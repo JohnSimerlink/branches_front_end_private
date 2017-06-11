@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <h2> This is Renaissance </h2>
-  <hello color='blue'></hello>
-  <facts></facts>
-   {{msg}} 
+    <facts></facts>
+    {{msg}} 
   </div>
 </template>
 

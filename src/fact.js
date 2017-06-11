@@ -1,3 +1,4 @@
+import md5 from 'md5'
 export class Fact {
   constructor (question, answer){
     this.question = question;
