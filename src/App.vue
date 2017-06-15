@@ -3,7 +3,7 @@
     <h2> This is Renaissance </h2>
   <hello color='blue'></hello>
   <facts></facts>
-   {{msg}} 
+   {{msg}}
   </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
   },
   components: {
     Hello
+    , SampleVue
     , Facts
   }
 }
