@@ -3,6 +3,7 @@
     <h2> This is Renaissance </h2>
   <hello color='blue'></hello>
   <facts></facts>
+  <!--<tree-ui></tree-ui>-->
    {{msg}} 
   </div>
 </template>
@@ -10,6 +11,7 @@
 <script>
 import Hello from './hello.vue';
 import Facts from './facts.vue';
+import TreeUi from './treeUi.vue';
 export default {
   name: 'app',
   data () {
@@ -20,6 +22,7 @@ export default {
   components: {
     Hello
     , Facts
+    , TreeUi
   }
 }
 </script>
