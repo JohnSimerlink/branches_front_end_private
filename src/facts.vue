@@ -5,7 +5,7 @@
 
   <ul>
     <fact id='does this work' question="What is Shaffan's last name?" answer="Mustafa"></fact>
-    <fact v-for='fact in facts' :id='fact.id' :question='fact.question' :answer='fact.answer'></fact>
+    <fact v-for='fact in facts' :id='fact.id' :key='fact.id' :question='fact.question' :answer='fact.answer'></fact>
   </ul>
   <newfact></newfact>
 </div>

@@ -11,7 +11,6 @@
 <script>
 import Hello from './hello.vue';
 import Facts from './facts.vue';
-import TreeUi from './treeUi.vue';
 export default {
   name: 'app',
   data () {
@@ -22,7 +21,6 @@ export default {
   components: {
     Hello
     , Facts
-    , TreeUi
   }
 }
 </script>
