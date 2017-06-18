@@ -1,9 +1,19 @@
+<style>
+   #app {
+       display: flex;
+       flex-direction: row;
+   }
+    #facts, #trees-graph {
+        flex: 50;
+    }
+
+</style>
 <template>
    <div>
       <h2> This is Renaissance </h2>
       <div id="app">
-          <facts></facts>
-          <trees-graph></trees-graph>
+          <facts id="facts"></facts>
+          <trees-graph id="trees-graph"></trees-graph>
       </div>
    </div>
 </template>

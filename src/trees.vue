@@ -1,7 +1,6 @@
 <template>
     <div>
         this will be the tree part of the app
-        jl
     </div>
 </template>
 <script>
