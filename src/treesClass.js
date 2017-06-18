@@ -24,7 +24,7 @@ class Trees {
 }
 const Trees = {
   gottenFirst20: false,
-  first20Trees
+  // first20Trees
   //todo make return a promise instead
   getAll: function() {
     const first20Trees = treesRef.limitToLast(20);

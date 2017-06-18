@@ -4,6 +4,7 @@
 <!--     <script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
     <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script> 
  -->  
+ <!-- old index below -->
 <script src="../other_imports/sigma/sigma.core.js"></script>
 <script src="../other_imports/sigma/conrad.js"></script>
 <script src="../other_imports/sigma/utils/sigma.utils.js"></script>
@@ -54,6 +55,7 @@
     </script>
     <meta charset="utf-8">
    <style>
+   /*
 #graph-container {
   background: #fff;
   height: 600px;
@@ -62,7 +64,7 @@
   position: relative;
   overflow: hidden;
 }
-
+*/
 .page {
   display: flex;
   flex-direction: row;
@@ -74,6 +76,34 @@
 #container {
   flex: 50;
 }
+
+  /*<style>*/
+    #graph-container {
+      background: #fff;
+      height: 600px;
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #disc {
+      position: absolute;
+      top: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    #ground {
+      position: absolute;
+      background: #ccc;
+      top: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  </style>
 </style>
  <title>renaissance</title>
   </head>
@@ -81,53 +111,291 @@
     <div class='page'>
       <div id="app"></div>
       <div id="container">
-        <div id="graph-container"></div>
+        <div id="graph-container">
+          <div id="disc"></div>
+          <div id="ground"></div>
+        </div>
       </div>
     </div>
     <script>
-        drawGraph()
-function drawGraph(){
-  var i,
-      s,
-      N = 100,
-      E = 500,
-      g = {
-        nodes: [],
-        edges: []
-      };
 
-  // Generate a random graph:
-  for (i = 0; i < N; i++){
-      g.nodes.push({
-          id: 'n' + i,
-          label: 'Node ' + i,
-          x: Math.random(),
-          y: Math.random(),
-          size: Math.random(),
-          color: '#666'
-      });
+(function() {
+  'use strict';
 
-      console.log('node pushed')
-  }
+  var s,
+      c,
+      dom,
+      disc,
+      ground,
+      nId = 0,
+      eId = 0,
+      radius = 50,
 
-  for (i = 0; i < E; i++){
-      g.edges.push({ id: 'e' + i,
-          source: 'n' + (Math.random() * N | 0),
-          target: 'n' + (Math.random() * N | 0),
-          size: Math.random(),
-          color: '#ccc'
-      });
+      mouseX,
+      mouseY,
+      spaceMode = false,
+      wheelRatio = 1.1,
 
-      console.log('edge pushed')
-  }
-
-  // Instantiate sigma:
+      nodeRadius = 10,
+      inertia = 0.8,
+      springForce = 0.01,
+      springLength = 50,
+      maxDisplacement = 15,
+      gravity = 1.5;
+  /**
+   * INITIALIZATION SCRIPT:
+   * **********************
+   */
   s = new sigma({
-    graph: g,
-    container: 'graph-container'
+    renderer: {
+      container: document.getElementById('graph-container'),
+      type: 'canvas'
+    },
+    settings: {
+      autoRescale: false,
+      mouseEnabled: false,
+      touchEnabled: false,
+      nodesPowRatio: 1,
+      edgesPowRatio: 1,
+      defaultEdgeColor: '#333',
+      defaultNodeColor: '#333',
+      edgeColor: 'default'
+    }
   });
-}
+  dom = document.querySelector('#graph-container canvas:last-child');
+  disc = document.getElementById('disc');
+  ground = document.getElementById('ground');
+  c = s.camera;
 
+  // Initialize graph:
+  s.graph.read({
+    nodes: [
+      {
+        id: (++nId) + '',
+        size: nodeRadius,
+        x: 0,
+        y: -80,
+        dX: 0,
+        dY: 0,
+        type: 'def'
+      },
+      {
+        id: (++nId) + '',
+        size: nodeRadius,
+        x: 10,
+        y: -100,
+        dX: 0,
+        dY: 0,
+        type: 'def'
+      },
+      {
+        id: (++nId) + '',
+        size: nodeRadius,
+        x: 20,
+        y: -80,
+        dX: 0,
+        dY: 0,
+        type: 'def'
+      }
+    ],
+    edges: [
+      {
+        id: (++eId) + '',
+        source: '1',
+        target: '2',
+        type: 'def'
+      },
+      {
+        id: (++eId) + '',
+        source: '1',
+        target: '3',
+        type: 'def'
+      },
+      {
+        id: (++eId) + '',
+        source: '2',
+        target: '3',
+        type: 'def'
+      }
+    ]
+  });
+
+  function frame() {
+    //s.graph.computePhysics();
+    s.refresh();
+
+    if (s.graph.nodes().length) {
+      var w = dom.offsetWidth,
+          h = dom.offsetHeight;
+
+      // The "rescale" middleware modifies the position of the nodes, but we
+      // need here the camera to deal with this. Here is the code:
+      var xMin = Infinity,
+          xMax = -Infinity,
+          yMin = Infinity,
+          yMax = -Infinity,
+          margin = 50,
+          scale;
+
+      s.graph.nodes().forEach(function(n) {
+        xMin = Math.min(n.x, xMin);
+        xMax = Math.max(n.x, xMax);
+        yMin = Math.min(n.y, yMin);
+        yMax = Math.max(n.y, yMax);
+      });
+
+      xMax += margin;
+      xMin -= margin;
+      yMax += margin;
+      yMin -= margin;
+
+      scale = Math.min(
+        w / Math.max(xMax - xMin, 1),
+        h / Math.max(yMax - yMin, 1)
+      );
+
+      c.goTo({
+        x: (xMin + xMax) / 2,
+        y: (yMin + yMax) / 2,
+        ratio: 1 / scale
+      });
+
+      ground.style.top =
+        Math.max(h / 2 - Math.min((yMin + yMax) / 2 * scale, h), 0) + 'px';
+      disc.style.borderRadius = radius * scale;
+      disc.style.width = 2 * radius * scale;
+      disc.style.height = 2 * radius * scale;
+      disc.style.top = mouseY - radius * scale;
+      disc.style.left = mouseX - radius * scale;
+      disc.style.backgroundColor = spaceMode ? '#f99' : '#9cf';
+
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+
+  /**
+   * EVENTS BINDING:
+   * ***************
+   */
+  dom.addEventListener('click', function(e) {
+    // Find neighbors:
+    var x,
+        y,
+        p,
+        id,
+        neighbors;
+
+    x = sigma.utils.getX(e) - dom.offsetWidth / 2;
+    y = sigma.utils.getY(e) - dom.offsetHeight / 2;
+
+    p = c.cameraPosition(x, y);
+    x = p.x;
+    y = p.y;
+
+
+    if (!spaceMode)
+      s.graph.addNode({
+        id: (id = (++nId) + ''),
+        size: nodeRadius,
+        x: x + Math.random() / 10,
+        y: y + Math.random() / 10,
+        type: 'def'
+      });
+  }, false);
+})();
+
+
+//        sigma.canvas.nodes.square = function(node, context, settings) {
+//            var prefix = settings('prefix') || '',
+//                size = node[prefix + 'size']
+//
+//            context.fillStyle = node.color || settings('defaultNodeColor');
+//            context.beginPath();
+//            context.rect(
+//                node[prefix + 'x'] - size,
+//                node[prefix + 'y'] - size,
+//                size * 2,
+//                size * 2
+//            )
+//            context.closePath()
+//            context.fill()
+//
+//        }
+//         drawGraph()
+// function drawGraph(){
+//   var i,
+//       s,
+//       N = 5,
+//       E = 8,
+//       g = {
+//         nodes: [],
+//         edges: []
+//       };
+//   globalG = g;
+
+//   // Generate a random graph:
+//   for (i = 0; i < N; i++){
+//       g.nodes.push({
+//           id: 'n' + i,
+//           label: 'node ' + i,
+//           x: Math.random(),
+//           y: Math.random(),
+//           size: Math.random(),
+//           color: '#f00',
+//       });
+
+//       console.log('node pushed')
+//   }
+
+//   for (i = 0; i < E; i++){
+//       g.edges.push({ id: 'e' + i,
+//           source: 'n' + (Math.random() * N | 0),
+//           target: 'n' + (Math.random() * N | 0),
+//           size: Math.random(),
+//           color: '#ccc'
+//       });
+
+//       console.log('edge pushed')
+//   }
+//     g.nodes.push({
+//               id: 'n' + 24,
+//               label: 'this is a new node',
+//               x: Math.random(),
+//               y: Math.random(),
+//               size: Math.random(),
+//               color: '#00f',
+//           });
+//     g.edges.push({id: 'e' + 9, source: 'n2', target: 'n24', color: '#00f'})
+//   // Instantiate sigma:
+//   s = new sigma({
+//     graph: g,
+//     container: 'graph-container'
+//   });
+//     g.nodes.push({
+//         id: 'n' + 25,
+//         label: 'this is a new node25',
+//         x: Math.random(),
+//         y: Math.random(),
+//         size: Math.random(),
+//         color: '#00f',
+//     });
+//     s.graph.addNode(
+//         {
+//             id: 'n' + 25,
+//             label: 'this is a new node25',
+//             x: Math.random(),
+//             y: Math.random(),
+//             size: Math.random(),
+//             color: '#00f',
+//         }
+//     )
+//     s.graph.dropNode('n25')
+//     g.edges.push({id: 'e' + 10, source: 'n3', target: 'n25', color: '#00f'})
+//     s.refresh()
+// }
     </script>
     <script src="/dist/build.js"></script>
   </body>

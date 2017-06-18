@@ -7,6 +7,7 @@
 </template>
 <script>
 export default {
+    name: 'hello',
   data () {
     return {
       name: "bob"
@@ -17,3 +18,4 @@ export default {
   , props: ['color']
 }
 </script>
+                                                                                                                                                                                       90
