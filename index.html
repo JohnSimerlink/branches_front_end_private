@@ -103,7 +103,6 @@
       left: 0;
       right: 0;
     }
-  </style>
 </style>
  <title>renaissance</title>
   </head>
@@ -276,10 +275,18 @@
 
   frame();
 
-  /**
-   * EVENTS BINDING:
-   * ***************
-   */
+    function addNode(x, y){
+        console.log('ADD NODE', x, y)
+        s.graph.addNode({
+            id: ((++nId) + ''),
+            size: nodeRadius,
+            label: 'new node' + nId,
+            x: x + Math.random() / 10,
+            y: y + Math.random() / 10,
+            type: 'def'
+        })
+    }
+
   dom.addEventListener('click', function(e) {
     // Find neighbors:
     var x,
@@ -294,18 +301,36 @@
     p = c.cameraPosition(x, y);
     x = p.x;
     y = p.y;
+    addNode(x, y);
+//      g.edges.push({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
+      s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
 
-
-    if (!spaceMode)
-      s.graph.addNode({
-        id: (id = (++nId) + ''),
-        size: nodeRadius,
-        x: x + Math.random() / 10,
-        y: y + Math.random() / 10,
-        type: 'def'
-      });
   }, false);
+    addNode(100,100)
+    addNode(200,100)
 })();
+
+    g.nodes.push({
+        id: 'n' + 25,
+        label: 'this is a new node25',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#00f',
+    });
+    s.graph.addNode(
+        {
+            id: 'n' + 25,
+            label: 'this is a new node25',
+            x: Math.random(),
+            y: Math.random(),
+            size: Math.random(),
+            color: '#00f',
+        }
+    )
+    s.graph.dropNode('n25')
+    g.edges.push({id: 'e' + 10, source: 'n3', target: 'n25', color: '#00f'})
+    s.refresh()
 
 
 //        sigma.canvas.nodes.square = function(node, context, settings) {
