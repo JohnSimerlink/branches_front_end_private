@@ -41,16 +41,6 @@
     </script>
     <meta charset="utf-8">
    <style>
-   /*
-#graph-container {
-  background: #fff;
-  height: 600px;
-  max-width: 800px;
-  margin: auto;
-  position: relative;
-  overflow: hidden;
-}
-*/
 .page {
   display: flex;
   flex-direction: row;
@@ -295,118 +285,6 @@
     addNode(100,100)
     addNode(200,100)
 })();
-
-    g.nodes.push({
-        id: 'n' + 25,
-        label: 'this is a new node25',
-        x: Math.random(),
-        y: Math.random(),
-        size: Math.random(),
-        color: '#00f',
-    });
-    s.graph.addNode(
-        {
-            id: 'n' + 25,
-            label: 'this is a new node25',
-            x: Math.random(),
-            y: Math.random(),
-            size: Math.random(),
-            color: '#00f',
-        }
-    )
-    s.graph.dropNode('n25')
-    g.edges.push({id: 'e' + 10, source: 'n3', target: 'n25', color: '#00f'})
-    s.refresh()
-
-
-//        sigma.canvas.nodes.square = function(node, context, settings) {
-//            var prefix = settings('prefix') || '',
-//                size = node[prefix + 'size']
-//
-//            context.fillStyle = node.color || settings('defaultNodeColor');
-//            context.beginPath();
-//            context.rect(
-//                node[prefix + 'x'] - size,
-//                node[prefix + 'y'] - size,
-//                size * 2,
-//                size * 2
-//            )
-//            context.closePath()
-//            context.fill()
-//
-//        }
-//         drawGraph()
-// function drawGraph(){
-//   var i,
-//       s,
-//       N = 5,
-//       E = 8,
-//       g = {
-//         nodes: [],
-//         edges: []
-//       };
-//   globalG = g;
-
-//   // Generate a random graph:
-//   for (i = 0; i < N; i++){
-//       g.nodes.push({
-//           id: 'n' + i,
-//           label: 'node ' + i,
-//           x: Math.random(),
-//           y: Math.random(),
-//           size: Math.random(),
-//           color: '#f00',
-//       });
-
-//       console.log('node pushed')
-//   }
-
-//   for (i = 0; i < E; i++){
-//       g.edges.push({ id: 'e' + i,
-//           source: 'n' + (Math.random() * N | 0),
-//           target: 'n' + (Math.random() * N | 0),
-//           size: Math.random(),
-//           color: '#ccc'
-//       });
-
-//       console.log('edge pushed')
-//   }
-//     g.nodes.push({
-//               id: 'n' + 24,
-//               label: 'this is a new node',
-//               x: Math.random(),
-//               y: Math.random(),
-//               size: Math.random(),
-//               color: '#00f',
-//           });
-//     g.edges.push({id: 'e' + 9, source: 'n2', target: 'n24', color: '#00f'})
-//   // Instantiate sigma:
-//   s = new sigma({
-//     graph: g,
-//     container: 'graph-container'
-//   });
-//     g.nodes.push({
-//         id: 'n' + 25,
-//         label: 'this is a new node25',
-//         x: Math.random(),
-//         y: Math.random(),
-//         size: Math.random(),
-//         color: '#00f',
-//     });
-//     s.graph.addNode(
-//         {
-//             id: 'n' + 25,
-//             label: 'this is a new node25',
-//             x: Math.random(),
-//             y: Math.random(),
-//             size: Math.random(),
-//             color: '#00f',
-//         }
-//     )
-//     s.graph.dropNode('n25')
-//     g.edges.push({id: 'e' + 10, source: 'n3', target: 'n25', color: '#00f'})
-//     s.refresh()
-// }
     </script>
     <script src="/dist/build.js"></script>
   </body>
