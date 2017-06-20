@@ -9,18 +9,16 @@
 
 </style>
 <template>
-   <div>
-      <h2> This is Renaissance </h2>
-      <div id="app">
-          <facts id="facts"></facts>
-          <trees-graph id="trees-graph"></trees-graph>
-      </div>
+   <div id="app">
+      <facts id="facts"></facts>
+      <!--<trees-graph id="trees-graph"></trees-graph>-->
    </div>
 </template>
 
 <script>
 import Facts from './facts.vue';
-import TreesGraph from './trees.vue';
+import './treesGraph.js'
+//import TreesGraph from './trees.vue';
 export default {
   name: 'app',
   data () {
@@ -30,7 +28,7 @@ export default {
   },
   components: {
     Facts
-    , TreesGraph
+//    , TreesGraph
   }
 }
 </script>
