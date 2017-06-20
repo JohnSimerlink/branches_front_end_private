@@ -1,45 +1,35 @@
-<template>
-    <div>
-        This will be the trees ui template
-        <div id="graph-container2">
-            <div id="disc2"></div>
-            <div id="ground2"></div>
-        </div>
-    </div>
-</template>
-<script>
 import "../other_imports/sigma/sigma.core.js"
-import "../other_imports/sigma/conrad.js"
-import "../other_imports/sigma/utils/sigma.utils.js"
-import "../other_imports/sigma/utils/sigma.polyfills.js"
-import "../other_imports/sigma/sigma.settings.js"
-import "../other_imports/sigma/classes/sigma.classes.dispatcher.js"
-import "../other_imports/sigma/classes/sigma.classes.configurable.js"
-import "../other_imports/sigma/classes/sigma.classes.graph.js"
-import "../other_imports/sigma/classes/sigma.classes.camera.js"
-import "../other_imports/sigma/classes/sigma.classes.quad.js"
-import "../other_imports/sigma/classes/sigma.classes.edgequad.js"
-import "../other_imports/sigma/captors/sigma.captors.mouse.js"
-import "../other_imports/sigma/captors/sigma.captors.touch.js"
-import "../other_imports/sigma/renderers/sigma.renderers.canvas.js"
-import "../other_imports/sigma/renderers/sigma.renderers.def.js"
-import "../other_imports/sigma/renderers/canvas/sigma.canvas.labels.def.js"
-import "../other_imports/sigma/renderers/canvas/sigma.canvas.nodes.def.js"
-import "../other_imports/sigma/renderers/canvas/sigma.canvas.edges.def.js"
-import "../other_imports/sigma/renderers/canvas/sigma.canvas.edgehovers.def.js"
-import "../other_imports/sigma/renderers/canvas/sigma.canvas.extremities.def.js"
-import "../other_imports/sigma/renderers/svg/sigma.svg.utils.js"
-import "../other_imports/sigma/renderers/svg/sigma.svg.nodes.def.js"
-import "../other_imports/sigma/renderers/svg/sigma.svg.edges.def.js"
-import "../other_imports/sigma/renderers/svg/sigma.svg.labels.def.js"
-import "../other_imports/sigma/renderers/svg/sigma.svg.hovers.def.js"
-import "../other_imports/sigma/middlewares/sigma.middlewares.rescale.js"
-import "../other_imports/sigma/middlewares/sigma.middlewares.copy.js"
-import "../other_imports/sigma/misc/sigma.misc.animation.js"
-import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
-import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
-import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
-
+    import "../other_imports/sigma/conrad.js"
+    import "../other_imports/sigma/utils/sigma.utils.js"
+    import "../other_imports/sigma/utils/sigma.polyfills.js"
+    import "../other_imports/sigma/sigma.settings.js"
+    import "../other_imports/sigma/classes/sigma.classes.dispatcher.js"
+    import "../other_imports/sigma/classes/sigma.classes.configurable.js"
+    import "../other_imports/sigma/classes/sigma.classes.graph.js"
+    import "../other_imports/sigma/classes/sigma.classes.camera.js"
+    import "../other_imports/sigma/classes/sigma.classes.quad.js"
+    import "../other_imports/sigma/classes/sigma.classes.edgequad.js"
+    import "../other_imports/sigma/captors/sigma.captors.mouse.js"
+    import "../other_imports/sigma/captors/sigma.captors.touch.js"
+    import "../other_imports/sigma/renderers/sigma.renderers.canvas.js"
+    import "../other_imports/sigma/renderers/sigma.renderers.def.js"
+    import "../other_imports/sigma/renderers/canvas/sigma.canvas.labels.def.js"
+    import "../other_imports/sigma/renderers/canvas/sigma.canvas.hovers.def.js"
+    import "../other_imports/sigma/renderers/canvas/sigma.canvas.nodes.def.js"
+    import "../other_imports/sigma/renderers/canvas/sigma.canvas.edges.def.js"
+    import "../other_imports/sigma/renderers/canvas/sigma.canvas.edgehovers.def.js"
+    import "../other_imports/sigma/renderers/canvas/sigma.canvas.extremities.def.js"
+    import "../other_imports/sigma/renderers/svg/sigma.svg.utils.js"
+    import "../other_imports/sigma/renderers/svg/sigma.svg.nodes.def.js"
+    import "../other_imports/sigma/renderers/svg/sigma.svg.edges.def.js"
+    import "../other_imports/sigma/renderers/svg/sigma.svg.labels.def.js"
+    import "../other_imports/sigma/renderers/svg/sigma.svg.hovers.def.js"
+    import "../other_imports/sigma/middlewares/sigma.middlewares.rescale.js"
+    import "../other_imports/sigma/middlewares/sigma.middlewares.copy.js"
+    import "../other_imports/sigma/misc/sigma.misc.animation.js"
+    import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
+    import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
+    import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
 (function() {
     'use strict';
 
@@ -69,7 +59,7 @@ import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
      */
     s = new sigma({
         renderer: {
-            container: document.getElementById('graph-container2'),
+            container: document.getElementById('graph-container'),
             type: 'canvas'
         },
         settings: {
@@ -83,9 +73,9 @@ import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
             edgeColor: 'default'
         }
     });
-    dom = document.querySelector('#graph-container2 canvas:last-child');
-    disc = document.getElementById('disc2');
-    ground = document.getElementById('ground2');
+    dom = document.querySelector('#graph-container canvas:last-child');
+    disc = document.getElementById('disc');
+    ground = document.getElementById('ground');
     c = s.camera;
 
     // Initialize graph:
@@ -231,40 +221,4 @@ import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
     addNode(100,100)
     addNode(200,100)
 })();
-export default {
-    name: 'treesgraph',
-    data() {
-        return {}
-    }
-}
 
-
-</script>
-<style>
-    /*<style>*/
-    #graph-container {
-        background: #fff;
-        height: 600px;
-        max-width: 800px;
-        margin: auto;
-        position: relative;
-        overflow: hidden;
-    }
-
-    #disc {
-        position: absolute;
-        top: 100%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-
-    #ground {
-        position: absolute;
-        background: #ccc;
-        top: 100%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-</style>
