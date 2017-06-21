@@ -30,6 +30,9 @@ import "../other_imports/sigma/sigma.core.js"
     import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
     import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
     import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
+    import getFirebase from './firebaseService.js';
+    const firebase = getFirebase();
+    // function initializeNodes
 (function() {
     'use strict';
 
