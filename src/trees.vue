@@ -1,6 +1,11 @@
 <template>
     <div>
-        This will be the trees ui template
+        <div>
+            <h2>Trees List</h2>
+            <ul>
+                <!--<tree v-for='tree in trees' :id='tree.id' :key='tree.id' :question='fact.question' :answer='fact.answer'></tree>-->
+            </ul>
+        </div>
         <div id="graph-container2">
             <div id="disc2"></div>
             <div id="ground2"></div>
@@ -39,6 +44,7 @@ import "../other_imports/sigma/misc/sigma.misc.animation.js"
 import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
 import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
 import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
+import trees from "./trees.js"
 
 (function() {
     'use strict';

@@ -1,7 +1,7 @@
 <template>
   <div>
     Fact Id: <input id='factId' type='text'>
-    <button id='createNewFact' v-on:click='newTree'>Create New Tree</button>
+    <button id='createNewTree' v-on:click='newTree'>Create New Tree</button>
   </div>
 </template>
 
