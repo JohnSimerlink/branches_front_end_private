@@ -1,12 +1,12 @@
 /**
  * Created by John on 6/21/2017.
  */
-import Fact from './fact.js';
+import {Fact} from './fact.js';
 const factsArr = [
     {question: "Less is ... ", answer: 'more'},
     {question: "It's not always the best product that ... ", answer: "wins. (example - according to steve jobs apple was better than windows, but windows won"},
-    {question: "What are the two qualities by which a person is judged by others? ", answer: "Competence (power) and warmth [and a third: 'presence']"}
-    {question: "How do people judge one's power?", answer: "Their social status, clothes, title ..."}
+    {question: "What are the two qualities by which a person is judged by others? ", answer: "Competence (power) and warmth [and a third: 'presence']"},
+    {question: "How do people judge one's power?", answer: "Their social status, clothes, title ..."},
     {question: "What is a technique to treat other people warmly?", answer: "Imagine they have halos around their head, and that they are the best people/angels you have ever encountered"},
     {question: "How can you treat jerks nicely?", answer: "Change how you see their situation in your head (e.g. say to yourself 'That guy was just diagnosed with cancer'"},
     {question: "What is presence?", answer: "The state of being totally focused and aware on the current moment and place. Not on the future or past. Not thinking about other people/activities, but think about the people you are with now and the activity you are doing now."},
@@ -14,16 +14,12 @@ const factsArr = [
 ]
 const facts = {}
 factsArr.forEach((fact) => {
-    f = new Fact(fact);
+    const f = new Fact(fact);
     facts[f.id] = f;
 })
-
-export class Facts {
-    getAll(success){
-        success(facts)
-    }
-    //TODO: make thenable with promises
-    get(id, success){
-        success(facts[id])
-    }
+export function getAllFacts(success) {
+    success(facts)
+}
+export function getFact(id, success){
+    success(facts[id])
 }
