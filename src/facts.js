@@ -1,7 +1,7 @@
 /**
  * Created by John on 6/21/2017.
  */
-import fact from './fact.js';
+import Fact from './fact.js';
 const factsArr = [
     {question: "Less is ... ", answer: 'more'},
     {question: "It's not always the best product that ... ", answer: "wins. (example - according to steve jobs apple was better than windows, but windows won"},
@@ -13,3 +13,17 @@ const factsArr = [
     {question: "What is a technique to instantly get present?", answer: "Focus on your toes, and trying to feel your toes in your shoes (this brings attention to your current senses"}
 ]
 const facts = {}
+factsArr.forEach((fact) => {
+    f = new Fact(fact);
+    facts[f.id] = f;
+})
+
+export class Facts {
+    getAll(success){
+        success(facts)
+    }
+    //TODO: make thenable with promises
+    get(id, success){
+        success(facts[id])
+    }
+}
