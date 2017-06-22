@@ -17,6 +17,7 @@
 
 <script>
 import Facts from './facts.vue';
+import './trees.js'
 import './treesGraph.js'
 //import TreesGraph from './trees.vue';
 export default {
