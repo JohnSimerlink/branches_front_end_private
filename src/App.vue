@@ -11,7 +11,6 @@
 <template>
    <div id="app">
       <facts id="facts"></facts>
-      <!--<trees-graph id="trees-graph"></trees-graph>-->
    </div>
 </template>
 
@@ -19,7 +18,6 @@
 import Facts from './facts.vue';
 import './trees.js'
 import './treesGraph.js'
-//import TreesGraph from './trees.vue';
 export default {
   name: 'app',
   data () {
@@ -28,9 +26,7 @@ export default {
     }
   },
   components: {
-    Hello
-    , Facts
-//    , TreesGraph
+     Facts
   }
 }
 </script>
