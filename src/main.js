@@ -4,4 +4,4 @@ import Vue from 'vue'
 
 Vue.use(VueFire)
 
-new Vue({el: '#app', render: h => h(App) })
+new Vue({el: '#bootstrap', render: h => h(App) })

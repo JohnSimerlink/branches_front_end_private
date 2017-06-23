@@ -1,0 +1,270 @@
+<!-- START SIGMA IMPORTS -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+<div id="container">
+  <style>
+    #graph-container {
+      background: #fff;
+      height: 600px;
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #disc {
+      position: absolute;
+      top: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    #ground {
+      position: absolute;
+      background: #ccc;
+      top: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  </style>
+  <div id="graph-container">
+    <div id="disc"></div>
+    <div id="ground"></div>
+  </div>
+</div>
+<script>
+(function() {
+  'use strict';
+
+  var s,
+      c,
+      dom,
+      disc,
+      ground,
+      nId = 0,
+      eId = 0,
+      radius = 50,
+
+      mouseX,
+      mouseY,
+      spaceMode = false,
+      wheelRatio = 1.1,
+
+      nodeRadius = 10,
+      inertia = 0.8,
+      springForce = 0.01,
+      springLength = 50,
+      maxDisplacement = 15,
+      gravity = 1.5;
+  /**
+   * INITIALIZATION SCRIPT:
+   * **********************
+   */
+  s = new sigma({
+    renderer: {
+      container: document.getElementById('graph-container'),
+      type: 'canvas'
+    },
+    settings: {
+      autoRescale: false,
+      mouseEnabled: false,
+      touchEnabled: false,
+      nodesPowRatio: 1,
+      edgesPowRatio: 1,
+      defaultEdgeColor: '#333',
+      defaultNodeColor: '#333',
+      edgeColor: 'default'
+    }
+  });
+  dom = document.querySelector('#graph-container canvas:last-child');
+  disc = document.getElementById('disc');
+  ground = document.getElementById('ground');
+  c = s.camera;
+
+  // Initialize graph:
+  s.graph.read({
+    nodes: [
+      {
+        id: (++nId) + '',
+        size: nodeRadius,
+        x: 0,
+        y: -80,
+        dX: 0,
+        dY: 0,
+        type: 'def'
+      },
+      {
+        id: (++nId) + '',
+        size: nodeRadius,
+        x: 10,
+        y: -100,
+        dX: 0,
+        dY: 0,
+        type: 'def'
+      },
+      {
+        id: (++nId) + '',
+        size: nodeRadius,
+        x: 20,
+        y: -80,
+        dX: 0,
+        dY: 0,
+        type: 'def'
+      }
+    ],
+    edges: [
+      {
+        id: (++eId) + '',
+        source: '1',
+        target: '2',
+        type: 'def'
+      },
+      {
+        id: (++eId) + '',
+        source: '1',
+        target: '3',
+        type: 'def'
+      },
+      {
+        id: (++eId) + '',
+        source: '2',
+        target: '3',
+        type: 'def'
+      }
+    ]
+  });
+
+  function frame() {
+    //s.graph.computePhysics();
+    s.refresh();
+
+    if (s.graph.nodes().length) {
+      var w = dom.offsetWidth,
+          h = dom.offsetHeight;
+
+      // The "rescale" middleware modifies the position of the nodes, but we
+      // need here the camera to deal with this. Here is the code:
+      var xMin = Infinity,
+          xMax = -Infinity,
+          yMin = Infinity,
+          yMax = -Infinity,
+          margin = 50,
+          scale;
+
+      s.graph.nodes().forEach(function(n) {
+        xMin = Math.min(n.x, xMin);
+        xMax = Math.max(n.x, xMax);
+        yMin = Math.min(n.y, yMin);
+        yMax = Math.max(n.y, yMax);
+      });
+
+      xMax += margin;
+      xMin -= margin;
+      yMax += margin;
+      yMin -= margin;
+
+      scale = Math.min(
+        w / Math.max(xMax - xMin, 1),
+        h / Math.max(yMax - yMin, 1)
+      );
+
+      c.goTo({
+        x: (xMin + xMax) / 2,
+        y: (yMin + yMax) / 2,
+        ratio: 1 / scale
+      });
+
+      ground.style.top =
+        Math.max(h / 2 - Math.min((yMin + yMax) / 2 * scale, h), 0) + 'px';
+      disc.style.borderRadius = radius * scale;
+      disc.style.width = 2 * radius * scale;
+      disc.style.height = 2 * radius * scale;
+      disc.style.top = mouseY - radius * scale;
+      disc.style.left = mouseX - radius * scale;
+      disc.style.backgroundColor = spaceMode ? '#f99' : '#9cf';
+
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+
+  /**
+   * EVENTS BINDING:
+   * ***************
+   */
+  dom.addEventListener('click', function(e) {
+    // Find neighbors:
+    var x,
+        y,
+        p,
+        id,
+        neighbors;
+
+    x = sigma.utils.getX(e) - dom.offsetWidth / 2;
+    y = sigma.utils.getY(e) - dom.offsetHeight / 2;
+
+    p = c.cameraPosition(x, y);
+    x = p.x;
+    y = p.y;
+
+
+    if (!spaceMode)
+      s.graph.addNode({
+        id: (id = (++nId) + ''),
+        size: nodeRadius,
+        x: x + Math.random() / 10,
+        y: y + Math.random() / 10,
+        type: 'def'
+      });
+  }, false);
+})();
+</script>

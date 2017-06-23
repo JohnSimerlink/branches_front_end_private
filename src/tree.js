@@ -2,10 +2,18 @@ import md5 from 'md5'
 import getFirebase from './firebaseService.js';
 const firebase = getFirebase();
 const treesRef = firebase.database().ref('trees');
-export class Tree {
+const devOfflineMode = true;
+const trees = {};
+export class OnlineTree {
   constructor(fact_id){
     let parent_id = null;
     let children = [];
+    const treeObj = {fact_id, parent_id, children}
+    const tree_id = md5(treeObj)
+    if (devOfflineMode) {
+        // trees[tree_id]
+      trees.push({fact_id,parent_id, children})
+    }
     this.treeRef = treesRef.push({
         fact_id,
         parent_id,
@@ -22,6 +30,15 @@ export class Tree {
     this.treeRef.update({
       parent_id: new_parent_id
     })
+  }
+}
+import md5 from 'md5'
+export class Tree {
+  constructor (factId, parentId){
+    this.factId = factId;
+    this.parentId = parentId;
+    this.children = [];
+    this.id = md5(JSON.stringify({factId, parentId, children})) // id mechanism for trees may very well change
   }
 }
 /*
