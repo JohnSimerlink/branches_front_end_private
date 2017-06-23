@@ -44,7 +44,7 @@ import "../other_imports/sigma/misc/sigma.misc.animation.js"
 import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
 import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
 import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
-import trees from "./trees.js"
+import {Trees, getAllTrees} from "./trees.js"
 
 (function() {
     'use strict';
@@ -94,6 +94,12 @@ import trees from "./trees.js"
     ground = document.getElementById('ground2');
     c = s.camera;
 
+    console.log(
+        'graph about to be initialized'
+    )
+    Trees.getAll((trees) =>{
+        console.log('trees received in trees.vue is', JSON.stringify(trees))
+    })
     // Initialize graph:
     s.graph.read({
         nodes: [

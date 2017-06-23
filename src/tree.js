@@ -32,13 +32,12 @@ export class OnlineTree {
     })
   }
 }
-import md5 from 'md5'
 export class Tree {
   constructor (factId, parentId){
     this.factId = factId;
     this.parentId = parentId;
     this.children = [];
-    this.id = md5(JSON.stringify({factId, parentId, children})) // id mechanism for trees may very well change
+    this.id = md5(JSON.stringify({factId:factId, parentId:parentId, children: this.children})) // id mechanism for trees may very well change
   }
 }
 /*
