@@ -32,7 +32,8 @@ import "../other_imports/sigma/sigma.core.js"
     import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
     import getFirebase from './firebaseService.js';
     const firebase = getFirebase();
-    // function initializeNodes
+    import {Trees} from './trees.js'
+// function initializeNodes
 (function() {
     'use strict';
 
@@ -80,6 +81,26 @@ import "../other_imports/sigma/sigma.core.js"
     disc = document.getElementById('disc');
     ground = document.getElementById('ground');
     c = s.camera;
+    const graphNodes = [];
+    let numNodes = 0;
+    console.log("TREES.VUE: Trees.getAll about to be called")
+    Trees.getAll((trees) =>{
+        console.log('TREES.VUE: trees received in trees.vue is', JSON.stringify(trees))
+        Object.keys(trees).forEach( (treeId) => {
+            addNode({treeId: treeId, x: numNodes * 20, y:0})
+            // graphNodes.push(
+            //     {
+            //         id: treeId,
+            //         size: nodeRadius,
+            //         x: numNodes * 20,
+            //         y: 0,
+            //         type: 'def'
+            //     }
+            // )
+            numNodes++
+            console.log("TREESGRAPH.JS: NumNodes is now", numNodes)
+        })
+    })
 
     // Initialize graph:
     s.graph.read({
@@ -190,14 +211,15 @@ import "../other_imports/sigma/sigma.core.js"
 
     frame();
 
-    function addNode(x, y){
-        console.log('ADD NODE', x, y)
+    function addNode(options){
+        console.log('ADD NODE', options.x, options.y)
+
         s.graph.addNode({
-            id: ((++nId) + ''),
+            id: ((options.id) + ''),
             size: nodeRadius,
-            label: 'new node' + nId,
-            x: x + Math.random() / 10,
-            y: y + Math.random() / 10,
+            label: 'new node' + options.id,
+            x: options.x,
+            y: options.y,
             type: 'def'
         })
     }
@@ -216,12 +238,12 @@ import "../other_imports/sigma/sigma.core.js"
         p = c.cameraPosition(x, y);
         x = p.x;
         y = p.y;
-        addNode(x, y);
+        addNode({id: 1, x:x, y:y});
 //      g.edges.push({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
         s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
 
     }, false);
-    addNode(100,100)
-    addNode(200,100)
+    addNode({id: 2, x:100, y:100});
+    addNode({id: 3, x:200, y:100});
 })();
 
