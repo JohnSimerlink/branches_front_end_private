@@ -83,11 +83,11 @@ import "../other_imports/sigma/sigma.core.js"
     c = s.camera;
     const graphNodes = [];
     let numNodes = 0;
-    console.log("TREES.VUE: Trees.getAll about to be called")
+    console.log("TREESGRAPH.JS: Trees.getAll about to be called")
     Trees.getAll((trees) =>{
-        console.log('TREES.VUE: trees received in trees.vue is', JSON.stringify(trees))
+        console.log('TREESGRAPH.JS: trees received in treesGRAPH.js is', JSON.stringify(trees))
         Object.keys(trees).forEach( (treeId) => {
-            addNode({treeId: treeId, x: numNodes * 20, y:0})
+            addNode({id: treeId, x: numNodes * 20, y:0})
             // graphNodes.push(
             //     {
             //         id: treeId,
@@ -238,7 +238,7 @@ import "../other_imports/sigma/sigma.core.js"
         p = c.cameraPosition(x, y);
         x = p.x;
         y = p.y;
-        addNode({id: 1, x:x, y:y});
+        addNode({id: Math.random() + '', x:x, y:y});
 //      g.edges.push({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
         s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
 
