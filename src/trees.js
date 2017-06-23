@@ -1,20 +1,28 @@
-/**
- * Created by John on 6/21/2017.
- */
 import {getAllFacts, getFact} from './facts.js'
+import {Tree} from './tree.js'
+const offlineDevMode = true;
 console.log('trees.js imported')
+const trees = {
+}
 getAllFacts((facts) => {
    Object.keys(facts).forEach((factId) => {
        console.log('factId ' + factId + ' has obj of ' + facts[factId])
     const tree = new Tree(factId, null)
+       trees[tree.id] = tree;
    })
 })
-const trees = {
-    "1": {
-
+export function getAllTrees(success){
+    if (offlineDevMode){
+        success(trees)
     }
 }
-class Trees {
-
-
+export class Trees {
+    static getAll(success){
+        if (offlineDevMode){
+            success(trees)
+        }
+    }
+    static get(treeId, success){
+        success(treeId)
+    }
 }
