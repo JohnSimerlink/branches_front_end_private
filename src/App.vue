@@ -9,10 +9,19 @@
 
 </style>
 <template>
+<<<<<<< HEAD
+  <div id="app">
+    <h2> This is Renaissance </h2>
+  <hello color='blue'></hello>
+  <facts></facts>
+   {{msg}}
+  </div>
+=======
    <div id="app">
       <facts id="facts"></facts>
       <!--<trees-graph id="trees-graph"></trees-graph>-->
    </div>
+>>>>>>> cbb1e924fb3d4993a2ee3db21aa21de143f043d4
 </template>
 
 <script>
@@ -28,8 +37,14 @@ export default {
     }
   },
   components: {
+<<<<<<< HEAD
+    Hello
+    , SampleVue
+    , Facts
+=======
     Facts
 //    , TreesGraph
+>>>>>>> cbb1e924fb3d4993a2ee3db21aa21de143f043d4
   }
 }
 </script>
