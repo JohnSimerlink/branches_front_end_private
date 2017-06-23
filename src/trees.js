@@ -18,6 +18,7 @@ export function getAllTrees(success){
 }
 export class Trees {
     static getAll(success){
+        console.log("TREES.JS: Trees.getAll called")
         if (offlineDevMode){
             success(trees)
         }
