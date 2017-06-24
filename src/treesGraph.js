@@ -33,6 +33,7 @@ import "../other_imports/sigma/sigma.core.js"
     import getFirebase from './firebaseService.js';
     const firebase = getFirebase();
     import {Trees} from './trees.js'
+    import {Facts} from './facts.js'
 // function initializeNodes
 (function() {
     'use strict';
@@ -87,74 +88,22 @@ import "../other_imports/sigma/sigma.core.js"
     Trees.getAll((trees) =>{
         console.log('TREESGRAPH.JS: trees received in treesGRAPH.js is', JSON.stringify(trees))
         Object.keys(trees).forEach( (treeId) => {
-            addNode({id: treeId, x: numNodes * 20, y:0})
-            // graphNodes.push(
-            //     {
-            //         id: treeId,
-            //         size: nodeRadius,
-            //         x: numNodes * 20,
-            //         y: 0,
-            //         type: 'def'
-            //     }
-            // )
-            numNodes++
-            console.log("TREESGRAPH.JS: NumNodes is now", numNodes)
+            const tree = trees[treeId]
+            Facts.get(tree.factId, (fact) => {
+                console.log('inside of facts.get callback, fact is', fact)
+
+                let question = fact.question;
+                let answer = fact.answer;
+                console.log('question is ', question)
+                console.log('answer is ', answer)
+                addNode({id: treeId, x: numNodes * 95, y:numNodes * -40, question: question, answer: answer})
+                numNodes++;
+                console.log("TREESGRAPH.JS: NumNodes is now", numNodes)
+            })
         })
     })
 
     // Initialize graph:
-    s.graph.read({
-        nodes: [
-            {
-                id: (++nId) + '',
-                size: nodeRadius,
-                x: 0,
-                y: -80,
-                dX: 0,
-                dY: 0,
-                type: 'def'
-            },
-            {
-                id: (++nId) + '',
-                size: nodeRadius,
-                x: 10,
-                y: -100,
-                dX: 0,
-                dY: 0,
-                type: 'def'
-            },
-            {
-                id: (++nId) + '',
-                size: nodeRadius,
-                x: 20,
-                y: -80,
-                dX: 0,
-                dY: 0,
-                type: 'def'
-            }
-        ],
-        edges: [
-            {
-                id: (++eId) + '',
-                source: '1',
-                target: '2',
-                type: 'def'
-            },
-            {
-                id: (++eId) + '',
-                source: '1',
-                target: '3',
-                type: 'def'
-            },
-            {
-                id: (++eId) + '',
-                source: '2',
-                target: '3',
-                type: 'def'
-            }
-        ]
-    });
-
     function frame() {
         //s.graph.computePhysics();
         s.refresh();
@@ -209,19 +158,30 @@ import "../other_imports/sigma/sigma.core.js"
         requestAnimationFrame(frame);
     }
 
-    frame();
+        frame();
 
-    function addNode(options){
-        console.log('ADD NODE', options.x, options.y)
+
+
+        function addNode(options){
+            console.log('ADD NODE', options, options.x, options.y)
+            let label = options.question && options.question.substring(0,5);
+            console.log('label is ',label)
 
         s.graph.addNode({
             id: ((options.id) + ''),
             size: nodeRadius,
-            label: 'new node' + options.id,
+            label: label,//'hi',// +  options.question && options.question.substring(0,5), //options.question + options.answer,
             x: options.x,
             y: options.y,
             type: 'def'
         })
+
+            function determineChildShadowNodeLocation(parentLocation, graph){
+               return {
+                   x: parentLocation.x + 200,
+                   y: parentLocation.y + 200
+               }
+            }
     }
 
     dom.addEventListener('click', function(e) {
@@ -240,10 +200,10 @@ import "../other_imports/sigma/sigma.core.js"
         y = p.y;
         addNode({id: Math.random() + '', x:x, y:y});
 //      g.edges.push({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
-        s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
+//         s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
 
     }, false);
-    addNode({id: 2, x:100, y:100});
-    addNode({id: 3, x:200, y:100});
+    // addNode({id: 2, x:100, y:100});
+    // addNode({id: 3, x:200, y:100});
 })();
 
