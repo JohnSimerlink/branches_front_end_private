@@ -1,7 +1,7 @@
 <style>
    #app {
        display: flex;
-       flex-direction: row;
+       flex-direction: column;
    }
     #facts, #trees-graph {
         flex: 50;
@@ -10,7 +10,9 @@
 </style>
 <template>
    <div id="app">
+     <newlogin></newlogin>
       <facts id="facts"></facts>
+
    </div>
 </template>
 
@@ -18,6 +20,7 @@
 import Facts from './facts.vue';
 import './trees.js'
 import './treesGraph.js'
+import newlogin from './newlogin.vue'
 export default {
   name: 'app',
   data () {
@@ -26,7 +29,8 @@ export default {
     }
   },
   components: {
-     Facts
+     Facts,
+     newlogin
   }
 }
 </script>
