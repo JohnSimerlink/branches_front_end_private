@@ -8,7 +8,6 @@
         <button v-on:click="buttonClick">marco</button>
     </div>
 </template>
-
 <script>
 //  new Vue({
 //    el: '#app',
@@ -23,4 +22,14 @@
 //    }
 //  });
     //^^Shaffan, modify the above code so that it follows the same structure/pattern as that of hello.vue :)
+
+  export default {
+  name 'sampleVue',
+    data() {
+      return {
+        name: "Shaffan",
+        age: 21
+      }
+    }
+  }
 </script>
