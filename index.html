@@ -1,3 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    .page {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+    #container {
+        flex: 50;
+    }
+    #bootstrap {
+        flex: 50;
+    }
+
+    /*<style>*/
+    #graph-container {
+        height: 600px;
+        border: 1px solid black;
+    }
+
+</style>
+
+
+
 <!-- START SIGMA IMPORTS -->
 <script src="other_imports/sigma/sigma.core.js"></script>
 <script src="other_imports/sigma/conrad.js"></script>
@@ -47,81 +73,75 @@
 <script src="other_imports/sigma/misc/sigma.misc.drawHovers.js"></script>
 <!-- END SIGMA IMPORTS -->
 <script src="other_imports/sigma/plugins/dragNode.js"></script>
-<div id="container">
-    <style>
-        #graph-container {
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            position: absolute;
-        }
+</head>
+<body>
+    <div class='page'>
+        <div id="bootstrap">
+            <h2> this is a title</h2>
+        </div>
+        <div id="container">
+            <div id="graph-container">
+            </div>
+        </div>
+    </div>
+    <script src="/dist/build.js"></script>
 
-        #sidebar {
-            bottom: 0;
-            right: 0;
-            width: 200px;
-            height: 150px;
-            position: absolute;
-            background-color: #999;
-            padding: 10px;
-        }
-    </style>
-    <div id="graph-container"></div>
-    <div id="sidebar">This area is not a drop target.</div>
-</div>
-<script>
-    /**
-     * This example shows how to use the dragNodes plugin.
-     */
-    var i,
-        s,
-        N = 5,
-        E = 3,
-        g = {
-            nodes: [],
-            edges: []
-        };
 
-    // Generate a random graph:
-    for (i = 0; i < N; i++)
-        g.nodes.push({
-            id: 'n' + i,
-            label: 'Node ' + i,
-            x: i * 100,
-            y: i * 100,
-            size: 1,
-            color: '#666'
+    <script>
+        /**
+         * This example shows how to use the dragNodes plugin.
+         */
+        var i,
+            s,
+            N = 5,
+            E = 3,
+            g = {
+                nodes: [],
+                edges: []
+            };
+
+        // Generate a random graph:
+        for (i = 0; i < N; i++)
+            g.nodes.push({
+                id: 'n' + i,
+                label: 'Node ' + i,
+                x: i * 100,
+                y: i * 100,
+                size: 1,
+                color: '#666'
+            });
+
+        for (i = 0; i < E; i++)
+            g.edges.push({
+                id: 'e' + i,
+                source: 'n' + (Math.random() * N | 0),
+                target: 'n' + (Math.random() * N | 0),
+                size: 1,
+                color: '#ccc'
+            });
+        // sigma.renderers.def = sigma.renderers.canvas
+        // Instantiate sigma:
+        s = new sigma({
+            graph: g,
+            container: 'graph-container'
         });
 
-    for (i = 0; i < E; i++)
-        g.edges.push({
-            id: 'e' + i,
-            source: 'n' + (Math.random() * N | 0),
-            target: 'n' + (Math.random() * N | 0),
-            size: 1,
-            color: '#ccc'
+        // Initialize the dragNodes plugin:
+        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+
+        dragListener.bind('startdrag', function(event) {
+            console.log(event);
         });
-    // sigma.renderers.def = sigma.renderers.canvas
-    // Instantiate sigma:
-    s = new sigma({
-        graph: g,
-        container: 'graph-container'
-    });
+        dragListener.bind('drag', function(event) {
+            console.log(event);
+        });
+        dragListener.bind('drop', function(event) {
+            console.log(event);
+        });
+        dragListener.bind('dragend', function(event) {
+            console.log(event);
+        });
+    </script>
 
-    // Initialize the dragNodes plugin:
-    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-
-    dragListener.bind('startdrag', function(event) {
-        console.log(event);
-    });
-    dragListener.bind('drag', function(event) {
-        console.log(event);
-    });
-    dragListener.bind('drop', function(event) {
-        console.log(event);
-    });
-    dragListener.bind('dragend', function(event) {
-        console.log(event);
-    });
-</script>
+</body>
+</html>
