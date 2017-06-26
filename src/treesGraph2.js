@@ -38,22 +38,34 @@ Trees.getAll((trees) => {
         Object.keys(trees).forEach( (treeId) => {
             const tree = trees[treeId]
             Facts.get(tree.factId, (fact) => {
-                console.log('A-inside of facts.get callback, fact is', fact)
-
                 let question = fact.question;
                 let answer = fact.answer;
-                console.log('B-question is ', question)
-                console.log('C-answer is ', answer)
-                g.nodes.push(
-                    {
+                const node = {
                         id: treeId,
-                        x: numNodes * 100,
-                        y: numNodes * 100,
+                        x: tree.x,
+                        y: tree.y,
                         label: question + answer,
                         size: 1,
                         color: '#666'
                     }
-                )
+                g.nodes.push(node);
+
+                const shadowNode = {
+                    id: treeId + "_newNode",
+                    x: tree.x - 100,
+                    y: tree.y + 100,
+                    label: 'Create a new Fact',
+                    size: 1,
+                    color: '#F00'
+                }
+                g.nodes.push(shadowNode)
+                g.edges.push({
+                    id: node.id + "___" + shadowNode.id,
+                    source: node.id,
+                    target: shadowNode.id,
+                    size: 1,
+                    color: '#F00'
+                })
                 numNodes++;
                 console.log("D-TREESGRAPH.JS: NumNodes is now", numNodes)
             })
