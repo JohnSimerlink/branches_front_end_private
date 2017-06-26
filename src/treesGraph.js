@@ -1,35 +1,35 @@
-import "../other_imports/sigma/sigma.core.js"
-    import "../other_imports/sigma/conrad.js"
-    import "../other_imports/sigma/utils/sigma.utils.js"
-    import "../other_imports/sigma/utils/sigma.polyfills.js"
-    import "../other_imports/sigma/sigma.settings.js"
-    import "../other_imports/sigma/classes/sigma.classes.dispatcher.js"
-    import "../other_imports/sigma/classes/sigma.classes.configurable.js"
-    import "../other_imports/sigma/classes/sigma.classes.graph.js"
-    import "../other_imports/sigma/classes/sigma.classes.camera.js"
-    import "../other_imports/sigma/classes/sigma.classes.quad.js"
-    import "../other_imports/sigma/classes/sigma.classes.edgequad.js"
-    import "../other_imports/sigma/captors/sigma.captors.mouse.js"
-    import "../other_imports/sigma/captors/sigma.captors.touch.js"
-    import "../other_imports/sigma/renderers/sigma.renderers.canvas.js"
-    import "../other_imports/sigma/renderers/sigma.renderers.def.js"
-    import "../other_imports/sigma/renderers/canvas/sigma.canvas.labels.def.js"
-    import "../other_imports/sigma/renderers/canvas/sigma.canvas.hovers.def.js"
-    import "../other_imports/sigma/renderers/canvas/sigma.canvas.nodes.def.js"
-    import "../other_imports/sigma/renderers/canvas/sigma.canvas.edges.def.js"
-    import "../other_imports/sigma/renderers/canvas/sigma.canvas.edgehovers.def.js"
-    import "../other_imports/sigma/renderers/canvas/sigma.canvas.extremities.def.js"
-    import "../other_imports/sigma/renderers/svg/sigma.svg.utils.js"
-    import "../other_imports/sigma/renderers/svg/sigma.svg.nodes.def.js"
-    import "../other_imports/sigma/renderers/svg/sigma.svg.edges.def.js"
-    import "../other_imports/sigma/renderers/svg/sigma.svg.labels.def.js"
-    import "../other_imports/sigma/renderers/svg/sigma.svg.hovers.def.js"
-    import "../other_imports/sigma/middlewares/sigma.middlewares.rescale.js"
-    import "../other_imports/sigma/middlewares/sigma.middlewares.copy.js"
-    import "../other_imports/sigma/misc/sigma.misc.animation.js"
-    import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
-    import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
-    import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
+// import "../other_imports/sigma/sigma.core.js"
+//     import "../other_imports/sigma/conrad.js"
+//     import "../other_imports/sigma/utils/sigma.utils.js"
+//     import "../other_imports/sigma/utils/sigma.polyfills.js"
+//     import "../other_imports/sigma/sigma.settings.js"
+//     import "../other_imports/sigma/classes/sigma.classes.dispatcher.js"
+//     import "../other_imports/sigma/classes/sigma.classes.configurable.js"
+//     import "../other_imports/sigma/classes/sigma.classes.graph.js"
+//     import "../other_imports/sigma/classes/sigma.classes.camera.js"
+//     import "../other_imports/sigma/classes/sigma.classes.quad.js"
+//     import "../other_imports/sigma/classes/sigma.classes.edgequad.js"
+//     import "../other_imports/sigma/captors/sigma.captors.mouse.js"
+//     import "../other_imports/sigma/captors/sigma.captors.touch.js"
+//     import "../other_imports/sigma/renderers/sigma.renderers.canvas.js"
+//     import "../other_imports/sigma/renderers/sigma.renderers.def.js"
+//     import "../other_imports/sigma/renderers/canvas/sigma.canvas.labels.def.js"
+//     import "../other_imports/sigma/renderers/canvas/sigma.canvas.hovers.def.js"
+//     import "../other_imports/sigma/renderers/canvas/sigma.canvas.nodes.def.js"
+//     import "../other_imports/sigma/renderers/canvas/sigma.canvas.edges.def.js"
+//     import "../other_imports/sigma/renderers/canvas/sigma.canvas.edgehovers.def.js"
+//     import "../other_imports/sigma/renderers/canvas/sigma.canvas.extremities.def.js"
+//     import "../other_imports/sigma/renderers/svg/sigma.svg.utils.js"
+//     import "../other_imports/sigma/renderers/svg/sigma.svg.nodes.def.js"
+//     import "../other_imports/sigma/renderers/svg/sigma.svg.edges.def.js"
+//     import "../other_imports/sigma/renderers/svg/sigma.svg.labels.def.js"
+//     import "../other_imports/sigma/renderers/svg/sigma.svg.hovers.def.js"
+//     import "../other_imports/sigma/middlewares/sigma.middlewares.rescale.js"
+//     import "../other_imports/sigma/middlewares/sigma.middlewares.copy.js"
+//     import "../other_imports/sigma/misc/sigma.misc.animation.js"
+//     import "../other_imports/sigma/misc/sigma.misc.bindEvents.js"
+//     import "../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"
+//     import "../other_imports/sigma/misc/sigma.misc.drawHovers.js"
     import getFirebase from './firebaseService.js';
     const firebase = getFirebase();
     import {Trees} from './trees.js'
@@ -183,27 +183,27 @@ import "../other_imports/sigma/sigma.core.js"
                }
             }
     }
-
-    dom.addEventListener('click', function(e) {
-        // Find neighbors:
-        var x,
-            y,
-            p,
-            id,
-            neighbors;
-
-        x = sigma.utils.getX(e) - dom.offsetWidth / 2;
-        y = sigma.utils.getY(e) - dom.offsetHeight / 2;
-
-        p = c.cameraPosition(x, y);
-        x = p.x;
-        y = p.y;
-        addNode({id: Math.random() + '', x:x, y:y});
-//      g.edges.push({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
-//         s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
-
-    }, false);
-    // addNode({id: 2, x:100, y:100});
+//
+//     dom.addEventListener('click', function(e) {
+//         // Find neighbors:
+//         var x,
+//             y,
+//             p,
+//             id,
+//             neighbors;
+//
+//         x = sigma.utils.getX(e) - dom.offsetWidth / 2;
+//         y = sigma.utils.getY(e) - dom.offsetHeight / 2;
+//
+//         p = c.cameraPosition(x, y);
+//         x = p.x;
+//         y = p.y;
+//         addNode({id: Math.random() + '', x:x, y:y});
+// //      g.edges.push({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
+// //         s.graph.addEdge({id: 'e' + 10, source: '3', target: '4', color: '#00f'})
+//
+//     }, false);
+//     // addNode({id: 2, x:100, y:100});
     // addNode({id: 3, x:200, y:100});
 })();
 
