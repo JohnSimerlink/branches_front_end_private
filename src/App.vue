@@ -10,14 +10,15 @@
 </style>
 <template>
    <div id="app">
-      <facts id="facts"></facts>
+       <h2> this is the app</h2>
+      <!--<facts id="facts"></facts>-->
    </div>
 </template>
 
 <script>
 import Facts from './facts.vue';
 import './trees.js'
-import './treesGraph.js'
+//import './treesGraph.js'
 export default {
   name: 'app',
   data () {
