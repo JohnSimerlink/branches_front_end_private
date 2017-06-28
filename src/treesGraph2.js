@@ -5,9 +5,6 @@ import {Facts} from './facts.js'
 import {Config} from './config.js'
 import {Globals} from './globals.js'
 var parentTreeId;
-/**
- * This example shows how to use the dragNodes plugin.
- */
 var i,
     s,
     N = 5,
