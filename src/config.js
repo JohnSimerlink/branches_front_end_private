@@ -1,3 +1,3 @@
 export const Config = {
-    offlineMode: true
+    offlineMode: false
 }
