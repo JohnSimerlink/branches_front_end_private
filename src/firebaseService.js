@@ -9,7 +9,7 @@ function initializeFirebase(){
 }
 
 export default function getFirebase(){
-  console.log('get firebase called');
+  // console.log('get firebase called');
   if (!firebaseInitialized()){
     initializeFirebase()
   }

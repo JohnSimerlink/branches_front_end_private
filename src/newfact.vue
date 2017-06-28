@@ -13,6 +13,7 @@
 <script>
 import {Fact} from './fact.js'
 import getFirebase from './firebaseService.js'
+import {Config} from './config.js'
 import {Globals} from './globals.js'
 function createAndWriteFactFromQA(question,answer){
     var fact = new Fact(question, answer);

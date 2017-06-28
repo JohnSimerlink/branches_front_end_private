@@ -3,6 +3,8 @@
  */
 import {Fact} from './fact.js';
 import {Config} from './config.js'
+import getFirebase from './firebaseService.js'
+const firebase = getFirebase()
 const factsArr = [
     {question: "Less is ... ", answer: 'more'},
     {question: "It's not always the best product that ... ", answer: "wins. (example - according to steve jobs apple was better than windows, but windows won"},
@@ -28,6 +30,13 @@ export class Facts {
        if (Config.offlineMode){
            const fact = facts[factId]
            success(fact)
+       } else {
+           console.log("FACTS.JS: FACTS.get called")
+           firebase.database().ref('facts/' + factId).on("value", function(snapshot){
+               var fact = snapshot.val()
+               console.log('FACTS.JS; snapshot from facts.get is', fact)
+               success(fact)
+           })
        }
    }
 }

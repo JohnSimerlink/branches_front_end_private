@@ -1,3 +1,4 @@
 export const Globals = {
-    currentTreeSelected: null
+    currentTreeSelected: null,
+    offlineMode: false
 }

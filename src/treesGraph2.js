@@ -2,6 +2,7 @@ import getFirebase from './firebaseService.js';
 const firebase = getFirebase();
 import {Trees} from './trees.js'
 import {Facts} from './facts.js'
+import {Config} from './config.js'
 import {Globals} from './globals.js'
 var parentTreeId;
 /**
@@ -17,20 +18,22 @@ var i,
     };
     var numNodes = 0;
 // Generate a random graph:
-Trees.getAll((trees) => {
+if (Config.offlineMode){
+    Trees.getAll((trees) => {
         Object.keys(trees).forEach((treeId) => {
             const tree = trees[treeId]
             Facts.get(tree.factId, (fact) => {
+                console.log("TREESGRAPH2.JS facts.get callback: fact", fact)
                 let question = fact.question;
                 let answer = fact.answer;
                 const node = {
-                        id: treeId,
-                        x: tree.x,
-                        y: tree.y,
-                        label: question + "  " + answer,
-                        size: 1,
-                        color: '#666'
-                    }
+                    id: treeId,
+                    x: tree.x,
+                    y: tree.y,
+                    label: question + "  " + answer,
+                    size: 1,
+                    color: '#666'
+                }
                 g.nodes.push(node);
 
                 const shadowNode = {
@@ -53,19 +56,24 @@ Trees.getAll((trees) => {
                 console.log("D-TREESGRAPH.JS: NumNodes is now", numNodes)
             })
         })
-})
-
+    })
+} else {
+    loadTreeAndSubTrees(1);
+}
 function loadTreeAndSubTrees(treeId){
     Trees.get(treeId, function(tree){
+        console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
         Facts.get(tree.factId, function(fact){
+            console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
             const node = {
                 id: tree.id,
                 x: tree.x,
                 y: tree.y,
-                label: fact.question + "  " + fact.answer
+                label: fact.question + "  " + fact.answer,
                 size: 1,
                 color: '#FFF'
             }
+            console.log("TREESGRAPH2.JS: node is", node)
             g.nodes.push(node);
             const shadowNode = {
                 id: treeId + "_newNode",
@@ -86,25 +94,24 @@ function loadTreeAndSubTrees(treeId){
         })
     })
 }
-Trees.get(null, function(treeId){
+if (Config.offlineMode){
+    var factsRef = firebase.database().ref('trees');
+    factsRef.on('value', function(snapshot){
+        var ftrees = snapshot.val();
+        console.log("firebase trees data is" + JSON.stringify(ftrees));
+        Object.keys(ftrees).forEach( (key) => {
+            var tree = ftrees[key];
 
-})
-var factsRef = firebase.database().ref('trees');
-factsRef.on('value', function(snapshot){
-    var ftrees = snapshot.val();
-    console.log("firebase trees data is" + JSON.stringify(ftrees));
-    Object.keys(ftrees).forEach( (key) => {
-        var tree = ftrees[key];
+            factListObj.data.push(fact);
+            // console.log('fact list data is', factListObj.data);
+            // addFactToList(fact);
+            // console.log('adding fact to list', fact);
+        })
 
-        factListObj.data.push(fact);
-        console.log('fact list data is', factListObj.data);
-        // addFactToList(fact);
-        // console.log('adding fact to list', fact);
-    })
-
-}, function (errorObject) {
-    console.log('The read failed: ' + errorObject.code);
-});
+    }, function (errorObject) {
+        console.log('The read failed: ' + errorObject.code);
+    });
+}
 sigma.renderers.def = sigma.renderers.canvas
 // Instantiate sigma:
 s = new sigma({

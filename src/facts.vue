@@ -38,7 +38,7 @@ factListObj.data = [];
     Object.keys(ffacts).forEach( (key) => {
       var fact = ffacts[key];
       factListObj.data.push(fact);
-      console.log('fact list data is', factListObj.data);
+//      console.log('fact list data is', factListObj.data);
       // addFactToList(fact);
       // console.log('adding fact to list', fact);
     })
