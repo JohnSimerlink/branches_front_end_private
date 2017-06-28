@@ -14,6 +14,12 @@ var i,
         edges: []
     };
     var numNodes = 0;
+sigma.renderers.def = sigma.renderers.canvas
+// Instantiate sigma:
+s = new sigma({
+    graph: g,
+    container: 'graph-container'
+});
 // Generate a random graph:
 if (Config.offlineMode){
     Trees.getAll((trees) => {
@@ -57,7 +63,9 @@ if (Config.offlineMode){
 } else {
     loadTreeAndSubTrees(1);
 }
+
 function loadTreeAndSubTrees(treeId){
+    console.log('loadTreeAndSubTrees just called')
     Trees.get(treeId, function(tree){
         console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
         Facts.get(tree.factId, function(fact){
@@ -74,22 +82,25 @@ function loadTreeAndSubTrees(treeId){
             g.nodes.push(node);
             const shadowNode = {
                 id: treeId + "_newNode",
-                x: tree.x - 100,
-                y: tree.y + 100,
+                x: parseInt(tree.x) - 100,
+                y: parseInt(tree.y) + 100,
                 label: 'Create a new Fact',
                 size: 1,
-                color: '#F00'
+                color: '#F0F'
             }
+            s.refresh();
+            console.log("TREESGRAPH2.js nodess is ", g.nodes)
             g.nodes.push(shadowNode)
             g.edges.push({
                 id: node.id + "___" + shadowNode.id,
                 source: node.id,
                 target: shadowNode.id,
                 size: 1,
-                color: '#F00'
+                color: '#F0F'
             })
-            console.log("TREESGRAPH2.js is ", s.graph.nodes)
+            console.log("TREESGRAPH2.js nodess is ", g.nodes)
             s.refresh();
+
         })
     })
 }
@@ -111,12 +122,6 @@ if (Config.offlineMode){
         console.log('The read failed: ' + errorObject.code);
     });
 }
-sigma.renderers.def = sigma.renderers.canvas
-// Instantiate sigma:
-s = new sigma({
-    graph: g,
-    container: 'graph-container'
-});
 
 // Initialize the dragNodes plugin:
 var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
@@ -134,12 +139,12 @@ dragListener.bind('dragend', function(event) {
     console.log(event);
 });
 // Bind the events:
-s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
+s.bind('clickNode', function(e) {
     console.log('event is e', e)
-
     console.log(e.type, e.data.node.label, e.data.captor);
     parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
     console.log('parent tree id selected was', parentTreeId)
+    document.querySelector("#parentTreeId").value = parentTreeId
     Globals.currentTreeSelected = parentTreeId;
 });
 s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {

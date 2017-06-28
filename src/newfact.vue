@@ -15,19 +15,7 @@ import {Fact} from './fact.js'
 import getFirebase from './firebaseService.js'
 import {Config} from './config.js'
 import {Globals} from './globals.js'
-function createAndWriteFactFromQA(question,answer){
-    var fact = new Fact(question, answer);
-    console.log('the fact just created is', fact)
-    writeNewFact(fact);
-}
-function writeNewFact(fact) {
-    const firebase = getFirebase();
-    var updates = {};
-    updates['/facts/' + fact.id] = fact;
-    console.log('inside of write new fact: firebase is', firebase, 'fb.db is', firebase.database())
-    firebase.database().ref().update(updates);
-}
-
+import {newFact} from './newfact.js'
 export default {
     name: 'newfact',
     data() {
@@ -36,11 +24,7 @@ export default {
         }// this.props['data']
     },
     methods: {
-        newFact: function (event) {
-          var question = document.querySelector('#newQuestion').value;
-          var answer = document.querySelector('#newAnswer').value;
-          createAndWriteFactFromQA(question,answer)
-        }
+        newFact: newFact
     },
     props: ['id', 'question', 'answer']
 }
