@@ -66,12 +66,12 @@ function loadTreeAndSubTrees(treeId){
         Facts.get(tree.factId, function(fact){
             console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
             const node = {
-                id: tree.id,
+                id: tree.treeId,
                 x: tree.x,
                 y: tree.y,
                 label: fact.question + "  " + fact.answer,
                 size: 1,
-                color: '#FFF'
+                color: '#0FF'
             }
             console.log("TREESGRAPH2.JS: node is", node)
             g.nodes.push(node);
@@ -91,6 +91,8 @@ function loadTreeAndSubTrees(treeId){
                 size: 1,
                 color: '#F00'
             })
+            console.log("TREESGRAPH2.js is ", s.graph.nodes)
+            s.refresh();
         })
     })
 }
