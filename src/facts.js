@@ -2,6 +2,7 @@
  * Created by John on 6/21/2017.
  */
 import {Fact} from './fact.js';
+import {Config} from './config.js'
 const factsArr = [
     {question: "Less is ... ", answer: 'more'},
     {question: "It's not always the best product that ... ", answer: "wins. (example - according to steve jobs apple was better than windows, but windows won"},
@@ -19,10 +20,14 @@ factsArr.forEach((fact) => {
 })
 export class Facts {
    static getAll(success) {
-     success(facts)
+       if (Config.offlineMode){
+           success(facts)
+       }
    }
    static get(factId, success){
-       const fact = facts[factId]
-       success(fact)
+       if (Config.offlineMode){
+           const fact = facts[factId]
+           success(fact)
+       }
    }
 }

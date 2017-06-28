@@ -10,8 +10,7 @@
 </style>
 <template>
    <div id="app">
-       <h2> this is the app</h2>
-      <!--<facts id="facts"></facts>-->
+      <facts id="facts"></facts>
    </div>
 </template>
 

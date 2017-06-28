@@ -14,6 +14,7 @@ Facts.getAll((facts) => {
        i++;
    })
 })
+
 export class Trees {
     static getAll(success){
         if (offlineDevMode){
@@ -21,7 +22,9 @@ export class Trees {
         }
     }
     static get(treeId, success){
-        const tree = trees[treeId]
-        success(tree)
+        if (offlineDevMode){
+            const tree = trees[treeId]
+            success(tree)
+        }
     }
 }
