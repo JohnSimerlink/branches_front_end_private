@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!--     <script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script> 
+ -->  
+ <!-- old index below -->
+<script src="../other_imports/sigma/sigma.core.js"></script>
+<script src="../other_imports/sigma/conrad.js"></script>
+<script src="../other_imports/sigma/utils/sigma.utils.js"></script>
+<script src="../other_imports/sigma/utils/sigma.polyfills.js"></script>
+<script src="../other_imports/sigma/sigma.settings.js"></script>
+<script src="../other_imports/sigma/classes/sigma.classes.dispatcher.js"></script>
+<script src="../other_imports/sigma/classes/sigma.classes.configurable.js"></script>
+<script src="../other_imports/sigma/classes/sigma.classes.graph.js"></script>
+<script src="../other_imports/sigma/classes/sigma.classes.camera.js"></script>
+<script src="../other_imports/sigma/classes/sigma.classes.quad.js"></script>
+<script src="../other_imports/sigma/classes/sigma.classes.edgequad.js"></script>
+<script src="../other_imports/sigma/captors/sigma.captors.mouse.js"></script>
+<script src="../other_imports/sigma/captors/sigma.captors.touch.js"></script>
+<script src="../other_imports/sigma/renderers/sigma.renderers.canvas.js"></script>
+<script src="../other_imports/sigma/renderers/sigma.renderers.def.js"></script>
+<script src="../other_imports/sigma/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../other_imports/sigma/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../other_imports/sigma/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../other_imports/sigma/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../other_imports/sigma/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../other_imports/sigma/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../other_imports/sigma/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../other_imports/sigma/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../other_imports/sigma/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../other_imports/sigma/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../other_imports/sigma/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../other_imports/sigma/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../other_imports/sigma/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../other_imports/sigma/misc/sigma.misc.animation.js"></script>
+<script src="../other_imports/sigma/misc/sigma.misc.bindEvents.js"></script>
+<script src="../other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../other_imports/sigma/misc/sigma.misc.drawHovers.js"></script>
+<script src="../other_imports/sigma/plugins/dragNode.js"></script>
+   <meta charset="utf-8">
+   <style>
+    .page {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+    }
+    #container {
+      flex: 50;
+    }
+    #bootstrap {
+        flex: 50;
+    }
+
+  /*<style>*/
+    #graph-container {
+      background: #fff;
+      height: 600px;
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+</style>
+ <title>renaissance</title>
+  </head>
+  <body>
+    <div class='page'>
+      <div id="bootstrap">
+          <h2> this is a title</h2>
+      </div>
+      <div id="container">
+        <div id="graph-container">
+          <div id="disc"></div>
+          <div id="ground"></div>
+        </div>
+      </div>
+    </div>
+    <script src="/dist/build.js"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+new fact class
+publish
+
+
+
+treeselector class publishes 'treeSelected' event with the treeid parameter
