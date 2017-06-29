@@ -12,11 +12,13 @@ var i,
 
 // Generate a random graph:
 
+var numTreesLoaded = 0;
 loadTreeAndSubTrees(1)
 // Instantiate sigma:
 function loadTreeAndSubTrees(treeId){
     console.log('loadTreeAndSubTrees just called')
-
+    numTreesLoaded++;
+    console.log('1num trees loaded is ', numTreesLoaded)
     Trees.get(treeId, function(tree){
         console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
         Facts.get(tree.factId, function(fact){
@@ -49,7 +51,10 @@ function loadTreeAndSubTrees(treeId){
                 color: '#F0F'
             })
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
-            initSigma()
+            if (numTreesLoaded > 2){
+                console.log('num treesloaded is ', numTreesLoaded)
+                initSigma()
+            }
         })
         tree.children && tree.children.forEach((childId) => {
             loadTreeAndSubTrees(childId)
@@ -58,23 +63,26 @@ function loadTreeAndSubTrees(treeId){
 
 }
 
+var initialized = false;
 function initSigma(){
-    sigma.renderers.def = sigma.renderers.canvas
-    s = new sigma({
-        graph: g,
-        container: 'graph-container'
-    });
-    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-    s.refresh();
+    if (!initialized){
+        sigma.renderers.def = sigma.renderers.canvas
+        s = new sigma({
+            graph: g,
+            container: 'graph-container'
+        });
+        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+        s.refresh();
 
-    s.bind('clickNode', function(e) {
-        console.log('event is e', e)
-        console.log(e.type, e.data.node.label, e.data.captor);
-        let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
-        console.log('parent tree id selected was', parentTreeId)
-        document.querySelector("#parentTreeId").value = parentTreeId
-        Globals.currentTreeSelected = parentTreeId;
-        console.log('g nodes is', g.nodes)
-    });
-
+        s.bind('clickNode', function(e) {
+            console.log('event is e', e)
+            console.log(e.type, e.data.node.label, e.data.captor);
+            let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
+            console.log('parent tree id selected was', parentTreeId)
+            document.querySelector("#parentTreeId").value = parentTreeId
+            Globals.currentTreeSelected = parentTreeId;
+            console.log('g nodes is', g.nodes)
+        });
+        initialized = true;
+    }
 }
