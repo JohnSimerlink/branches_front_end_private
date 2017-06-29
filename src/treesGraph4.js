@@ -1,10 +1,7 @@
 import {Trees} from './trees.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
-var i,
-    s,
-    N = 3,
-    E = 2,
+var s,
     g = {
         nodes: [],
         edges: []
@@ -25,21 +22,25 @@ function loadTreeAndSubTrees(treeId){
             console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
             const node = {
                 id: tree.treeId,
+                parentId: tree.parentId,
                 x: tree.x,
                 y: tree.y,
                 label: fact.question + "  " + fact.answer,
                 size: 1,
-                color: '#0FF'
+                color: '#0FF',
+                type: 'tree'
             }
             console.log("TREESGRAPH2.JS: node is", node)
             g.nodes.push(node);
             const shadowNode = {
-                id: treeId + "_newNode",
+                id: treeId + "_newChildTree",
+                parentId: treeId,
                 x: parseInt(tree.x) - 100,
                 y: parseInt(tree.y) + 100,
                 label: 'Create a new Fact',
                 size: 1,
-                color: '#F0F'
+                color: '#F0F',
+                type: 'newChildTree'
             }
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
             g.nodes.push(shadowNode)
@@ -86,10 +87,14 @@ function initSigma(){
         s.bind('clickNode', function(e) {
             console.log('event is e', e)
             console.log(e.type, e.data.node.label, e.data.captor);
-            let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
-            console.log('parent tree id selected was', parentTreeId)
-            document.querySelector("#parentTreeId").value = parentTreeId
-            Globals.currentTreeSelected = parentTreeId;
+            let parentId = e.data.node.parentId;
+            if (e.data.node.type == 'tree'){
+
+            }
+            // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
+            console.log('parent tree id selected was', parentId)
+            document.querySelector("#parentTreeId").value = parentId
+            Globals.currentTreeSelected = parentId;
             console.log('g nodes is', g.nodes)
         });
         initialized = true;
