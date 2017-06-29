@@ -1,5 +1,6 @@
 import {Trees} from './trees.js'
 import {Facts} from './facts.js'
+import {Globals} from './globals.js'
 var i,
     s,
     N = 3,
@@ -48,16 +49,32 @@ function loadTreeAndSubTrees(treeId){
                 color: '#F0F'
             })
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
-            sigma.renderers.def = sigma.renderers.canvas
-            s = new sigma({
-                graph: g,
-                container: 'graph-container'
-            });
-            var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-            s.refresh();
-
+            initSigma()
+        })
+        tree.children && tree.children.forEach((childId) => {
+            loadTreeAndSubTrees(childId)
         })
     })
 
 }
 
+function initSigma(){
+    sigma.renderers.def = sigma.renderers.canvas
+    s = new sigma({
+        graph: g,
+        container: 'graph-container'
+    });
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    s.refresh();
+
+    s.bind('clickNode', function(e) {
+        console.log('event is e', e)
+        console.log(e.type, e.data.node.label, e.data.captor);
+        let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
+        console.log('parent tree id selected was', parentTreeId)
+        document.querySelector("#parentTreeId").value = parentTreeId
+        Globals.currentTreeSelected = parentTreeId;
+        console.log('g nodes is', g.nodes)
+    });
+
+}
