@@ -1,3 +1,5 @@
+import {Trees} from './trees.js'
+import {Facts} from './facts.js'
 var i,
     s,
     N = 3,
@@ -7,7 +9,11 @@ var i,
         edges: []
     };
 
-// Generate a random graph:
+// Instantiate sigma:
+s = new sigma({
+    graph: g,
+    container: 'graph-container'
+});
 for (i = 0; i < N; i++){
     g.nodes.push({
         id: 'n' + i,
@@ -19,67 +25,54 @@ for (i = 0; i < N; i++){
     });
     console.log(g.nodes)
 }
-
-// for (i = 0; i < E; i++)
-// g.edges.push({
-//   id: 'e' + i,
-//   source: 'n' + (Math.random() * N | 0),
-//   target: 'n' + (Math.random() * N | 0),
-//   size: 10,
-//   color: '#ccc'
-// });
-
-// Instantiate sigma:
-s = new sigma({
-    graph: g,
-    container: 'graph-container'
-});
+s.refresh()
+// loadTreeAndSubTrees(1);
 // globalS = s
 var c = s.camera;
 var dom = document.querySelector('#graph-container canvas:last-child');
-var nId = 0;
-var addNode = false;
-var goTo = false;
-dom.addEventListener('click', function(e) {
-    // Find neighbors:
-    var x,
-        y,
-        p,
-        id,
-        neighbors;
-    console.log('event is ', e)
-    var sigmaX = sigma.utils.getX(e);
-    var subX = dom.offsetWidth / 2;
-    var sigmaY = sigma.utils.getY(e);
-    var subY = dom.offsetHeight / 2;
+var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+// loadTreeAndSubTrees(1)
 
-    x = sigmaX - subX
-    console.log('x: = ', sigmaX, ' - ', subX, ' = ', x)
-    y = sigmaY - subY
-    console.log('y: = ', sigmaY, ' - ', subY, ' = ', y)
+function loadTreeAndSubTrees(treeId){
+    console.log('loadTreeAndSubTrees just called')
 
-    console.log('calced? x and y are', x, y)
-    p = c.graphPosition(x, y);
-    console.log('graph x and y are', p.x, p.y)
+    // Trees.get(treeId, function(tree){
+    //     console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
+    //     Facts.get(tree.factId, function(fact){
+    //         console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
+    //         const node = {
+    //             id: tree.treeId,
+    //             x: tree.x,
+    //             y: tree.y,
+    //             label: fact.question + "  " + fact.answer,
+    //             size: 1,
+    //             color: '#0FF'
+    //         }
+    //         console.log("TREESGRAPH2.JS: node is", node)
+    //         g.nodes.push(node);
+    //         const shadowNode = {
+    //             id: treeId + "_newNode",
+    //             x: parseInt(tree.x) - 100,
+    //             y: parseInt(tree.y) + 100,
+    //             label: 'Create a new Fact',
+    //             size: 1,
+    //             color: '#F0F'
+    //         }
+    //         s.refresh();
+    //         console.log("TREESGRAPH2.js nodess is ", g.nodes)
+    //         g.nodes.push(shadowNode)
+    //         g.edges.push({
+    //             id: node.id + "___" + shadowNode.id,
+    //             source: node.id,
+    //             target: shadowNode.id,
+    //             size: 1,
+    //             color: '#F0F'
+    //         })
+    //         console.log("TREESGRAPH2.js nodess is ", g.nodes)
+    //         s.refresh();
+    //
+    //     })
+    // })
+    //
+}
 
-    p = c.cameraPosition(x,y);
-    console.log('camera x and y are', p.x, p.y)
-
-    if (addNode){
-        var node = {
-            id: ++nId + '',
-            size: 10,
-            x: x,
-            y: y,
-            type: 'def'
-        };
-        s.graph.addNode(node);
-        s.refresh();
-        console.log('node is ',node)
-    }
-    if (goTo){
-        c.goTo({x: x, y: y, ratio: 1, angle: 0})
-        s.refresh()
-    }
-    s.refresh()
-}, false);

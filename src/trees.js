@@ -7,6 +7,7 @@ console.log('trees.js imported')
 const trees = {
 }
 const offlineTreesData = {
+    //LAST UPDATED 6/28 9am
     "1":
         {
             "factId":"24",
@@ -34,10 +35,6 @@ const offlineTreesData = {
         }
 };
 
-
-
-
-
 //
 // Facts.getAll((facts) => {
 //    var i = 0;
@@ -59,7 +56,7 @@ export class Trees {
     static get(treeId, success){
         let tree;
         if (Config.offlineMode){
-            tree = trees[treeId]
+            tree = offlineTreesData[treeId]
             success(tree)
         } else {
            firebase.database().ref('trees/' + treeId).on("value", function(snapshot){
