@@ -51,6 +51,15 @@ function loadTreeAndSubTrees(treeId){
                 color: '#F0F'
             })
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
+            if (tree.parentId) {
+                g.edges.push({
+                    id: tree.parentId + "___" + tree.id,
+                    source: tree.parentId,
+                    target: tree.id,
+                    size: 1,
+                    color: '#FF0'
+                })
+            }
             if (numTreesLoaded > 2){
                 console.log('num treesloaded is ', numTreesLoaded)
                 initSigma()
