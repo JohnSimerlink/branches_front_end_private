@@ -3,6 +3,20 @@
 <h2> Log In! </h2>
 <h2> Don't have an account? Sign up! </h2>
 </div>
+<input type="text" name="" value=""></input>
+<input type="password"/>
+<!--> have to make eye visibiility turn on and off <!-->
+<!--> add event listener to check if eye is clicked, toggle visibility <!-->
+<!--> use flexbox to make sure that eye appears in the same box as pwd <!-->
+<i class="material-icons">visibility</i>
+<!--> hopefully if i add this line it will also show on IE9 and older browsers! <!-->
+<i class="material-icons">&#xE8F4;</i>
+
+<button v-on:click="toggle"></button>
+
+
+<!--> <!-->
+</div>
 </template>
 <script>
 function clickCreateAccountButton() {
@@ -17,15 +31,12 @@ function clickSignInButton() {
 }
 
 function clickLogoutButton() {
-  alert()
 }
 
 function validatePassword() {
-
 }
 
 function validateEmail() {
-
 }
 
   export default {
