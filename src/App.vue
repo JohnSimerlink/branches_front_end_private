@@ -20,7 +20,8 @@ import Facts from './facts.vue';
 import newtree from './newTree.vue';
 import './trees.js'
 //import './treesGraph.js'
-import './treesGraph2.js'
+//import './treesGraph2.js'
+import './treesGraph3.js'
 export default {
   name: 'app',
   data () {

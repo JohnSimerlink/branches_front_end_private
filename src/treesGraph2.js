@@ -111,8 +111,8 @@ if (Config.offlineMode){
         console.log("firebase trees data is" + JSON.stringify(ftrees));
         Object.keys(ftrees).forEach( (key) => {
             var tree = ftrees[key];
-
-            factListObj.data.push(fact);
+            var treeListObj = {data:[]};
+            treeListObj.data.push(tree);
             // console.log('fact list data is', factListObj.data);
             // addFactToList(fact);
             // console.log('adding fact to list', fact);
