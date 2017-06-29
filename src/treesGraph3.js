@@ -36,43 +36,43 @@ var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
 function loadTreeAndSubTrees(treeId){
     console.log('loadTreeAndSubTrees just called')
 
-    // Trees.get(treeId, function(tree){
-    //     console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
-    //     Facts.get(tree.factId, function(fact){
-    //         console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
-    //         const node = {
-    //             id: tree.treeId,
-    //             x: tree.x,
-    //             y: tree.y,
-    //             label: fact.question + "  " + fact.answer,
-    //             size: 1,
-    //             color: '#0FF'
-    //         }
-    //         console.log("TREESGRAPH2.JS: node is", node)
-    //         g.nodes.push(node);
-    //         const shadowNode = {
-    //             id: treeId + "_newNode",
-    //             x: parseInt(tree.x) - 100,
-    //             y: parseInt(tree.y) + 100,
-    //             label: 'Create a new Fact',
-    //             size: 1,
-    //             color: '#F0F'
-    //         }
-    //         s.refresh();
-    //         console.log("TREESGRAPH2.js nodess is ", g.nodes)
-    //         g.nodes.push(shadowNode)
-    //         g.edges.push({
-    //             id: node.id + "___" + shadowNode.id,
-    //             source: node.id,
-    //             target: shadowNode.id,
-    //             size: 1,
-    //             color: '#F0F'
-    //         })
-    //         console.log("TREESGRAPH2.js nodess is ", g.nodes)
-    //         s.refresh();
-    //
-    //     })
-    // })
-    //
+    Trees.get(treeId, function(tree){
+        console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
+        Facts.get(tree.factId, function(fact){
+            console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
+            const node = {
+                id: tree.treeId,
+                x: tree.x,
+                y: tree.y,
+                label: fact.question + "  " + fact.answer,
+                size: 1,
+                color: '#0FF'
+            }
+            console.log("TREESGRAPH2.JS: node is", node)
+            g.nodes.push(node);
+            const shadowNode = {
+                id: treeId + "_newNode",
+                x: parseInt(tree.x) - 100,
+                y: parseInt(tree.y) + 100,
+                label: 'Create a new Fact',
+                size: 1,
+                color: '#F0F'
+            }
+            s.refresh();
+            console.log("TREESGRAPH2.js nodess is ", g.nodes)
+            g.nodes.push(shadowNode)
+            g.edges.push({
+                id: node.id + "___" + shadowNode.id,
+                source: node.id,
+                target: shadowNode.id,
+                size: 1,
+                color: '#F0F'
+            })
+            console.log("TREESGRAPH2.js nodess is ", g.nodes)
+            s.refresh();
+
+        })
+    })
+
 }
 
