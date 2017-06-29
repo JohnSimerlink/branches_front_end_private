@@ -13,7 +13,8 @@ const offlineTreesData = {
             "factId":"24",
             "treeId":"1",
             "x":"0",
-            "y":"0"
+            "y":"0",
+            "children": ["075d07593a01ae43d7e045e7effadfb2","35d917de5c0bd13a49d6e86bb7c540c1"]
         },
     "075d07593a01ae43d7e045e7effadfb2":
         {
