@@ -21,6 +21,7 @@ import Facts from './facts.vue';
 import './trees.js'
 import './treesGraph.js'
 import newlogin from './newlogin.vue'
+import createAccount from './createAccount.vue'
 export default {
   name: 'app',
   data () {
@@ -30,7 +31,7 @@ export default {
   },
   components: {
      Facts,
-     newlogin
+     createAccount
   }
 }
 </script>
