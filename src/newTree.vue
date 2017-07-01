@@ -32,6 +32,8 @@ export default {
       tree.x = x;
       tree.y = y;
       console.log('the tree about to be pushed to firebase is', tree);
+
+      //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
       var updates = {};
       updates['/trees/' + tree.id] = tree;
       updates['/trees/' + parentTreeId + '/children/']
