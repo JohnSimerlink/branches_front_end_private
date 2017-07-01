@@ -1,4 +1,6 @@
 export const Globals = {
     currentTreeSelected: null,
-    offlineMode: false
+    offlineMode: false,
+    existingColor: '#FF0',
+    newColor: '#F0F'
 }
