@@ -2,7 +2,6 @@ import {Trees} from './trees.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
 import {Redux} from './redux.js'
-
 var s,
     g = {
         nodes: [],
@@ -131,5 +130,5 @@ function newTree(parentTree, fact){
 }
 
 function getNewChildTreeNode(treeId){
-    return g.nodes(treeId + Globals.newChildTreeSuffix)
+    return g.nodes(treeId + newChildTreeSuffix})
 }
