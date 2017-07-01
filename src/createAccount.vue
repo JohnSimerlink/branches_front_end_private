@@ -26,12 +26,15 @@ function validatePassword(password) {
     if (password.length < 8) {
         errors.push({id: 1, message: "Password needs to be 8 or more characters long"})
     }
+    
     if (!/A-Z/.test(password)) {
         errors.push({id: 2, message: "Password needs to have an uppercase letter"})
     }
+    
     if (!/0-9/.test(password)) {
         errors.push({id: 3, message: "Password needs to have a number"})
     }
+    
     if (!/!@#\$%\^\&*\)\(+=._-]+$/.test(password)) {
         errors.push({id: 3, message: "Password must contain a special character"})
     }
@@ -52,6 +55,7 @@ function validateEmail() {
             if (visibilityIcon.innerHTML == 'visibility') {
                 visibilityIcon.innerHTML = 'visibility_off';
             }
+            
             else {
                 visibilityIcon.innerHTML == 'visibility';
                 passwordInput.type = 'password';
@@ -64,7 +68,7 @@ function validateEmail() {
 <style>
     #visibility {
         cursor: pointer;
-        margin-left: -24px;
+        margin-left: -24px; 
     }
     .create-account {
         display: flex;
