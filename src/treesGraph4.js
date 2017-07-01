@@ -1,16 +1,11 @@
 import {Trees} from './trees.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
-import {Redux} from './redux.js'
 var s,
     g = {
         nodes: [],
         edges: []
     };
-var newNodeXOffset = -100,
-    newNodeYOffset = 100,
-    newChildTreeSuffix = "__newChildTree";
-
 
 // Generate a random graph:
 
@@ -38,10 +33,10 @@ function loadTreeAndSubTrees(treeId){
             console.log("TREESGRAPH2.JS: node is", node)
             g.nodes.push(node);
             const shadowNode = {
-                id: treeId + newChildTreeSuffix,
+                id: treeId + "_newChildTree",
                 parentId: treeId,
-                x: parseInt(tree.x) + newNodeXOffset,
-                y: parseInt(tree.y) + newNodeYOffset,
+                x: parseInt(tree.x) - 100,
+                y: parseInt(tree.y) + 100,
                 label: 'Create a new Fact',
                 size: 1,
                 color: '#F0F',
@@ -50,7 +45,7 @@ function loadTreeAndSubTrees(treeId){
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
             g.nodes.push(shadowNode)
             g.edges.push({
-                id: node.id + "__" + shadowNode.id,
+                id: node.id + "___" + shadowNode.id,
                 source: node.id,
                 target: shadowNode.id,
                 size: 1,
@@ -59,7 +54,7 @@ function loadTreeAndSubTrees(treeId){
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
             if (tree.parentId) {
                 g.edges.push({
-                    id: tree.parentId + "__" + tree.id,
+                    id: tree.parentId + "___" + tree.id,
                     source: tree.parentId,
                     target: tree.id,
                     size: 1,
@@ -104,31 +99,4 @@ function initSigma(){
         });
         initialized = true;
     }
-}
-function newTree(parentTree, fact){
-    //delete current addNewNode button
-    var currentNewChildTree = g.nodes(treeId + newChildTreeSuffix);
-    var newChildTreeX = currentNewChildTree.x;
-    var newChildTreeY = currentNewChildTree.y;
-    var newChildNodeId = g.nodes(treeId + newChildTreeSuffix).id
-    g.dropNode(newChildNodeId)
-
-    var newTree = new Tree(fact.id,parentTree.id)
-    //add new node to parent tree
-    const newTree = {
-        id: newTree.id,
-        parentId: parentTree.id,
-        x: parseInt(tree.x) + newNodeXOffset,
-        y: parseInt(tree.y) + newNodeYOffset,
-        label: 'Create a new Fact',
-        size: 1,
-        color: '#F0F',
-        type: 'newChildTree'
-    }
-    //add edge between new node and parent tree
-    //re add a add new new tree button onto the parent tree.
-}
-
-function getNewChildTreeNode(treeId){
-    return g.nodes(treeId + newChildTreeSuffix})
 }
