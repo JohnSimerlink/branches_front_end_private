@@ -10,6 +10,7 @@
 </style>
 <template>
    <div id="app">
+     <newlogin></newlogin>
       <facts id="facts"></facts>
       <newtree></newtree>
    </div>
@@ -22,6 +23,9 @@ import './trees.js'
 //import './treesGraph.js'
 //import './treesGraph2.js'
 import './treesGraph4.js'
+import './treesGraph.js'
+//import newlogin from './newlogin.vue'
+import createAccount from './createAccount.vue'
 export default {
   name: 'app',
   data () {
@@ -31,7 +35,8 @@ export default {
   },
   components: {
      Facts,
-     newtree
+     newtree,
+     createAccount
   }
 }
 </script>
