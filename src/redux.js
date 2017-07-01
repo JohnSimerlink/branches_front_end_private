@@ -1,5 +1,5 @@
 //redux mock
 
-export Redux {
+export const Redux = {
     dispatch: () => {}
 }
