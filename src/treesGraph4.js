@@ -44,7 +44,7 @@ function loadTreeAndSubTrees(treeId){
                 y: parseInt(tree.y) + newNodeYOffset,
                 label: 'Create a new Fact',
                 size: 1,
-                color: '#F0F',
+                color: Globals.newColor,
                 type: 'newChildTree'
             }
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
@@ -54,7 +54,7 @@ function loadTreeAndSubTrees(treeId){
                 source: node.id,
                 target: shadowNode.id,
                 size: 1,
-                color: '#F0F'
+                color: Globals.newColor
             })
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
             if (tree.parentId) {
@@ -63,7 +63,7 @@ function loadTreeAndSubTrees(treeId){
                     source: tree.parentId,
                     target: tree.id,
                     size: 1,
-                    color: '#FF0'
+                    color: Globals.existingColor
                 })
             }
             if (numTreesLoaded > 2){
@@ -123,7 +123,7 @@ function newTree(parentTree, fact){
         y: parseInt(tree.y) + newNodeYOffset,
         label: 'Create a new Fact',
         size: 1,
-        color: '#F0F',
+        color: Globals.newColor,
         type: 'newChildTree'
     }
     //add edge between new node and parent tree
