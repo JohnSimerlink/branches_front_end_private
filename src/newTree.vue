@@ -14,6 +14,7 @@ import {Tree} from './tree.js'
 import getFirebase from './firebaseService.js'
 const firebase = getFirebase();
 import {newFact} from './newfact.js';
+import {addTreeToGraph} from './treesGraph4.js'
 
 export default {
   name: 'newtree',
@@ -25,21 +26,24 @@ export default {
       var fact = newFact(event)
         var factId = fact.id;
       var parentTreeId = document.querySelector('#parentTreeId').value;
-      var x = document.querySelector('#treeX').value;
-      var y = document.querySelector('#treeY').value;
-      var tree = new Tree(factId, parentTreeId);
-      tree.treeId = tree.id;
-      tree.x = x;
-      tree.y = y;
-      console.log('the tree about to be pushed to firebase is', tree);
+//      var x = document.querySelector('#treeX').value;
+//      var y = document.querySelector('#treeY').value;
+//      var tree = new Tree(factId, parentTreeId);
+//      tree.treeId = tree.id;
+//      tree.x = x;
+//      tree.y = y;
+//      console.log('the tree about to be pushed to firebase is', tree);
 
+        const tree = addTreeToGraph(parentTreeId, fact)
       //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
       var updates = {};
       updates['/trees/' + tree.id] = tree;
       updates['/trees/' + parentTreeId + '/children/']
       firebase.database().ref().update(updates)
-        var parentNodeRef = firebase.database().ref('/trees/' + parentTreeId +"children/");
-        parentNodeRef.push(tree.id);
+      var parentNodeRef = firebase.database().ref('/trees/' + parentTreeId +"children/");
+      parentNodeRef.push(tree.id);
+
+      //add tree to the graph
 
     }
   }

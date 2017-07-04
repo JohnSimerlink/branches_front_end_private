@@ -1,4 +1,5 @@
 import {Trees} from './trees.js'
+import {Tree} from './tree.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
 import {Redux} from './redux.js'
@@ -7,6 +8,8 @@ var s,
         nodes: [],
         edges: []
     };
+window.g = g
+window.s = s;
 
 var newNodeXOffset = -100,
     newNodeYOffset = 100,
@@ -37,6 +40,7 @@ function loadTreeAndSubTrees(treeId){
             }
             console.log("TREESGRAPH2.JS: node is", node)
             g.nodes.push(node);
+            // addShadowNodeToTree(treeId)
             const shadowNode = {
                 id: treeId + newChildTreeSuffix, //"_newChildTree",
                 parentId: treeId,
@@ -66,6 +70,7 @@ function loadTreeAndSubTrees(treeId){
                     color: Globals.existingColor
                 })
             }
+            //temporary hacky solution because not all nodes were showing?? and s.refresh wasn't working as expected
             if (numTreesLoaded > 2){
                 console.log('num treesloaded is ', numTreesLoaded)
                 initSigma()
@@ -78,6 +83,9 @@ function loadTreeAndSubTrees(treeId){
 
 }
 
+function addShadowNodeToTree(treeId){
+
+}
 var initialized = false;
 function initSigma(){
     if (!initialized){
@@ -86,6 +94,7 @@ function initSigma(){
             graph: g,
             container: 'graph-container'
         });
+        window.s = s;
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
@@ -106,30 +115,41 @@ function initSigma(){
     }
 }
 
-function newTree(parentTree, fact){
-    //delete current addNewNode button
-    var currentNewChildTree = g.nodes(treeId + newChildTreeSuffix);
+export function addTreeToGraph(parentTreeId, fact) {
+    //1. delete current addNewNode button
+    var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
+    console.log('currentNewChildTree is', currentNewChildTree)
     var newChildTreeX = currentNewChildTree.x;
     var newChildTreeY = currentNewChildTree.y;
-    var newChildNodeId = g.nodes(treeId + newChildTreeSuffix).id
-    g.dropNode(newChildNodeId)
-
-    var newTree = new Tree(fact.id,parentTree.id)
-    //add new node to parent tree
+    var tree = new Tree(fact.id, parentTreeId)
+    //2. add new node to parent tree
     const newTree = {
-        id: newTree.id,
-        parentId: parentTree.id,
-        x: parseInt(tree.x) + newNodeXOffset,
-        y: parseInt(tree.y) + newNodeYOffset,
-        label: 'Create a new Fact',
+        id: tree.id,
+        parentId: parentTreeId,
+        x: parseInt(currentNewChildTree.x),
+        y: parseInt(currentNewChildTree.y),
+        label: fact.question + ' ' + fact.answer,
         size: 1,
-        color: Globals.newColor,
-        type: 'newChildTree'
+        color: Globals.existingColor,
+        type: 'tree'
     }
-    //add edge between new node and parent tree
+
+    s.graph.dropNode(currentNewChildTree.id)
+    s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    const newEdge = {
+        id: parentTreeId + "__" + newTree.id,
+        source: parentTreeId,
+        target: newTree.id,
+        size: 1,
+        color: Globals.existingColor
+    }
+    s.graph.addEdge(newEdge)
+    s.refresh();
+    return newTree;
+    //trigger some db method/action to fill in the parent and child properties between the two trees
     //re add a add new new tree button onto the parent tree.
 }
-
 // function getNewChildTreeNode(treeId){
 //         return g.nodes(treeId + newChildTreeSuffix})
 // }
