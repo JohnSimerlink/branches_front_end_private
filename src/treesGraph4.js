@@ -3,6 +3,7 @@ import {Tree} from './tree.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
 import {Redux} from './redux.js'
+var initialized = false;
 var s,
     g = {
         nodes: [],
@@ -35,31 +36,12 @@ function loadTreeAndSubTrees(treeId){
                 y: tree.y,
                 label: fact.question + "  " + fact.answer,
                 size: 1,
-                color: '#0FF',
+                color: Globals.existingColor,
                 type: 'tree'
             }
             console.log("TREESGRAPH2.JS: node is", node)
             g.nodes.push(node);
-            // addShadowNodeToTree(treeId)
-            const shadowNode = {
-                id: treeId + newChildTreeSuffix, //"_newChildTree",
-                parentId: treeId,
-                x: parseInt(tree.x) + newNodeXOffset,
-                y: parseInt(tree.y) + newNodeYOffset,
-                label: 'Create a new Fact',
-                size: 1,
-                color: Globals.newColor,
-                type: 'newChildTree'
-            }
-            console.log("TREESGRAPH2.js nodess is ", g.nodes)
-            g.nodes.push(shadowNode)
-            g.edges.push({
-                id: node.id + "__" + shadowNode.id,
-                source: node.id,
-                target: shadowNode.id,
-                size: 1,
-                color: Globals.newColor
-            })
+            addShadowNodeToTree(node)
             console.log("TREESGRAPH2.js nodess is ", g.nodes)
             if (tree.parentId) {
                 g.edges.push({
@@ -83,10 +65,40 @@ function loadTreeAndSubTrees(treeId){
 
 }
 
-function addShadowNodeToTree(treeId){
-
+function addShadowNodeToTree(tree){
+    console.log("add shadow node to tree")
+    let newX = parseInt(tree.x) + newNodeXOffset
+    let newY = parseInt(tree.y) + newNodeYOffset
+    const shadowNode = {
+        id: tree.id + newChildTreeSuffix, //"_newChildTree",
+        parentId: tree.id,
+        x: newX,
+        y: newY,
+        label: 'Create a new Fact',
+        size: 1,
+        color: Globals.newColor,
+        type: 'newChildTree'
+    }
+    const shadowEdge = {
+            id: tree.id + "__" + shadowNode.id,
+            source: tree.id,
+            target: shadowNode.id,
+            size: 1,
+            color: Globals.newColor
+        };
+    console.log('g.nodes before push is ', g.nodes)
+    if (!initialized) {
+        g.nodes.push(shadowNode)
+        g.edges.push(shadowEdge)
+    } else {
+       s.graph.addNode(shadowNode)
+       s.graph.addEdge(shadowEdge)
+    }
+    console.log('g.nodes after push is ', g.nodes)
+    if (initialized){
+        s.refresh()
+    }
 }
-var initialized = false;
 function initSigma(){
     if (!initialized){
         sigma.renderers.def = sigma.renderers.canvas
@@ -145,6 +157,10 @@ export function addTreeToGraph(parentTreeId, fact) {
         color: Globals.existingColor
     }
     s.graph.addEdge(newEdge)
+    //4. add shadow node
+    console.log('num nodes bfor add shadow node is ', s.graph.nodes())
+    addShadowNodeToTree(newTree)
+    console.log('num nodes after add shadow node is ', s.graph.nodes())
     s.refresh();
     return newTree;
     //trigger some db method/action to fill in the parent and child properties between the two trees
