@@ -67,25 +67,23 @@ function loadTreeAndSubTrees(treeId){
 
 function addShadowNodeToTree(tree){
     console.log("add shadow node to tree")
-    let newX = parseInt(tree.x) + newNodeXOffset
-    let newY = parseInt(tree.y) + newNodeYOffset
     const shadowNode = {
         id: tree.id + newChildTreeSuffix, //"_newChildTree",
         parentId: tree.id,
-        x: newX,
-        y: newY,
+        x: parseInt(tree.x) + newNodeXOffset,
+        y: parseInt(tree.y) + newNodeYOffset,
         label: 'Create a new Fact',
         size: 1,
         color: Globals.newColor,
         type: 'newChildTree'
     }
     const shadowEdge = {
-            id: tree.id + "__" + shadowNode.id,
-            source: tree.id,
-            target: shadowNode.id,
-            size: 1,
-            color: Globals.newColor
-        };
+        id: tree.id + "__" + shadowNode.id,
+        source: tree.id,
+        target: shadowNode.id,
+        size: 1,
+        color: Globals.newColor
+    };
     console.log('g.nodes before push is ', g.nodes)
     if (!initialized) {
         g.nodes.push(shadowNode)
@@ -160,6 +158,9 @@ export function addTreeToGraph(parentTreeId, fact) {
     //4. add shadow node
     console.log('num nodes bfor add shadow node is ', s.graph.nodes())
     addShadowNodeToTree(newTree)
+    Trees.get(parentTreeId, function(parentTree){
+        addShadowNodeToTree(parentTree)
+    })
     console.log('num nodes after add shadow node is ', s.graph.nodes())
     s.refresh();
     return newTree;
