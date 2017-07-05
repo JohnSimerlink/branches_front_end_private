@@ -34,6 +34,7 @@ function loadTreeAndSubTrees(treeId){
                 parentId: tree.parentId,
                 x: tree.x,
                 y: tree.y,
+                children: tree.children,
                 label: fact.question + "  " + fact.answer,
                 size: 1,
                 color: Globals.existingColor,
@@ -66,12 +67,16 @@ function loadTreeAndSubTrees(treeId){
 }
 
 function addShadowNodeToTree(tree){
+    if (tree.children) {
+        console.log('THE TREE', tree,'HAS CHILDREN', tree.children)
+    }
     console.log("add shadow node to tree")
     const shadowNode = {
         id: tree.id + newChildTreeSuffix, //"_newChildTree",
         parentId: tree.id,
         x: parseInt(tree.x) + newNodeXOffset,
         y: parseInt(tree.y) + newNodeYOffset,
+        children: tree.children,
         label: 'Create a new Fact',
         size: 1,
         color: Globals.newColor,
@@ -125,6 +130,7 @@ function initSigma(){
     }
 }
 
+//returns sigma tree node
 export function addTreeToGraph(parentTreeId, fact) {
     //1. delete current addNewNode button
     var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
@@ -138,6 +144,7 @@ export function addTreeToGraph(parentTreeId, fact) {
         parentId: parentTreeId,
         x: parseInt(currentNewChildTree.x),
         y: parseInt(currentNewChildTree.y),
+        children: tree.children,
         label: fact.question + ' ' + fact.answer,
         size: 1,
         color: Globals.existingColor,
