@@ -2,9 +2,7 @@
   <div>
     Question: <input id='newTreeQuestion' type='text'>
     Answer: <input id='newTreeAnswer' type='text'>
-    Parent Tree Id: <input id='parentTreeId' type='text'>
-    X: <input id='treeX' type='text'>
-    Y: <input id='treeY' type='text'>
+    <input hidden id='parentTreeId' type='text'>
     <button id='createNewTree' v-on:click='newTree'>Create New Tree</button>
   </div>
 </template>
@@ -14,7 +12,7 @@ import {Tree} from './tree.js'
 import getFirebase from './firebaseService.js'
 const firebase = getFirebase();
 import {newFact} from './newfact.js';
-import {addTreeToGraph} from './treesGraph4.js'
+import {addTreeToGraph} from './treesGraph.js'
 
 export default {
   name: 'newtree',
