@@ -6,6 +6,7 @@ function firebaseInitialized() {
 }
 function initializeFirebase(){
     firebase.initializeApp(firebaseDevConfig);
+    window.firebase = firebase;
 }
 
 export default function getFirebase(){

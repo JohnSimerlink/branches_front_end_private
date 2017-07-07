@@ -26,11 +26,11 @@ function loadTreeAndSubTrees(treeId){
     numTreesLoaded++;
     console.log('1num trees loaded is ', numTreesLoaded)
     Trees.get(treeId, function(tree){
-        console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree)
+        console.log("TREESGRAPH.JS: Trees.get callback tree is", tree)
         Facts.get(tree.factId, function(fact){
-            console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact)
+            console.log("TREESGRAPH.JS: Facts.get callback is this. fact is", fact)
             const node = {
-                id: tree.treeId,
+                id: tree.id,
                 parentId: tree.parentId,
                 x: tree.x,
                 y: tree.y,
@@ -40,10 +40,10 @@ function loadTreeAndSubTrees(treeId){
                 color: Globals.existingColor,
                 type: 'tree'
             }
-            console.log("TREESGRAPH2.JS: node is", node)
+            console.log("TREESGRAPH.JS: node is", node)
             g.nodes.push(node);
             addShadowNodeToTree(node)
-            console.log("TREESGRAPH2.js nodess is ", g.nodes)
+            console.log("TREESGRAPH.js nodess is ", g.nodes)
             if (tree.parentId) {
                 g.edges.push({
                     id: tree.parentId + "__" + tree.id,
@@ -171,9 +171,4 @@ export function addTreeToGraph(parentTreeId, fact) {
     console.log('num nodes after add shadow node is ', s.graph.nodes())
     s.refresh();
     return newTree;
-    //trigger some db method/action to fill in the parent and child properties between the two trees
-    //re add a add new new tree button onto the parent tree.
 }
-// function getNewChildTreeNode(treeId){
-//         return g.nodes(treeId + newChildTreeSuffix})
-// }
