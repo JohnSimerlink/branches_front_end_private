@@ -22,13 +22,13 @@ var numTreesLoaded = 0;
 loadTreeAndSubTrees(1)
 // Instantiate sigma:
 function loadTreeAndSubTrees(treeId){
-    console.log('0loadTreeAndSubTrees just called')
+    console.log('L25: 0loadTreeAndSubTrees just called')
     numTreesLoaded++;
-    console.log('1num trees loaded is ', numTreesLoaded)
+    console.log('L27: 1num trees loaded is ', numTreesLoaded)
     Trees.get(treeId, function(tree){
-        console.log("TREESGRAPH.JS: Trees.get callback tree is", tree)
+        console.log("L29:TREESGRAPH.JS: Trees.get callback tree is", tree)
         Facts.get(tree.factId, function(fact){
-            console.log("TREESGRAPH.JS: Facts.get callback is this. fact is", fact)
+            console.log("L31:TREESGRAPH.JS: Facts.get callback is this. fact is", fact)
             const node = {
                 id: tree.id,
                 parentId: tree.parentId,
@@ -40,22 +40,24 @@ function loadTreeAndSubTrees(treeId){
                 color: Globals.existingColor,
                 type: 'tree'
             }
-            console.log("TREESGRAPH.JS: node is", node)
+            console.log("L43:TREESGRAPH.JS: right before g.nodes.push node is", node)
             g.nodes.push(node);
             addShadowNodeToTree(node)
-            console.log("TREESGRAPH.js nodess is ", g.nodes)
+            console.log("L46:TREESGRAPH.js nodess is ", g.nodes)
             if (tree.parentId) {
-                g.edges.push({
+                const edge = {
                     id: tree.parentId + "__" + tree.id,
                     source: tree.parentId,
                     target: tree.id,
                     size: 1,
                     color: Globals.existingColor
-                })
+                };
+                console.log('L55:TREESGRAPH.JS Edge before push is', edge)
+                g.edges.push(edge);
             }
             //temporary hacky solution because not all nodes were showing?? and s.refresh wasn't working as expected
             if (numTreesLoaded > 2){
-                console.log('num treesloaded is ', numTreesLoaded)
+                console.log('L60:num treesloaded is ', numTreesLoaded)
                 initSigma()
             }
         })
@@ -75,7 +77,6 @@ function addShadowNodeToTree(tree){
         parentId: tree.id,
         x: parseInt(tree.x) + newNodeXOffset,
         y: parseInt(tree.y) + newNodeYOffset,
-        children: tree.children,
         label: 'Create a new Fact',
         size: 1,
         color: Globals.newColor,
@@ -114,8 +115,11 @@ function initSigma(){
 
         s.bind('clickNode', function(e) {
             console.log('event is e', e)
-            console.log(e.type, e.data.node.label, e.data.captor);
+            console.log(e.type, e.data.node, e.data.node.label, e.data.captor);
             let parentId = e.data.node.parentId;
+            console.log('new line')
+            console.log('new line')
+            console.log('new line')
             if (e.data.node.type == 'tree'){
 
             }
