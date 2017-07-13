@@ -20,57 +20,70 @@ var newNodeXOffset = -100,
 
 var numTreesLoaded = 0;
 loadTreeAndSubTrees(1)
-console.log('new line')
-console.log('new line')
 // Instantiate sigma:
+function createTreeNodeFromTreeAndFact(tree, fact){
+    console.log("L25: CreateTreeNode From Tree and fact args", arguments)
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        label: fact.question + "  " + fact.answer,
+        size: 1,
+        color: Globals.existingColor,
+        type: 'tree'
+    }
+    return node;
+}
+function connectTreeToParent(tree, g){
+    console.log('Connect tree to parent called')
+    if (tree.parentId) {
+        console.log('Connect tree to parent called - tree has parentId')
+        const edge = {
+            id: tree.parentId + "__" + tree.id,
+            source: tree.parentId,
+            target: tree.id,
+            size: 1,
+            color: Globals.existingColor
+        };
+        console.log('L55:TREESGRAPH.JS Edge before push is', edge)
+        g.edges.push(edge);
+    }
+}
+function onGetFact(tree,fact){
+    console.log('ONGettree args ', arguments)
+    console.log("L31:TREESGRAPH.JS: Facts.get callback is this. fact is", fact)
+    const node = createTreeNodeFromTreeAndFact(tree,fact)
+    console.log("L43:TREESGRAPH.JS: right before g.nodes.push node is", node)
+    g.nodes.push(node);
+    addShadowNodeToTree(node)
+    console.log("L46:TREESGRAPH.js nodess is ", g.nodes)
+    //temporary hacky solution because not all nodes were showing?? and s.refresh wasn't working as expected
+    connectTreeToParent(tree,g)
+    if (numTreesLoaded > 2){
+        console.log('L60:num treesloaded is ', numTreesLoaded)
+        initSigma()
+    }
+}
+function onGetTree(tree) {
+    console.log("L29:TREESGRAPH.JS: Trees.get callback tree is", tree)
+    Facts.get(tree.factId)
+        .then( fact => onGetFact(tree,fact))
+        .catch( err => console.log('facts get err is ', err))
+
+    tree.children && tree.children.forEach((childId) => {
+        loadTreeAndSubTrees(childId)
+    })
+}
 function loadTreeAndSubTrees(treeId){
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
     console.log('L25: 0loadTreeAndSubTrees just called')
     numTreesLoaded++;
     console.log('L27: 1num trees loaded is ', numTreesLoaded)
     Trees.get(treeId)
-        .then((tree) => {
-console.log('new line')
-            console.log('new line')
-            console.log("L29:TREESGRAPH.JS: Trees.get callback tree is", tree)
-            Facts.get(tree.factId)
-                .then( (fact) => {
-                    console.log("L31:TREESGRAPH.JS: Facts.get callback is this. fact is", fact)
-                    const node = {
-                        id: tree.id,
-                        parentId: tree.parentId,
-                        x: tree.x,
-                        y: tree.y,
-                        children: tree.children,
-                        label: fact.question + "  " + fact.answer,
-                        size: 1,
-                        color: Globals.existingColor,
-                        type: 'tree'
-                    }
-                    console.log("L43:TREESGRAPH.JS: right before g.nodes.push node is", node)
-                    g.nodes.push(node);
-                    addShadowNodeToTree(node)
-                    console.log("L46:TREESGRAPH.js nodess is ", g.nodes)
-                    if (tree.parentId) {
-                        const edge = {
-                            id: tree.parentId + "__" + tree.id,
-                            source: tree.parentId,
-                            target: tree.id,
-                            size: 1,
-                            color: Globals.existingColor
-                        };
-                        console.log('L55:TREESGRAPH.JS Edge before push is', edge)
-                        g.edges.push(edge);
-                    }
-                    //temporary hacky solution because not all nodes were showing?? and s.refresh wasn't working as expected
-                    if (numTreesLoaded > 2){
-                        console.log('L60:num treesloaded is ', numTreesLoaded)
-                        initSigma()
-                    }
-                })
-                tree.children && tree.children.forEach((childId) => {
-                    loadTreeAndSubTrees(childId)
-                })
-        })
+        .then(onGetTree)
+        .catch( err => console.log('trees get err is', err))
     // Trees.get(treeId, function(tree){
     //     console.log("L29:TREESGRAPH.JS: Trees.get callback tree is", tree)
     //     Facts.get(tree.factId, function(fact){
@@ -135,9 +148,8 @@ function addShadowNodeToTree(tree){
         size: 1,
         color: Globals.newColor
     };
-    console.log('new line')
-    console.log('new line')
     console.log('g.nodes before push is ', g.nodes)
+    console.log('shadow Edge is', tree, shadowEdge, shadowNode)
     if (!initialized) {
         g.nodes.push(shadowNode)
         g.edges.push(shadowEdge)
@@ -161,24 +173,22 @@ function initSigma(){
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
-        s.bind('clickNode', function(e) {
-            console.log('event is e', e)
-            console.log(e.type, e.data.node, e.data.node.label, e.data.captor);
-            let parentId = e.data.node.parentId;
-            console.log('new line')
-            console.log('new line')
-            console.log('new line')
-            if (e.data.node.type == 'tree'){
-
-            }
-            // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
-            console.log('parent tree id selected was', parentId)
-            document.querySelector("#parentTreeId").value = parentId
-            Globals.currentTreeSelected = parentId;
-            console.log('g nodes is', g.nodes)
-        });
+        s.bind('clickNode', clickNode);
         initialized = true;
     }
+}
+function clickNode(e){
+    console.log('event is e', e)
+    console.log(e.type, e.data.node, e.data.node.label, e.data.captor);
+    let parentId = e.data.node.parentId;
+    if (e.data.node.type == 'tree'){
+
+    }
+    // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
+    console.log('parent tree id selected was', parentId)
+    document.querySelector("#parentTreeId").value = parentId
+    Globals.currentTreeSelected = parentId;
+    console.log('g nodes is', g.nodes)
 }
 
 //returns sigma tree node
