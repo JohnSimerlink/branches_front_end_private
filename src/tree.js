@@ -2,15 +2,15 @@ import md5 from 'md5'
 import getFirebase from './firebaseService.js';
 const firebase = getFirebase();
 const treesRef = firebase.database().ref('trees');
-const devOfflineMode = true;
 const trees = {};
+import {Config} from './config.js'
 
 class OfflineTree {
     constructor (factId, parentId){
         this.factId = factId;
         this.parentId = parentId;
         this.children = [];
-        this.id = md5(JSON.stringify({factId:factId, parentId:parentId, children: this.children})) // id mechanism for trees may very well change
+        this.id = md5(JSON.stringify({factId:factId, parentId:parentId, children: this.children}))// id mechanism for trees may very well change
     }
 }
 class OnlineTree {
@@ -45,9 +45,8 @@ class OnlineTree {
 }
 
 //invoke like a constructor - new Tree(parentId, factId)
-export default function Tree(offlineMode){
-    let args = arguments.splice(1)
-    return offlineMode ? OfflineTree(args) :  OnlineTree(args);
+export function Tree(){
+    return Config.offlineMode ? OfflineTree(arguments) :  OnlineTree(arguments);
 }
 /*
 facts can have dependencies
