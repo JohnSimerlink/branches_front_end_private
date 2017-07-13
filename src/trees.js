@@ -11,6 +11,7 @@ const offlineTreesData = {
     "1":
         {
             "factId":"24",
+            "id": "1",
             "treeId":"1",
             "x":"0",
             "y":"0",
@@ -68,8 +69,6 @@ export class Trees {
     // }
     //returns promise
     static get(treeId){
-        console.log('new line')
-        console.log('new line')
         return new Promise((resolve, reject) => {
             let tree;
             if (Config.offlineMode){
