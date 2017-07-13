@@ -16,8 +16,6 @@ const factsArr = [
     {question: "What is a technique to instantly get present?", answer: "Focus on your toes, and trying to feel your toes in your shoes (this brings attention to your current senses)"}
 ]
 
-
-
 const offlineFacts = {
     "24":{"answer":" this is an a","question":"this is a q"},
     "126b28d1a4184e4d7d99656feebd823b":{"answer":"If you have an HTML element with a CSS `display` value of `flex` and `flex-direction` value ","id":"126b28d1a4184e4d7d99656feebd823b","question":"What does flex-direction do?"},
@@ -43,17 +41,33 @@ export class Facts {
        if (Config.offlineMode){
        }
    }
-   static get(factId, success){
-       if (Config.offlineMode){
-           const fact = offlineFacts[factId]
-           success(fact)
-       } else {
-           console.log("FACTS.JS: FACTS.get called")
-           firebase.database().ref('facts/' + factId).on("value", function(snapshot){
-               var fact = snapshot.val()
-               console.log('FACTS.JS; snapshot from facts.get is', fact)
-               success(fact)
-           })
-       }
+   static get(factId) {
+       return new Promise((resolve, reject) => {
+           if (Config.offlineMode){
+               const fact = offlineFacts[factId]
+               resolve(fact)
+           } else {
+               console.log("FACTS.JS: FACTS.get called")
+               firebase.database().ref('facts/' + factId).on("value", function(snapshot){
+                   var fact = snapshot.val()
+                   console.log('FACTS.JS; snapshot from facts.get is', fact)
+                   resolve(fact)
+               })
+           }
+
+       })
    }
+   // static get(factId, success){
+   //     if (Config.offlineMode){
+   //         const fact = offlineFacts[factId]
+   //         success(fact)
+   //     } else {
+   //         console.log("FACTS.JS: FACTS.get called")
+   //         firebase.database().ref('facts/' + factId).on("value", function(snapshot){
+   //             var fact = snapshot.val()
+   //             console.log('FACTS.JS; snapshot from facts.get is', fact)
+   //             success(fact)
+   //         })
+   //     }
+   // }
 }
