@@ -54,16 +54,33 @@ export class Trees {
             success(trees)
         }
     }
-    static get(treeId, success){
-        let tree;
-        if (Config.offlineMode){
-            tree = offlineTreesData[treeId]
-            success(tree)
-        } else {
-           firebase.database().ref('trees/' + treeId).on("value", function(snapshot){
-               tree = snapshot.val()
-               success(tree)
-           })
-        }
+    // static get(treeId, success){
+    //     let tree;
+    //     if (Config.offlineMode){
+    //         tree = offlineTreesData[treeId]
+    //         success(tree)
+    //     } else {
+    //        firebase.database().ref('trees/' + treeId).on("value", function(snapshot){
+    //            tree = snapshot.val()
+    //            success(tree)
+    //        })
+    //     }
+    // }
+    //returns promise
+    static get(treeId){
+        console.log('new line')
+        console.log('new line')
+        return new Promise((resolve, reject) => {
+            let tree;
+            if (Config.offlineMode){
+                tree = offlineTreesData[treeId]
+                resolve(tree)
+            } else {
+                firebase.database().ref('trees/' + treeId).on("value", function(snapshot){
+                    tree = snapshot.val()
+                    resolve(tree)
+                })
+            }
+        })
     }
 }
