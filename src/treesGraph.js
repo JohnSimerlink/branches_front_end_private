@@ -22,7 +22,7 @@ var numTreesLoaded = 0;
 loadTreeAndSubTrees(1)
 // Instantiate sigma:
 function loadTreeAndSubTrees(treeId){
-    console.log('loadTreeAndSubTrees just called')
+    console.log('0loadTreeAndSubTrees just called')
     numTreesLoaded++;
     console.log('1num trees loaded is ', numTreesLoaded)
     Trees.get(treeId, function(tree){
@@ -63,7 +63,6 @@ function loadTreeAndSubTrees(treeId){
             loadTreeAndSubTrees(childId)
         })
     })
-
 }
 
 function addShadowNodeToTree(tree){
