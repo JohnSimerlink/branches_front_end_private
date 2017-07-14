@@ -68,6 +68,7 @@ export class Trees {
     //     }
     // }
     //returns promise
+    //TODO: make resolve "null" or something if fact not found
     static get(treeId){
         return new Promise((resolve, reject) => {
             let tree;

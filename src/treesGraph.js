@@ -18,7 +18,7 @@ var newNodeXOffset = -100,
 
 
 var numTreesLoaded = 0;
-loadTreeAndSubTrees(1)
+loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
 // Instantiate sigma:
 function createTreeNodeFromTreeAndFact(tree, fact){
     console.log("L25: CreateTreeNode From Tree and fact args", arguments)
@@ -60,20 +60,31 @@ function onGetFact(tree,fact){
         console.log('L60:num treesloaded is ', numTreesLoaded)
         initSigma()
     }
+    return fact.id
 }
 function onGetTree(tree) {
-    Facts.get(tree.factId)
+    var factsPromise = Facts.get(tree.factId)
         .then( fact => onGetFact(tree,fact))
-        .catch( err => console.log(`facts get err for treeid of  ${tree.id} is `, err))
+        .catch( err => console.log(`facts get err for treeid of  ${tree.id} with factid of ${tree.factId} is `, err))
 
-    tree.children && tree.children.forEach(loadTreeAndSubTrees)
+    var childTreesPromises = tree.children ? tree.children.map(loadTreeAndSubTrees) : []
+    var promises = childTreesPromises
+    promises.push(factsPromise)
+
+    return Promise.all(promises).then((resultsArray) => {
+        var factIdPrettyString = resultsArray.shift();
+        var treeIdsPrettyStrings = resultsArray.join(', ')
+        return "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
+
+    }) //promise should only resolve when the tree's fact and all the subtrees are loaded
 }
+//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
 function loadTreeAndSubTrees(treeId){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
     console.log('L25: 0loadTreeAndSubTrees just called')
     numTreesLoaded++;
     console.log('L27: 1num trees loaded is ', numTreesLoaded)
-    Trees.get(treeId)
+    return Trees.get(treeId)
         .then(onGetTree)
         .catch( err => console.log('trees get err is', err))
 }
@@ -129,6 +140,7 @@ function initSigma(){
         initialized = true;
     }
 }
+window.initSigma = initSigma;
 function clickNode(e){
     console.log(e.type, e.data.node, e.data.node.label, e.data.captor);
     let parentId = e.data.node.parentId;
