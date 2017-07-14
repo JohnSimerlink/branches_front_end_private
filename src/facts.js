@@ -1,6 +1,3 @@
-/**
- * Created by John on 6/21/2017.
- */
 import {Fact} from './fact.js';
 import {Config} from './config.js'
 import getFirebase from './firebaseService.js'
@@ -48,27 +45,12 @@ export class Facts {
                const fact = offlineFacts[factId]
                resolve(fact)
            } else {
-               console.log("FACTS.JS: FACTS.get called")
                firebase.database().ref('facts/' + factId).on("value", function(snapshot){
                    var fact = snapshot.val()
-                   console.log('FACTS.JS; snapshot from facts.get is', fact)
                    resolve(fact)
                })
            }
 
        })
    }
-   // static get(factId, success){
-   //     if (Config.offlineMode){
-   //         const fact = offlineFacts[factId]
-   //         success(fact)
-   //     } else {
-   //         console.log("FACTS.JS: FACTS.get called")
-   //         firebase.database().ref('facts/' + factId).on("value", function(snapshot){
-   //             var fact = snapshot.val()
-   //             console.log('FACTS.JS; snapshot from facts.get is', fact)
-   //             success(fact)
-   //         })
-   //     }
-   // }
 }
