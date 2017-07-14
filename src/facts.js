@@ -41,6 +41,7 @@ export class Facts {
        if (Config.offlineMode){
        }
    }
+   //TODO: make resolve "null" or something if fact not found
    static get(factId) {
        return new Promise((resolve, reject) => {
            if (Config.offlineMode){
