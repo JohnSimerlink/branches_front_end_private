@@ -21,7 +21,6 @@ var numTreesLoaded = 0;
 loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
 // Instantiate sigma:
 function createTreeNodeFromTreeAndFact(tree, fact){
-    console.log("L25: CreateTreeNode From Tree and fact args", arguments)
     const node = {
         id: tree.id,
         parentId: tree.parentId,
@@ -55,16 +54,12 @@ function onGetFact(tree,fact){
     g.nodes.push(node);
     addShadowNodeToTree(node)
     tree.parentId && connectTreeToParent(tree,g)
-    //temporary hacky solution because not all nodes were showing?? and s.refresh wasn't working as expected
-    if (numTreesLoaded > 2){
-        console.log('L60:num treesloaded is ', numTreesLoaded)
-        initSigma()
-    }
     return fact.id
 }
 function onGetTree(tree) {
     var factsPromise = Facts.get(tree.factId)
         .then( fact => onGetFact(tree,fact))
+        .then( factId => {console.log('onGetTree fact id is', factId); return factId})
         .catch( err => console.log(`facts get err for treeid of  ${tree.id} with factid of ${tree.factId} is `, err))
 
     var childTreesPromises = tree.children ? tree.children.map(loadTreeAndSubTrees) : []
@@ -72,18 +67,19 @@ function onGetTree(tree) {
     promises.push(factsPromise)
 
     return Promise.all(promises).then((resultsArray) => {
+        console.log('promise results array is', resultsArray)
         var factIdPrettyString = resultsArray.shift();
         var treeIdsPrettyStrings = resultsArray.join(', ')
-        return "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
-
+        console.log('tree with id', tree.id,' and children of', tree.children,' has finished loading')
+        var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
+        console.log('its pretty string is', treePrettyString)
+        return treePrettyString
     }) //promise should only resolve when the tree's fact and all the subtrees are loaded
 }
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
 function loadTreeAndSubTrees(treeId){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    console.log('L25: 0loadTreeAndSubTrees just called')
     numTreesLoaded++;
-    console.log('L27: 1num trees loaded is ', numTreesLoaded)
     return Trees.get(treeId)
         .then(onGetTree)
         .catch( err => console.log('trees get err is', err))
@@ -91,9 +87,7 @@ function loadTreeAndSubTrees(treeId){
 
 function addShadowNodeToTree(tree){
     if (tree.children) {
-        console.log('THE TREE', tree,'HAS CHILDREN', tree.children)
     }
-    console.log("add shadow node to tree")
     const shadowNode = {
         id: tree.id + newChildTreeSuffix, //"_newChildTree",
         parentId: tree.id,
@@ -111,8 +105,6 @@ function addShadowNodeToTree(tree){
         size: 1,
         color: Globals.newColor
     };
-    console.log('g.nodes before push is ', g.nodes)
-    console.log('shadow Edge is', tree, shadowEdge, shadowNode)
     if (!initialized) {
         g.nodes.push(shadowNode)
         g.edges.push(shadowEdge)
@@ -120,7 +112,6 @@ function addShadowNodeToTree(tree){
        s.graph.addNode(shadowNode)
        s.graph.addEdge(shadowEdge)
     }
-    console.log('g.nodes after push is ', g.nodes)
     if (initialized){
         s.refresh()
     }
