@@ -116,6 +116,12 @@ function addShadowNodeToTree(tree){
         s.refresh()
     }
 }
+function calculateNewChildNodeCoordinates(treeId){
+    return Trees.get(treeId)
+        .then( tree => {
+
+        })
+}
 function initSigma(){
     if (!initialized){
         sigma.renderers.def = sigma.renderers.canvas
