@@ -24,15 +24,8 @@ export default {
       var fact = newFact(event)
         var factId = fact.id;
       var parentTreeId = document.querySelector('#parentTreeId').value;
-//      var x = document.querySelector('#treeX').value;
-//      var y = document.querySelector('#treeY').value;
-//      var tree = new Tree(factId, parentTreeId);
-//      tree.treeId = tree.id;
-//      tree.x = x;
-//      tree.y = y;
-//      console.log('the tree about to be pushed to firebase is', tree);
 
-        const tree = addTreeToGraph(parentTreeId, fact)
+      const tree = addTreeToGraph(parentTreeId, fact)
       //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
       var updates = {};
       updates['/trees/' + tree.id] = tree;

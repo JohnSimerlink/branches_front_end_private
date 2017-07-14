@@ -25,7 +25,7 @@ class OnlineTree {
             id: this.id,
             factId,
             parentId,
-            children
+            children: this.children
         })
     }
 
@@ -46,7 +46,7 @@ class OnlineTree {
 
 //invoke like a constructor - new Tree(parentId, factId)
 export function Tree(){
-    return Config.offlineMode ? OfflineTree(arguments) :  OnlineTree(arguments);
+    return Config.offlineMode ? new OfflineTree(arguments) :  new OnlineTree(arguments);
 }
 /*
 facts can have dependencies
