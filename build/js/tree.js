@@ -4,6 +4,8 @@ define(['exports', 'md5', './firebaseService.js', './config.js'], function (expo
     Object.defineProperty(exports, '__esModule', {
         value: true
     });
+    var _bind = Function.prototype.bind;
+    var _slice = Array.prototype.slice;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -31,26 +33,46 @@ define(['exports', 'md5', './firebaseService.js', './config.js'], function (expo
     };
 
     var OnlineTree = (function () {
-        function OnlineTree(factId, parentId) {
+        function OnlineTree(factIdOrTreeObj, parentId) {
             _classCallCheck(this, OnlineTree);
 
-            this.factId = factId;
-            this.parentId = parentId;
-            this.children = [];
-
-            var treeObj = { factId: factId, parentId: parentId, children: this.children };
-            this.id = (0, _md52['default'])(JSON.stringify(treeObj));
-            this.treeRef = treesRef.push({
-                id: this.id,
-                factId: factId,
-                parentId: parentId,
-                children: this.children
-            });
+            if (typeof factIdOrTreeObj === 'object') {
+                var treeObj = factIdOrTreeObj;
+                this.loadObject(treeObj);
+            } else {
+                var factId = factIdOrTreeObj;
+                this.createAndPushObjectToDB(factId, parentId);
+            }
+            console.log('the object just created is: ', this);
         }
 
         //invoke like a constructor - new Tree(parentId, factId)
 
         _createClass(OnlineTree, [{
+            key: 'loadObject',
+            value: function loadObject(treeObj) {
+                var self = this;
+                Object.keys(treeObj).forEach(function (key) {
+                    return self[key] = treeObj[key];
+                });
+            }
+        }, {
+            key: 'createAndPushObjectToDB',
+            value: function createAndPushObjectToDB(factId, parentId) {
+                this.factId = factId;
+                this.parentId = parentId;
+                this.children = [];
+
+                var treeObj = { factId: factId, parentId: parentId, children: this.children };
+                this.id = (0, _md52['default'])(JSON.stringify(treeObj));
+                this.treeRef = treesRef.push({
+                    id: this.id,
+                    factId: factId,
+                    parentId: parentId,
+                    children: this.children
+                });
+            }
+        }, {
             key: 'addChild',
             value: function addChild(treeId) {
                 this.treeRef.child('children').push(treeId);
@@ -65,13 +87,24 @@ define(['exports', 'md5', './firebaseService.js', './config.js'], function (expo
                     parentId: newParentId
                 });
             }
+        }, {
+            key: 'set',
+            value: function set(prop, val) {
+                if (this[prop] == val) {
+                    return;
+                }
+
+                var updates = {};
+                updates[prop] = val;
+                this.treeRef.update(updates);
+            }
         }]);
 
         return OnlineTree;
     })();
 
     function Tree() {
-        return _configJs.Config.offlineMode ? new OfflineTree(arguments) : new OnlineTree(arguments);
+        return _configJs.Config.offlineMode ? new (_bind.apply(OfflineTree, [null].concat(_slice.call(arguments))))() : new (_bind.apply(OnlineTree, [null].concat(_slice.call(arguments))))();
     }
 
     /*

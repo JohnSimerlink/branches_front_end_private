@@ -134,12 +134,46 @@ function initSigma(){
         s.refresh();
 
         s.bind('clickNode', clickNode);
+        s.bind('outNode', updateTreePosition);
         initialized = true;
     }
 }
 window.initSigma = initSigma;
+function updateTreePosition(e){
+    console.log('update tree position called')
+    let x = e.data.node.x
+    let y = e.data.node.y
+    let treeId = e.data.node.id;
+    Trees.get(treeId).then( tree => {
+        console.log('tree location is currently', tree.x, tree.y)
+        console.log('tree location is trying to be changed to currently', x, y)
+        if (Math.abs(tree.x - x) > 20 ) {
+            tree.set('x', x)
+        }
+        if (Math.abs(tree.y - y) > 20 ) {
+            tree.set('y', y)
+        }
+        return tree
+    }).then((tree) => {
+        console.log('tree location is now', tree.x, tree.y)
+    })
+}
+function logEvent(e){
+    let x = e.data.node.x
+    let y = e.data.node.y
+    let treeId = e.data.node.id;
+    Trees.get(treeId).then( tree => {
+        if (Math.abs(tree.x - x) > 20 ) {
+           tree.set('x', x)
+        }
+        if (Math.abs(tree.y - y) > 20 ) {
+            tree.set('y', y)
+        }
+    })
+    console.log(e.data.node.id, e.data.node.x, e.data.node.y)
+}
 function clickNode(e){
-    console.log(e.type, e.data.node, e.data.node.label, e.data.captor);
+    // console.log(e.type,e, e.data.node, e.data.node.label, e.data.captor);
     let parentId = e.data.node.parentId;
     if (e.data.node.type == 'tree'){
 
@@ -147,6 +181,14 @@ function clickNode(e){
     // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
     document.querySelector("#parentTreeId").value = parentId
     Globals.currentTreeSelected = parentId;
+}
+function dragNode(e){
+    console.log('drag Node', e,e.type, e.data.node, e.data.node.label, e.data.captor);
+    let parentId = e.data.node.parentId;
+    if (e.data.node.type == 'tree'){
+
+    }
+    // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
 }
 
 //returns sigma tree node

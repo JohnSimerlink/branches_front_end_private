@@ -21,7 +21,6 @@ define(['exports', './facts.js', './tree.js', './config.js', './firebaseService.
         "1": {
             "factId": "24",
             "id": "1",
-            "treeId": "1",
             "x": "0",
             "y": "0",
             "children": ["075d07593a01ae43d7e045e7effadfb2", "35d917de5c0bd13a49d6e86bb7c540c1"]
@@ -30,7 +29,6 @@ define(['exports', './facts.js', './tree.js', './config.js', './firebaseService.
             "factId": "c8d26306d29ff13f0c1010ee0467d47a",
             "id": "075d07593a01ae43d7e045e7effadfb2",
             "parentId": "1",
-            "treeId": "075d07593a01ae43d7e045e7effadfb2",
             "x": "300",
             "y": "300"
         },
@@ -39,7 +37,6 @@ define(['exports', './facts.js', './tree.js', './config.js', './firebaseService.
             "factId": "bc62641cfd029c281b8ce6135d8991e0",
             "id": "35d917de5c0bd13a49d6e86bb7c540c1",
             "parentId": "1",
-            "treeId": "35d917de5c0bd13a49d6e86bb7c540c1",
             "x": "500",
             "y": "400"
         }
@@ -88,13 +85,17 @@ define(['exports', './facts.js', './tree.js', './config.js', './firebaseService.
             key: 'get',
             value: function get(treeId) {
                 return new Promise(function (resolve, reject) {
-                    var tree = undefined;
+                    var treeObj = undefined;
                     if (_configJs.Config.offlineMode) {
-                        tree = offlineTreesData[treeId];
+                        treeObj = offlineTreesData[treeId];
+                        var tree = new _treeJs.Tree(treeObj);
                         resolve(tree);
                     } else {
                         firebase.database().ref('trees/' + treeId).on("value", function (snapshot) {
-                            tree = snapshot.val();
+                            treeObj = snapshot.val();
+                            console.log('the tree Obj passed into tree constructor is', treeObj);
+                            var tree = new _treeJs.Tree(treeObj);
+                            console.log('the tree just loaded from trees.get is', tree);
                             resolve(tree);
                         });
                     }

@@ -14,7 +14,22 @@ class OfflineTree {
     }
 }
 class OnlineTree {
-    constructor(factId, parentId) {
+    constructor(factIdOrTreeObj, parentId) {
+        if (typeof factIdOrTreeObj === 'object'){
+            var treeObj = factIdOrTreeObj
+            this.loadObject(treeObj)
+        }
+        else {
+            var factId = factIdOrTreeObj
+            this.createAndPushObjectToDB(factId, parentId)
+        }
+        console.log('the object just created is: ',this)
+    }
+    loadObject(treeObj){
+        const self = this;
+        Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
+    }
+    createAndPushObjectToDB(factId, parentId){
         this.factId = factId;
         this.parentId = parentId;
         this.children = [];
@@ -30,7 +45,13 @@ class OnlineTree {
     }
 
     addChild(treeId) {
-        this.treeRef.child('children').push(treeId)
+        // this.treeRef.child('/children').push(treeId)
+        var children = {}
+        children[treeId] = true
+        var updates = {
+            children
+        }
+        firebase.database().ref('trees/' +this.id).update(updates)
     }
 
     removeChild(treeId) {
@@ -42,11 +63,23 @@ class OnlineTree {
             parentId: newParentId
         })
     }
+
+    set(prop, val){
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {}
+        updates[prop] = val
+        // this.treeRef.update(updates)
+        firebase.database().ref('trees/' +this.id).update(updates)
+        this[prop] = val
+    }
 }
 
 //invoke like a constructor - new Tree(parentId, factId)
 export function Tree(){
-    return Config.offlineMode ? new OfflineTree(arguments) :  new OnlineTree(arguments);
+    return Config.offlineMode ? new OfflineTree(...arguments) :  new OnlineTree(...arguments);
 }
 /*
 facts can have dependencies

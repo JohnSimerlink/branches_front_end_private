@@ -5,7 +5,7 @@ define(["exports"], function (exports) {
         value: true
     });
     var Config = {
-        offlineMode: true
+        offlineMode: false
     };
     exports.Config = Config;
 });
