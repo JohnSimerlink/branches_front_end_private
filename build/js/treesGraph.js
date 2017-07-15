@@ -137,17 +137,51 @@ define(['exports', './trees.js', './tree.js', './facts.js', './globals.js', './r
             s.refresh();
 
             s.bind('clickNode', clickNode);
+            s.bind('outNode', updateTreePosition);
             initialized = true;
         }
     }
     window.initSigma = initSigma;
+    function updateTreePosition(e) {
+        var x = e.data.node.x;
+        var y = e.data.node.y;
+        var treeId = e.data.node.id;
+        _treesJs.Trees.get(treeId).then(function (tree) {
+            if (Math.abs(tree.x - x) > 20) {
+                tree.set('x', x);
+            }
+            if (Math.abs(tree.y - y) > 20) {
+                tree.set('y', y);
+            }
+        });
+    }
+    function logEvent(e) {
+        var x = e.data.node.x;
+        var y = e.data.node.y;
+        var treeId = e.data.node.id;
+        _treesJs.Trees.get(treeId).then(function (tree) {
+            if (Math.abs(tree.x - x) > 20) {
+                tree.set('x', x);
+            }
+            if (Math.abs(tree.y - y) > 20) {
+                tree.set('y', y);
+            }
+        });
+        console.log(e.data.node.id, e.data.node.x, e.data.node.y);
+    }
     function clickNode(e) {
-        console.log(e.type, e.data.node, e.data.node.label, e.data.captor);
+        // console.log(e.type,e, e.data.node, e.data.node.label, e.data.captor);
         var parentId = e.data.node.parentId;
         if (e.data.node.type == 'tree') {}
         // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
         document.querySelector("#parentTreeId").value = parentId;
         _globalsJs.Globals.currentTreeSelected = parentId;
+    }
+    function dragNode(e) {
+        console.log('drag Node', e, e.type, e.data.node, e.data.node.label, e.data.captor);
+        var parentId = e.data.node.parentId;
+        if (e.data.node.type == 'tree') {}
+        // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
     }
 
     //returns sigma tree node
