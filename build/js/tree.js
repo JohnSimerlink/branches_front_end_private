@@ -20,6 +20,7 @@ define(['exports', 'md5', './firebaseService.js', './config.js'], function (expo
     var _getFirebase = _interopRequireDefault(_firebaseServiceJs);
 
     var firebase = (0, _getFirebase['default'])();
+    window.firebase = firebase;
     var treesRef = firebase.database().ref('trees');
     var trees = {};
 
