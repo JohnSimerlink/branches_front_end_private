@@ -1,6 +1,7 @@
 import md5 from 'md5'
 import getFirebase from './firebaseService.js';
 const firebase = getFirebase();
+window.firebase = firebase
 const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Config} from './config.js'

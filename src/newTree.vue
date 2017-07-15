@@ -29,10 +29,11 @@ export default {
       //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
       var updates = {};
       updates['/trees/' + tree.id] = tree;
-      updates['/trees/' + parentTreeId + '/children/']
       firebase.database().ref().update(updates)
-      var parentNodeRef = firebase.database().ref('/trees/' + parentTreeId +"children/");
-      parentNodeRef.push(tree.id);
+      var parentNodeChildrenRef = firebase.database().ref('/trees/' + parentTreeId + '/children');
+      var updates = {  }
+      updates[tree.id] = true
+      parentNodeChildrenRef.update(updates);
 
       //add tree to the graph
 

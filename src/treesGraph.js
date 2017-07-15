@@ -62,7 +62,7 @@ function onGetTree(tree) {
         .then( factId => {console.log('onGetTree fact id is', factId); return factId})
         .catch( err => console.log(`facts get err for treeid of  ${tree.id} with factid of ${tree.factId} is `, err))
 
-    var childTreesPromises = tree.children ? tree.children.map(loadTreeAndSubTrees) : []
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
     var promises = childTreesPromises
     promises.push(factsPromise)
 
@@ -70,7 +70,7 @@ function onGetTree(tree) {
         console.log('promise results array is', resultsArray)
         var factIdPrettyString = resultsArray.shift();
         var treeIdsPrettyStrings = resultsArray.join(', ')
-        console.log('tree with id', tree.id,' and children of', tree.children,' has finished loading')
+        console.log('tree with id', tree.id,' and children of', Object.keys(tree.children),' has finished loading')
         var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
         console.log('its pretty string is', treePrettyString)
         return treePrettyString
@@ -79,6 +79,7 @@ function onGetTree(tree) {
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
 function loadTreeAndSubTrees(treeId){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    console.log('tree being loaded is treeId', treeId)
     numTreesLoaded++;
     return Trees.get(treeId)
         .then(onGetTree)
@@ -149,8 +150,6 @@ function updateTreePosition(e){
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
     Trees.get(treeId).then( tree => {
-        console.log('tree location is currently', tree.x, tree.y)
-        console.log('tree location is trying to be changed to currently', x, y)
         if (Math.abs(tree.x - x) > 20 ) {
             tree.set('x', x)
         }
@@ -159,7 +158,6 @@ function updateTreePosition(e){
         }
         return tree
     }).then((tree) => {
-        console.log('tree location is now', tree.x, tree.y)
     })
 }
 function logEvent(e){
@@ -206,9 +204,10 @@ export function addTreeToGraph(parentTreeId, fact) {
     const newTree = {
         id: tree.id,
         parentId: parentTreeId,
+        factId: fact.id,
         x: parseInt(currentNewChildTree.x),
         y: parseInt(currentNewChildTree.y),
-        children: tree.children,
+        children: {},
         label: fact.question + ' ' + fact.answer,
         size: 1,
         color: Globals.existingColor,
