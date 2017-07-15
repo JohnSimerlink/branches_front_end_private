@@ -143,16 +143,28 @@ define(['exports', './trees.js', './tree.js', './facts.js', './globals.js', './r
     }
     window.initSigma = initSigma;
     function updateTreePosition(e) {
+        console.log('update tree position called');
         var x = e.data.node.x;
         var y = e.data.node.y;
         var treeId = e.data.node.id;
+        if (!g.nodes.find(function (node) {
+            return node.id == treeId && node.type === 'tree';
+        })) {
+            console.log('not an actual node!');
+            return; //node isn't an actual node in the db - its like a shadow node or helper node
+        }
         _treesJs.Trees.get(treeId).then(function (tree) {
+            console.log('tree location is currently', tree.x, tree.y);
+            console.log('tree location is trying to be changed to currently', x, y);
             if (Math.abs(tree.x - x) > 20) {
                 tree.set('x', x);
             }
             if (Math.abs(tree.y - y) > 20) {
                 tree.set('y', y);
             }
+            return tree;
+        }).then(function (tree) {
+            console.log('tree location is now', tree.x, tree.y);
         });
     }
     function logEvent(e) {

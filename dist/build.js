@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 48);
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -216,7 +216,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -399,34 +399,6 @@ function internalError(message) {
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getFirebase;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json__);
-
-
-
-function firebaseInitialized() {
-  return __WEBPACK_IMPORTED_MODULE_0_firebase__["apps"].length !== 0;
-}
-function initializeFirebase() {
-  __WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](__WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json___default.a);
-}
-
-function getFirebase() {
-  // console.log('get firebase called');
-  if (!firebaseInitialized()) {
-    initializeFirebase();
-  }
-  return __WEBPACK_IMPORTED_MODULE_0_firebase__; //TODO: initfirebase might actually be async
-}
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -443,7 +415,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(15);
+var _shared_promise = __webpack_require__(13);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -485,7 +457,7 @@ function reject(error) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -557,6 +529,35 @@ function clone(obj) {
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getFirebase;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json__);
+
+
+
+function firebaseInitialized() {
+  return __WEBPACK_IMPORTED_MODULE_0_firebase__["apps"].length !== 0;
+}
+function initializeFirebase() {
+  __WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](__WEBPACK_IMPORTED_MODULE_1__firebase_dev_config_json___default.a);
+  window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__;
+}
+
+function getFirebase() {
+  // console.log('get firebase called');
+  if (!firebaseInitialized()) {
+    initializeFirebase();
+  }
+  return __WEBPACK_IMPORTED_MODULE_0_firebase__; //TODO: initfirebase might actually be async
+}
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -571,7 +572,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(56);
+var _firebase_app = __webpack_require__(53);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -597,103 +598,6 @@ module.exports = exports['default'];
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -704,63 +608,7 @@ const Config = {
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -838,7 +686,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -925,7 +773,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1058,228 +906,7 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(100)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 13 */
+/* 10 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1306,7 +933,107 @@ module.exports = g;
 
 
 /***/ }),
-/* 14 */
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(6);
+
+
+const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
+const treesRef = firebase.database().ref('trees');
+const trees = {};
+
+
+class OfflineTree {
+    constructor(factId, parentId) {
+        this.factId = factId;
+        this.parentId = parentId;
+        this.children = [];
+        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ factId: factId, parentId: parentId, children: this.children }) // id mechanism for trees may very well change
+        );
+    }
+}
+class OnlineTree {
+    constructor(factIdOrTreeObj, parentId) {
+        if (typeof factIdOrTreeObj === 'object') {
+            var treeObj = factIdOrTreeObj;
+            this.loadObject(treeObj);
+        } else {
+            var factId = factIdOrTreeObj;
+            this.createAndPushObjectToDB(factId, parentId);
+        }
+        console.log('the object just created is: ', this);
+    }
+    loadObject(treeObj) {
+        const self = this;
+        Object.keys(treeObj).forEach(key => self[key] = treeObj[key]);
+    }
+    createAndPushObjectToDB(factId, parentId) {
+        this.factId = factId;
+        this.parentId = parentId;
+        this.children = [];
+
+        const treeObj = { factId: factId, parentId: parentId, children: this.children };
+        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify(treeObj));
+        this.treeRef = treesRef.push({
+            id: this.id,
+            factId,
+            parentId,
+            children: this.children
+        });
+    }
+
+    addChild(treeId) {
+        // this.treeRef.child('/children').push(treeId)
+        var children = {};
+        children[treeId] = true;
+        var updates = {
+            children
+        };
+        firebase.database().ref('trees/' + this.id).update(updates);
+    }
+
+    removeChild(treeId) {}
+
+    changeParent(newParentId) {
+        this.treeRef.update({
+            parentId: newParentId
+        });
+    }
+
+    set(prop, val) {
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {};
+        updates[prop] = val;
+        // this.treeRef.update(updates)
+        firebase.database().ref('trees/' + this.id).update(updates);
+        this[prop] = val;
+    }
+}
+
+//invoke like a constructor - new Tree(parentId, factId)
+function Tree() {
+    return __WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].offlineMode ? new OfflineTree(...arguments) : new OnlineTree(...arguments);
+}
+/*
+facts can have dependencies
+
+trees can have dependencies
+
+trees can have children
+
+*/
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1413,7 +1140,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1453,17 +1180,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(66);
+var PromiseImpl = scope.Promise || __webpack_require__(63);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1490,7 +1217,7 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(18);
+var _metadata = __webpack_require__(16);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -1627,7 +1354,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1701,7 +1428,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1724,13 +1451,13 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(73);
+var _json = __webpack_require__(70);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(9);
 
-var _path = __webpack_require__(34);
+var _path = __webpack_require__(32);
 
 var path = _interopRequireWildcard(_path);
 
@@ -1738,7 +1465,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(20);
+var _url = __webpack_require__(18);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -1911,7 +1638,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2121,7 +1848,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2139,11 +1866,11 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(8);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _object = __webpack_require__(4);
+var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
@@ -2191,177 +1918,11 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function(){
-  var crypt = __webpack_require__(50),
-      utf8 = __webpack_require__(27).utf8,
-      isBuffer = __webpack_require__(83),
-      bin = __webpack_require__(27).bin,
-
-  // The core
-  md5 = function (message, options) {
-    // Convert to byte array
-    if (message.constructor == String)
-      if (options && options.encoding === 'binary')
-        message = bin.stringToBytes(message);
-      else
-        message = utf8.stringToBytes(message);
-    else if (isBuffer(message))
-      message = Array.prototype.slice.call(message, 0);
-    else if (!Array.isArray(message))
-      message = message.toString();
-    // else, assume byte array already
-
-    var m = crypt.bytesToWords(message),
-        l = message.length * 8,
-        a =  1732584193,
-        b = -271733879,
-        c = -1732584194,
-        d =  271733878;
-
-    // Swap endian
-    for (var i = 0; i < m.length; i++) {
-      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
-             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
-    }
-
-    // Padding
-    m[l >>> 5] |= 0x80 << (l % 32);
-    m[(((l + 64) >>> 9) << 4) + 14] = l;
-
-    // Method shortcuts
-    var FF = md5._ff,
-        GG = md5._gg,
-        HH = md5._hh,
-        II = md5._ii;
-
-    for (var i = 0; i < m.length; i += 16) {
-
-      var aa = a,
-          bb = b,
-          cc = c,
-          dd = d;
-
-      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
-      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
-      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
-      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
-      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
-      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
-      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
-      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
-      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
-      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
-      c = FF(c, d, a, b, m[i+10], 17, -42063);
-      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
-      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
-      d = FF(d, a, b, c, m[i+13], 12, -40341101);
-      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
-      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
-
-      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
-      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
-      c = GG(c, d, a, b, m[i+11], 14,  643717713);
-      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
-      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
-      d = GG(d, a, b, c, m[i+10],  9,  38016083);
-      c = GG(c, d, a, b, m[i+15], 14, -660478335);
-      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
-      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
-      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
-      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
-      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
-      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
-      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
-      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
-      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
-
-      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
-      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
-      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
-      b = HH(b, c, d, a, m[i+14], 23, -35309556);
-      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
-      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
-      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
-      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
-      a = HH(a, b, c, d, m[i+13],  4,  681279174);
-      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
-      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
-      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
-      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
-      d = HH(d, a, b, c, m[i+12], 11, -421815835);
-      c = HH(c, d, a, b, m[i+15], 16,  530742520);
-      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
-
-      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
-      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
-      c = II(c, d, a, b, m[i+14], 15, -1416354905);
-      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
-      a = II(a, b, c, d, m[i+12],  6,  1700485571);
-      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
-      c = II(c, d, a, b, m[i+10], 15, -1051523);
-      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
-      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
-      d = II(d, a, b, c, m[i+15], 10, -30611744);
-      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
-      b = II(b, c, d, a, m[i+13], 21,  1309151649);
-      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
-      d = II(d, a, b, c, m[i+11], 10, -1120210379);
-      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
-      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
-
-      a = (a + aa) >>> 0;
-      b = (b + bb) >>> 0;
-      c = (c + cc) >>> 0;
-      d = (d + dd) >>> 0;
-    }
-
-    return crypt.endian([a, b, c, d]);
-  };
-
-  // Auxiliary functions
-  md5._ff  = function (a, b, c, d, x, s, t) {
-    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-  md5._gg  = function (a, b, c, d, x, s, t) {
-    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-  md5._hh  = function (a, b, c, d, x, s, t) {
-    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-  md5._ii  = function (a, b, c, d, x, s, t) {
-    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-
-  // Package private blocksize
-  md5._blocksize = 16;
-  md5._digestsize = 16;
-
-  module.exports = function (message, options) {
-    if (message === undefined || message === null)
-      throw new Error('Illegal argument ' + message);
-
-    var digestbytes = crypt.wordsToBytes(md5(message, options));
-    return options && options.asBytes ? digestbytes :
-        options && options.asString ? bin.bytesToString(digestbytes) :
-        crypt.bytesToHex(digestbytes);
-  };
-
-})();
-
-
-/***/ }),
-/* 22 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 
 class Fact {
@@ -2375,132 +1936,83 @@ class Fact {
 
 
 /***/ }),
-/* 23 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(2);
-/**
- * Created by John on 6/21/2017.
- */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(4);
 
 
 
 const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */])();
 const factsArr = [{ question: "Less is ... ", answer: 'more' }, { question: "It's not always the best product that ... ", answer: "wins. (example - according to steve jobs apple was better than windows, but windows won" }, { question: "What are the two qualities by which a person is judged by others? ", answer: "Competence (power) and warmth [and a third: 'presence']" }, { question: "How do people judge one's power?", answer: "Their social status, clothes, title ..." }, { question: "What is a technique to treat other people warmly?", answer: "Imagine they have halos around their head, and that they are the best people/angels you have ever encountered" }, { question: "How can you treat jerks nicely?", answer: "Change how you see their situation in your head (e.g. say to yourself 'That guy was just diagnosed with cancer'" }, { question: "What is presence?", answer: "The state of being totally focused and aware on the current moment and place. Not on the future or past. Not thinking about other people/activities, but think about the people you are with now and the activity you are doing now." }, { question: "What is a technique to instantly get present?", answer: "Focus on your toes, and trying to feel your toes in your shoes (this brings attention to your current senses)" }];
-const facts = {};
-factsArr.forEach(fact => {
-    const f = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](fact.question, fact.answer);
-    facts[f.id] = f;
-});
+
+const offlineFacts = {
+    "24": { "id": 24, "answer": " this is an a", "question": "this is a q" },
+    "126b28d1a4184e4d7d99656feebd823b": { "answer": "If you have an HTML element with a CSS `display` value of `flex` and `flex-direction` value ", "id": "126b28d1a4184e4d7d99656feebd823b", "question": "What does flex-direction do?" },
+    "1d1ec14bc8010cbfb42ce160744248ff": { "answer": "3", "id": "1d1ec14bc8010cbfb42ce160744248ff", "question": "what is 2+1" },
+    "34bd2fe8d329d9bc7b6c5e78397d1a1f": { "answer": "4", "id": "34bd2fe8d329d9bc7b6c5e78397d1a1f", "question": "what is 2+2" },
+    "4f5430fb0fd39072b50ff0b80c453dc3": { "answer": "hello", "id": "4f5430fb0fd39072b50ff0b80c453dc3", "question": "" },
+    "591fa736595d0f5c18c295a81046350b": { "answer": "it's who you know", "id": "591fa736595d0f5c18c295a81046350b", "question": "It's not what you know . . . " },
+    "5b798954b7c7414de1f232813e0ffb0b": { "answer": "flex-direction; justify-content; align-items; flex; flex-order; (Tip: direction, cross-axes, positioning, ordering)", "id": "5b798954b7c7414de1f232813e0ffb0b", "question": "List the 5 main flexbox properties:" },
+    "619a3ed7e1ca41843df5b38c4d886b2e": { "answer": "100", "id": "619a3ed7e1ca41843df5b38c4d886b2e", "question": "99+1" },
+    "9b5c4a3fb1a4f239868fbd399ddecd83": { "answer": "21", "id": "9b5c4a3fb1a4f239868fbd399ddecd83", "question": "10+11" },
+    "abdb7623bca3eca1918af5c1d76ed863": { "answer": "row; row-reverse; column; column-reverse", "id": "abdb7623bca3eca1918af5c1d76ed863", "question": "List the possible values for flex-direction" },
+    "ad852f5df11cf523ea97ba5c1742a699": { "answer": "18", "id": "ad852f5df11cf523ea97ba5c1742a699", "question": "9+9" },
+    "bc62641cfd029c281b8ce6135d8991e0": { "answer": ". . . the more you earn", "id": "bc62641cfd029c281b8ce6135d8991e0", "question": "The more you learn . . . " },
+    "c1882855355c3e28c1389a1d8eb2a90a": { "answer": "44", "id": "c1882855355c3e28c1389a1d8eb2a90a", "question": "22+22" },
+    "c8d26306d29ff13f0c1010ee0467d47a": { "answer": "There are many genes and coupled mechanisms that seem to essentially be hardcoded such that certain humans processes will stop after 120 years. There is no one variable called lifespan that we can tweak in the human genome", "id": "c8d26306d29ff13f0c1010ee0467d47a", "question": "Why can't humans currently live past age ~120?" }, "cafc5b435101f520710988617dff22bd": { "id": "cafc5b435101f520710988617dff22bd" },
+    "dfc27295e2f5527812aad0539c68975b": { "answer": "20", "id": "dfc27295e2f5527812aad0539c68975b", "question": "10+10" },
+    "e41b48edf89e0a90e2f9f3b4cf3a2c7b": { "answer": "79", "id": "e41b48edf89e0a90e2f9f3b4cf3a2c7b", "question": "2+77" },
+    "ecd1d2b273b3642feabbcc802d97bf0a": { "answer": "9", "id": "ecd1d2b273b3642feabbcc802d97bf0a", "question": "2+7" }
+};
+
 class Facts {
     static getAll(success) {
-        if (__WEBPACK_IMPORTED_MODULE_1__config_js__["a" /* Config */].offlineMode) {
-            success(facts);
-        }
+        if (__WEBPACK_IMPORTED_MODULE_1__config_js__["a" /* Config */].offlineMode) {}
     }
-    static get(factId, success) {
-        if (__WEBPACK_IMPORTED_MODULE_1__config_js__["a" /* Config */].offlineMode) {
-            const fact = facts[factId];
-            success(fact);
-        } else {
-            console.log("FACTS.JS: FACTS.get called");
-            firebase.database().ref('facts/' + factId).on("value", function (snapshot) {
-                var fact = snapshot.val();
-                console.log('FACTS.JS; snapshot from facts.get is', fact);
-                success(fact);
-            });
-        }
+    //TODO: make resolve "null" or something if fact not found
+    static get(factId) {
+        return new Promise((resolve, reject) => {
+            if (__WEBPACK_IMPORTED_MODULE_1__config_js__["a" /* Config */].offlineMode) {
+                const fact = offlineFacts[factId];
+                resolve(fact);
+            } else {
+                firebase.database().ref('facts/' + factId).on("value", function (snapshot) {
+                    var fact = snapshot.val();
+                    resolve(fact);
+                });
+            }
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Facts;
 
 
 /***/ }),
-/* 24 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 const Globals = {
     currentTreeSelected: null,
-    offlineMode: false
+    existingColor: '#FF0',
+    newColor: '#F0F'
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Globals;
 
 
 /***/ }),
-/* 25 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(2);
-
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
-const treesRef = firebase.database().ref('trees');
-const devOfflineMode = true;
-const trees = {};
-class OnlineTree {
-  constructor(fact_id) {
-    let parent_id = null;
-    let children = [];
-    const treeObj = { fact_id, parent_id, children };
-    const tree_id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(treeObj);
-    if (devOfflineMode) {
-      // trees[tree_id]
-      trees.push({ fact_id, parent_id, children });
-    }
-    this.treeRef = treesRef.push({
-      fact_id,
-      parent_id,
-      children
-    });
-  }
-  addChild(tree_id) {
-    this.treeRef.child('children').push(tree_id);
-  }
-  removeChild(tree_id) {}
-  changeParent(new_parent_id) {
-    this.treeRef.update({
-      parent_id: new_parent_id
-    });
-  }
-}
-/* unused harmony export OnlineTree */
-
-class Tree {
-  constructor(factId, parentId) {
-    this.factId = factId;
-    this.parentId = parentId;
-    this.children = [];
-    this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ factId: factId, parentId: parentId, children: this.children }) // id mechanism for trees may very well change
-    );
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
-
-/*
-facts can have dependencies
-
-trees can have dependencies
-
-trees can have children
-
-*/
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(4);
 
 
 
@@ -2508,16 +2020,43 @@ trees can have children
 const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__firebaseService_js__["a" /* default */])();
 console.log('trees.js imported');
 const trees = {};
-__WEBPACK_IMPORTED_MODULE_0__facts_js__["a" /* Facts */].getAll(facts => {
-    var i = 0;
-    Object.keys(facts).forEach(factId => {
-        const tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](factId, null);
-        tree.x = 100 * i;
-        tree.y = 100 * i;
-        trees[tree.id] = tree;
-        i++;
-    });
-});
+const offlineTreesData = {
+    //LAST UPDATED 6/28 9am
+    "1": {
+        "factId": "24",
+        "id": "1",
+        "x": "0",
+        "y": "0",
+        "children": ["075d07593a01ae43d7e045e7effadfb2", "35d917de5c0bd13a49d6e86bb7c540c1"]
+    },
+    "075d07593a01ae43d7e045e7effadfb2": {
+        "factId": "c8d26306d29ff13f0c1010ee0467d47a",
+        "id": "075d07593a01ae43d7e045e7effadfb2",
+        "parentId": "1",
+        "x": "300",
+        "y": "300"
+    },
+    "35d917de5c0bd13a49d6e86bb7c540c1": // the more you learn the more you earn
+    {
+        "factId": "bc62641cfd029c281b8ce6135d8991e0",
+        "id": "35d917de5c0bd13a49d6e86bb7c540c1",
+        "parentId": "1",
+        "x": "500",
+        "y": "400"
+    }
+};
+
+//
+// Facts.getAll((facts) => {
+//    var i = 0;
+//    Object.keys(facts).forEach((factId) => {
+//        const tree = new Tree(factId, null)
+//        tree.x = 100 * i;
+//        tree.y = 100 * i;
+//        trees[tree.id] = tree;
+//        i++;
+//    })
+// })
 
 class Trees {
     static getAll(success) {
@@ -2525,24 +2064,290 @@ class Trees {
             success(trees);
         }
     }
-    static get(treeId, success) {
-        if (__WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].offlineMode) {
-            const tree = trees[treeId];
-            success(tree);
-        } else {
-            console.log('TREES.JS; trees .get called');
-            firebase.database().ref('trees/' + treeId).on("value", function (snapshot) {
-                console.log('TREES.JS; snapshot from trees.get is', snapshot.val());
-                success(snapshot.val());
-            });
-        }
+    // static get(treeId, success){
+    //     let tree;
+    //     if (Config.offlineMode){
+    //         tree = offlineTreesData[treeId]
+    //         success(tree)
+    //     } else {
+    //        firebase.database().ref('trees/' + treeId).on("value", function(snapshot){
+    //            tree = snapshot.val()
+    //            success(tree)
+    //        })
+    //     }
+    // }
+    //returns promise
+    //TODO: make resolve "null" or something if fact not found
+    static get(treeId) {
+        return new Promise((resolve, reject) => {
+            let treeObj;
+            if (__WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].offlineMode) {
+                treeObj = offlineTreesData[treeId];
+                var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeObj);
+                resolve(tree);
+            } else {
+                if (trees[treeId]) {
+                    console.log('tree id', treeId, 'found locally');
+                    resolve(trees[treeId]);
+                } else {
+                    console.log('tree id', treeId, ' NOT found locally');
+                    firebase.database().ref('trees/' + treeId).on("value", function (snapshot) {
+                        treeObj = snapshot.val();
+                        console.log('the tree Obj passed into tree constructor is', treeObj);
+                        var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeObj);
+                        trees[tree.id] = tree;
+                        console.log('the tree just loaded from trees.get is', tree);
+                        resolve(tree);
+                    });
+                }
+            }
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Trees;
 
 
 /***/ }),
-/* 27 */
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__trees_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__facts_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globals_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__redux_js__ = __webpack_require__(48);
+
+
+
+
+
+var initialized = false;
+var s,
+    g = {
+    nodes: [],
+    edges: []
+};
+window.g = g;
+window.s = s;
+
+var newNodeXOffset = -100,
+    newNodeYOffset = 100,
+    newChildTreeSuffix = "__newChildTree";
+
+var numTreesLoaded = 0;
+loadTreeAndSubTrees(1).then(val => {
+    console.log(`loadTree has allegedly resolved. resolve val is ${val}`);initSigma();
+} /*.then(initSigma)*/
+// Instantiate sigma:
+);function createTreeNodeFromTreeAndFact(tree, fact) {
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        label: fact.question + "  " + fact.answer,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].existingColor,
+        type: 'tree'
+    };
+    return node;
+}
+function connectTreeToParent(tree, g) {
+    console.log(`Connect tree ${tree.id} to parent ${tree.parentId} called`);
+    if (tree.parentId) {
+        console.log('Connect tree to parent called - tree has parentId');
+        const edge = {
+            id: tree.parentId + "__" + tree.id,
+            source: tree.parentId,
+            target: tree.id,
+            size: 1,
+            color: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].existingColor
+        };
+        console.log('L55:TREESGRAPH.JS Edge before push is', edge);
+        g.edges.push(edge);
+    }
+}
+function onGetFact(tree, fact) {
+    const node = createTreeNodeFromTreeAndFact(tree, fact);
+    g.nodes.push(node);
+    addShadowNodeToTree(node);
+    tree.parentId && connectTreeToParent(tree, g);
+    return fact.id;
+}
+function onGetTree(tree) {
+    var factsPromise = __WEBPACK_IMPORTED_MODULE_2__facts_js__["a" /* Facts */].get(tree.factId).then(fact => onGetFact(tree, fact)).then(factId => {
+        console.log('onGetTree fact id is', factId);return factId;
+    }).catch(err => console.log(`facts get err for treeid of  ${tree.id} with factid of ${tree.factId} is `, err));
+
+    var childTreesPromises = tree.children ? tree.children.map(loadTreeAndSubTrees) : [];
+    var promises = childTreesPromises;
+    promises.push(factsPromise);
+
+    return Promise.all(promises).then(resultsArray => {
+        console.log('promise results array is', resultsArray);
+        var factIdPrettyString = resultsArray.shift();
+        var treeIdsPrettyStrings = resultsArray.join(', ');
+        console.log('tree with id', tree.id, ' and children of', tree.children, ' has finished loading');
+        var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )";
+        console.log('its pretty string is', treePrettyString);
+        return treePrettyString;
+    } //promise should only resolve when the tree's fact and all the subtrees are loaded
+    );
+}
+//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+function loadTreeAndSubTrees(treeId) {
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    numTreesLoaded++;
+    return __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.log('trees get err is', err));
+}
+
+function addShadowNodeToTree(tree) {
+    if (tree.children) {}
+    const shadowNode = {
+        id: tree.id + newChildTreeSuffix, //"_newChildTree",
+        parentId: tree.id,
+        x: parseInt(tree.x) + newNodeXOffset,
+        y: parseInt(tree.y) + newNodeYOffset,
+        label: 'Create a new Fact',
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].newColor,
+        type: 'newChildTree'
+    };
+    const shadowEdge = {
+        id: tree.id + "__" + shadowNode.id,
+        source: tree.id,
+        target: shadowNode.id,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].newColor
+    };
+    if (!initialized) {
+        g.nodes.push(shadowNode);
+        g.edges.push(shadowEdge);
+    } else {
+        s.graph.addNode(shadowNode);
+        s.graph.addEdge(shadowEdge);
+    }
+    if (initialized) {
+        s.refresh();
+    }
+}
+function calculateNewChildNodeCoordinates(treeId) {
+    return __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {});
+}
+function initSigma() {
+    if (!initialized) {
+        sigma.renderers.def = sigma.renderers.canvas;
+        s = new sigma({
+            graph: g,
+            container: 'graph-container'
+        });
+        window.s = s;
+        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+        s.refresh();
+
+        s.bind('clickNode', clickNode);
+        s.bind('outNode', updateTreePosition);
+        initialized = true;
+    }
+}
+window.initSigma = initSigma;
+function updateTreePosition(e) {
+    console.log('update tree position called');
+    let x = e.data.node.x;
+    let y = e.data.node.y;
+    let treeId = e.data.node.id;
+    if (!g.nodes.find(node => node.id == treeId && node.type === 'tree')) {
+        console.log('not an actual node!');
+        return; //node isn't an actual node in the db - its like a shadow node or helper node
+    }
+    __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        console.log('tree location is currently', tree.x, tree.y);
+        console.log('tree location is trying to be changed to currently', x, y);
+        if (Math.abs(tree.x - x) > 20) {
+            tree.set('x', x);
+        }
+        if (Math.abs(tree.y - y) > 20) {
+            tree.set('y', y);
+        }
+        return tree;
+    }).then(tree => {
+        console.log('tree location is now', tree.x, tree.y);
+    });
+}
+function logEvent(e) {
+    let x = e.data.node.x;
+    let y = e.data.node.y;
+    let treeId = e.data.node.id;
+    __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        if (Math.abs(tree.x - x) > 20) {
+            tree.set('x', x);
+        }
+        if (Math.abs(tree.y - y) > 20) {
+            tree.set('y', y);
+        }
+    });
+    console.log(e.data.node.id, e.data.node.x, e.data.node.y);
+}
+function clickNode(e) {
+    // console.log(e.type,e, e.data.node, e.data.node.label, e.data.captor);
+    let parentId = e.data.node.parentId;
+    if (e.data.node.type == 'tree') {}
+    // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
+    document.querySelector("#parentTreeId").value = parentId;
+    __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].currentTreeSelected = parentId;
+}
+function dragNode(e) {
+    console.log('drag Node', e, e.type, e.data.node, e.data.node.label, e.data.captor);
+    let parentId = e.data.node.parentId;
+    if (e.data.node.type == 'tree') {}
+    // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
+}
+
+//returns sigma tree node
+function addTreeToGraph(parentTreeId, fact) {
+    //1. delete current addNewNode button
+    var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
+    var newChildTreeX = currentNewChildTree.x;
+    var newChildTreeY = currentNewChildTree.y;
+    var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](fact.id, parentTreeId);
+    //2. add new node to parent tree
+    const newTree = {
+        id: tree.id,
+        parentId: parentTreeId,
+        x: parseInt(currentNewChildTree.x),
+        y: parseInt(currentNewChildTree.y),
+        children: tree.children,
+        label: fact.question + ' ' + fact.answer,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].existingColor,
+        type: 'tree'
+    };
+
+    s.graph.dropNode(currentNewChildTree.id);
+    s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    const newEdge = {
+        id: parentTreeId + "__" + newTree.id,
+        source: parentTreeId,
+        target: newTree.id,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].existingColor
+    };
+    s.graph.addEdge(newEdge
+    //4. add shadow node
+    );addShadowNodeToTree(newTree
+    //5. Re add shadow node to parent
+    );__WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(parentTreeId).then(addShadowNodeToTree);
+
+    s.refresh();
+    return newTree;
+}
+
+/***/ }),
+/* 24 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -2581,7 +2386,63 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 28 */
+/* 25 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2602,7 +2463,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(15);
+var _shared_promise = __webpack_require__(13);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2866,7 +2727,7 @@ function noop() {
 
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2897,17 +2758,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(14);
+var _errors = __webpack_require__(12);
 
-var _errors2 = __webpack_require__(9);
+var _errors2 = __webpack_require__(7);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(65);
+var _tokenManager = __webpack_require__(62);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(31);
+var _notificationPermission = __webpack_require__(29);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -3106,7 +2967,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3149,7 +3010,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3187,7 +3048,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3246,7 +3107,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 33 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3283,11 +3144,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(72);
+var _fs = __webpack_require__(69);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(19);
+var _string = __webpack_require__(17);
 
 var string = _interopRequireWildcard(_string);
 
@@ -3412,7 +3273,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3502,7 +3363,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 35 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3531,31 +3392,31 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(17);
+var _array = __webpack_require__(15);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(33);
+var _blob = __webpack_require__(31);
 
 var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(18);
+var _metadata = __webpack_require__(16);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(4);
+var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(76);
+var _requestinfo = __webpack_require__(73);
 
 var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(20);
+var _url = __webpack_require__(18);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -3856,7 +3717,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3933,7 +3794,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3974,7 +3835,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4009,35 +3870,35 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(16);
+var _args = __webpack_require__(14);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(33);
+var _blob = __webpack_require__(31);
 
 var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(9);
 
-var _metadata = __webpack_require__(18);
+var _metadata = __webpack_require__(16);
 
 var metadata = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(4);
+var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(34);
+var _path = __webpack_require__(32);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(35);
+var _requests = __webpack_require__(33);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(19);
+var _string = __webpack_require__(17);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -4045,7 +3906,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(81);
+var _task = __webpack_require__(78);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -4283,7 +4144,173 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 39 */
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function(){
+  var crypt = __webpack_require__(49),
+      utf8 = __webpack_require__(24).utf8,
+      isBuffer = __webpack_require__(80),
+      bin = __webpack_require__(24).bin,
+
+  // The core
+  md5 = function (message, options) {
+    // Convert to byte array
+    if (message.constructor == String)
+      if (options && options.encoding === 'binary')
+        message = bin.stringToBytes(message);
+      else
+        message = utf8.stringToBytes(message);
+    else if (isBuffer(message))
+      message = Array.prototype.slice.call(message, 0);
+    else if (!Array.isArray(message))
+      message = message.toString();
+    // else, assume byte array already
+
+    var m = crypt.bytesToWords(message),
+        l = message.length * 8,
+        a =  1732584193,
+        b = -271733879,
+        c = -1732584194,
+        d =  271733878;
+
+    // Swap endian
+    for (var i = 0; i < m.length; i++) {
+      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
+             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
+    }
+
+    // Padding
+    m[l >>> 5] |= 0x80 << (l % 32);
+    m[(((l + 64) >>> 9) << 4) + 14] = l;
+
+    // Method shortcuts
+    var FF = md5._ff,
+        GG = md5._gg,
+        HH = md5._hh,
+        II = md5._ii;
+
+    for (var i = 0; i < m.length; i += 16) {
+
+      var aa = a,
+          bb = b,
+          cc = c,
+          dd = d;
+
+      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
+      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
+      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
+      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
+      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
+      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
+      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
+      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
+      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
+      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
+      c = FF(c, d, a, b, m[i+10], 17, -42063);
+      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
+      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
+      d = FF(d, a, b, c, m[i+13], 12, -40341101);
+      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
+      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
+
+      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
+      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
+      c = GG(c, d, a, b, m[i+11], 14,  643717713);
+      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
+      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
+      d = GG(d, a, b, c, m[i+10],  9,  38016083);
+      c = GG(c, d, a, b, m[i+15], 14, -660478335);
+      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
+      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
+      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
+      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
+      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
+      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
+      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
+      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
+      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
+
+      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
+      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
+      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
+      b = HH(b, c, d, a, m[i+14], 23, -35309556);
+      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
+      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
+      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
+      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
+      a = HH(a, b, c, d, m[i+13],  4,  681279174);
+      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
+      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
+      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
+      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
+      d = HH(d, a, b, c, m[i+12], 11, -421815835);
+      c = HH(c, d, a, b, m[i+15], 16,  530742520);
+      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
+
+      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
+      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
+      c = II(c, d, a, b, m[i+14], 15, -1416354905);
+      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
+      a = II(a, b, c, d, m[i+12],  6,  1700485571);
+      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
+      c = II(c, d, a, b, m[i+10], 15, -1051523);
+      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
+      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
+      d = II(d, a, b, c, m[i+15], 10, -30611744);
+      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
+      b = II(b, c, d, a, m[i+13], 21,  1309151649);
+      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
+      d = II(d, a, b, c, m[i+11], 10, -1120210379);
+      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
+      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
+
+      a = (a + aa) >>> 0;
+      b = (b + bb) >>> 0;
+      c = (c + cc) >>> 0;
+      d = (d + dd) >>> 0;
+    }
+
+    return crypt.endian([a, b, c, d]);
+  };
+
+  // Auxiliary functions
+  md5._ff  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._gg  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._hh  = function (a, b, c, d, x, s, t) {
+    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._ii  = function (a, b, c, d, x, s, t) {
+    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+
+  // Package private blocksize
+  md5._blocksize = 16;
+  md5._digestsize = 16;
+
+  module.exports = function (message, options) {
+    if (message === undefined || message === null)
+      throw new Error('Illegal argument ' + message);
+
+    var digestbytes = crypt.wordsToBytes(md5(message, options));
+    return options && options.asBytes ? digestbytes :
+        options && options.asString ? bin.bytesToString(digestbytes) :
+        crypt.bytesToHex(digestbytes);
+  };
+
+})();
+
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4473,18 +4500,336 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function injectStyle (ssrContext) {
-  __webpack_require__(98)
-  __webpack_require__(96)
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
 }
-var Component = __webpack_require__(6)(
+
+var listToStyles = __webpack_require__(89)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(88)
+  __webpack_require__(87)
+}
+var Component = __webpack_require__(39)(
   /* script */
-  __webpack_require__(43),
+  __webpack_require__(44),
   /* template */
-  __webpack_require__(94),
+  __webpack_require__(86),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4497,7 +4842,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14191,10 +14536,10 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(39), __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(38), __webpack_require__(10)))
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -14550,18 +14895,15 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_vue__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__facts_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__newTree_vue__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__newTree_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__newTree_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__treesGraph2_js__ = __webpack_require__(49);
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__newTree_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__newTree_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__newTree_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__treesGraph_js__ = __webpack_require__(23);
 //
 //
 //
@@ -14581,8 +14923,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-//import './treesGraph.js'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'app',
@@ -14592,36 +14932,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
   components: {
-    Facts: __WEBPACK_IMPORTED_MODULE_0__facts_vue___default.a,
-    newtree: __WEBPACK_IMPORTED_MODULE_1__newTree_vue___default.a
+    newtree: __WEBPACK_IMPORTED_MODULE_0__newTree_vue___default.a
   }
-});
-
-/***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var a = 5;
-console.log(a);
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'fact',
-  data() {
-    return {}; // this.props['data']
-  },
-  props: ['id', 'question', 'answer']
 });
 
 /***/ }),
@@ -14630,92 +14942,10 @@ console.log(a);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fact_vue__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fact_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fact_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newfact_vue__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newfact_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__newfact_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */])();
-
-
-
-var md5 = __webpack_require__(21);
-const local = false;
-const factListObj = {};
-factListObj.data = [];
-
-factListObj.data = [{
-  id: '24',
-  question: 'what is sam\'s last name?',
-  answer: 'Yinger'
-}];
-var factsRef = firebase.database().ref('facts').limitToLast(20);
-factsRef.on('value', function (snapshot) {
-  var ffacts = snapshot.val();
-  console.log("firebase data is" + JSON.stringify(ffacts));
-  Object.keys(ffacts).forEach(key => {
-    var fact = ffacts[key];
-    factListObj.data.push(fact);
-    //      console.log('fact list data is', factListObj.data);
-    // addFactToList(fact);
-    // console.log('adding fact to list', fact);
-  });
-}, function (errorObject) {
-  console.log('The read failed: ' + errorObject.code);
-});
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'facts',
-  data() {
-    var res = {
-      facts: factListObj.data
-    };
-
-    if (local) {
-      res = {
-        facts: Object.keys(facts).map(key => {
-          return facts[key];
-        }
-        // fact: facts["126b28d1a4184e4d7d99656feebd823b"]
-        ) };
-    }
-    return res;
-  },
-  components: {
-    Fact: __WEBPACK_IMPORTED_MODULE_1__fact_vue___default.a,
-    newfact: __WEBPACK_IMPORTED_MODULE_2__newfact_vue___default.a
-  }
-
-});
-
-/***/ }),
-/* 46 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(2);
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newfact_js__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__treesGraph_js__ = __webpack_require__(23);
 //
 //
 //
@@ -14730,6 +14960,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'newtree',
   data() {
@@ -14737,86 +14969,35 @@ const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseServ
   },
   methods: {
     newTree: function (event) {
-      var factId = document.querySelector('#factId').value;
-      var treeId = document.querySelector('#treeId').value;
-      var x = document.querySelector('#treeX').value;
-      var y = document.querySelector('#treeY').value;
-      var tree = { treeId, factId, x, y };
-      var updates = {};
-      updates['/trees/' + tree.treeId] = tree;
+      var fact = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__newfact_js__["a" /* newFact */])(event);
+      var factId = fact.id;
+      var parentTreeId = document.querySelector('#parentTreeId').value;
+
+      const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, fact
+      //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
+      );var updates = {};
+      updates['/trees/' + tree.id] = tree;
+      updates['/trees/' + parentTreeId + '/children/'];
       firebase.database().ref().update(updates);
+      var parentNodeRef = firebase.database().ref('/trees/' + parentTreeId + "children/");
+      parentNodeRef.push(tree.id);
+
+      //add tree to the graph
     }
   }
 });
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globals_js__ = __webpack_require__(24);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-function createAndWriteFactFromQA(question, answer) {
-    var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](question, answer);
-    console.log('the fact just created is', fact);
-    writeNewFact(fact);
-}
-function writeNewFact(fact) {
-    const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
-    var updates = {};
-    updates['/facts/' + fact.id] = fact;
-    console.log('inside of write new fact: firebase is', firebase, 'fb.db is', firebase.database());
-    firebase.database().ref().update(updates);
-}
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'newfact',
-    data() {
-        return {
-            currentTreeSelected: __WEBPACK_IMPORTED_MODULE_3__globals_js__["a" /* Globals */].currentTreeSelected // this.props['data']
-        };
-    },
-    methods: {
-        newFact: function (event) {
-            var question = document.querySelector('#newQuestion').value;
-            var answer = document.querySelector('#newAnswer').value;
-            createAndWriteFactFromQA(question, answer);
-        }
-    },
-    props: ['id', 'question', 'answer']
-});
-
-/***/ }),
-/* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuefire__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(42);
 
 
 
@@ -14826,170 +15007,53 @@ __WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 new __WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */]({ el: '#bootstrap', render: h => h(__WEBPACK_IMPORTED_MODULE_0__App_vue___default.a) });
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__facts_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globals_js__ = __webpack_require__(24);
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */])();
+/* harmony export (immutable) */ __webpack_exports__["a"] = newFact;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globals_js__ = __webpack_require__(21);
 
 
 
 
-var parentTreeId;
-var i,
-    s,
-    N = 5,
-    E = 3,
-    g = {
-    nodes: [],
-    edges: []
-};
-var numNodes = 0;
-// Generate a random graph:
-if (__WEBPACK_IMPORTED_MODULE_3__config_js__["a" /* Config */].offlineMode) {
-    __WEBPACK_IMPORTED_MODULE_1__trees_js__["a" /* Trees */].getAll(trees => {
-        Object.keys(trees).forEach(treeId => {
-            const tree = trees[treeId];
-            __WEBPACK_IMPORTED_MODULE_2__facts_js__["a" /* Facts */].get(tree.factId, fact => {
-                console.log("TREESGRAPH2.JS facts.get callback: fact", fact);
-                let question = fact.question;
-                let answer = fact.answer;
-                const node = {
-                    id: treeId,
-                    x: tree.x,
-                    y: tree.y,
-                    label: question + "  " + answer,
-                    size: 1,
-                    color: '#666'
-                };
-                g.nodes.push(node);
-
-                const shadowNode = {
-                    id: treeId + "_newNode",
-                    x: tree.x - 100,
-                    y: tree.y + 100,
-                    label: 'Create a new Fact',
-                    size: 1,
-                    color: '#F00'
-                };
-                g.nodes.push(shadowNode);
-                g.edges.push({
-                    id: node.id + "___" + shadowNode.id,
-                    source: node.id,
-                    target: shadowNode.id,
-                    size: 1,
-                    color: '#F00'
-                });
-                numNodes++;
-                console.log("D-TREESGRAPH.JS: NumNodes is now", numNodes);
-            });
-        });
-    });
-} else {
-    loadTreeAndSubTrees(1);
+function createAndWriteFactFromQA(question, answer) {
+    var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](question, answer);
+    console.log('the fact just created is', fact);
+    writeNewFact(fact);
+    return fact;
 }
-function loadTreeAndSubTrees(treeId) {
-    __WEBPACK_IMPORTED_MODULE_1__trees_js__["a" /* Trees */].get(treeId, function (tree) {
-        console.log("TREESGRAPH2.JS: Trees.get callback tree is", tree);
-        __WEBPACK_IMPORTED_MODULE_2__facts_js__["a" /* Facts */].get(tree.factId, function (fact) {
-            console.log("TREESGRAPH2.JS: Facts.get callback is this. fact is", fact);
-            const node = {
-                id: tree.treeId,
-                x: tree.x,
-                y: tree.y,
-                label: fact.question + "  " + fact.answer,
-                size: 1,
-                color: '#0FF'
-            };
-            console.log("TREESGRAPH2.JS: node is", node);
-            g.nodes.push(node);
-            const shadowNode = {
-                id: treeId + "_newNode",
-                x: tree.x - 100,
-                y: tree.y + 100,
-                label: 'Create a new Fact',
-                size: 1,
-                color: '#F00'
-            };
-            g.nodes.push(shadowNode);
-            g.edges.push({
-                id: node.id + "___" + shadowNode.id,
-                source: node.id,
-                target: shadowNode.id,
-                size: 1,
-                color: '#F00'
-            });
-            console.log("TREESGRAPH2.js is ", s.graph.nodes);
-            s.refresh();
-        });
-    });
+function writeNewFact(fact) {
+    console.log('THE FACT BEEING CREATED IN NEWFACT.JS is ', fact);
+    const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
+    var updates = {};
+    updates['/facts/' + fact.id] = fact;
+    console.log('inside of write new fact: firebase is', firebase, 'fb.db is', firebase.database());
+    firebase.database().ref().update(updates);
 }
-if (__WEBPACK_IMPORTED_MODULE_3__config_js__["a" /* Config */].offlineMode) {
-    var factsRef = firebase.database().ref('trees');
-    factsRef.on('value', function (snapshot) {
-        var ftrees = snapshot.val();
-        console.log("firebase trees data is" + JSON.stringify(ftrees));
-        Object.keys(ftrees).forEach(key => {
-            var tree = ftrees[key];
-
-            factListObj.data.push(fact);
-            // console.log('fact list data is', factListObj.data);
-            // addFactToList(fact);
-            // console.log('adding fact to list', fact);
-        });
-    }, function (errorObject) {
-        console.log('The read failed: ' + errorObject.code);
-    });
+function newFact(event) {
+    var question = document.querySelector('#newTreeQuestion').value;
+    var answer = document.querySelector('#newTreeAnswer').value;
+    var fact = createAndWriteFactFromQA(question, answer);
+    return fact;
 }
-sigma.renderers.def = sigma.renderers.canvas;
-// Instantiate sigma:
-s = new sigma({
-    graph: g,
-    container: 'graph-container'
-});
-
-// Initialize the dragNodes plugin:
-var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-
-dragListener.bind('startdrag', function (event) {
-    console.log(event);
-});
-dragListener.bind('drag', function (event) {
-    console.log(event);
-});
-dragListener.bind('drop', function (event) {
-    console.log(event);
-});
-dragListener.bind('dragend', function (event) {
-    console.log(event);
-});
-// Bind the events:
-s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function (e) {
-    console.log('event is e', e);
-
-    console.log(e.type, e.data.node.label, e.data.captor);
-    parentTreeId = e.data.node.id.substring(0, e.data.node.id.indexOf("_"));
-    console.log('parent tree id selected was', parentTreeId);
-    __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].currentTreeSelected = parentTreeId;
-});
-s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
-    console.log(e.type, e.data.edge, e.data.captor);
-});
-s.bind('clickStage', function (e) {
-    console.log(e.type, e.data.captor);
-});
-s.bind('doubleClickStage rightClickStage', function (e) {
-    console.log(e.type, e.data.captor);
-});
 
 /***/ }),
-/* 50 */
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const Redux = {
+    dispatch: () => {}
+};
+/* unused harmony export Redux */
+
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -15091,10 +15155,10 @@ s.bind('doubleClickStage rightClickStage', function (e) {
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(8)();
+exports = module.exports = __webpack_require__(25)();
 // imports
 
 
@@ -15105,24 +15169,10 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(8)();
-// imports
-
-
-// module
-exports.push([module.i, "#factList{display:none}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(8)();
+exports = module.exports = __webpack_require__(25)();
 // imports
 
 
@@ -15133,21 +15183,7 @@ exports.push([module.i, "#app{display:flex;flex-direction:column}#facts,#trees-g
 
 
 /***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(8)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
-/* 55 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15249,7 +15285,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 56 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15282,13 +15318,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(28);
+var _subscribe = __webpack_require__(26);
 
-var _errors = __webpack_require__(14);
+var _errors = __webpack_require__(12);
 
-var _shared_promise = __webpack_require__(15);
+var _shared_promise = __webpack_require__(13);
 
-var _deep_copy = __webpack_require__(55);
+var _deep_copy = __webpack_require__(52);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15653,7 +15689,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 57 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
@@ -15929,10 +15965,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 58 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -16203,7 +16239,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 59 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16221,18 +16257,18 @@ var _app = __webpack_require__(5);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(57);
+__webpack_require__(54);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(58);
-__webpack_require__(67);
+__webpack_require__(55);
+__webpack_require__(64);
 var AsyncStorage;
 
-__webpack_require__(60);
+__webpack_require__(57);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -16240,7 +16276,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 60 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16270,11 +16306,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(62);
+var _windowController = __webpack_require__(59);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(61);
+var _swController = __webpack_require__(58);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -16301,7 +16337,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 61 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16334,19 +16370,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(29);
+var _controllerInterface = __webpack_require__(27);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(9);
+var _errors = __webpack_require__(7);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(32);
+var _workerPageMessage = __webpack_require__(30);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(30);
+var _fcmDetails = __webpack_require__(28);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -16679,7 +16715,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 62 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16712,27 +16748,27 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(29);
+var _controllerInterface = __webpack_require__(27);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(9);
+var _errors = __webpack_require__(7);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(32);
+var _workerPageMessage = __webpack_require__(30);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(64);
+var _defaultSw = __webpack_require__(61);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(31);
+var _notificationPermission = __webpack_require__(29);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(28);
+var _subscribe = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17080,7 +17116,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 63 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17123,7 +17159,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 64 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17160,7 +17196,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 65 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17191,17 +17227,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(14);
+var _errors = __webpack_require__(12);
 
-var _errors2 = __webpack_require__(9);
+var _errors2 = __webpack_require__(7);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(63);
+var _arrayBufferToBase = __webpack_require__(60);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(30);
+var _fcmDetails = __webpack_require__(28);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -17582,7 +17618,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 66 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -17819,10 +17855,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(86).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(83).setImmediate))
 
 /***/ }),
-/* 67 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17837,15 +17873,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(19);
+var _string = __webpack_require__(17);
 
-var _taskenums = __webpack_require__(36);
+var _taskenums = __webpack_require__(34);
 
-var _xhriopool = __webpack_require__(79);
+var _xhriopool = __webpack_require__(76);
 
-var _reference = __webpack_require__(38);
+var _reference = __webpack_require__(36);
 
-var _service = __webpack_require__(80);
+var _service = __webpack_require__(77);
 
 var _app = __webpack_require__(5);
 
@@ -17892,7 +17928,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 68 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17907,7 +17943,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.async = async;
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -17950,7 +17986,7 @@ function async(f) {
 
 
 /***/ }),
-/* 69 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17967,7 +18003,7 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(8);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -17975,15 +18011,15 @@ var _error2 = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(71);
+var _failrequest = __webpack_require__(68);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(9);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(77);
+var _requestmap = __webpack_require__(74);
 
 var _type = __webpack_require__(0);
 
@@ -18132,7 +18168,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 70 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18264,7 +18300,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 71 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18281,7 +18317,7 @@ exports.FailRequest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -18323,7 +18359,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 72 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18404,7 +18440,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 73 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18460,7 +18496,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 74 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18520,7 +18556,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 75 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18560,11 +18596,11 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(17);
+var _array = __webpack_require__(15);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(70);
+var _backoff = __webpack_require__(67);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -18572,11 +18608,11 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(4);
+var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -18584,11 +18620,11 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(20);
+var _url = __webpack_require__(18);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(37);
+var _xhrio = __webpack_require__(35);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -18793,7 +18829,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 76 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18840,7 +18876,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 77 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18872,11 +18908,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _object = __webpack_require__(4);
+var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(8);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -18935,7 +18971,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 78 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18971,11 +19007,11 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(4);
+var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -18983,7 +19019,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(37);
+var _xhrio = __webpack_require__(35);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -19134,7 +19170,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 79 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19166,7 +19202,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(78);
+var _xhrio_network = __webpack_require__(75);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19191,7 +19227,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 80 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19223,23 +19259,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(16);
+var _args = __webpack_require__(14);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(69);
+var _authwrapper = __webpack_require__(66);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(9);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(75);
+var _request = __webpack_require__(72);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(38);
+var _reference = __webpack_require__(36);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -19382,7 +19418,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 81 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19417,33 +19453,33 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(36);
+var _taskenums = __webpack_require__(34);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(74);
+var _observer = __webpack_require__(71);
 
-var _tasksnapshot = __webpack_require__(82);
+var _tasksnapshot = __webpack_require__(79);
 
-var _args = __webpack_require__(16);
+var _args = __webpack_require__(14);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(17);
+var _array = __webpack_require__(15);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(68);
+var _async = __webpack_require__(65);
 
 var _error = __webpack_require__(1);
 
 var errors = _interopRequireWildcard(_error);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(2);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(35);
+var _requests = __webpack_require__(33);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -20025,7 +20061,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 82 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20077,7 +20113,7 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 83 */
+/* 80 */
 /***/ (function(module, exports) {
 
 /*!
@@ -20104,7 +20140,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 84 */
+/* 81 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -20117,7 +20153,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 85 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -20307,10 +20343,10 @@ module.exports = {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(39)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(38)))
 
 /***/ }),
-/* 86 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -20363,63 +20399,20 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(85);
+__webpack_require__(82);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 87 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(6)(
-  /* script */
-  __webpack_require__(44),
-  /* template */
-  __webpack_require__(91),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(97)
-}
-var Component = __webpack_require__(6)(
+var Component = __webpack_require__(39)(
   /* script */
   __webpack_require__(45),
   /* template */
-  __webpack_require__(93),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(6)(
-  /* script */
-  __webpack_require__(46),
-  /* template */
-  __webpack_require__(92),
+  __webpack_require__(85),
   /* styles */
   null,
   /* scopeId */
@@ -20432,65 +20425,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(99)
-}
-var Component = __webpack_require__(6)(
-  /* script */
-  __webpack_require__(47),
-  /* template */
-  __webpack_require__(95),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 91 */
+/* 85 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "fact"
-  }, [_c('span', [_vm._v(_vm._s(_vm.id) + ":")]), _vm._v(" "), _c('span', {
-    staticClass: "question"
-  }, [_vm._v(" " + _vm._s(_vm.question) + " ")]), _vm._v(" "), _c('span', {
-    staticClass: "answer"
-  }, [_vm._v(" " + _vm._s(_vm.answer) + " ")])])
-},staticRenderFns: []}
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("\n  Fact Id: "), _c('input', {
+  return _c('div', [_vm._v("\n  Question: "), _c('input', {
     attrs: {
-      "id": "factId",
+      "id": "newTreeQuestion",
       "type": "text"
     }
-  }), _vm._v("\n  Tree Id: "), _c('input', {
+  }), _vm._v("\n  Answer: "), _c('input', {
     attrs: {
-      "id": "treeId",
+      "id": "newTreeAnswer",
       "type": "text"
     }
-  }), _vm._v("\n  X: "), _c('input', {
+  }), _vm._v(" "), _c('input', {
     attrs: {
-      "id": "treeX",
-      "type": "text"
-    }
-  }), _vm._v("\n  Y: "), _c('input', {
-    attrs: {
-      "id": "treeY",
+      "hidden": "",
+      "id": "parentTreeId",
       "type": "text"
     }
   }), _vm._v(" "), _c('button', {
@@ -20504,38 +20456,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 93 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('ul', {
-    attrs: {
-      "id": "factList"
-    }
-  }, [_c('fact', {
-    attrs: {
-      "id": "12345",
-      "question": "What is Shaffan's last name?",
-      "answer": "Mustafa"
-    }
-  }), _vm._v(" "), _vm._l((_vm.facts), function(fact) {
-    return _c('fact', {
-      key: fact.id,
-      attrs: {
-        "id": fact.id,
-        "question": fact.question,
-        "answer": fact.answer
-      }
-    })
-  })], 2), _vm._v(" "), _c('newfact', {
-    attrs: {
-      "id": "newFact"
-    }
-  })], 1)
-},staticRenderFns: []}
-
-/***/ }),
-/* 94 */
+/* 86 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20543,44 +20464,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "app"
     }
-  }, [_c('facts', {
-    attrs: {
-      "id": "facts"
-    }
-  }), _vm._v(" "), _c('newtree')], 1)
+  }, [_c('newtree')], 1)
 },staticRenderFns: []}
 
 /***/ }),
-/* 95 */
-/***/ (function(module, exports) {
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "newFact"
-    }
-  }, [_vm._v("\n    Question: "), _c('input', {
-    attrs: {
-      "id": "newQuestion",
-      "type": "text"
-    }
-  }), _vm._v("\n    Answer: "), _c('input', {
-    attrs: {
-      "id": "newAnswer",
-      "type": "text"
-    }
-  }), _vm._v(" "), _c('button', {
-    attrs: {
-      "id": "createNewFact"
-    },
-    on: {
-      "click": _vm.newFact
-    }
-  }, [_vm._v("Create New Fact")]), _vm._v("\n    current tree selected is " + _vm._s(_vm.currentTreeSelected) + "\n")])
-},staticRenderFns: []}
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(50);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(40)("5c20ac7a", content, true);
 
 /***/ }),
-/* 96 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -20590,49 +20491,10 @@ var content = __webpack_require__(51);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(12)("5c20ac7a", content, true);
+var update = __webpack_require__(40)("77584748", content, true);
 
 /***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(52);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(12)("10fcdf91", content, true);
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(53);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(12)("77584748", content, true);
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(54);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(12)("4dea9bf7", content, true);
-
-/***/ }),
-/* 100 */
+/* 89 */
 /***/ (function(module, exports) {
 
 /**
