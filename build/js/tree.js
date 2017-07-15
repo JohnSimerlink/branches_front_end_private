@@ -75,7 +75,13 @@ define(['exports', 'md5', './firebaseService.js', './config.js'], function (expo
         }, {
             key: 'addChild',
             value: function addChild(treeId) {
-                this.treeRef.child('children').push(treeId);
+                // this.treeRef.child('/children').push(treeId)
+                var children = {};
+                children[treeId] = true;
+                var updates = {
+                    children: children
+                };
+                firebase.database().ref('trees/' + this.id).update(updates);
             }
         }, {
             key: 'removeChild',
@@ -96,7 +102,9 @@ define(['exports', 'md5', './firebaseService.js', './config.js'], function (expo
 
                 var updates = {};
                 updates[prop] = val;
-                this.treeRef.update(updates);
+                // this.treeRef.update(updates)
+                firebase.database().ref('trees/' + this.id).update(updates);
+                this[prop] = val;
             }
         }]);
 

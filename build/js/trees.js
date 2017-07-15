@@ -91,13 +91,20 @@ define(['exports', './facts.js', './tree.js', './config.js', './firebaseService.
                         var tree = new _treeJs.Tree(treeObj);
                         resolve(tree);
                     } else {
-                        firebase.database().ref('trees/' + treeId).on("value", function (snapshot) {
-                            treeObj = snapshot.val();
-                            console.log('the tree Obj passed into tree constructor is', treeObj);
-                            var tree = new _treeJs.Tree(treeObj);
-                            console.log('the tree just loaded from trees.get is', tree);
-                            resolve(tree);
-                        });
+                        if (trees[treeId]) {
+                            console.log('tree id', treeId, 'found locally');
+                            resolve(trees[treeId]);
+                        } else {
+                            console.log('tree id', treeId, ' NOT found locally');
+                            firebase.database().ref('trees/' + treeId).on("value", function (snapshot) {
+                                treeObj = snapshot.val();
+                                console.log('the tree Obj passed into tree constructor is', treeObj);
+                                var tree = new _treeJs.Tree(treeObj);
+                                trees[tree.id] = tree;
+                                console.log('the tree just loaded from trees.get is', tree);
+                                resolve(tree);
+                            });
+                        }
                     }
                 });
             }
