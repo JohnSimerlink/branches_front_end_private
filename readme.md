@@ -1,3 +1,4 @@
+![Karma tests](https://travis-ci.org/renaissanceorg/renaissance_front_end.svg?branch=master)
 #instructions
 
 `npm install`
