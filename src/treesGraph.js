@@ -144,6 +144,10 @@ function updateTreePosition(e){
     let x = e.data.node.x
     let y = e.data.node.y
     let treeId = e.data.node.id;
+    if (!g.nodes.find(node => node.id == treeId && node.type === 'tree')){
+        console.log('not an actual node!')
+        return; //node isn't an actual node in the db - its like a shadow node or helper node
+    }
     Trees.get(treeId).then( tree => {
         console.log('tree location is currently', tree.x, tree.y)
         console.log('tree location is trying to be changed to currently', x, y)
