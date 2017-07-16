@@ -57,6 +57,7 @@ function onGetFact(tree,fact){
     return fact.id
 }
 function onGetTree(tree) {
+    console.log('60: The tree being got is', tree, 'with a factid of ',tree.factId)
     var factsPromise = Facts.get(tree.factId)
         .then( fact => onGetFact(tree,fact))
         .then( factId => {console.log('onGetTree fact id is', factId); return factId})
