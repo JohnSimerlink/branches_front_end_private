@@ -10,7 +10,6 @@
 </style>
 <template>
    <div id="app">
-      <newtree></newtree>
    </div>
 </template>
 
