@@ -19,13 +19,11 @@ var newNodeXOffset = -100,
 
 window.createNewTreeClick = function(event){
     var newTreeForm = event.target.parentNode
-    var question = newTreeForm.querySelector('#newTreeQuestion')
-    var answer = newTreeForm.querySelector('#newTreeAnswer')
-    var parentId = newTreeForm.querySelector('#parentId')
+    var question = newTreeForm.querySelector('#newTreeQuestion').value
+    var answer = newTreeForm.querySelector('#newTreeAnswer').value
+    var parentId = newTreeForm.querySelector('#parentId').value
 
     newTree(question, answer, parentId)
-    alert('click')
-    console.log('new click arguments!!!!!!1', ...arguments)
 }
 var numTreesLoaded = 0;
 loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
@@ -302,7 +300,7 @@ function initSigmaPlugins() {
                   <div class="sigma-tooltip-header">Add a new Fact </div> 
                     <div class="sigma-tooltip-body"> 
                       <p id="newTreeForm">
-                        <input type="hidden" id="parentId" value="${node.parentId}"
+                        <input type="hidden" id="parentId" value="${node.parentId}">
                         Question: <input id='newTreeQuestion' type='text'><br>
                         Answer: <input id='newTreeAnswer' type='text'><br>
                         <button id='createNewTree2' onclick="createNewTreeClick(event)">Create New Tree</button>

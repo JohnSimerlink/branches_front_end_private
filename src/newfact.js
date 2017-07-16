@@ -14,7 +14,6 @@ function writeNewFact(fact) {
     const firebase = getFirebase();
     var updates = {};
     updates['/facts/' + fact.id] = fact;
-    console.log('inside of write new fact: firebase is', firebase, 'fb.db is', firebase.database())
     firebase.database().ref().update(updates);
 }
 export function newFact(question, answer){
