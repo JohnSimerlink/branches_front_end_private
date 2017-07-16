@@ -270,6 +270,13 @@ function initSigmaPlugins() {
             show: 'rightClickNode',
             cssClass: 'sigma-tooltip',
             position: 'right',
+            template2:
+            '<div class="arrow"></div>' +
+            ' <div class="sigma-tooltip-header">{{label}}</div>' +
+            '  <div class="sigma-tooltip-body">' +
+            '   <p> TEMPLATE 2. TEMPLATE 2 Context menu for {{x}}{{y}}{{label}} </p>' +
+            '  </div>' +
+            ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
             template:
             '<div class="arrow"></div>' +
             ' <div class="sigma-tooltip-header">{{label}}</div>' +
@@ -278,6 +285,26 @@ function initSigmaPlugins() {
             '  </div>' +
             ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
             renderer: function(node, template) {
+                console.log('render node arguments are', ...arguments)
+                var newChildTreeTemplate =
+                '<div class="arrow"></div>' +
+                ' <div class="sigma-tooltip-header">{{label}}</div>' +
+                '  <div class="sigma-tooltip-body">' +
+                '   <p> NEW CHILD TREE TEMPLATE Context menu for {{x}}{{y}}{{label}} </p>' +
+                `<div>
+                Question: <input id='newTreeQuestion' type='text'>
+                    Answer: <input id='newTreeAnswer' type='text'>
+                    <input hidden id='parentTreeId' type='text'>
+                    <button id='createNewTree' v-on:click='newTree'>Create New Tree</button>
+                </div>` +
+                '  </div>' +
+                ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>'
+
+
+
+                if (node.type == 'newChildTree'){
+                    template = newChildTreeTemplate
+                }
                 node.degree = this.degree(node.id);
                 return Mustache.render(template, node);
             }
