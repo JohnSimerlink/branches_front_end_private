@@ -6,45 +6,46 @@ const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Config} from './config.js'
 
-class OfflineTree {
+function loadObject(treeObj, self){
+    Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
+}
+class BaseTree {
     constructor (factId, parentId){
+        var treeObj
+        if (typeof arguments[0] === 'object'){
+            treeObj = arguments[0]
+            loadObject(treeObj, this)
+            return
+        }
+
         this.factId = factId;
         this.parentId = parentId;
-        this.children = [];
-        this.id = md5(JSON.stringify({factId:factId, parentId:parentId, children: this.children}))// id mechanism for trees may very well change
+        this.children = {};
+
+        treeObj = {factId: factId, parentId: parentId, children: this.children}
+        this.id = md5(JSON.stringify(treeObj))
     }
 }
-class OnlineTree {
-    constructor(factIdOrTreeObj, parentId) {
-        if (typeof factIdOrTreeObj === 'object'){
-            var treeObj = factIdOrTreeObj
-            this.loadObject(treeObj)
-        }
-        else {
-            var factId = factIdOrTreeObj
-            this.createAndPushObjectToDB(factId, parentId)
-        }
-        console.log('the object just created is: ',this)
+class OfflineTree extends BaseTree{
+    constructor (factId, parentId){
+        super(...arguments)
     }
-    loadObject(treeObj){
-        const self = this;
-        Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
-    }
-    createAndPushObjectToDB(factId, parentId){
-        this.factId = factId;
-        this.parentId = parentId;
-        this.children = [];
+}
+class OnlineTree extends BaseTree {
 
-        const treeObj = {factId: factId, parentId: parentId, children: this.children}
-        this.id = md5(JSON.stringify(treeObj))
+    constructor(factIdOrTreeObj, parentId) {
+        super(...arguments)
+        if (typeof arguments[0] === 'object'){
+            return
+        }
         this.treeRef = treesRef.push({
             id: this.id,
             factId,
             parentId,
             children: this.children
         })
+        console.log('the object just created is: ',this)
     }
-
     addChild(treeId) {
         // this.treeRef.child('/children').push(treeId)
         var children = {}
