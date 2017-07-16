@@ -2,3 +2,4 @@ node_modules/
 src/firebase.dev.config.json
 .idea
 
+branches.pem
