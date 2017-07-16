@@ -103,7 +103,7 @@ function addShadowNodeToTree(tree){
         parentId: tree.id,
         x: parseInt(tree.x) + newNodeXOffset,
         y: parseInt(tree.y) + newNodeYOffset,
-        label: 'Right Click',
+        label: 'Right Click On Me',
         size: 1,
         color: Globals.newColor,
         type: 'newChildTree'
