@@ -1,4 +1,5 @@
 import {Trees} from './trees.js'
+import {newTree} from './newTree.js';
 import {Tree} from './tree.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
@@ -16,7 +17,16 @@ var newNodeXOffset = -100,
     newNodeYOffset = 100,
     newChildTreeSuffix = "__newChildTree";
 
+window.createNewTreeClick = function(event){
+    var newTreeForm = event.target.parentNode
+    var question = newTreeForm.querySelector('#newTreeQuestion')
+    var answer = newTreeForm.querySelector('#newTreeAnswer')
+    var parentId = newTreeForm.querySelector('#parentId')
 
+    newTree(question, answer, parentId)
+    alert('click')
+    console.log('new click arguments!!!!!!1', ...arguments)
+}
 var numTreesLoaded = 0;
 loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
 // Instantiate sigma:
@@ -95,7 +105,7 @@ function addShadowNodeToTree(tree){
         parentId: tree.id,
         x: parseInt(tree.x) + newNodeXOffset,
         y: parseInt(tree.y) + newNodeYOffset,
-        label: 'Create a new Fact',
+        label: 'Right Click',
         size: 1,
         color: Globals.newColor,
         type: 'newChildTree'
@@ -287,26 +297,33 @@ function initSigmaPlugins() {
             renderer: function(node, template) {
                 console.log('render node arguments are', ...arguments)
                 var newChildTreeTemplate =
-                '<div class="arrow"></div>' +
-                ' <div class="sigma-tooltip-header">{{label}}</div>' +
-                '  <div class="sigma-tooltip-body">' +
-                '   <p> NEW CHILD TREE TEMPLATE Context menu for {{x}}{{y}}{{label}} </p>' +
-                `<div>
-                Question: <input id='newTreeQuestion' type='text'>
-                    Answer: <input id='newTreeAnswer' type='text'>
-                    <input hidden id='parentTreeId' type='text'>
-                    <button id='createNewTree' v-on:click='newTree'>Create New Tree</button>
-                </div>` +
-                '  </div>' +
-                ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>'
-
-
+                `
+                <div class="arrow"></div> 
+                  <div class="sigma-tooltip-header">Add a new Fact </div> 
+                    <div class="sigma-tooltip-body"> 
+                      <p id="newTreeForm">
+                        <input type="hidden" id="parentId" value="${node.parentId}"
+                        Question: <input id='newTreeQuestion' type='text'><br>
+                        Answer: <input id='newTreeAnswer' type='text'><br>
+                        <button id='createNewTree2' onclick="createNewTreeClick(event)">Create New Tree</button>
+                      </p>
+                    </div> 
+                  </div> 
+               <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>
+               `
 
                 if (node.type == 'newChildTree'){
                     template = newChildTreeTemplate
                 }
                 node.degree = this.degree(node.id);
-                return Mustache.render(template, node);
+                var result = Mustache.render(template, node)
+                // document.querySelector('#createNewTree2').addEventListener('click', (event) => {
+                //     console.log(' CLICKED ON NEW TREE the event that just occured was', event)
+                //     alert('hi')
+                //     newTree(event)
+                // })
+
+                return result
             }
         }],
         stage: {
