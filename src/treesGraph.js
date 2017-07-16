@@ -278,20 +278,21 @@ function initSigmaPlugins() {
             show: 'rightClickNode',
             cssClass: 'sigma-tooltip',
             position: 'right',
-            template2:
-            '<div class="arrow"></div>' +
-            ' <div class="sigma-tooltip-header">{{label}}</div>' +
-            '  <div class="sigma-tooltip-body">' +
-            '   <p> TEMPLATE 2. TEMPLATE 2 Context menu for {{x}}{{y}}{{label}} </p>' +
-            '  </div>' +
-            ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
             template:
-            '<div class="arrow"></div>' +
-            ' <div class="sigma-tooltip-header">{{label}}</div>' +
-            '  <div class="sigma-tooltip-body">' +
-            '   <p> Context menu for {{x}}{{y}}{{label}} </p>' +
-            '  </div>' +
-            ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
+            `<div class="arrow"></div>
+             <div class="sigma-tooltip-header">{{label}}</div>
+              <div class="sigma-tooltip-body"> 
+               <p>How well did you know this topic? </p>
+               <p>
+                 <button>Not at All (Review in < 2 min)</button>
+                 <button>Somewhat (10 min)</button>
+                 <button>Easy (1 day)</button>
+                 <button>Perfectly (4 days)</button>
+                 <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->
+               </p> 
+               
+              </div> 
+             <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>`,
             renderer: function(node, template) {
                 console.log('render node arguments are', ...arguments)
                 var newChildTreeTemplate =
