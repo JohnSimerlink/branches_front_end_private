@@ -2,6 +2,7 @@ import {Fact} from './fact.js'
 import getFirebase from './firebaseService.js'
 import {Config} from './config.js'
 import {Globals} from './globals.js'
+//TODO Replace a lot of this with the Trees.js or Tree.js ORM
 function createAndWriteFactFromQA(question,answer){
     var fact = new Fact(question, answer);
     console.log('the fact just created is', fact)
@@ -16,9 +17,7 @@ function writeNewFact(fact) {
     console.log('inside of write new fact: firebase is', firebase, 'fb.db is', firebase.database())
     firebase.database().ref().update(updates);
 }
-export function newFact(event){
-    var question = document.querySelector('#newTreeQuestion').value;
-    var answer = document.querySelector('#newTreeAnswer').value;
+export function newFact(question, answer){
     var fact = createAndWriteFactFromQA(question,answer)
     return fact;
 }
