@@ -144,7 +144,6 @@ function initSigma(){
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
-        s.bind('clickNode', clickNode);
         s.bind('outNode', updateTreePosition);
         initialized = true;
     }
@@ -184,16 +183,6 @@ function logEvent(e){
         }
     })
     console.log(e.data.node.id, e.data.node.x, e.data.node.y)
-}
-function clickNode(e){
-    // console.log(e.type,e, e.data.node, e.data.node.label, e.data.captor);
-    let parentId = e.data.node.parentId;
-    if (e.data.node.type == 'tree'){
-
-    }
-    // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
-    document.querySelector("#parentTreeId").value = parentId
-    Globals.currentTreeSelected = parentId;
 }
 function dragNode(e){
     console.log('drag Node', e,e.type, e.data.node, e.data.node.label, e.data.captor);
