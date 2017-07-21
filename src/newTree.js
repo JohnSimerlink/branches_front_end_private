@@ -5,7 +5,6 @@ import {addTreeToGraph} from './treesGraph.js'
 import {Trees} from './trees'
 export function newTree(question, answer, parentTreeId){
     var fact = newFact(question, answer)
-
     console.log('==========data before addTreeToGraph is', parentTreeId, fact)
     const tree = addTreeToGraph(parentTreeId, fact)
     //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
