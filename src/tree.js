@@ -33,7 +33,7 @@ class OfflineTree extends BaseTree{
 }
 class OnlineTree extends BaseTree {
 
-    constructor(factIdOrTreeObj, parentId) {
+    constructor(factId, parentId) {
         super(...arguments)
         if (typeof arguments[0] === 'object'){
             return
