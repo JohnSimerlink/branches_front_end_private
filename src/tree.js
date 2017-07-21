@@ -78,6 +78,63 @@ class OnlineTree extends BaseTree {
         this[prop] = val
     }
 }
+class OnlineTree2 {
+    //TODO: get typeScript so we can have a schema for treeObj
+    //treeObj  example
+
+    /*
+     parentId: parentTreeId,
+     factId: fact.id,
+     x: parseInt(currentNewChildTree.x),
+     y: parseInt(currentNewChildTree.y),
+     children: {},
+     label: fact.question + ' ' + fact.answer,
+     size: 1,
+     color: Globals.existingColor,
+     type: 'tree'
+     */
+
+    constructor(treeObj, pushToDb = false){
+      const self = this
+      Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
+      this.id = md5(JSON.stringify({factId: self.factId, parentId: self.parentId}))
+      if(pushToDb){
+        this.treeRef = treesRef.push(self)
+      }
+    }
+
+    addChild(treeId) {
+        // this.treeRef.child('/children').push(treeId)
+        var children = {}
+        children[treeId] = true
+        var updates = {
+            children
+        }
+        firebase.database().ref('trees/' +this.id).update(updates)
+    }
+
+    removeChild(treeId) {
+
+    }
+
+    changeParent(newParentId) {
+        this.treeRef.update({
+            parentId: newParentId
+        })
+    }
+
+    set(prop, val){
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {}
+        updates[prop] = val
+        // this.treeRef.update(updates)
+        firebase.database().ref('trees/' +this.id).update(updates)
+        this[prop] = val
+    }
+}
 
 //invoke like a constructor - new Tree(parentId, factId)
 export function Tree(){
