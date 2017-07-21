@@ -56,7 +56,7 @@ class OnlineTree extends BaseTree {
     }
     addChild(treeId) {
         // this.treeRef.child('/children').push(treeId)
-        var children = this.children
+        var children = this.children || {}
         children[treeId] = true
         var updates = {
             children
