@@ -151,11 +151,12 @@ function initSigma(){
 }
 window.initSigma = initSigma;
 function updateTreePosition(e){
-    console.log('update tree position called')
+    console.log('update tree position called',e, e.data.node.id, e.data.node.type)
     let x = e.data.node.x
     let y = e.data.node.y
     let treeId = e.data.node.id;
-    if (!g.nodes.find(node => node.id == treeId && node.type === 'tree')){
+
+    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
         console.log('not an actual node!')
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
@@ -171,14 +172,15 @@ function updateTreePosition(e){
     })
 }
 function logEvent(e){
+    const MINIMUM_DISTANCE_TO_UPDATE = 20
     let x = e.data.node.x
     let y = e.data.node.y
     let treeId = e.data.node.id;
     Trees.get(treeId).then( tree => {
-        if (Math.abs(tree.x - x) > 20 ) {
+        if (Math.abs(tree.x - x) > MINIMUM_DISTANCE_TO_UPDATE ) {
            tree.set('x', x)
         }
-        if (Math.abs(tree.y - y) > 20 ) {
+        if (Math.abs(tree.y - y) > MINIMUM_DISTANCE_TO_UPDATE ) {
             tree.set('y', y)
         }
     })
