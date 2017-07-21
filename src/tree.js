@@ -7,12 +7,14 @@ const trees = {};
 import {Config} from './config.js'
 
 function loadObject(treeObj, self){
+    console.log('LOAD OBJECT CALLED on', treeObj, self)
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
 class BaseTree {
-    constructor (factId, parentId){
+    constructor (factId, parentId, x, y){
         var treeObj
-        if (typeof arguments[0] === 'object'){
+        if (arguments[0] && typeof arguments[0] === 'object'){
+            console.log('ARGUMENTS[0] IS', arguments[0])
             treeObj = arguments[0]
             loadObject(treeObj, this)
             return
@@ -21,29 +23,36 @@ class BaseTree {
         this.factId = factId;
         this.parentId = parentId;
         this.children = {};
+        this.x = x
+        this.y = y
 
         treeObj = {factId: factId, parentId: parentId, children: this.children}
         this.id = md5(JSON.stringify(treeObj))
     }
 }
 class OfflineTree extends BaseTree{
-    constructor (factId, parentId){
+    constructor (factId, parentId, x, y){
         super(...arguments)
     }
 }
 class OnlineTree extends BaseTree {
 
-    constructor(factId, parentId) {
+    constructor(factId, parentId, x, y) {
         super(...arguments)
         if (typeof arguments[0] === 'object'){
             return
         }
-        this.treeRef = treesRef.push({
-            id: this.id,
-            factId,
-            parentId,
-            children: this.children
-        })
+        console.log("ONLINE TREE - the object about to be pushed to db is", {id: this.id, factId, parentId, children: this.children})
+        firebase.database().ref('trees/' + this.id).update(
+            {
+                id: this.id,
+                factId,
+                parentId,
+                x,
+                y,
+                children: this.children
+            }
+        )
         console.log('the object just created is: ',this)
     }
     addChild(treeId) {

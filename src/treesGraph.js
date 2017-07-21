@@ -58,6 +58,7 @@ function connectTreeToParent(tree, g){
     }
 }
 function onGetFact(tree,fact){
+    console.log('ON GET FACT CALLED', tree, fact)
     const node = createTreeNodeFromTreeAndFact(tree,fact)
     g.nodes.push(node);
     addShadowNodeToTree(node)
@@ -67,7 +68,7 @@ function onGetFact(tree,fact){
 function onGetTree(tree) {
     console.log('60: The tree being got is', tree, 'with a factid of ',tree.factId)
     var factsPromise = Facts.get(tree.factId)
-        .then( fact => onGetFact(tree,fact))
+        .then( function onFactsGet(fact) {return onGetFact(tree,fact)})
         .then( factId => {console.log('onGetTree fact id is', factId); return factId})
         .catch( err => console.log(`facts get err for treeid of  ${tree.id} with factid of ${tree.factId} is `, err))
 
@@ -75,11 +76,11 @@ function onGetTree(tree) {
     var promises = childTreesPromises
     promises.push(factsPromise)
 
-    return Promise.all(promises).then((resultsArray) => {
+    return Promise.all(promises).then( function onAllChildTreesReceived(resultsArray) {
         console.log('promise results array is', resultsArray)
         var factIdPrettyString = resultsArray.shift();
         var treeIdsPrettyStrings = resultsArray.join(', ')
-        console.log('tree with id', tree.id,' and children of', Object.keys(tree.children),' has finished loading')
+        console.log('tree with id', tree.id,' and children of', tree.children && Object.keys(tree.children),' has finished loading')
         var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
         console.log('its pretty string is', treePrettyString)
         return treePrettyString
@@ -207,22 +208,23 @@ function dragNode(e){
 export function addTreeToGraph(parentTreeId, fact) {
     //1. delete current addNewNode button
     var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
-    var newChildTreeX = currentNewChildTree.x;
-    var newChildTreeY = currentNewChildTree.y;
-    var tree = new Tree(fact.id, parentTreeId)
+    var newChildTreeX = parseInt(currentNewChildTree.x);
+    var newChildTreeY = parseInt(currentNewChildTree.y);
+    var tree = new Tree(fact.id, parentTreeId, newChildTreeX, newChildTreeY)
     //2. add new node to parent tree
     const newTree = {
         id: tree.id,
         parentId: parentTreeId,
         factId: fact.id,
-        x: parseInt(currentNewChildTree.x),
-        y: parseInt(currentNewChildTree.y),
+        x: newChildTreeX,
+        y: newChildTreeY,
         children: {},
         label: fact.question + ' ' + fact.answer,
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
     }
+    //2b. update x and y location in the db for the tree
 
     s.graph.dropNode(currentNewChildTree.id)
     s.graph.addNode(newTree);
