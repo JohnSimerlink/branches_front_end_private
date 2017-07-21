@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import newtree from './newTree.vue';
 import './trees.js'
 import './treesGraph.js'
 import {Config} from './config.js'
@@ -28,7 +27,6 @@ export default {
     }
   },
   components: {
-     newtree
   }
 }
 </script>

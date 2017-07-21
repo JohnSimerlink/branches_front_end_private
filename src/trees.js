@@ -42,7 +42,7 @@ export class OnlineTrees {
     //returns promise
     //TODO: make resolve "null" or something if fact not found
     static get(treeId){
-        return new Promise((resolve, reject) => {
+        return new Promise( function getTreePromise (resolve, reject) {
             let treeObj;
 
             //trees[] serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
@@ -51,7 +51,7 @@ export class OnlineTrees {
                 resolve(trees[treeId])
             } else {
                 console.log('tree id', treeId, ' NOT found locally')
-                firebase.database().ref('trees/' + treeId).on("value", function(snapshot){
+                firebase.database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot){
                     treeObj = snapshot.val()
                     console.log('the tree Obj passed into tree constructor is', treeObj)
                     var tree = new Tree(treeObj)
