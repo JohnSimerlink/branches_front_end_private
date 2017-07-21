@@ -39,7 +39,7 @@ class OnlineTree extends BaseTree {
 
     constructor(factId, parentId, x, y) {
         super(...arguments)
-        if (typeof arguments[0] === 'object'){
+        if (typeof arguments[0] === 'object'){//TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return
         }
         console.log("ONLINE TREE - the object about to be pushed to db is", {id: this.id, factId, parentId, children: this.children})
@@ -49,15 +49,14 @@ class OnlineTree extends BaseTree {
                 factId,
                 parentId,
                 x,
-                y,
-                children: this.children
+                y
             }
         )
         console.log('the object just created is: ',this)
     }
     addChild(treeId) {
         // this.treeRef.child('/children').push(treeId)
-        var children = {}
+        var children = this.children
         children[treeId] = true
         var updates = {
             children
