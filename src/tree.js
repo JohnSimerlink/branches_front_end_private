@@ -62,7 +62,6 @@ class OnlineTree extends BaseTree {
     }
 
     unlinkFromParent(){
-       alert('unlink from parent called')
        var treeId = this.id
        Trees.get(this.parentId).then(parentTree => {
            parentTree.removeChild(treeId)
