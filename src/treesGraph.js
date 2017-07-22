@@ -45,6 +45,7 @@ const treeCtrl = {
         var treeId = newTreeForm.querySelector('.treeId').value
         // var fact = new Fact(question,answer)
 
+
     },
     toggleEdit: function(event){
         console.log('togle edit event', event)
@@ -56,6 +57,7 @@ const treeCtrl = {
     },
     deleteTree : function (event) {
         var deleteTreeForm = event.target.parentNode
+        console.log('deletetreefrom is', deleteTreeForm)
         var treeId = deleteTreeForm.querySelector('.treeId').value
         console.log('TREES GRAPH.JS the tree about to be deleted is ', treeId)
         //1.Remove Tree and subtrees from graph
@@ -325,9 +327,9 @@ function initSigmaPlugins() {
                
               </div> 
              <div class="sigma-tooltip-footer">
-               <div id="deleteTreeForm" class="deleteTreeForm">
-                 <input type="hidden" id="treeId" value="{{id}}"> 
-                 <button id="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
+               <div class="deleteTreeForm" class="deleteTreeForm">
+                 <input type="hidden" class="treeId" value="{{id}}"> 
+                 <button class="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
                </div>   
              </div>
             `,
