@@ -4,3 +4,4 @@ src/firebase.prod.config.json
 .idea
 
 branches.pem
+.deploy-configured
