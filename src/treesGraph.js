@@ -17,16 +17,116 @@ var newNodeXOffset = -100,
     newNodeYOffset = 100,
     newChildTreeSuffix = "__newChildTree";
 
+var toolTipsConfig = {
+    node: [
+        {
+            show: 'hovers',
+            hide: 'hovers',
+            cssClass: 'sigma-tooltip',
+            position: 'top',
+            //autoadjust: true,
+            template:
+            '<div class="arrow"></div>' +
+            ' <div class="sigma-tooltip-header">{{label}}</div>' +
+            '  <div class="sigma-tooltip-body">' +
+            '    <table>' +
+            '      <tr><th>Name</th> <td>{{data.name}}</td></tr>' +
+            '      <tr><th>Gender</th> <td>{{data.gender}}</td></tr>' +
+            '      <tr><th>Age</th> <td>{{data.age}}</td></tr>' +
+            '      <tr><th>City</th> <td>{{data.city}}</td></tr>' +
+            '    </table>' +
+            '  </div>' +
+            '  <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
+            renderer: function(node, template) {
+                console.log("HOVER RENDER")
+                // The function context is s.graph
+                node.degree = this.degree(node.id);
+
+                // Returns an HTML string:
+                return Mustache.render(template, node);
+
+                // Returns a DOM Element:
+                //var el = document.createElement('div');
+                //return el.innerHTML = Mustache.render(template, node);
+            }
+        },
+
+        {
+            show: 'rightClickNode',
+            cssClass: 'sigma-tooltip',
+            position: 'right',
+            template:
+                `
+              <div class="arrow"></div>
+              <div class="tree-fact" class="sigma-tooltip-header">
+                <div class="tree-current-fact" style="display:block;">{{fact.question}} {{fact.answer}}</div>
+                <div class="tree-new-fact" style="display:none;" >
+                  <input class="tree-id" value="{{id}}" type="hidden">
+                  <input class="tree-new-fact-question" value="{{fact.question}}">
+                  <input class="tree-new-fact-answer" value="{{fact.answer}}">
+                  <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
+                </div>
+                <button class="sigma-tooltip-edit-button" onclick="treeCtrl.toggleEdit(event)" >Edit</button>
+              </div>
+              <div class="sigma-tooltip-body"> 
+                <p>How well did you know this topic? </p>
+                <p>
+                  <button>Not at All (Review in < 2 min)</button>
+                  <button>Somewhat (10 min)</button>
+                  <button>Easy (1 day)</button>
+                  <button>Perfectly (4 days)</button>
+                 <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->
+                </p> 
+              </div> 
+              <div class="sigma-tooltip-footer">
+                <div class="deleteTreeForm" class="deleteTreeForm">
+                  <input type="hidden" class="treeId" value="{{id}}"> 
+                  <button class="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
+                </div>   
+              </div>
+            `,
+            renderer: function(node, template) {
+                console.log('right click render')
+                var newChildTreeTemplate =
+                    `
+                <div class="arrow"></div> 
+                  <div class="sigma-tooltip-header">Add a new Fact </div> 
+                    <div class="sigma-tooltip-body"> 
+                      <p class="newTreeForm">
+                        <input type="hidden" class="parentId" value="${node.parentId}">
+                        Question: <input class='newTreeQuestion' type='text'><br>
+                        Answer: <input class='newTreeAnswer' type='text'><br>
+                        <button class='createNewTree' onclick="treeCtrl.createNewTreeClick(event)">Create New Tree</button>
+                      </p>
+                    </div> 
+                  </div> 
+               <div class="sigma-tooltip-footer">
+                  <p> Number of connections: {{degree}}</p>
+               </div>
+               `
+
+                if (node.type == 'newChildTree'){
+                    template = newChildTreeTemplate
+                }
+                node.degree = this.degree(node.id);
+                var result = Mustache.render(template, node)
+
+                return result
+            }
+        }],
+    stage: {
+        template:
+        '<div class="arrow"></div>' +
+        '<div class="sigma-tooltip-header"> Menu </div>'
+    }
+};
+
 function toggleVisibility(el){
    var style = el.style
     if (style.display == 'block') {
-       console.log('style display for el',el,' is none:', style.display)
         style.display = 'none'
-        console.log('style display is nowh"', style.display,'"')
     } else {
-        console.log('style display for el',el,' is :', style.display)
         style.display = 'block'
-        console.log('style display is nowh"', style.display,'"')
     }
 }
 const treeCtrl = {
@@ -40,7 +140,6 @@ const treeCtrl = {
     },
     editFactOnTreeFromEvent : function (event) {
         const treeNewFactDom = event.target.parentNode
-        console.log('treeNewFactDom is', treeNewFactDom)
         var question = treeNewFactDom.querySelector('.tree-new-fact-question').value
         var answer = treeNewFactDom.querySelector('.tree-new-fact-answer').value
         var treeId = treeNewFactDom.querySelector('.tree-id').value
@@ -58,14 +157,20 @@ const treeCtrl = {
 
         //3.update UI source for question and fact
         var sigmaNode = s.graph.nodes().find(node => node.id == treeId)
+        console.log('sigma node is currently', sigmaNode)
         sigmaNode.fact.question = fact.question
         sigmaNode.fact.answer = fact.answer
         sigmaNode.fact = fact
         s.refresh()
+        console.log('sigma node is now', sigmaNode)
 
         //4. close the edit functionality
         const treeFactDom = treeNewFactDom.parentNode
         window.treeCtrl.toggleEditGivenTreeFactDom(treeFactDom)
+
+        //5. ^^3 and 4 don't seem to be working. Workaround below:
+
+        alert('Fact updated. Refresh the page to see changes')
     },
     toggleEditGivenTreeFactDom: function(treeFactDom){
         let treeCurrentFactDom = treeFactDom.querySelector('.tree-current-fact')
@@ -74,20 +179,16 @@ const treeCtrl = {
         toggleVisibility(treeNewFactDom)
     },
     toggleEdit: function(event){
-        console.log('togle edit event', event)
         const factEditDom = event.target.parentNode
         window.treeCtrl.toggleEditGivenTreeFactDom(factEditDom)
     },
     deleteTree : function (event) {
         var deleteTreeForm = event.target.parentNode
-        console.log('deletetreefrom is', deleteTreeForm)
         var treeId = deleteTreeForm.querySelector('.treeId').value
-        console.log('TREES GRAPH.JS the tree about to be deleted is ', treeId)
         //1.Remove Tree and subtrees from graph
         removeTreeFromGraph(treeId).then(() => s.refresh())
         //2. remove the tree's current parent from being its parent
         Trees.get(treeId).then(tree => {
-            console.log("TREESGRAPH.JS the tree just received from window.deleteTree Trees.get", tree)
             tree.unlinkFromParent()
         })
     }
@@ -106,7 +207,7 @@ function removeTreeFromGraph(treeId){
 }
 
 var numTreesLoaded = 0;
-loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
+loadTreeAndSubTrees(1).then( val => {initSigma();}/*.then(initSigma)*/)
 // Instantiate sigma:
 function createTreeNodeFromTreeAndFact(tree, fact){
     const node = {
@@ -116,17 +217,18 @@ function createTreeNodeFromTreeAndFact(tree, fact){
         y: tree.y,
         children: tree.children,
         fact: fact,
-        label: fact.question + "  " + fact.answer,
+        label: getLabelFromFact(fact),
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
     }
     return node;
 }
+function getLabelFromFact(fact) {
+    return fact.question + " " + fact.answer
+}
 function connectTreeToParent(tree, g){
-    console.log(`Connect tree ${tree.id} to parent ${tree.parentId} called`)
     if (tree.parentId) {
-        console.log('Connect tree to parent called - tree has parentId')
         const edge = {
             id: tree.parentId + "__" + tree.id,
             source: tree.parentId,
@@ -134,12 +236,10 @@ function connectTreeToParent(tree, g){
             size: 1,
             color: Globals.existingColor
         };
-        console.log('L55:TREESGRAPH.JS Edge before push is', edge)
         g.edges.push(edge);
     }
 }
 function onGetFact(tree,fact){
-    console.log('ON GET FACT CALLED', tree, fact)
     const node = createTreeNodeFromTreeAndFact(tree,fact)
     g.nodes.push(node);
     addShadowNodeToTree(node)
@@ -147,34 +247,29 @@ function onGetFact(tree,fact){
     return fact.id
 }
 function onGetTree(tree) {
-    console.log('60: The tree being got is', tree, 'with a factid of ',tree.factId)
     var factsPromise = Facts.get(tree.factId)
         .then( function onFactsGet(fact) {return onGetFact(tree,fact)})
-        .then( factId => {console.log('onGetTree fact id is', factId); return factId})
-        .catch( err => console.log(`facts get err for treeid of  ${tree.id} with factid of ${tree.factId} is `, err))
+        .then( factId => {
+            return factId})
 
     var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
     var promises = childTreesPromises
     promises.push(factsPromise)
 
     return Promise.all(promises).then( function onAllChildTreesReceived(resultsArray) {
-        console.log('promise results array is', resultsArray)
         var factIdPrettyString = resultsArray.shift();
         var treeIdsPrettyStrings = resultsArray.join(', ')
-        console.log('tree with id', tree.id,' and children of', tree.children && Object.keys(tree.children),' has finished loading')
         var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
-        console.log('its pretty string is', treePrettyString)
         return treePrettyString
     }) //promise should only resolve when the tree's fact and all the subtrees are loaded
 }
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
 function loadTreeAndSubTrees(treeId){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    console.log('tree being loaded is treeId', treeId)
     numTreesLoaded++;
     return Trees.get(treeId)
         .then(onGetTree)
-        .catch( err => console.log('trees get err is', err))
+        .catch( err => console.error('trees get err is', err))
 }
 
 function addShadowNodeToTree(tree){
@@ -225,20 +320,35 @@ function initSigma(){
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
+        s.bind('click', printNodeInfo )
         s.bind('outNode', updateTreePosition);
+        s.bind('overNode', hoverOverNode)
         initialized = true;
     }
     initSigmaPlugins()
 }
 window.initSigma = initSigma;
+function printNodeInfo(e){
+   console.log(e, e.data.node)
+}
+function hoverOverNode(e){
+    var node = e.data.node
+    console.log('tooltips in hoverOverNode is', window.tooltips)
+
+    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
+
+    // Manually open a tooltip on a node:
+    var n = s.graph.nodes('1');
+    var prefix = s.renderers[0].camera.prefix;
+    console.log('prefix is', prefix)
+    tooltips.open(n, toolTipsConfig.node[1], n["renderer1:x"] /*n[prefix + 'x']*/, n["renderer1:y"] /*n[prefix + 'y']*/);
+}
 function updateTreePosition(e){
-    console.log('update tree position called',e, e.data.node.id, e.data.node.type)
     let x = e.data.node.x
     let y = e.data.node.y
     let treeId = e.data.node.id;
 
     if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
-        console.log('not an actual node!')
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
     Trees.get(treeId).then( tree => {
@@ -265,7 +375,6 @@ function logEvent(e){
             tree.set('y', y)
         }
     })
-    console.log(e.data.node.id, e.data.node.x, e.data.node.y)
 }
 function dragNode(e){
     console.log('drag Node', e,e.type, e.data.node, e.data.node.label, e.data.captor);
@@ -320,90 +429,20 @@ export function addTreeToGraph(parentTreeId, fact) {
     return newTree;
 }
 function initSigmaPlugins() {
-    var config = {
-        node: [{
-            show: 'rightClickNode',
-            cssClass: 'sigma-tooltip',
-            position: 'right',
-            template:
-            `
-              <div class="arrow"></div>
-              <div class="tree-fact" class="sigma-tooltip-header">
-                <div class="tree-current-fact" style="display:block;">{{fact.question}} {{fact.answer}}</div>
-                <div class="tree-new-fact" style="display:none;" >
-                  <input class="tree-id" value="{{id}}" type="hidden">
-                  <input class="tree-new-fact-question" value="{{fact.question}}">
-                  <input class="tree-new-fact-answer" value="{{fact.answer}}">
-                  <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
-                </div>
-                <button class="sigma-tooltip-edit-button" onclick="treeCtrl.toggleEdit(event)" >Edit</button>
-              </div>
-              <div class="sigma-tooltip-body"> 
-                <p>How well did you know this topic? </p>
-                <p>
-                  <button>Not at All (Review in < 2 min)</button>
-                  <button>Somewhat (10 min)</button>
-                  <button>Easy (1 day)</button>
-                  <button>Perfectly (4 days)</button>
-                 <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->
-                </p> 
-              </div> 
-              <div class="sigma-tooltip-footer">
-                <div class="deleteTreeForm" class="deleteTreeForm">
-                  <input type="hidden" class="treeId" value="{{id}}"> 
-                  <button class="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
-                </div>   
-              </div>
-            `,
-            renderer: function(node, template) {
-                console.log('render node arguments are', ...arguments)
-                var newChildTreeTemplate =
-                `
-                <div class="arrow"></div> 
-                  <div class="sigma-tooltip-header">Add a new Fact </div> 
-                    <div class="sigma-tooltip-body"> 
-                      <p class="newTreeForm">
-                        <input type="hidden" class="parentId" value="${node.parentId}">
-                        Question: <input class='newTreeQuestion' type='text'><br>
-                        Answer: <input class='newTreeAnswer' type='text'><br>
-                        <button class='createNewTree' onclick="treeCtrl.createNewTreeClick(event)">Create New Tree</button>
-                      </p>
-                    </div> 
-                  </div> 
-               <div class="sigma-tooltip-footer">
-                  <p> Number of connections: {{degree}}</p>
-               </div>
-               `
-
-                if (node.type == 'newChildTree'){
-                    template = newChildTreeTemplate
-                }
-                node.degree = this.degree(node.id);
-                var result = Mustache.render(template, node)
-
-                return result
-            }
-        }],
-        stage: {
-            template:
-            '<div class="arrow"></div>' +
-            '<div class="sigma-tooltip-header"> Menu </div>'
-        }
-    };
     // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], config)
+    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig)
+    window.tooltips = tooltips
 
     // Manually open a tooltip on a node:
-    var n = s.graph.nodes('n10');
+    var n = s.graph.nodes('1');
     var prefix = s.renderers[0].camera.prefix;
-    tooltips.open(n, config.node[0], n[prefix + 'x'], n[prefix + 'y']);
+    console.log('prefix is', prefix)
+    tooltips.open(n, toolTipsConfig.node[1], n["renderer1:x"] /*n[prefix + 'x']*/, n["renderer1:y"] /*n[prefix + 'y']*/);
 
     tooltips.bind('shown', function(event) {
-        console.log('tooltip shown', event);
     });
 
     tooltips.bind('hidden', function(event) {
-        console.log('tooltip hidden', event);
     });
 
 }

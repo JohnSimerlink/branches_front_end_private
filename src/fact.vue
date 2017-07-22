@@ -9,7 +9,6 @@
 
 <script>
 var a = 5;
-console.log(a);
 
 export default {
   name: 'fact',

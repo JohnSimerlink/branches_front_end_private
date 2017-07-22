@@ -3,7 +3,6 @@ import {Tree} from './tree.js'
 import {Config} from './config.js'
 import getFirebase from './firebaseService.js'
 const firebase = getFirebase()
-console.log('trees.js imported')
 const trees = {
 }
 const offlineTreesData = {
@@ -50,15 +49,11 @@ export class OnlineTrees {
 
             //trees[] serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
             if (trees[treeId]){
-                console.log('tree id', treeId, 'found locally')
                 resolve(trees[treeId])
             } else {
-                console.log('tree id', treeId, ' NOT found locally')
                 firebase.database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot){
                     treeObj = snapshot.val()
-                    console.log('the tree Obj passed into tree constructor is', treeObj)
                     var tree = new Tree(treeObj)
-                     console.log('the tree just loaded from trees.get is', tree)
                     trees[tree.id] = tree
                     resolve(tree)
                 })
@@ -76,7 +71,6 @@ export class OfflineTrees {
             let treeObj;
 
             treeObj = offlineTreesData[treeId]
-            console.log('76: the treeobj about to be returned from offlineTrees.get is: ', treeObj)
             var tree = new Tree(treeObj)
             resolve(tree)
         })
