@@ -38,5 +38,5 @@ gulp.task('build', ['build-src', 'build-test']);
 gulp.task('default', ['build', 'test']);
 
 gulp.on('err', function(e) {
-    console.log(e.err.stack);
+    console.error(e.err.stack);
 });

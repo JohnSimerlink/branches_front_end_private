@@ -8,14 +8,12 @@ import {Config} from './config.js'
 import {Trees} from './trees.js'
 
 function loadObject(treeObj, self){
-    console.log('LOAD OBJECT CALLED on', treeObj, self)
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
 class BaseTree {
     constructor (factId, parentId, x, y){
         var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
-            console.log('ARGUMENTS[0] IS', arguments[0])
             treeObj = arguments[0]
             loadObject(treeObj, this)
             return
@@ -43,7 +41,6 @@ class OnlineTree extends BaseTree {
         if (typeof arguments[0] === 'object'){//TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return
         }
-        console.log("ONLINE TREE - the object about to be pushed to db is", {id: this.id, factId, parentId, children: this.children})
         firebase.database().ref('trees/' + this.id).update(
             {
                 id: this.id,
@@ -53,7 +50,6 @@ class OnlineTree extends BaseTree {
                 y
             }
         )
-        console.log('the object just created is: ',this)
     }
     addChild(treeId) {
         // this.treeRef.child('/children').push(treeId)
@@ -75,11 +71,7 @@ class OnlineTree extends BaseTree {
     }
 
     removeChild(childId) {
-        console.log('REMOVECHILD: child id is', childId)
-        console.log('REMOVECHILD: all children ids are:', Object.keys(this.children))
         delete this.children[childId]
-        console.log('REMOVECHILD AFTER: child id is', childId)
-        console.log('REMOVECHILD AFTER: all children ids are:', Object.keys(this.children))
 
         firebase.database().ref('trees/' + this.id).update({children: this.children})
     }
