@@ -34,9 +34,14 @@ window.deleteTree = function (event) {
     var deleteTreeForm = event.target.parentNode
     var treeId = deleteTreeForm.querySelector('#treeId').value
     console.log('the tree about to be deleted is ', treeId)
+    //1.Remove Tree from graph
+    //2. remove the tree's current parent from being its parent
     Trees.get(treeId).then(tree => {
-
+        tree.unlinkFromParent()
     })
+
+
+
 }
 
 
