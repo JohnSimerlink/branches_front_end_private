@@ -33,10 +33,12 @@ window.editFactOnTree = function (event) {
 window.deleteTree = function (event) {
     var deleteTreeForm = event.target.parentNode
     var treeId = deleteTreeForm.querySelector('#treeId').value
-    console.log('the tree about to be deleted is ', treeId)
+    console.log('TREES GRAPH.JS the tree about to be deleted is ', treeId)
     //1.Remove Tree from graph
     //2. remove the tree's current parent from being its parent
+
     Trees.get(treeId).then(tree => {
+        console.log("TREESGRAPH.JS the tree just received from window.deleteTree Trees.get", tree)
         tree.unlinkFromParent()
     })
 
@@ -313,8 +315,8 @@ function initSigmaPlugins() {
               </div> 
              <div class="sigma-tooltip-footer">
                <div id="deleteTreeForm" class="deleteTreeForm">
-                 <input type="hidden" id="treeId" value="$\{node.id}">
-                 <button id="deleteTree" onclick="deleteTree(Event)">DELETE TREE</button> 
+                 <input type="hidden" id="treeId" value="{{id}}"> 
+                 <button id="deleteTree" onclick="deleteTree(event)">DELETE TREE</button> 
                </div>   
              </div>
             `,

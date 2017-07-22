@@ -5,6 +5,7 @@ window.firebase = firebase
 const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Config} from './config.js'
+import {Trees} from './trees.js'
 
 function loadObject(treeObj, self){
     console.log('LOAD OBJECT CALLED on', treeObj, self)
@@ -65,21 +66,27 @@ class OnlineTree extends BaseTree {
     }
 
     unlinkFromParent(){
+       alert('unlink from parent called')
        var treeId = this.id
-       Trees.get(parentId).then(parentTree => {
+       Trees.get(this.parentId).then(parentTree => {
            parentTree.removeChild(treeId)
        })
        this.changeParent(null)
     }
 
     removeChild(childId) {
+        console.log('REMOVECHILD: child id is', childId)
+        console.log('REMOVECHILD: all children ids are:', Object.keys(this.children))
         delete this.children[childId]
-        Object.keys.updates({children})
+        console.log('REMOVECHILD AFTER: child id is', childId)
+        console.log('REMOVECHILD AFTER: all children ids are:', Object.keys(this.children))
+
+        firebase.database().ref('trees/' + this.id).update({children: this.children})
     }
 
     changeParent(newParentId) {
         this.parentId = newParentId
-        firbase.database().ref('trees/' + this.id).update({
+        firebase.database().ref('trees/' + this.id).update({
             parentId: newParentId
         })
     }
