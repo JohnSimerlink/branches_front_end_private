@@ -64,11 +64,17 @@ class OnlineTree extends BaseTree {
         firebase.database().ref('trees/' +this.id).update(updates)
     }
 
-    removeChild(treeId) {
-        var children = {}
-        // Object.keys(this.children).forEach(key => {
-        //     if (key != treeId)
-        // })
+    unlinkFromParent(){
+       var treeId = this.id
+       Trees.get(parentId).then(parentTree => {
+           parentTree.removeChild(treeId)
+       })
+       this.changeParent(null)
+    }
+
+    removeChild(childId) {
+        delete this.children[childId]
+        Object.keys.updates({children})
     }
 
     changeParent(newParentId) {
