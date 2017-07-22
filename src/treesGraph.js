@@ -19,11 +19,15 @@ var newNodeXOffset = -100,
 
 function toggleVisibility(el){
    var style = el.style
-    style.display = style.display != 'none' ? 'block' : 'none'
-   //  console.log('style is ', style)
-   // style = style.indexOf('display:none;') == -1 ?
-   //     style + 'display:none;' : style.replace('display;none;','')
-   //  console.log('style is now ', style)
+    if (style.display == 'block') {
+       console.log('style display for el',el,' is none:', style.display)
+        style.display = 'none'
+        console.log('style display is nowh"', style.display,'"')
+    } else {
+        console.log('style display for el',el,' is :', style.display)
+        style.display = 'block'
+        console.log('style display is nowh"', style.display,'"')
+    }
 }
 const treeCtrl = {
     createNewTreeClick : function(event){
@@ -39,6 +43,8 @@ const treeCtrl = {
         var question = newTreeForm.querySelector('.newTreeQuestion').value
         var answer = newTreeForm.querySelector('.newTreeAnswer').value
         var treeId = newTreeForm.querySelector('.treeId').value
+        // var fact = new Fact(question,answer)
+
     },
     toggleEdit: function(event){
         console.log('togle edit event', event)
@@ -298,8 +304,8 @@ function initSigmaPlugins() {
             `
             <div class="arrow"></div>
              <div class="fact-edit" class="sigma-tooltip-header">
-                <div class="fact-current">{{fact.question}} {{fact.answer}}</div>
-                <div class="fact-new hidden" >
+                <div class="fact-current" style="display:block;">{{fact.question}} {{fact.answer}}</div>
+                <div class="fact-new" style="display:none;" >
                     <input class="fact-new-treeId" value="{{id}}" type="hidden">
                     <input class="fact-new-question" value="{{fact.question}}">
                     <input class="fact-new-answer" value="{{fact.answer}}">
