@@ -59,7 +59,10 @@ var toolTipsConfig = {
                 `
               <div class="arrow"></div>
               <div class="tree-fact" class="sigma-tooltip-header">
-                <div class="tree-current-fact" style="display:block;">{{fact.question}} {{fact.answer}}</div>
+                <div class="tree-current-fact" style="display:block;">
+                    <div class="tree-current-fact-question">{{fact.question}}</div>
+                    <div class="tree-current-fact-answer">{{fact.answer}}</div>
+                </div>
                 <div class="tree-new-fact" style="display:none;" >
                   <input class="tree-id" value="{{id}}" type="hidden">
                   <input class="tree-new-fact-question" value="{{fact.question}}">
@@ -225,7 +228,7 @@ function createTreeNodeFromTreeAndFact(tree, fact){
     return node;
 }
 function getLabelFromFact(fact) {
-    return fact.question + " " + fact.answer
+    return fact.question
 }
 function connectTreeToParent(tree, g){
     if (tree.parentId) {
@@ -280,7 +283,7 @@ function addShadowNodeToTree(tree){
         parentId: tree.id,
         x: parseInt(tree.x) + newNodeXOffset,
         y: parseInt(tree.y) + newNodeYOffset,
-        label: 'Right Click On Me',
+        label: '+',
         size: 1,
         color: Globals.newColor,
         type: 'newChildTree'
@@ -338,10 +341,9 @@ function hoverOverNode(e){
     // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
 
     // Manually open a tooltip on a node:
-    var n = s.graph.nodes('1');
     var prefix = s.renderers[0].camera.prefix;
     console.log('prefix is', prefix)
-    tooltips.open(n, toolTipsConfig.node[1], n["renderer1:x"] /*n[prefix + 'x']*/, n["renderer1:y"] /*n[prefix + 'y']*/);
+    tooltips.open(node, toolTipsConfig.node[1], node["renderer1:x"] /*n[prefix + 'x']*/, node["renderer1:y"] /*n[prefix + 'y']*/);
 }
 function updateTreePosition(e){
     let x = e.data.node.x
@@ -401,7 +403,7 @@ export function addTreeToGraph(parentTreeId, fact) {
         x: newChildTreeX,
         y: newChildTreeY,
         children: {},
-        label: fact.question + ' ' + fact.answer,
+        label: getLabelFromFact(fact),
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
@@ -432,17 +434,4 @@ function initSigmaPlugins() {
     // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
     var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig)
     window.tooltips = tooltips
-
-    // Manually open a tooltip on a node:
-    var n = s.graph.nodes('1');
-    var prefix = s.renderers[0].camera.prefix;
-    console.log('prefix is', prefix)
-    tooltips.open(n, toolTipsConfig.node[1], n["renderer1:x"] /*n[prefix + 'x']*/, n["renderer1:y"] /*n[prefix + 'y']*/);
-
-    tooltips.bind('shown', function(event) {
-    });
-
-    tooltips.bind('hidden', function(event) {
-    });
-
 }
