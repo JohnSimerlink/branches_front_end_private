@@ -42,6 +42,9 @@ export class OnlineTrees {
     //returns promise
     //TODO: make resolve "null" or something if fact not found
     static get(treeId){
+        if (!treeId) {
+           throw "Trees.get(treeId) error!. treeId empty"
+        }
         return new Promise( function getTreePromise (resolve, reject) {
             let treeObj;
 
