@@ -17,31 +17,52 @@ var newNodeXOffset = -100,
     newNodeYOffset = 100,
     newChildTreeSuffix = "__newChildTree";
 
-window.createNewTreeClick = function(event){
-    var newTreeForm = event.target.parentNode
-    var question = newTreeForm.querySelector('#newTreeQuestion').value
-    var answer = newTreeForm.querySelector('#newTreeAnswer').value
-    var parentId = newTreeForm.querySelector('#parentId').value
-
-    newTree(question, answer, parentId)
+function toggleVisibility(el){
+   var style = el.style
+    style.display = style.display != 'none' ? 'block' : 'none'
+   //  console.log('style is ', style)
+   // style = style.indexOf('display:none;') == -1 ?
+   //     style + 'display:none;' : style.replace('display;none;','')
+   //  console.log('style is now ', style)
 }
+const treeCtrl = {
+    createNewTreeClick : function(event){
+        var newTreeForm = event.target.parentNode
+        var question = newTreeForm.querySelector('.newTreeQuestion').value
+        var answer = newTreeForm.querySelector('.newTreeAnswer').value
+        var parentId = newTreeForm.querySelector('.parentId').value
 
-window.editFactOnTree = function (event) {
-
+        newTree(question, answer, parentId)
+    },
+    editFactOnTreeFromEvent : function (event) {
+        const editFactForm = event.target.parentNode
+        var question = newTreeForm.querySelector('.newTreeQuestion').value
+        var answer = newTreeForm.querySelector('.newTreeAnswer').value
+        var treeId = newTreeForm.querySelector('.treeId').value
+    },
+    toggleEdit: function(event){
+        console.log('togle edit event', event)
+        const factEditDom = event.target.parentNode
+        let factCurrentDom = factEditDom.querySelector('.fact-current')
+        let factNewDom = factEditDom.querySelector('.fact-new')
+        toggleVisibility(factCurrentDom)
+        toggleVisibility(factNewDom)
+    },
+    deleteTree : function (event) {
+        var deleteTreeForm = event.target.parentNode
+        var treeId = deleteTreeForm.querySelector('.treeId').value
+        console.log('TREES GRAPH.JS the tree about to be deleted is ', treeId)
+        //1.Remove Tree and subtrees from graph
+        removeTreeFromGraph(treeId).then(() => s.refresh())
+        //2. remove the tree's current parent from being its parent
+        Trees.get(treeId).then(tree => {
+            console.log("TREESGRAPH.JS the tree just received from window.deleteTree Trees.get", tree)
+            tree.unlinkFromParent()
+        })
+    }
 }
+window.treeCtrl = treeCtrl
 
-window.deleteTree = function (event) {
-    var deleteTreeForm = event.target.parentNode
-    var treeId = deleteTreeForm.querySelector('#treeId').value
-    console.log('TREES GRAPH.JS the tree about to be deleted is ', treeId)
-    //1.Remove Tree and subtrees from graph
-    removeTreeFromGraph(treeId).then(() => s.refresh())
-    //2. remove the tree's current parent from being its parent
-    Trees.get(treeId).then(tree => {
-        console.log("TREESGRAPH.JS the tree just received from window.deleteTree Trees.get", tree)
-        tree.unlinkFromParent()
-    })
-}
 function removeTreeFromGraph(treeId){
     s.graph.dropNode(treeId)
     s.graph.dropNode(treeId + newChildTreeSuffix)
@@ -52,7 +73,6 @@ function removeTreeFromGraph(treeId){
         })
     })
 }
-
 
 var numTreesLoaded = 0;
 loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
@@ -271,43 +291,21 @@ export function addTreeToGraph(parentTreeId, fact) {
 function initSigmaPlugins() {
     var config = {
         node: [{
-            show: 'hovers',
-            hide: 'hovers',
-            cssClass: 'sigma-tooltip',
-            position: 'top',
-            //autoadjust: true,
-            template:
-            '<div class="arrow"></div>' +
-            ' <div class="sigma-tooltip-header">{{label}}</div>' +
-            '  <div class="sigma-tooltip-body">' +
-            '    <table>' +
-            '      <tr><th>X</th> <td>{{x}}</td></tr>' +
-            '      <tr><th>y</th> <td>{{y}}</td></tr>' +
-            '      <tr><th>Label</th> <td>{{label}}</td></tr>' +
-            '    </table>' +
-            '  </div>' +
-            '  <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
-            renderer: function(node, template) {
-                // The function context is s.graph
-                node.degree = this.degree(node.id);
-
-                // Returns an HTML string:
-                return Mustache.render(template, node);
-
-                // Returns a DOM Element:
-                //var el = document.createElement('div');
-                //return el.innerHTML = Mustache.render(template, node);
-            }
-        }, {
             show: 'rightClickNode',
             cssClass: 'sigma-tooltip',
             position: 'right',
             template:
             `
             <div class="arrow"></div>
-             <div id="editFactOnTree" class="sigma-tooltip-header">
-                {{fact.question}} {{fact.answer}}
-                <button class="sigma-tooltip-edit-button" onclick="editFactOnTree(event)">Edit</button>
+             <div class="fact-edit" class="sigma-tooltip-header">
+                <div class="fact-current">{{fact.question}} {{fact.answer}}</div>
+                <div class="fact-new hidden" >
+                    <input class="fact-new-treeId" value="{{id}}" type="hidden">
+                    <input class="fact-new-question" value="{{fact.question}}">
+                    <input class="fact-new-answer" value="{{fact.answer}}">
+                    <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
+                </div>
+                <button class="sigma-tooltip-edit-button" onclick="treeCtrl.toggleEdit(event)" >Edit</button>
              </div>
               <div class="sigma-tooltip-body"> 
                <p>How well did you know this topic? </p>
@@ -323,7 +321,7 @@ function initSigmaPlugins() {
              <div class="sigma-tooltip-footer">
                <div id="deleteTreeForm" class="deleteTreeForm">
                  <input type="hidden" id="treeId" value="{{id}}"> 
-                 <button id="deleteTree" onclick="deleteTree(event)">DELETE TREE</button> 
+                 <button id="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
                </div>   
              </div>
             `,
@@ -338,7 +336,7 @@ function initSigmaPlugins() {
                         <input type="hidden" id="parentId" value="${node.parentId}">
                         Question: <input id='newTreeQuestion' type='text'><br>
                         Answer: <input id='newTreeAnswer' type='text'><br>
-                        <button id='createNewTree2' onclick="createNewTreeClick(event)">Create New Tree</button>
+                        <button id='createNewTree2' onclick="treeCtrl.createNewTreeClick(event)">Create New Tree</button>
                       </p>
                     </div> 
                   </div> 
@@ -352,11 +350,6 @@ function initSigmaPlugins() {
                 }
                 node.degree = this.degree(node.id);
                 var result = Mustache.render(template, node)
-                // document.querySelector('#createNewTree2').addEventListener('click', (event) => {
-                //     console.log(' CLICKED ON NEW TREE the event that just occured was', event)
-                //     alert('hi')
-                //     newTree(event)
-                // })
 
                 return result
             }
