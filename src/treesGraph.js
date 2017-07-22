@@ -61,23 +61,22 @@ const treeCtrl = {
         sigmaNode.fact.question = fact.question
         sigmaNode.fact.answer = fact.answer
         sigmaNode.fact = fact
+        s.refresh()
 
         //4. close the edit functionality
-
-
+        const treeFactDom = treeNewFactDom.parentNode
+        window.treeCtrl.toggleEditGivenTreeFactDom(treeFactDom)
     },
-    toggleEditGivenFactEditDom: function(toggleFactEditDom){
-        let factCurrentDom = toggleFactEditDom.querySelector('.tree-current-fact')
-        let factNewDom = toggleFactEditDom.querySelector('.tree-new-fact')
-        console.log('fact current Dom is', factCurrentDom)
-        console.log('fact ne Dom is', factNewDom)
-        toggleVisibility(factCurrentDom)
-        toggleVisibility(factNewDom)
+    toggleEditGivenTreeFactDom: function(treeFactDom){
+        let treeCurrentFactDom = treeFactDom.querySelector('.tree-current-fact')
+        let treeNewFactDom = treeFactDom.querySelector('.tree-new-fact')
+        toggleVisibility(treeCurrentFactDom)
+        toggleVisibility(treeNewFactDom)
     },
     toggleEdit: function(event){
         console.log('togle edit event', event)
         const factEditDom = event.target.parentNode
-        window.treeCtrl.toggleEditGivenFactEditDom(factEditDom)
+        window.treeCtrl.toggleEditGivenTreeFactDom(factEditDom)
     },
     deleteTree : function (event) {
         var deleteTreeForm = event.target.parentNode
