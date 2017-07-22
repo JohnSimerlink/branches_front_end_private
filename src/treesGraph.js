@@ -34,16 +34,23 @@ window.deleteTree = function (event) {
     var deleteTreeForm = event.target.parentNode
     var treeId = deleteTreeForm.querySelector('#treeId').value
     console.log('TREES GRAPH.JS the tree about to be deleted is ', treeId)
-    //1.Remove Tree from graph
+    //1.Remove Tree and subtrees from graph
+    removeTreeFromGraph(treeId).then(() => s.refresh())
     //2. remove the tree's current parent from being its parent
-
     Trees.get(treeId).then(tree => {
         console.log("TREESGRAPH.JS the tree just received from window.deleteTree Trees.get", tree)
         tree.unlinkFromParent()
     })
-
-
-
+}
+function removeTreeFromGraph(treeId){
+    s.graph.dropNode(treeId)
+    s.graph.dropNode(treeId + newChildTreeSuffix)
+    return Trees.get(treeId).then(tree => {
+        var childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
+        return Promise.all(childPromises).then((val) => {
+            return `removed all children of ${treeId}`
+        })
+    })
 }
 
 
