@@ -65,69 +65,23 @@ class OnlineTree extends BaseTree {
     }
 
     removeChild(treeId) {
-
-    }
-
-    changeParent(newParentId) {
-        this.treeRef.update({
-            parentId: newParentId
-        })
-    }
-
-    set(prop, val){
-        if (this[prop] == val) {
-            return;
-        }
-
-        var updates = {}
-        updates[prop] = val
-        // this.treeRef.update(updates)
-        firebase.database().ref('trees/' +this.id).update(updates)
-        this[prop] = val
-    }
-}
-class OnlineTree2 {
-    //TODO: get typeScript so we can have a schema for treeObj
-    //treeObj  example
-
-    /*
-     parentId: parentTreeId,
-     factId: fact.id,
-     x: parseInt(currentNewChildTree.x),
-     y: parseInt(currentNewChildTree.y),
-     children: {},
-     label: fact.question + ' ' + fact.answer,
-     size: 1,
-     color: Globals.existingColor,
-     type: 'tree'
-     */
-
-    constructor(treeObj, pushToDb = false){
-      const self = this
-      Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
-      this.id = md5(JSON.stringify({factId: self.factId, parentId: self.parentId}))
-      if(pushToDb){
-        this.treeRef = treesRef.push(self)
-      }
-    }
-
-    addChild(treeId) {
-        // this.treeRef.child('/children').push(treeId)
         var children = {}
-        children[treeId] = true
-        var updates = {
-            children
-        }
-        firebase.database().ref('trees/' +this.id).update(updates)
-    }
-
-    removeChild(treeId) {
-
+        // Object.keys(this.children).forEach(key => {
+        //     if (key != treeId)
+        // })
     }
 
     changeParent(newParentId) {
-        this.treeRef.update({
+        this.parentId = newParentId
+        firbase.database().ref('trees/' + this.id).update({
             parentId: newParentId
+        })
+    }
+
+    changeFact(newfactid) {
+        this.factId = newfactid
+        firebase.database().ref('trees/' + this.id).update({
+           factId: newfactid
         })
     }
 
@@ -143,16 +97,20 @@ class OnlineTree2 {
         this[prop] = val
     }
 }
-
+//TODO: get typeScript so we can have a schema for treeObj
+//treeObj  example
+/*
+ parentId: parentTreeId,
+ factId: fact.id,
+ x: parseInt(currentNewChildTree.x),
+ y: parseInt(currentNewChildTree.y),
+ children: {},
+ label: fact.question + ' ' + fact.answer,
+ size: 1,
+ color: Globals.existingColor,
+ type: 'tree'
+ */
 //invoke like a constructor - new Tree(parentId, factId)
 export function Tree(){
     return Config.offlineMode ? new OfflineTree(...arguments) :  new OnlineTree(...arguments);
 }
-/*
-facts can have dependencies
-
-trees can have dependencies
-
-trees can have children
-
-*/

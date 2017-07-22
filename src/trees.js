@@ -55,8 +55,8 @@ export class OnlineTrees {
                     treeObj = snapshot.val()
                     console.log('the tree Obj passed into tree constructor is', treeObj)
                     var tree = new Tree(treeObj)
+                     console.log('the tree just loaded from trees.get is', tree)
                     trees[tree.id] = tree
-                    console.log('the tree just loaded from trees.get is', tree)
                     resolve(tree)
                 })
             }
