@@ -1,16 +1,22 @@
 <style>
    #app {
-       display: flex;
-       flex-direction: column;
    }
     #facts, #trees-graph {
         flex: 50;
     }
+    .app-plan {
+        margin-left: 8px;
+        margin-right: 8px;
+        display: inline;
+    }
+
 
 </style>
 <template>
    <div id="app">
-       Version: {{version}}
+       <span class="app-version"> Version: {{version}}</span>
+       <span class="app-plan"><a href="https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing">The Plan</a></span>
+       <span class="app-hire"><a href="mailto:john@branches-app.com">Work for Branches</a></span>
    </div>
 </template>
 
