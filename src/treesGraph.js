@@ -25,6 +25,21 @@ window.createNewTreeClick = function(event){
 
     newTree(question, answer, parentId)
 }
+
+window.editFactOnTree = function (event) {
+
+}
+
+window.deleteTree = function (event) {
+    var deleteTreeForm = event.target.parentNode
+    var treeId = deleteTreeForm.querySelector('#treeId').value
+    console.log('the tree about to be deleted is ', treeId)
+    Trees.get(treeId).then(tree => {
+
+    })
+}
+
+
 var numTreesLoaded = 0;
 loadTreeAndSubTrees(1).then( val => {console.log(`loadTree has allegedly resolved. resolve val is ${val}`); initSigma()}/*.then(initSigma)*/)
 // Instantiate sigma:
@@ -35,6 +50,7 @@ function createTreeNodeFromTreeAndFact(tree, fact){
         x: tree.x,
         y: tree.y,
         children: tree.children,
+        fact: fact,
         label: fact.question + "  " + fact.answer,
         size: 1,
         color: Globals.existingColor,
@@ -202,11 +218,12 @@ export function addTreeToGraph(parentTreeId, fact) {
     var newChildTreeX = parseInt(currentNewChildTree.x);
     var newChildTreeY = parseInt(currentNewChildTree.y);
     var tree = new Tree(fact.id, parentTreeId, newChildTreeX, newChildTreeY)
-    //2. add new node to parent tree
+    //2. add new node to parent tree on UI
     const newTree = {
         id: tree.id,
         parentId: parentTreeId,
         factId: fact.id,
+        fact: fact,
         x: newChildTreeX,
         y: newChildTreeY,
         children: {},
@@ -272,8 +289,12 @@ function initSigmaPlugins() {
             cssClass: 'sigma-tooltip',
             position: 'right',
             template:
-            `<div class="arrow"></div>
-             <div class="sigma-tooltip-header">{{label}}</div>
+            `
+            <div class="arrow"></div>
+             <div id="editFactOnTree" class="sigma-tooltip-header">
+                {{fact.question}} {{fact.answer}}
+                <button class="sigma-tooltip-edit-button" onclick="editFactOnTree(event)">Edit</button>
+             </div>
               <div class="sigma-tooltip-body"> 
                <p>How well did you know this topic? </p>
                <p>
@@ -285,7 +306,13 @@ function initSigmaPlugins() {
                </p> 
                
               </div> 
-             <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>`,
+             <div class="sigma-tooltip-footer">
+               <div id="deleteTreeForm" class="deleteTreeForm">
+                 <input type="hidden" id="treeId" value="$\{node.id}">
+                 <button id="deleteTree" onclick="deleteTree(Event)">DELETE TREE</button> 
+               </div>   
+             </div>
+            `,
             renderer: function(node, template) {
                 console.log('render node arguments are', ...arguments)
                 var newChildTreeTemplate =
@@ -301,7 +328,9 @@ function initSigmaPlugins() {
                       </p>
                     </div> 
                   </div> 
-               <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>
+               <div class="sigma-tooltip-footer">
+                  <p> Number of connections: {{degree}}</p>
+               </div>
                `
 
                 if (node.type == 'newChildTree'){
