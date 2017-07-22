@@ -39,21 +39,45 @@ const treeCtrl = {
         newTree(question, answer, parentId)
     },
     editFactOnTreeFromEvent : function (event) {
-        const editFactForm = event.target.parentNode
-        var question = newTreeForm.querySelector('.newTreeQuestion').value
-        var answer = newTreeForm.querySelector('.newTreeAnswer').value
-        var treeId = newTreeForm.querySelector('.treeId').value
-        // var fact = new Fact(question,answer)
+        const treeNewFactDom = event.target.parentNode
+        console.log('treeNewFactDom is', treeNewFactDom)
+        var question = treeNewFactDom.querySelector('.tree-new-fact-question').value
+        var answer = treeNewFactDom.querySelector('.tree-new-fact-answer').value
+        var treeId = treeNewFactDom.querySelector('.tree-id').value
+        //1. create new fact
+        var fact=
+        Facts.create(
+            {
+                question: question,
+                answer: answer,
+            }
+        )
+        //2.link new fact with current tree
+        fact.addTree(treeId)
+        Trees.get(treeId).then( tree => tree.changeFact(fact.id))
+
+        //3.update UI source for question and fact
+        var sigmaNode = s.graph.nodes().find(node => node.id == treeId)
+        sigmaNode.fact.question = fact.question
+        sigmaNode.fact.answer = fact.answer
+        sigmaNode.fact = fact
+
+        //4. close the edit functionality
 
 
+    },
+    toggleEditGivenFactEditDom: function(toggleFactEditDom){
+        let factCurrentDom = toggleFactEditDom.querySelector('.tree-current-fact')
+        let factNewDom = toggleFactEditDom.querySelector('.tree-new-fact')
+        console.log('fact current Dom is', factCurrentDom)
+        console.log('fact ne Dom is', factNewDom)
+        toggleVisibility(factCurrentDom)
+        toggleVisibility(factNewDom)
     },
     toggleEdit: function(event){
         console.log('togle edit event', event)
         const factEditDom = event.target.parentNode
-        let factCurrentDom = factEditDom.querySelector('.fact-current')
-        let factNewDom = factEditDom.querySelector('.fact-new')
-        toggleVisibility(factCurrentDom)
-        toggleVisibility(factNewDom)
+        window.treeCtrl.toggleEditGivenFactEditDom(factEditDom)
     },
     deleteTree : function (event) {
         var deleteTreeForm = event.target.parentNode
@@ -304,34 +328,33 @@ function initSigmaPlugins() {
             position: 'right',
             template:
             `
-            <div class="arrow"></div>
-             <div class="fact-edit" class="sigma-tooltip-header">
-                <div class="fact-current" style="display:block;">{{fact.question}} {{fact.answer}}</div>
-                <div class="fact-new" style="display:none;" >
-                    <input class="fact-new-treeId" value="{{id}}" type="hidden">
-                    <input class="fact-new-question" value="{{fact.question}}">
-                    <input class="fact-new-answer" value="{{fact.answer}}">
-                    <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
+              <div class="arrow"></div>
+              <div class="tree-fact" class="sigma-tooltip-header">
+                <div class="tree-current-fact" style="display:block;">{{fact.question}} {{fact.answer}}</div>
+                <div class="tree-new-fact" style="display:none;" >
+                  <input class="tree-id" value="{{id}}" type="hidden">
+                  <input class="tree-new-fact-question" value="{{fact.question}}">
+                  <input class="tree-new-fact-answer" value="{{fact.answer}}">
+                  <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
                 </div>
                 <button class="sigma-tooltip-edit-button" onclick="treeCtrl.toggleEdit(event)" >Edit</button>
-             </div>
+              </div>
               <div class="sigma-tooltip-body"> 
-               <p>How well did you know this topic? </p>
-               <p>
-                 <button>Not at All (Review in < 2 min)</button>
-                 <button>Somewhat (10 min)</button>
-                 <button>Easy (1 day)</button>
-                 <button>Perfectly (4 days)</button>
+                <p>How well did you know this topic? </p>
+                <p>
+                  <button>Not at All (Review in < 2 min)</button>
+                  <button>Somewhat (10 min)</button>
+                  <button>Easy (1 day)</button>
+                  <button>Perfectly (4 days)</button>
                  <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->
-               </p> 
-               
+                </p> 
               </div> 
-             <div class="sigma-tooltip-footer">
-               <div class="deleteTreeForm" class="deleteTreeForm">
-                 <input type="hidden" class="treeId" value="{{id}}"> 
-                 <button class="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
-               </div>   
-             </div>
+              <div class="sigma-tooltip-footer">
+                <div class="deleteTreeForm" class="deleteTreeForm">
+                  <input type="hidden" class="treeId" value="{{id}}"> 
+                  <button class="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
+                </div>   
+              </div>
             `,
             renderer: function(node, template) {
                 console.log('render node arguments are', ...arguments)
@@ -340,11 +363,11 @@ function initSigmaPlugins() {
                 <div class="arrow"></div> 
                   <div class="sigma-tooltip-header">Add a new Fact </div> 
                     <div class="sigma-tooltip-body"> 
-                      <p id="newTreeForm">
-                        <input type="hidden" id="parentId" value="${node.parentId}">
-                        Question: <input id='newTreeQuestion' type='text'><br>
-                        Answer: <input id='newTreeAnswer' type='text'><br>
-                        <button id='createNewTree2' onclick="treeCtrl.createNewTreeClick(event)">Create New Tree</button>
+                      <p class="newTreeForm">
+                        <input type="hidden" class="parentId" value="${node.parentId}">
+                        Question: <input class='newTreeQuestion' type='text'><br>
+                        Answer: <input class='newTreeAnswer' type='text'><br>
+                        <button class='createNewTree' onclick="treeCtrl.createNewTreeClick(event)">Create New Tree</button>
                       </p>
                     </div> 
                   </div> 
