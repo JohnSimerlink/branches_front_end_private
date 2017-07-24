@@ -4,6 +4,7 @@ import {Tree} from './tree.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
 import {Redux} from './redux.js'
+import './login.js'
 var initialized = false;
 var s,
     g = {
@@ -124,14 +125,6 @@ var toolTipsConfig = {
     }
 };
 
-function toggleVisibility(el){
-   var style = el.style
-    if (style.display == 'block') {
-        style.display = 'none'
-    } else {
-        style.display = 'block'
-    }
-}
 const treeCtrl = {
     createNewTreeClick : function(event){
         var newTreeForm = event.target.parentNode
