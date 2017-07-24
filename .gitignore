@@ -1,6 +1,7 @@
 node_modules/
 src/firebase.dev.config.json
 src/firebase.prod.config.json
+src/env.js
 .idea
 
 branches.pem
