@@ -4,6 +4,7 @@ import {Tree} from './tree.js'
 import {Facts} from './facts.js'
 import {Globals} from './globals.js'
 import {Redux} from './redux.js'
+import {toggleVisibility} from "./utils"
 import './login.js'
 var initialized = false;
 var s,
