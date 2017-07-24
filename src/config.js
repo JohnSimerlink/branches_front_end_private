@@ -1,4 +1,5 @@
 export const Config = {
+    env: 'prod',
     offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
     version: 3
 }

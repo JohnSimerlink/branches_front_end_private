@@ -55,10 +55,10 @@ export default {
               // This gives you a Facebook Access Token. You can use it to access the Facebook API.
               var token = result.credential.accessToken;
               document.querySelector('.login-user-name').innerHTML = result.user.displayName
+              document.querySelector('.login-button').style.display = 'none'
               console.log('result', result)
               Globals.username = result.user.displayName
               Globals.userId = result.user.uid
-              document.querySelector('.login-button').style.display = 'none'
           }).catch(function (error) {
               // Handle Errors here.
               var errorCode = error.code;
