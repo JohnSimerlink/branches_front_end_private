@@ -1,0 +1,30 @@
+<div class="arrow"></div>
+<div class="tree-fact" class="sigma-tooltip-header">
+    <div class="tree-current-fact" style="display:block;">
+        <div class="tree-current-fact-question">{{fact.question}}</div>
+        <div class="tree-current-fact-answer">{{fact.answer}}</div>
+    </div>
+    <div class="tree-new-fact" style="display:none;" >
+        <input class="tree-id" value="{{id}}" type="hidden">
+        <input class="tree-new-fact-question" value="{{fact.question}}">
+        <input class="tree-new-fact-answer" value="{{fact.answer}}">
+        <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
+    </div>
+    <button class="sigma-tooltip-edit-button" onclick="treeCtrl.toggleEdit(event)" >Edit</button>
+</div>
+<div class="tree-confidence sigma-tooltip-body">
+    <p>How well did you know this topic? </p>
+    <p>
+        <button>Not at All (Review in < 2 min)</button>
+        <button>Somewhat (10 min)</button>
+        <button>Easy (1 day)</button>
+        <button>Perfectly (4 days)</button>
+        <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->
+    </p>
+</div>
+<div class="sigma-tooltip-footer">
+    <div class="tree-delete">
+        <input class="tree-id" type="hidden"  value="{{id}}">
+        <button class="tree-delete-button" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button>
+    </div>
+</div>
