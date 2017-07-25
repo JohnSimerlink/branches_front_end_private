@@ -3,16 +3,9 @@ import {removeTreeFromGraph} from "./treesGraph"
 import {Trees} from '../objects/trees.js'
 import {Facts} from '../objects/facts.js'
 import {toggleVisibility} from "../core/utils"
+
 //hacky controller solution for now - as i haven't yet figured out how to (or tried to ) place an angular component inside of a sigmajs/linkurious rendered template on the HTML5 canvas
 const treeCtrl = {
-    createNewTreeClick : function(event){
-        var newTreeForm = event.target.parentNode
-        var question = newTreeForm.querySelector('.newTree-question').value
-        var answer = newTreeForm.querySelector('.newTree-answer').value
-        var parentId = newTreeForm.querySelector('.newTree-parentId').value
-
-        newTree(question, answer, parentId)
-    },
     editFactOnTreeFromEvent : function (event) {
         const treeNewFactDom = event.target.parentNode
         var question = treeNewFactDom.querySelector('.tree-new-fact-question').value
@@ -32,12 +25,8 @@ const treeCtrl = {
 
         //3.update UI source for question and fact
         var sigmaNode = s.graph.nodes().find(node => node.id == treeId)
-        console.log('sigma node is currently', sigmaNode)
-        sigmaNode.fact.question = fact.question
-        sigmaNode.fact.answer = fact.answer
         sigmaNode.fact = fact
         s.refresh()
-        console.log('sigma node is now', sigmaNode)
 
         //4. close the edit functionality
         const treeFactDom = treeNewFactDom.parentNode
