@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "deploy": "sh .deploy.sh",
-    "test": "gulp test"
+    "deploy": "sh .deploy.sh"
   },
   "author": "",
   "license": "ISC",

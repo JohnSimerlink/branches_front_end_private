@@ -40,11 +40,34 @@ var toolTipsConfig = {
             }
         }],
     stage: {
-        template:
-        '<div class="arrow"></div>' +
-        '<div class="sigma-tooltip-header"> Menu </div>'
+        template:require('./rightClickMenu.html')
     }
 };
+loadTreeAndSubTrees(1).then( val => {initSigma();})
+function loadTreeAndSubTrees(treeId){
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    return Trees.get(treeId)
+        .then(onGetTree)
+        .catch( err => console.error('trees get err is', err))
+}
+function onGetTree(tree) {
+    var factsPromise = Facts.get(tree.factId)
+        .then( function onFactsGet(fact) {return addTreeNodeToGraph(tree,fact)})
+
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
+    var promises = childTreesPromises
+    promises.push(factsPromise)
+
+    return Promise.all(promises)
+}
+
+function addTreeNodeToGraph(tree,fact){
+    const treeUINode = createTreeNodeFromTreeAndFact(tree,fact)
+    g.nodes.push(treeUINode);
+    addNewChildTreeToTree(treeUINode)
+    connectTreeToParent(tree,g)
+    return fact.id
+}
 
 export function removeTreeFromGraph(treeId){
     s.graph.dropNode(treeId)
@@ -56,8 +79,7 @@ export function removeTreeFromGraph(treeId){
         })
     })
 }
-
-loadTreeAndSubTrees(1).then( val => {initSigma();}/*.then(initSigma)*/)
+//recursively load the entire tree
 // Instantiate sigma:
 function createTreeNodeFromTreeAndFact(tree, fact){
     const node = {
@@ -92,37 +114,7 @@ function connectTreeToParent(tree, g){
         g.edges.push(edge);
     }
 }
-function onGetFact(tree,fact){
-    const node = createTreeNodeFromTreeAndFact(tree,fact)
-    g.nodes.push(node);
-    addNewChildTreeToTree(node)
-    tree.parentId && connectTreeToParent(tree,g)
-    return fact.id
-}
-function onGetTree(tree) {
-    var factsPromise = Facts.get(tree.factId)
-        .then( function onFactsGet(fact) {return onGetFact(tree,fact)})
-        .then( factId => {
-            return factId})
-
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
-    var promises = childTreesPromises
-    promises.push(factsPromise)
-
-    return Promise.all(promises).then( function onAllChildTreesReceived(resultsArray) {
-        var factIdPrettyString = resultsArray.shift();
-        var treeIdsPrettyStrings = resultsArray.join(', ')
-        var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )"
-        return treePrettyString
-    }) //promise should only resolve when the tree's fact and all the subtrees are loaded
-}
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
-function loadTreeAndSubTrees(treeId){
-    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    return Trees.get(treeId)
-        .then(onGetTree)
-        .catch( err => console.error('trees get err is', err))
-}
 
 function addNewChildTreeToTree(tree){
     if (tree.children) {
@@ -173,7 +165,6 @@ function initSigma(){
     }
     initSigmaPlugins()
 }
-window.initSigma = initSigma;
 function printNodeInfo(e){
    console.log(e, e.data.node)
 }
