@@ -6,7 +6,15 @@ import './objects'
 import './utils'
 import angular from 'angular'
 
+
 Vue.use(VueFire)
+var branches = angular.module('branches', [])
+branches.component('header', {
+    template: require('../components/header.html'),
+    controller: function HeaderController() {
+
+    }
+})
 
 angular.element(document.querySelector('#bootstrap2')).ready( () => {
     angular.bootstrap(document, ['app'], {
