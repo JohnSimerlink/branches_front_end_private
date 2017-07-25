@@ -10,8 +10,9 @@ import {Trees} from './trees.js'
 function loadObject(treeObj, self){
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
-class BaseTree {
-    constructor (factId, parentId, x, y){
+export class Tree {
+
+    constructor(factId, parentId, x, y) {
         var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
@@ -27,17 +28,6 @@ class BaseTree {
 
         treeObj = {factId: factId, parentId: parentId, children: this.children}
         this.id = md5(JSON.stringify(treeObj))
-    }
-}
-class OfflineTree extends BaseTree{
-    constructor (factId, parentId, x, y){
-        super(...arguments)
-    }
-}
-class OnlineTree extends BaseTree {
-
-    constructor(factId, parentId, x, y) {
-        super(...arguments)
         if (typeof arguments[0] === 'object'){//TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return
         }
@@ -115,6 +105,3 @@ class OnlineTree extends BaseTree {
  type: 'tree'
  */
 //invoke like a constructor - new Tree(parentId, factId)
-export function Tree(){
-    return Config.offlineMode ? new OfflineTree(...arguments) :  new OnlineTree(...arguments);
-}
