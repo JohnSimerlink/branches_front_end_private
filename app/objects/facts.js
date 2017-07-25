@@ -1,5 +1,5 @@
 import {Fact} from './fact.js';
-import {Config} from './config.js'
+import {Config} from '../core/config.js'
 import getFirebase from './firebaseService.js'
 const firebase = getFirebase()
 const factsArr = [

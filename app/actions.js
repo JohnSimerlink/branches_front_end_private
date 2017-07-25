@@ -3,6 +3,6 @@ function addTree(parentTreeId){
 }
 
 
-import {Globals} from './globals.js'
+import {Globals} from './core/globals.js'
 
 

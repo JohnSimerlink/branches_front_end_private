@@ -1,11 +1,11 @@
-import {Trees} from './trees.js'
-import {newTree} from './newTree.js';
-import {Tree} from './tree.js'
-import {Facts} from './facts.js'
-import {Globals} from './globals.js'
-import {Redux} from './redux.js'
-import {toggleVisibility} from "./utils"
-import './login.js'
+import {Trees} from '../objects/trees.js'
+import {newTree} from '../objects/newTree.js';
+import {Tree} from '../objects/tree.js'
+import {Facts} from '../objects/facts.js'
+import {Globals} from '../core/globals.js'
+import {toggleVisibility} from "../core/utils"
+import '../core/login.js'
+console.log("treesGraph loaded")
 var initialized = false;
 var s,
     g = {
