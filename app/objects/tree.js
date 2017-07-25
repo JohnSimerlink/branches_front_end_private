@@ -4,7 +4,7 @@ const firebase = getFirebase();
 window.firebase = firebase
 const treesRef = firebase.database().ref('trees');
 const trees = {};
-import {Config} from './config.js'
+import {Config} from '../core/config.js'
 import {Trees} from './trees.js'
 
 function loadObject(treeObj, self){

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import './trees.js'
-import './treesGraph.js'
 import {Config} from './config.js'
 import {toggleVisibility} from './utils.js'
 var userObj = {

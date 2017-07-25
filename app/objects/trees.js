@@ -1,6 +1,6 @@
 import {Facts} from './facts.js'
 import {Tree} from './tree.js'
-import {Config} from './config.js'
+import {Config} from '../core/config.js'
 import getFirebase from './firebaseService.js'
 const firebase = getFirebase()
 const trees = {

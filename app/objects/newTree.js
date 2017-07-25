@@ -1,7 +1,7 @@
 import {newFact} from './newfact.js';
 import getFirebase from './firebaseService.js'
 const firebase = getFirebase();
-import {addTreeToGraph} from './treesGraph.js'
+import {addTreeToGraph} from '../components/treesGraph.js'
 import {Trees} from './trees'
 export function newTree(question, answer, parentTreeId){
     var fact = newFact(question, answer)

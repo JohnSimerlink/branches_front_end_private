@@ -1,5 +1,5 @@
 import * as firebase from 'firebase'
-import {Config} from './config'
+import {Config} from '../core/config'
 import firebaseDevConfig from './firebase.dev.config.json';
 import firebaseProdConfig from './firebase.prod.config.json';
 
