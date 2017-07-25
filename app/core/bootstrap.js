@@ -4,21 +4,28 @@ import Vue from 'vue'
 import './components'
 import './objects'
 import './utils'
-import angular from 'angular'
+import {login} from './login.js'
 
 
 Vue.use(VueFire)
-var branches = angular.module('branches', [])
+new Vue({el: '#bootstrap', render: h => h(App) })
+
+
+//ABOVE original VUEJS
+///BELOW CONVERTING TO ANGULAR -- below still doesn't work yet
+
+
+
+var branches = angular.module('branches', ['ngRoute'])
 branches.component('header', {
     template: require('../components/header.html'),
     controller: function HeaderController() {
-
+        this.login = login;
     }
 })
 
-angular.element(document.querySelector('#bootstrap2')).ready( () => {
-    angular.bootstrap(document, ['app'], {
-        strictDi: true
-    });
-});
-new Vue({el: '#bootstrap', render: h => h(App) })
+branches.config(function($routeProvider){
+    $routeProvider.when('/', {
+        template: '<header></header>'
+    })
+})

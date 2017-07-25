@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular-route": "^1.6.5",
     "angularjs": "0.0.1",
     "firebase": "^4.1.2",
     "html-loader": "^0.4.5",
