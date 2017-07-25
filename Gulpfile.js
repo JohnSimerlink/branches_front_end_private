@@ -5,7 +5,7 @@ var babel = require('gulp-babel');
 var Server = require('karma').Server;
 
 var paths = {
-    src:      ['src/**.js', 'src/*/**.js'],
+    src:      ['app/**.js', 'app/*/**.js'],
     dest:     'build/js',
     specSrc:  'spec/*Spec.js',
     specDest: 'build/spec',

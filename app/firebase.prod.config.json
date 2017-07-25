@@ -1,0 +1,8 @@
+{
+  "apiKey": "AIzaSyARFLXLjlpf4zNk0uCNwSzUBIn0osDwfQI",
+  "authDomain": "branches-prod.firebaseapp.com",
+  "databaseURL": "https://branches-prod.firebaseio.com",
+  "projectId": "branches-prod",
+  "storageBucket": "branches-prod.appspot.com",
+  "messagingSenderId": "663497929399"
+}
