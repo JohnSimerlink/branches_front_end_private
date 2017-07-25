@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+/******/ 	return __webpack_require__(__webpack_require__.s = 49);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -216,7 +216,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(9);
+var _constants = __webpack_require__(10);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -415,7 +415,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(13);
+var _shared_promise = __webpack_require__(17);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -533,12 +533,12 @@ function clone(obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-throw new Error("Cannot find module \"./env.js\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(50);
 
 const Config = {
-    env: __WEBPACK_IMPORTED_MODULE_0__env_js___default.a, // prod || dev
+    env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
     offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
-    version: 4
+    version: 5
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Config;
 
@@ -548,34 +548,43 @@ const Config = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getFirebase;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_config_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(8);
 
 
 
 
+const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__firebaseService_js__["a" /* default */])();
+const trees = {};
+class Trees {
+    static getAll(success) {}
+    //returns promise
+    //TODO: make resolve "null" or something if fact not found
+    static get(treeId) {
+        if (!treeId) {
+            throw "Trees.get(treeId) error!. treeId empty";
+        }
+        return new Promise(function getTreePromise(resolve, reject) {
+            let treeObj;
 
-function firebaseInitialized() {
-  return __WEBPACK_IMPORTED_MODULE_0_firebase__["apps"].length !== 0;
+            //trees[] serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+            if (trees[treeId]) {
+                resolve(trees[treeId]);
+            } else {
+                firebase.database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot) {
+                    treeObj = snapshot.val();
+                    var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeObj);
+                    trees[tree.id] = tree;
+                    resolve(tree);
+                });
+            }
+        });
+    }
 }
-function initializeFirebase() {
-  const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
-  __WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
-  window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__;
-}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Trees;
 
-function getFirebase() {
-  if (!firebaseInitialized()) {
-    initializeFirebase();
-  }
-  return __WEBPACK_IMPORTED_MODULE_0_firebase__; //TODO: initfirebase might actually be async
-}
 
 /***/ }),
 /* 6 */
@@ -592,7 +601,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(54);
+var _firebase_app = __webpack_require__(58);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -621,100 +630,77 @@ module.exports = exports['default'];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(8);
 
 
 
+const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */])();
 
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__firebaseService_js__["a" /* default */])();
-const trees = {};
-const offlineTreesData = {
-    //LAST UPDATED 6/28 9am
-    "1": {
-        "factId": "24",
-        "id": "1",
-        "x": "0",
-        "y": "0",
-        "children": {
-            "075d07593a01ae43d7e045e7effadfb2": true,
-            "35d917de5c0bd13a49d6e86bb7c540c1": true
-        }
-    },
-    "075d07593a01ae43d7e045e7effadfb2": {
-        "factId": "c8d26306d29ff13f0c1010ee0467d47a",
-        "id": "075d07593a01ae43d7e045e7effadfb2",
-        "parentId": "1",
-        "x": "300",
-        "y": "300"
-    },
-    "35d917de5c0bd13a49d6e86bb7c540c1": // the more you learn the more you earn
-    {
-        "factId": "bc62641cfd029c281b8ce6135d8991e0",
-        "id": "35d917de5c0bd13a49d6e86bb7c540c1",
-        "parentId": "1",
-        "x": "500",
-        "y": "400"
-    }
-};
-class OnlineTrees {
-    static getAll(success) {}
-    //returns promise
+class Facts {
     //TODO: make resolve "null" or something if fact not found
-    static get(treeId) {
-        if (!treeId) {
-            throw "Trees.get(treeId) error!. treeId empty";
-        }
-        return new Promise(function getTreePromise(resolve, reject) {
-            let treeObj;
-
-            //trees[] serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-            if (trees[treeId]) {
-                resolve(trees[treeId]);
+    static get(factId) {
+        return new Promise((resolve, reject) => {
+            if (__WEBPACK_IMPORTED_MODULE_1__core_config_js__["a" /* Config */].offlineMode) {
+                const fact = offlineFacts[factId];
+                resolve(fact);
             } else {
-                firebase.database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot) {
-                    treeObj = snapshot.val();
-                    var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeObj);
-                    trees[tree.id] = tree;
-                    resolve(tree);
+                firebase.database().ref('facts/' + factId).on("value", function (snapshot) {
+                    var fact = snapshot.val();
+                    resolve(fact);
                 });
             }
         });
     }
-}
-/* unused harmony export OnlineTrees */
-
-class OfflineTrees {
-    static getAll(success) {}
-    //returns promise
-    //TODO: make resolve "null" or something if fact not found
-    static get(treeId) {
-        return new Promise((resolve, reject) => {
-            let treeObj;
-
-            treeObj = offlineTreesData[treeId];
-            var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeObj);
-            resolve(tree);
-        });
+    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+    static create({ question, answer }) {
+        var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](question, answer);
+        var updates = {};
+        updates['/facts/' + fact.id] = fact;
+        firebase.database().ref().update(updates);
+        return fact;
     }
 }
-/* unused harmony export OfflineTrees */
-
-class Trees {
-    static getAll() {
-        return __WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].offlineMode ? OfflineTrees.getAll(...arguments) : OnlineTrees.getAll(...arguments);
-    }
-    static get() {
-        return __WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].offlineMode ? OfflineTrees.get(...arguments) : OnlineTrees.get(...arguments);
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Trees;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Facts;
 
 
 /***/ }),
 /* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getFirebase;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
+
+
+
+
+
+function firebaseInitialized() {
+  return __WEBPACK_IMPORTED_MODULE_0_firebase__["apps"].length !== 0;
+}
+function initializeFirebase() {
+  const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
+  __WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
+  window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__;
+}
+
+function getFirebase() {
+  if (!firebaseInitialized()) {
+    initializeFirebase();
+  }
+  return __WEBPACK_IMPORTED_MODULE_0_firebase__; //TODO: initfirebase might actually be async
+}
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -792,7 +778,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -879,7 +865,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1012,7 +998,7 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1039,7 +1025,308 @@ module.exports = g;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = login;
+function login() {
+    var mobile = false;
+
+    if (mobile) {} else {
+        console.log('login called');
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
+            document.querySelector('.login-button').style.display = 'none';
+            console.log('result', result);
+            Globals.username = result.user.displayName;
+            Globals.userId = result.user.uid;
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+        });
+    }
+}
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = toggleVisibility;
+function toggleVisibility(el) {
+    var style = el.style;
+    if (style.display == 'block') {
+        style.display = 'none';
+    } else {
+        style.display = 'block';
+    }
+}
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = removeTreeFromGraph;
+/* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_tree_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_facts_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__treeController__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__newTreeController__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_login_js__ = __webpack_require__(13);
+
+
+
+
+
+
+
+var initialized = false;
+var s,
+    g = {
+    nodes: [],
+    edges: []
+};
+window.g = g;
+window.s = s;
+
+var newNodeXOffset = -100,
+    newNodeYOffset = 100,
+    newChildTreeSuffix = "__newChildTree";
+var toolTipsConfig = {
+    node: [{
+        show: 'rightClickNode',
+        cssClass: 'sigma-tooltip',
+        position: 'right',
+        template: '',
+        renderer: function (node, template) {
+            console.log('right click render');
+            switch (node.type) {
+                case 'tree':
+                    template = __webpack_require__(87);
+                    break;
+                case 'newChildTree':
+                    template = __webpack_require__(85);
+                    break;
+            }
+            var result = Mustache.render(template, node);
+
+            return result;
+        }
+    }],
+    stage: {
+        template: __webpack_require__(86)
+    }
+};
+loadTreeAndSubTrees(1).then(val => {
+    initSigma();
+});
+function loadTreeAndSubTrees(treeId) {
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.error('trees get err is', err));
+}
+function onGetTree(tree) {
+    var factsPromise = __WEBPACK_IMPORTED_MODULE_2__objects_facts_js__["a" /* Facts */].get(tree.factId).then(function onFactsGet(fact) {
+        return addTreeNodeToGraph(tree, fact);
+    });
+
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : [];
+    var promises = childTreesPromises;
+    promises.push(factsPromise);
+
+    return Promise.all(promises);
+}
+
+function addTreeNodeToGraph(tree, fact) {
+    const treeUINode = createTreeNodeFromTreeAndFact(tree, fact);
+    g.nodes.push(treeUINode);
+    addNewChildTreeToTree(treeUINode);
+    connectTreeToParent(tree, g);
+    return fact.id;
+}
+
+function removeTreeFromGraph(treeId) {
+    s.graph.dropNode(treeId);
+    s.graph.dropNode(treeId + newChildTreeSuffix);
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
+        return Promise.all(childPromises).then(val => {
+            return `removed all children of ${treeId}`;
+        });
+    });
+}
+//recursively load the entire tree
+// Instantiate sigma:
+function createTreeNodeFromTreeAndFact(tree, fact) {
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        fact: fact,
+        label: getLabelFromFact(fact),
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
+        type: 'tree'
+    };
+    return node;
+}
+function getLabelFromFact(fact) {
+    return fact.question;
+}
+function createEdgeId(nodeOneId, nodeTwoId) {
+    return nodeOneId + "__" + nodeTwoId;
+}
+function connectTreeToParent(tree, g) {
+    if (tree.parentId) {
+        const edge = {
+            id: createEdgeId(tree.parentId, tree.id),
+            source: tree.parentId,
+            target: tree.id,
+            size: 1,
+            color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
+        };
+        g.edges.push(edge);
+    }
+}
+//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
+function addNewChildTreeToTree(tree) {
+    if (tree.children) {}
+    const newChildTree = {
+        id: tree.id + newChildTreeSuffix, //"_newChildTree",
+        parentId: tree.id,
+        x: parseInt(tree.x) + newNodeXOffset,
+        y: parseInt(tree.y) + newNodeYOffset,
+        label: '+',
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor,
+        type: 'newChildTree'
+    };
+    const shadowEdge = {
+        id: createEdgeId(tree.id, newChildTree.id),
+        source: tree.id,
+        target: newChildTree.id,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor
+    };
+    if (!initialized) {
+        g.nodes.push(newChildTree);
+        g.edges.push(shadowEdge);
+    } else {
+        s.graph.addNode(newChildTree);
+        s.graph.addEdge(shadowEdge);
+    }
+    if (initialized) {
+        s.refresh();
+    }
+}
+function initSigma() {
+    if (!initialized) {
+        sigma.renderers.def = sigma.renderers.canvas;
+        s = new sigma({
+            graph: g,
+            container: 'graph-container'
+        });
+        window.s = s;
+        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+        s.refresh();
+
+        s.bind('click', printNodeInfo);
+        s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
+        s.bind('overNode', hoverOverNode);
+        initialized = true;
+    }
+    initSigmaPlugins();
+}
+function printNodeInfo(e) {
+    console.log(e, e.data.node);
+}
+function hoverOverNode(e) {
+    var node = e.data.node;
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+}
+function updateTreePosition(e) {
+    let newX = e.data.node.x;
+    let newY = e.data.node.y;
+    let treeId = e.data.node.id;
+
+    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
+        return; //node isn't an actual node in the db - its like a shadow node or helper node
+    }
+    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20;
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        if (Math.abs(tree.x - newX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.set('x', newX);
+        }
+        if (Math.abs(tree.y - newY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.set('y', newY);
+        }
+        return tree;
+    });
+}
+
+//returns sigma tree node
+function addTreeToGraph(parentTreeId, fact) {
+    //1. delete current addNewNode button
+    var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
+    var newChildTreeX = parseInt(currentNewChildTree.x);
+    var newChildTreeY = parseInt(currentNewChildTree.y);
+    var tree = new __WEBPACK_IMPORTED_MODULE_1__objects_tree_js__["a" /* Tree */](fact.id, parentTreeId, newChildTreeX, newChildTreeY);
+    //2. add new node to parent tree on UI
+    const newTree = {
+        id: tree.id,
+        parentId: parentTreeId,
+        factId: fact.id,
+        fact: fact,
+        x: newChildTreeX,
+        y: newChildTreeY,
+        children: {},
+        label: getLabelFromFact(fact),
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
+        type: 'tree'
+        //2b. update x and y location in the db for the tree
+
+    };s.graph.dropNode(currentNewChildTree.id);
+    s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    const newEdge = {
+        id: parentTreeId + "__" + newTree.id,
+        source: parentTreeId,
+        target: newTree.id,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
+    };
+    s.graph.addEdge(newEdge
+    //4. add shadow node
+    );addNewChildTreeToTree(newTree
+    //5. Re add shadow node to parent
+    );__WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(parentTreeId).then(addNewChildTreeToTree);
+
+    s.refresh();
+    return newTree;
+}
+function initSigmaPlugins() {
+    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
+    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
+    window.tooltips = tooltips;
+}
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1146,7 +1433,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 13 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1186,17 +1473,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(64);
+var PromiseImpl = scope.Promise || __webpack_require__(68);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ }),
-/* 14 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1223,7 +1510,7 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(16);
+var _metadata = __webpack_require__(20);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -1360,7 +1647,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1434,7 +1721,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1457,11 +1744,11 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(71);
+var _json = __webpack_require__(75);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(10);
+var _location = __webpack_require__(11);
 
 var _path = __webpack_require__(32);
 
@@ -1471,7 +1758,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(18);
+var _url = __webpack_require__(22);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -1644,7 +1931,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1854,7 +2141,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1872,7 +2159,7 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(9);
+var _constants = __webpack_require__(10);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -1924,108 +2211,42 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 19 */
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__facts__ = __webpack_require__(7);
+
+const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */])();
+
+
+
+//todo: change newTree to Trees.create()
+function newTree(question, answer, parentTreeId) {
+    var fact = __WEBPACK_IMPORTED_MODULE_3__facts__["a" /* Facts */].create({ question, answer });
+    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, fact
+    //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
+    //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db from firebase to neo4j or couchdb)
+    );__WEBPACK_IMPORTED_MODULE_2__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
+        parentTree.addChild(tree.id);
+    });
+    fact.addTree(tree.id);
+}
+
+/***/ }),
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-
-class Fact {
-  constructor(question, answer) {
-    this.question = question;
-    this.answer = answer;
-    this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
-    this.trees = {};
-  }
-  addTree(treeId) {
-    this.trees[treeId] = true;
-    var trees = {};
-    trees[treeId] = true;
-    var updates = {
-      trees
-    };
-    firebase.database().ref('facts/' + this.id).update(updates);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(5);
-
-
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */])();
-const factsArr = [{ question: "Less is ... ", answer: 'more' }, { question: "It's not always the best product that ... ", answer: "wins. (example - according to steve jobs apple was better than windows, but windows won" }, { question: "What are the two qualities by which a person is judged by others? ", answer: "Competence (power) and warmth [and a third: 'presence']" }, { question: "How do people judge one's power?", answer: "Their social status, clothes, title ..." }, { question: "What is a technique to treat other people warmly?", answer: "Imagine they have halos around their head, and that they are the best people/angels you have ever encountered" }, { question: "How can you treat jerks nicely?", answer: "Change how you see their situation in your head (e.g. say to yourself 'That guy was just diagnosed with cancer'" }, { question: "What is presence?", answer: "The state of being totally focused and aware on the current moment and place. Not on the future or past. Not thinking about other people/activities, but think about the people you are with now and the activity you are doing now." }, { question: "What is a technique to instantly get present?", answer: "Focus on your toes, and trying to feel your toes in your shoes (this brings attention to your current senses)" }];
-
-const offlineFacts = {
-    "24": { "id": 24, "answer": " this is an a", "question": "this is a q" },
-    "126b28d1a4184e4d7d99656feebd823b": { "answer": "If you have an HTML element with a CSS `display` value of `flex` and `flex-direction` value ", "id": "126b28d1a4184e4d7d99656feebd823b", "question": "What does flex-direction do?" },
-    "1d1ec14bc8010cbfb42ce160744248ff": { "answer": "3", "id": "1d1ec14bc8010cbfb42ce160744248ff", "question": "what is 2+1" },
-    "34bd2fe8d329d9bc7b6c5e78397d1a1f": { "answer": "4", "id": "34bd2fe8d329d9bc7b6c5e78397d1a1f", "question": "what is 2+2" },
-    "4f5430fb0fd39072b50ff0b80c453dc3": { "answer": "hello", "id": "4f5430fb0fd39072b50ff0b80c453dc3", "question": "" },
-    "591fa736595d0f5c18c295a81046350b": { "answer": "it's who you know", "id": "591fa736595d0f5c18c295a81046350b", "question": "It's not what you know . . . " },
-    "5b798954b7c7414de1f232813e0ffb0b": { "answer": "flex-direction; justify-content; align-items; flex; flex-order; (Tip: direction, cross-axes, positioning, ordering)", "id": "5b798954b7c7414de1f232813e0ffb0b", "question": "List the 5 main flexbox properties:" },
-    "619a3ed7e1ca41843df5b38c4d886b2e": { "answer": "100", "id": "619a3ed7e1ca41843df5b38c4d886b2e", "question": "99+1" },
-    "9b5c4a3fb1a4f239868fbd399ddecd83": { "answer": "21", "id": "9b5c4a3fb1a4f239868fbd399ddecd83", "question": "10+11" },
-    "abdb7623bca3eca1918af5c1d76ed863": { "answer": "row; row-reverse; column; column-reverse", "id": "abdb7623bca3eca1918af5c1d76ed863", "question": "List the possible values for flex-direction" },
-    "ad852f5df11cf523ea97ba5c1742a699": { "answer": "18", "id": "ad852f5df11cf523ea97ba5c1742a699", "question": "9+9" },
-    "bc62641cfd029c281b8ce6135d8991e0": { "answer": ". . . the more you earn", "id": "bc62641cfd029c281b8ce6135d8991e0", "question": "The more you learn . . . " },
-    "c1882855355c3e28c1389a1d8eb2a90a": { "answer": "44", "id": "c1882855355c3e28c1389a1d8eb2a90a", "question": "22+22" },
-    "c8d26306d29ff13f0c1010ee0467d47a": { "answer": "There are many genes and coupled mechanisms that seem to essentially be hardcoded such that certain humans processes will stop after 120 years. There is no one variable called lifespan that we can tweak in the human genome", "id": "c8d26306d29ff13f0c1010ee0467d47a", "question": "Why can't humans currently live past age ~120?" }, "cafc5b435101f520710988617dff22bd": { "id": "cafc5b435101f520710988617dff22bd" },
-    "dfc27295e2f5527812aad0539c68975b": { "answer": "20", "id": "dfc27295e2f5527812aad0539c68975b", "question": "10+10" },
-    "e41b48edf89e0a90e2f9f3b4cf3a2c7b": { "answer": "79", "id": "e41b48edf89e0a90e2f9f3b4cf3a2c7b", "question": "2+77" },
-    "ecd1d2b273b3642feabbcc802d97bf0a": { "answer": "9", "id": "ecd1d2b273b3642feabbcc802d97bf0a", "question": "2+7" }
-};
-
-class Facts {
-    static getAll(success) {
-        if (__WEBPACK_IMPORTED_MODULE_1__config_js__["a" /* Config */].offlineMode) {}
-    }
-    //TODO: make resolve "null" or something if fact not found
-    static get(factId) {
-        return new Promise((resolve, reject) => {
-            if (__WEBPACK_IMPORTED_MODULE_1__config_js__["a" /* Config */].offlineMode) {
-                const fact = offlineFacts[factId];
-                resolve(fact);
-            } else {
-                firebase.database().ref('facts/' + factId).on("value", function (snapshot) {
-                    var fact = snapshot.val();
-                    resolve(fact);
-                });
-            }
-        });
-    }
-    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
-    static create({ question, answer }) {
-        var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](question, answer);
-        var updates = {};
-        updates['/facts/' + fact.id] = fact;
-        firebase.database().ref().update(updates);
-        return fact;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Facts;
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_config_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees_js__ = __webpack_require__(5);
 
 
 const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
@@ -2038,7 +2259,8 @@ const trees = {};
 function loadObject(treeObj, self) {
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key]);
 }
-class BaseTree {
+class Tree {
+
     constructor(factId, parentId, x, y) {
         var treeObj;
         if (arguments[0] && typeof arguments[0] === 'object') {
@@ -2055,17 +2277,6 @@ class BaseTree {
 
         treeObj = { factId: factId, parentId: parentId, children: this.children };
         this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify(treeObj));
-    }
-}
-class OfflineTree extends BaseTree {
-    constructor(factId, parentId, x, y) {
-        super(...arguments);
-    }
-}
-class OnlineTree extends BaseTree {
-
-    constructor(factId, parentId, x, y) {
-        super(...arguments);
         if (typeof arguments[0] === 'object') {
             //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return;
@@ -2128,6 +2339,8 @@ class OnlineTree extends BaseTree {
         this[prop] = val;
     }
 }
+/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
+
 //TODO: get typeScript so we can have a schema for treeObj
 //treeObj  example
 /*
@@ -2142,446 +2355,9 @@ class OnlineTree extends BaseTree {
  type: 'tree'
  */
 //invoke like a constructor - new Tree(parentId, factId)
-function Tree() {
-    return __WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].offlineMode ? new OfflineTree(...arguments) : new OnlineTree(...arguments);
-}
 
 /***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__trees_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__newTree_js__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tree_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__facts_js__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globals_js__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__redux_js__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_js__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__login_js__);
-
-
-
-
-
-
-
-
-var initialized = false;
-var s,
-    g = {
-    nodes: [],
-    edges: []
-};
-window.g = g;
-window.s = s;
-
-var newNodeXOffset = -100,
-    newNodeYOffset = 100,
-    newChildTreeSuffix = "__newChildTree";
-
-var toolTipsConfig = {
-    node: [{
-        show: 'hovers',
-        hide: 'hovers',
-        cssClass: 'sigma-tooltip',
-        position: 'top',
-        //autoadjust: true,
-        template: '<div class="arrow"></div>' + ' <div class="sigma-tooltip-header">{{label}}</div>' + '  <div class="sigma-tooltip-body">' + '    <table>' + '      <tr><th>Name</th> <td>{{data.name}}</td></tr>' + '      <tr><th>Gender</th> <td>{{data.gender}}</td></tr>' + '      <tr><th>Age</th> <td>{{data.age}}</td></tr>' + '      <tr><th>City</th> <td>{{data.city}}</td></tr>' + '    </table>' + '  </div>' + '  <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
-        renderer: function (node, template) {
-            console.log("HOVER RENDER"
-            // The function context is s.graph
-            );node.degree = this.degree(node.id);
-
-            // Returns an HTML string:
-            return Mustache.render(template, node);
-
-            // Returns a DOM Element:
-            //var el = document.createElement('div');
-            //return el.innerHTML = Mustache.render(template, node);
-        }
-    }, {
-        show: 'rightClickNode',
-        cssClass: 'sigma-tooltip',
-        position: 'right',
-        template: `
-              <div class="arrow"></div>
-              <div class="tree-fact" class="sigma-tooltip-header">
-                <div class="tree-current-fact" style="display:block;">
-                    <div class="tree-current-fact-question">{{fact.question}}</div>
-                    <div class="tree-current-fact-answer">{{fact.answer}}</div>
-                </div>
-                <div class="tree-new-fact" style="display:none;" >
-                  <input class="tree-id" value="{{id}}" type="hidden">
-                  <input class="tree-new-fact-question" value="{{fact.question}}">
-                  <input class="tree-new-fact-answer" value="{{fact.answer}}">
-                  <button class="fact-new-save" onclick="treeCtrl.editFactOnTreeFromEvent(event)">Save</button>
-                </div>
-                <button class="sigma-tooltip-edit-button" onclick="treeCtrl.toggleEdit(event)" >Edit</button>
-              </div>
-              <div class="sigma-tooltip-body"> 
-                <p>How well did you know this topic? </p>
-                <p>
-                  <button>Not at All (Review in < 2 min)</button>
-                  <button>Somewhat (10 min)</button>
-                  <button>Easy (1 day)</button>
-                  <button>Perfectly (4 days)</button>
-                 <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->
-                </p> 
-              </div> 
-              <div class="sigma-tooltip-footer">
-                <div class="deleteTreeForm" class="deleteTreeForm">
-                  <input type="hidden" class="treeId" value="{{id}}"> 
-                  <button class="deleteTree" onclick="treeCtrl.deleteTree(event)">DELETE TREE</button> 
-                </div>   
-              </div>
-            `,
-        renderer: function (node, template) {
-            console.log('right click render');
-            var newChildTreeTemplate = `
-                <div class="arrow"></div> 
-                  <div class="sigma-tooltip-header">Add a new Fact </div> 
-                    <div class="sigma-tooltip-body"> 
-                      <p class="newTreeForm">
-                        <input type="hidden" class="parentId" value="${node.parentId}">
-                        Question: <input class='newTreeQuestion' type='text'><br>
-                        Answer: <input class='newTreeAnswer' type='text'><br>
-                        <button class='createNewTree' onclick="treeCtrl.createNewTreeClick(event)">Create New Tree</button>
-                      </p>
-                    </div> 
-                  </div> 
-               <div class="sigma-tooltip-footer">
-                  <p> Number of connections: {{degree}}</p>
-               </div>
-               `;
-
-            if (node.type == 'newChildTree') {
-                template = newChildTreeTemplate;
-            }
-            node.degree = this.degree(node.id);
-            var result = Mustache.render(template, node);
-
-            return result;
-        }
-    }],
-    stage: {
-        template: '<div class="arrow"></div>' + '<div class="sigma-tooltip-header"> Menu </div>'
-    }
-};
-
-const treeCtrl = {
-    createNewTreeClick: function (event) {
-        var newTreeForm = event.target.parentNode;
-        var question = newTreeForm.querySelector('.newTreeQuestion').value;
-        var answer = newTreeForm.querySelector('.newTreeAnswer').value;
-        var parentId = newTreeForm.querySelector('.parentId').value;
-
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__newTree_js__["a" /* newTree */])(question, answer, parentId);
-    },
-    editFactOnTreeFromEvent: function (event) {
-        const treeNewFactDom = event.target.parentNode;
-        var question = treeNewFactDom.querySelector('.tree-new-fact-question').value;
-        var answer = treeNewFactDom.querySelector('.tree-new-fact-answer').value;
-        var treeId = treeNewFactDom.querySelector('.tree-id').value;
-        //1. create new fact
-        var fact = __WEBPACK_IMPORTED_MODULE_3__facts_js__["a" /* Facts */].create({
-            question: question,
-            answer: answer
-        }
-        //2.link new fact with current tree
-        );fact.addTree(treeId);
-        __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => tree.changeFact(fact.id)
-
-        //3.update UI source for question and fact
-        );var sigmaNode = s.graph.nodes().find(node => node.id == treeId);
-        console.log('sigma node is currently', sigmaNode);
-        sigmaNode.fact.question = fact.question;
-        sigmaNode.fact.answer = fact.answer;
-        sigmaNode.fact = fact;
-        s.refresh();
-        console.log('sigma node is now', sigmaNode
-
-        //4. close the edit functionality
-        );const treeFactDom = treeNewFactDom.parentNode;
-        window.treeCtrl.toggleEditGivenTreeFactDom(treeFactDom
-
-        //5. ^^3 and 4 don't seem to be working. Workaround below:
-
-        );alert('Fact updated. Refresh the page to see changes');
-    },
-    toggleEditGivenTreeFactDom: function (treeFactDom) {
-        let treeCurrentFactDom = treeFactDom.querySelector('.tree-current-fact');
-        let treeNewFactDom = treeFactDom.querySelector('.tree-new-fact');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["a" /* toggleVisibility */])(treeCurrentFactDom);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["a" /* toggleVisibility */])(treeNewFactDom);
-    },
-    toggleEdit: function (event) {
-        const factEditDom = event.target.parentNode;
-        window.treeCtrl.toggleEditGivenTreeFactDom(factEditDom);
-    },
-    deleteTree: function (event) {
-        var deleteTreeForm = event.target.parentNode;
-        var treeId = deleteTreeForm.querySelector('.treeId').value;
-        //1.Remove Tree and subtrees from graph
-        removeTreeFromGraph(treeId).then(() => s.refresh()
-        //2. remove the tree's current parent from being its parent
-        );__WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {
-            tree.unlinkFromParent();
-        });
-    }
-};
-window.treeCtrl = treeCtrl;
-
-function removeTreeFromGraph(treeId) {
-    s.graph.dropNode(treeId);
-    s.graph.dropNode(treeId + newChildTreeSuffix);
-    return __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
-        return Promise.all(childPromises).then(val => {
-            return `removed all children of ${treeId}`;
-        });
-    });
-}
-
-var numTreesLoaded = 0;
-loadTreeAndSubTrees(1).then(val => {
-    initSigma();
-} /*.then(initSigma)*/
-// Instantiate sigma:
-);function createTreeNodeFromTreeAndFact(tree, fact) {
-    const node = {
-        id: tree.id,
-        parentId: tree.parentId,
-        x: tree.x,
-        y: tree.y,
-        children: tree.children,
-        fact: fact,
-        label: getLabelFromFact(fact),
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].existingColor,
-        type: 'tree'
-    };
-    return node;
-}
-function getLabelFromFact(fact) {
-    return fact.question;
-}
-function connectTreeToParent(tree, g) {
-    if (tree.parentId) {
-        const edge = {
-            id: tree.parentId + "__" + tree.id,
-            source: tree.parentId,
-            target: tree.id,
-            size: 1,
-            color: __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].existingColor
-        };
-        g.edges.push(edge);
-    }
-}
-function onGetFact(tree, fact) {
-    const node = createTreeNodeFromTreeAndFact(tree, fact);
-    g.nodes.push(node);
-    addShadowNodeToTree(node);
-    tree.parentId && connectTreeToParent(tree, g);
-    return fact.id;
-}
-function onGetTree(tree) {
-    var factsPromise = __WEBPACK_IMPORTED_MODULE_3__facts_js__["a" /* Facts */].get(tree.factId).then(function onFactsGet(fact) {
-        return onGetFact(tree, fact);
-    }).then(factId => {
-        return factId;
-    });
-
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : [];
-    var promises = childTreesPromises;
-    promises.push(factsPromise);
-
-    return Promise.all(promises).then(function onAllChildTreesReceived(resultsArray) {
-        var factIdPrettyString = resultsArray.shift();
-        var treeIdsPrettyStrings = resultsArray.join(', ');
-        var treePrettyString = "( " + factIdPrettyString + " : [ " + treeIdsPrettyStrings + " ] )";
-        return treePrettyString;
-    } //promise should only resolve when the tree's fact and all the subtrees are loaded
-    );
-}
-//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
-function loadTreeAndSubTrees(treeId) {
-    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    numTreesLoaded++;
-    return __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.error('trees get err is', err));
-}
-
-function addShadowNodeToTree(tree) {
-    if (tree.children) {}
-    const shadowNode = {
-        id: tree.id + newChildTreeSuffix, //"_newChildTree",
-        parentId: tree.id,
-        x: parseInt(tree.x) + newNodeXOffset,
-        y: parseInt(tree.y) + newNodeYOffset,
-        label: '+',
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].newColor,
-        type: 'newChildTree'
-    };
-    const shadowEdge = {
-        id: tree.id + "__" + shadowNode.id,
-        source: tree.id,
-        target: shadowNode.id,
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].newColor
-    };
-    if (!initialized) {
-        g.nodes.push(shadowNode);
-        g.edges.push(shadowEdge);
-    } else {
-        s.graph.addNode(shadowNode);
-        s.graph.addEdge(shadowEdge);
-    }
-    if (initialized) {
-        s.refresh();
-    }
-}
-function calculateNewChildNodeCoordinates(treeId) {
-    return __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {});
-}
-function initSigma() {
-    if (!initialized) {
-        sigma.renderers.def = sigma.renderers.canvas;
-        s = new sigma({
-            graph: g,
-            container: 'graph-container'
-        });
-        window.s = s;
-        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        s.refresh();
-
-        s.bind('click', printNodeInfo);
-        s.bind('outNode', updateTreePosition);
-        s.bind('overNode', hoverOverNode);
-        initialized = true;
-    }
-    initSigmaPlugins();
-}
-window.initSigma = initSigma;
-function printNodeInfo(e) {
-    console.log(e, e.data.node);
-}
-function hoverOverNode(e) {
-    var node = e.data.node;
-    console.log('tooltips in hoverOverNode is', window.tooltips
-
-    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
-
-    // Manually open a tooltip on a node:
-    );var prefix = s.renderers[0].camera.prefix;
-    console.log('prefix is', prefix);
-    tooltips.open(node, toolTipsConfig.node[1], node["renderer1:x"] /*n[prefix + 'x']*/, node["renderer1:y"] /*n[prefix + 'y']*/);
-}
-function updateTreePosition(e) {
-    let x = e.data.node.x;
-    let y = e.data.node.y;
-    let treeId = e.data.node.id;
-
-    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
-        return; //node isn't an actual node in the db - its like a shadow node or helper node
-    }
-    __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        if (Math.abs(tree.x - x) > 20) {
-            tree.set('x', x);
-        }
-        if (Math.abs(tree.y - y) > 20) {
-            tree.set('y', y);
-        }
-        return tree;
-    }).then(tree => {});
-}
-function logEvent(e) {
-    const MINIMUM_DISTANCE_TO_UPDATE = 20;
-    let x = e.data.node.x;
-    let y = e.data.node.y;
-    let treeId = e.data.node.id;
-    __WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        if (Math.abs(tree.x - x) > MINIMUM_DISTANCE_TO_UPDATE) {
-            tree.set('x', x);
-        }
-        if (Math.abs(tree.y - y) > MINIMUM_DISTANCE_TO_UPDATE) {
-            tree.set('y', y);
-        }
-    });
-}
-function dragNode(e) {
-    console.log('drag Node', e, e.type, e.data.node, e.data.node.label, e.data.captor);
-    let parentId = e.data.node.parentId;
-    if (e.data.node.type == 'tree') {}
-    // let parentTreeId = e.data.node.id.substring(0,e.data.node.id.indexOf("_"));
-}
-
-//returns sigma tree node
-function addTreeToGraph(parentTreeId, fact) {
-    //1. delete current addNewNode button
-    var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
-    var newChildTreeX = parseInt(currentNewChildTree.x);
-    var newChildTreeY = parseInt(currentNewChildTree.y);
-    var tree = new __WEBPACK_IMPORTED_MODULE_2__tree_js__["a" /* Tree */](fact.id, parentTreeId, newChildTreeX, newChildTreeY);
-    //2. add new node to parent tree on UI
-    const newTree = {
-        id: tree.id,
-        parentId: parentTreeId,
-        factId: fact.id,
-        fact: fact,
-        x: newChildTreeX,
-        y: newChildTreeY,
-        children: {},
-        label: getLabelFromFact(fact),
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].existingColor,
-        type: 'tree'
-        //2b. update x and y location in the db for the tree
-
-    };s.graph.dropNode(currentNewChildTree.id);
-    s.graph.addNode(newTree);
-    //3. add edge between new node and parent tree
-    const newEdge = {
-        id: parentTreeId + "__" + newTree.id,
-        source: parentTreeId,
-        target: newTree.id,
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__globals_js__["a" /* Globals */].existingColor
-    };
-    s.graph.addEdge(newEdge
-    //4. add shadow node
-    );addShadowNodeToTree(newTree
-    //5. Re add shadow node to parent
-    );__WEBPACK_IMPORTED_MODULE_0__trees_js__["a" /* Trees */].get(parentTreeId).then(addShadowNodeToTree);
-
-    s.refresh();
-    return newTree;
-}
-function initSigmaPlugins() {
-    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
-    window.tooltips = tooltips;
-}
-
-/***/ }),
-/* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = toggleVisibility;
-function toggleVisibility(el) {
-    var style = el.style;
-    if (style.display == 'block') {
-        style.display = 'none';
-    } else {
-        style.display = 'block';
-    }
-}
-
-/***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -2620,62 +2396,6 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2697,7 +2417,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(13);
+var _shared_promise = __webpack_require__(17);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2992,13 +2712,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(12);
+var _errors = __webpack_require__(16);
 
-var _errors2 = __webpack_require__(8);
+var _errors2 = __webpack_require__(9);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(63);
+var _tokenManager = __webpack_require__(67);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -3378,11 +3098,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(70);
+var _fs = __webpack_require__(74);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(17);
+var _string = __webpack_require__(21);
 
 var string = _interopRequireWildcard(_string);
 
@@ -3626,7 +3346,7 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(15);
+var _array = __webpack_require__(19);
 
 var array = _interopRequireWildcard(_array);
 
@@ -3636,7 +3356,7 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(16);
+var _metadata = __webpack_require__(20);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -3644,13 +3364,13 @@ var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(74);
+var _requestinfo = __webpack_require__(78);
 
 var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(18);
+var _url = __webpack_require__(22);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -4104,7 +3824,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(14);
+var _args = __webpack_require__(18);
 
 var args = _interopRequireWildcard(_args);
 
@@ -4114,9 +3834,9 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(10);
+var _location = __webpack_require__(11);
 
-var _metadata = __webpack_require__(16);
+var _metadata = __webpack_require__(20);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -4132,7 +3852,7 @@ var _requests = __webpack_require__(33);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(17);
+var _string = __webpack_require__(21);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -4140,7 +3860,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(79);
+var _task = __webpack_require__(83);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -4382,10 +4102,10 @@ var Reference = exports.Reference = function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(50),
-      utf8 = __webpack_require__(24).utf8,
-      isBuffer = __webpack_require__(81),
-      bin = __webpack_require__(24).bin,
+  var crypt = __webpack_require__(54),
+      utf8 = __webpack_require__(25).utf8,
+      isBuffer = __webpack_require__(88),
+      bin = __webpack_require__(25).bin,
 
   // The core
   md5 = function (message, options) {
@@ -4735,238 +4455,38 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 39 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(90)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(15);
 
 
 /***/ }),
 /* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(5);
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"header\">\n    <h1>THIS IS HEADER COMPONENT</h1>\n    <span class=\"header-version\"> Version: {{headerCtrl.version}}</span>\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\n    <button class=\"login-button\"  ng-click=\"headerCtrl.login()\"> Login via Facebook </button>\n    <span class=\"login-user-name\"></span>\n</div>\n";
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function injectStyle (ssrContext) {
-  __webpack_require__(89)
-  __webpack_require__(88)
+  __webpack_require__(93)
 }
-var Component = __webpack_require__(86)(
+var Component = __webpack_require__(91)(
   /* script */
-  __webpack_require__(43),
+  __webpack_require__(53),
   /* template */
-  __webpack_require__(87),
+  __webpack_require__(92),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4979,7 +4499,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14673,10 +14193,10 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(38), __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(38), __webpack_require__(12)))
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -15032,93 +14552,174 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 43 */
+/* 45 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"apiKey": "AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A",
+	"authDomain": "branches-dev.firebaseapp.com",
+	"databaseURL": "https://branches-dev.firebaseio.com",
+	"projectId": "branches-dev",
+	"storageBucket": "branches-dev.appspot.com",
+	"messagingSenderId": "354929800016"
+};
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"apiKey": "AIzaSyARFLXLjlpf4zNk0uCNwSzUBIn0osDwfQI",
+	"authDomain": "branches-prod.firebaseapp.com",
+	"databaseURL": "https://branches-prod.firebaseio.com",
+	"projectId": "branches-prod",
+	"storageBucket": "branches-prod.appspot.com",
+	"messagingSenderId": "663497929399"
+};
+
+/***/ }),
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(23);
+
+//temporary hacky solution for controller
+const newTreeCtrl = {
+    createNewTreeClick: function (event) {
+        var newTreeForm = event.target.parentNode;
+        var question = newTreeForm.querySelector('.newTree-question').value;
+        var answer = newTreeForm.querySelector('.newTree-answer').value;
+        var parentId = newTreeForm.querySelector('.newTree-parentId').value;
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__["a" /* newTree */])(question, answer, parentId);
+    }
+};
+window.newTreeCtrl = newTreeCtrl;
+
+/***/ }),
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_trees_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_facts_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_utils__ = __webpack_require__(14);
+
+
+
+
+
+
+//hacky controller solution for now - as i haven't yet figured out how to (or tried to ) place an angular component inside of a sigmajs/linkurious rendered template on the HTML5 canvas
+const treeCtrl = {
+    editFactOnTreeFromEvent: function (event) {
+        const treeNewFactDom = event.target.parentNode;
+        var question = treeNewFactDom.querySelector('.tree-new-fact-question').value;
+        var answer = treeNewFactDom.querySelector('.tree-new-fact-answer').value;
+        var treeId = treeNewFactDom.querySelector('.tree-id').value;
+        //1. create new fact
+        var fact = __WEBPACK_IMPORTED_MODULE_3__objects_facts_js__["a" /* Facts */].create({
+            question: question,
+            answer: answer
+        }
+        //2.link new fact with current tree
+        );fact.addTree(treeId);
+        __WEBPACK_IMPORTED_MODULE_2__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => tree.changeFact(fact.id)
+
+        //3.update UI source for question and fact
+        );var sigmaNode = s.graph.nodes().find(node => node.id == treeId);
+        sigmaNode.fact = fact;
+        s.refresh
+
+        //4. close the edit functionality
+        ();const treeFactDom = treeNewFactDom.parentNode;
+        window.treeCtrl.toggleEditGivenTreeFactDom(treeFactDom
+
+        //5. ^^3 and 4 don't seem to be working. Workaround below:
+
+        );alert('Fact updated. Refresh the page to see changes');
+    },
+    toggleEditGivenTreeFactDom: function (treeFactDom) {
+        let treeCurrentFactDom = treeFactDom.querySelector('.tree-current-fact');
+        let treeNewFactDom = treeFactDom.querySelector('.tree-new-fact');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__core_utils__["a" /* toggleVisibility */])(treeCurrentFactDom);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__core_utils__["a" /* toggleVisibility */])(treeNewFactDom);
+    },
+    toggleEdit: function (event) {
+        const factEditDom = event.target.parentNode;
+        window.treeCtrl.toggleEditGivenTreeFactDom(factEditDom);
+    },
+    deleteTree: function (event) {
+        var deleteTreeForm = event.target.parentNode;
+        var treeId = deleteTreeForm.querySelector('.tree-id').value;
+        //1.Remove Tree and subtrees from graph
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["b" /* removeTreeFromGraph */])(treeId).then(() => s.refresh()
+        //2. remove the tree's current parent from being its parent
+        );__WEBPACK_IMPORTED_MODULE_2__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+            tree.unlinkFromParent();
+        });
+    }
+    //accessible in Mustache template via window
+};window.treeCtrl = treeCtrl;
+
+/***/ }),
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__trees_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_js__ = __webpack_require__(23);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__App_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuefire__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_js__ = __webpack_require__(13);
 
 
 
 
 
-var userObj = {
-  loggedIn: false,
-  name: ''
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'app',
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      version: __WEBPACK_IMPORTED_MODULE_2__config_js__["a" /* Config */].version,
-      loggedIn: userObj.loggedIn,
-      userName: userObj.name
-    };
-  },
-  methods: {
-    login: function (event) {
-      console.log('login called');
-      var provider = new firebase.auth.FacebookAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function (result) {
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        var token = result.credential.accessToken;
-        document.querySelector('.login-user-name').innerHTML = result.user.displayName;
-        document.querySelector('.login-button').style.display = 'none';
-        console.log('result', result);
-        Globals.username = result.user.displayName;
-        Globals.userId = result.user.uid;
-      }).catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-      });
+
+
+
+__WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuefire___default.a);
+new __WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */]({ el: '#bootstrap', render: h => h(__WEBPACK_IMPORTED_MODULE_0__App_vue___default.a) });
+
+//ABOVE original VUEJS
+///BELOW CONVERTING TO ANGULAR -- below still doesn't work yet
+
+
+var branches = angular.module('branches', ['ngRoute']);
+branches.component('header', {
+    template: __webpack_require__(41),
+    controller: function HeaderController() {
+        this.login = __WEBPACK_IMPORTED_MODULE_6__login_js__["a" /* login */];
     }
+});
 
-  },
-  components: {}
+branches.config(function ($routeProvider) {
+    $routeProvider.when('/', {
+        template: '<header></header>'
+    });
 });
 
 /***/ }),
-/* 44 */
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const ENV = 'dev';
+
+/* harmony default export */ __webpack_exports__["a"] = (ENV);
+
+/***/ }),
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15131,113 +14732,85 @@ const Globals = {
 
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports) {
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var provider = new firebase.auth.FacebookAuthProvider();
-var mobile = false;
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 
-if (mobile) {} else {
-    // firebase.auth().signInWithPopup(provider).then(function(result) {
-    //     // // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    //     // var token = result.credential.accessToken;
-    //     // // The signed-in user info.
-    //     // var user = result.user;
-    //     // console.log('FACEBOOK FACEBOOK FACEBOOK result is', result, user)
-    //     // ...
-    // }).catch(function(error) {
-    //     // Handle Errors here.
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //     // The email of the user's account used.
-    //     var email = error.email;
-    //     // The firebase.auth.AuthCredential type that was used.
-    //     var credential = error.credential;
-    //     // ...
-    // });
+class Fact {
+  constructor(question, answer) {
+    this.question = question;
+    this.answer = answer;
+    this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
+    this.trees = {};
+  }
+  addTree(treeId) {
+    this.trees[treeId] = true;
+    var trees = {};
+    trees[treeId] = true;
+    var updates = {
+      trees
+    };
+    firebase.database().ref('facts/' + this.id).update(updates);
+  }
 }
+/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
+
 
 /***/ }),
-/* 46 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuefire__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_js__ = __webpack_require__(13);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
-__WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuefire___default.a);
-
-new __WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */]({ el: '#bootstrap', render: h => h(__WEBPACK_IMPORTED_MODULE_0__App_vue___default.a) });
-
-/***/ }),
-/* 47 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__newfact_js__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__treesGraph_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees__ = __webpack_require__(7);
-
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
-
-
-function newTree(question, answer, parentTreeId) {
-    var fact = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__newfact_js__["a" /* newFact */])(question, answer);
-    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, fact
-    //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
-    //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
-    );__WEBPACK_IMPORTED_MODULE_3__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
-        parentTree.addChild(tree.id);
-    });
-    fact.addTree(tree.id);
-}
-
-/***/ }),
-/* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = newFact;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(5);
-
-
-//TODO Replace a lot of this with the Trees.js or Tree.js ORM
-function writeNewFact(fact) {
-    const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
-    var updates = {};
-    updates['/facts/' + fact.id] = fact;
-    firebase.database().ref().update(updates);
-}
-function newFact(question, answer, treeId) {
-    var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](question, answer, treeId);
-    writeNewFact(fact);
-    return fact;
-}
-
-/***/ }),
-/* 49 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const Redux = {
-    dispatch: () => {}
+var userObj = {
+  loggedIn: false,
+  name: ''
 };
-/* unused harmony export Redux */
-
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'app',
+  data() {
+    return {
+      version: __WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* Config */].version
+    };
+  },
+  methods: {
+    login: __WEBPACK_IMPORTED_MODULE_2__login_js__["a" /* login */]
+  }
+});
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -15339,35 +14912,77 @@ const Redux = {
 
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(25)();
+exports = module.exports = __webpack_require__(56)();
 // imports
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#facts,#trees-graph{flex:50}.header-plan{margin-left:8px;margin-right:8px;display:inline}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 56 */
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(25)();
-// imports
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
 
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
 
-// module
-exports.push([module.i, "#facts,#trees-graph{flex:50}.app-plan{margin-left:8px;margin-right:8px;display:inline}.pluginLoginButton{display:flex!important;flex-direction:row}", ""]);
-
-// exports
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
 
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15469,7 +15084,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15504,11 +15119,11 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(26);
 
-var _errors = __webpack_require__(12);
+var _errors = __webpack_require__(16);
 
-var _shared_promise = __webpack_require__(13);
+var _shared_promise = __webpack_require__(17);
 
-var _deep_copy = __webpack_require__(53);
+var _deep_copy = __webpack_require__(57);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15873,7 +15488,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
@@ -16149,10 +15764,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -16423,7 +16038,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16441,18 +16056,18 @@ var _app = __webpack_require__(6);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(55);
+__webpack_require__(59);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(56);
-__webpack_require__(65);
+__webpack_require__(60);
+__webpack_require__(69);
 var AsyncStorage;
 
-__webpack_require__(58);
+__webpack_require__(62);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -16460,7 +16075,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16490,11 +16105,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(60);
+var _windowController = __webpack_require__(64);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(59);
+var _swController = __webpack_require__(63);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -16521,7 +16136,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16558,7 +16173,7 @@ var _controllerInterface = __webpack_require__(27);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(8);
+var _errors = __webpack_require__(9);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -16899,7 +16514,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16936,7 +16551,7 @@ var _controllerInterface = __webpack_require__(27);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(8);
+var _errors = __webpack_require__(9);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -16944,7 +16559,7 @@ var _workerPageMessage = __webpack_require__(30);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(62);
+var _defaultSw = __webpack_require__(66);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -17300,7 +16915,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17343,7 +16958,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17380,7 +16995,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17411,13 +17026,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(12);
+var _errors = __webpack_require__(16);
 
-var _errors2 = __webpack_require__(8);
+var _errors2 = __webpack_require__(9);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(61);
+var _arrayBufferToBase = __webpack_require__(65);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -17802,7 +17417,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -18039,10 +17654,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(85).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(90).setImmediate))
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18057,15 +17672,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(17);
+var _string = __webpack_require__(21);
 
 var _taskenums = __webpack_require__(34);
 
-var _xhriopool = __webpack_require__(77);
+var _xhriopool = __webpack_require__(81);
 
 var _reference = __webpack_require__(36);
 
-var _service = __webpack_require__(78);
+var _service = __webpack_require__(82);
 
 var _app = __webpack_require__(6);
 
@@ -18112,7 +17727,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18170,7 +17785,7 @@ function async(f) {
 
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18187,7 +17802,7 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(9);
+var _constants = __webpack_require__(10);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -18195,15 +17810,15 @@ var _error2 = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(69);
+var _failrequest = __webpack_require__(73);
 
-var _location = __webpack_require__(10);
+var _location = __webpack_require__(11);
 
 var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(75);
+var _requestmap = __webpack_require__(79);
 
 var _type = __webpack_require__(0);
 
@@ -18352,7 +17967,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18484,7 +18099,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18543,7 +18158,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18624,7 +18239,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18680,7 +18295,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18740,7 +18355,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18780,11 +18395,11 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(15);
+var _array = __webpack_require__(19);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(68);
+var _backoff = __webpack_require__(72);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -18804,7 +18419,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(18);
+var _url = __webpack_require__(22);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -19013,7 +18628,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19060,7 +18675,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19096,7 +18711,7 @@ var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(9);
+var _constants = __webpack_require__(10);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -19155,7 +18770,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19354,7 +18969,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 77 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19386,7 +19001,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(76);
+var _xhrio_network = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19411,7 +19026,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19443,19 +19058,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(14);
+var _args = __webpack_require__(18);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(67);
+var _authwrapper = __webpack_require__(71);
 
-var _location = __webpack_require__(10);
+var _location = __webpack_require__(11);
 
 var _promise_external = __webpack_require__(2);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(73);
+var _request = __webpack_require__(77);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -19602,7 +19217,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19641,19 +19256,19 @@ var _taskenums = __webpack_require__(34);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(72);
+var _observer = __webpack_require__(76);
 
-var _tasksnapshot = __webpack_require__(80);
+var _tasksnapshot = __webpack_require__(84);
 
-var _args = __webpack_require__(14);
+var _args = __webpack_require__(18);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(15);
+var _array = __webpack_require__(19);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(66);
+var _async = __webpack_require__(70);
 
 var _error = __webpack_require__(1);
 
@@ -20245,7 +19860,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20297,7 +19912,25 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 81 */
+/* 85 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"arrow\"></div>\n<div class=\"sigma-tooltip-header\">Add a new Fact </div>\n<div class=\"sigma-tooltip-body\">\n    <p class=\"newTree-form\">\n        <input type=\"hidden\" class=\"newTree-parentId\" value=\"{{parentId}}\">\n        Question: <input class='newTree-question' type='text'><br>\n        Answer: <input class='newTree-answer' type='text'><br>\n        <button class='newTree-create-button' onclick=\"newTreeCtrl.createNewTreeClick(event)\">Create New Tree</button>\n    </p>\n</div>\n";
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"arrow\"></div>\n<div class=\"sigma-tooltip-header\"> Menu </div>\n";
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"arrow\"></div>\n<div class=\"tree-fact\" class=\"sigma-tooltip-header\">\n    <div class=\"tree-current-fact\" style=\"display:block;\">\n        <div class=\"tree-current-fact-question\">{{fact.question}}</div>\n        <div class=\"tree-current-fact-answer\">{{fact.answer}}</div>\n    </div>\n    <div class=\"tree-new-fact\" style=\"display:none;\" >\n        <input class=\"tree-id\" value=\"{{id}}\" type=\"hidden\">\n        <input class=\"tree-new-fact-question\" value=\"{{fact.question}}\">\n        <input class=\"tree-new-fact-answer\" value=\"{{fact.answer}}\">\n        <button class=\"fact-new-save\" onclick=\"treeCtrl.editFactOnTreeFromEvent(event)\">Save</button>\n    </div>\n    <button class=\"sigma-tooltip-edit-button\" onclick=\"treeCtrl.toggleEdit(event)\" >Edit</button>\n</div>\n<div class=\"tree-confidence sigma-tooltip-body\">\n    <p>How well did you know this topic? </p>\n    <p>\n        <button>Not at All (Review in < 2 min)</button>\n        <button>Somewhat (10 min)</button>\n        <button>Easy (1 day)</button>\n        <button>Perfectly (4 days)</button>\n        <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->\n    </p>\n</div>\n<div class=\"sigma-tooltip-footer\">\n    <div class=\"tree-delete\">\n        <input class=\"tree-id\" type=\"hidden\"  value=\"{{id}}\">\n        <button class=\"tree-delete-button\" onclick=\"treeCtrl.deleteTree(event)\">DELETE TREE</button>\n    </div>\n</div>\n";
+
+/***/ }),
+/* 88 */
 /***/ (function(module, exports) {
 
 /*!
@@ -20324,33 +19957,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 82 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"apiKey": "AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A",
-	"authDomain": "branches-dev.firebaseapp.com",
-	"databaseURL": "https://branches-dev.firebaseio.com",
-	"projectId": "branches-dev",
-	"storageBucket": "branches-dev.appspot.com",
-	"messagingSenderId": "354929800016"
-};
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"apiKey": "AIzaSyARFLXLjlpf4zNk0uCNwSzUBIn0osDwfQI",
-	"authDomain": "branches-prod.firebaseapp.com",
-	"databaseURL": "https://branches-prod.firebaseio.com",
-	"projectId": "branches-prod",
-	"storageBucket": "branches-prod.appspot.com",
-	"messagingSenderId": "663497929399"
-};
-
-/***/ }),
-/* 84 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -20540,10 +20147,10 @@ module.exports = {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(38)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(38)))
 
 /***/ }),
-/* 85 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -20596,13 +20203,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(84);
+__webpack_require__(89);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 86 */
+/* 91 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -20699,16 +20306,16 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 87 */
+/* 92 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     attrs: {
-      "id": "app"
+      "id": "header"
     }
   }, [_c('span', {
-    staticClass: "app-version"
+    staticClass: "header-version"
   }, [_vm._v(" Version: " + _vm._s(_vm.version))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('button', {
     staticClass: "login-button",
     on: {
@@ -20719,7 +20326,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
-    staticClass: "app-plan"
+    staticClass: "header-plan"
   }, [_c('a', {
     attrs: {
       "href": "https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing"
@@ -20727,7 +20334,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("The Plan")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
-    staticClass: "app-hire"
+    staticClass: "header-hire"
   }, [_c('a', {
     attrs: {
       "href": "mailto:john@branches-app.com"
@@ -20736,33 +20343,241 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 }]}
 
 /***/ }),
-/* 88 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(51);
+var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(39)("ef76fe88", content, true);
+var update = __webpack_require__(94)("dc4e6eb4", content, true);
 
 /***/ }),
-/* 89 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
 
-// load the styles
-var content = __webpack_require__(52);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(39)("7e05ae0a", content, true);
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(95)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
 
 /***/ }),
-/* 90 */
+/* 95 */
 /***/ (function(module, exports) {
 
 /**
