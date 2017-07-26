@@ -15,4 +15,5 @@ export class Fact {
     }
     firebase.database().ref('facts/' +this.id).update(updates)
   }
+
 }

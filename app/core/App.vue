@@ -21,12 +21,9 @@
 
 <script>
 import {Config} from './config.js'
-import {toggleVisibility} from './utils.js'
 import {login} from './login.js'
-var userObj = {
-    loggedIn: false,
-    name: ''
-}
+import user from '../objects/user.js'
+
 export default {
   name: 'app',
   data () {
