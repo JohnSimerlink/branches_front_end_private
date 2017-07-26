@@ -1,5 +1,6 @@
 import md5 from 'md5';
 import user from './user'
+import firebase from './firebaseService'
 export class Fact {
   //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
   constructor ({question, answer, id, usersTimeMap, trees}){
@@ -10,12 +11,12 @@ export class Fact {
 
     this.usersTimeMap = usersTimeMap || {} ;
 
-    this.timeElapsedForCurrentUser = user.loggedIn && userTimeMap[user.getId()] || 0
+    this.timeElapsedForCurrentUser = user.loggedIn && this.usersTimeMap && this.usersTimeMap[user.getId()] || 0
     this.timerId = null;
   }
 
   updateWithUserInfo() {//in case the card was loaded before the user logged in and userTimeElapsed is just a 0 when it actually isnt in the db
-    this.timeElapsed = user.loggedIn && userTimeMap[user.getId()] || 0
+    this.timeElapsed = user.loggedIn && usersTimeMap[user.getId()] || 0
   }
 
   //bc certain properties used in the local js object in memory, shouldn't be stored in the db
@@ -37,22 +38,28 @@ export class Fact {
     var updates = {
       trees
     }
+    console.log('fact.js about to addTree')
     firebase.database().ref('facts/' +this.id).update(updates)
-  }
-  getTimeSpentForCurrentUser(){
-
-
+    console.log('fact.js just addedTree')
   }
   continueTimer(){
+      if (!user.loggedIn) return;
       const self = this
       this.timerId = setInterval(()=>{
          self.timeElapsedForCurrentUser++
+          console.log('timeElapsedForCurrent user is', self.timeElapsedForCurrentUser)
       },1000)
   }
 
   pauseTimer() {
       clearInterval(this.timerId)
-      // this.usersTimeMap[user.id] =
+      this.usersTimeMap[user.getId()] = self.timeElapsedForCurrentUser
+
+      var updates = {
+          usersTimeMap: this.usersTimeMap
+      }
+      console.log('pause timer called for ',this.id, user.getId())
+      firebase.database().ref('facts/' + this.id).updates(updates)
   }
 
 }

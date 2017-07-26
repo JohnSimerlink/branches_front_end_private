@@ -1,9 +1,12 @@
 <div class="arrow"></div>
 <div class="tree-fact" class="sigma-tooltip-header">
     <div class="tree-current-fact" style="display:block;">
+        <input type="text" class="tree-current-fact-id" value="{{fact.id}}" hidden>
+        <button class="tree-current-fact-timer-start" onclick="treeCtrl.continueTimer(event)">Continue Timer</button>
+        <button class="tree-current-fact-timer-end" onclick="treeCtrl.pauseTimer(event)">Pause Timer</button>
+        <div class="tree-current-fact-timer">{{fact.timeElapsedForCurrentUser}} seconds </div>
         <div class="tree-current-fact-question">{{fact.question}}</div>
         <div class="tree-current-fact-answer">{{fact.answer}}</div>
-        <div class="tree-current-fact-timer">{{fact.user.numSeconds}}</div>
     </div>
     <div class="tree-new-fact" style="display:none;" >
         <input class="tree-id" value="{{id}}" type="hidden">
