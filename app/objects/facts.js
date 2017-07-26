@@ -2,19 +2,21 @@ import {Fact} from './fact.js';
 import {Config} from '../core/config.js'
 import firebase from './firebaseService.js'
 
+const facts = {} // cache
 export class Facts {
-   //TODO: make resolve "null" or something if fact not found
    static get(factId) {
+        if(!factId){
+            throw "Facts.get(factId) error! factId empty!"
+        }
        return new Promise((resolve, reject) => {
-           if (Config.offlineMode){
-               const fact = offlineFacts[factId]
-               resolve(fact)
-           } else {
-               firebase.database().ref('facts/' + factId).on("value", function(snapshot){
-                   var fact = snapshot.val()
-                   resolve(fact)
-               })
-           }
+            if (facts[factId]){
+                resolve(facts[factId])
+            } else {
+                firebase.database().ref('facts/' + factId).on("value", function(snapshot){
+                    var fact = snapshot.val()
+                    resolve(fact)
+                })
+            }
 
        })
    }

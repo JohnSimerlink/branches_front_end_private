@@ -2,13 +2,13 @@ import {Facts} from './facts.js'
 import {Tree} from './tree.js'
 import {Config} from '../core/config.js'
 import firebase from './firebaseService.js'
+
 const trees = {
-}
+} // cache
 export class Trees {
     static getAll(success){
     }
     //returns promise
-    //TODO: make resolve "null" or something if fact not found
     static get(treeId){
         if (!treeId) {
            throw "Trees.get(treeId) error!. treeId empty"
@@ -16,7 +16,7 @@ export class Trees {
         return new Promise( function getTreePromise (resolve, reject) {
             let treeObj;
 
-            //trees[] serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
             if (trees[treeId]){
                 resolve(trees[treeId])
             } else {
