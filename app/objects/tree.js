@@ -1,10 +1,7 @@
 import md5 from 'md5'
-import getFirebase from './firebaseService.js';
-const firebase = getFirebase();
-window.firebase = firebase
+import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');
 const trees = {};
-import {Config} from '../core/config.js'
 import {Trees} from './trees.js'
 
 function loadObject(treeObj, self){

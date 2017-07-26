@@ -1,5 +1,3 @@
-import getFirebase from './firebaseService.js'
-const firebase = getFirebase();
 import {addTreeToGraph} from '../components/treesGraph.js'
 import {Trees} from './trees'
 import {Facts} from './facts'

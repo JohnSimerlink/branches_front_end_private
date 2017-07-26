@@ -1,7 +1,6 @@
 import {Fact} from './fact.js';
 import {Config} from '../core/config.js'
-import getFirebase from './firebaseService.js'
-const firebase = getFirebase()
+import firebase from './firebaseService.js'
 
 export class Facts {
    //TODO: make resolve "null" or something if fact not found

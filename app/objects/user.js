@@ -1,5 +1,4 @@
-import getFirebase from './firebaseService.js'
-var firebase = getFirebase()
+import firebase from './firebaseService.js'
 class User {
 
 
