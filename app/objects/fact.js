@@ -52,14 +52,20 @@ export class Fact {
   }
 
   pauseTimer() {
+      if (!user.loggedIn) return;
+      console.log('all facts within fact.js pauseTimer is . . . . .')
+      firebase.database().ref('facts/' + this.id).on('value', function(snapshot) {
+          console.log('snapshot of fact within fact.js pauseTimer is', snapshot.val())
+      })
+
       clearInterval(this.timerId)
-      this.usersTimeMap[user.getId()] = self.timeElapsedForCurrentUser
+      this.usersTimeMap[user.getId()] = this.timeElapsedForCurrentUser
 
       var updates = {
           usersTimeMap: this.usersTimeMap
       }
-      console.log('pause timer called for ',this.id, user.getId())
-      firebase.database().ref('facts/' + this.id).updates(updates)
+      console.log('pause timer called for ',this.id, user.getId(), updates)
+      firebase.database().ref('facts/' + this.id).update(updates)
   }
 
 }

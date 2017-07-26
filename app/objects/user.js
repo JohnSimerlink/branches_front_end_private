@@ -11,6 +11,7 @@ class User {
         // User is signed in.
           self.loggedIn = true;
           self.data = user;
+          console.log('user data is', self.data)
           // self.id = .
       } else {
         console.log('user is not logged in')
@@ -21,7 +22,7 @@ class User {
 
   }
   getId(){
-
+    return this.data.uid
   }
 }
 
