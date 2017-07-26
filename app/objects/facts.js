@@ -13,7 +13,9 @@ export class Facts {
                 resolve(facts[factId])
             } else {
                 firebase.database().ref('facts/' + factId).on("value", function(snapshot){
-                    var fact = snapshot.val()
+                    var factData = snapshot.val()
+                    var fact = new Fact(factData)
+                    facts[fact.id] = fact // add to cache
                     resolve(fact)
                 })
             }
@@ -22,9 +24,10 @@ export class Facts {
    }
    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
    static create({question, answer}){
-       var fact = new Fact(question, answer)
+       var fact = new Fact({question, answer})
        var updates = {};
-       updates['/facts/' + fact.id] = fact;
+       updates['/facts/' + fact.id] = fact.getDBRepresentation();
+       console.log('facts create updates are', updates)
        firebase.database().ref().update(updates);
        return fact
    }
