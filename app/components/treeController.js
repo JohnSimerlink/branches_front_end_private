@@ -55,6 +55,18 @@ const treeCtrl = {
         Trees.get(treeId).then(tree => {
             tree.unlinkFromParent()
         })
+    },
+    continueTimer: function(event){
+        var factDom = event.target.parentNode
+
+        var factId = factDom.querySelector('.tree-current-fact-id').value
+        console.log('fact id in continue timer is', factId)
+        Facts.get(factId).then(fact => fact.continueTimer())
+    },
+    pauseTimer: function(event){
+        var factDom = event.target.parentNode
+        var factId = factDom.querySelector('.tree-current-fact-id').value
+        Facts.get(factId).then(fact => fact.pauseTimer())
     }
 }
 //accessible in Mustache template via window
