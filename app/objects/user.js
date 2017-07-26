@@ -3,18 +3,18 @@ class User {
 
 
   constructor(){
-    this.signedIn=false;
+    this.loggedin=false;
     const self = this;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log('USER is now logged in', user)
         // User is signed in.
-          self.signedIn = true;
+          self.loggedin = true;
           self.data = user;
           // self.id = .
       } else {
         console.log('user is not logged in')
-          signedIn = false;
+          loggedin = false;
         // No user is signed in.
       }
     });
