@@ -1,10 +1,19 @@
 <div class="arrow"></div>
-<div class="sigma-tooltip-header">Add a new Fact </div>
+<div class="sigma-tooltip-header">Add a new Tree </div>
 <div class="sigma-tooltip-body">
-    <p class="newTree-form">
+    <div class="tree-type-selector">
+        <button class="select-tree-type-button" onclick="newTreeCtrl.selectTreeType(event, 'heading')">Heading</button>
+        <button class="select-tree-type-button" onclick="newTreeCtrl.selectTreeType(event, 'fact')">Fact</button>
+    </div>
+    <p class="newTree-form tree-fact hidden">
         <input type="hidden" class="newTree-parentId" value="{{parentId}}">
         Question: <input class='newTree-question' type='text'><br>
         Answer: <input class='newTree-answer' type='text'><br>
+        <button class='newTree-create-button' onclick="newTreeCtrl.createNewTreeClick(event)">Create New Tree</button>
+    </p>
+    <p class="newTree-form tree-heading hidden">
+        <input type="hidden" class="newTree-parentId" value="{{parentId}}">
+        <input type="text" class="newTree-title" placeholder="Enter a title">
         <button class='newTree-create-button' onclick="newTreeCtrl.createNewTreeClick(event)">Create New Tree</button>
     </p>
 </div>
