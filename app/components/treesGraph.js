@@ -1,6 +1,6 @@
 import {Trees} from '../objects/trees.js'
 import {Tree} from '../objects/tree.js'
-import {Facts} from '../objects/facts.js'
+import {ContentItem} from '../objects/contentItem.js'
 import {Globals} from '../core/globals.js'
 import './treeController'
 import './newTreeController'
@@ -25,7 +25,6 @@ var toolTipsConfig = {
             position: 'right',
             template: '',
             renderer: function(node, template) {
-                console.log('right click render')
                 switch(node.type){
                     case 'tree':
                         template = require('./tree.html')
@@ -51,8 +50,8 @@ function loadTreeAndSubTrees(treeId){
         .catch( err => console.error('trees get err is', err))
 }
 function onGetTree(tree) {
-    var factsPromise = Facts.get(tree.factId)
-        .then( function onFactsGet(fact) {return addTreeNodeToGraph(tree,fact)})
+    var factsPromise = ContentItem.get(tree.contentId || tree.factId) //Support old style nodes for testing
+        .then( function onFactsGet(fact) { return addTreeNodeToGraph(tree,fact)}, function onGetFailed(err) { console.error("Failed to get node for content id " + tree.contentId) });
 
     var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
     var promises = childTreesPromises
@@ -61,12 +60,12 @@ function onGetTree(tree) {
     return Promise.all(promises)
 }
 
-function addTreeNodeToGraph(tree,fact){
-    const treeUINode = createTreeNodeFromTreeAndFact(tree,fact)
+function addTreeNodeToGraph(tree,content){
+    const treeUINode = createTreeNodeFromTreeAndContent(tree,content);
     g.nodes.push(treeUINode);
-    addNewChildTreeToTree(treeUINode)
-    connectTreeToParent(tree,g)
-    return fact.id
+    addNewChildTreeToTree(treeUINode);
+    connectTreeToParent(tree,g);
+    return content.id;
 }
 
 export function removeTreeFromGraph(treeId){
@@ -81,24 +80,26 @@ export function removeTreeFromGraph(treeId){
 }
 //recursively load the entire tree
 // Instantiate sigma:
-function createTreeNodeFromTreeAndFact(tree, fact){
+function createTreeNodeFromTreeAndContent(tree, content){
     const node = {
         id: tree.id,
         parentId: tree.parentId,
         x: tree.x,
         y: tree.y,
         children: tree.children,
-        fact: fact,
-        label: getLabelFromFact(fact),
+        content: content,
+        label: getLabelFromContent(content),
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
-    }
+    };
     return node;
 }
-function getLabelFromFact(fact) {
-    return fact.question
+
+function getLabelFromContent(content) {
+    return (content) ? content.title || content.question : "OLD NODE"; //TODO Replace all old nodes
 }
+
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
@@ -122,7 +123,7 @@ function addNewChildTreeToTree(tree){
     const newChildTree = {
         id: tree.id + newChildTreeSuffix, //"_newChildTree",
         parentId: tree.id,
-        x: parseInt(tree.x) + newNodeXOffset,
+        x: parseInt(tree.x) + newNodeXOffset + 100,
         y: parseInt(tree.y) + newNodeYOffset,
         label: '+',
         size: 1,
@@ -140,8 +141,8 @@ function addNewChildTreeToTree(tree){
         g.nodes.push(newChildTree)
         g.edges.push(shadowEdge)
     } else {
-       s.graph.addNode(newChildTree)
-       s.graph.addEdge(shadowEdge)
+        s.graph.addNode(newChildTree)
+        s.graph.addEdge(shadowEdge)
     }
     if (initialized){
         s.refresh()
@@ -166,7 +167,7 @@ function initSigma(){
     initSigmaPlugins()
 }
 function printNodeInfo(e){
-   console.log(e, e.data.node)
+    console.log(e, e.data.node)
 }
 function hoverOverNode(e){
     var node = e.data.node
@@ -193,26 +194,26 @@ function updateTreePosition(e){
 }
 
 //returns sigma tree node
-export function addTreeToGraph(parentTreeId, fact) {
+export function addTreeToGraph(parentTreeId, content) {
     //1. delete current addNewNode button
     var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
     var newChildTreeX = parseInt(currentNewChildTree.x);
     var newChildTreeY = parseInt(currentNewChildTree.y);
-    var tree = new Tree(fact.id, parentTreeId, newChildTreeX, newChildTreeY)
+    var tree = new Tree(content.id, content.contentType, parentTreeId, newChildTreeX, newChildTreeY);
     //2. add new node to parent tree on UI
     const newTree = {
         id: tree.id,
         parentId: parentTreeId,
-        factId: fact.id,
-        fact: fact,
+        contentId: content.id,
+        content: content,
         x: newChildTreeX,
         y: newChildTreeY,
         children: {},
-        label: getLabelFromFact(fact),
+        label: getLabelFromContent(content),
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
-    }
+    };
     //2b. update x and y location in the db for the tree
 
     s.graph.dropNode(currentNewChildTree.id)
