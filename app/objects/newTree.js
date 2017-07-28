@@ -13,13 +13,13 @@ export function newTree(nodeType, parentTreeId, values){
 
     switch(nodeType) {
         case 'fact':
-            newContent = ContentItem.create(new Fact(values.question, values.answer));
+            newContent = ContentItem.create(new Fact(values.question, values.answer, values.id));
             break;
         case 'heading':
             newContent = ContentItem.create(new Heading(values.title));
             break;
         default:
-            newContent = ContentItem.create(new Fact(values.question, values.answer));
+            newContent = ContentItem.create(new Fact(values.question, values.answer, values.id));
             break;
     }
 

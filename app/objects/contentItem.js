@@ -2,6 +2,7 @@
 //import getFirebase from './firebaseService.js'
 //const firebase = getFirebase();
 
+
 export class ContentItem {
 
     constructor() {}
