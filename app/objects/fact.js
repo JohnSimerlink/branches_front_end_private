@@ -18,7 +18,6 @@ export class Fact extends ContentItem {
         this.usersTimeMap = usersTimeMap || {} ;
         this.timeElapsedForCurrentUser = user.loggedIn && this.usersTimeMap && this.usersTimeMap[user.getId()] || 0;
         this.timerId = null;
-        console.log("MAKE FAT " + id);
         if (!window.facts[id]) window.facts[id] = this;
     }
     updateWithUserInfo() {//in case the card was loaded before the user logged in and userTimeElapsed is just a 0 when it actually isnt in the db
