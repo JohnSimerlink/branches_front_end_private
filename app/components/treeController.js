@@ -52,7 +52,7 @@ const treeCtrl = {
         let factId = factDom.querySelector('.tree-current-fact-id').value;
         ContentItem.get(factId).then(fact => {
             if (fact.contentType === 'fact') {
-                let content = window.facts[fact.id] || new Fact(fact.question, fact.answer, fact.id);
+                let content = window.facts[fact.id] || new Fact(fact.question, fact.answer, fact.id, fact.usersTimeMap);
                 content.continueTimer();
             }
         });
@@ -62,7 +62,7 @@ const treeCtrl = {
         let factId = factDom.querySelector('.tree-current-fact-id').value;
         ContentItem.get(factId).then(fact => {
             if (fact.contentType === 'fact') {
-                let content = window.facts[fact.id] || new Fact(fact.question, fact.answer, fact.id);
+                let content = window.facts[fact.id] || new Fact(fact.question, fact.answer, fact.id, fact.usersTimeMap);
                 content.pauseTimer();
             }
         });
