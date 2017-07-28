@@ -25,7 +25,6 @@ var toolTipsConfig = {
             position: 'right',
             template: '',
             renderer: function(node, template) {
-                console.log('right click render')
                 switch(node.type){
                     case 'tree':
                         template = require('./tree.html')
@@ -51,8 +50,6 @@ function loadTreeAndSubTrees(treeId){
         .catch( err => console.error('trees get err is', err))
 }
 function onGetTree(tree) {
-    console.log("got tree");
-    console.log(tree);
     var factsPromise = ContentItem.get(tree.contentId || tree.factId) //Support old style nodes for testing
         .then( function onFactsGet(fact) { return addTreeNodeToGraph(tree,fact)}, function onGetFailed(err) { console.error("Failed to get node for content id " + tree.contentId) });
 
@@ -84,7 +81,6 @@ export function removeTreeFromGraph(treeId){
 //recursively load the entire tree
 // Instantiate sigma:
 function createTreeNodeFromTreeAndContent(tree, content){
-    console.log(content);
     const node = {
         id: tree.id,
         parentId: tree.parentId,
