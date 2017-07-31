@@ -1,5 +1,4 @@
 import {Trees} from '../../objects/trees'
-import {Facts} from '../../objects/facts'
 import {Fact} from '../../objects/fact'
 import ContentItem from '../../objects/contentItem'
 import timers from './timers'
@@ -52,6 +51,7 @@ export default {
         }
     },
     methods: {
+        //user methods
         startTimer() {
             console.log()
             this.content.startTimer()
@@ -62,13 +62,19 @@ export default {
         toggleEditing() {
             this.editing = !this.editing
         },
-        changeFactForTree() {
-            this.fact = Facts.create({question: this.fact.question, answer: this.fact.answer})
-            this.fact.addTree(this.id)
-            // this.tree.changeFact(this.fact.id)
-            this.tree.changeContent(contentId, contentType)
-            this.toggleEditing()
+        setProficiencyToOne() {
+            this.content.setProficiency(0)
         },
+        setProficiencyToTwo() {
+            this.content.setProficiency(33)
+        },
+        setProficiencyToThree() {
+            this.content.setProficiency(66)
+        },
+        setProficiencyToFour() {
+            this.content.setProficiency(100)
+        },
+        //global methods
         changeContent() {
             switch (this.tree.contentType){
                 case 'fact':

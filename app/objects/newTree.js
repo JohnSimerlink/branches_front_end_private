@@ -1,6 +1,5 @@
 import {addTreeToGraph} from '../components/treesGraph.js'
 import {Trees} from './trees'
-import {Facts} from './facts'
 
 import ContentItem from "./contentItem";
 

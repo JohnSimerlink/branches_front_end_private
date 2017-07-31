@@ -11,6 +11,8 @@ export default class ContentItem {
         this.usersTimeMap = this.usersTimeMap || {} ;
         this.timeElapsedForCurrentUser = user.loggedIn && this.usersTimeMap && this.usersTimeMap[user.getId()] || 0
         this.timerId = null;
+
+        this.usersProficiencyMap = this.usersProficiencyMap || {}
     }
 
     static get(contentId) {
@@ -85,5 +87,8 @@ export default class ContentItem {
 
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
+    }
+    setProficiency() {
+
     }
 }

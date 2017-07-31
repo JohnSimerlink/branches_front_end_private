@@ -25,6 +25,15 @@
             <button class="heading-new-save" v-on:click="changeContent">Save</button>
         </div>
     </div>
+    <div class="tree-proficiency">
+        <div class="tree-proficiency-message">How well did you know this?</div>
+        <div class="tree-proficiency-values">
+            <button class="tree-proficiency-values-one" v-on:click="setProficiencyToOne">Not at all</button>
+            <button class="tree-proficiency-values-two" v-on:click="setProficiencyToTwo">A lil'</button>
+            <button class="tree-proficiency-values-three" v-on:click="setProficiencyToThree">Mostly</button>
+            <button class="tree-proficiency-values-four" v-on:click="setProficiencyToFour">All the way baby</button>
+        </div>
+    </div>
     <button v-on:click="toggleEditing">{{editing ? "Stop Editing" : "Edit"}}</button>
     <button v-on:click="unlinkFromParent">Delete</button>
 </div>
