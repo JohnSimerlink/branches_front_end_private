@@ -1,10 +1,14 @@
 import {Trees} from '../objects/trees.js'
+import ContentItem from '../objects/contentItem'
 import {Tree} from '../objects/tree.js'
-import {ContentItem} from '../objects/contentItem.js'
+import {Facts} from '../objects/facts.js'
 import {Globals} from '../core/globals.js'
-import './treeController'
-import './newTreeController'
+import {Config} from '../core/config'
 import '../core/login.js'
+import PubSub from 'pubsub-js'
+import TreeComponent from './tree/treecomponent'
+import NewTreeComponent from './newtree/newtreecomponent'
+import Vue from 'vue'
 var initialized = false;
 var s,
     g = {
@@ -15,7 +19,7 @@ window.g = g
 window.s = s;
 
 var newNodeXOffset = -100,
-    newNodeYOffset = 100,
+    newNodeYOffset = 20,
     newChildTreeSuffix = "__newChildTree";
 var toolTipsConfig = {
     node: [
@@ -25,12 +29,15 @@ var toolTipsConfig = {
             position: 'right',
             template: '',
             renderer: function(node, template) {
+                var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
                 switch(node.type){
                     case 'tree':
-                        template = require('./tree.html')
+                        if (Config.framework == 'vue') {
+                            template = '<div id="vue"><tree id="' + node.id + '"></tree></div>'
+                        }
                         break;
                     case 'newChildTree':
-                        template = require('./newTree.html')
+                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>'
                         break;
                 }
                 var result = Mustache.render(template, node)
@@ -50,22 +57,22 @@ function loadTreeAndSubTrees(treeId){
         .catch( err => console.error('trees get err is', err))
 }
 function onGetTree(tree) {
-    var factsPromise = ContentItem.get(tree.contentId || tree.factId) //Support old style nodes for testing
-        .then( function onFactsGet(fact) { return addTreeNodeToGraph(tree,fact)}, function onGetFailed(err) { console.error("Failed to get node for content id " + tree.contentId) });
+    var contentPromise = ContentItem.get(tree.contentId)
+        .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content)})
 
     var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
     var promises = childTreesPromises
-    promises.push(factsPromise)
+    promises.push(contentPromise)
 
     return Promise.all(promises)
 }
 
 function addTreeNodeToGraph(tree,content){
-    const treeUINode = createTreeNodeFromTreeAndContent(tree,content);
+    const treeUINode = createTreeNodeFromTreeAndContent(tree,content)
     g.nodes.push(treeUINode);
-    addNewChildTreeToTree(treeUINode);
-    connectTreeToParent(tree,g);
-    return content.id;
+    addNewChildTreeToTree(treeUINode)
+    connectTreeToParent(tree,g)
+    return content.id
 }
 
 export function removeTreeFromGraph(treeId){
@@ -73,10 +80,12 @@ export function removeTreeFromGraph(treeId){
     s.graph.dropNode(treeId + newChildTreeSuffix)
     return Trees.get(treeId).then(tree => {
         var childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
-        return Promise.all(childPromises).then((val) => {
+        return Promise.all(childPromises).then(val => {
+            s.refresh()
             return `removed all children of ${treeId}`
         })
     })
+
 }
 //recursively load the entire tree
 // Instantiate sigma:
@@ -92,14 +101,17 @@ function createTreeNodeFromTreeAndContent(tree, content){
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
-    };
+    }
     return node;
 }
-
 function getLabelFromContent(content) {
-    return (content) ? content.title || content.question : "OLD NODE"; //TODO Replace all old nodes
+    switch (content.type){
+        case "fact":
+            return content.question
+        case "heading":
+            return content.title
+    }
 }
-
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
@@ -141,8 +153,8 @@ function addNewChildTreeToTree(tree){
         g.nodes.push(newChildTree)
         g.edges.push(shadowEdge)
     } else {
-        s.graph.addNode(newChildTree)
-        s.graph.addEdge(shadowEdge)
+       s.graph.addNode(newChildTree)
+       s.graph.addEdge(shadowEdge)
     }
     if (initialized){
         s.refresh()
@@ -159,21 +171,48 @@ function initSigma(){
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
-        s.bind('click', printNodeInfo )
+        s.bind('click', onCanvasClick)
         s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
         s.bind('overNode', hoverOverNode)
         initialized = true;
     }
     initSigmaPlugins()
 }
-function printNodeInfo(e){
+function onCanvasClick(e){
+    console.log('canvas click!')
+    PubSub.publish('canvas.clicked', true)
     console.log(e, e.data.node)
+}
+function printNodeInfo(e){
+   console.log(e, e.data.node)
 }
 function hoverOverNode(e){
     var node = e.data.node
+    console.log('hover over node for node with id', node.id, 'just called')
+    // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function(){
+        var treeNodeDom = document.querySelector('.tree')
+        if (Config.framework == 'angular1'){
+            angular.bootstrap(treeNodeDom, ['branches'])
+        } else {
+            Vue.component('tree', TreeComponent)
+            Vue.component('newtree', NewTreeComponent)
+            // {
+            //     template: require('./tree/tree.html'), // '<div> {{movie}} this is the tree template</div>',
+            //     props: ['movie']
+            //     // render: h => h(TreeVue)
+            // })
+            var vm = new Vue(
+                {
+                    el: '#vue'
+                }
+            )
+        }
+    },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
 }
 function updateTreePosition(e){
+    console.log("outNODE just called")
     let newX = e.data.node.x
     let newY = e.data.node.y
     let treeId = e.data.node.id;
@@ -199,7 +238,7 @@ export function addTreeToGraph(parentTreeId, content) {
     var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
     var newChildTreeX = parseInt(currentNewChildTree.x);
     var newChildTreeY = parseInt(currentNewChildTree.y);
-    var tree = new Tree(content.id, content.contentType, parentTreeId, newChildTreeX, newChildTreeY);
+    var tree = new Tree(content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY)
     //2. add new node to parent tree on UI
     const newTree = {
         id: tree.id,
@@ -213,7 +252,7 @@ export function addTreeToGraph(parentTreeId, content) {
         size: 1,
         color: Globals.existingColor,
         type: 'tree'
-    };
+    }
     //2b. update x and y location in the db for the tree
 
     s.graph.dropNode(currentNewChildTree.id)

@@ -1,0 +1,23 @@
+<div>
+    <div class="arrow"></div>
+    <div class="sigma-tooltip-header">Add a new Fact </div>
+    <div class="sigma-tooltip-body">
+        <div class="newTree-type-selector">
+            <button class="newTree-type-selector-heading-button" v-on:click="setTypeToHeading">Heading</button>
+            <button class="newTree-type-selector-heading-button" v-on:click="setTypeToFact">Fact</button>
+        </div>
+        <p class="newTree-form">
+            <p class="newTree-form tree-fact" v-if="contentIsFact">
+                <input type="hidden" class="newTree-parentId" v-model="parentid">
+                Question: <input class='newTree-question' type='text' v-model="question"><br>
+                Answer: <input class='newTree-answer' type='text' v-model="answer"><br>
+                <button class='newTree-create-button' v-on:click="createNewTree">Create New Tree</button>
+            </p>
+            <p class="newTree-form tree-heading" v-if="contentIsHeading">
+                <input type="hidden" class="newTree-parentId" v-model="parentid">
+                Heading: <input class='newTree-heading' type='text' v-model="title"><br>
+                <button class='newTree-create-button' v-on:click="createNewTree">Create New Tree</button>
+            </p>
+        </p>
+    </div>
+</div>

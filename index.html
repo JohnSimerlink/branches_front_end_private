@@ -158,7 +158,7 @@
 <!-- END SIGMA IMPORTS -->
 <script src="other_imports/sigma/plugins/dragNode.js"></script>
 <script src="other_imports/sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
+<script src="other_imports/mustache/mustache.min.js"></script>
 </head>
 <body>
 <!-- FB Login -->
@@ -174,13 +174,15 @@
     <div class='page'>
         <div id="bootstrap">
         </div>
-        <div ng-app='branches'>
+        <div id="branches-app">
+            <branches-header></branches-header>
         </div>
         <div id="container">
             <div id="graph-container">
             </div>
         </div>
     </div>
+
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-route/angular-route.js"></script>
     <script>document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");</script>

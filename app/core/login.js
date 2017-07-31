@@ -11,7 +11,7 @@ export function login() {
             var token = result.credential.accessToken;
             document.querySelector('.login-user-name').innerHTML = result.user.displayName
             document.querySelector('.login-button').style.display = 'none'
-            console.log('result', result)
+            console.log('login result', result)
             Globals.username = result.user.displayName
             Globals.userId = result.user.uid
         }).catch(function (error) {
