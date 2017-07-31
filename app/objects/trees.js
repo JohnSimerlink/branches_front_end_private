@@ -1,6 +1,4 @@
-import {Facts} from './facts.js'
 import {Tree} from './tree.js'
-import {Config} from '../core/config.js'
 import firebase from './firebaseService.js'
 
 const trees = {

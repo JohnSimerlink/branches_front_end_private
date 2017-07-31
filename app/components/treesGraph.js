@@ -1,13 +1,12 @@
 import {Trees} from '../objects/trees.js'
 import ContentItem from '../objects/contentItem'
 import {Tree} from '../objects/tree.js'
-import {Facts} from '../objects/facts.js'
 import {Globals} from '../core/globals.js'
 import {Config} from '../core/config'
 import '../core/login.js'
 import PubSub from 'pubsub-js'
 import TreeComponent from './tree/treecomponent'
-import NewTreeComponent from './newtree/newtreecomponent'
+import NewTreeComponent from './newTree/newtreecomponent'
 import Vue from 'vue'
 var initialized = false;
 var s,
