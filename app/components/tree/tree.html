@@ -1,0 +1,32 @@
+<div>
+    <div> CONTENT TYPE: {{tree.contentType}}</div>
+    <div> tree id :{{tree.id}}</div>
+    <div> content id :{{content.id}}</div>
+    <div class="tree-timer">TIMER:{{content.timeElapsedForCurrentUser}}</div>
+    <div class="tree-fact" v-if="typeIsFact">
+        <div class="tree-current-fact" v-if="!editing">
+            <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
+            <div class="tree-current-fact-question">{{content.question}}</div>
+            <div class="tree-current-fact-answer">{{content.answer}}</div>
+        </div>
+        <div class="tree-new-fact" v-if="editing">
+            <input class="tree-id" v-model="content.id">
+            <input class="tree-new-fact-question" v-model="content.question">
+            <input class="tree-new-fact-answer" v-model="content.answer">
+            <button class="fact-new-save" v-on:click="changeContent">Save</button>
+        </div>
+    </div>
+    <div class="tree-heading" v-if="typeIsHeading">
+        <div class="tree-current-fact" v-if="!editing">
+            <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
+            <div class="tree-current-heading">HEADING: {{content.title}}</div>
+        </div>
+        <div class="tree-new-fact" v-if="editing">
+            <input class="tree-id" v-model="content.id">
+            <input class="tree-new-heading" v-model="content.title">
+            <button class="heading-new-save" v-on:click="changeContent">Save</button>
+        </div>
+    </div>
+    <button v-on:click="toggleEditing">{{editing ? "Stop Editing" : "Edit"}}</button>
+    <button v-on:click="unlinkFromParent">Delete</button>
+</div>

@@ -1,10 +1,9 @@
 import md5 from 'md5'
-//import getFirebase from './firebaseService.js';
-//const firebase = getFirebase();
-window.firebase = firebase;
+import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Trees} from './trees.js'
+import timers from './timers'
 
 function loadObject(treeObj, self){
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
@@ -12,21 +11,22 @@ function loadObject(treeObj, self){
 export class Tree {
 
     constructor(contentId, contentType, parentId, x, y) {
-        let treeObj;
+        var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
-            treeObj = arguments[0];
-            loadObject(treeObj, this);
+            treeObj = arguments[0]
+            loadObject(treeObj, this)
             return
         }
 
-        this.contentId = contentId;
-        this.contentType = contentType;
+        this.contentId = contentId
+        this.contentType = contentType
         this.parentId = parentId;
         this.children = {};
-        this.x = x;
-        this.y = y;
 
-        treeObj = {contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children};
+        this.x = x
+        this.y = y
+
+        treeObj = {contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children}
         this.id = md5(JSON.stringify(treeObj))
         if (typeof arguments[0] === 'object'){//TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return
@@ -34,55 +34,63 @@ export class Tree {
         firebase.database().ref('trees/' + this.id).update(
             {
                 id: this.id,
-                contentType: this.contentType,
-                contentId: this.contentId,
+                contentId,
+                contentType,
                 parentId,
                 x,
                 y
             }
         )
     }
-
     /**
      * Add a child tree to this tree
      * @param treeId
      */
     addChild(treeId) {
+        console.log('add child called in tree.js')
         // this.treeRef.child('/children').push(treeId)
-        let children = this.children || {};
-        children[treeId] = true;
-        let updates = {
+        var children = this.children || {}
+        children[treeId] = true
+        var updates = {
             children
-        };
+        }
         firebase.database().ref('trees/' +this.id).update(updates)
     }
 
     unlinkFromParent(){
-        var treeId = this.id
-        Trees.get(this.parentId).then(parentTree => {
-            parentTree.removeChild(treeId)
-        })
-        this.changeParent(null)
+       var treeId = this.id
+       Trees.get(this.parentId).then(parentTree => {
+           parentTree.removeChild(treeId)
+       })
+       this.changeParent(null)
     }
 
     removeChild(childId) {
-        delete this.children[childId];
+        delete this.children[childId]
 
         firebase.database().ref('trees/' + this.id).update({children: this.children})
-    };
+    }
 
     changeParent(newParentId) {
-        this.parentId = newParentId;
+        this.parentId = newParentId
         firebase.database().ref('trees/' + this.id).update({
             parentId: newParentId
-        });
-    };
+        })
+    }
+
+    changeFact(newfactid) {
+        this.factId = newfactid
+        firebase.database().ref('trees/' + this.id).update({
+           factId: newfactid
+        })
+    }
+
 
     /**
      * Change the content of a given node ("Tree")
      * Available content types currently header and fact
      */
-    changeTreeContent(contentId, contentType) {
+    changeContent(contentId, contentType) {
         this.contentId = contentId;
         this.contentType = contentType;
         firebase.database().ref('trees/' + this.id).update({

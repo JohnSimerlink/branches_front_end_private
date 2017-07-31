@@ -1,8 +1,8 @@
-//import getFirebase from './firebaseService.js'
-//const firebase = getFirebase();
 import {addTreeToGraph} from '../components/treesGraph.js'
 import {Trees} from './trees'
-import {ContentItem} from "./contentItem";
+import {Facts} from './facts'
+
+import ContentItem from "./contentItem";
 
 import {Fact} from './fact';
 import {Heading} from './heading';
@@ -13,13 +13,13 @@ export function newTree(nodeType, parentTreeId, values){
 
     switch(nodeType) {
         case 'fact':
-            newContent = ContentItem.create(new Fact(values.question, values.answer, values.id));
+            newContent = ContentItem.create(new Fact(values));
             break;
         case 'heading':
-            newContent = ContentItem.create(new Heading(values.title));
+            newContent = ContentItem.create(new Heading(values));
             break;
         default:
-            newContent = ContentItem.create(new Fact(values.question, values.answer, values.id));
+            newContent = ContentItem.create(new Fact(values));
             break;
     }
 
