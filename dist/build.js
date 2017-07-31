@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 53);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -216,7 +216,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(11);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -533,12 +533,13 @@ function clone(obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(54);
 
 const Config = {
     env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
     offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
-    version: 5
+    version: 6,
+    framework: 'vue' // vue || angular1
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Config;
 
@@ -548,35 +549,155 @@ const Config = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(29);
+//import {offlineFacts} from '../static/of'
+//import getFirebase from './firebaseService.js'
+//const firebase = getFirebase();
+const content = {};
+
+class ContentItem {
+
+    constructor() {}
+    init() {
+        this.usersTimeMap = this.usersTimeMap || {};
+        this.timeElapsedForCurrentUser = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.usersTimeMap && this.usersTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+        this.timerId = null;
+    }
+
+    static get(contentId) {
+        if (!contentId) {
+            throw "Content.get(contentId) error! contentId empty!";
+        }
+        return new Promise((resolve, reject) => {
+            if (content[contentId]) {
+                resolve(content[contentId]);
+            } else {
+                firebase.database().ref('content/' + contentId).on("value", function (snapshot) {
+                    const contentData = snapshot.val();
+                    const contentItem = new ContentItem(); // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
+                    for (let prop in contentData) {
+                        //copy over data into this new typed object
+                        contentItem[prop] = contentData[prop];
+                    }
+                    contentItem.init // post constructor
+
+                    ();content[contentItem.id] = contentItem; // add to cache
+                    resolve(contentItem);
+                }, reject);
+            }
+        });
+    }
+
+    /**
+     * Create a new content object in the database
+     * @param contentItem
+     * @returns newly created contentItem
+     */
+    static create(contentItem) {
+        let updates = {};
+        updates['/content/' + contentItem.id] = contentItem;
+        firebase.database().ref().update(updates);
+        return contentItem;
+    }
+    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+
+    /**
+     * Add a tree to the given content item
+     * @param treeId
+     */
+    addTree(treeId) {
+        this.trees[treeId] = true;
+        let trees = {};
+        trees[treeId] = true;
+        let updates = {
+            trees
+        };
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+    //TODO : make timer for heading be the sum of the time of all the child facts
+    startTimer() {
+        var self = this;
+
+        if (!this.timerId) {
+            //to prevent from two or more timers being created simultaneously on the content item
+            this.timerId = setInterval(function () {
+                self.timeElapsedForCurrentUser = self.timeElapsedForCurrentUser || 0;
+                self.timeElapsedForCurrentUser++; // = fact.timeElapsedForCurrentUser || 0
+            }, 1000);
+        }
+    }
+    saveTimer(time) {
+
+        this.usersTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timeElapsedForCurrentUser;
+        console.log('setTimer for user just called on this NOW,', this);
+
+        var updates = {
+            usersTimeMap: this.usersTimeMap
+        };
+
+        this.timerId = null;
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItem;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
+
+
+
+
+
+const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
+
+__WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
+
+window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from the console
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(6);
 
 
 
 
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__firebaseService_js__["a" /* default */])();
-const trees = {};
+
+const trees = {}; // cache
 class Trees {
     static getAll(success) {}
     //returns promise
-    //TODO: make resolve "null" or something if fact not found
     static get(treeId) {
         if (!treeId) {
             throw "Trees.get(treeId) error!. treeId empty";
         }
         return new Promise(function getTreePromise(resolve, reject) {
-            let treeObj;
 
-            //trees[] serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
             if (trees[treeId]) {
                 resolve(trees[treeId]);
             } else {
-                firebase.database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot) {
-                    treeObj = snapshot.val();
-                    var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeObj);
-                    trees[tree.id] = tree;
+                __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__["a" /* default */].database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot) {
+                    let treeData = snapshot.val();
+                    var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeData);
+                    trees[tree.id] = tree; // add to cache
                     resolve(tree);
                 });
             }
@@ -587,7 +708,7 @@ class Trees {
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -601,7 +722,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(58);
+var _firebase_app = __webpack_require__(59);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -626,28 +747,31 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(6);
 
 
 
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */])();
 
+const facts = {}; // cache
 class Facts {
-    //TODO: make resolve "null" or something if fact not found
     static get(factId) {
+        if (!factId) {
+            throw "Facts.get(factId) error! factId empty!";
+        }
         return new Promise((resolve, reject) => {
-            if (__WEBPACK_IMPORTED_MODULE_1__core_config_js__["a" /* Config */].offlineMode) {
-                const fact = offlineFacts[factId];
-                resolve(fact);
+            if (facts[factId]) {
+                resolve(facts[factId]);
             } else {
-                firebase.database().ref('facts/' + factId).on("value", function (snapshot) {
-                    var fact = snapshot.val();
+                __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */].database().ref('facts/' + factId).on("value", function (snapshot) {
+                    var factData = snapshot.val();
+                    var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](factData);
+                    facts[fact.id] = fact; // add to cache
                     resolve(fact);
                 });
             }
@@ -655,10 +779,11 @@ class Facts {
     }
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
     static create({ question, answer }) {
-        var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](question, answer);
+        var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */]({ question, answer });
         var updates = {};
-        updates['/facts/' + fact.id] = fact;
-        firebase.database().ref().update(updates);
+        updates['/facts/' + fact.id] = fact.getDBRepresentation();
+        console.log('facts create updates are', updates);
+        __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */].database().ref().update(updates);
         return fact;
     }
 }
@@ -666,41 +791,7 @@ class Facts {
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getFirebase;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
-
-
-
-
-
-function firebaseInitialized() {
-  return __WEBPACK_IMPORTED_MODULE_0_firebase__["apps"].length !== 0;
-}
-function initializeFirebase() {
-  const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
-  __WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
-  window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__;
-}
-
-function getFirebase() {
-  if (!firebaseInitialized()) {
-    initializeFirebase();
-  }
-  return __WEBPACK_IMPORTED_MODULE_0_firebase__; //TODO: initfirebase might actually be async
-}
-
-/***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -778,7 +869,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -865,7 +956,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -998,7 +1089,7 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1025,66 +1116,28 @@ module.exports = g;
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = login;
-function login() {
-    var mobile = false;
-
-    if (mobile) {} else {
-        console.log('login called');
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function (result) {
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var token = result.credential.accessToken;
-            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
-            document.querySelector('.login-button').style.display = 'none';
-            console.log('result', result);
-            Globals.username = result.user.displayName;
-            Globals.userId = result.user.uid;
-        }).catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-        });
-    }
-}
-
-/***/ }),
 /* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = toggleVisibility;
-function toggleVisibility(el) {
-    var style = el.style;
-    if (style.display == 'block') {
-        style.display = 'none';
-    } else {
-        style.display = 'block';
-    }
-}
-
-/***/ }),
-/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = removeTreeFromGraph;
 /* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_tree_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_facts_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__treeController__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__newTreeController__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_login_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_facts_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_globals_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_config__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_login_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pubsub_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__tree_treecomponent__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__newtree_newtreecomponent__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vue__ = __webpack_require__(24);
+
+
+
+
 
 
 
@@ -1102,7 +1155,7 @@ window.g = g;
 window.s = s;
 
 var newNodeXOffset = -100,
-    newNodeYOffset = 100,
+    newNodeYOffset = 20,
     newChildTreeSuffix = "__newChildTree";
 var toolTipsConfig = {
     node: [{
@@ -1111,13 +1164,15 @@ var toolTipsConfig = {
         position: 'right',
         template: '',
         renderer: function (node, template) {
-            console.log('right click render');
+            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
             switch (node.type) {
                 case 'tree':
-                    template = __webpack_require__(87);
+                    if (__WEBPACK_IMPORTED_MODULE_5__core_config__["a" /* Config */].framework == 'vue') {
+                        template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                    }
                     break;
                 case 'newChildTree':
-                    template = __webpack_require__(85);
+                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
                     break;
             }
             var result = Mustache.render(template, node);
@@ -1126,7 +1181,7 @@ var toolTipsConfig = {
         }
     }],
     stage: {
-        template: __webpack_require__(86)
+        template: __webpack_require__(88)
     }
 };
 loadTreeAndSubTrees(1).then(val => {
@@ -1137,23 +1192,23 @@ function loadTreeAndSubTrees(treeId) {
     return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.error('trees get err is', err));
 }
 function onGetTree(tree) {
-    var factsPromise = __WEBPACK_IMPORTED_MODULE_2__objects_facts_js__["a" /* Facts */].get(tree.factId).then(function onFactsGet(fact) {
-        return addTreeNodeToGraph(tree, fact);
+    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
+        return addTreeNodeToGraph(tree, content);
     });
 
     var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : [];
     var promises = childTreesPromises;
-    promises.push(factsPromise);
+    promises.push(contentPromise);
 
     return Promise.all(promises);
 }
 
-function addTreeNodeToGraph(tree, fact) {
-    const treeUINode = createTreeNodeFromTreeAndFact(tree, fact);
+function addTreeNodeToGraph(tree, content) {
+    const treeUINode = createTreeNodeFromTreeAndContent(tree, content);
     g.nodes.push(treeUINode);
     addNewChildTreeToTree(treeUINode);
     connectTreeToParent(tree, g);
-    return fact.id;
+    return content.id;
 }
 
 function removeTreeFromGraph(treeId) {
@@ -1162,29 +1217,35 @@ function removeTreeFromGraph(treeId) {
     return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
         var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
         return Promise.all(childPromises).then(val => {
+            s.refresh();
             return `removed all children of ${treeId}`;
         });
     });
 }
 //recursively load the entire tree
 // Instantiate sigma:
-function createTreeNodeFromTreeAndFact(tree, fact) {
+function createTreeNodeFromTreeAndContent(tree, content) {
     const node = {
         id: tree.id,
         parentId: tree.parentId,
         x: tree.x,
         y: tree.y,
         children: tree.children,
-        fact: fact,
-        label: getLabelFromFact(fact),
+        content: content,
+        label: getLabelFromContent(content),
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
+        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor,
         type: 'tree'
     };
     return node;
 }
-function getLabelFromFact(fact) {
-    return fact.question;
+function getLabelFromContent(content) {
+    switch (content.type) {
+        case "fact":
+            return content.question;
+        case "heading":
+            return content.title;
+    }
 }
 function createEdgeId(nodeOneId, nodeTwoId) {
     return nodeOneId + "__" + nodeTwoId;
@@ -1196,7 +1257,7 @@ function connectTreeToParent(tree, g) {
             source: tree.parentId,
             target: tree.id,
             size: 1,
-            color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
+            color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor
         };
         g.edges.push(edge);
     }
@@ -1208,11 +1269,11 @@ function addNewChildTreeToTree(tree) {
     const newChildTree = {
         id: tree.id + newChildTreeSuffix, //"_newChildTree",
         parentId: tree.id,
-        x: parseInt(tree.x) + newNodeXOffset,
+        x: parseInt(tree.x) + newNodeXOffset + 100,
         y: parseInt(tree.y) + newNodeYOffset,
         label: '+',
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor,
+        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].newColor,
         type: 'newChildTree'
     };
     const shadowEdge = {
@@ -1220,7 +1281,7 @@ function addNewChildTreeToTree(tree) {
         source: tree.id,
         target: newChildTree.id,
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor
+        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].newColor
     };
     if (!initialized) {
         g.nodes.push(newChildTree);
@@ -1244,21 +1305,47 @@ function initSigma() {
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
-        s.bind('click', printNodeInfo);
+        s.bind('click', onCanvasClick);
         s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
         s.bind('overNode', hoverOverNode);
         initialized = true;
     }
     initSigmaPlugins();
 }
+function onCanvasClick(e) {
+    console.log('canvas click!');
+    __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('canvas.clicked', true);
+    console.log(e, e.data.node);
+}
 function printNodeInfo(e) {
     console.log(e, e.data.node);
 }
 function hoverOverNode(e) {
     var node = e.data.node;
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    console.log('hover over node for node with id', node.id, 'just called'
+    // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
+    );tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function () {
+        var treeNodeDom = document.querySelector('.tree');
+        if (__WEBPACK_IMPORTED_MODULE_5__core_config__["a" /* Config */].framework == 'angular1') {
+            angular.bootstrap(treeNodeDom, ['branches']);
+        } else {
+            __WEBPACK_IMPORTED_MODULE_10_vue__["a" /* default */].component('tree', __WEBPACK_IMPORTED_MODULE_8__tree_treecomponent__["a" /* default */]);
+            __WEBPACK_IMPORTED_MODULE_10_vue__["a" /* default */].component('newtree', __WEBPACK_IMPORTED_MODULE_9__newtree_newtreecomponent__["a" /* default */]
+            // {
+            //     template: require('./tree/tree.html'), // '<div> {{movie}} this is the tree template</div>',
+            //     props: ['movie']
+            //     // render: h => h(TreeVue)
+            // })
+            );var vm = new __WEBPACK_IMPORTED_MODULE_10_vue__["a" /* default */]({
+                el: '#vue'
+            });
+        }
+    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+    );
 }
 function updateTreePosition(e) {
+    console.log("outNODE just called");
     let newX = e.data.node.x;
     let newY = e.data.node.y;
     let treeId = e.data.node.id;
@@ -1279,24 +1366,24 @@ function updateTreePosition(e) {
 }
 
 //returns sigma tree node
-function addTreeToGraph(parentTreeId, fact) {
+function addTreeToGraph(parentTreeId, content) {
     //1. delete current addNewNode button
     var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
     var newChildTreeX = parseInt(currentNewChildTree.x);
     var newChildTreeY = parseInt(currentNewChildTree.y);
-    var tree = new __WEBPACK_IMPORTED_MODULE_1__objects_tree_js__["a" /* Tree */](fact.id, parentTreeId, newChildTreeX, newChildTreeY);
+    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY);
     //2. add new node to parent tree on UI
     const newTree = {
         id: tree.id,
         parentId: parentTreeId,
-        factId: fact.id,
-        fact: fact,
+        contentId: content.id,
+        content: content,
         x: newChildTreeX,
         y: newChildTreeY,
         children: {},
-        label: getLabelFromFact(fact),
+        label: getLabelFromContent(content),
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
+        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor,
         type: 'tree'
         //2b. update x and y location in the db for the tree
 
@@ -1308,7 +1395,7 @@ function addTreeToGraph(parentTreeId, fact) {
         source: parentTreeId,
         target: newTree.id,
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
+        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor
     };
     s.graph.addEdge(newEdge
     //4. add shadow node
@@ -1324,6 +1411,48 @@ function initSigmaPlugins() {
     var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
     window.tooltips = tooltips;
 }
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(5);
+
+
+
+ // from './firebaseService'
+class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */] {
+    //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
+    constructor({ question, answer, id, usersTimeMap, trees }) {
+        super();
+        this.type = 'fact';
+        this.question = question;
+        this.answer = answer;
+        this.id = id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
+        this.trees = {};
+
+        if (window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+    }
+
+    //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+
+    getDBRepresentation() {
+        return {
+            id: this.id,
+            question: this.question,
+            answer: this.answer,
+            trees: this.trees,
+            usersTimeMap: this.usersTimeMap
+        };
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
+
 
 /***/ }),
 /* 16 */
@@ -1473,14 +1602,14 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(68);
+var PromiseImpl = scope.Promise || __webpack_require__(69);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
 /* 18 */
@@ -1744,13 +1873,13 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(75);
+var _json = __webpack_require__(76);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(12);
 
-var _path = __webpack_require__(32);
+var _path = __webpack_require__(37);
 
 var path = _interopRequireWildcard(_path);
 
@@ -2159,7 +2288,7 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(11);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -2212,1900 +2341,13 @@ function makeQueryString(params) {
 
 /***/ }),
 /* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__facts__ = __webpack_require__(7);
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */])();
-
-
-
-//todo: change newTree to Trees.create()
-function newTree(question, answer, parentTreeId) {
-    var fact = __WEBPACK_IMPORTED_MODULE_3__facts__["a" /* Facts */].create({ question, answer });
-    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, fact
-    //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
-    //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db from firebase to neo4j or couchdb)
-    );__WEBPACK_IMPORTED_MODULE_2__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
-        parentTree.addChild(tree.id);
-    });
-    fact.addTree(tree.id);
-}
-
-/***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees_js__ = __webpack_require__(5);
-
-
-const firebase = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */])();
-window.firebase = firebase;
-const treesRef = firebase.database().ref('trees');
-const trees = {};
-
-
-
-function loadObject(treeObj, self) {
-    Object.keys(treeObj).forEach(key => self[key] = treeObj[key]);
-}
-class Tree {
-
-    constructor(factId, parentId, x, y) {
-        var treeObj;
-        if (arguments[0] && typeof arguments[0] === 'object') {
-            treeObj = arguments[0];
-            loadObject(treeObj, this);
-            return;
-        }
-
-        this.factId = factId;
-        this.parentId = parentId;
-        this.children = {};
-        this.x = x;
-        this.y = y;
-
-        treeObj = { factId: factId, parentId: parentId, children: this.children };
-        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify(treeObj));
-        if (typeof arguments[0] === 'object') {
-            //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
-            return;
-        }
-        firebase.database().ref('trees/' + this.id).update({
-            id: this.id,
-            factId,
-            parentId,
-            x,
-            y
-        });
-    }
-    addChild(treeId) {
-        // this.treeRef.child('/children').push(treeId)
-        var children = this.children || {};
-        children[treeId] = true;
-        var updates = {
-            children
-        };
-        firebase.database().ref('trees/' + this.id).update(updates);
-    }
-
-    unlinkFromParent() {
-        var treeId = this.id;
-        __WEBPACK_IMPORTED_MODULE_3__trees_js__["a" /* Trees */].get(this.parentId).then(parentTree => {
-            parentTree.removeChild(treeId);
-        });
-        this.changeParent(null);
-    }
-
-    removeChild(childId) {
-        delete this.children[childId];
-
-        firebase.database().ref('trees/' + this.id).update({ children: this.children });
-    }
-
-    changeParent(newParentId) {
-        this.parentId = newParentId;
-        firebase.database().ref('trees/' + this.id).update({
-            parentId: newParentId
-        });
-    }
-
-    changeFact(newfactid) {
-        this.factId = newfactid;
-        firebase.database().ref('trees/' + this.id).update({
-            factId: newfactid
-        });
-    }
-
-    set(prop, val) {
-        if (this[prop] == val) {
-            return;
-        }
-
-        var updates = {};
-        updates[prop] = val;
-        // this.treeRef.update(updates)
-        firebase.database().ref('trees/' + this.id).update(updates);
-        this[prop] = val;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
-
-//TODO: get typeScript so we can have a schema for treeObj
-//treeObj  example
-/*
- parentId: parentTreeId,
- factId: fact.id,
- x: parseInt(currentNewChildTree.x),
- y: parseInt(currentNewChildTree.y),
- children: {},
- label: fact.question + ' ' + fact.answer,
- size: 1,
- color: Globals.existingColor,
- type: 'tree'
- */
-//invoke like a constructor - new Tree(parentId, factId)
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-var charenc = {
-  // UTF-8 encoding
-  utf8: {
-    // Convert a string to a byte array
-    stringToBytes: function(str) {
-      return charenc.bin.stringToBytes(unescape(encodeURIComponent(str)));
-    },
-
-    // Convert a byte array to a string
-    bytesToString: function(bytes) {
-      return decodeURIComponent(escape(charenc.bin.bytesToString(bytes)));
-    }
-  },
-
-  // Binary encoding
-  bin: {
-    // Convert a string to a byte array
-    stringToBytes: function(str) {
-      for (var bytes = [], i = 0; i < str.length; i++)
-        bytes.push(str.charCodeAt(i) & 0xFF);
-      return bytes;
-    },
-
-    // Convert a byte array to a string
-    bytesToString: function(bytes) {
-      for (var str = [], i = 0; i < bytes.length; i++)
-        str.push(String.fromCharCode(bytes[i]));
-      return str.join('');
-    }
-  }
-};
-
-module.exports = charenc;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.createSubscribe = createSubscribe;
-exports.async = async;
-
-var _shared_promise = __webpack_require__(17);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LocalPromise = _shared_promise.local.Promise;
-/**
- * Helper to make a Subscribe function (just like Promise helps make a
- * Thenable).
- *
- * @param executor Function which can make calls to a single Observer
- *     as a proxy.
- * @param onNoObservers Callback when count of Observers goes to zero.
- */
-function createSubscribe(executor, onNoObservers) {
-    var proxy = new ObserverProxy(executor, onNoObservers);
-    return proxy.subscribe.bind(proxy);
-}
-/**
- * Implement fan-out for any number of Observers attached via a subscribe
- * function.
- */
-
-var ObserverProxy = function () {
-    /**
-     * @param executor Function which can make calls to a single Observer
-     *     as a proxy.
-     * @param onNoObservers Callback when count of Observers goes to zero.
-     */
-    function ObserverProxy(executor, onNoObservers) {
-        var _this = this;
-
-        _classCallCheck(this, ObserverProxy);
-
-        this.observers = [];
-        this.unsubscribes = [];
-        this.observerCount = 0;
-        // Micro-task scheduling by calling task.then().
-        this.task = LocalPromise.resolve();
-        this.finalized = false;
-        this.onNoObservers = onNoObservers;
-        // Call the executor asynchronously so subscribers that are called
-        // synchronously after the creation of the subscribe function
-        // can still receive the very first value generated in the executor.
-        this.task.then(function () {
-            executor(_this);
-        }).catch(function (e) {
-            _this.error(e);
-        });
-    }
-
-    _createClass(ObserverProxy, [{
-        key: 'next',
-        value: function next(value) {
-            this.forEachObserver(function (observer) {
-                observer.next(value);
-            });
-        }
-    }, {
-        key: 'error',
-        value: function error(_error) {
-            this.forEachObserver(function (observer) {
-                observer.error(_error);
-            });
-            this.close(_error);
-        }
-    }, {
-        key: 'complete',
-        value: function complete() {
-            this.forEachObserver(function (observer) {
-                observer.complete();
-            });
-            this.close();
-        }
-        /**
-         * Subscribe function that can be used to add an Observer to the fan-out list.
-         *
-         * - We require that no event is sent to a subscriber sychronously to their
-         *   call to subscribe().
-         */
-
-    }, {
-        key: 'subscribe',
-        value: function subscribe(nextOrObserver, error, complete) {
-            var _this2 = this;
-
-            var observer = void 0;
-            if (nextOrObserver === undefined && error === undefined && complete === undefined) {
-                throw new Error("Missing Observer.");
-            }
-            // Assemble an Observer object when passed as callback functions.
-            if (implementsAnyMethods(nextOrObserver, ['next', 'error', 'complete'])) {
-                observer = nextOrObserver;
-            } else {
-                observer = {
-                    next: nextOrObserver,
-                    error: error,
-                    complete: complete
-                };
-            }
-            if (observer.next === undefined) {
-                observer.next = noop;
-            }
-            if (observer.error === undefined) {
-                observer.error = noop;
-            }
-            if (observer.complete === undefined) {
-                observer.complete = noop;
-            }
-            var unsub = this.unsubscribeOne.bind(this, this.observers.length);
-            // Attempt to subscribe to a terminated Observable - we
-            // just respond to the Observer with the final error or complete
-            // event.
-            if (this.finalized) {
-                this.task.then(function () {
-                    try {
-                        if (_this2.finalError) {
-                            observer.error(_this2.finalError);
-                        } else {
-                            observer.complete();
-                        }
-                    } catch (e) {
-                        // nothing
-                    }
-                });
-            }
-            this.observers.push(observer);
-            return unsub;
-        }
-        // Unsubscribe is synchronous - we guarantee that no events are sent to
-        // any unsubscribed Observer.
-
-    }, {
-        key: 'unsubscribeOne',
-        value: function unsubscribeOne(i) {
-            if (this.observers === undefined || this.observers[i] === undefined) {
-                return;
-            }
-            delete this.observers[i];
-            this.observerCount -= 1;
-            if (this.observerCount === 0 && this.onNoObservers !== undefined) {
-                this.onNoObservers(this);
-            }
-        }
-    }, {
-        key: 'forEachObserver',
-        value: function forEachObserver(fn) {
-            if (this.finalized) {
-                // Already closed by previous event....just eat the additional values.
-                return;
-            }
-            // Since sendOne calls asynchronously - there is no chance that
-            // this.observers will become undefined.
-            for (var i = 0; i < this.observers.length; i++) {
-                this.sendOne(i, fn);
-            }
-        }
-        // Call the Observer via one of it's callback function. We are careful to
-        // confirm that the observe has not been unsubscribed since this asynchronous
-        // function had been queued.
-
-    }, {
-        key: 'sendOne',
-        value: function sendOne(i, fn) {
-            var _this3 = this;
-
-            // Execute the callback asynchronously
-            this.task.then(function () {
-                if (_this3.observers !== undefined && _this3.observers[i] !== undefined) {
-                    try {
-                        fn(_this3.observers[i]);
-                    } catch (e) {
-                        // Ignore exceptions raised in Observers or missing methods of an
-                        // Observer.
-                        // Log error to console. b/31404806
-                        if (typeof console !== "undefined" && console.error) {
-                            console.error(e);
-                        }
-                    }
-                }
-            });
-        }
-    }, {
-        key: 'close',
-        value: function close(err) {
-            var _this4 = this;
-
-            if (this.finalized) {
-                return;
-            }
-            this.finalized = true;
-            if (err !== undefined) {
-                this.finalError = err;
-            }
-            // Proxy is no longer needed - garbage collect references
-            this.task.then(function () {
-                _this4.observers = undefined;
-                _this4.onNoObservers = undefined;
-            });
-        }
-    }]);
-
-    return ObserverProxy;
-}();
-/** Turn synchronous function into one called asynchronously. */
-
-
-function async(fn, onError) {
-    return function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        LocalPromise.resolve(true).then(function () {
-            fn.apply(undefined, args);
-        }).catch(function (error) {
-            if (onError) {
-                onError(error);
-            }
-        });
-    };
-}
-/**
- * Return true if the object passed in implements any of the named methods.
- */
-function implementsAnyMethods(obj, methods) {
-    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) {
-        return false;
-    }
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = methods[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var method = _step.value;
-
-            if (method in obj && typeof obj[method] === 'function') {
-                return true;
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-
-    return false;
-}
-function noop() {
-    // do nothing
-}
-//# sourceMappingURL=subscribe.js.map
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _errors = __webpack_require__(16);
-
-var _errors2 = __webpack_require__(9);
-
-var _errors3 = _interopRequireDefault(_errors2);
-
-var _tokenManager = __webpack_require__(67);
-
-var _tokenManager2 = _interopRequireDefault(_tokenManager);
-
-var _notificationPermission = __webpack_require__(29);
-
-var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var SENDER_ID_OPTION_NAME = 'messagingSenderId';
-
-var ControllerInterface = function () {
-    /**
-     * An interface of the Messaging Service API
-     * @param {!firebase.app.App} app
-     */
-    function ControllerInterface(app) {
-        var _this = this;
-
-        _classCallCheck(this, ControllerInterface);
-
-        this.errorFactory_ = new _errors.ErrorFactory('messaging', 'Messaging', _errors3.default.map);
-        if (!app.options[SENDER_ID_OPTION_NAME] || typeof app.options[SENDER_ID_OPTION_NAME] !== 'string') {
-            throw this.errorFactory_.create(_errors3.default.codes.BAD_SENDER_ID);
-        }
-        this.messagingSenderId_ = app.options[SENDER_ID_OPTION_NAME];
-        this.tokenManager_ = new _tokenManager2.default();
-        this.app = app;
-        this.INTERNAL = {};
-        this.INTERNAL.delete = function () {
-            return _this.delete;
-        };
-    }
-    /**
-     * @export
-     * @return {Promise<string> | Promise<null>} Returns a promise that
-     * resolves to an FCM token.
-     */
-
-
-    _createClass(ControllerInterface, [{
-        key: 'getToken',
-        value: function getToken() {
-            var _this2 = this;
-
-            // Check with permissions
-            var currentPermission = this.getNotificationPermission_();
-            if (currentPermission !== _notificationPermission2.default.granted) {
-                if (currentPermission === _notificationPermission2.default.denied) {
-                    return Promise.reject(this.errorFactory_.create(_errors3.default.codes.NOTIFICATIONS_BLOCKED));
-                }
-                // We must wait for permission to be granted
-                return Promise.resolve(null);
-            }
-            return this.getSWRegistration_().then(function (registration) {
-                return _this2.tokenManager_.getSavedToken(_this2.messagingSenderId_, registration).then(function (token) {
-                    if (token) {
-                        return token;
-                    }
-                    return _this2.tokenManager_.createToken(_this2.messagingSenderId_, registration);
-                });
-            });
-        }
-        /**
-         * This method deletes tokens that the token manager looks after and then
-         * unregisters the push subscription if it exists.
-         * @export
-         * @param {string} token
-         * @return {Promise<void>}
-         */
-
-    }, {
-        key: 'deleteToken',
-        value: function deleteToken(token) {
-            var _this3 = this;
-
-            return this.tokenManager_.deleteToken(token).then(function () {
-                return _this3.getSWRegistration_().then(function (registration) {
-                    if (registration) {
-                        return registration.pushManager.getSubscription();
-                    }
-                }).then(function (subscription) {
-                    if (subscription) {
-                        return subscription.unsubscribe();
-                    }
-                });
-            });
-        }
-    }, {
-        key: 'getSWRegistration_',
-        value: function getSWRegistration_() {
-            throw this.errorFactory_.create(_errors3.default.codes.SHOULD_BE_INHERITED);
-        }
-        //
-        // The following methods should only be available in the window.
-        //
-
-    }, {
-        key: 'requestPermission',
-        value: function requestPermission() {
-            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
-        }
-        /**
-         * @export
-         * @param {!ServiceWorkerRegistration} registration
-         */
-
-    }, {
-        key: 'useServiceWorker',
-        value: function useServiceWorker() {
-            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
-        }
-        /**
-         * @export
-         * @param {!firebase.Observer|function(*)} nextOrObserver
-         * @param {function(!Error)=} optError
-         * @param {function()=} optCompleted
-         * @return {!function()}
-         */
-
-    }, {
-        key: 'onMessage',
-        value: function onMessage() {
-            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
-        }
-        /**
-         * @export
-         * @param {!firebase.Observer|function()} nextOrObserver An observer object
-         * or a function triggered on token refresh.
-         * @param {function(!Error)=} optError Optional A function
-         * triggered on token refresh error.
-         * @param {function()=} optCompleted Optional function triggered when the
-         * observer is removed.
-         * @return {!function()} The unsubscribe function for the observer.
-         */
-
-    }, {
-        key: 'onTokenRefresh',
-        value: function onTokenRefresh() {
-            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
-        }
-        //
-        // The following methods are used by the service worker only.
-        //
-        /**
-         * @export
-         * @param {function(Object)} callback
-         */
-
-    }, {
-        key: 'setBackgroundMessageHandler',
-        value: function setBackgroundMessageHandler() {
-            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_SW);
-        }
-        //
-        // The following methods are used by the service themselves and not exposed
-        // publicly or not expected to be used by developers.
-        //
-        /**
-         * This method is required to adhere to the Firebase interface.
-         * It closes any currently open indexdb database connections.
-         */
-
-    }, {
-        key: 'delete',
-        value: function _delete() {
-            this.tokenManager_.closeDatabase();
-        }
-        /**
-         * Returns the current Notification Permission state.
-         * @private
-         * @return {string} The currenct permission state.
-         */
-
-    }, {
-        key: 'getNotificationPermission_',
-        value: function getNotificationPermission_() {
-            return Notification.permission;
-        }
-        /**
-         * @protected
-         * @returns {TokenManager}
-         */
-
-    }, {
-        key: 'getTokenManager',
-        value: function getTokenManager() {
-            return this.tokenManager_;
-        }
-    }]);
-
-    return ControllerInterface;
-}();
-
-exports.default = ControllerInterface;
-module.exports = exports['default'];
-//# sourceMappingURL=controller-interface.js.map
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var FCM_APPLICATION_SERVER_KEY = [0x04, 0x33, 0x94, 0xF7, 0xDF, 0xA1, 0xEB, 0xB1, 0xDC, 0x03, 0xA2, 0x5E, 0x15, 0x71, 0xDB, 0x48, 0xD3, 0x2E, 0xED, 0xED, 0xB2, 0x34, 0xDB, 0xB7, 0x47, 0x3A, 0x0C, 0x8F, 0xC4, 0xCC, 0xE1, 0x6F, 0x3C, 0x8C, 0x84, 0xDF, 0xAB, 0xB6, 0x66, 0x3E, 0xF2, 0x0C, 0xD4, 0x8B, 0xFE, 0xE3, 0xF9, 0x76, 0x2F, 0x14, 0x1C, 0x63, 0x08, 0x6A, 0x6F, 0x2D, 0xB1, 0x1A, 0x95, 0xB0, 0xCE, 0x37, 0xC0, 0x9C, 0x6E];
-var SUBSCRIPTION_DETAILS = {
-    'userVisibleOnly': true,
-    'applicationServerKey': new Uint8Array(FCM_APPLICATION_SERVER_KEY)
-};
-exports.default = {
-    ENDPOINT: 'https://fcm.googleapis.com',
-    APPLICATION_SERVER_KEY: FCM_APPLICATION_SERVER_KEY,
-    SUBSCRIPTION_OPTIONS: SUBSCRIPTION_DETAILS
-};
-module.exports = exports['default'];
-//# sourceMappingURL=fcm-details.js.map
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    granted: 'granted',
-    default: 'default',
-    denied: 'denied'
-};
-module.exports = exports['default'];
-//# sourceMappingURL=notification-permission.js.map
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-// These fields are strings to prevent closure from thinking goog.getMsg
-// should be used to initialise the values
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var PARAMS = {
-    TYPE_OF_MSG: 'firebase-messaging-msg-type',
-    DATA: 'firebase-messaging-msg-data'
-};
-// This value isn't using the TYPE_OF_MSG short hand as closure
-// expects the variable to be defined via goog.getMsg
-var msgType = {
-    PUSH_MSG_RECEIVED: 'push-msg-received',
-    NOTIFICATION_CLICKED: 'notification-clicked'
-};
-var createNewMsg = function (msgType, msgData) {
-    var _message;
-
-    var message = (_message = {}, _defineProperty(_message, PARAMS.TYPE_OF_MSG, msgType), _defineProperty(_message, PARAMS.DATA, msgData), _message);
-    return message;
-};
-exports.default = {
-    PARAMS: PARAMS,
-    TYPES_OF_MSG: msgType,
-    createNewMsg: createNewMsg
-};
-module.exports = exports['default'];
-//# sourceMappingURL=worker-page-message.js.map
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.FbsBlob = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
-/**
- * @file Provides a Blob-like wrapper for various binary types (including the
- * native Blob type). This makes it possible to upload types like ArrayBuffers,
- * making uploads possible in environments without the native Blob type.
- */
-
-
-var _fs = __webpack_require__(74);
-
-var fs = _interopRequireWildcard(_fs);
-
-var _string = __webpack_require__(21);
-
-var string = _interopRequireWildcard(_string);
-
-var _type = __webpack_require__(0);
-
-var type = _interopRequireWildcard(_type);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @param opt_elideCopy If true, doesn't copy mutable input data
- *     (e.g. Uint8Arrays). Pass true only if you know the objects will not be
- *     modified after this blob's construction.
- */
-var FbsBlob = exports.FbsBlob = function () {
-    function FbsBlob(data, opt_elideCopy) {
-        _classCallCheck(this, FbsBlob);
-
-        var size = 0;
-        var blobType = '';
-        if (type.isNativeBlob(data)) {
-            this.data_ = data;
-            size = data.size;
-            blobType = data.type;
-        } else if (data instanceof ArrayBuffer) {
-            if (opt_elideCopy) {
-                this.data_ = new Uint8Array(data);
-            } else {
-                this.data_ = new Uint8Array(data.byteLength);
-                this.data_.set(new Uint8Array(data));
-            }
-            size = this.data_.length;
-        } else if (data instanceof Uint8Array) {
-            if (opt_elideCopy) {
-                this.data_ = data;
-            } else {
-                this.data_ = new Uint8Array(data.length);
-                this.data_.set(data);
-            }
-            size = data.length;
-        }
-        this.size_ = size;
-        this.type_ = blobType;
-    }
-
-    _createClass(FbsBlob, [{
-        key: 'size',
-        value: function size() {
-            return this.size_;
-        }
-    }, {
-        key: 'type',
-        value: function () {
-            return this.type_;
-        }
-    }, {
-        key: 'slice',
-        value: function slice(startByte, endByte) {
-            if (type.isNativeBlob(this.data_)) {
-                var realBlob = this.data_;
-                var sliced = fs.sliceBlob(realBlob, startByte, endByte);
-                if (sliced === null) {
-                    return null;
-                }
-                return new FbsBlob(sliced);
-            } else {
-                var slice = new Uint8Array(this.data_.buffer, startByte, endByte - startByte);
-                return new FbsBlob(slice, true);
-            }
-        }
-    }, {
-        key: 'uploadData',
-        value: function uploadData() {
-            return this.data_;
-        }
-    }], [{
-        key: 'getBlob',
-        value: function getBlob() {
-            for (var _len = arguments.length, var_args = Array(_len), _key = 0; _key < _len; _key++) {
-                var_args[_key] = arguments[_key];
-            }
-
-            if (type.isNativeBlobDefined()) {
-                var blobby = var_args.map(function (val) {
-                    if (val instanceof FbsBlob) {
-                        return val.data_;
-                    } else {
-                        return val;
-                    }
-                });
-                return new FbsBlob(fs.getBlob.apply(null, blobby));
-            } else {
-                var uint8Arrays = var_args.map(function (val) {
-                    if (type.isString(val)) {
-                        return string.dataFromString(_string.StringFormat.RAW, val).data;
-                    } else {
-                        // Blobs don't exist, so this has to be a Uint8Array.
-                        return val.data_;
-                    }
-                });
-                var finalLength = 0;
-                uint8Arrays.forEach(function (array) {
-                    finalLength += array.byteLength;
-                });
-                var merged = new Uint8Array(finalLength);
-                var index = 0;
-                uint8Arrays.forEach(function (array) {
-                    for (var i = 0; i < array.length; i++) {
-                        merged[index++] = array[i];
-                    }
-                });
-                return new FbsBlob(merged, true);
-            }
-        }
-    }]);
-
-    return FbsBlob;
-}();
-//# sourceMappingURL=blob.js.map
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.parent = parent;
-exports.child = child;
-exports.lastComponent = lastComponent;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Contains helper methods for manipulating paths.
- */
-/**
- * @return Null if the path is already at the root.
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/function parent(path) {
-    if (path.length == 0) {
-        return null;
-    }
-    var index = path.lastIndexOf('/');
-    if (index === -1) {
-        return '';
-    }
-    var newPath = path.slice(0, index);
-    return newPath;
-}
-function child(path, childPath) {
-    var canonicalChildPath = childPath.split('/').filter(function (component) {
-        return component.length > 0;
-    }).join('/');
-    if (path.length === 0) {
-        return canonicalChildPath;
-    } else {
-        return path + '/' + canonicalChildPath;
-    }
-}
-/**
- * Returns the last component of a path.
- * '/foo/bar' -> 'bar'
- * '/foo/bar/baz/' -> 'baz/'
- * '/a' -> 'a'
- */
-function lastComponent(path) {
-    var index = path.lastIndexOf('/', path.length - 2);
-    if (index === -1) {
-        return path;
-    } else {
-        return path.slice(index + 1);
-    }
-}
-//# sourceMappingURL=path.js.map
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.resumableUploadChunkSize = exports.ResumableUploadStatus = undefined;
-exports.handlerCheck = handlerCheck;
-exports.metadataHandler = metadataHandler;
-exports.sharedErrorHandler = sharedErrorHandler;
-exports.objectErrorHandler = objectErrorHandler;
-exports.getMetadata = getMetadata;
-exports.updateMetadata = updateMetadata;
-exports.deleteObject = deleteObject;
-exports.determineContentType_ = determineContentType_;
-exports.metadataForUpload_ = metadataForUpload_;
-exports.multipartUpload = multipartUpload;
-exports.checkResumeHeader_ = checkResumeHeader_;
-exports.createResumableUpload = createResumableUpload;
-exports.getResumableUploadStatus = getResumableUploadStatus;
-exports.continueResumableUpload = continueResumableUpload;
-
-var _array = __webpack_require__(19);
-
-var array = _interopRequireWildcard(_array);
-
-var _blob = __webpack_require__(31);
-
-var _error = __webpack_require__(1);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-var _metadata = __webpack_require__(20);
-
-var MetadataUtils = _interopRequireWildcard(_metadata);
-
-var _object = __webpack_require__(3);
-
-var object = _interopRequireWildcard(_object);
-
-var _requestinfo = __webpack_require__(78);
-
-var _type = __webpack_require__(0);
-
-var type = _interopRequireWildcard(_type);
-
-var _url = __webpack_require__(22);
-
-var UrlUtils = _interopRequireWildcard(_url);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-/**
- * Throws the UNKNOWN FirebaseStorageError if cndn is false.
- */
-function handlerCheck(cndn) {
-    if (!cndn) {
-        throw errorsExports.unknown();
-    }
-}
-function metadataHandler(authWrapper, mappings) {
-    return function (xhr, text) {
-        var metadata = MetadataUtils.fromResourceString(authWrapper, text, mappings);
-        handlerCheck(metadata !== null);
-        return metadata;
-    };
-}
-function sharedErrorHandler(location) {
-    return function (xhr, err) {
-        var newErr = void 0;
-        if (xhr.getStatus() === 401) {
-            newErr = errorsExports.unauthenticated();
-        } else {
-            if (xhr.getStatus() === 402) {
-                newErr = errorsExports.quotaExceeded(location.bucket);
-            } else {
-                if (xhr.getStatus() === 403) {
-                    newErr = errorsExports.unauthorized(location.path);
-                } else {
-                    newErr = err;
-                }
-            }
-        }
-        newErr.setServerResponseProp(err.serverResponseProp());
-        return newErr;
-    };
-}
-function objectErrorHandler(location) {
-    var shared = sharedErrorHandler(location);
-
-    return function (xhr, err) {
-        var newErr = shared(xhr, err);
-        if (xhr.getStatus() === 404) {
-            newErr = errorsExports.objectNotFound(location.path);
-        }
-        newErr.setServerResponseProp(err.serverResponseProp());
-        return newErr;
-    };
-}
-function getMetadata(authWrapper, location, mappings) {
-    var urlPart = location.fullServerUrl();
-    var url = UrlUtils.makeNormalUrl(urlPart);
-
-    var timeout = authWrapper.maxOperationRetryTime();
-    var requestInfo = new _requestinfo.RequestInfo(url, 'GET', metadataHandler(authWrapper, mappings), timeout);
-    requestInfo.errorHandler = objectErrorHandler(location);
-    return requestInfo;
-}
-function updateMetadata(authWrapper, location, metadata, mappings) {
-    var urlPart = location.fullServerUrl();
-    var url = UrlUtils.makeNormalUrl(urlPart);
-
-    var body = MetadataUtils.toResourceString(metadata, mappings);
-
-    var timeout = authWrapper.maxOperationRetryTime();
-    var requestInfo = new _requestinfo.RequestInfo(url, 'PATCH', metadataHandler(authWrapper, mappings), timeout);
-    requestInfo.headers = { 'Content-Type': 'application/json; charset=utf-8' };
-    requestInfo.body = body;
-    requestInfo.errorHandler = objectErrorHandler(location);
-    return requestInfo;
-}
-function deleteObject(authWrapper, location) {
-    var urlPart = location.fullServerUrl();
-    var url = UrlUtils.makeNormalUrl(urlPart);
-
-    var timeout = authWrapper.maxOperationRetryTime();
-
-    var requestInfo = new _requestinfo.RequestInfo(url, 'DELETE', function () {}, timeout);
-    requestInfo.successCodes = [200, 204];
-    requestInfo.errorHandler = objectErrorHandler(location);
-    return requestInfo;
-}
-function determineContentType_(metadata, blob) {
-    return metadata && metadata['contentType'] || blob && blob.type() || 'application/octet-stream';
-}
-function metadataForUpload_(location, blob, opt_metadata) {
-    var metadata = object.clone(opt_metadata);
-    metadata['fullPath'] = location.path;
-    metadata['size'] = blob.size();
-    if (!metadata['contentType']) {
-        metadata['contentType'] = determineContentType_(null, blob);
-    }
-    return metadata;
-}
-function multipartUpload(authWrapper, location, mappings, blob, opt_metadata) {
-    var urlPart = location.bucketOnlyServerUrl();
-    var headers = { 'X-Goog-Upload-Protocol': 'multipart' };
-
-    var boundary = function () {
-        var str = '';
-        for (var i = 0; i < 2; i++) {
-            str = str + Math.random().toString().slice(2);
-        }
-        return str;
-    }();
-    headers['Content-Type'] = 'multipart/related; boundary=' + boundary;
-    var metadata = metadataForUpload_(location, blob, opt_metadata);
-    var metadataString = MetadataUtils.toResourceString(metadata, mappings);
-    var preBlobPart = '--' + boundary + '\r\n' + 'Content-Type: application/json; charset=utf-8\r\n\r\n' + metadataString + '\r\n--' + boundary + '\r\n' + 'Content-Type: ' + metadata['contentType'] + '\r\n\r\n';
-
-    var body = _blob.FbsBlob.getBlob(preBlobPart, blob, '\r\n--' + boundary + '--');
-    if (body === null) {
-        throw errorsExports.cannotSliceBlob();
-    }
-    var urlParams = { 'name': metadata['fullPath'] };
-    var url = UrlUtils.makeUploadUrl(urlPart);
-
-    var timeout = authWrapper.maxUploadRetryTime();
-    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', metadataHandler(authWrapper, mappings), timeout);
-    requestInfo.urlParams = urlParams;
-    requestInfo.headers = headers;
-    requestInfo.body = body.uploadData();
-    requestInfo.errorHandler = sharedErrorHandler(location);
-    return requestInfo;
-}
-/**
- * @param current The number of bytes that have been uploaded so far.
- * @param total The total number of bytes in the upload.
- * @param opt_finalized True if the server has finished the upload.
- * @param opt_metadata The upload metadata, should
- *     only be passed if opt_finalized is true.
- * @struct
- */
-
-var ResumableUploadStatus = exports.ResumableUploadStatus = function ResumableUploadStatus(current, total, finalized, metadata) {
-    _classCallCheck(this, ResumableUploadStatus);
-
-    this.current = current;
-    this.total = total;
-    this.finalized = !!finalized;
-    this.metadata = metadata || null;
-};
-
-function checkResumeHeader_(xhr, opt_allowed) {
-    var status = void 0;
-    try {
-        status = xhr.getResponseHeader('X-Goog-Upload-Status');
-    } catch (e) {
-        handlerCheck(false);
-    }
-
-    handlerCheck(array.contains(opt_allowed || ['active'], status));
-    return status;
-}
-function createResumableUpload(authWrapper, location, mappings, blob, opt_metadata) {
-    var urlPart = location.bucketOnlyServerUrl();
-    var metadata = metadataForUpload_(location, blob, opt_metadata);
-    var urlParams = { 'name': metadata['fullPath'] };
-    var url = UrlUtils.makeUploadUrl(urlPart);
-
-    var headers = {
-        'X-Goog-Upload-Protocol': 'resumable',
-        'X-Goog-Upload-Command': 'start',
-        'X-Goog-Upload-Header-Content-Length': blob.size(),
-        'X-Goog-Upload-Header-Content-Type': metadata['contentType'],
-        'Content-Type': 'application/json; charset=utf-8'
-    };
-    var body = MetadataUtils.toResourceString(metadata, mappings);
-    var timeout = authWrapper.maxUploadRetryTime();
-
-    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', function (xhr) {
-        checkResumeHeader_(xhr);
-        var url = void 0;
-        try {
-            url = xhr.getResponseHeader('X-Goog-Upload-URL');
-        } catch (e) {
-            handlerCheck(false);
-        }
-        handlerCheck(type.isString(url));
-        return url;
-    }, timeout);
-    requestInfo.urlParams = urlParams;
-    requestInfo.headers = headers;
-    requestInfo.body = body;
-    requestInfo.errorHandler = sharedErrorHandler(location);
-    return requestInfo;
-}
-/**
- * @param url From a call to fbs.requests.createResumableUpload.
- */
-function getResumableUploadStatus(authWrapper, location, url, blob) {
-    var timeout = authWrapper.maxUploadRetryTime();
-    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', function (xhr) {
-        var status = checkResumeHeader_(xhr, ['active', 'final']);
-        var sizeString = void 0;
-        try {
-            sizeString = xhr.getResponseHeader('X-Goog-Upload-Size-Received');
-        } catch (e) {
-            handlerCheck(false);
-        }
-        var size = parseInt(sizeString, 10);
-        handlerCheck(!isNaN(size));
-        return new ResumableUploadStatus(size, blob.size(), status === 'final');
-    }, timeout);
-    requestInfo.headers = { 'X-Goog-Upload-Command': 'query' };
-    requestInfo.errorHandler = sharedErrorHandler(location);
-    return requestInfo;
-}
-/**
- * Any uploads via the resumable upload API must transfer a number of bytes
- * that is a multiple of this number.
- */
-var resumableUploadChunkSize = exports.resumableUploadChunkSize = 256 * 1024;
-/**
- * @param url From a call to fbs.requests.createResumableUpload.
- * @param chunkSize Number of bytes to upload.
- * @param opt_status The previous status.
- *     If not passed or null, we start from the beginning.
- * @throws fbs.Error If the upload is already complete, the passed in status
- *     has a final size inconsistent with the blob, or the blob cannot be sliced
- *     for upload.
- */
-function continueResumableUpload(location, authWrapper, url, blob, chunkSize, mappings, opt_status, opt_progressCallback) {
-    // TODO(andysoto): standardize on internal asserts
-    // assert(!(opt_status && opt_status.finalized));
-    var status = new ResumableUploadStatus(0, 0);
-    if (opt_status) {
-        status.current = opt_status.current;
-        status.total = opt_status.total;
-    } else {
-        status.current = 0;
-        status.total = blob.size();
-    }
-    if (blob.size() !== status.total) {
-        throw errorsExports.serverFileWrongSize();
-    }
-    var bytesLeft = status.total - status.current;
-    var bytesToUpload = bytesLeft;
-    if (chunkSize > 0) {
-        bytesToUpload = Math.min(bytesToUpload, chunkSize);
-    }
-    var startByte = status.current;
-    var endByte = startByte + bytesToUpload;
-    var uploadCommand = bytesToUpload === bytesLeft ? 'upload, finalize' : 'upload';
-    var headers = {
-        'X-Goog-Upload-Command': uploadCommand,
-        'X-Goog-Upload-Offset': status.current
-    };
-    var body = blob.slice(startByte, endByte);
-    if (body === null) {
-        throw errorsExports.cannotSliceBlob();
-    }
-
-    var timeout = authWrapper.maxUploadRetryTime();
-    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', function (xhr, text) {
-        // TODO(andysoto): Verify the MD5 of each uploaded range:
-        // the 'x-range-md5' header comes back with status code 308 responses.
-        // We'll only be able to bail out though, because you can't re-upload a
-        // range that you previously uploaded.
-        var uploadStatus = checkResumeHeader_(xhr, ['active', 'final']);
-        var newCurrent = status.current + bytesToUpload;
-        var size = blob.size();
-        var metadata = void 0;
-        if (uploadStatus === 'final') {
-            metadata = metadataHandler(authWrapper, mappings)(xhr, text);
-        } else {
-            metadata = null;
-        }
-        return new ResumableUploadStatus(newCurrent, size, uploadStatus === 'final', metadata);
-    }, timeout);
-    requestInfo.headers = headers;
-    requestInfo.body = body.uploadData();
-    requestInfo.progressCallback = opt_progressCallback || null;
-    requestInfo.errorHandler = sharedErrorHandler(location);
-    return requestInfo;
-}
-//# sourceMappingURL=requests.js.map
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.taskStateFromInternalTaskState = taskStateFromInternalTaskState;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var TaskEvent = exports.TaskEvent = {
-    /** Triggered whenever the task changes or progress is updated. */
-    STATE_CHANGED: 'state_changed'
-};
-var InternalTaskState = exports.InternalTaskState = {
-    RUNNING: 'running',
-    PAUSING: 'pausing',
-    PAUSED: 'paused',
-    SUCCESS: 'success',
-    CANCELING: 'canceling',
-    CANCELED: 'canceled',
-    ERROR: 'error'
-};
-var TaskState = exports.TaskState = {
-    /** The task is currently transferring data. */
-    RUNNING: 'running',
-    /** The task was paused by the user. */
-    PAUSED: 'paused',
-    /** The task completed successfully. */
-    SUCCESS: 'success',
-    /** The task was canceled. */
-    CANCELED: 'canceled',
-    /** The task failed with an error. */
-    ERROR: 'error'
-};
-function taskStateFromInternalTaskState(state) {
-    switch (state) {
-        case InternalTaskState.RUNNING:
-        case InternalTaskState.PAUSING:
-        case InternalTaskState.CANCELING:
-            return TaskState.RUNNING;
-        case InternalTaskState.PAUSED:
-            return TaskState.PAUSED;
-        case InternalTaskState.SUCCESS:
-            return TaskState.SUCCESS;
-        case InternalTaskState.CANCELED:
-            return TaskState.CANCELED;
-        case InternalTaskState.ERROR:
-            return TaskState.ERROR;
-        default:
-            // TODO(andysoto): assert(false);
-            return TaskState.ERROR;
-    }
-}
-//# sourceMappingURL=taskenums.js.map
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @enum{number}
- */
-var ErrorCode = exports.ErrorCode = undefined;
-(function (ErrorCode) {
-    ErrorCode[ErrorCode["NO_ERROR"] = 0] = "NO_ERROR";
-    ErrorCode[ErrorCode["NETWORK_ERROR"] = 1] = "NETWORK_ERROR";
-    ErrorCode[ErrorCode["ABORT"] = 2] = "ABORT";
-})(ErrorCode || (exports.ErrorCode = ErrorCode = {}));
-//# sourceMappingURL=xhrio.js.map
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Reference = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
-/**
- * @fileoverview Defines the Firebase Storage Reference class.
- */
-
-
-var _args = __webpack_require__(18);
-
-var args = _interopRequireWildcard(_args);
-
-var _blob = __webpack_require__(31);
-
-var _error = __webpack_require__(1);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-var _location = __webpack_require__(11);
-
-var _metadata = __webpack_require__(20);
-
-var metadata = _interopRequireWildcard(_metadata);
-
-var _object = __webpack_require__(3);
-
-var object = _interopRequireWildcard(_object);
-
-var _path = __webpack_require__(32);
-
-var path = _interopRequireWildcard(_path);
-
-var _requests = __webpack_require__(33);
-
-var requests = _interopRequireWildcard(_requests);
-
-var _string = __webpack_require__(21);
-
-var fbsString = _interopRequireWildcard(_string);
-
-var _type = __webpack_require__(0);
-
-var type = _interopRequireWildcard(_type);
-
-var _task = __webpack_require__(83);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Provides methods to interact with a bucket in the Firebase Storage service.
- * @param location An fbs.location, or the URL at
- *     which to base this object, in one of the following forms:
- *         gs://<bucket>/<object-path>
- *         http[s]://firebasestorage.googleapis.com/
- *                     <api-version>/b/<bucket>/o/<object-path>
- *     Any query or fragment strings will be ignored in the http[s]
- *     format. If no value is passed, the storage object will use a URL based on
- *     the project ID of the base firebase.App instance.
- */
-var Reference = exports.Reference = function () {
-    function Reference(authWrapper, location) {
-        _classCallCheck(this, Reference);
-
-        this.authWrapper = authWrapper;
-        if (location instanceof _location.Location) {
-            this.location = location;
-        } else {
-            this.location = _location.Location.makeFromUrl(location);
-        }
-    }
-    /**
-     * @return The URL for the bucket and path this object references,
-     *     in the form gs://<bucket>/<object-path>
-     * @override
-     */
-
-
-    _createClass(Reference, [{
-        key: 'toString',
-        value: function toString() {
-            args.validate('toString', [], arguments);
-            return 'gs://' + this.location.bucket + '/' + this.location.path;
-        }
-    }, {
-        key: 'newRef',
-        value: function newRef(authWrapper, location) {
-            return new Reference(authWrapper, location);
-        }
-    }, {
-        key: 'mappings',
-        value: function mappings() {
-            return metadata.getMappings();
-        }
-        /**
-         * @return A reference to the object obtained by
-         *     appending childPath, removing any duplicate, beginning, or trailing
-         *     slashes.
-         */
-
-    }, {
-        key: 'child',
-        value: function child(childPath) {
-            args.validate('child', [args.stringSpec()], arguments);
-            var newPath = path.child(this.location.path, childPath);
-            var location = new _location.Location(this.location.bucket, newPath);
-            return this.newRef(this.authWrapper, location);
-        }
-        /**
-         * @return A reference to the parent of the
-         *     current object, or null if the current object is the root.
-         */
-
-    }, {
-        key: 'put',
-
-        /**
-         * Uploads a blob to this object's location.
-         * @param data The blob to upload.
-         * @return An UploadTask that lets you control and
-         *     observe the upload.
-         */
-        value: function put(data) {
-            var metadata = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            args.validate('put', [args.uploadDataSpec(), args.metadataSpec(true)], arguments);
-            this.throwIfRoot_('put');
-            return new _task.UploadTask(this, this.authWrapper, this.location, this.mappings(), new _blob.FbsBlob(data), metadata);
-        }
-        /**
-         * Uploads a string to this object's location.
-         * @param string The string to upload.
-         * @param opt_format The format of the string to upload.
-         * @return An UploadTask that lets you control and
-         *     observe the upload.
-         */
-
-    }, {
-        key: 'putString',
-        value: function putString(string) {
-            var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _string.StringFormat.RAW;
-            var opt_metadata = arguments[2];
-
-            args.validate('putString', [args.stringSpec(), args.stringSpec(fbsString.formatValidator, true), args.metadataSpec(true)], arguments);
-            this.throwIfRoot_('putString');
-            var data = fbsString.dataFromString(format, string);
-            var metadata = object.clone(opt_metadata);
-            if (!type.isDef(metadata['contentType']) && type.isDef(data.contentType)) {
-                metadata['contentType'] = data.contentType;
-            }
-            return new _task.UploadTask(this, this.authWrapper, this.location, this.mappings(), new _blob.FbsBlob(data.data, true), metadata);
-        }
-        /**
-         * Deletes the object at this location.
-         * @return A promise that resolves if the deletion succeeds.
-         */
-
-    }, {
-        key: 'delete',
-        value: function _delete() {
-            args.validate('delete', [], arguments);
-            this.throwIfRoot_('delete');
-            var self = this;
-            return this.authWrapper.getAuthToken().then(function (authToken) {
-                var requestInfo = requests.deleteObject(self.authWrapper, self.location);
-                return self.authWrapper.makeRequest(requestInfo, authToken).getPromise();
-            });
-        }
-        /**
-         *     A promise that resolves with the metadata for this object. If this
-         *     object doesn't exist or metadata cannot be retreived, the promise is
-         *     rejected.
-         */
-
-    }, {
-        key: 'getMetadata',
-        value: function getMetadata() {
-            args.validate('getMetadata', [], arguments);
-            this.throwIfRoot_('getMetadata');
-            var self = this;
-            return this.authWrapper.getAuthToken().then(function (authToken) {
-                var requestInfo = requests.getMetadata(self.authWrapper, self.location, self.mappings());
-                return self.authWrapper.makeRequest(requestInfo, authToken).getPromise();
-            });
-        }
-        /**
-         * Updates the metadata for this object.
-         * @param metadata The new metadata for the object.
-         *     Only values that have been explicitly set will be changed. Explicitly
-         *     setting a value to null will remove the metadata.
-         * @return A promise that resolves
-         *     with the new metadata for this object.
-         *     @see firebaseStorage.Reference.prototype.getMetadata
-         */
-
-    }, {
-        key: 'updateMetadata',
-        value: function updateMetadata(metadata) {
-            args.validate('updateMetadata', [args.metadataSpec()], arguments);
-            this.throwIfRoot_('updateMetadata');
-            var self = this;
-            return this.authWrapper.getAuthToken().then(function (authToken) {
-                var requestInfo = requests.updateMetadata(self.authWrapper, self.location, metadata, self.mappings());
-                return self.authWrapper.makeRequest(requestInfo, authToken).getPromise();
-            });
-        }
-        /**
-         * @return A promise that resolves with the download
-         *     URL for this object.
-         */
-
-    }, {
-        key: 'getDownloadURL',
-        value: function getDownloadURL() {
-            args.validate('getDownloadURL', [], arguments);
-            this.throwIfRoot_('getDownloadURL');
-            return this.getMetadata().then(function (metadata) {
-                var url = metadata['downloadURLs'][0];
-                if (type.isDef(url)) {
-                    return url;
-                } else {
-                    throw errorsExports.noDownloadURL();
-                }
-            });
-        }
-    }, {
-        key: 'throwIfRoot_',
-        value: function throwIfRoot_(name) {
-            if (this.location.path === '') {
-                throw errorsExports.invalidRootOperation(name);
-            }
-        }
-    }, {
-        key: 'parent',
-        get: function get() {
-            var newPath = path.parent(this.location.path);
-            if (newPath === null) {
-                return null;
-            }
-            var location = new _location.Location(this.location.bucket, newPath);
-            return this.newRef(this.authWrapper, location);
-        }
-        /**
-         * @return An reference to the root of this
-         *     object's bucket.
-         */
-
-    }, {
-        key: 'root',
-        get: function get() {
-            var location = new _location.Location(this.location.bucket, '');
-            return this.newRef(this.authWrapper, location);
-        }
-    }, {
-        key: 'bucket',
-        get: function get() {
-            return this.location.bucket;
-        }
-    }, {
-        key: 'fullPath',
-        get: function get() {
-            return this.location.path;
-        }
-    }, {
-        key: 'name',
-        get: function get() {
-            return path.lastComponent(this.location.path);
-        }
-    }, {
-        key: 'storage',
-        get: function get() {
-            return this.authWrapper.service();
-        }
-    }]);
-
-    return Reference;
-}();
-//# sourceMappingURL=reference.js.map
-
-
-/***/ }),
-/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(54),
-      utf8 = __webpack_require__(25).utf8,
-      isBuffer = __webpack_require__(88),
-      bin = __webpack_require__(25).bin,
+  var crypt = __webpack_require__(57),
+      utf8 = __webpack_require__(30).utf8,
+      isBuffer = __webpack_require__(90),
+      bin = __webpack_require__(30).bin,
 
   // The core
   md5 = function (message, options) {
@@ -4264,242 +2506,7 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(15);
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(5);
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"header\">\n    <h1>THIS IS HEADER COMPONENT</h1>\n    <span class=\"header-version\"> Version: {{headerCtrl.version}}</span>\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\n    <button class=\"login-button\"  ng-click=\"headerCtrl.login()\"> Login via Facebook </button>\n    <span class=\"login-user-name\"></span>\n</div>\n";
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(93)
-}
-var Component = __webpack_require__(91)(
-  /* script */
-  __webpack_require__(53),
-  /* template */
-  __webpack_require__(92),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 43 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14193,366 +12200,2544 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(38), __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(42), __webpack_require__(13)))
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = login;
+function login() {
+    var mobile = false;
+
+    if (mobile) {} else {
+        console.log('login called');
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
+            document.querySelector('.login-button').style.display = 'none';
+            console.log('login result', result);
+            Globals.username = result.user.displayName;
+            Globals.userId = result.user.uid;
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+        });
+    }
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(5);
+
+
+
+class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default */] {
+
+    constructor({ title }) {
+        super();
+        this.type = 'heading';
+
+        this.title = title;
+        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ title }));
+        this.trees = {};
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Heading;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__facts__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fact__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(26);
+
+
+
+
+
+
+
+
+
+function newTree(nodeType, parentTreeId, values) {
+    let newContent = {};
+
+    switch (nodeType) {
+        case 'fact':
+            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__fact__["a" /* Fact */](values));
+            break;
+        case 'heading':
+            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_5__heading__["a" /* Heading */](values));
+            break;
+        default:
+            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__fact__["a" /* Fact */](values));
+            break;
+    }
+
+    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, newContent);
+    //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
+    //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
+    __WEBPACK_IMPORTED_MODULE_1__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
+        parentTree.addChild(tree.id);
+    });
+    newContent.addTree(tree.id);
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(56);
+
+
+const treesRef = __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees');
+const trees = {};
+
+
+
+function loadObject(treeObj, self) {
+    Object.keys(treeObj).forEach(key => self[key] = treeObj[key]);
+}
+class Tree {
+
+    constructor(contentId, contentType, parentId, x, y) {
+        var treeObj;
+        if (arguments[0] && typeof arguments[0] === 'object') {
+            treeObj = arguments[0];
+            loadObject(treeObj, this);
+            return;
+        }
+
+        this.contentId = contentId;
+        this.contentType = contentType;
+        this.parentId = parentId;
+        this.children = {};
+
+        this.x = x;
+        this.y = y;
+
+        treeObj = { contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children };
+        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify(treeObj));
+        if (typeof arguments[0] === 'object') {
+            //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
+            return;
+        }
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
+            id: this.id,
+            contentId,
+            contentType,
+            parentId,
+            x,
+            y
+        });
+    }
+    /**
+     * Add a child tree to this tree
+     * @param treeId
+     */
+    addChild(treeId) {
+        console.log('add child called in tree.js'
+        // this.treeRef.child('/children').push(treeId)
+        );var children = this.children || {};
+        children[treeId] = true;
+        var updates = {
+            children
+        };
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update(updates);
+    }
+
+    unlinkFromParent() {
+        var treeId = this.id;
+        __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(this.parentId).then(parentTree => {
+            parentTree.removeChild(treeId);
+        });
+        this.changeParent(null);
+    }
+
+    removeChild(childId) {
+        delete this.children[childId];
+
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({ children: this.children });
+    }
+
+    changeParent(newParentId) {
+        this.parentId = newParentId;
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
+            parentId: newParentId
+        });
+    }
+
+    changeFact(newfactid) {
+        this.factId = newfactid;
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
+            factId: newfactid
+        });
+    }
+
+    /**
+     * Change the content of a given node ("Tree")
+     * Available content types currently header and fact
+     */
+    changeContent(contentId, contentType) {
+        this.contentId = contentId;
+        this.contentType = contentType;
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
+            contentId,
+            contentType
+        });
+    }
+
+    /**
+     * Used to update tree X and Y coordinates
+     * @param prop
+     * @param val
+     */
+    set(prop, val) {
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {};
+        updates[prop] = val;
+        // this.treeRef.update(updates)
+        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update(updates);
+        this[prop] = val;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
+
+//TODO: get typeScript so we can have a schema for treeObj
+//treeObj  example
+/*
+ parentId: parentTreeId,
+ factId: fact.id,
+ x: parseInt(currentNewChildTree.x),
+ y: parseInt(currentNewChildTree.y),
+ children: {},
+ label: fact.question + ' ' + fact.answer,
+ size: 1,
+ color: Globals.existingColor,
+ type: 'tree'
+ */
+//invoke like a constructor - new Tree(parentId, factId)
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(6);
+
+class User {
+
+  constructor() {
+    this.loggedIn = false;
+    const self = this;
+    __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */].auth().onAuthStateChanged(function (user) {
+      if (user) {
+        self.loggedIn = true;
+        self.data = user;
+      } else {
+        console.log('user is not logged in');
+        loggedIn = false;
+        // No user is signed in.
+      }
+    });
+  }
+  getId() {
+    return this.data.uid;
+  }
+}
+
+//user singleton
+const user = new User();
+/* harmony default export */ __webpack_exports__["a"] = (user);
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+var charenc = {
+  // UTF-8 encoding
+  utf8: {
+    // Convert a string to a byte array
+    stringToBytes: function(str) {
+      return charenc.bin.stringToBytes(unescape(encodeURIComponent(str)));
+    },
+
+    // Convert a byte array to a string
+    bytesToString: function(bytes) {
+      return decodeURIComponent(escape(charenc.bin.bytesToString(bytes)));
+    }
+  },
+
+  // Binary encoding
+  bin: {
+    // Convert a string to a byte array
+    stringToBytes: function(str) {
+      for (var bytes = [], i = 0; i < str.length; i++)
+        bytes.push(str.charCodeAt(i) & 0xFF);
+      return bytes;
+    },
+
+    // Convert a byte array to a string
+    bytesToString: function(bytes) {
+      for (var str = [], i = 0; i < bytes.length; i++)
+        str.push(String.fromCharCode(bytes[i]));
+      return str.join('');
+    }
+  }
+};
+
+module.exports = charenc;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.createSubscribe = createSubscribe;
+exports.async = async;
+
+var _shared_promise = __webpack_require__(17);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LocalPromise = _shared_promise.local.Promise;
+/**
+ * Helper to make a Subscribe function (just like Promise helps make a
+ * Thenable).
+ *
+ * @param executor Function which can make calls to a single Observer
+ *     as a proxy.
+ * @param onNoObservers Callback when count of Observers goes to zero.
+ */
+function createSubscribe(executor, onNoObservers) {
+    var proxy = new ObserverProxy(executor, onNoObservers);
+    return proxy.subscribe.bind(proxy);
+}
+/**
+ * Implement fan-out for any number of Observers attached via a subscribe
+ * function.
+ */
+
+var ObserverProxy = function () {
+    /**
+     * @param executor Function which can make calls to a single Observer
+     *     as a proxy.
+     * @param onNoObservers Callback when count of Observers goes to zero.
+     */
+    function ObserverProxy(executor, onNoObservers) {
+        var _this = this;
+
+        _classCallCheck(this, ObserverProxy);
+
+        this.observers = [];
+        this.unsubscribes = [];
+        this.observerCount = 0;
+        // Micro-task scheduling by calling task.then().
+        this.task = LocalPromise.resolve();
+        this.finalized = false;
+        this.onNoObservers = onNoObservers;
+        // Call the executor asynchronously so subscribers that are called
+        // synchronously after the creation of the subscribe function
+        // can still receive the very first value generated in the executor.
+        this.task.then(function () {
+            executor(_this);
+        }).catch(function (e) {
+            _this.error(e);
+        });
+    }
+
+    _createClass(ObserverProxy, [{
+        key: 'next',
+        value: function next(value) {
+            this.forEachObserver(function (observer) {
+                observer.next(value);
+            });
+        }
+    }, {
+        key: 'error',
+        value: function error(_error) {
+            this.forEachObserver(function (observer) {
+                observer.error(_error);
+            });
+            this.close(_error);
+        }
+    }, {
+        key: 'complete',
+        value: function complete() {
+            this.forEachObserver(function (observer) {
+                observer.complete();
+            });
+            this.close();
+        }
+        /**
+         * Subscribe function that can be used to add an Observer to the fan-out list.
+         *
+         * - We require that no event is sent to a subscriber sychronously to their
+         *   call to subscribe().
+         */
+
+    }, {
+        key: 'subscribe',
+        value: function subscribe(nextOrObserver, error, complete) {
+            var _this2 = this;
+
+            var observer = void 0;
+            if (nextOrObserver === undefined && error === undefined && complete === undefined) {
+                throw new Error("Missing Observer.");
+            }
+            // Assemble an Observer object when passed as callback functions.
+            if (implementsAnyMethods(nextOrObserver, ['next', 'error', 'complete'])) {
+                observer = nextOrObserver;
+            } else {
+                observer = {
+                    next: nextOrObserver,
+                    error: error,
+                    complete: complete
+                };
+            }
+            if (observer.next === undefined) {
+                observer.next = noop;
+            }
+            if (observer.error === undefined) {
+                observer.error = noop;
+            }
+            if (observer.complete === undefined) {
+                observer.complete = noop;
+            }
+            var unsub = this.unsubscribeOne.bind(this, this.observers.length);
+            // Attempt to subscribe to a terminated Observable - we
+            // just respond to the Observer with the final error or complete
+            // event.
+            if (this.finalized) {
+                this.task.then(function () {
+                    try {
+                        if (_this2.finalError) {
+                            observer.error(_this2.finalError);
+                        } else {
+                            observer.complete();
+                        }
+                    } catch (e) {
+                        // nothing
+                    }
+                });
+            }
+            this.observers.push(observer);
+            return unsub;
+        }
+        // Unsubscribe is synchronous - we guarantee that no events are sent to
+        // any unsubscribed Observer.
+
+    }, {
+        key: 'unsubscribeOne',
+        value: function unsubscribeOne(i) {
+            if (this.observers === undefined || this.observers[i] === undefined) {
+                return;
+            }
+            delete this.observers[i];
+            this.observerCount -= 1;
+            if (this.observerCount === 0 && this.onNoObservers !== undefined) {
+                this.onNoObservers(this);
+            }
+        }
+    }, {
+        key: 'forEachObserver',
+        value: function forEachObserver(fn) {
+            if (this.finalized) {
+                // Already closed by previous event....just eat the additional values.
+                return;
+            }
+            // Since sendOne calls asynchronously - there is no chance that
+            // this.observers will become undefined.
+            for (var i = 0; i < this.observers.length; i++) {
+                this.sendOne(i, fn);
+            }
+        }
+        // Call the Observer via one of it's callback function. We are careful to
+        // confirm that the observe has not been unsubscribed since this asynchronous
+        // function had been queued.
+
+    }, {
+        key: 'sendOne',
+        value: function sendOne(i, fn) {
+            var _this3 = this;
+
+            // Execute the callback asynchronously
+            this.task.then(function () {
+                if (_this3.observers !== undefined && _this3.observers[i] !== undefined) {
+                    try {
+                        fn(_this3.observers[i]);
+                    } catch (e) {
+                        // Ignore exceptions raised in Observers or missing methods of an
+                        // Observer.
+                        // Log error to console. b/31404806
+                        if (typeof console !== "undefined" && console.error) {
+                            console.error(e);
+                        }
+                    }
+                }
+            });
+        }
+    }, {
+        key: 'close',
+        value: function close(err) {
+            var _this4 = this;
+
+            if (this.finalized) {
+                return;
+            }
+            this.finalized = true;
+            if (err !== undefined) {
+                this.finalError = err;
+            }
+            // Proxy is no longer needed - garbage collect references
+            this.task.then(function () {
+                _this4.observers = undefined;
+                _this4.onNoObservers = undefined;
+            });
+        }
+    }]);
+
+    return ObserverProxy;
+}();
+/** Turn synchronous function into one called asynchronously. */
+
+
+function async(fn, onError) {
+    return function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        LocalPromise.resolve(true).then(function () {
+            fn.apply(undefined, args);
+        }).catch(function (error) {
+            if (onError) {
+                onError(error);
+            }
+        });
+    };
+}
+/**
+ * Return true if the object passed in implements any of the named methods.
+ */
+function implementsAnyMethods(obj, methods) {
+    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) {
+        return false;
+    }
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = methods[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var method = _step.value;
+
+            if (method in obj && typeof obj[method] === 'function') {
+                return true;
+            }
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return false;
+}
+function noop() {
+    // do nothing
+}
+//# sourceMappingURL=subscribe.js.map
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _errors = __webpack_require__(16);
+
+var _errors2 = __webpack_require__(10);
+
+var _errors3 = _interopRequireDefault(_errors2);
+
+var _tokenManager = __webpack_require__(68);
+
+var _tokenManager2 = _interopRequireDefault(_tokenManager);
+
+var _notificationPermission = __webpack_require__(34);
+
+var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SENDER_ID_OPTION_NAME = 'messagingSenderId';
+
+var ControllerInterface = function () {
+    /**
+     * An interface of the Messaging Service API
+     * @param {!firebase.app.App} app
+     */
+    function ControllerInterface(app) {
+        var _this = this;
+
+        _classCallCheck(this, ControllerInterface);
+
+        this.errorFactory_ = new _errors.ErrorFactory('messaging', 'Messaging', _errors3.default.map);
+        if (!app.options[SENDER_ID_OPTION_NAME] || typeof app.options[SENDER_ID_OPTION_NAME] !== 'string') {
+            throw this.errorFactory_.create(_errors3.default.codes.BAD_SENDER_ID);
+        }
+        this.messagingSenderId_ = app.options[SENDER_ID_OPTION_NAME];
+        this.tokenManager_ = new _tokenManager2.default();
+        this.app = app;
+        this.INTERNAL = {};
+        this.INTERNAL.delete = function () {
+            return _this.delete;
+        };
+    }
+    /**
+     * @export
+     * @return {Promise<string> | Promise<null>} Returns a promise that
+     * resolves to an FCM token.
+     */
+
+
+    _createClass(ControllerInterface, [{
+        key: 'getToken',
+        value: function getToken() {
+            var _this2 = this;
+
+            // Check with permissions
+            var currentPermission = this.getNotificationPermission_();
+            if (currentPermission !== _notificationPermission2.default.granted) {
+                if (currentPermission === _notificationPermission2.default.denied) {
+                    return Promise.reject(this.errorFactory_.create(_errors3.default.codes.NOTIFICATIONS_BLOCKED));
+                }
+                // We must wait for permission to be granted
+                return Promise.resolve(null);
+            }
+            return this.getSWRegistration_().then(function (registration) {
+                return _this2.tokenManager_.getSavedToken(_this2.messagingSenderId_, registration).then(function (token) {
+                    if (token) {
+                        return token;
+                    }
+                    return _this2.tokenManager_.createToken(_this2.messagingSenderId_, registration);
+                });
+            });
+        }
+        /**
+         * This method deletes tokens that the token manager looks after and then
+         * unregisters the push subscription if it exists.
+         * @export
+         * @param {string} token
+         * @return {Promise<void>}
+         */
+
+    }, {
+        key: 'deleteToken',
+        value: function deleteToken(token) {
+            var _this3 = this;
+
+            return this.tokenManager_.deleteToken(token).then(function () {
+                return _this3.getSWRegistration_().then(function (registration) {
+                    if (registration) {
+                        return registration.pushManager.getSubscription();
+                    }
+                }).then(function (subscription) {
+                    if (subscription) {
+                        return subscription.unsubscribe();
+                    }
+                });
+            });
+        }
+    }, {
+        key: 'getSWRegistration_',
+        value: function getSWRegistration_() {
+            throw this.errorFactory_.create(_errors3.default.codes.SHOULD_BE_INHERITED);
+        }
+        //
+        // The following methods should only be available in the window.
+        //
+
+    }, {
+        key: 'requestPermission',
+        value: function requestPermission() {
+            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
+        }
+        /**
+         * @export
+         * @param {!ServiceWorkerRegistration} registration
+         */
+
+    }, {
+        key: 'useServiceWorker',
+        value: function useServiceWorker() {
+            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
+        }
+        /**
+         * @export
+         * @param {!firebase.Observer|function(*)} nextOrObserver
+         * @param {function(!Error)=} optError
+         * @param {function()=} optCompleted
+         * @return {!function()}
+         */
+
+    }, {
+        key: 'onMessage',
+        value: function onMessage() {
+            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
+        }
+        /**
+         * @export
+         * @param {!firebase.Observer|function()} nextOrObserver An observer object
+         * or a function triggered on token refresh.
+         * @param {function(!Error)=} optError Optional A function
+         * triggered on token refresh error.
+         * @param {function()=} optCompleted Optional function triggered when the
+         * observer is removed.
+         * @return {!function()} The unsubscribe function for the observer.
+         */
+
+    }, {
+        key: 'onTokenRefresh',
+        value: function onTokenRefresh() {
+            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_WINDOW);
+        }
+        //
+        // The following methods are used by the service worker only.
+        //
+        /**
+         * @export
+         * @param {function(Object)} callback
+         */
+
+    }, {
+        key: 'setBackgroundMessageHandler',
+        value: function setBackgroundMessageHandler() {
+            throw this.errorFactory_.create(_errors3.default.codes.AVAILABLE_IN_SW);
+        }
+        //
+        // The following methods are used by the service themselves and not exposed
+        // publicly or not expected to be used by developers.
+        //
+        /**
+         * This method is required to adhere to the Firebase interface.
+         * It closes any currently open indexdb database connections.
+         */
+
+    }, {
+        key: 'delete',
+        value: function _delete() {
+            this.tokenManager_.closeDatabase();
+        }
+        /**
+         * Returns the current Notification Permission state.
+         * @private
+         * @return {string} The currenct permission state.
+         */
+
+    }, {
+        key: 'getNotificationPermission_',
+        value: function getNotificationPermission_() {
+            return Notification.permission;
+        }
+        /**
+         * @protected
+         * @returns {TokenManager}
+         */
+
+    }, {
+        key: 'getTokenManager',
+        value: function getTokenManager() {
+            return this.tokenManager_;
+        }
+    }]);
+
+    return ControllerInterface;
+}();
+
+exports.default = ControllerInterface;
+module.exports = exports['default'];
+//# sourceMappingURL=controller-interface.js.map
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var FCM_APPLICATION_SERVER_KEY = [0x04, 0x33, 0x94, 0xF7, 0xDF, 0xA1, 0xEB, 0xB1, 0xDC, 0x03, 0xA2, 0x5E, 0x15, 0x71, 0xDB, 0x48, 0xD3, 0x2E, 0xED, 0xED, 0xB2, 0x34, 0xDB, 0xB7, 0x47, 0x3A, 0x0C, 0x8F, 0xC4, 0xCC, 0xE1, 0x6F, 0x3C, 0x8C, 0x84, 0xDF, 0xAB, 0xB6, 0x66, 0x3E, 0xF2, 0x0C, 0xD4, 0x8B, 0xFE, 0xE3, 0xF9, 0x76, 0x2F, 0x14, 0x1C, 0x63, 0x08, 0x6A, 0x6F, 0x2D, 0xB1, 0x1A, 0x95, 0xB0, 0xCE, 0x37, 0xC0, 0x9C, 0x6E];
+var SUBSCRIPTION_DETAILS = {
+    'userVisibleOnly': true,
+    'applicationServerKey': new Uint8Array(FCM_APPLICATION_SERVER_KEY)
+};
+exports.default = {
+    ENDPOINT: 'https://fcm.googleapis.com',
+    APPLICATION_SERVER_KEY: FCM_APPLICATION_SERVER_KEY,
+    SUBSCRIPTION_OPTIONS: SUBSCRIPTION_DETAILS
+};
+module.exports = exports['default'];
+//# sourceMappingURL=fcm-details.js.map
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    granted: 'granted',
+    default: 'default',
+    denied: 'denied'
+};
+module.exports = exports['default'];
+//# sourceMappingURL=notification-permission.js.map
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+// These fields are strings to prevent closure from thinking goog.getMsg
+// should be used to initialise the values
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var PARAMS = {
+    TYPE_OF_MSG: 'firebase-messaging-msg-type',
+    DATA: 'firebase-messaging-msg-data'
+};
+// This value isn't using the TYPE_OF_MSG short hand as closure
+// expects the variable to be defined via goog.getMsg
+var msgType = {
+    PUSH_MSG_RECEIVED: 'push-msg-received',
+    NOTIFICATION_CLICKED: 'notification-clicked'
+};
+var createNewMsg = function (msgType, msgData) {
+    var _message;
+
+    var message = (_message = {}, _defineProperty(_message, PARAMS.TYPE_OF_MSG, msgType), _defineProperty(_message, PARAMS.DATA, msgData), _message);
+    return message;
+};
+exports.default = {
+    PARAMS: PARAMS,
+    TYPES_OF_MSG: msgType,
+    createNewMsg: createNewMsg
+};
+module.exports = exports['default'];
+//# sourceMappingURL=worker-page-message.js.map
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.FbsBlob = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
+/**
+ * @file Provides a Blob-like wrapper for various binary types (including the
+ * native Blob type). This makes it possible to upload types like ArrayBuffers,
+ * making uploads possible in environments without the native Blob type.
+ */
+
+
+var _fs = __webpack_require__(75);
+
+var fs = _interopRequireWildcard(_fs);
+
+var _string = __webpack_require__(21);
+
+var string = _interopRequireWildcard(_string);
+
+var _type = __webpack_require__(0);
+
+var type = _interopRequireWildcard(_type);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @param opt_elideCopy If true, doesn't copy mutable input data
+ *     (e.g. Uint8Arrays). Pass true only if you know the objects will not be
+ *     modified after this blob's construction.
+ */
+var FbsBlob = exports.FbsBlob = function () {
+    function FbsBlob(data, opt_elideCopy) {
+        _classCallCheck(this, FbsBlob);
+
+        var size = 0;
+        var blobType = '';
+        if (type.isNativeBlob(data)) {
+            this.data_ = data;
+            size = data.size;
+            blobType = data.type;
+        } else if (data instanceof ArrayBuffer) {
+            if (opt_elideCopy) {
+                this.data_ = new Uint8Array(data);
+            } else {
+                this.data_ = new Uint8Array(data.byteLength);
+                this.data_.set(new Uint8Array(data));
+            }
+            size = this.data_.length;
+        } else if (data instanceof Uint8Array) {
+            if (opt_elideCopy) {
+                this.data_ = data;
+            } else {
+                this.data_ = new Uint8Array(data.length);
+                this.data_.set(data);
+            }
+            size = data.length;
+        }
+        this.size_ = size;
+        this.type_ = blobType;
+    }
+
+    _createClass(FbsBlob, [{
+        key: 'size',
+        value: function size() {
+            return this.size_;
+        }
+    }, {
+        key: 'type',
+        value: function () {
+            return this.type_;
+        }
+    }, {
+        key: 'slice',
+        value: function slice(startByte, endByte) {
+            if (type.isNativeBlob(this.data_)) {
+                var realBlob = this.data_;
+                var sliced = fs.sliceBlob(realBlob, startByte, endByte);
+                if (sliced === null) {
+                    return null;
+                }
+                return new FbsBlob(sliced);
+            } else {
+                var slice = new Uint8Array(this.data_.buffer, startByte, endByte - startByte);
+                return new FbsBlob(slice, true);
+            }
+        }
+    }, {
+        key: 'uploadData',
+        value: function uploadData() {
+            return this.data_;
+        }
+    }], [{
+        key: 'getBlob',
+        value: function getBlob() {
+            for (var _len = arguments.length, var_args = Array(_len), _key = 0; _key < _len; _key++) {
+                var_args[_key] = arguments[_key];
+            }
+
+            if (type.isNativeBlobDefined()) {
+                var blobby = var_args.map(function (val) {
+                    if (val instanceof FbsBlob) {
+                        return val.data_;
+                    } else {
+                        return val;
+                    }
+                });
+                return new FbsBlob(fs.getBlob.apply(null, blobby));
+            } else {
+                var uint8Arrays = var_args.map(function (val) {
+                    if (type.isString(val)) {
+                        return string.dataFromString(_string.StringFormat.RAW, val).data;
+                    } else {
+                        // Blobs don't exist, so this has to be a Uint8Array.
+                        return val.data_;
+                    }
+                });
+                var finalLength = 0;
+                uint8Arrays.forEach(function (array) {
+                    finalLength += array.byteLength;
+                });
+                var merged = new Uint8Array(finalLength);
+                var index = 0;
+                uint8Arrays.forEach(function (array) {
+                    for (var i = 0; i < array.length; i++) {
+                        merged[index++] = array[i];
+                    }
+                });
+                return new FbsBlob(merged, true);
+            }
+        }
+    }]);
+
+    return FbsBlob;
+}();
+//# sourceMappingURL=blob.js.map
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.parent = parent;
+exports.child = child;
+exports.lastComponent = lastComponent;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Contains helper methods for manipulating paths.
+ */
+/**
+ * @return Null if the path is already at the root.
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/function parent(path) {
+    if (path.length == 0) {
+        return null;
+    }
+    var index = path.lastIndexOf('/');
+    if (index === -1) {
+        return '';
+    }
+    var newPath = path.slice(0, index);
+    return newPath;
+}
+function child(path, childPath) {
+    var canonicalChildPath = childPath.split('/').filter(function (component) {
+        return component.length > 0;
+    }).join('/');
+    if (path.length === 0) {
+        return canonicalChildPath;
+    } else {
+        return path + '/' + canonicalChildPath;
+    }
+}
+/**
+ * Returns the last component of a path.
+ * '/foo/bar' -> 'bar'
+ * '/foo/bar/baz/' -> 'baz/'
+ * '/a' -> 'a'
+ */
+function lastComponent(path) {
+    var index = path.lastIndexOf('/', path.length - 2);
+    if (index === -1) {
+        return path;
+    } else {
+        return path.slice(index + 1);
+    }
+}
+//# sourceMappingURL=path.js.map
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.resumableUploadChunkSize = exports.ResumableUploadStatus = undefined;
+exports.handlerCheck = handlerCheck;
+exports.metadataHandler = metadataHandler;
+exports.sharedErrorHandler = sharedErrorHandler;
+exports.objectErrorHandler = objectErrorHandler;
+exports.getMetadata = getMetadata;
+exports.updateMetadata = updateMetadata;
+exports.deleteObject = deleteObject;
+exports.determineContentType_ = determineContentType_;
+exports.metadataForUpload_ = metadataForUpload_;
+exports.multipartUpload = multipartUpload;
+exports.checkResumeHeader_ = checkResumeHeader_;
+exports.createResumableUpload = createResumableUpload;
+exports.getResumableUploadStatus = getResumableUploadStatus;
+exports.continueResumableUpload = continueResumableUpload;
+
+var _array = __webpack_require__(19);
+
+var array = _interopRequireWildcard(_array);
+
+var _blob = __webpack_require__(36);
+
+var _error = __webpack_require__(1);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+var _metadata = __webpack_require__(20);
+
+var MetadataUtils = _interopRequireWildcard(_metadata);
+
+var _object = __webpack_require__(3);
+
+var object = _interopRequireWildcard(_object);
+
+var _requestinfo = __webpack_require__(79);
+
+var _type = __webpack_require__(0);
+
+var type = _interopRequireWildcard(_type);
+
+var _url = __webpack_require__(22);
+
+var UrlUtils = _interopRequireWildcard(_url);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+/**
+ * Throws the UNKNOWN FirebaseStorageError if cndn is false.
+ */
+function handlerCheck(cndn) {
+    if (!cndn) {
+        throw errorsExports.unknown();
+    }
+}
+function metadataHandler(authWrapper, mappings) {
+    return function (xhr, text) {
+        var metadata = MetadataUtils.fromResourceString(authWrapper, text, mappings);
+        handlerCheck(metadata !== null);
+        return metadata;
+    };
+}
+function sharedErrorHandler(location) {
+    return function (xhr, err) {
+        var newErr = void 0;
+        if (xhr.getStatus() === 401) {
+            newErr = errorsExports.unauthenticated();
+        } else {
+            if (xhr.getStatus() === 402) {
+                newErr = errorsExports.quotaExceeded(location.bucket);
+            } else {
+                if (xhr.getStatus() === 403) {
+                    newErr = errorsExports.unauthorized(location.path);
+                } else {
+                    newErr = err;
+                }
+            }
+        }
+        newErr.setServerResponseProp(err.serverResponseProp());
+        return newErr;
+    };
+}
+function objectErrorHandler(location) {
+    var shared = sharedErrorHandler(location);
+
+    return function (xhr, err) {
+        var newErr = shared(xhr, err);
+        if (xhr.getStatus() === 404) {
+            newErr = errorsExports.objectNotFound(location.path);
+        }
+        newErr.setServerResponseProp(err.serverResponseProp());
+        return newErr;
+    };
+}
+function getMetadata(authWrapper, location, mappings) {
+    var urlPart = location.fullServerUrl();
+    var url = UrlUtils.makeNormalUrl(urlPart);
+
+    var timeout = authWrapper.maxOperationRetryTime();
+    var requestInfo = new _requestinfo.RequestInfo(url, 'GET', metadataHandler(authWrapper, mappings), timeout);
+    requestInfo.errorHandler = objectErrorHandler(location);
+    return requestInfo;
+}
+function updateMetadata(authWrapper, location, metadata, mappings) {
+    var urlPart = location.fullServerUrl();
+    var url = UrlUtils.makeNormalUrl(urlPart);
+
+    var body = MetadataUtils.toResourceString(metadata, mappings);
+
+    var timeout = authWrapper.maxOperationRetryTime();
+    var requestInfo = new _requestinfo.RequestInfo(url, 'PATCH', metadataHandler(authWrapper, mappings), timeout);
+    requestInfo.headers = { 'Content-Type': 'application/json; charset=utf-8' };
+    requestInfo.body = body;
+    requestInfo.errorHandler = objectErrorHandler(location);
+    return requestInfo;
+}
+function deleteObject(authWrapper, location) {
+    var urlPart = location.fullServerUrl();
+    var url = UrlUtils.makeNormalUrl(urlPart);
+
+    var timeout = authWrapper.maxOperationRetryTime();
+
+    var requestInfo = new _requestinfo.RequestInfo(url, 'DELETE', function () {}, timeout);
+    requestInfo.successCodes = [200, 204];
+    requestInfo.errorHandler = objectErrorHandler(location);
+    return requestInfo;
+}
+function determineContentType_(metadata, blob) {
+    return metadata && metadata['contentType'] || blob && blob.type() || 'application/octet-stream';
+}
+function metadataForUpload_(location, blob, opt_metadata) {
+    var metadata = object.clone(opt_metadata);
+    metadata['fullPath'] = location.path;
+    metadata['size'] = blob.size();
+    if (!metadata['contentType']) {
+        metadata['contentType'] = determineContentType_(null, blob);
+    }
+    return metadata;
+}
+function multipartUpload(authWrapper, location, mappings, blob, opt_metadata) {
+    var urlPart = location.bucketOnlyServerUrl();
+    var headers = { 'X-Goog-Upload-Protocol': 'multipart' };
+
+    var boundary = function () {
+        var str = '';
+        for (var i = 0; i < 2; i++) {
+            str = str + Math.random().toString().slice(2);
+        }
+        return str;
+    }();
+    headers['Content-Type'] = 'multipart/related; boundary=' + boundary;
+    var metadata = metadataForUpload_(location, blob, opt_metadata);
+    var metadataString = MetadataUtils.toResourceString(metadata, mappings);
+    var preBlobPart = '--' + boundary + '\r\n' + 'Content-Type: application/json; charset=utf-8\r\n\r\n' + metadataString + '\r\n--' + boundary + '\r\n' + 'Content-Type: ' + metadata['contentType'] + '\r\n\r\n';
+
+    var body = _blob.FbsBlob.getBlob(preBlobPart, blob, '\r\n--' + boundary + '--');
+    if (body === null) {
+        throw errorsExports.cannotSliceBlob();
+    }
+    var urlParams = { 'name': metadata['fullPath'] };
+    var url = UrlUtils.makeUploadUrl(urlPart);
+
+    var timeout = authWrapper.maxUploadRetryTime();
+    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', metadataHandler(authWrapper, mappings), timeout);
+    requestInfo.urlParams = urlParams;
+    requestInfo.headers = headers;
+    requestInfo.body = body.uploadData();
+    requestInfo.errorHandler = sharedErrorHandler(location);
+    return requestInfo;
+}
+/**
+ * @param current The number of bytes that have been uploaded so far.
+ * @param total The total number of bytes in the upload.
+ * @param opt_finalized True if the server has finished the upload.
+ * @param opt_metadata The upload metadata, should
+ *     only be passed if opt_finalized is true.
+ * @struct
+ */
+
+var ResumableUploadStatus = exports.ResumableUploadStatus = function ResumableUploadStatus(current, total, finalized, metadata) {
+    _classCallCheck(this, ResumableUploadStatus);
+
+    this.current = current;
+    this.total = total;
+    this.finalized = !!finalized;
+    this.metadata = metadata || null;
+};
+
+function checkResumeHeader_(xhr, opt_allowed) {
+    var status = void 0;
+    try {
+        status = xhr.getResponseHeader('X-Goog-Upload-Status');
+    } catch (e) {
+        handlerCheck(false);
+    }
+
+    handlerCheck(array.contains(opt_allowed || ['active'], status));
+    return status;
+}
+function createResumableUpload(authWrapper, location, mappings, blob, opt_metadata) {
+    var urlPart = location.bucketOnlyServerUrl();
+    var metadata = metadataForUpload_(location, blob, opt_metadata);
+    var urlParams = { 'name': metadata['fullPath'] };
+    var url = UrlUtils.makeUploadUrl(urlPart);
+
+    var headers = {
+        'X-Goog-Upload-Protocol': 'resumable',
+        'X-Goog-Upload-Command': 'start',
+        'X-Goog-Upload-Header-Content-Length': blob.size(),
+        'X-Goog-Upload-Header-Content-Type': metadata['contentType'],
+        'Content-Type': 'application/json; charset=utf-8'
+    };
+    var body = MetadataUtils.toResourceString(metadata, mappings);
+    var timeout = authWrapper.maxUploadRetryTime();
+
+    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', function (xhr) {
+        checkResumeHeader_(xhr);
+        var url = void 0;
+        try {
+            url = xhr.getResponseHeader('X-Goog-Upload-URL');
+        } catch (e) {
+            handlerCheck(false);
+        }
+        handlerCheck(type.isString(url));
+        return url;
+    }, timeout);
+    requestInfo.urlParams = urlParams;
+    requestInfo.headers = headers;
+    requestInfo.body = body;
+    requestInfo.errorHandler = sharedErrorHandler(location);
+    return requestInfo;
+}
+/**
+ * @param url From a call to fbs.requests.createResumableUpload.
+ */
+function getResumableUploadStatus(authWrapper, location, url, blob) {
+    var timeout = authWrapper.maxUploadRetryTime();
+    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', function (xhr) {
+        var status = checkResumeHeader_(xhr, ['active', 'final']);
+        var sizeString = void 0;
+        try {
+            sizeString = xhr.getResponseHeader('X-Goog-Upload-Size-Received');
+        } catch (e) {
+            handlerCheck(false);
+        }
+        var size = parseInt(sizeString, 10);
+        handlerCheck(!isNaN(size));
+        return new ResumableUploadStatus(size, blob.size(), status === 'final');
+    }, timeout);
+    requestInfo.headers = { 'X-Goog-Upload-Command': 'query' };
+    requestInfo.errorHandler = sharedErrorHandler(location);
+    return requestInfo;
+}
+/**
+ * Any uploads via the resumable upload API must transfer a number of bytes
+ * that is a multiple of this number.
+ */
+var resumableUploadChunkSize = exports.resumableUploadChunkSize = 256 * 1024;
+/**
+ * @param url From a call to fbs.requests.createResumableUpload.
+ * @param chunkSize Number of bytes to upload.
+ * @param opt_status The previous status.
+ *     If not passed or null, we start from the beginning.
+ * @throws fbs.Error If the upload is already complete, the passed in status
+ *     has a final size inconsistent with the blob, or the blob cannot be sliced
+ *     for upload.
+ */
+function continueResumableUpload(location, authWrapper, url, blob, chunkSize, mappings, opt_status, opt_progressCallback) {
+    // TODO(andysoto): standardize on internal asserts
+    // assert(!(opt_status && opt_status.finalized));
+    var status = new ResumableUploadStatus(0, 0);
+    if (opt_status) {
+        status.current = opt_status.current;
+        status.total = opt_status.total;
+    } else {
+        status.current = 0;
+        status.total = blob.size();
+    }
+    if (blob.size() !== status.total) {
+        throw errorsExports.serverFileWrongSize();
+    }
+    var bytesLeft = status.total - status.current;
+    var bytesToUpload = bytesLeft;
+    if (chunkSize > 0) {
+        bytesToUpload = Math.min(bytesToUpload, chunkSize);
+    }
+    var startByte = status.current;
+    var endByte = startByte + bytesToUpload;
+    var uploadCommand = bytesToUpload === bytesLeft ? 'upload, finalize' : 'upload';
+    var headers = {
+        'X-Goog-Upload-Command': uploadCommand,
+        'X-Goog-Upload-Offset': status.current
+    };
+    var body = blob.slice(startByte, endByte);
+    if (body === null) {
+        throw errorsExports.cannotSliceBlob();
+    }
+
+    var timeout = authWrapper.maxUploadRetryTime();
+    var requestInfo = new _requestinfo.RequestInfo(url, 'POST', function (xhr, text) {
+        // TODO(andysoto): Verify the MD5 of each uploaded range:
+        // the 'x-range-md5' header comes back with status code 308 responses.
+        // We'll only be able to bail out though, because you can't re-upload a
+        // range that you previously uploaded.
+        var uploadStatus = checkResumeHeader_(xhr, ['active', 'final']);
+        var newCurrent = status.current + bytesToUpload;
+        var size = blob.size();
+        var metadata = void 0;
+        if (uploadStatus === 'final') {
+            metadata = metadataHandler(authWrapper, mappings)(xhr, text);
+        } else {
+            metadata = null;
+        }
+        return new ResumableUploadStatus(newCurrent, size, uploadStatus === 'final', metadata);
+    }, timeout);
+    requestInfo.headers = headers;
+    requestInfo.body = body.uploadData();
+    requestInfo.progressCallback = opt_progressCallback || null;
+    requestInfo.errorHandler = sharedErrorHandler(location);
+    return requestInfo;
+}
+//# sourceMappingURL=requests.js.map
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.taskStateFromInternalTaskState = taskStateFromInternalTaskState;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var TaskEvent = exports.TaskEvent = {
+    /** Triggered whenever the task changes or progress is updated. */
+    STATE_CHANGED: 'state_changed'
+};
+var InternalTaskState = exports.InternalTaskState = {
+    RUNNING: 'running',
+    PAUSING: 'pausing',
+    PAUSED: 'paused',
+    SUCCESS: 'success',
+    CANCELING: 'canceling',
+    CANCELED: 'canceled',
+    ERROR: 'error'
+};
+var TaskState = exports.TaskState = {
+    /** The task is currently transferring data. */
+    RUNNING: 'running',
+    /** The task was paused by the user. */
+    PAUSED: 'paused',
+    /** The task completed successfully. */
+    SUCCESS: 'success',
+    /** The task was canceled. */
+    CANCELED: 'canceled',
+    /** The task failed with an error. */
+    ERROR: 'error'
+};
+function taskStateFromInternalTaskState(state) {
+    switch (state) {
+        case InternalTaskState.RUNNING:
+        case InternalTaskState.PAUSING:
+        case InternalTaskState.CANCELING:
+            return TaskState.RUNNING;
+        case InternalTaskState.PAUSED:
+            return TaskState.PAUSED;
+        case InternalTaskState.SUCCESS:
+            return TaskState.SUCCESS;
+        case InternalTaskState.CANCELED:
+            return TaskState.CANCELED;
+        case InternalTaskState.ERROR:
+            return TaskState.ERROR;
+        default:
+            // TODO(andysoto): assert(false);
+            return TaskState.ERROR;
+    }
+}
+//# sourceMappingURL=taskenums.js.map
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @enum{number}
+ */
+var ErrorCode = exports.ErrorCode = undefined;
+(function (ErrorCode) {
+    ErrorCode[ErrorCode["NO_ERROR"] = 0] = "NO_ERROR";
+    ErrorCode[ErrorCode["NETWORK_ERROR"] = 1] = "NETWORK_ERROR";
+    ErrorCode[ErrorCode["ABORT"] = 2] = "ABORT";
+})(ErrorCode || (exports.ErrorCode = ErrorCode = {}));
+//# sourceMappingURL=xhrio.js.map
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Reference = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
+/**
+ * @fileoverview Defines the Firebase Storage Reference class.
+ */
+
+
+var _args = __webpack_require__(18);
+
+var args = _interopRequireWildcard(_args);
+
+var _blob = __webpack_require__(36);
+
+var _error = __webpack_require__(1);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+var _location = __webpack_require__(12);
+
+var _metadata = __webpack_require__(20);
+
+var metadata = _interopRequireWildcard(_metadata);
+
+var _object = __webpack_require__(3);
+
+var object = _interopRequireWildcard(_object);
+
+var _path = __webpack_require__(37);
+
+var path = _interopRequireWildcard(_path);
+
+var _requests = __webpack_require__(38);
+
+var requests = _interopRequireWildcard(_requests);
+
+var _string = __webpack_require__(21);
+
+var fbsString = _interopRequireWildcard(_string);
+
+var _type = __webpack_require__(0);
+
+var type = _interopRequireWildcard(_type);
+
+var _task = __webpack_require__(84);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Provides methods to interact with a bucket in the Firebase Storage service.
+ * @param location An fbs.location, or the URL at
+ *     which to base this object, in one of the following forms:
+ *         gs://<bucket>/<object-path>
+ *         http[s]://firebasestorage.googleapis.com/
+ *                     <api-version>/b/<bucket>/o/<object-path>
+ *     Any query or fragment strings will be ignored in the http[s]
+ *     format. If no value is passed, the storage object will use a URL based on
+ *     the project ID of the base firebase.App instance.
+ */
+var Reference = exports.Reference = function () {
+    function Reference(authWrapper, location) {
+        _classCallCheck(this, Reference);
+
+        this.authWrapper = authWrapper;
+        if (location instanceof _location.Location) {
+            this.location = location;
+        } else {
+            this.location = _location.Location.makeFromUrl(location);
+        }
+    }
+    /**
+     * @return The URL for the bucket and path this object references,
+     *     in the form gs://<bucket>/<object-path>
+     * @override
+     */
+
+
+    _createClass(Reference, [{
+        key: 'toString',
+        value: function toString() {
+            args.validate('toString', [], arguments);
+            return 'gs://' + this.location.bucket + '/' + this.location.path;
+        }
+    }, {
+        key: 'newRef',
+        value: function newRef(authWrapper, location) {
+            return new Reference(authWrapper, location);
+        }
+    }, {
+        key: 'mappings',
+        value: function mappings() {
+            return metadata.getMappings();
+        }
+        /**
+         * @return A reference to the object obtained by
+         *     appending childPath, removing any duplicate, beginning, or trailing
+         *     slashes.
+         */
+
+    }, {
+        key: 'child',
+        value: function child(childPath) {
+            args.validate('child', [args.stringSpec()], arguments);
+            var newPath = path.child(this.location.path, childPath);
+            var location = new _location.Location(this.location.bucket, newPath);
+            return this.newRef(this.authWrapper, location);
+        }
+        /**
+         * @return A reference to the parent of the
+         *     current object, or null if the current object is the root.
+         */
+
+    }, {
+        key: 'put',
+
+        /**
+         * Uploads a blob to this object's location.
+         * @param data The blob to upload.
+         * @return An UploadTask that lets you control and
+         *     observe the upload.
+         */
+        value: function put(data) {
+            var metadata = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            args.validate('put', [args.uploadDataSpec(), args.metadataSpec(true)], arguments);
+            this.throwIfRoot_('put');
+            return new _task.UploadTask(this, this.authWrapper, this.location, this.mappings(), new _blob.FbsBlob(data), metadata);
+        }
+        /**
+         * Uploads a string to this object's location.
+         * @param string The string to upload.
+         * @param opt_format The format of the string to upload.
+         * @return An UploadTask that lets you control and
+         *     observe the upload.
+         */
+
+    }, {
+        key: 'putString',
+        value: function putString(string) {
+            var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _string.StringFormat.RAW;
+            var opt_metadata = arguments[2];
+
+            args.validate('putString', [args.stringSpec(), args.stringSpec(fbsString.formatValidator, true), args.metadataSpec(true)], arguments);
+            this.throwIfRoot_('putString');
+            var data = fbsString.dataFromString(format, string);
+            var metadata = object.clone(opt_metadata);
+            if (!type.isDef(metadata['contentType']) && type.isDef(data.contentType)) {
+                metadata['contentType'] = data.contentType;
+            }
+            return new _task.UploadTask(this, this.authWrapper, this.location, this.mappings(), new _blob.FbsBlob(data.data, true), metadata);
+        }
+        /**
+         * Deletes the object at this location.
+         * @return A promise that resolves if the deletion succeeds.
+         */
+
+    }, {
+        key: 'delete',
+        value: function _delete() {
+            args.validate('delete', [], arguments);
+            this.throwIfRoot_('delete');
+            var self = this;
+            return this.authWrapper.getAuthToken().then(function (authToken) {
+                var requestInfo = requests.deleteObject(self.authWrapper, self.location);
+                return self.authWrapper.makeRequest(requestInfo, authToken).getPromise();
+            });
+        }
+        /**
+         *     A promise that resolves with the metadata for this object. If this
+         *     object doesn't exist or metadata cannot be retreived, the promise is
+         *     rejected.
+         */
+
+    }, {
+        key: 'getMetadata',
+        value: function getMetadata() {
+            args.validate('getMetadata', [], arguments);
+            this.throwIfRoot_('getMetadata');
+            var self = this;
+            return this.authWrapper.getAuthToken().then(function (authToken) {
+                var requestInfo = requests.getMetadata(self.authWrapper, self.location, self.mappings());
+                return self.authWrapper.makeRequest(requestInfo, authToken).getPromise();
+            });
+        }
+        /**
+         * Updates the metadata for this object.
+         * @param metadata The new metadata for the object.
+         *     Only values that have been explicitly set will be changed. Explicitly
+         *     setting a value to null will remove the metadata.
+         * @return A promise that resolves
+         *     with the new metadata for this object.
+         *     @see firebaseStorage.Reference.prototype.getMetadata
+         */
+
+    }, {
+        key: 'updateMetadata',
+        value: function updateMetadata(metadata) {
+            args.validate('updateMetadata', [args.metadataSpec()], arguments);
+            this.throwIfRoot_('updateMetadata');
+            var self = this;
+            return this.authWrapper.getAuthToken().then(function (authToken) {
+                var requestInfo = requests.updateMetadata(self.authWrapper, self.location, metadata, self.mappings());
+                return self.authWrapper.makeRequest(requestInfo, authToken).getPromise();
+            });
+        }
+        /**
+         * @return A promise that resolves with the download
+         *     URL for this object.
+         */
+
+    }, {
+        key: 'getDownloadURL',
+        value: function getDownloadURL() {
+            args.validate('getDownloadURL', [], arguments);
+            this.throwIfRoot_('getDownloadURL');
+            return this.getMetadata().then(function (metadata) {
+                var url = metadata['downloadURLs'][0];
+                if (type.isDef(url)) {
+                    return url;
+                } else {
+                    throw errorsExports.noDownloadURL();
+                }
+            });
+        }
+    }, {
+        key: 'throwIfRoot_',
+        value: function throwIfRoot_(name) {
+            if (this.location.path === '') {
+                throw errorsExports.invalidRootOperation(name);
+            }
+        }
+    }, {
+        key: 'parent',
+        get: function get() {
+            var newPath = path.parent(this.location.path);
+            if (newPath === null) {
+                return null;
+            }
+            var location = new _location.Location(this.location.bucket, newPath);
+            return this.newRef(this.authWrapper, location);
+        }
+        /**
+         * @return An reference to the root of this
+         *     object's bucket.
+         */
+
+    }, {
+        key: 'root',
+        get: function get() {
+            var location = new _location.Location(this.location.bucket, '');
+            return this.newRef(this.authWrapper, location);
+        }
+    }, {
+        key: 'bucket',
+        get: function get() {
+            return this.location.bucket;
+        }
+    }, {
+        key: 'fullPath',
+        get: function get() {
+            return this.location.path;
+        }
+    }, {
+        key: 'name',
+        get: function get() {
+            return path.lastComponent(this.location.path);
+        }
+    }, {
+        key: 'storage',
+        get: function get() {
+            return this.authWrapper.service();
+        }
+    }]);
+
+    return Reference;
+}();
+//# sourceMappingURL=reference.js.map
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;/*
+Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
+License: MIT - http://mrgnrdrck.mit-license.org
+
+https://github.com/mroderick/PubSubJS
+*/
+(function (root, factory){
+	'use strict';
+
+	var PubSub = {};
+	root.PubSub = PubSub;
+	factory(PubSub);
+
+	// AMD support
+	if (true){
+		!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+	// CommonJS and Node.js module support
+	} else if (typeof exports === 'object'){
+		if (module !== undefined && module.exports) {
+			exports = module.exports = PubSub; // Node.js specific `module.exports`
+		}
+		exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+		module.exports = exports = PubSub; // CommonJS
+	}
+
+}(( typeof window === 'object' && window ) || this, function (PubSub){
+	'use strict';
+
+	var messages = {},
+		lastUid = -1;
+
+	function hasKeys(obj){
+		var key;
+
+		for (key in obj){
+			if ( obj.hasOwnProperty(key) ){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 *	Returns a function that throws the passed exception, for use as argument for setTimeout
+	 *	@param { Object } ex An Error object
+	 */
+	function throwException( ex ){
+		return function reThrowException(){
+			throw ex;
+		};
+	}
+
+	function callSubscriberWithDelayedExceptions( subscriber, message, data ){
+		try {
+			subscriber( message, data );
+		} catch( ex ){
+			setTimeout( throwException( ex ), 0);
+		}
+	}
+
+	function callSubscriberWithImmediateExceptions( subscriber, message, data ){
+		subscriber( message, data );
+	}
+
+	function deliverMessage( originalMessage, matchedMessage, data, immediateExceptions ){
+		var subscribers = messages[matchedMessage],
+			callSubscriber = immediateExceptions ? callSubscriberWithImmediateExceptions : callSubscriberWithDelayedExceptions,
+			s;
+
+		if ( !messages.hasOwnProperty( matchedMessage ) ) {
+			return;
+		}
+
+		for (s in subscribers){
+			if ( subscribers.hasOwnProperty(s)){
+				callSubscriber( subscribers[s], originalMessage, data );
+			}
+		}
+	}
+
+	function createDeliveryFunction( message, data, immediateExceptions ){
+		return function deliverNamespaced(){
+			var topic = String( message ),
+				position = topic.lastIndexOf( '.' );
+
+			// deliver the message as it is now
+			deliverMessage(message, message, data, immediateExceptions);
+
+			// trim the hierarchy and deliver message to each level
+			while( position !== -1 ){
+				topic = topic.substr( 0, position );
+				position = topic.lastIndexOf('.');
+				deliverMessage( message, topic, data, immediateExceptions );
+			}
+		};
+	}
+
+	function messageHasSubscribers( message ){
+		var topic = String( message ),
+			found = Boolean(messages.hasOwnProperty( topic ) && hasKeys(messages[topic])),
+			position = topic.lastIndexOf( '.' );
+
+		while ( !found && position !== -1 ){
+			topic = topic.substr( 0, position );
+			position = topic.lastIndexOf( '.' );
+			found = Boolean(messages.hasOwnProperty( topic ) && hasKeys(messages[topic]));
+		}
+
+		return found;
+	}
+
+	function publish( message, data, sync, immediateExceptions ){
+		var deliver = createDeliveryFunction( message, data, immediateExceptions ),
+			hasSubscribers = messageHasSubscribers( message );
+
+		if ( !hasSubscribers ){
+			return false;
+		}
+
+		if ( sync === true ){
+			deliver();
+		} else {
+			setTimeout( deliver, 0 );
+		}
+		return true;
+	}
+
+	/**
+	 *	PubSub.publish( message[, data] ) -> Boolean
+	 *	- message (String): The message to publish
+	 *	- data: The data to pass to subscribers
+	 *	Publishes the the message, passing the data to it's subscribers
+	**/
+	PubSub.publish = function( message, data ){
+		return publish( message, data, false, PubSub.immediateExceptions );
+	};
+
+	/**
+	 *	PubSub.publishSync( message[, data] ) -> Boolean
+	 *	- message (String): The message to publish
+	 *	- data: The data to pass to subscribers
+	 *	Publishes the the message synchronously, passing the data to it's subscribers
+	**/
+	PubSub.publishSync = function( message, data ){
+		return publish( message, data, true, PubSub.immediateExceptions );
+	};
+
+	/**
+	 *	PubSub.subscribe( message, func ) -> String
+	 *	- message (String): The message to subscribe to
+	 *	- func (Function): The function to call when a new message is published
+	 *	Subscribes the passed function to the passed message. Every returned token is unique and should be stored if
+	 *	you need to unsubscribe
+	**/
+	PubSub.subscribe = function( message, func ){
+		if ( typeof func !== 'function'){
+			return false;
+		}
+
+		// message is not registered yet
+		if ( !messages.hasOwnProperty( message ) ){
+			messages[message] = {};
+		}
+
+		// forcing token as String, to allow for future expansions without breaking usage
+		// and allow for easy use as key names for the 'messages' object
+		var token = 'uid_' + String(++lastUid);
+		messages[message][token] = func;
+
+		// return token for unsubscribing
+		return token;
+	};
+
+	/* Public: Clears all subscriptions
+	 */
+	PubSub.clearAllSubscriptions = function clearAllSubscriptions(){
+		messages = {};
+	};
+
+	/*Public: Clear subscriptions by the topic
+	*/
+	PubSub.clearSubscriptions = function clearSubscriptions(topic){
+		var m;
+		for (m in messages){
+			if (messages.hasOwnProperty(m) && m.indexOf(topic) === 0){
+				delete messages[m];
+			}
+		}
+	};
+
+	/* Public: removes subscriptions.
+	 * When passed a token, removes a specific subscription.
+	 * When passed a function, removes all subscriptions for that function
+	 * When passed a topic, removes all subscriptions for that topic (hierarchy)
+	 *
+	 * value - A token, function or topic to unsubscribe.
+	 *
+	 * Examples
+	 *
+	 *		// Example 1 - unsubscribing with a token
+	 *		var token = PubSub.subscribe('mytopic', myFunc);
+	 *		PubSub.unsubscribe(token);
+	 *
+	 *		// Example 2 - unsubscribing with a function
+	 *		PubSub.unsubscribe(myFunc);
+	 *
+	 *		// Example 3 - unsubscribing a topic
+	 *		PubSub.unsubscribe('mytopic');
+	 */
+	PubSub.unsubscribe = function(value){
+		var descendantTopicExists = function(topic) {
+				var m;
+				for ( m in messages ){
+					if ( messages.hasOwnProperty(m) && m.indexOf(topic) === 0 ){
+						// a descendant of the topic exists:
+						return true;
+					}
+				}
+
+				return false;
+			},
+			isTopic    = typeof value === 'string' && ( messages.hasOwnProperty(value) || descendantTopicExists(value) ),
+			isToken    = !isTopic && typeof value === 'string',
+			isFunction = typeof value === 'function',
+			result = false,
+			m, message, t;
+
+		if (isTopic){
+			PubSub.clearSubscriptions(value);
+			return;
+		}
+
+		for ( m in messages ){
+			if ( messages.hasOwnProperty( m ) ){
+				message = messages[m];
+
+				if ( isToken && message[value] ){
+					delete message[value];
+					result = value;
+					// tokens are unique, so we can just stop here
+					break;
+				}
+
+				if (isFunction) {
+					for ( t in message ){
+						if (message.hasOwnProperty(t) && message[t] === value){
+							delete message[t];
+							result = true;
+						}
+					}
+				}
+			}
+		}
+
+		return result;
+	};
+}));
+
 
 /***/ }),
 /* 44 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["VueFire"] = factory();
-	else
-		root["VueFire"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(25);
 
 
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
 
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ function(module, exports) {
-
-	var Vue // late binding
-
-	/**
-	 * Returns the key of a Firebase snapshot across SDK versions.
-	 *
-	 * @param {FirebaseSnapshot} snapshot
-	 * @return {string|null}
-	 */
-	function _getKey (snapshot) {
-	  return typeof snapshot.key === 'function'
-	    ? snapshot.key()
-	    : snapshot.key
-	}
-
-	/**
-	 * Returns the original reference of a Firebase reference or query across SDK versions.
-	 *
-	 * @param {FirebaseReference|FirebaseQuery} refOrQuery
-	 * @return {FirebaseReference}
-	 */
-	function _getRef (refOrQuery) {
-	  if (typeof refOrQuery.ref === 'function') {
-	    refOrQuery = refOrQuery.ref()
-	  } else if (typeof refOrQuery.ref === 'object') {
-	    refOrQuery = refOrQuery.ref
-	  }
-
-	  return refOrQuery
-	}
-
-	/**
-	 * Check if a value is an object.
-	 *
-	 * @param {*} val
-	 * @return {boolean}
-	 */
-	function isObject (val) {
-	  return Object.prototype.toString.call(val) === '[object Object]'
-	}
-
-	/**
-	 * Convert firebase snapshot into a bindable data record.
-	 *
-	 * @param {FirebaseSnapshot} snapshot
-	 * @return {Object}
-	 */
-	function createRecord (snapshot) {
-	  var value = snapshot.val()
-	  var res = isObject(value)
-	    ? value
-	    : { '.value': value }
-	  res['.key'] = _getKey(snapshot)
-	  return res
-	}
-
-	/**
-	 * Find the index for an object with given key.
-	 *
-	 * @param {array} array
-	 * @param {string} key
-	 * @return {number}
-	 */
-	function indexForKey (array, key) {
-	  for (var i = 0; i < array.length; i++) {
-	    if (array[i]['.key'] === key) {
-	      return i
-	    }
-	  }
-	  /* istanbul ignore next */
-	  return -1
-	}
-
-	/**
-	 * Bind a firebase data source to a key on a vm.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {object} source
-	 */
-	function bind (vm, key, source) {
-	  var asObject = false
-	  var cancelCallback = null
-	  var readyCallback = null
-	  // check { source, asArray, cancelCallback } syntax
-	  if (isObject(source) && source.hasOwnProperty('source')) {
-	    asObject = source.asObject
-	    cancelCallback = source.cancelCallback
-	    readyCallback = source.readyCallback
-	    source = source.source
-	  }
-	  if (!isObject(source)) {
-	    throw new Error('VueFire: invalid Firebase binding source.')
-	  }
-	  var ref = _getRef(source)
-	  vm.$firebaseRefs[key] = ref
-	  vm._firebaseSources[key] = source
-	  // bind based on initial value type
-	  if (asObject) {
-	    bindAsObject(vm, key, source, cancelCallback)
-	  } else {
-	    bindAsArray(vm, key, source, cancelCallback)
-	  }
-	  if (readyCallback) {
-	    source.once('value', readyCallback.bind(vm))
-	  }
-	}
-
-	/**
-	 * Define a reactive property in a given vm if it's not defined
-	 * yet
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {*} val
-	 */
-	function defineReactive (vm, key, val) {
-	  if (key in vm) {
-	    vm[key] = val
-	  } else {
-	    Vue.util.defineReactive(vm, key, val)
-	  }
-	}
-
-	/**
-	 * Bind a firebase data source to a key on a vm as an Array.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {object} source
-	 * @param {function|null} cancelCallback
-	 */
-	function bindAsArray (vm, key, source, cancelCallback) {
-	  var array = []
-	  defineReactive(vm, key, array)
-
-	  var onAdd = source.on('child_added', function (snapshot, prevKey) {
-	    var index = prevKey ? indexForKey(array, prevKey) + 1 : 0
-	    array.splice(index, 0, createRecord(snapshot))
-	  }, cancelCallback)
-
-	  var onRemove = source.on('child_removed', function (snapshot) {
-	    var index = indexForKey(array, _getKey(snapshot))
-	    array.splice(index, 1)
-	  }, cancelCallback)
-
-	  var onChange = source.on('child_changed', function (snapshot) {
-	    var index = indexForKey(array, _getKey(snapshot))
-	    array.splice(index, 1, createRecord(snapshot))
-	  }, cancelCallback)
-
-	  var onMove = source.on('child_moved', function (snapshot, prevKey) {
-	    var index = indexForKey(array, _getKey(snapshot))
-	    var record = array.splice(index, 1)[0]
-	    var newIndex = prevKey ? indexForKey(array, prevKey) + 1 : 0
-	    array.splice(newIndex, 0, record)
-	  }, cancelCallback)
-
-	  vm._firebaseListeners[key] = {
-	    child_added: onAdd,
-	    child_removed: onRemove,
-	    child_changed: onChange,
-	    child_moved: onMove
-	  }
-	}
-
-	/**
-	 * Bind a firebase data source to a key on a vm as an Object.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {Object} source
-	 * @param {function|null} cancelCallback
-	 */
-	function bindAsObject (vm, key, source, cancelCallback) {
-	  defineReactive(vm, key, {})
-	  var cb = source.on('value', function (snapshot) {
-	    vm[key] = createRecord(snapshot)
-	  }, cancelCallback)
-	  vm._firebaseListeners[key] = { value: cb }
-	}
-
-	/**
-	 * Unbind a firebase-bound key from a vm.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 */
-	function unbind (vm, key) {
-	  var source = vm._firebaseSources && vm._firebaseSources[key]
-	  if (!source) {
-	    throw new Error(
-	      'VueFire: unbind failed: "' + key + '" is not bound to ' +
-	      'a Firebase reference.'
-	    )
-	  }
-	  var listeners = vm._firebaseListeners[key]
-	  for (var event in listeners) {
-	    source.off(event, listeners[event])
-	  }
-	  vm[key] = null
-	  vm.$firebaseRefs[key] = null
-	  vm._firebaseSources[key] = null
-	  vm._firebaseListeners[key] = null
-	}
-
-	/**
-	 * Ensure the related bookkeeping variables on an instance.
-	 *
-	 * @param {Vue} vm
-	 */
-	function ensureRefs (vm) {
-	  if (!vm.$firebaseRefs) {
-	    vm.$firebaseRefs = Object.create(null)
-	    vm._firebaseSources = Object.create(null)
-	    vm._firebaseListeners = Object.create(null)
-	  }
-	}
-
-	var init = function () {
-	  var bindings = this.$options.firebase
-	  if (typeof bindings === 'function') bindings = bindings.call(this)
-	  if (!bindings) return
-	  ensureRefs(this)
-	  for (var key in bindings) {
-	    bind(this, key, bindings[key])
-	  }
-	}
-
-	var VueFireMixin = {
-	  created: init, // 1.x and 2.x
-	  beforeDestroy: function () {
-	    if (!this.$firebaseRefs) return
-	    for (var key in this.$firebaseRefs) {
-	      if (this.$firebaseRefs[key]) {
-	        this.$unbind(key)
-	      }
-	    }
-	    this.$firebaseRefs = null
-	    this._firebaseSources = null
-	    this._firebaseListeners = null
-	  }
-	}
-
-	/**
-	 * Install function passed to Vue.use() in manual installation.
-	 *
-	 * @param {function} _Vue
-	 */
-	function install (_Vue) {
-	  Vue = _Vue
-	  Vue.mixin(VueFireMixin)
-
-	  // use object-based merge strategy
-	  // TODO This makes impossible to merge functions
-	  var mergeStrats = Vue.config.optionMergeStrategies
-	  mergeStrats.firebase = mergeStrats.methods
-
-	  // extend instance methods
-	  Vue.prototype.$bindAsObject = function (key, source, cancelCallback, readyCallback) {
-	    ensureRefs(this)
-	    bind(this, key, {
-	      source: source,
-	      asObject: true,
-	      cancelCallback: cancelCallback,
-	      readyCallback: readyCallback
-	    })
-	  }
-
-	  Vue.prototype.$bindAsArray = function (key, source, cancelCallback, readyCallback) {
-	    ensureRefs(this)
-	    bind(this, key, {
-	      source: source,
-	      cancelCallback: cancelCallback,
-	      readyCallback: readyCallback
-	    })
-	  }
-
-	  Vue.prototype.$unbind = function (key) {
-	    unbind(this, key)
-	  }
-	}
-
-	// auto install
-	/* istanbul ignore if */
-	if (typeof window !== 'undefined' && window.Vue) {
-	  install(window.Vue)
-	}
-
-	module.exports = install
-
-
-/***/ }
-/******/ ])
+//temporary hacky solution for controller
+/* harmony default export */ __webpack_exports__["a"] = ({
+    template: __webpack_require__(86),
+    data() {
+        return {
+            version: __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].version,
+            username: '',
+            loggedIn: false
+        };
+    },
+    methods: {
+        login() {
+            this.loggedIn = true;
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core_login__["a" /* login */])();
+        }
+    }
 });
-;
 
 /***/ }),
 /* 45 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(14);
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(7);
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export toggleVisibility */
+function toggleVisibility(el) {
+    var style = el.style;
+    if (style.display == 'block') {
+        style.display = 'none';
+    } else {
+        style.display = 'block';
+    }
+}
+
+/***/ }),
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14565,7 +14750,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14578,139 +14763,199 @@ module.exports = {
 };
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(27);
 
 //temporary hacky solution for controller
-const newTreeCtrl = {
-    createNewTreeClick: function (event) {
-        var newTreeForm = event.target.parentNode;
-        var question = newTreeForm.querySelector('.newTree-question').value;
-        var answer = newTreeForm.querySelector('.newTree-answer').value;
-        var parentId = newTreeForm.querySelector('.newTree-parentId').value;
-
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__["a" /* newTree */])(question, answer, parentId);
+/* harmony default export */ __webpack_exports__["a"] = ({
+    template: __webpack_require__(87),
+    props: ['parentid'],
+    data() {
+        return {
+            question: '',
+            answer: '',
+            title: '',
+            type: 'fact'
+        };
+    },
+    computed: {
+        contentIsFact() {
+            return this.type == 'fact';
+        },
+        contentIsHeading() {
+            return this.type == 'heading';
+        }
+    },
+    methods: {
+        createNewTree() {
+            let contentArgs;
+            switch (this.type) {
+                case 'fact':
+                    contentArgs = { question: this.question, answer: this.answer };
+                    break;
+                case 'heading':
+                    contentArgs = { title: this.title };
+                    break;
+            }
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__["a" /* newTree */])(this.type, this.parentid, contentArgs);
+        },
+        setTypeToHeading() {
+            this.type = 'heading';
+        },
+        setTypeToFact() {
+            this.type = 'fact';
+        }
     }
-};
-window.newTreeCtrl = newTreeCtrl;
+});
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_trees_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_facts_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_utils__ = __webpack_require__(14);
-
-
-
-
-
-
-//hacky controller solution for now - as i haven't yet figured out how to (or tried to ) place an angular component inside of a sigmajs/linkurious rendered template on the HTML5 canvas
-const treeCtrl = {
-    editFactOnTreeFromEvent: function (event) {
-        const treeNewFactDom = event.target.parentNode;
-        var question = treeNewFactDom.querySelector('.tree-new-fact-question').value;
-        var answer = treeNewFactDom.querySelector('.tree-new-fact-answer').value;
-        var treeId = treeNewFactDom.querySelector('.tree-id').value;
-        //1. create new fact
-        var fact = __WEBPACK_IMPORTED_MODULE_3__objects_facts_js__["a" /* Facts */].create({
-            question: question,
-            answer: answer
-        }
-        //2.link new fact with current tree
-        );fact.addTree(treeId);
-        __WEBPACK_IMPORTED_MODULE_2__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => tree.changeFact(fact.id)
-
-        //3.update UI source for question and fact
-        );var sigmaNode = s.graph.nodes().find(node => node.id == treeId);
-        sigmaNode.fact = fact;
-        s.refresh
-
-        //4. close the edit functionality
-        ();const treeFactDom = treeNewFactDom.parentNode;
-        window.treeCtrl.toggleEditGivenTreeFactDom(treeFactDom
-
-        //5. ^^3 and 4 don't seem to be working. Workaround below:
-
-        );alert('Fact updated. Refresh the page to see changes');
-    },
-    toggleEditGivenTreeFactDom: function (treeFactDom) {
-        let treeCurrentFactDom = treeFactDom.querySelector('.tree-current-fact');
-        let treeNewFactDom = treeFactDom.querySelector('.tree-new-fact');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__core_utils__["a" /* toggleVisibility */])(treeCurrentFactDom);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__core_utils__["a" /* toggleVisibility */])(treeNewFactDom);
-    },
-    toggleEdit: function (event) {
-        const factEditDom = event.target.parentNode;
-        window.treeCtrl.toggleEditGivenTreeFactDom(factEditDom);
-    },
-    deleteTree: function (event) {
-        var deleteTreeForm = event.target.parentNode;
-        var treeId = deleteTreeForm.querySelector('.tree-id').value;
-        //1.Remove Tree and subtrees from graph
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["b" /* removeTreeFromGraph */])(treeId).then(() => s.refresh()
-        //2. remove the tree's current parent from being its parent
-        );__WEBPACK_IMPORTED_MODULE_2__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-            tree.unlinkFromParent();
-        });
-    }
-    //accessible in Mustache template via window
-};window.treeCtrl = treeCtrl;
+//THIS BLANK FILE IS NECESSARY
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 /***/ }),
-/* 49 */
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_facts__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_heading__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__treesGraph__ = __webpack_require__(14);
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    template: __webpack_require__(89), // '<div> {{movie}} this is the tree template</div>',
+    props: ['movie', 'id'],
+    created() {
+        var self = this;
+
+        this.editing = false;
+        this.tree = {}; // init to empty object until promises resolve, so vue does not complain
+        this.fact = {};
+        this.content = {};
+        __WEBPACK_IMPORTED_MODULE_0__objects_trees__["a" /* Trees */].get(this.id).then(tree => {
+            self.tree = tree;
+            __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
+                self.content = content;
+                self.startTimer();
+            });
+        }
+        // Trees.get(this.id).then( (tree) => {
+        //     self.tree = tree
+        //     Facts.get(tree.factId).then((fact) =>{
+        //         self.fact = fact
+        //         this.startTimer()
+        //     })
+        // })
+        );__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.clicked', () => {
+            console.log('canvas clicked!');
+            self.saveTimer();
+        });
+    },
+    data() {
+        return {
+            tree: this.tree,
+            content: this.content,
+            editing: this.editing
+        };
+    },
+    computed: {
+        typeIsHeading() {
+            return this.tree.contentType == 'heading';
+        },
+        typeIsFact() {
+            return this.tree.contentType == 'fact';
+        }
+    },
+    methods: {
+        startTimer() {
+            console.log();
+            this.content.startTimer();
+        },
+        saveTimer() {
+            this.content.saveTimer();
+        },
+        toggleEditing() {
+            this.editing = !this.editing;
+        },
+        changeFactForTree() {
+            this.fact = __WEBPACK_IMPORTED_MODULE_1__objects_facts__["a" /* Facts */].create({ question: this.fact.question, answer: this.fact.answer });
+            this.fact.addTree(this.id
+            // this.tree.changeFact(this.fact.id)
+            );this.tree.changeContent(contentId, contentType);
+            this.toggleEditing();
+        },
+        changeContent() {
+            switch (this.tree.contentType) {
+                case 'fact':
+                    var fact = new __WEBPACK_IMPORTED_MODULE_2__objects_fact__["a" /* Fact */]({ question: this.content.question, answer: this.content.answer });
+                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].create(fact);
+                    break;
+                case 'heading':
+                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_6__objects_heading__["a" /* Heading */]({ title: this.content.title }));
+                    break;
+            }
+            this.content.addTree(this.id);
+            this.tree.changeContent(this.content.id, this.tree.contentType);
+
+            this.toggleEditing();
+        },
+        changeTypeToFact() {
+            this.tree.contentType == 'fact';
+        },
+        changeTypeToFact() {
+            this.tree.contentType == 'heading';
+        },
+        unlinkFromParent() {
+            if (confirm("Warning! Are you sure you would you like to delete this tree?")) {
+                this.tree.unlinkFromParent();
+            }
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__treesGraph__["b" /* removeTreeFromGraph */])(this.id);
+        }
+    }
+});
+
+/***/ }),
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuefire__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_header_branchesHeaderComponent__ = __webpack_require__(44);
 
 
 
 
 
-
-
-
-__WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuefire___default.a);
-new __WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */]({ el: '#bootstrap', render: h => h(__WEBPACK_IMPORTED_MODULE_0__App_vue___default.a) });
-
-//ABOVE original VUEJS
-///BELOW CONVERTING TO ANGULAR -- below still doesn't work yet
-
-
-var branches = angular.module('branches', ['ngRoute']);
-branches.component('header', {
-    template: __webpack_require__(41),
-    controller: function HeaderController() {
-        this.login = __WEBPACK_IMPORTED_MODULE_6__login_js__["a" /* login */];
-    }
-});
-
-branches.config(function ($routeProvider) {
-    $routeProvider.when('/', {
-        template: '<header></header>'
-    });
+__WEBPACK_IMPORTED_MODULE_3_vue__["a" /* default */].component('branchesHeader', __WEBPACK_IMPORTED_MODULE_4__components_header_branchesHeaderComponent__["a" /* default */]);
+var vm = new __WEBPACK_IMPORTED_MODULE_3_vue__["a" /* default */]({
+    el: '#branches-app'
 });
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14719,7 +14964,7 @@ const ENV = 'dev';
 /* harmony default export */ __webpack_exports__["a"] = (ENV);
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14732,85 +14977,14 @@ const Globals = {
 
 
 /***/ }),
-/* 52 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-
-class Fact {
-  constructor(question, answer) {
-    this.question = question;
-    this.answer = answer;
-    this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
-    this.trees = {};
-  }
-  addTree(treeId) {
-    this.trees[treeId] = true;
-    var trees = {};
-    trees[treeId] = true;
-    var updates = {
-      trees
-    };
-    firebase.database().ref('facts/' + this.id).update(updates);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
-
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 /***/ }),
-/* 53 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_js__ = __webpack_require__(13);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-var userObj = {
-  loggedIn: false,
-  name: ''
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'app',
-  data() {
-    return {
-      version: __WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* Config */].version
-    };
-  },
-  methods: {
-    login: __WEBPACK_IMPORTED_MODULE_2__login_js__["a" /* login */]
-  }
-});
-
-/***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -14912,77 +15086,7 @@ var userObj = {
 
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(56)();
-// imports
-
-
-// module
-exports.push([module.i, "#facts,#trees-graph{flex:50}.header-plan{margin-left:8px;margin-right:8px;display:inline}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15084,7 +15188,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15117,13 +15221,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(26);
+var _subscribe = __webpack_require__(31);
 
 var _errors = __webpack_require__(16);
 
 var _shared_promise = __webpack_require__(17);
 
-var _deep_copy = __webpack_require__(57);
+var _deep_copy = __webpack_require__(58);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15488,14 +15592,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(6);
+var firebase = __webpack_require__(8);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -15764,10 +15868,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -15798,7 +15902,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(6);
+            var firebase = __webpack_require__(8);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -16038,7 +16142,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16052,22 +16156,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(6);
+var _app = __webpack_require__(8);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(59);
+__webpack_require__(60);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(60);
-__webpack_require__(69);
+__webpack_require__(61);
+__webpack_require__(70);
 var AsyncStorage;
 
-__webpack_require__(62);
+__webpack_require__(63);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -16075,7 +16179,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16105,15 +16209,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(64);
+var _windowController = __webpack_require__(65);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(63);
+var _swController = __webpack_require__(64);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(6);
+var _app = __webpack_require__(8);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -16136,7 +16240,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16169,19 +16273,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(27);
+var _controllerInterface = __webpack_require__(32);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(9);
+var _errors = __webpack_require__(10);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(30);
+var _workerPageMessage = __webpack_require__(35);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(28);
+var _fcmDetails = __webpack_require__(33);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -16514,7 +16618,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16547,27 +16651,27 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(27);
+var _controllerInterface = __webpack_require__(32);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(9);
+var _errors = __webpack_require__(10);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(30);
+var _workerPageMessage = __webpack_require__(35);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(66);
+var _defaultSw = __webpack_require__(67);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(29);
+var _notificationPermission = __webpack_require__(34);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(26);
+var _subscribe = __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16915,7 +17019,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16958,7 +17062,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16995,7 +17099,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17028,15 +17132,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _errors = __webpack_require__(16);
 
-var _errors2 = __webpack_require__(9);
+var _errors2 = __webpack_require__(10);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(65);
+var _arrayBufferToBase = __webpack_require__(66);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(28);
+var _fcmDetails = __webpack_require__(33);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -17417,7 +17521,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -17654,10 +17758,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(90).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(92).setImmediate))
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17674,15 +17778,15 @@ exports.registerStorage = registerStorage;
 
 var _string = __webpack_require__(21);
 
-var _taskenums = __webpack_require__(34);
+var _taskenums = __webpack_require__(39);
 
-var _xhriopool = __webpack_require__(81);
+var _xhriopool = __webpack_require__(82);
 
-var _reference = __webpack_require__(36);
+var _reference = __webpack_require__(41);
 
-var _service = __webpack_require__(82);
+var _service = __webpack_require__(83);
 
-var _app = __webpack_require__(6);
+var _app = __webpack_require__(8);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -17727,7 +17831,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17785,7 +17889,7 @@ function async(f) {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17802,7 +17906,7 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(11);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -17810,15 +17914,15 @@ var _error2 = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(73);
+var _failrequest = __webpack_require__(74);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(12);
 
 var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(79);
+var _requestmap = __webpack_require__(80);
 
 var _type = __webpack_require__(0);
 
@@ -17967,7 +18071,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18099,7 +18203,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18158,7 +18262,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18239,7 +18343,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18295,7 +18399,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18355,7 +18459,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18399,7 +18503,7 @@ var _array = __webpack_require__(19);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(72);
+var _backoff = __webpack_require__(73);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -18423,7 +18527,7 @@ var _url = __webpack_require__(22);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(35);
+var _xhrio = __webpack_require__(40);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -18628,7 +18732,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18675,7 +18779,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18711,7 +18815,7 @@ var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(11);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -18770,7 +18874,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18818,7 +18922,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(35);
+var _xhrio = __webpack_require__(40);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -18969,7 +19073,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19001,7 +19105,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(80);
+var _xhrio_network = __webpack_require__(81);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19026,7 +19130,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19062,19 +19166,19 @@ var _args = __webpack_require__(18);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(71);
+var _authwrapper = __webpack_require__(72);
 
-var _location = __webpack_require__(11);
+var _location = __webpack_require__(12);
 
 var _promise_external = __webpack_require__(2);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(77);
+var _request = __webpack_require__(78);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(36);
+var _reference = __webpack_require__(41);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -19217,7 +19321,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19252,13 +19356,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(34);
+var _taskenums = __webpack_require__(39);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(76);
+var _observer = __webpack_require__(77);
 
-var _tasksnapshot = __webpack_require__(84);
+var _tasksnapshot = __webpack_require__(85);
 
 var _args = __webpack_require__(18);
 
@@ -19268,7 +19372,7 @@ var _array = __webpack_require__(19);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(70);
+var _async = __webpack_require__(71);
 
 var _error = __webpack_require__(1);
 
@@ -19278,7 +19382,7 @@ var _promise_external = __webpack_require__(2);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(33);
+var _requests = __webpack_require__(38);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -19860,7 +19964,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19912,25 +20016,31 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 85 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"arrow\"></div>\n<div class=\"sigma-tooltip-header\">Add a new Fact </div>\n<div class=\"sigma-tooltip-body\">\n    <p class=\"newTree-form\">\n        <input type=\"hidden\" class=\"newTree-parentId\" value=\"{{parentId}}\">\n        Question: <input class='newTree-question' type='text'><br>\n        Answer: <input class='newTree-answer' type='text'><br>\n        <button class='newTree-create-button' onclick=\"newTreeCtrl.createNewTreeClick(event)\">Create New Tree</button>\n    </p>\n</div>\n";
-
-/***/ }),
 /* 86 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"arrow\"></div>\n<div class=\"sigma-tooltip-header\"> Menu </div>\n";
+module.exports = "<div id=\"header\">\r\n    <span class=\"header-version\"> Version: {{version}}</span>\r\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n    <button class=\"login-button\"  v-on:click=\"login\" ng-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class=\"login-user-name\" v-if=\"loggedIn\"> {{username}}</span>\r\n</div>\r\n";
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"arrow\"></div>\n<div class=\"tree-fact\" class=\"sigma-tooltip-header\">\n    <div class=\"tree-current-fact\" style=\"display:block;\">\n        <div class=\"tree-current-fact-question\">{{fact.question}}</div>\n        <div class=\"tree-current-fact-answer\">{{fact.answer}}</div>\n    </div>\n    <div class=\"tree-new-fact\" style=\"display:none;\" >\n        <input class=\"tree-id\" value=\"{{id}}\" type=\"hidden\">\n        <input class=\"tree-new-fact-question\" value=\"{{fact.question}}\">\n        <input class=\"tree-new-fact-answer\" value=\"{{fact.answer}}\">\n        <button class=\"fact-new-save\" onclick=\"treeCtrl.editFactOnTreeFromEvent(event)\">Save</button>\n    </div>\n    <button class=\"sigma-tooltip-edit-button\" onclick=\"treeCtrl.toggleEdit(event)\" >Edit</button>\n</div>\n<div class=\"tree-confidence sigma-tooltip-body\">\n    <p>How well did you know this topic? </p>\n    <p>\n        <button>Not at All (Review in < 2 min)</button>\n        <button>Somewhat (10 min)</button>\n        <button>Easy (1 day)</button>\n        <button>Perfectly (4 days)</button>\n        <!-- This intervals change/increase base on number of times user has reviewed. e.g. if use has known it perfectly the last 3 times, the next time they click perfectly, the review interval will be like 4 months . Exact algorithm TBD, but probably similar to Anki -->\n    </p>\n</div>\n<div class=\"sigma-tooltip-footer\">\n    <div class=\"tree-delete\">\n        <input class=\"tree-id\" type=\"hidden\"  value=\"{{id}}\">\n        <button class=\"tree-delete-button\" onclick=\"treeCtrl.deleteTree(event)\">DELETE TREE</button>\n    </div>\n</div>\n";
+module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new Fact </div>\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 88 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"arrow\"></div>\r\n<div class=\"sigma-tooltip-header\"> Menu </div>\r\n";
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports) {
+
+module.exports = "<div>\r\n    <div> CONTENT TYPE: {{tree.contentType}}</div>\r\n    <div class=\"tree-timer\">TIMER:{{content.timeElapsedForCurrentUser}}</div>\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-if=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\">\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <input class=\"tree-new-fact-answer\" v-model=\"content.answer\">\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">HEADING: {{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-if=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\">\r\n            <input class=\"tree-new-heading\" v-model=\"content.title\">\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <button v-on:click=\"toggleEditing\">{{editing ? \"Stop Editing\" : \"Edit\"}}</button>\r\n    <button v-on:click=\"unlinkFromParent\">Delete</button>\r\n</div>\r\n";
+
+/***/ }),
+/* 90 */
 /***/ (function(module, exports) {
 
 /*!
@@ -19957,7 +20067,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -20147,10 +20257,10 @@ function isSlowBuffer (obj) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(38)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(42)))
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -20203,410 +20313,9 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(89);
+__webpack_require__(91);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
-
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "header"
-    }
-  }, [_c('span', {
-    staticClass: "header-version"
-  }, [_vm._v(" Version: " + _vm._s(_vm.version))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('button', {
-    staticClass: "login-button",
-    on: {
-      "click": _vm.login
-    }
-  }, [_vm._v(" Login via Facebook ")]), _vm._v(" "), _c('span', {
-    staticClass: "login-user-name"
-  })])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "header-plan"
-  }, [_c('a', {
-    attrs: {
-      "href": "https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing"
-    }
-  }, [_vm._v("The Plan")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "header-hire"
-  }, [_c('a', {
-    attrs: {
-      "href": "mailto:john@branches-app.com"
-    }
-  }, [_vm._v("Work for Branches")])])
-}]}
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(55);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(94)("dc4e6eb4", content, true);
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(95)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
 
 
 /***/ })
