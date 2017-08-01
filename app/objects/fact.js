@@ -4,7 +4,7 @@ import firebase from './firebaseService'
 import ContentItem from './contentItem'// from './firebaseService'
 export class Fact extends ContentItem {
   //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-  constructor ({question, answer, id, usersTimeMap, trees}){
+  constructor ({question, answer, id, userTimeMap, trees}){
     super()
     this.type = 'fact'
     this.question = question;
@@ -24,7 +24,7 @@ export class Fact extends ContentItem {
             question: this.question,
             answer: this.answer,
             trees: this.trees,
-            usersTimeMap: this.usersTimeMap
+            userTimeMap: this.userTimeMap
         }
     }
 }
