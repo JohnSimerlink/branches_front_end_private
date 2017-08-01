@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 53);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -216,7 +216,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(11);
+var _constants = __webpack_require__(9);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -415,7 +415,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(17);
+var _shared_promise = __webpack_require__(15);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -533,23 +533,7 @@ function clone(obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(54);
-
-const Config = {
-    env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
-    offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
-    version: 6,
-    framework: 'vue' // vue || angular1
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = Config;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(28);
 //import {offlineFacts} from '../static/of'
 //import getFirebase from './firebaseService.js'
 //const firebase = getFirebase();
@@ -559,9 +543,12 @@ class ContentItem {
 
     constructor() {}
     init() {
-        this.usersTimeMap = this.usersTimeMap || {};
-        this.timeElapsedForCurrentUser = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.usersTimeMap && this.usersTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+        this.userTimeMap = this.userTimeMap || {};
+        this.timer = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userTimeMap && this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
         this.timerId = null;
+
+        this.userProficiencyMap = this.userProficiencyMap || {};
+        this.proficiency = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userProficiencyMap && this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
     }
 
     static get(contentId) {
@@ -621,18 +608,30 @@ class ContentItem {
         if (!this.timerId) {
             //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                self.timeElapsedForCurrentUser = self.timeElapsedForCurrentUser || 0;
-                self.timeElapsedForCurrentUser++; // = fact.timeElapsedForCurrentUser || 0
+                self.timer = self.timer || 0;
+                self.timer++; // = fact.timer || 0
             }, 1000);
         }
     }
-    saveTimer(time) {
+    saveTimer() {
 
-        this.usersTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timeElapsedForCurrentUser;
-        console.log('setTimer for user just called on this NOW,', this);
+        this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
+        console.log('settimer for user just called on this now,', this);
 
         var updates = {
-            usersTimeMap: this.usersTimeMap
+            userTimeMap: this.userTimeMap
+        };
+
+        this.timerId = null;
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+    setProficiency(proficiency) {
+        this.proficiency = proficiency;
+        this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.proficiency;
+        console.log('settimer for user just called on this now,', this);
+
+        var updates = {
+            userProficiencyMap: this.userProficiencyMap
         };
 
         this.timerId = null;
@@ -643,40 +642,12 @@ class ContentItem {
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
-
-
-
-
-
-const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
-
-__WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
-
-window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from the console
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facts_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__ = __webpack_require__(6);
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
 
 
 
@@ -694,9 +665,9 @@ class Trees {
             if (trees[treeId]) {
                 resolve(trees[treeId]);
             } else {
-                __WEBPACK_IMPORTED_MODULE_3__firebaseService_js__["a" /* default */].database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot) {
+                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot) {
                     let treeData = snapshot.val();
-                    var tree = new __WEBPACK_IMPORTED_MODULE_1__tree_js__["a" /* Tree */](treeData);
+                    var tree = new __WEBPACK_IMPORTED_MODULE_0__tree_js__["a" /* Tree */](treeData);
                     trees[tree.id] = tree; // add to cache
                     resolve(tree);
                 });
@@ -708,7 +679,7 @@ class Trees {
 
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -722,7 +693,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(59);
+var _firebase_app = __webpack_require__(58);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -747,51 +718,31 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
 
 
 
 
-const facts = {}; // cache
-class Facts {
-    static get(factId) {
-        if (!factId) {
-            throw "Facts.get(factId) error! factId empty!";
-        }
-        return new Promise((resolve, reject) => {
-            if (facts[factId]) {
-                resolve(facts[factId]);
-            } else {
-                __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */].database().ref('facts/' + factId).on("value", function (snapshot) {
-                    var factData = snapshot.val();
-                    var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */](factData);
-                    facts[fact.id] = fact; // add to cache
-                    resolve(fact);
-                });
-            }
-        });
-    }
-    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
-    static create({ question, answer }) {
-        var fact = new __WEBPACK_IMPORTED_MODULE_0__fact_js__["a" /* Fact */]({ question, answer });
-        var updates = {};
-        updates['/facts/' + fact.id] = fact.getDBRepresentation();
-        console.log('facts create updates are', updates);
-        __WEBPACK_IMPORTED_MODULE_2__firebaseService_js__["a" /* default */].database().ref().update(updates);
-        return fact;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Facts;
 
+const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
+
+__WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
+
+window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from the console
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -869,7 +820,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -956,7 +907,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1089,7 +1040,7 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1116,25 +1067,23 @@ module.exports = g;
 
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = removeTreeFromGraph;
 /* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_facts_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_globals_js__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_config__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_login_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pubsub_js__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__tree_treecomponent__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__newtree_newtreecomponent__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vue__ = __webpack_require__(24);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_config__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_login_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pubsub_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__tree_treecomponent__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__newTree_newtreecomponent__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vue__ = __webpack_require__(22);
 
 
 
@@ -1167,7 +1116,7 @@ var toolTipsConfig = {
             var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
             switch (node.type) {
                 case 'tree':
-                    if (__WEBPACK_IMPORTED_MODULE_5__core_config__["a" /* Config */].framework == 'vue') {
+                    if (__WEBPACK_IMPORTED_MODULE_4__core_config__["a" /* Config */].framework == 'vue') {
                         template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                     }
                     break;
@@ -1181,7 +1130,7 @@ var toolTipsConfig = {
         }
     }],
     stage: {
-        template: __webpack_require__(88)
+        template: __webpack_require__(87)
     }
 };
 loadTreeAndSubTrees(1).then(val => {
@@ -1234,7 +1183,7 @@ function createTreeNodeFromTreeAndContent(tree, content) {
         content: content,
         label: getLabelFromContent(content),
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
         type: 'tree'
     };
     return node;
@@ -1257,7 +1206,7 @@ function connectTreeToParent(tree, g) {
             source: tree.parentId,
             target: tree.id,
             size: 1,
-            color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor
+            color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
         };
         g.edges.push(edge);
     }
@@ -1273,7 +1222,7 @@ function addNewChildTreeToTree(tree) {
         y: parseInt(tree.y) + newNodeYOffset,
         label: '+',
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].newColor,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor,
         type: 'newChildTree'
     };
     const shadowEdge = {
@@ -1281,7 +1230,7 @@ function addNewChildTreeToTree(tree) {
         source: tree.id,
         target: newChildTree.id,
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].newColor
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor
     };
     if (!initialized) {
         g.nodes.push(newChildTree);
@@ -1314,7 +1263,7 @@ function initSigma() {
 }
 function onCanvasClick(e) {
     console.log('canvas click!');
-    __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('canvas.clicked', true);
+    __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default.a.publish('canvas.clicked', true);
     console.log(e, e.data.node);
 }
 function printNodeInfo(e) {
@@ -1327,17 +1276,17 @@ function hoverOverNode(e) {
     );tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function () {
         var treeNodeDom = document.querySelector('.tree');
-        if (__WEBPACK_IMPORTED_MODULE_5__core_config__["a" /* Config */].framework == 'angular1') {
+        if (__WEBPACK_IMPORTED_MODULE_4__core_config__["a" /* Config */].framework == 'angular1') {
             angular.bootstrap(treeNodeDom, ['branches']);
         } else {
-            __WEBPACK_IMPORTED_MODULE_10_vue__["a" /* default */].component('tree', __WEBPACK_IMPORTED_MODULE_8__tree_treecomponent__["a" /* default */]);
-            __WEBPACK_IMPORTED_MODULE_10_vue__["a" /* default */].component('newtree', __WEBPACK_IMPORTED_MODULE_9__newtree_newtreecomponent__["a" /* default */]
+            __WEBPACK_IMPORTED_MODULE_9_vue__["a" /* default */].component('tree', __WEBPACK_IMPORTED_MODULE_7__tree_treecomponent__["a" /* default */]);
+            __WEBPACK_IMPORTED_MODULE_9_vue__["a" /* default */].component('newtree', __WEBPACK_IMPORTED_MODULE_8__newTree_newtreecomponent__["a" /* default */]
             // {
             //     template: require('./tree/tree.html'), // '<div> {{movie}} this is the tree template</div>',
             //     props: ['movie']
             //     // render: h => h(TreeVue)
             // })
-            );var vm = new __WEBPACK_IMPORTED_MODULE_10_vue__["a" /* default */]({
+            );var vm = new __WEBPACK_IMPORTED_MODULE_9_vue__["a" /* default */]({
                 el: '#vue'
             });
         }
@@ -1383,7 +1332,7 @@ function addTreeToGraph(parentTreeId, content) {
         children: {},
         label: getLabelFromContent(content),
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
         type: 'tree'
         //2b. update x and y location in the db for the tree
 
@@ -1395,7 +1344,7 @@ function addTreeToGraph(parentTreeId, content) {
         source: parentTreeId,
         target: newTree.id,
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_4__core_globals_js__["a" /* Globals */].existingColor
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
     };
     s.graph.addEdge(newEdge
     //4. add shadow node
@@ -1413,49 +1362,23 @@ function initSigmaPlugins() {
 }
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(53);
 
-
-
- // from './firebaseService'
-class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */] {
-    //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-    constructor({ question, answer, id, usersTimeMap, trees }) {
-        super();
-        this.type = 'fact';
-        this.question = question;
-        this.answer = answer;
-        this.id = id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
-        this.trees = {};
-
-        if (window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
-    }
-
-    //bc certain properties used in the local js object in memory, shouldn't be stored in the db
-
-    getDBRepresentation() {
-        return {
-            id: this.id,
-            question: this.question,
-            answer: this.answer,
-            trees: this.trees,
-            usersTimeMap: this.usersTimeMap
-        };
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
+const Config = {
+    env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
+    offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
+    version: 7,
+    framework: 'vue' // vue || angular1
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = Config;
 
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1562,7 +1485,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1602,17 +1525,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(69);
+var PromiseImpl = scope.Promise || __webpack_require__(68);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1639,7 +1562,7 @@ var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(20);
+var _metadata = __webpack_require__(18);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -1776,7 +1699,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1850,7 +1773,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1873,13 +1796,13 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(76);
+var _json = __webpack_require__(75);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(12);
+var _location = __webpack_require__(10);
 
-var _path = __webpack_require__(37);
+var _path = __webpack_require__(36);
 
 var path = _interopRequireWildcard(_path);
 
@@ -1887,7 +1810,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(22);
+var _url = __webpack_require__(20);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -2060,7 +1983,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2270,7 +2193,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 22 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2288,7 +2211,7 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(11);
+var _constants = __webpack_require__(9);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -2340,14 +2263,14 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(57),
-      utf8 = __webpack_require__(30).utf8,
-      isBuffer = __webpack_require__(90),
-      bin = __webpack_require__(30).bin,
+  var crypt = __webpack_require__(56),
+      utf8 = __webpack_require__(29).utf8,
+      isBuffer = __webpack_require__(89),
+      bin = __webpack_require__(29).bin,
 
   // The core
   md5 = function (message, options) {
@@ -2506,7 +2429,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12200,10 +12123,10 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(42), __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(41), __webpack_require__(11)))
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12235,13 +12158,55 @@ function login() {
 }
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(4);
+
+
+
+ // from './firebaseService'
+class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */] {
+    //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
+    constructor({ question, answer, id, userTimeMap, trees }) {
+        super();
+        this.type = 'fact';
+        this.question = question;
+        this.answer = answer;
+        this.id = id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
+        this.trees = {};
+
+        if (window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+    }
+
+    //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+
+    getDBRepresentation() {
+        return {
+            id: this.id,
+            question: this.question,
+            answer: this.answer,
+            trees: this.trees,
+            userTimeMap: this.userTimeMap
+        };
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(4);
 
 
 
@@ -12261,18 +12226,16 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__facts__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fact__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(26);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contentItem__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fact__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__heading__ = __webpack_require__(25);
 
 
 
@@ -12286,13 +12249,13 @@ function newTree(nodeType, parentTreeId, values) {
 
     switch (nodeType) {
         case 'fact':
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__fact__["a" /* Fact */](values));
+            newContent = __WEBPACK_IMPORTED_MODULE_2__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_3__fact__["a" /* Fact */](values));
             break;
         case 'heading':
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_5__heading__["a" /* Heading */](values));
+            newContent = __WEBPACK_IMPORTED_MODULE_2__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__heading__["a" /* Heading */](values));
             break;
         default:
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__fact__["a" /* Fact */](values));
+            newContent = __WEBPACK_IMPORTED_MODULE_2__contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_3__fact__["a" /* Fact */](values));
             break;
     }
 
@@ -12306,15 +12269,15 @@ function newTree(nodeType, parentTreeId, values) {
 }
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(55);
 
 
 const treesRef = __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees');
@@ -12449,11 +12412,11 @@ class Tree {
 //invoke like a constructor - new Tree(parentId, factId)
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(7);
 
 class User {
 
@@ -12481,7 +12444,7 @@ const user = new User();
 /* harmony default export */ __webpack_exports__["a"] = (user);
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -12520,7 +12483,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12541,7 +12504,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(17);
+var _shared_promise = __webpack_require__(15);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12805,7 +12768,7 @@ function noop() {
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12836,17 +12799,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(16);
+var _errors = __webpack_require__(14);
 
-var _errors2 = __webpack_require__(10);
+var _errors2 = __webpack_require__(8);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(68);
+var _tokenManager = __webpack_require__(67);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(34);
+var _notificationPermission = __webpack_require__(33);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -13045,7 +13008,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13088,7 +13051,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13126,7 +13089,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13185,7 +13148,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13222,11 +13185,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(75);
+var _fs = __webpack_require__(74);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(21);
+var _string = __webpack_require__(19);
 
 var string = _interopRequireWildcard(_string);
 
@@ -13351,7 +13314,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13441,7 +13404,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13470,17 +13433,17 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(19);
+var _array = __webpack_require__(17);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(36);
+var _blob = __webpack_require__(35);
 
 var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(20);
+var _metadata = __webpack_require__(18);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -13488,13 +13451,13 @@ var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(79);
+var _requestinfo = __webpack_require__(78);
 
 var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(22);
+var _url = __webpack_require__(20);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -13795,7 +13758,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13872,7 +13835,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13913,7 +13876,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13948,19 +13911,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(18);
+var _args = __webpack_require__(16);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(36);
+var _blob = __webpack_require__(35);
 
 var _error = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(12);
+var _location = __webpack_require__(10);
 
-var _metadata = __webpack_require__(20);
+var _metadata = __webpack_require__(18);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -13968,15 +13931,15 @@ var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(37);
+var _path = __webpack_require__(36);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(38);
+var _requests = __webpack_require__(37);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(21);
+var _string = __webpack_require__(19);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -13984,7 +13947,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(84);
+var _task = __webpack_require__(83);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -14222,7 +14185,7 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -14412,7 +14375,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -14677,19 +14640,19 @@ https://github.com/mroderick/PubSubJS
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(23);
 
 
 
 //temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(86),
+    template: __webpack_require__(85),
     data() {
         return {
             version: __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].version,
@@ -14706,23 +14669,23 @@ https://github.com/mroderick/PubSubJS
 });
 
 /***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(12);
+
+
+/***/ }),
 /* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(5);
 
 
 /***/ }),
 /* 46 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(7);
-
-
-/***/ }),
-/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14737,7 +14700,7 @@ function toggleVisibility(el) {
 }
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14750,7 +14713,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14763,15 +14726,15 @@ module.exports = {
 };
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(26);
 
 //temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(87),
+    template: __webpack_require__(86),
     props: ['parentid'],
     data() {
         return {
@@ -14812,7 +14775,7 @@ module.exports = {
 });
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14820,20 +14783,18 @@ module.exports = {
 /* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_facts__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_heading__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__treesGraph__ = __webpack_require__(14);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_fact__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__objects_heading__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__treesGraph__ = __webpack_require__(12);
 
 
 
@@ -14842,7 +14803,7 @@ module.exports = {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(89), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(88), // '<div> {{movie}} this is the tree template</div>',
     props: ['movie', 'id'],
     created() {
         var self = this;
@@ -14853,7 +14814,7 @@ module.exports = {
         this.content = {};
         __WEBPACK_IMPORTED_MODULE_0__objects_trees__["a" /* Trees */].get(this.id).then(tree => {
             self.tree = tree;
-            __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
+            __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
                 self.content = content;
                 self.startTimer();
             });
@@ -14865,7 +14826,7 @@ module.exports = {
         //         this.startTimer()
         //     })
         // })
-        );__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.clicked', () => {
+        );__WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('canvas.clicked', () => {
             console.log('canvas clicked!');
             self.saveTimer();
         });
@@ -14886,6 +14847,7 @@ module.exports = {
         }
     },
     methods: {
+        //user methods
         startTimer() {
             console.log();
             this.content.startTimer();
@@ -14896,21 +14858,27 @@ module.exports = {
         toggleEditing() {
             this.editing = !this.editing;
         },
-        changeFactForTree() {
-            this.fact = __WEBPACK_IMPORTED_MODULE_1__objects_facts__["a" /* Facts */].create({ question: this.fact.question, answer: this.fact.answer });
-            this.fact.addTree(this.id
-            // this.tree.changeFact(this.fact.id)
-            );this.tree.changeContent(contentId, contentType);
-            this.toggleEditing();
+        setProficiencyToOne() {
+            this.content.setProficiency(0);
         },
+        setProficiencyToTwo() {
+            this.content.setProficiency(33);
+        },
+        setProficiencyToThree() {
+            this.content.setProficiency(66);
+        },
+        setProficiencyToFour() {
+            this.content.setProficiency(100);
+        },
+        //global methods
         changeContent() {
             switch (this.tree.contentType) {
                 case 'fact':
-                    var fact = new __WEBPACK_IMPORTED_MODULE_2__objects_fact__["a" /* Fact */]({ question: this.content.question, answer: this.content.answer });
-                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].create(fact);
+                    var fact = new __WEBPACK_IMPORTED_MODULE_1__objects_fact__["a" /* Fact */]({ question: this.content.question, answer: this.content.answer });
+                    this.content = __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__["a" /* default */].create(fact);
                     break;
                 case 'heading':
-                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_6__objects_heading__["a" /* Heading */]({ title: this.content.title }));
+                    this.content = __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_5__objects_heading__["a" /* Heading */]({ title: this.content.title }));
                     break;
             }
             this.content.addTree(this.id);
@@ -14928,22 +14896,22 @@ module.exports = {
             if (confirm("Warning! Are you sure you would you like to delete this tree?")) {
                 this.tree.unlinkFromParent();
             }
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__treesGraph__["b" /* removeTreeFromGraph */])(this.id);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__treesGraph__["b" /* removeTreeFromGraph */])(this.id);
         }
     }
 });
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_header_branchesHeaderComponent__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_header_branchesHeaderComponent__ = __webpack_require__(43);
 
 
 
@@ -14955,7 +14923,7 @@ var vm = new __WEBPACK_IMPORTED_MODULE_3_vue__["a" /* default */]({
 });
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14964,7 +14932,7 @@ const ENV = 'dev';
 /* harmony default export */ __webpack_exports__["a"] = (ENV);
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14977,14 +14945,14 @@ const Globals = {
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -15086,7 +15054,7 @@ const Globals = {
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15188,7 +15156,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15221,13 +15189,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(31);
+var _subscribe = __webpack_require__(30);
 
-var _errors = __webpack_require__(16);
+var _errors = __webpack_require__(14);
 
-var _shared_promise = __webpack_require__(17);
+var _shared_promise = __webpack_require__(15);
 
-var _deep_copy = __webpack_require__(58);
+var _deep_copy = __webpack_require__(57);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15592,14 +15560,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(8);
+var firebase = __webpack_require__(6);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -15868,10 +15836,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -15902,7 +15870,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(8);
+            var firebase = __webpack_require__(6);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -16142,7 +16110,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16156,22 +16124,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(8);
+var _app = __webpack_require__(6);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(60);
+__webpack_require__(59);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(61);
-__webpack_require__(70);
+__webpack_require__(60);
+__webpack_require__(69);
 var AsyncStorage;
 
-__webpack_require__(63);
+__webpack_require__(62);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -16179,7 +16147,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16209,15 +16177,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(65);
+var _windowController = __webpack_require__(64);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(64);
+var _swController = __webpack_require__(63);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(8);
+var _app = __webpack_require__(6);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -16240,7 +16208,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16273,19 +16241,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(32);
+var _controllerInterface = __webpack_require__(31);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(10);
+var _errors = __webpack_require__(8);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(35);
+var _workerPageMessage = __webpack_require__(34);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(33);
+var _fcmDetails = __webpack_require__(32);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -16618,7 +16586,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16651,27 +16619,27 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(32);
+var _controllerInterface = __webpack_require__(31);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(10);
+var _errors = __webpack_require__(8);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(35);
+var _workerPageMessage = __webpack_require__(34);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(67);
+var _defaultSw = __webpack_require__(66);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(34);
+var _notificationPermission = __webpack_require__(33);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(31);
+var _subscribe = __webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17019,7 +16987,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17062,7 +17030,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17099,7 +17067,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17130,17 +17098,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(16);
+var _errors = __webpack_require__(14);
 
-var _errors2 = __webpack_require__(10);
+var _errors2 = __webpack_require__(8);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(66);
+var _arrayBufferToBase = __webpack_require__(65);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(33);
+var _fcmDetails = __webpack_require__(32);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -17521,7 +17489,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -17758,10 +17726,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(92).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(91).setImmediate))
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17776,17 +17744,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(21);
+var _string = __webpack_require__(19);
 
-var _taskenums = __webpack_require__(39);
+var _taskenums = __webpack_require__(38);
 
-var _xhriopool = __webpack_require__(82);
+var _xhriopool = __webpack_require__(81);
 
-var _reference = __webpack_require__(41);
+var _reference = __webpack_require__(40);
 
-var _service = __webpack_require__(83);
+var _service = __webpack_require__(82);
 
-var _app = __webpack_require__(8);
+var _app = __webpack_require__(6);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -17831,7 +17799,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17889,7 +17857,7 @@ function async(f) {
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17906,7 +17874,7 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(11);
+var _constants = __webpack_require__(9);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -17914,15 +17882,15 @@ var _error2 = __webpack_require__(1);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(74);
+var _failrequest = __webpack_require__(73);
 
-var _location = __webpack_require__(12);
+var _location = __webpack_require__(10);
 
 var _promise_external = __webpack_require__(2);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(80);
+var _requestmap = __webpack_require__(79);
 
 var _type = __webpack_require__(0);
 
@@ -18071,7 +18039,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18203,7 +18171,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18262,7 +18230,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18343,7 +18311,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18399,7 +18367,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18459,7 +18427,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18499,11 +18467,11 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(19);
+var _array = __webpack_require__(17);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(73);
+var _backoff = __webpack_require__(72);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -18523,11 +18491,11 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(22);
+var _url = __webpack_require__(20);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(40);
+var _xhrio = __webpack_require__(39);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -18732,7 +18700,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18779,7 +18747,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18815,7 +18783,7 @@ var _object = __webpack_require__(3);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(11);
+var _constants = __webpack_require__(9);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -18874,7 +18842,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18922,7 +18890,7 @@ var _type = __webpack_require__(0);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(40);
+var _xhrio = __webpack_require__(39);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -19073,7 +19041,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19105,7 +19073,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(81);
+var _xhrio_network = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19130,7 +19098,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19162,23 +19130,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(18);
+var _args = __webpack_require__(16);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(72);
+var _authwrapper = __webpack_require__(71);
 
-var _location = __webpack_require__(12);
+var _location = __webpack_require__(10);
 
 var _promise_external = __webpack_require__(2);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(78);
+var _request = __webpack_require__(77);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(41);
+var _reference = __webpack_require__(40);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -19321,7 +19289,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19356,23 +19324,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(39);
+var _taskenums = __webpack_require__(38);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(77);
+var _observer = __webpack_require__(76);
 
-var _tasksnapshot = __webpack_require__(85);
+var _tasksnapshot = __webpack_require__(84);
 
-var _args = __webpack_require__(18);
+var _args = __webpack_require__(16);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(19);
+var _array = __webpack_require__(17);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(71);
+var _async = __webpack_require__(70);
 
 var _error = __webpack_require__(1);
 
@@ -19382,7 +19350,7 @@ var _promise_external = __webpack_require__(2);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(38);
+var _requests = __webpack_require__(37);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -19964,7 +19932,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20016,31 +19984,31 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
+/* 85 */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"header\">\n    <span class=\"header-version\"> Version: {{version}}</span>\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\n    <button class=\"login-button\"  v-on:click=\"login\" ng-if=\"!loggedIn\"> Login via Facebook </button>\n    <span class=\"login-user-name\" v-if=\"loggedIn\"> {{username}}</span>\n</div>\n";
+
+/***/ }),
 /* 86 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"header\">\r\n    <span class=\"header-version\"> Version: {{version}}</span>\r\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n    <button class=\"login-button\"  v-on:click=\"login\" ng-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class=\"login-user-name\" v-if=\"loggedIn\"> {{username}}</span>\r\n</div>\r\n";
+module.exports = "<div>\n    <div class=\"arrow\"></div>\n    <div class=\"sigma-tooltip-header\">Add a new Fact </div>\n    <div class=\"sigma-tooltip-body\">\n        <div class=\"newTree-type-selector\">\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToFact\">Fact</button>\n        </div>\n        <p class=\"newTree-form\">\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\n            </p>\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\n            </p>\n        </p>\n    </div>\n</div>\n";
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new Fact </div>\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div class=\"arrow\"></div>\n<div class=\"sigma-tooltip-header\"> Menu </div>\n";
 
 /***/ }),
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"arrow\"></div>\r\n<div class=\"sigma-tooltip-header\"> Menu </div>\r\n";
+module.exports = "<div class=\"tree\">\n    <div class=\"tree-timer\">TIMER:{{content.timer}}</div>\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\n        </div>\n        <div class=\"tree-new-fact\" v-if=\"editing\">\n            <input class=\"tree-id\" v-model=\"content.id\">\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\n            <input class=\"tree-new-fact-answer\" v-model=\"content.answer\">\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\n        </div>\n    </div>\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\n            <div class=\"tree-current-heading\">HEADING: {{content.title}}</div>\n        </div>\n        <div class=\"tree-new-fact\" v-if=\"editing\">\n            <input class=\"tree-id\" v-model=\"content.id\">\n            <input class=\"tree-new-heading\" v-model=\"t.title\">\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\n        </div>\n    </div>\n    <div class=\"tree-proficiency\">\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\n        <div class=\"tree-proficiency-value\">Proficiency: {{content.proficiency}}</div>\n        <div class=\"tree-proficiency-values\">\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\n        </div>\n    </div>\n    <button v-on:click=\"toggleEditing\">{{editing ? \"Stop Editing\" : \"Edit\"}}</button>\n    <button v-on:click=\"unlinkFromParent\">Delete</button>\n</div>\n";
 
 /***/ }),
 /* 89 */
-/***/ (function(module, exports) {
-
-module.exports = "<div>\r\n    <div> CONTENT TYPE: {{tree.contentType}}</div>\r\n    <div class=\"tree-timer\">TIMER:{{content.timeElapsedForCurrentUser}}</div>\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-if=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\">\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <input class=\"tree-new-fact-answer\" v-model=\"content.answer\">\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">HEADING: {{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-if=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\">\r\n            <input class=\"tree-new-heading\" v-model=\"content.title\">\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <button v-on:click=\"toggleEditing\">{{editing ? \"Stop Editing\" : \"Edit\"}}</button>\r\n    <button v-on:click=\"unlinkFromParent\">Delete</button>\r\n</div>\r\n";
-
-/***/ }),
-/* 90 */
 /***/ (function(module, exports) {
 
 /*!
@@ -20067,7 +20035,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -20257,10 +20225,10 @@ function isSlowBuffer (obj) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(42)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(41)))
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -20313,7 +20281,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(91);
+__webpack_require__(90);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
