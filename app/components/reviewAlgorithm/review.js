@@ -1,4 +1,4 @@
-function calculateNextReview(dateProficiencyMap){
+function calculateMinutesTilNextReview(dateProficiencyMap){
     var minutesTilNextReview;
     const numInteractions = dateProficiencyMap.length
 
@@ -26,20 +26,7 @@ function calculateNextReview(dateProficiencyMap){
 
             }
     }
-    switch (numInteractions){
-        case 0:
-            throw "profiencyDecayFunction error! must be at least one dateProficiency key-pair provided"
-        case 1:
-            if (dateProficiencyMap[0].proficiency < 33){
-            } else if (dateProficiencyMap[0].proficiency < 66){
-            } else if (dateProficiencyMap[0].proficiency < 95){
-            } else {
-                minutesTilNextReview = 60 * 24;
-            }
-            break:
-        case 2:
-
-    }
+    return minutesTilNextReview;
 
 }
 const USER_SUCKS = 1
