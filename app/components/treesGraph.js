@@ -49,6 +49,12 @@ var toolTipsConfig = {
         template:require('./rightClickMenu.html')
     }
 };
+var noOverlapConfig = {
+    nodeMargin: 2.0,
+    scaleNodes: 10,
+    permittedExpansion: 1.3,
+    gridSize: 50
+};
 loadTreeAndSubTrees(1).then( val => {initSigma();})
 function loadTreeAndSubTrees(treeId){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
@@ -277,6 +283,11 @@ export function addTreeToGraph(parentTreeId, content) {
 }
 function initSigmaPlugins() {
     // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig)
+    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
+
+    //Instantiate the nooverlap algorithm
+    var listener = s.configNoverlap(noOverlapConfig);
+    s.startNoverlap();
+
     window.tooltips = tooltips
 }
