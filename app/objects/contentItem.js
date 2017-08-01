@@ -8,11 +8,12 @@ export default class ContentItem {
     constructor() {
     }
     init () {
-        this.usersTimeMap = this.usersTimeMap || {} ;
-        this.timeElapsedForCurrentUser = user.loggedIn && this.usersTimeMap && this.usersTimeMap[user.getId()] || 0
+        this.userTimeMap = this.userTimeMap || {} ;
+        this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
         this.timerId = null;
 
-        this.usersProficiencyMap = this.usersProficiencyMap || {}
+        this.userProficiencyMap = this.userProficiencyMap || {}
+        this.proficiency = user.loggedIn && this.userProficiencyMap && this.userProficiencyMap[user.getId()] || 0
     }
 
     static get(contentId) {
@@ -70,25 +71,34 @@ export default class ContentItem {
 
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                self.timeElapsedForCurrentUser = self.timeElapsedForCurrentUser || 0
-                self.timeElapsedForCurrentUser++ // = fact.timeElapsedForCurrentUser || 0
+                self.timer = self.timer || 0
+                self.timer++ // = fact.timer || 0
             }, 1000)
         }
 
     }
-    saveTimer(time){
+    saveTimer(){
 
-        this.usersTimeMap[user.getId()] = this.timeElapsedForCurrentUser
-        console.log('setTimer for user just called on this NOW,', this)
+        this.userTimeMap[user.getId()] = this.timer
+        console.log('settimer for user just called on this now,', this)
 
         var updates = {
-            usersTimeMap: this.usersTimeMap
+            userTimeMap: this.userTimeMap
         }
 
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
     }
-    setProficiency() {
+    setProficiency(proficiency) {
+        this.proficiency = proficiency
+        this.userProficiencyMap[user.getId()] = this.proficiency
+        console.log('settimer for user just called on this now,', this)
 
+        var updates = {
+           userProficiencyMap : this.userProficiencyMap
+        }
+
+        this.timerId = null
+        firebase.database().ref('content/' + this.id).update(updates)
     }
 }

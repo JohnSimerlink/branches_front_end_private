@@ -1,6 +1,6 @@
 <div>
     <div> CONTENT TYPE: {{tree.contentType}}</div>
-    <div class="tree-timer">TIMER:{{content.timeElapsedForCurrentUser}}</div>
+    <div class="tree-timer">TIMER:{{content.timer}}</div>
     <div class="tree-fact" v-if="typeIsFact">
         <div class="tree-current-fact" v-if="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
@@ -21,12 +21,13 @@
         </div>
         <div class="tree-new-fact" v-if="editing">
             <input class="tree-id" v-model="content.id">
-            <input class="tree-new-heading" v-model="content.title">
+            <input class="tree-new-heading" v-model="t.title">
             <button class="heading-new-save" v-on:click="changeContent">Save</button>
         </div>
     </div>
     <div class="tree-proficiency">
         <div class="tree-proficiency-message">How well did you know this?</div>
+        <div class="tree-proficiency-value">{{content.proficiency}}How well did you know this?</div>
         <div class="tree-proficiency-values">
             <button class="tree-proficiency-values-one" v-on:click="setProficiencyToOne">Not at all</button>
             <button class="tree-proficiency-values-two" v-on:click="setProficiencyToTwo">A lil'</button>
