@@ -1,10 +1,11 @@
 import firebase from './firebaseService.js'
 import PubSub from 'pubsub-js'
+import Users from './users'
 class User {
-
 
   constructor(){
     this.loggedIn=false;
+    this.branchesData = {}
     const self = this;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -13,7 +14,8 @@ class User {
           self.loggedIn = true;
           self.fbData = user;
           Users.get(self.getId()).then(user => {
-            self.branchesData = user
+
+            self.branchesData = user || {}
 
             self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
 
@@ -31,7 +33,7 @@ class User {
   }
 
   addItemReviewTime(itemReviewTime){
-    console.log('user.addItemReviewTime just called')
+    console.log('=============user.addItemReviewTime just called=============')
     this.branchesData.itemReviewTimeMap[itemReviewTime.id] = itemReviewTime.nextReviewTime
     let updates = {
       itemReviewTimeMap: this.branchesData.itemReviewTimeMap
