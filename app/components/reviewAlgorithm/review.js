@@ -27,7 +27,9 @@ function calculateMinutesTilNextReview(dateProficiencyMap){
             }
     }
     return minutesTilNextReview;
-
+}
+export function calculateMillisecondsTilNextReview(dateProficiencyMap){
+   return calculateMinutesTilNextReview(dateProficiencyMap) * 60 * 1000
 }
 const USER_SUCKS = 1
 const USER_OK = 2
