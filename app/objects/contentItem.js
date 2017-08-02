@@ -3,6 +3,7 @@
 //const firebase = getFirebase();
 const content = {}
 import user from './user'
+import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 export default class ContentItem {
 
     constructor() {
@@ -14,6 +15,12 @@ export default class ContentItem {
 
         this.userProficiencyMap = this.userProficiencyMap || {}
         this.proficiency = user.loggedIn && this.userProficiencyMap && this.userProficiencyMap[user.getId()] || 0
+
+        this.userInteractionsMap = this.userInteractionsMap || {}
+        this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || 0
+
+        this.userReviewTimeMap = this.userReviewTimeMap || {}
+        this.timeTilReview = user.loggedIn && this.userReviewTimeMap && this.userReviewTimeMap[user.getId()] || 0
     }
 
     static get(contentId) {
@@ -78,7 +85,6 @@ export default class ContentItem {
 
     }
     saveTimer(){
-
         this.userTimeMap[user.getId()] = this.timer
         console.log('settimer for user just called on this now,', this)
 
@@ -90,9 +96,11 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
     }
     setProficiency(proficiency) {
+        //proficiency
+
+        //-proficiency stored under fact
         this.proficiency = proficiency
         this.userProficiencyMap[user.getId()] = this.proficiency
-        console.log('settimer for user just called on this now,', this)
 
         var updates = {
            userProficiencyMap : this.userProficiencyMap
@@ -100,5 +108,24 @@ export default class ContentItem {
 
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
+
+        //interactions
+        this.interactions.push({timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency})
+        this.userInteractionsMap[user.getId()] = this.interactions
+
+        var updates = {
+            userInteractionsMap : this.userInteractionsMap
+        }
+
+        firebase.database().ref('content/' + this.id).update(updates)
+
+        //user review time map
+        const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
+        this.nextReviewTime = firebase.database.ServerValue.TIMESTAMP + millisecondsTilNextReview
+
+        this.userReviewTimeMap[user.getId()] = this.nextReviewTime
+
+        //user contentItemReviewTimeMap
+        user.addItemReviewTime({id: this.id, nextReviewTime: this.nextReviewTime})
     }
 }
