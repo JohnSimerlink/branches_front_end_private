@@ -10,21 +10,11 @@ export default {
         this.loggedIn = false
         this.user = {}
         this.itemReviewTimeMap = {}
-        this.editing = false
-        this.tree = {} // init to empty object until promises resolve, so vue does not complain
-        this.fact = {}
         this.content = {}
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user){
-                self.user = user;
-                self.loggedIn = true
-                console.log('ReviewSchedule COMPONENT: firebase auth state changed detected in reviewschedule component')
-                console.log('branch user is', branchuser)
-            }
-
-
-        })
         PubSub.subscribe('login',() => {
+
+
+            self.loggedIn = true
 
             // console.log('Review schedule component: login detected')
             // Users.get(user.getId()).then(user => {

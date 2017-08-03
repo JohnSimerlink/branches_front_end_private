@@ -14,13 +14,16 @@ export default class ContentItem {
         this.timerId = null;
 
         this.userProficiencyMap = this.userProficiencyMap || {}
-        this.proficiency = user.loggedIn && this.userProficiencyMap && this.userProficiencyMap[user.getId()] || 0
+        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || 0
 
         this.userInteractionsMap = this.userInteractionsMap || {}
-        this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || 0
+        this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
 
         this.userReviewTimeMap = this.userReviewTimeMap || {}
-        this.timeTilReview = user.loggedIn && this.userReviewTimeMap && this.userReviewTimeMap[user.getId()] || 0
+        this.timeTilReview = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
+
+        this.studiers = this.studiers || {}
+        this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
     }
 
     static get(contentId) {
@@ -95,7 +98,19 @@ export default class ContentItem {
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
     }
+    addToStudyQueue() { //don't display nextReviewTime if not in user's study queue
+        this.studiers[user.getId()] = true
+        console.log('settimer for user just called on this now,', this)
+
+        var updates = {
+            studiers: this.studiers
+        }
+        this.inStudyQueue = true
+
+        firebase.database().ref('content/' + this.id).update(updates)
+    }
     setProficiency(proficiency) {
+        !this.inStudyQueue && this.addToStudyQueue()
         //proficiency
 
         //-proficiency stored under fact
@@ -109,6 +124,7 @@ export default class ContentItem {
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
 
+
         //interactions
         this.interactions.push({timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency})
         this.userInteractionsMap[user.getId()] = this.interactions
@@ -119,13 +135,15 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
 
+        //duplicate the information in the user database <<< we should really start using a graph db to avoid this . . .
         //user review time map
         const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
-        this.nextReviewTime = firebase.database.ServerValue.TIMESTAMP + millisecondsTilNextReview
+        console.log()
+        this.nextReviewTime = Date.now() + millisecondsTilNextReview
 
         this.userReviewTimeMap[user.getId()] = this.nextReviewTime
 
-        //user contentItemReviewTimeMap
-        user.addItemReviewTime({id: this.id, nextReviewTime: this.nextReviewTime})
+        user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency});
+        // user.addItemReviewTime({id: this.id, nextReviewTime: this.nextReviewTime})
     }
 }

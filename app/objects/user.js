@@ -17,7 +17,8 @@ class User {
 
             self.branchesData = user || {}
 
-            self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
+            self.branchesData.items = self.branchesData.items || {}
+            // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
 
           })
       } else {
@@ -32,11 +33,27 @@ class User {
     return this.fbData.uid
   }
 
-  addItemReviewTime(itemReviewTime){
-    console.log('=============user.addItemReviewTime just called=============')
-    this.branchesData.itemReviewTimeMap[itemReviewTime.id] = itemReviewTime.nextReviewTime
+  // addItemReviewTime(itemReviewTime){
+  //   console.log('=============user.addItemReviewTime just called=============')
+  //   this.branchesData.itemReviewTimeMap[itemReviewTime.id] = itemReviewTime.nextReviewTime
+  //
+  //     this.branchesData.items[]
+  //   var items = {}
+  //
+  //   let updates = {
+  //     itemReviewTimeMap: this.branchesData.itemReviewTimeMap
+  //   }
+  //   firebase.database().ref('users/' + this.getId()).update(updates)
+  // }
+  setItemProperties(itemId, obj){
+    console.log('=============user.setItemProperties just called for' + this.getId() + '=============')
+
+    this.branchesData.items[itemId] = this.branchesData.items[itemId] || {}
+    for (let prop in obj){
+        this.branchesData.items[itemId][prop] = obj[prop]
+    }
     let updates = {
-      itemReviewTimeMap: this.branchesData.itemReviewTimeMap
+      items: this.branchesData.items
     }
     firebase.database().ref('users/' + this.getId()).update(updates)
   }
