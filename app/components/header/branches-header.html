@@ -4,5 +4,5 @@
     <span class="header-hire"><a href="mailto:john@branches-app.com">Work for Branches</a></span>
     <span class="header-todolist"><a href="https://trello.com/b/lEER4Uqu">Future Features</a></span>
     <button class="login-button"  v-on:click="login" v-if="!loggedIn"> Login via Facebook </button>
-    <span class="login-user-name" v-if="loggedIn">{{user.fbData.displayName}}</span>
+    <span class="login-user-name" v-if="loggedIn">{{username}}</span>
 </div>
