@@ -10,10 +10,12 @@ export default {
         const self = this
         self.loggedIn = false
         self.user = {}
+        self.username = ''
         PubSub.subscribe('login', () => {
             console.log('login detected inside branchesheader')
             self.loggedIn = true
             self.user = user
+            self.username = user.fbData.displayName
             console.log('branches header loggedIn is now', self.loggedIn)
         })
     },
@@ -21,7 +23,8 @@ export default {
         return {
             version: Config.version,
             user: this.user,
-            loggedIn: this.loggedIn
+            loggedIn: this.loggedIn,
+            username: this.username
         }
     },
     methods: {
