@@ -27,7 +27,7 @@
     <div class="tree-proficiency">
         <div class="tree-proficiency-message">How well did you know this?</div>
         <div class="tree-proficiency-value">Proficiency: {{content.proficiency}}</div>
-        <div class="tree-proficiency-timeTilRevie" v-if="content.proficiency">Time Til review: {{content.timeTilReview}}</div>
+        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime}}</div>
         <div class="tree-proficiency-values">
             <button class="tree-proficiency-values-one" v-on:click="setProficiencyToOne">Not at all</button>
             <button class="tree-proficiency-values-two" v-on:click="setProficiencyToTwo">A lil'</button>
