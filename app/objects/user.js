@@ -9,7 +9,7 @@ class User {
     const self = this;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        console.log('USER.js user just logged in')
+        console.log('USER.js user just logged in in firebase auth state changed')
           PubSub.publish('login')
           self.loggedIn = true;
           self.fbData = user;
