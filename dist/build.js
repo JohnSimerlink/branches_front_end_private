@@ -4946,7 +4946,7 @@ class User {
     const self = this;
     __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */].auth().onAuthStateChanged(function (user) {
       if (user) {
-        console.log('USER.js user just logged in');
+        console.log('USER.js user just logged in in firebase auth state changed');
         __WEBPACK_IMPORTED_MODULE_1_pubsub_js___default.a.publish('login');
         self.loggedIn = true;
         self.fbData = user;
@@ -17012,8 +17012,9 @@ function login() {
             Globals.userId = result.user.uid;
             PubSub.publish('login', { userId: result.user.uid });
         }).catch(function (error) {
+            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN"
             // Handle Errors here.
-            var errorCode = error.code;
+            );var errorCode = error.code;
             var errorMessage = error.message;
             // The email of the user's account used.
             var email = error.email;
