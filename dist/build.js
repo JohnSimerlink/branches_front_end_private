@@ -30347,10 +30347,12 @@ process.umask = function() { return 0; };
         const self = this;
         self.loggedIn = false;
         self.user = {};
+        self.username = '';
         __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('login', () => {
             console.log('login detected inside branchesheader');
             self.loggedIn = true;
             self.user = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */];
+            self.username = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.displayName;
             console.log('branches header loggedIn is now', self.loggedIn);
         });
     },
@@ -30358,7 +30360,8 @@ process.umask = function() { return 0; };
         return {
             version: __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].version,
             user: this.user,
-            loggedIn: this.loggedIn
+            loggedIn: this.loggedIn,
+            username: this.username
         };
     },
     methods: {
