@@ -20,7 +20,7 @@ export default class ContentItem {
         this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
 
         this.userReviewTimeMap = this.userReviewTimeMap || {}
-        this.timeTilReview = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
+        this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
 
         this.studiers = this.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
@@ -121,7 +121,6 @@ export default class ContentItem {
            userProficiencyMap : this.userProficiencyMap
         }
 
-        this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
 
 
@@ -135,15 +134,17 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
 
-        //duplicate the information in the user database <<< we should really start using a graph db to avoid this . . .
+        //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
         //user review time map
         const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
-        console.log()
         this.nextReviewTime = Date.now() + millisecondsTilNextReview
 
         this.userReviewTimeMap[user.getId()] = this.nextReviewTime
+        var updates = {
+            userReviewTimeMap : this.userReviewTimeMap
+        }
+        firebase.database().ref('content/' + this.id).update(updates)
 
         user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency});
-        // user.addItemReviewTime({id: this.id, nextReviewTime: this.nextReviewTime})
     }
 }
