@@ -10,6 +10,9 @@ Vue.component('reviewSchedule', ReviewScheduleComponent)
 Vue.filter('timeFromNow', utcTimestamp => {
     return moment(utcTimestamp).fromNow()
 })
+Vue.filter('sortByNextReviewTime', arr => {
+    return arr.sort((a,b) => a.nextReviewTime > b.nextReviewTime)
+})
 var vm = new Vue({
     el: '#branches-app'
 })
