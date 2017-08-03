@@ -35821,7 +35821,7 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 /* 204 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"header\">\r\n    <span class=\"header-version\"> Version: {{version}}</span>\r\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n    <span class=\"header-todolist\"><a href=\"https://trello.com/b/lEER4Uqu\">Future Features</a></span>\r\n    <button class=\"login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class=\"login-user-name\" v-if=\"loggedIn\">{{user.fbData.displayName}}</span>\r\n</div>\r\n";
+module.exports = "<div id=\"header\">\r\n    <span class=\"header-version\"> Version: {{version}}</span>\r\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n    <span class=\"header-todolist\"><a href=\"https://trello.com/b/lEER4Uqu\">Future Features</a></span>\r\n    <button class=\"login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class=\"login-user-name\" v-if=\"loggedIn\">{{username}}</span>\r\n</div>\r\n";
 
 /***/ }),
 /* 205 */
