@@ -2,6 +2,7 @@
 //import getFirebase from './firebaseService.js'
 //const firebase = getFirebase();
 const content = {}
+window.content = content //expose to window for easy debugging
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 export default class ContentItem {
