@@ -80,7 +80,7 @@ export default class ContentItem {
     saveTimer(){
 
         this.userTimeMap[user.getId()] = this.timer
-        console.log('settimer for user just called on this now,', this)
+        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap
@@ -92,7 +92,7 @@ export default class ContentItem {
     setProficiency(proficiency) {
         this.proficiency = proficiency
         this.userProficiencyMap[user.getId()] = this.proficiency
-        console.log('settimer for user just called on this now,', this)
+        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
            userProficiencyMap : this.userProficiencyMap
