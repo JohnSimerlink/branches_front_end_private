@@ -34,7 +34,7 @@ var toolTipsConfig = {
                 switch(node.type){
                     case 'tree':
                         if (Config.framework == 'vue') {
-                            template = '<div id="vue">X' + node.x + '<br>Y' + node.y +'<tree id="' + node.id + '"></tree></div>';
+                            template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                         }
                         break;
                     case 'newChildTree':
