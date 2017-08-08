@@ -215,6 +215,7 @@ function printNodeInfo(e){
 function hoverOverNode(e){
     var node = e.data.node
     console.log('hover over node for node with id', node.id, 'just called')
+    console.log('node about to open is', node)
     // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
@@ -319,19 +320,23 @@ function initSigmaPlugins() {
  */
 function jumpToAndOpenTreeId(treeid) {
     //let tree = sigma.nodes[treeid];
-    let goToNode = s.graph.nodes().filter(function(node) { return node.id === treeid });
+    let goToNode = s.graph.nodes().find(function(node) { return node.id === treeid });
     focusNode(s.cameras[0], goToNode);
+
+    // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
+    console.log('node about to open is ',goToNode)
+    tooltips.open(goToNode, toolTipsConfig.node[0], goToNode["renderer1:x"], goToNode["renderer1:y"]);
 }
 
 function focusNode(camera, node) {
-    if (!node || !node[0]) {
+    if (!node) {
         console.error("Tried to go to node");
         console.error(node);
         return;
     }
     let cameraCoord = {
-        x: node[0]['read_cam0:x'],
-        y: node[0]['read_cam0:y'],
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
         ratio: 0.1
     };
     camera.goTo(cameraCoord);
