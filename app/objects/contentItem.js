@@ -89,7 +89,7 @@ export default class ContentItem {
     }
     saveTimer(){
         this.userTimeMap[user.getId()] = this.timer
-        console.log('settimer for user just called on this now,', this)
+        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap

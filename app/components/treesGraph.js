@@ -8,6 +8,8 @@ import PubSub from 'pubsub-js'
 import TreeComponent from './tree/treecomponent'
 import NewTreeComponent from './newTree/newtreecomponent'
 import Vue from 'vue'
+import user from '../objects/user'
+import * as login from '../core/login';
 var initialized = false;
 var s,
     g = {
@@ -32,11 +34,11 @@ var toolTipsConfig = {
                 switch(node.type){
                     case 'tree':
                         if (Config.framework == 'vue') {
-                            template = '<div id="vue"><tree id="' + node.id + '"></tree></div>'
+                            template = '<div id="vue">X' + node.x + '<br>Y' + node.y +'<tree id="' + node.id + '"></tree></div>';
                         }
                         break;
                     case 'newChildTree':
-                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>'
+                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
                         break;
                 }
                 var result = Mustache.render(template, node)
@@ -104,10 +106,24 @@ function createTreeNodeFromTreeAndContent(tree, content){
         content: content,
         label: getLabelFromContent(content),
         size: 1,
-        color: Globals.existingColor,
+        color: getTreeColor(tree),
         type: 'tree'
-    }
+    };
     return node;
+}
+/**
+ * Get tree colors for descending proficiency levels. Default to "existing node" color
+ * @param tree
+ * @returns {*}
+ */
+function getTreeColor(tree) {
+    if (tree.userProficiencyMap && tree.userProficiencyMap[user.getId()]) {
+        let treeProfLevel = tree.userProficiencyMap[user.getId()];
+        if (treeProfLevel > 95) return Globals.proficiency_4;
+        if (treeProfLevel > 66) return Globals.proficiency_3;
+        if (treeProfLevel > 33) return Globals.proficiency_2;
+    }
+    return Globals.proficiency_1;
 }
 function getLabelFromContent(content) {
     switch (content.type){
@@ -158,8 +174,8 @@ function addNewChildTreeToTree(tree){
         g.nodes.push(newChildTree)
         g.edges.push(shadowEdge)
     } else {
-       s.graph.addNode(newChildTree)
-       s.graph.addEdge(shadowEdge)
+        s.graph.addNode(newChildTree)
+        s.graph.addEdge(shadowEdge)
     }
     if (initialized){
         s.refresh()
@@ -184,12 +200,17 @@ function initSigma(){
     initSigmaPlugins()
 }
 function onCanvasClick(e){
-    console.log('canvas click!')
+    //console.log('canvas click!')
     PubSub.publish('canvas.clicked', true)
-    console.log(e, e.data.node)
+    //console.log(e, e.data.node)
+    // var X=e['data']['node']['renderer1:x'];
+    // var Y=e['data']['node']['renderer1:y'];
+
+    console.log(e.data);
+    //console.log("X %s, Y %S", X, Y);
 }
 function printNodeInfo(e){
-   console.log(e, e.data.node)
+    console.log(e, e.data.node)
 }
 function hoverOverNode(e){
     var node = e.data.node
@@ -286,7 +307,43 @@ function initSigmaPlugins() {
 
     //Instantiate the nooverlap algorithm
     var listener = s.configNoverlap(noOverlapConfig);
-    s.startNoverlap();
+    //s.startNoverlap();
 
-    window.tooltips = tooltips
+    window.tooltips = tooltips;
+    window.jump = jumpToAndOpenTreeId;
+}
+
+
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    let goToNode = s.graph.nodes().filter(function(node) { return node.id === treeid });
+    focusNode(s.cameras[0], goToNode);
+}
+
+function focusNode(camera, node) {
+    if (!node || !node[0]) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    let cameraCoord = {
+        x: node[0]['read_cam0:x'],
+        y: node[0]['read_cam0:y'],
+        ratio: 0.1
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
 }
