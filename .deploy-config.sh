@@ -2,6 +2,7 @@
 echo "First time deploying! Engaging deployment configuration."
 if [ ! -f branches.pem ]; then
     echo "branches.pem not found! get it from john or someone"
+    exit 1
 fi
 chmod 400 branches.pem
 cat >> ~/.ssh/config <<- EOM
