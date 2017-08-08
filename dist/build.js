@@ -4869,72 +4869,13 @@ function internalError(message) {
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.make = make;
-exports.resolve = resolve;
-exports.reject = reject;
-
-var _shared_promise = __webpack_require__(18);
-
-function make(resolver) {
-  return new _shared_promise.local.Promise(resolver);
-}
-/**
- * @template T
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Implements the promise abstraction interface for external
- * (public SDK) packaging, which just passes through to the firebase-app impl.
- */
-/**
- * @template T
- * @param {function((function(T): void),
- *                  (function(!Error): void))} resolver
- */
-function resolve(value) {
-  return _shared_promise.local.Promise.resolve(value);
-}
-function reject(error) {
-  return _shared_promise.local.Promise.reject(error);
-}
-//# sourceMappingURL=promise_external.js.map
-
-
-/***/ }),
-/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pubsub_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__users__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__users__ = __webpack_require__(18);
 
 
 
@@ -4997,6 +4938,65 @@ class User {
 //user singleton
 const user = new User();
 /* harmony default export */ __webpack_exports__["a"] = (user);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.make = make;
+exports.resolve = resolve;
+exports.reject = reject;
+
+var _shared_promise = __webpack_require__(20);
+
+function make(resolver) {
+  return new _shared_promise.local.Promise(resolver);
+}
+/**
+ * @template T
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Implements the promise abstraction interface for external
+ * (public SDK) packaging, which just passes through to the firebase-app impl.
+ */
+/**
+ * @template T
+ * @param {function((function(T): void),
+ *                  (function(!Error): void))} resolver
+ */
+function resolve(value) {
+  return _shared_promise.local.Promise.resolve(value);
+}
+function reject(error) {
+  return _shared_promise.local.Promise.reject(error);
+}
+//# sourceMappingURL=promise_external.js.map
+
 
 /***/ }),
 /* 5 */
@@ -5075,12 +5075,13 @@ function clone(obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__ = __webpack_require__(168);
 //import {offlineFacts} from '../static/of'
 //import getFirebase from './firebaseService.js'
 //const firebase = getFirebase();
 const content = {};
+window.content = content; //expose to window for easy debugging
 
 
 class ContentItem {
@@ -5168,7 +5169,7 @@ class ContentItem {
     }
     saveTimer() {
         this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
-        console.log('settimer for user just called on this now,', this);
+        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap
@@ -5259,12 +5260,13 @@ window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
 
 
 
 const trees = {}; // cache
+window.trees = trees; //expose to window for console debugging
 class Trees {
     static getAll(success) {}
     //returns promise
@@ -5929,15 +5931,19 @@ module.exports = g;
 /* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_config__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_login_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_login_js__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pubsub_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pubsub_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__tree_treecomponent__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__newTree_newtreecomponent__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__objects_user__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__core_login__ = __webpack_require__(17);
+
+
 
 
 
@@ -6043,10 +6049,24 @@ function createTreeNodeFromTreeAndContent(tree, content) {
         content: content,
         label: getLabelFromContent(content),
         size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
+        color: getTreeColor(tree),
         type: 'tree'
     };
     return node;
+}
+/**
+ * Get tree colors for descending proficiency levels. Default to "existing node" color
+ * @param tree
+ * @returns {*}
+ */
+function getTreeColor(tree) {
+    if (tree.userProficiencyMap && tree.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_10__objects_user__["a" /* default */].getId()]) {
+        let treeProfLevel = tree.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_10__objects_user__["a" /* default */].getId()];
+        if (treeProfLevel > 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_4;
+        if (treeProfLevel > 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_3;
+        if (treeProfLevel > 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_2;
+    }
+    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_1;
 }
 function getLabelFromContent(content) {
     switch (content.type) {
@@ -6122,9 +6142,14 @@ function initSigma() {
     initSigmaPlugins();
 }
 function onCanvasClick(e) {
-    console.log('canvas click!');
-    __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default.a.publish('canvas.clicked', true);
-    console.log(e, e.data.node);
+    //console.log('canvas click!')
+    __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default.a.publish('canvas.clicked', true
+    //console.log(e, e.data.node)
+    // var X=e['data']['node']['renderer1:x'];
+    // var Y=e['data']['node']['renderer1:y'];
+
+    );console.log(e.data);
+    //console.log("X %s, Y %S", X, Y);
 }
 function printNodeInfo(e) {
     console.log(e, e.data.node);
@@ -6221,9 +6246,46 @@ function initSigmaPlugins() {
 
     //Instantiate the nooverlap algorithm
     var listener = s.configNoverlap(noOverlapConfig);
-    s.startNoverlap();
+    //s.startNoverlap();
 
     window.tooltips = tooltips;
+    window.jump = jumpToAndOpenTreeId;
+}
+
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    let goToNode = s.graph.nodes().filter(function (node) {
+        return node.id === treeid;
+    });
+    focusNode(s.cameras[0], goToNode);
+}
+
+function focusNode(camera, node) {
+    if (!node || !node[0]) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    let cameraCoord = {
+        x: node[0]['read_cam0:x'],
+        y: node[0]['read_cam0:y'],
+        ratio: 0.1
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
 }
 
 /***/ }),
@@ -6236,7 +6298,7 @@ function initSigmaPlugins() {
 const Config = {
     env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
     offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
-    version: 8,
+    version: 9,
     framework: 'vue' // vue || angular1
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Config;
@@ -6244,6 +6306,78 @@ const Config = {
 
 /***/ }),
 /* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = login;
+function login() {
+    var mobile = false;
+
+    if (mobile) {} else {
+        console.log('login called');
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
+            document.querySelector('.login-button').style.display = 'none';
+            console.log('login result', result);
+            Globals.username = result.user.displayName;
+            Globals.userId = result.user.uid;
+            PubSub.publish('login', { userId: result.user.uid });
+        }).catch(function (error) {
+            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN", error
+            // Handle Errors here.
+            );var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+        });
+    }
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
+
+
+
+const users = {}; // cache
+class Users {
+    //returns promise
+    static get(userId) {
+        console.log('USERS.get called');
+        if (!userId) {
+            throw "Users.get(userId) error!. userId empty";
+        }
+        return new Promise(function getUserPromise(resolve, reject) {
+
+            console.log('getUserPromise called'
+            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+            );if (users[userId]) {
+                resolve(users[userId]);
+            } else {
+                console.log('user not found in cache');
+                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('users/' + userId).on("value", function onFirebaseUserGet(snapshot) {
+                    let userData = snapshot.val();
+                    users[userId] = userData; // add to cache
+                    resolve(userData);
+                });
+            }
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Users;
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6350,7 +6484,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6400,7 +6534,7 @@ var local = exports.local = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6427,7 +6561,7 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(21);
+var _metadata = __webpack_require__(23);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -6564,7 +6698,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6638,7 +6772,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6675,7 +6809,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(23);
+var _url = __webpack_require__(25);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -6848,7 +6982,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7058,7 +7192,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7128,7 +7262,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
@@ -7294,7 +7428,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16991,47 +17125,13 @@ Vue$3.compile = compileToFunctions;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(159), __webpack_require__(14)))
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = login;
-function login() {
-    var mobile = false;
-
-    if (mobile) {} else {
-        console.log('login called');
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function (result) {
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var token = result.credential.accessToken;
-            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
-            document.querySelector('.login-button').style.display = 'none';
-            console.log('login result', result);
-            Globals.username = result.user.displayName;
-            Globals.userId = result.user.uid;
-            PubSub.publish('login', { userId: result.user.uid });
-        }).catch(function (error) {
-            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN", error
-            // Handle Errors here.
-            );var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-        });
-    }
-}
-
-/***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(6);
 
@@ -17067,11 +17167,11 @@ class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */]
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(6);
 
@@ -17093,7 +17193,7 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17101,8 +17201,8 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contentItem__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fact__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__heading__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fact__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__heading__ = __webpack_require__(29);
 
 
 
@@ -17136,11 +17236,11 @@ function newTree(nodeType, parentTreeId, values) {
 }
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(8);
@@ -17279,41 +17379,6 @@ class Tree {
 //invoke like a constructor - new Tree(parentId, factId)
 
 /***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
-
-
-
-const users = {}; // cache
-class Users {
-    //returns promise
-    static get(userId) {
-        if (!userId) {
-            throw "Users.get(userId) error!. userId empty";
-        }
-        return new Promise(function getTreePromise(resolve, reject) {
-
-            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-            if (users[userId]) {
-                resolve(users[userId]);
-            } else {
-                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('users/' + userId).on("value", function onFirebaseTreeGet(snapshot) {
-                    let userData = snapshot.val();
-                    users[userId] = userData; // add to cache
-                    resolve(userData);
-                });
-            }
-        });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Users;
-
-
-/***/ }),
 /* 32 */
 /***/ (function(module, exports) {
 
@@ -17374,7 +17439,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(18);
+var _shared_promise = __webpack_require__(20);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17669,7 +17734,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(17);
+var _errors = __webpack_require__(19);
 
 var _errors2 = __webpack_require__(11);
 
@@ -18059,7 +18124,7 @@ var _fs = __webpack_require__(193);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(22);
+var _string = __webpack_require__(24);
 
 var string = _interopRequireWildcard(_string);
 
@@ -18303,7 +18368,7 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(20);
+var _array = __webpack_require__(22);
 
 var array = _interopRequireWildcard(_array);
 
@@ -18313,7 +18378,7 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(21);
+var _metadata = __webpack_require__(23);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -18327,7 +18392,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(23);
+var _url = __webpack_require__(25);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -18781,7 +18846,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(19);
+var _args = __webpack_require__(21);
 
 var args = _interopRequireWildcard(_args);
 
@@ -18793,7 +18858,7 @@ var errorsExports = _interopRequireWildcard(_error);
 
 var _location = __webpack_require__(13);
 
-var _metadata = __webpack_require__(21);
+var _metadata = __webpack_require__(23);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -18809,7 +18874,7 @@ var _requests = __webpack_require__(40);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(22);
+var _string = __webpack_require__(24);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -30329,12 +30394,14 @@ process.umask = function() { return 0; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_user__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_users__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
+
 
 
 
@@ -30348,12 +30415,27 @@ process.umask = function() { return 0; };
         self.loggedIn = false;
         self.user = {};
         self.username = '';
-        __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('login', () => {
+        // self.numItemsStudied = 0
+        self.numItemsMastered = 0;
+        self.secondsSpentStudying = 1;
+        this.items = {};
+
+        __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('login', () => {
             console.log('login detected inside branchesheader');
             self.loggedIn = true;
             self.user = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */];
             self.username = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.displayName;
-            console.log('branches header loggedIn is now', self.loggedIn);
+            __WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
+                self.items = user.items;
+                console.log('user received in branchesheader component is', user, user.items, user.items.length);
+                self.user = user;
+                // self.numItemsStudied = user.items.length
+                // console.log('numItems studied is', self.numItemsStudied)
+                // console.log('user inside of branchesheader component is ', user, user.branchesData.items.length)
+                // self.numItemsStudied = self.user.branchesData.items.length
+            }
+            // console.log('branches header loggedIn is now', self.loggedIn)
+            );
         });
     },
     data() {
@@ -30361,9 +30443,31 @@ process.umask = function() { return 0; };
             version: __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].version,
             user: this.user,
             loggedIn: this.loggedIn,
-            username: this.username
+            username: this.username,
+            items: this.items
+            // numItemsStudied: this.numItemsStudied
         };
     },
+    computed: {
+        itemsMasteredPerMinute() {
+            return this.numItemsMastered / (this.secondsSpentStudying * 60);
+        },
+        numItemsStudied() {
+            return Object.keys(this.items).length;
+        },
+        numItemsMastered() {
+            var itemsKeys = Object.keys(this.items);
+            var numMastered = itemsKeys.reduce((sum, key) => {
+                if (this.items[key].proficiency >= 96) {
+                    sum++;
+                }
+                console.log('items mastered reduce being called', sum);
+                return sum;
+            }, 0);
+            return numMastered;
+        }
+    },
+
     methods: {
         login() {
             this.loggedIn = true;
@@ -30377,8 +30481,8 @@ process.umask = function() { return 0; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_user__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pubsub_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_pubsub_js__);
 
@@ -30489,7 +30593,7 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(30);
 
 //temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -30610,12 +30714,12 @@ function getProficiencyCategory(proficiency) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_fact__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_fact__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__objects_heading__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__objects_heading__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__treesGraph__ = __webpack_require__(15);
 
 
@@ -30649,7 +30753,7 @@ function getProficiencyCategory(proficiency) {
         //     })
         // })
         );__WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('canvas.clicked', () => {
-            console.log('canvas clicked!');
+            // console.log('canvas clicked!')
             self.saveTimer();
         });
     },
@@ -30734,7 +30838,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_header_branchesHeaderComponent__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_reviewAlgorithm_reviewScheduleComponent__ = __webpack_require__(161);
 
@@ -30751,6 +30855,32 @@ __WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].filter('timeFromNow', utcTi
 });
 __WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].filter('sortByNextReviewTime', arr => {
     return arr.sort((a, b) => a.nextReviewTime > b.nextReviewTime);
+});
+__WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].filter('secondsToPretty', (seconds = 0) => {
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    let days = Math.floor(hours / 24);
+    console.log('minutes, hours, days', minutes, hours, days);
+    let unit, word;
+    if (days) {
+        unit = days;
+        word = "day";
+    } else if (hours) {
+        unit = hours;
+        word = 'hour';
+    } else if (minutes) {
+        unit = minutes;
+        word = 'minute';
+    } else {
+        unit = 0;
+        word = 'minutes';
+    }
+    if (unit > 1) {
+        word += 's';
+    }
+    var ret = unit + ' ' + word;
+    console.log('seconds pretty res is ', ret);
+    return unit + " " + word;
 });
 var vm = new __WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */]({
     el: '#branches-app'
@@ -30773,7 +30903,11 @@ const ENV = 'dev';
 const Globals = {
     currentTreeSelected: null,
     existingColor: 'brown',
-    newColor: 'lightgreen'
+    newColor: 'lightgreen',
+    proficiency_4: 'blue',
+    proficiency_3: 'darkgreen',
+    proficiency_2: 'yellow',
+    proficiency_1: 'brown'
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Globals;
 
@@ -31025,9 +31159,9 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(33);
 
-var _errors = __webpack_require__(17);
+var _errors = __webpack_require__(19);
 
-var _shared_promise = __webpack_require__(18);
+var _shared_promise = __webpack_require__(20);
 
 var _deep_copy = __webpack_require__(176);
 
@@ -32932,7 +33066,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(17);
+var _errors = __webpack_require__(19);
 
 var _errors2 = __webpack_require__(11);
 
@@ -33578,7 +33712,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(22);
+var _string = __webpack_require__(24);
 
 var _taskenums = __webpack_require__(41);
 
@@ -33648,7 +33782,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.async = async;
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -33720,7 +33854,7 @@ var _failrequest = __webpack_require__(192);
 
 var _location = __webpack_require__(13);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -34022,7 +34156,7 @@ exports.FailRequest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -34301,7 +34435,7 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(20);
+var _array = __webpack_require__(22);
 
 var array = _interopRequireWildcard(_array);
 
@@ -34317,7 +34451,7 @@ var _object = __webpack_require__(5);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -34325,7 +34459,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(23);
+var _url = __webpack_require__(25);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -34716,7 +34850,7 @@ var _object = __webpack_require__(5);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -34964,7 +35098,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(19);
+var _args = __webpack_require__(21);
 
 var args = _interopRequireWildcard(_args);
 
@@ -34972,7 +35106,7 @@ var _authwrapper = __webpack_require__(190);
 
 var _location = __webpack_require__(13);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
@@ -35166,11 +35300,11 @@ var _observer = __webpack_require__(195);
 
 var _tasksnapshot = __webpack_require__(203);
 
-var _args = __webpack_require__(19);
+var _args = __webpack_require__(21);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(20);
+var _array = __webpack_require__(22);
 
 var fbsArray = _interopRequireWildcard(_array);
 
@@ -35180,7 +35314,7 @@ var _error = __webpack_require__(2);
 
 var errors = _interopRequireWildcard(_error);
 
-var _promise_external = __webpack_require__(3);
+var _promise_external = __webpack_require__(4);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -35821,7 +35955,7 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 /* 204 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"header\">\r\n    <span class=\"header-version\"> Version: {{version}}</span>\r\n    <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n    <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n    <span class=\"header-todolist\"><a href=\"https://trello.com/b/lEER4Uqu\">Future Features</a></span>\r\n    <button class=\"login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class=\"login-user-name\" v-if=\"loggedIn\">{{username}}</span>\r\n</div>\r\n";
+module.exports = "<div id=\"header\">\r\n    <span class=\"header-left\">\r\n        <span class=\"header-version\"> Version: {{version}}</span>\r\n        <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n        <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n        <span class=\"header-github\"><a href=\"https://github.com/branchesorg/branches_front_end\">Github</a></span>\r\n        <span class=\"header-todolist\"><a href=\"https://trello.com/b/lEER4Uqu\">Future Features</a></span>\r\n        <button class=\"login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n        <span class=\"login-user-name\" v-if=\"loggedIn\">{{username}}</span>\r\n    </span>\r\n    <span class=\"header-right\">\r\n        <span class=\"header-numItemsStudied\"> {{numItemsStudied}} Items Studied | </span>\r\n        <span class=\"header-numItemsMastered\"> {{numItemsMastered}} Items Mastered |</span>\r\n        <span class=\"header-timeSpent\"> {{secondsSpentStudying | secondsToPretty}} Spent Learning |</span>\r\n        <span class=\"header-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute}} Items Mastered Per Minute</span>\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 205 */
