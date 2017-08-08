@@ -3,6 +3,7 @@ import firebase from './firebaseService.js'
 
 const trees = {
 } // cache
+window.trees = trees //expose to window for console debugging
 export class Trees {
     static getAll(success){
     }
