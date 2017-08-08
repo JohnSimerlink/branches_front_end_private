@@ -14,7 +14,9 @@ export function login() {
             console.log('login result', result)
             Globals.username = result.user.displayName
             Globals.userId = result.user.uid
+            PubSub.publish('login', {userId: result.user.uid})
         }).catch(function (error) {
+            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN",error)
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -26,4 +28,5 @@ export function login() {
     }
 
 }
+
 
