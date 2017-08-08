@@ -14,7 +14,7 @@ export default {
         self.username = ''
         // self.numItemsStudied = 0
         self.numItemsMastered = 0
-        self.secondsSpentStudying = 1
+        self.secondsSpentStudying = 1 // init to 1, not 0 to prevent divBy0 Error
         this.items = {}
 
         PubSub.subscribe('login', () => {
