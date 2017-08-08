@@ -31,7 +31,7 @@ export default {
         //     })
         // })
         PubSub.subscribe('canvas.clicked', () => {
-            console.log('canvas clicked!')
+            // console.log('canvas clicked!')
             self.saveTimer()
         })
     },
