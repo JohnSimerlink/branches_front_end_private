@@ -57,12 +57,19 @@
 <script src="other_imports/sigma/misc/sigma.misc.bindEvents.js"></script>
 <script src="other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"></script>
 <script src="other_imports/sigma/misc/sigma.misc.drawHovers.js"></script>
-    <script src="other_imports/sigma/layout/sigma.layout.nooverlap.js"></script>
+<script src="other_imports/sigma/layout/sigma.layout.nooverlap.js"></script>
 
 <!-- END SIGMA IMPORTS -->
 <script src="other_imports/sigma/plugins/dragNode.js"></script>
     <script src="other_imports/sigma/plugins/sigma.plugins.animate.js"></script>
 <script src="other_imports/sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js"></script>
+<script src="other_imports/sigma/plugins/sigma.plugins.lasso.js"></script>
+<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>
+<script src="other_imports/sigma/plugins/sigma.plugins.select.js"></script>
+
+<script src="other_imports/sigma/plugins/sigma.renderers.halo/settings.js"></script>
+<script src="other_imports/sigma/plugins/sigma.renderers.halo/sigma.renderers.halo.js"></script>
+
 <script src="other_imports/mustache/mustache.min.js"></script>
 </head>
 <body>
@@ -81,6 +88,7 @@
         </div>
         <div id="branches-app">
             <branches-header></branches-header>
+            <toolbar></toolbar>
             <div id="container">
                 <div id="graph-container">
                 </div>
