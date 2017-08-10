@@ -17,6 +17,7 @@
        <button class="login-button"  v-on:click="login"> Login via Facebook </button>
        <span class="login-user-name"></span>
    </div>
+    <toolbar></toolbar>
 </template>
 
 <script>

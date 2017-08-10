@@ -3,10 +3,12 @@ import './objects'
 import './utils'
 import moment from 'moment'
 import Vue from 'vue'
-import HeaderComponent from '../components/header/branchesHeaderComponent'
-import ReviewScheduleComponent from '../components/reviewAlgorithm/reviewScheduleComponent'
-Vue.component('branchesHeader', HeaderComponent)
-Vue.component('reviewSchedule', ReviewScheduleComponent)
+import Header from '../components/header/branchesHeader'
+import ReviewSchedule from '../components/reviewAlgorithm/reviewSchedule'
+import Toolbar from '../components/toolbar/toolbar'
+Vue.component('branchesHeader', Header)
+Vue.component('reviewSchedule', ReviewSchedule)
+Vue.component('toolbar', Toolbar)
 Vue.filter('timeFromNow', utcTimestamp => {
     return moment(utcTimestamp).fromNow()
 })
