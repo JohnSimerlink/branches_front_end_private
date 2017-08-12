@@ -200,7 +200,6 @@ function onCanvasClick(e){
     // var X=e['data']['node']['renderer1:x'];
     // var Y=e['data']['node']['renderer1:y'];
 
-    console.log(e.data);
     //console.log("X %s, Y %S", X, Y);
 }
 function printNodeInfo(e){
@@ -283,84 +282,9 @@ export function addTreeToGraph(parentTreeId, content) {
 function initSigmaPlugins() {
     // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
     var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
-
-    //Instantiate the nooverlap algorithm
-    // var listener = s.configNoverlap(noOverlapConfig);
-    //s.startNoverlap();
-
-    // Initialize the activeState plugin:
-    var activeState = sigma.plugins.activeState(s);
-
-    // Initialize the Select plugin:
-    var select = sigma.plugins.select(s, activeState);
-    // select.bindKeyboard(keyboard);
-
-    //intialize the drag nodes plugin
-    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
+    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
     window.tooltips = tooltips;
     window.jump = jumpToAndOpenTreeId;
-
-    // Initialize the lasso plugin:
-    var lasso = new sigma.plugins.lasso(s, s.renderers[0], {
-      'strokeStyle': 'black',
-      'lineWidth': 2,
-      'fillWhileDrawing': true,
-      'fillStyle': 'rgba(41, 41, 41, 0.2)',
-      'cursor': 'crosshair'
-    });
-    window.lasso = lasso
-    select.bindLasso(lasso)
-    // lasso.activate()
-
-// halo on active nodes:
-    function renderHalo() {
-        s.renderers[0].halo({
-            nodes: activeState.nodes()
-        });
-    }
-
-    s.renderers[0].bind('render', function(e) {
-        renderHalo();
-    });
-
-    //
-
-
-    // Listen for selectedNodes event
-    lasso.bind('selectedNodes', function (event) {
-        setTimeout(function() {
-            lasso.deactivate();
-            s.refresh({ skipIdexation: true });
-        }, 0);
-    });
-    // Listen for selectedNodes event from the lasso instance:
-    // lasso.bind('selectedNodes', function (event) {
-    //   console.log('event is ', event)
-    //   // set all edges as "inactive" to avoid mixing active nodes and edges:
-    //   activeState.dropEdges();
-    //
-    //   // nodes within the lasso area:
-    //   var nodes = event.data;
-    //
-    //   // set all nodes as "inactive" if no node is selected:
-    //   if (!nodes.length) activeState.dropNodes();
-    //
-    //   // add the selected nodes to the "active" nodes:
-    //   activeState.addNodes(nodes.map(function(n) { return n.id; }));
-    //
-    //   setTimeout(function() {
-    //     // disable the lasso tool after a selection:
-    //     lasso.deactivate();
-    //     // refresh the display to see the active nodes:
-    //     s.refresh({ skipIdexation: true });
-    //   }, 0);
-    // });
-
-    // // Enable the lasso tool right now (may be triggered anywhere in the code):
-    // lasso.activate();
-
-
-
 
 }
 
