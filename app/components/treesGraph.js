@@ -4,11 +4,6 @@ import {Tree} from '../objects/tree.js'
 import {Globals} from '../core/globals.js'
 import '../core/login.js'
 import PubSub from 'pubsub-js'
-<<<<<<< HEAD
-=======
-import TreeComponent from './tree/tree'
-import NewTreeComponent from './newTree/newtreecomponent'
->>>>>>> cc75b61bfe15cb264d0639bcf4dc0395c7b32021
 import Vue from 'vue'
 import user from '../objects/user'
 var initialized = false;
@@ -180,7 +175,6 @@ function addNewChildTreeToTree(tree){
     }
 }
 function initSigma(){
-<<<<<<< HEAD
     if (initialized) return
 
     sigma.renderers.def = sigma.renderers.canvas
@@ -197,33 +191,6 @@ function initSigma(){
     s.bind('overNode', hoverOverNode)
     initialized = true;
     initSigmaPlugins()
-=======
-    if (!initialized){
-        sigma.renderers.def = sigma.renderers.canvas
-        s = new sigma({
-            graph: g,
-            container: 'graph-container',
-            settings: {
-                enableEdgeHovering: false,
-                nodeActiveBorderSize: 2,
-                nodeActiveOuterBorderSize: 3,
-                defaultNodeActiveBorderColor: '#fff',
-                defaultNodeActiveOuterBorderColor: 'rgb(236, 81, 72)',
-                nodeHaloColor: 'rgba(236, 81, 72, 0.2)',
-                nodeHaloSize: 50,
-            }
-        });
-        window.s = s;
-        s.refresh();
-
-        s.bind('click', onCanvasClick)
-        s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
-        s.bind('overNode', hoverOverNode)
-        initialized = true;
-
-        initSigmaPlugins()
-    }
->>>>>>> cc75b61bfe15cb264d0639bcf4dc0395c7b32021
 }
 
 function onCanvasClick(e){
@@ -347,7 +314,7 @@ function initSigmaPlugins() {
     });
     window.lasso = lasso
     select.bindLasso(lasso)
-    lasso.activate()
+    // lasso.activate()
 
 // halo on active nodes:
     function renderHalo() {
