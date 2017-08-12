@@ -23,7 +23,6 @@ Vue.filter('secondsToPretty', (seconds=0)  => {
     let minutes = Math.floor(seconds / 60)
     let hours = Math.floor(minutes / 60)
     let days = Math.floor(hours / 24)
-    console.log('minutes, hours, days', minutes, hours,days)
     let unit, word;
     if (days){
         unit = days;
@@ -42,7 +41,6 @@ Vue.filter('secondsToPretty', (seconds=0)  => {
         word += 's'
     }
     var ret = unit + ' ' + word
-    console.log('seconds pretty res is ', ret)
     return unit + " " + word
 })
 var vm = new Vue({

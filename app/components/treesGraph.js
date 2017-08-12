@@ -208,9 +208,6 @@ function printNodeInfo(e){
 }
 function hoverOverNode(e){
     var node = e.data.node
-    console.log('hover over node for node with id', node.id, 'just called')
-    console.log('node about to open is', node)
-    // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
         var vm = new Vue(
@@ -221,7 +218,6 @@ function hoverOverNode(e){
     },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
 }
 function updateTreePosition(e){
-    console.log("outNODE just called")
     let newX = e.data.node.x
     let newY = e.data.node.y
     let treeId = e.data.node.id;
