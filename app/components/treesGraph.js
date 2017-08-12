@@ -2,14 +2,10 @@ import {Trees} from '../objects/trees.js'
 import ContentItem from '../objects/contentItem'
 import {Tree} from '../objects/tree.js'
 import {Globals} from '../core/globals.js'
-import {Config} from '../core/config'
 import '../core/login.js'
 import PubSub from 'pubsub-js'
-import TreeComponent from './tree/treecomponent'
-import NewTreeComponent from './newTree/newtreecomponent'
 import Vue from 'vue'
 import user from '../objects/user'
-import * as login from '../core/login';
 var initialized = false;
 var s,
     g = {
@@ -33,9 +29,7 @@ var toolTipsConfig = {
                 var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
                 switch(node.type){
                     case 'tree':
-                        if (Config.framework == 'vue') {
                             template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                        }
                         break;
                     case 'newChildTree':
                         template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
@@ -176,27 +170,25 @@ function addNewChildTreeToTree(tree){
     } else {
         s.graph.addNode(newChildTree)
         s.graph.addEdge(shadowEdge)
-    }
-    if (initialized){
         s.refresh()
     }
 }
 function initSigma(){
-    if (!initialized){
-        sigma.renderers.def = sigma.renderers.canvas
-        s = new sigma({
-            graph: g,
-            container: 'graph-container'
-        });
-        window.s = s;
-        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        s.refresh();
+    if (initialized) return
 
-        s.bind('click', onCanvasClick)
-        s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
-        s.bind('overNode', hoverOverNode)
-        initialized = true;
-    }
+    sigma.renderers.def = sigma.renderers.canvas
+    s = new sigma({
+        graph: g,
+        container: 'graph-container'
+    });
+    window.s = s;
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    s.refresh();
+
+    s.bind('click', onCanvasClick)
+    s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
+    s.bind('overNode', hoverOverNode)
+    initialized = true;
     initSigmaPlugins()
 }
 function onCanvasClick(e){
@@ -219,23 +211,11 @@ function hoverOverNode(e){
     // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
-        var treeNodeDom = document.querySelector('.tree')
-        if (Config.framework == 'angular1'){
-            angular.bootstrap(treeNodeDom, ['branches'])
-        } else {
-            Vue.component('tree', TreeComponent)
-            Vue.component('newtree', NewTreeComponent)
-            // {
-            //     template: require('./tree/tree.html'), // '<div> {{movie}} this is the tree template</div>',
-            //     props: ['movie']
-            //     // render: h => h(TreeVue)
-            // })
-            var vm = new Vue(
-                {
-                    el: '#vue'
-                }
-            )
-        }
+        var vm = new Vue(
+            {
+                el: '#vue'
+            }
+        )
     },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
 }
 function updateTreePosition(e){

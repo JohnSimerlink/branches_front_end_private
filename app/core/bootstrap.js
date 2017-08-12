@@ -3,10 +3,14 @@ import './objects'
 import './utils'
 import moment from 'moment'
 import Vue from 'vue'
-import HeaderComponent from '../components/header/branchesHeaderComponent'
-import ReviewScheduleComponent from '../components/reviewAlgorithm/reviewScheduleComponent'
+import HeaderComponent from '../components/header/branchesHeader'
+import ReviewScheduleComponent from '../components/reviewAlgorithm/reviewSchedule'
+import TreeComponent from '../components/tree/tree'
+import NewTreeComponent from '../components/newTree/newtreecomponent'
 Vue.component('branchesHeader', HeaderComponent)
 Vue.component('reviewSchedule', ReviewScheduleComponent)
+Vue.component('tree', TreeComponent)
+Vue.component('newtree', NewTreeComponent)
 Vue.filter('timeFromNow', utcTimestamp => {
     return moment(utcTimestamp).fromNow()
 })
