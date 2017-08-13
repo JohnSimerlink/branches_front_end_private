@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <link rel='stylesheet' href="styles.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 
 </style>
@@ -67,12 +68,23 @@
 <!--<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>-->
 <script src="other_imports/sigma/plugins/sigma.plugins.select.js"></script>
 
-<script src="other_imports/sigma/plugins/sigma.renderers.halo/settings.js"></script>
-<script src="other_imports/sigma/plugins/sigma.renderers.halo/sigma.renderers.halo.js"></script>
+<script src="other_imports/sigma/renderers/sigma.renderers.halo/settings.js"></script>
+<script src="other_imports/sigma/renderers/sigma.renderers.halo/sigma.renderers.halo.js"></script>
+
+
+<script src="other_imports/sigma/renderers/sigma.renderers.glyphs/settings.js"></script>
+<script src="other_imports/sigma/renderers/sigma.renderers.glyphs/sigma.renderers.glyphs.js"></script>
+
+
+
+
 
 <script src="other_imports/mustache/mustache.min.js"></script>
 </head>
 <body>
+
+<i class="fa fa-camera-retro fa-1x" style="color: rgba(0,0,0,0);"></i>
+
 <!-- FB Login -->
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
@@ -84,8 +96,6 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 <!-- END FB Login -->
     <div class='page'>
-        <div id="bootstrap">
-        </div>
         <div id="branches-app">
             <branches-header></branches-header>
             <toolbar></toolbar>

@@ -11,11 +11,38 @@ var s,
     g = {
         nodes: [],
         edges: []
-    };
+    },
+
+    positions = [
+    'top-right',
+    'top-left',
+    'bottom-left',
+    'bottom-right'
+    ],
+    icons = [
+        "\uF11b",
+        "\uF11c",
+        "\uF11d",
+        "\uF128",
+        "\uF129",
+        "\uF130",
+        "\uF131",
+        "\uF132"
+    ],
+    glyphs = [
+        {
+            position: positions[0],
+            content: icons[Math.floor(Math.random() * icons.length)],
+            fillColor: '#35ac19',
+            hidden: false
+        }
+    ]
+
+
 window.g = g
 window.s = s;
 
-var newNodeXOffset = -100,
+var newNodeXOffset = -500,
     newNodeYOffset = 20,
     newChildTreeSuffix = "__newChildTree";
 var toolTipsConfig = {
@@ -43,12 +70,6 @@ var toolTipsConfig = {
     stage: {
         template:require('./rightClickMenu.html')
     }
-};
-var noOverlapConfig = {
-    nodeMargin: 2.0,
-    scaleNodes: 10,
-    permittedExpansion: 1.3,
-    gridSize: 50
 };
 loadTreeAndSubTrees(1).then( val => {initSigma();})
 function loadTreeAndSubTrees(treeId){
@@ -102,7 +123,8 @@ function createTreeNodeFromTreeAndContent(tree, content){
         label: getLabelFromContent(content),
         size: 1,
         color: getTreeColor(tree),
-        type: 'tree'
+        type: 'tree',
+        glyphs
     };
     return node;
 }
@@ -180,12 +202,24 @@ function initSigma(){
     sigma.renderers.def = sigma.renderers.canvas
     s = new sigma({
         graph: g,
-        container: 'graph-container'
+        container: 'graph-container',
+        glyphScale: 0.7,
+        glyphFillColor: '#666',
+        glyphTextColor: 'white',
+        glyphStrokeColor: 'transparent',
+        glyphFont: 'FontAwesome',
+        glyphFontStyle: 'normal',
+        glyphTextThreshold: 6,
+        glyphThreshold: 3
+
     });
     window.s = s;
     var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
     s.refresh();
 
+    s.bind('mousedown', function(){
+        console.log('mousedown')
+    })
     s.bind('click', onCanvasClick)
     s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
     s.bind('overNode', hoverOverNode)
@@ -194,9 +228,8 @@ function initSigma(){
 }
 
 function onCanvasClick(e){
-    //console.log('canvas click!')
     PubSub.publish('canvas.clicked', true)
-    //console.log(e, e.data.node)
+    console.log(e, e.data.x,e.data.y,e.data.clientX,e.data.clientY)
     // var X=e['data']['node']['renderer1:x'];
     // var Y=e['data']['node']['renderer1:y'];
 
@@ -206,6 +239,7 @@ function printNodeInfo(e){
     console.log(e, e.data.node)
 }
 function hoverOverNode(e){
+    console.log('hoverOverNode event called', ...arguments)
     var node = e.data.node
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
@@ -255,7 +289,8 @@ export function addTreeToGraph(parentTreeId, content) {
         label: getLabelFromContent(content),
         size: 1,
         color: Globals.existingColor,
-        type: 'tree'
+        type: 'tree',
+        glyphs,
     }
     //2b. update x and y location in the db for the tree
 
@@ -286,6 +321,15 @@ function initSigmaPlugins() {
     window.tooltips = tooltips;
     window.jump = jumpToAndOpenTreeId;
 
+
+    var myRenderer = s.renderers[0];
+
+    myRenderer.glyphs();
+
+    myRenderer.bind('render', function(e) {
+        myRenderer.glyphs();
+    });
+    console.log('my renderenr is', myRenderer, s.renderers)
 }
 
 
@@ -294,12 +338,11 @@ function initSigmaPlugins() {
  */
 function jumpToAndOpenTreeId(treeid) {
     //let tree = sigma.nodes[treeid];
-    let goToNode = s.graph.nodes().find(function(node) { return node.id === treeid });
-    focusNode(s.cameras[0], goToNode);
+    let node = s.graph.nodes().find(function(node) { return node.id === treeid });
+    focusNode(s.cameras[0], node);
 
-    // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
-    console.log('node about to open is ',goToNode)
-    tooltips.open(goToNode, toolTipsConfig.node[0], goToNode["renderer1:x"], goToNode["renderer1:y"]);
+    console.log('node about to open is ',node)
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
 }
 
 function focusNode(camera, node) {
