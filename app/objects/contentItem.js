@@ -78,17 +78,21 @@ export default class ContentItem {
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
     startTimer() {
+        console.log("contentItem.js startTimer called")
         var self = this
 
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                self.timer = self.timer || 0
+                console.log('timer',self.timerId,' was', self.timer)
+                self.timer  = self.timer || 0
                 self.timer++ // = fact.timer || 0
+                console.log('timer',self.timerId,' is now', self.timer)
             }, 1000)
         }
 
     }
     saveTimer(){
+        console.log('content Item save timer called')
         this.userTimeMap[user.getId()] = this.timer
         // console.log('settimer for user just called on this now,', this)
 
@@ -96,6 +100,7 @@ export default class ContentItem {
             userTimeMap: this.userTimeMap
         }
 
+        clearInterval(this.timerId)
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
     }

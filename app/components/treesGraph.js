@@ -134,13 +134,15 @@ function createTreeNodeFromTreeAndContent(tree, content){
  * @returns {*}
  */
 function getTreeColor(tree) {
-    if (tree.userProficiencyMap && tree.userProficiencyMap[user.getId()]) {
-        let treeProfLevel = tree.userProficiencyMap[user.getId()];
-        if (treeProfLevel > 95) return Globals.proficiency_4;
-        if (treeProfLevel > 66) return Globals.proficiency_3;
-        if (treeProfLevel > 33) return Globals.proficiency_2;
-    }
-    return Globals.proficiency_1;
+    let proficiency = tree.userProficiencyMap && tree.userProficiencyMap[user.getId()]
+    if (proficiency >= 0) return proficiencyToColor(proficiency)
+    return Globals.colors.proficiency_unknown
+}
+export function proficiencyToColor(proficiency){
+    if (proficiency >= 95) return Globals.colors.proficiency_4;
+    if (proficiency >= 66) return Globals.colors.proficiency_3;
+    if (proficiency >= 33) return Globals.colors.proficiency_2;
+    return Globals.colors.proficiency_1;
 }
 function getLabelFromContent(content) {
     switch (content.type){
@@ -160,7 +162,7 @@ function connectTreeToParent(tree, g){
             source: tree.parentId,
             target: tree.id,
             size: 1,
-            color: Globals.existingColor
+            color: Globals.colors.proficiency_unknown
         };
         g.edges.push(edge);
     }
@@ -235,11 +237,15 @@ function onCanvasClick(e){
 
     //console.log("X %s, Y %S", X, Y);
 }
+PubSub.subscribe('canvas.clicked', function() {
+    PubSub.publish('canvas.closeTooltip')
+})
 function printNodeInfo(e){
     console.log(e, e.data.node)
 }
 function hoverOverNode(e){
     console.log('hoverOverNode event called', ...arguments)
+    PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
     var node = e.data.node
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
