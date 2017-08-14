@@ -8,7 +8,7 @@
         <div class="tree-new-fact" v-if="editing">
             <input class="tree-id" v-model="content.id" hidden>
             <input class="tree-new-fact-question" v-model="content.question">
-            <input class="tree-new-fact-answer" v-model="content.answer">
+            <textarea class="tree-new-fact-answer" v-model="content.answer"></textarea>
             <button class="fact-new-save" v-on:click="changeContent">Save</button>
         </div>
     </div>
@@ -19,14 +19,13 @@
         </div>
         <div class="tree-new-fact" v-if="editing">
             <input class="tree-id" v-model="content.id" hidden>
-            <input class="tree-new-heading" v-model="t.title">
+            <textarea class="tree-new-heading" v-model="content.title"></textarea>
             <button class="heading-new-save" v-on:click="changeContent">Save</button>
         </div>
     </div>
     <div class="tree-proficiency">
+        <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
-        <div class="tree-proficiency-value">Proficiency: {{content.proficiency}}</div>
-        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
         <div class="tree-proficiency-values">
             <button class="tree-proficiency-values-one" v-on:click="setProficiencyToOne">Not at all</button>
             <button class="tree-proficiency-values-two" v-on:click="setProficiencyToTwo">A lil'</button>
@@ -35,8 +34,13 @@
         </div>
     </div>
     <div class="tree-footer">
-        <button v-on:click="toggleEditing">{{editing ? "Stop Editing" : "Edit"}}</button>
-        <button v-on:click="unlinkFromParent">Delete</button>
-        <div class="tree-timer">{{content.timer | secondsToPretty}}</div>
+        <div class="divider-horizontal"></div>
+        <div class="tree-footer-row">
+            <div class="tree-edit-button" v-on:click="toggleEditing"><i :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}" aria-hidden="true"></i>{{editing ? "Stop Editing" : "Edit"}}</div>
+            <div class="tree-timer" :title="timerMouseOverMessage" >{{content.timer | secondsToPretty}} </div>
+            <div class="tree-proficiency-value" title="proficiency"> | {{content.proficiency}}% </div>
+            <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParent" ></i>
+        </div>
+        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
     </div>
 </div>

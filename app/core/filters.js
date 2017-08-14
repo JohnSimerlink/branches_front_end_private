@@ -7,7 +7,8 @@ Vue.filter('timeFromNow', utcTimestamp => {
 Vue.filter('sortByNextReviewTime', arr => {
     return arr.sort((a,b) => a.nextReviewTime > b.nextReviewTime)
 })
-Vue.filter('secondsToPretty', (seconds=0)  => {
+Vue.filter('truncate', Math.floor)
+export function secondsToPretty(seconds=0) {
     let minutes = Math.floor(seconds / 60)
         seconds = seconds % 60
     let hours = Math.floor(minutes / 60)
@@ -29,5 +30,6 @@ Vue.filter('secondsToPretty', (seconds=0)  => {
         result += seconds + ' s '
     }
     return result
-})
+}
 
+Vue.filter('secondsToPretty',secondsToPretty)

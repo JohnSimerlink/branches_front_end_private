@@ -1,3 +1,6 @@
+html, .tree, button {
+    font-family: 'Fredoka One', cursive;
+}
 .page {
     display: flex;
     flex-direction: column;
@@ -118,8 +121,33 @@
 .tree-proficiency-unknown {
     background-color: grey
 }
-.tree-footer {
+.tree-footer-row {
     display: flex;
     flex-direction: row;
-
+    justify-content: space-between;
+}
+.tree-proficiency-timeTilReview {
+    display: flex;
+    justify-content: center;
+}
+.tree {
+    padding: 4px;
+    width: 300px;
+}
+.tree-edit-button {
+    cursor: pointer;
+}
+.tree-delete-button {
+    cursor: pointer;
+}
+.tree-current-fact-question {
+    padding-bottom: 4px;
+}
+.tree-current-fact-answer {
+    padding-left: 4px;
+}
+.divider-horizontal {
+    border-top: 2px dotted #fff;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }

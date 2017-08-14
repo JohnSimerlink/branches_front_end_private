@@ -6,6 +6,7 @@ import timers from './timers'
 import PubSub from 'pubsub-js'
 import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
+import {secondsToPretty} from "../../core/filters"
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
@@ -67,6 +68,9 @@ export default {
             const styles = {}
             styles['background-color'] = proficiencyToColor(this.content.proficiency)
             return styles
+        },
+        timerMouseOverMessage(){
+            return "You have spent " + secondsToPretty(this.content.timer) + "studying this item"
         }
     },
     methods: {
