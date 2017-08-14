@@ -1,4 +1,5 @@
 import {Trees} from '../../objects/trees'
+import {proficiencyToColor} from "../treesGraph"
 import {Fact} from '../../objects/fact'
 import ContentItem from '../../objects/contentItem'
 import timers from './timers'
@@ -7,33 +8,46 @@ import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
-    props: ['movie', 'id'],
+    props: ['id'],
     created () {
-        var self = this;
+        var me = this;
 
         this.editing = false
         this.tree = {} // init to empty object until promises resolve, so vue does not complain
         this.fact = {}
         this.content = {}
         Trees.get(this.id).then(tree => {
-            self.tree = tree
+            me.tree = tree
             ContentItem.get(tree.contentId).then(content => {
-                self.content = content
-                self.startTimer()
+                me.content = content
+                console.log('this.content in tree.js is ', me.content)
+                me.startTimer()
             })
 
         })
-        // Trees.get(this.id).then( (tree) => {
-        //     self.tree = tree
-        //     Facts.get(tree.factId).then((fact) =>{
-        //         self.fact = fact
-        //         this.startTimer()
-        //     })
-        // })
-        PubSub.subscribe('canvas.clicked', () => {
-            // console.log('canvas clicked!')
-            self.saveTimer()
+        //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
+        PubSub.subscribe('canvas.closeTooltip',function () {
+            console.log('canvas.closeTooltip subscribe called')
+            //get reference to content, because by the time
+            const content = me.content
+            content.saveTimer()
         })
+    },
+    beforeDestroy(){
+        console.log('before destroy called')
+        this.saveTimer()
+    },
+    destroy(){
+        console.log('destroy called')
+        this.saveTimer()
+    },
+    activated() {
+       console.log('activated called')
+    },
+    deactivated(){
+
+        console.log('deactivated called')
+        this.saveTimer()
     },
     data () {
         return {
@@ -48,16 +62,24 @@ export default {
         },
         typeIsFact() {
             return this.tree.contentType == 'fact'
+        },
+        styleObject(){
+            const styles = {}
+            styles['background-color'] = proficiencyToColor(this.content.proficiency)
+            return styles
         }
     },
     methods: {
         //user methods
         startTimer() {
-            console.log()
+            console.log('this.startTimer called')
             this.content.startTimer()
+            console.log('this.startTimer called FINISHED')
         },
         saveTimer() {
-            this.content.saveTimer()
+            console.log('this.content.saveTimer in tree controller save timer is', this, this.content, this.content.saveTimer)
+            var me = this
+            me.content.saveTimer()
         },
         toggleEditing() {
             this.editing = !this.editing

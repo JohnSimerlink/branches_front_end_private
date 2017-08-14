@@ -101,5 +101,25 @@
     flex-direction: row;
     justify-content: space-between;
 }
+.tree-proficiency-values-one {
+    background-color: red
+}
 
+.tree-proficiency-values-two {
+    background-color: yellow
+}
 
+.tree-proficiency-values-three {
+    background-color: green
+}
+.tree-proficiency-values-four {
+    background-color: blue
+}
+.tree-proficiency-unknown {
+    background-color: grey
+}
+.tree-footer {
+    display: flex;
+    flex-direction: row;
+
+}
