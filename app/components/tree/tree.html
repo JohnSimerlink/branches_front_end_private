@@ -1,11 +1,11 @@
 <div class="tree" v-bind:style="styleObject">
     <div class="tree-fact" v-if="typeIsFact">
-        <div class="tree-current-fact" v-if="!editing">
+        <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-fact-question">{{content.question}}</div>
             <div class="tree-current-fact-answer">{{content.answer}}</div>
         </div>
-        <div class="tree-new-fact" v-if="editing">
+        <div class="tree-new-fact" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
             <input class="tree-new-fact-question" v-model="content.question">
             <textarea class="tree-new-fact-answer" v-model="content.answer"></textarea>
@@ -13,11 +13,11 @@
         </div>
     </div>
     <div class="tree-heading" v-if="typeIsHeading">
-        <div class="tree-current-fact" v-if="!editing">
+        <div class="tree-current-fact" v-showk="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-heading">{{content.title}}</div>
         </div>
-        <div class="tree-new-fact" v-if="editing">
+        <div class="tree-new-fact" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
             <textarea class="tree-new-heading" v-model="content.title"></textarea>
             <button class="heading-new-save" v-on:click="changeContent">Save</button>
@@ -44,5 +44,5 @@
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
     </div>
-    <newtree :parentid='id' v-if="addingChild"></newtree>
+    <newtree :parentid='id' v-show="addingChild"></newtree>
 </div>
