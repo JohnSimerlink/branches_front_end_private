@@ -99,7 +99,7 @@ html, .tree, button {
     border-right-color: rgb(249, 247, 237);
     border-left-width: 0;
 }
-#header {
+.header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -125,6 +125,7 @@ html, .tree, button {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 .tree-proficiency-timeTilReview {
     display: flex;
@@ -132,7 +133,8 @@ html, .tree, button {
 }
 .tree {
     padding: 4px;
-    width: 300px;
+    width: 320px;
+    border-radius: 3px;
 }
 .tree-edit-button {
     cursor: pointer;
@@ -142,6 +144,10 @@ html, .tree, button {
 }
 .tree-current-fact-question {
     padding-bottom: 4px;
+}
+.tree-new-fact {
+    display: flex;
+    flex-direction: column;
 }
 .tree-current-fact-answer {
     padding-left: 4px;
