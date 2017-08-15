@@ -294,9 +294,9 @@ function updateTreePosition(e){
 //returns sigma tree node
 export function addTreeToGraph(parentTreeId, content) {
     //1. delete current addNewNode button
-    var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
-    var newChildTreeX = parseInt(currentNewChildTree.x);
-    var newChildTreeY = parseInt(currentNewChildTree.y);
+    var parentTree = s.graph.nodes(parentTreeId);
+    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
     var tree = new Tree(content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY)
     //2. add new node to parent tree on UI
     const newTree = {
@@ -315,7 +315,6 @@ export function addTreeToGraph(parentTreeId, content) {
     }
     //2b. update x and y location in the db for the tree
 
-    s.graph.dropNode(currentNewChildTree.id)
     s.graph.addNode(newTree);
     //3. add edge between new node and parent tree
     const newEdge = {
