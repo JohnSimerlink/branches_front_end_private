@@ -139,14 +139,12 @@ function onGetTree(tree) {
 function addTreeNodeToGraph(tree,content){
     const treeUINode = createTreeNodeFromTreeAndContent(tree,content)
     g.nodes.push(treeUINode);
-    addNewChildTreeToTree(treeUINode)
     connectTreeToParent(tree,g)
     return content.id
 }
 
 export function removeTreeFromGraph(treeId){
     s.graph.dropNode(treeId)
-    s.graph.dropNode(treeId + newChildTreeSuffix)
     return Trees.get(treeId).then(tree => {
         var childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
         return Promise.all(childPromises).then(val => {
@@ -215,40 +213,6 @@ function connectTreeToParent(tree, g){
     }
 }
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
-
-function addNewChildTreeToTree(tree){
-    if (tree.children) {
-    }
-    const newChildTree = {
-        id: tree.id + newChildTreeSuffix, //"_newChildTree",
-        parentId: tree.id,
-        x: parseInt(tree.x) + newNodeXOffset + 100,
-        y: parseInt(tree.y) + newNodeYOffset,
-        size: 2,
-        color: Globals.newColor,
-        tooltipType: 'newChildTree',
-        type: 'cross',
-        cross: {
-            lineWeight: 2
-        }
-
-    }
-    const shadowEdge = {
-        id: createEdgeId(tree.id, newChildTree.id),
-        source: tree.id,
-        target: newChildTree.id,
-        size: 2,
-        color: Globals.newColor
-    };
-    if (!initialized) {
-        g.nodes.push(newChildTree)
-        g.edges.push(shadowEdge)
-    } else {
-        s.graph.addNode(newChildTree)
-        s.graph.addEdge(shadowEdge)
-        s.refresh()
-    }
-}
 function initSigma(){
     if (initialized) return
 
@@ -362,11 +326,6 @@ export function addTreeToGraph(parentTreeId, content) {
         color: Globals.existingColor
     }
     s.graph.addEdge(newEdge)
-    //4. add shadow node
-    addNewChildTreeToTree(newTree)
-    //5. Re add shadow node to parent
-    Trees.get(parentTreeId)
-        .then(addNewChildTreeToTree);
 
     s.refresh();
     return newTree;
