@@ -59,7 +59,6 @@
 <script src="other_imports/sigma/misc/sigma.misc.bindEvents.js"></script>
 <script src="other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"></script>
 <script src="other_imports/sigma/misc/sigma.misc.drawHovers.js"></script>
-<script src="other_imports/sigma/layout/sigma.layout.nooverlap.js"></script>
 
 <!-- END SIGMA IMPORTS -->
 <script src="other_imports/sigma/plugins/dragNode.js"></script>
@@ -69,13 +68,15 @@
 <!--<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>-->
 <script src="other_imports/sigma/plugins/sigma.plugins.select.js"></script>
 
-<script src="other_imports/sigma/renderers/sigma.renderers.halo/settings.js"></script>
+<script src="other_imports/sigma/canvas/sigma.renderers.halo/settings.js"></script>
 <script src="other_imports/sigma/renderers/sigma.renderers.halo/sigma.renderers.halo.js"></script>
 
+<script src="other_imports/sigma/renderers/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.cross.js"></script>
 
 <script src="other_imports/sigma/renderers/sigma.renderers.glyphs/settings.js"></script>
 <script src="other_imports/sigma/renderers/sigma.renderers.glyphs/sigma.renderers.glyphs.js"></script>
 
+<script src="other_imports/sigma/plugins/sigma.canvas.nodes.cross.js"></script>
 
 
 
@@ -95,6 +96,30 @@
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=257685958060788";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+<script>
+    var explorer = false
+
+if (/MSIE 10/i.test(navigator.userAgent)) {
+   // This is internet explorer 10
+    explorer = true
+}
+
+if (/MSIE 9/i.test(navigator.userAgent) || /rv:11.0/i.test(navigator.userAgent)) {
+    // This is internet explorer 9 or 11
+    explorer = true
+}
+
+if (/Edge\/\d./i.test(navigator.userAgent)){
+   // This is Microsoft Edge
+    explorer = true
+}
+if (explorer) {
+    alert ("Internet Explorer / Edge not supported! Use Chrome or Firefox. Things you wont' be able to do in IE/Edge: 1) Editing facts is harder, because you cant resize the textarea box. 2) Other stuff")
+}
+
+
+
+</script>
 <!-- END FB Login -->
     <div class='page'>
         <div id="branches-app">

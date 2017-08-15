@@ -7,6 +7,53 @@ import PubSub from 'pubsub-js'
 import Vue from 'vue'
 import user from '../objects/user'
 var initialized = false;
+
+sigma.settings.font = 'Fredoka One'
+// declare new node shapes
+sigma.canvas.labels.rectangle = function(node, context, settings) {
+    // declarations
+    var prefix = settings('prefix') || '';
+    var size = node[prefix + 'size'];
+    var nodeX = node[prefix + 'x'];
+    var nodeY = node[prefix + 'y'];
+    var textWidth;
+    // define settings
+    context.fillStyle = node.textColor;
+    context.lineWidth = size * 0.5;
+    context.font = '400 ' + size + 'px AvenirNext';
+    context.textAlign = 'center';
+    context.fillText(node.label, nodeX, nodeY + size * 0.375);
+    // measure text width
+    textWidth = context.measureText(node.label).width
+    node.labelWidth = textWidth; // important for clicks
+};
+sigma.canvas.nodes.rectangle = function(node, context, settings) {
+    // declarations
+    var prefix = settings('prefix') || '';
+    var size = node[prefix + 'size'];
+    var nodeX = node[prefix + 'x'];
+    var nodeY = node[prefix + 'y'];
+    var textWidth;
+    // define settings
+    context.fillStyle = node.fillColor;
+    context.strokeStyle = node.color || settings('defaultNodeColor');
+    context.lineWidth = size * 0.1;
+    context.font = '400 ' + size + 'px AvenirNext';
+    // measure text width
+    textWidth = context.measureText(node.label).width;
+    // draw path
+    context.beginPath();
+    context.rect(
+        nodeX - (textWidth * 1.2) * 0.5,
+        nodeY - size * 1.2 * 0.5,
+        textWidth * 1.2,
+        size * 1.2
+    );
+    context.closePath();
+    context.fill();
+    context.stroke();
+};
+
 var s,
     g = {
         nodes: [],
@@ -54,7 +101,7 @@ var toolTipsConfig = {
             template: '',
             renderer: function(node, template) {
                 var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
-                switch(node.type){
+                switch(node.tooltipType){
                     case 'tree':
                             template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                         break;
@@ -121,10 +168,10 @@ function createTreeNodeFromTreeAndContent(tree, content){
         children: tree.children,
         content: content,
         label: getLabelFromContent(content),
-        size: 1,
+        size: 2,
         color: getTreeColor(tree),
-        type: 'tree',
-        glyphs
+        tooltipType: 'tree',
+        // glyphs
     };
     return node;
 }
@@ -145,7 +192,7 @@ export function proficiencyToColor(proficiency){
     return Globals.colors.proficiency_1;
 }
 function getLabelFromContent(content) {
-    switch (content.type){
+    switch (content.tooltipType){
         case "fact":
             return content.question
         case "heading":
@@ -161,7 +208,7 @@ function connectTreeToParent(tree, g){
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 1,
+            size: 2,
             color: Globals.colors.proficiency_unknown
         };
         g.edges.push(edge);
@@ -177,16 +224,20 @@ function addNewChildTreeToTree(tree){
         parentId: tree.id,
         x: parseInt(tree.x) + newNodeXOffset + 100,
         y: parseInt(tree.y) + newNodeYOffset,
-        label: '+',
-        size: 1,
+        size: 2,
         color: Globals.newColor,
-        type: 'newChildTree'
+        tooltipType: 'newChildTree',
+        type: 'cross',
+        cross: {
+            lineWeight: 2
+        }
+
     }
     const shadowEdge = {
         id: createEdgeId(tree.id, newChildTree.id),
         source: tree.id,
         target: newChildTree.id,
-        size: 1,
+        size: 2,
         color: Globals.newColor
     };
     if (!initialized) {
@@ -261,7 +312,7 @@ function updateTreePosition(e){
     let newY = e.data.node.y
     let treeId = e.data.node.id;
 
-    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
+    if (!s.graph.nodes().find(node => node.id == treeId && node.tooltipType === 'tree')){
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
     const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20
@@ -293,10 +344,10 @@ export function addTreeToGraph(parentTreeId, content) {
         y: newChildTreeY,
         children: {},
         label: getLabelFromContent(content),
-        size: 1,
+        size: 2,
         color: Globals.existingColor,
-        type: 'tree',
-        glyphs,
+        tooltipType: 'tree',
+        // glyphs,
     }
     //2b. update x and y location in the db for the tree
 
@@ -307,7 +358,7 @@ export function addTreeToGraph(parentTreeId, content) {
         id: parentTreeId + "__" + newTree.id,
         source: parentTreeId,
         target: newTree.id,
-        size: 1,
+        size: 2,
         color: Globals.existingColor
     }
     s.graph.addEdge(newEdge)
