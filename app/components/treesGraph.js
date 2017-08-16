@@ -217,6 +217,16 @@ function hoverOverNode(e){
         )
     },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
 }
+export function syncGraphWithNode(treeId){
+    Trees.get(treeId).then(tree => {
+        var sigmaNode = s.graph.nodes(treeId)
+        console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
+        sigmaNode.x = tree.x
+        sigmaNode.y = tree.y
+        console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
+        s.refresh()
+    })
+}
 function updateTreePosition(e){
     let newX = e.data.node.x
     let newY = e.data.node.y
@@ -227,15 +237,18 @@ function updateTreePosition(e){
     }
     const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20
     Trees.get(treeId).then( tree => {
-        if (Math.abs(tree.x - newX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
-            tree.set('x', newX)
+        let deltaX = newX - tree.x
+        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
+            tree.addToX({recursion: true, deltaX})
         }
-        if (Math.abs(tree.y - newY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
-            tree.set('y', newY)
+        let deltaY = newY - tree.y
+        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
+            tree.addToY({recursion: true, deltaY})
         }
         return tree
     })
 }
+
 
 //returns sigma tree node
 export function addTreeToGraph(parentTreeId, content) {

@@ -39,7 +39,7 @@
             <div class="tree-edit-button" v-on:click="toggleEditing">
                 <i :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}" aria-hidden="true"></i>
             </div>
-            <div class="tree-add-child-button" v-on:mouseover="toggleAddChild" v-on:click="toggleAddChild">
+            <div class="tree-add-child-button" v-on:click="toggleAddChild">
                 <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" >{{content.timer | secondsToPretty}} </div>

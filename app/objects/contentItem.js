@@ -78,23 +78,18 @@ export default class ContentItem {
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
     startTimer() {
-        console.log("contentItem.js startTimer called")
         var self = this
 
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                console.log('timer',self.timerId,' was', self.timer)
                 self.timer  = self.timer || 0
                 self.timer++ // = fact.timer || 0
-                console.log('timer',self.timerId,' is now', self.timer)
             }, 1000)
         }
 
     }
     saveTimer(){
-        console.log('content Item save timer called')
         this.userTimeMap[user.getId()] = this.timer
-        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap
@@ -106,7 +101,6 @@ export default class ContentItem {
     }
     addToStudyQueue() { //don't display nextReviewTime if not in user's study queue
         this.studiers[user.getId()] = true
-        console.log('settimer for user just called on this now,', this)
 
         var updates = {
             studiers: this.studiers
