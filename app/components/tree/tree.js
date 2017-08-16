@@ -78,12 +78,9 @@ export default {
     methods: {
         //user methods
         startTimer() {
-            console.log('this.startTimer called')
             this.content.startTimer()
-            console.log('this.startTimer called FINISHED')
         },
         saveTimer() {
-            console.log('this.content.saveTimer in tree controller save timer is', this, this.content, this.content.saveTimer)
             var me = this
             me.content.saveTimer()
         },
