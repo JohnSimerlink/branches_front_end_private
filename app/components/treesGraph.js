@@ -7,53 +7,6 @@ import PubSub from 'pubsub-js'
 import Vue from 'vue'
 import user from '../objects/user'
 var initialized = false;
-
-sigma.settings.font = 'Fredoka One'
-// declare new node shapes
-sigma.canvas.labels.rectangle = function(node, context, settings) {
-    // declarations
-    var prefix = settings('prefix') || '';
-    var size = node[prefix + 'size'];
-    var nodeX = node[prefix + 'x'];
-    var nodeY = node[prefix + 'y'];
-    var textWidth;
-    // define settings
-    context.fillStyle = node.textColor;
-    context.lineWidth = size * 0.5;
-    context.font = '400 ' + size + 'px AvenirNext';
-    context.textAlign = 'center';
-    context.fillText(node.label, nodeX, nodeY + size * 0.375);
-    // measure text width
-    textWidth = context.measureText(node.label).width
-    node.labelWidth = textWidth; // important for clicks
-};
-sigma.canvas.nodes.rectangle = function(node, context, settings) {
-    // declarations
-    var prefix = settings('prefix') || '';
-    var size = node[prefix + 'size'];
-    var nodeX = node[prefix + 'x'];
-    var nodeY = node[prefix + 'y'];
-    var textWidth;
-    // define settings
-    context.fillStyle = node.fillColor;
-    context.strokeStyle = node.color || settings('defaultNodeColor');
-    context.lineWidth = size * 0.1;
-    context.font = '400 ' + size + 'px AvenirNext';
-    // measure text width
-    textWidth = context.measureText(node.label).width;
-    // draw path
-    context.beginPath();
-    context.rect(
-        nodeX - (textWidth * 1.2) * 0.5,
-        nodeY - size * 1.2 * 0.5,
-        textWidth * 1.2,
-        size * 1.2
-    );
-    context.closePath();
-    context.fill();
-    context.stroke();
-};
-
 var s,
     g = {
         nodes: [],
@@ -75,19 +28,12 @@ var s,
         "\uF130",
         "\uF131",
         "\uF132"
-    ],
-    glyphs = [
-        {
-            position: positions[0],
-            content: icons[Math.floor(Math.random() * icons.length)],
-            fillColor: '#35ac19',
-            hidden: false
-        }
     ]
 
 
 window.g = g
 window.s = s;
+sigma.settings.font = 'Fredoka One'
 
 var newNodeXOffset = -500,
     newNodeYOffset = 20,
@@ -101,7 +47,7 @@ var toolTipsConfig = {
             template: '',
             renderer: function(node, template) {
                 var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
-                switch(node.tooltipType){
+                switch(node.type){
                     case 'tree':
                             template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                         break;
@@ -166,10 +112,9 @@ function createTreeNodeFromTreeAndContent(tree, content){
         children: tree.children,
         content: content,
         label: getLabelFromContent(content),
-        size: 2,
+        size: 1,
         color: getTreeColor(tree),
-        tooltipType: 'tree',
-        // glyphs
+        type: 'tree',
     };
     return node;
 }
@@ -190,7 +135,7 @@ export function proficiencyToColor(proficiency){
     return Globals.colors.proficiency_1;
 }
 function getLabelFromContent(content) {
-    switch (content.tooltipType){
+    switch (content.type){
         case "fact":
             return content.question
         case "heading":
@@ -206,13 +151,14 @@ function connectTreeToParent(tree, g){
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 2,
+            size: 1,
             color: Globals.colors.proficiency_unknown
         };
         g.edges.push(edge);
     }
 }
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
 function initSigma(){
     if (initialized) return
 
@@ -276,7 +222,7 @@ function updateTreePosition(e){
     let newY = e.data.node.y
     let treeId = e.data.node.id;
 
-    if (!s.graph.nodes().find(node => node.id == treeId && node.tooltipType === 'tree')){
+    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
     const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20
@@ -308,10 +254,9 @@ export function addTreeToGraph(parentTreeId, content) {
         y: newChildTreeY,
         children: {},
         label: getLabelFromContent(content),
-        size: 2,
+        size: 1,
         color: Globals.existingColor,
-        tooltipType: 'tree',
-        // glyphs,
+        type: 'tree',
     }
     //2b. update x and y location in the db for the tree
 
@@ -321,7 +266,7 @@ export function addTreeToGraph(parentTreeId, content) {
         id: parentTreeId + "__" + newTree.id,
         source: parentTreeId,
         target: newTree.id,
-        size: 2,
+        size: 1,
         color: Globals.existingColor
     }
     s.graph.addEdge(newEdge)
@@ -339,11 +284,6 @@ function initSigmaPlugins() {
 
     var myRenderer = s.renderers[0];
 
-    myRenderer.glyphs();
-
-    myRenderer.bind('render', function(e) {
-        myRenderer.glyphs();
-    });
     console.log('my renderenr is', myRenderer, s.renderers)
 }
 

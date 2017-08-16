@@ -102,7 +102,8 @@ html, .tree, button {
 .header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
+    align-items:center;
 }
 .tree-proficiency-values-one {
     background-color: red
@@ -125,7 +126,6 @@ html, .tree, button {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
 }
 .tree-proficiency-timeTilReview {
     display: flex;
@@ -134,7 +134,7 @@ html, .tree, button {
 .tree {
     padding: 4px;
     width: 320px;
-    border-radius: 3px;
+    border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
 }
 .tree-edit-button {
     cursor: pointer;
@@ -144,6 +144,10 @@ html, .tree, button {
 }
 .tree-current-fact-question {
     padding-bottom: 4px;
+}
+.header-photo {
+    width: 25px;
+    height: 25px;
 }
 .tree-new-fact {
     display: flex;
