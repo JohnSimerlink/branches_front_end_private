@@ -15310,64 +15310,17 @@ Vue$3.compile = compileToFunctions;
 
 
 var initialized = false;
-
-sigma.settings.font = 'Fredoka One';
-// declare new node shapes
-sigma.canvas.labels.rectangle = function (node, context, settings) {
-    // declarations
-    var prefix = settings('prefix') || '';
-    var size = node[prefix + 'size'];
-    var nodeX = node[prefix + 'x'];
-    var nodeY = node[prefix + 'y'];
-    var textWidth;
-    // define settings
-    context.fillStyle = node.textColor;
-    context.lineWidth = size * 0.5;
-    context.font = '400 ' + size + 'px AvenirNext';
-    context.textAlign = 'center';
-    context.fillText(node.label, nodeX, nodeY + size * 0.375);
-    // measure text width
-    textWidth = context.measureText(node.label).width;
-    node.labelWidth = textWidth; // important for clicks
-};
-sigma.canvas.nodes.rectangle = function (node, context, settings) {
-    // declarations
-    var prefix = settings('prefix') || '';
-    var size = node[prefix + 'size'];
-    var nodeX = node[prefix + 'x'];
-    var nodeY = node[prefix + 'y'];
-    var textWidth;
-    // define settings
-    context.fillStyle = node.fillColor;
-    context.strokeStyle = node.color || settings('defaultNodeColor');
-    context.lineWidth = size * 0.1;
-    context.font = '400 ' + size + 'px AvenirNext';
-    // measure text width
-    textWidth = context.measureText(node.label).width;
-    // draw path
-    context.beginPath();
-    context.rect(nodeX - textWidth * 1.2 * 0.5, nodeY - size * 1.2 * 0.5, textWidth * 1.2, size * 1.2);
-    context.closePath();
-    context.fill();
-    context.stroke();
-};
-
 var s,
     g = {
     nodes: [],
     edges: []
 },
     positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
-    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"],
-    glyphs = [{
-    position: positions[0],
-    content: icons[Math.floor(Math.random() * icons.length)],
-    fillColor: '#35ac19',
-    hidden: false
-}];
+    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
 
 window.g = g;
 window.s = s;
+sigma.settings.font = 'Fredoka One';
 
 var newNodeXOffset = -500,
     newNodeYOffset = 20,
@@ -15380,7 +15333,7 @@ var toolTipsConfig = {
         template: '',
         renderer: function (node, template) {
             var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
-            switch (node.tooltipType) {
+            switch (node.type) {
                 case 'tree':
                     template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                     break;
@@ -15445,10 +15398,9 @@ function createTreeNodeFromTreeAndContent(tree, content) {
         children: tree.children,
         content: content,
         label: getLabelFromContent(content),
-        size: 2,
+        size: 1,
         color: getTreeColor(tree),
-        tooltipType: 'tree'
-        // glyphs
+        type: 'tree'
     };
     return node;
 }
@@ -15469,7 +15421,7 @@ function proficiencyToColor(proficiency) {
     return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
 }
 function getLabelFromContent(content) {
-    switch (content.tooltipType) {
+    switch (content.type) {
         case "fact":
             return content.question;
         case "heading":
@@ -15485,13 +15437,14 @@ function connectTreeToParent(tree, g) {
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 2,
+            size: 1,
             color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown
         };
         g.edges.push(edge);
     }
 }
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
 function initSigma() {
     if (initialized) return;
 
@@ -15555,7 +15508,7 @@ function updateTreePosition(e) {
     let newY = e.data.node.y;
     let treeId = e.data.node.id;
 
-    if (!s.graph.nodes().find(node => node.id == treeId && node.tooltipType === 'tree')) {
+    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
     const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20;
@@ -15587,11 +15540,9 @@ function addTreeToGraph(parentTreeId, content) {
         y: newChildTreeY,
         children: {},
         label: getLabelFromContent(content),
-        size: 2,
+        size: 1,
         color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
-        tooltipType: 'tree'
-        // glyphs,
-
+        type: 'tree'
         //2b. update x and y location in the db for the tree
 
     };s.graph.addNode(newTree);
@@ -15600,7 +15551,7 @@ function addTreeToGraph(parentTreeId, content) {
         id: parentTreeId + "__" + newTree.id,
         source: parentTreeId,
         target: newTree.id,
-        size: 2,
+        size: 1,
         color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
     };
     s.graph.addEdge(newEdge);
@@ -15617,11 +15568,6 @@ function initSigmaPlugins() {
 
     var myRenderer = s.renderers[0];
 
-    myRenderer.glyphs();
-
-    myRenderer.bind('render', function (e) {
-        myRenderer.glyphs();
-    });
     console.log('my renderenr is', myRenderer, s.renderers);
 }
 
@@ -30543,8 +30489,10 @@ module.exports = {
             self.loggedIn = true;
             self.user = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */];
             self.username = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.displayName;
+            self.photoURL = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.photoURL;
+            console.log('user fbdata is', __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData
             //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
-            __WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
+            );__WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
                 self.items = user.items;
                 self.user = user;
             });
@@ -30556,6 +30504,7 @@ module.exports = {
             user: this.user,
             loggedIn: this.loggedIn,
             username: this.username,
+            photoURL: this.photoURL,
             items: this.items
         };
     },
@@ -30896,6 +30845,9 @@ function getProficiencyCategory(proficiency) {
         },
         setProficiencyToFour() {
             this.content.setProficiency(100);
+        },
+        toggleAddChild() {
+            this.addingChild = !this.addingChild;
         },
         //global methods
         changeContent() {
@@ -36020,7 +35972,7 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 /* 206 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"header-container\">\r\n        <button class=\"header login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n        <span class='header' v-if=\"loggedIn\">\r\n            <span class=\"header-left\">\r\n                <!--<span class=\"header-version\"> Version: {{version}}</span>-->\r\n                <!--<span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>-->\r\n                <!--<span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>-->\r\n                <!--<span class=\"header-github\"><a href=\"https://github.com/branchesorg/branches_front_end\">Github</a></span>-->\r\n                <!--<span class=\"header-todolist\"><a href=\"https://trello.com/b/lEER4Uqu\">Future Features</a></span>-->\r\n                <span class=\"login-user-name\" v-if=\"loggedIn\">{{username}}</span>\r\n            </span>\r\n            <span class=\"header-right\">\r\n                <span class=\"header-numItemsStudied\"> {{numItemsStudied}} Items Studied | </span>\r\n                <span class=\"header-numItemsMastered\"> {{numItemsMastered}} Items Mastered |</span>\r\n                <span class=\"header-timeSpent\"> {{secondsSpentStudying | secondsToPretty}} Spent Learning</span>\r\n                <!--<span class=\"header-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n            </span>\r\n        </span>\r\n</div>\r\n";
+module.exports = "<div id=\"header-container\">\r\n    <button class=\"header login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='header' v-if=\"loggedIn\">\r\n        <span class=\"header-right\">\r\n            <span class=\"header-numItemsStudied\" title=\"Items studied\">\r\n                {{numItemsStudied}}\r\n                <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n            </span>\r\n            <span class=\"header-numItemsMastered\" title=\"Items mastered\">\r\n                {{numItemsMastered}}\r\n                <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n            </span>\r\n            <span class=\"header-timeSpent\">\r\n                <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n                =\r\n                {{secondsSpentStudying | secondsToPretty}}\r\n            </span>\r\n            <img class='header-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n            <!--<span class=\"header-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n        </span>\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 207 */
@@ -36050,7 +36002,7 @@ module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-la
 /* 211 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\">\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-showk=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:mouseover=\"toggleEditing\" v-on:click=\"toggleEditing\"><i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i></div>\r\n            <div class=\"tree-add-child-button\" v-on:mouseover=\"toggleAddChild\" v-on:click=\"toggleAddChild\"><i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i></div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <newtree :parentid='id' v-show=\"addingChild\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\">\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:mouseover=\"toggleAddChild\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 212 */
