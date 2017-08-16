@@ -1,19 +1,22 @@
 <div id="header-container">
-        <button class="header login-button"  v-on:click="login" v-if="!loggedIn"> Login via Facebook </button>
-        <span class='header' v-if="loggedIn">
-            <span class="header-left">
-                <!--<span class="header-version"> Version: {{version}}</span>-->
-                <!--<span class="header-plan"><a href="https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing">The Plan</a></span>-->
-                <!--<span class="header-hire"><a href="mailto:john@branches-app.com">Work for Branches</a></span>-->
-                <!--<span class="header-github"><a href="https://github.com/branchesorg/branches_front_end">Github</a></span>-->
-                <!--<span class="header-todolist"><a href="https://trello.com/b/lEER4Uqu">Future Features</a></span>-->
-                <span class="login-user-name" v-if="loggedIn">{{username}}</span>
+    <button class="header login-button"  v-on:click="login" v-if="!loggedIn"> Login via Facebook </button>
+    <span class='header' v-if="loggedIn">
+        <span class="header-right">
+            <span class="header-numItemsStudied" title="Items studied">
+                {{numItemsStudied}}
+                <i class="fa fa-pagelines" aria-hidden="true"></i>
             </span>
-            <span class="header-right">
-                <span class="header-numItemsStudied"> {{numItemsStudied}} Items Studied | </span>
-                <span class="header-numItemsMastered"> {{numItemsMastered}} Items Mastered |</span>
-                <span class="header-timeSpent"> {{secondsSpentStudying | secondsToPretty}} Spent Learning</span>
-                <!--<span class="header-itemsMasteredPerMinute"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->
+            <span class="header-numItemsMastered" title="Items mastered">
+                {{numItemsMastered}}
+                <i class="fa fa-tree" aria-hidden="true"></i>
             </span>
+            <span class="header-timeSpent">
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                =
+                {{secondsSpentStudying | secondsToPretty}}
+            </span>
+            <img class='header-photo' :src="photoURL" v-if="loggedIn">
+            <!--<span class="header-itemsMasteredPerMinute"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->
         </span>
+    </span>
 </div>

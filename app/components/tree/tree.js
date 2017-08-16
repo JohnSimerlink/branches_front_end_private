@@ -105,6 +105,9 @@ export default {
         setProficiencyToFour() {
             this.content.setProficiency(100)
         },
+        toggleAddChild(){
+            this.addingChild = !this.addingChild
+        },
         //global methods
         changeContent() {
             switch (this.tree.contentType){
