@@ -131,9 +131,13 @@ export class Tree {
         })
     }
     addToY({recursion,deltaY}={recursion:false, deltaY: 0}){
-        this.set('y', this.y + deltaY)
+        var newY = this.y + deltaY
+        this.set('y', newY)
+
+        syncGraphWithNode(this.id)
         if (!recursion) return
 
+        console.log('addToY called on', this, ...arguments)
         this.children && Object.keys(this.children).forEach(childId => {
             Trees.get(childId).then(child => {
                 child.addToY({recursion: true, deltaY})

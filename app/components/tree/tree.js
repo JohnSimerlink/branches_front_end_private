@@ -18,22 +18,36 @@ export default {
         this.tree = {} // init to empty object until promises resolve, so vue does not complain
         this.fact = {}
         this.content = {}
+        this.nodeBeingDragged = false
         Trees.get(this.id).then(tree => {
             me.tree = tree
             ContentItem.get(tree.contentId).then(content => {
                 me.content = content
-                console.log('this.content in tree.js is ', me.content)
+                // console.log('this.content in tree.js is ', me.content)
                 me.startTimer()
             })
 
         })
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
         PubSub.subscribe('canvas.closeTooltip',function () {
-            console.log('canvas.closeTooltip subscribe called')
+            // console.log('canvas.closeTooltip subscribe called')
             //get reference to content, because by the time
             const content = me.content
             content.saveTimer()
         })
+        //todo replace with vuex
+        PubSub.subscribe('canvas.startDraggingNode', function() {
+            // console.log('tree.js: node being dragged start')
+            me.nodeBeingDragged = true
+            window.draggingNode = true
+            console.log('me.nodeBeingDragged is now' + me.nodeBeingDragged)
+        })
+        PubSub.subscribe('canvas.stopDraggingNode', function() {
+            // console.log('tree.js: node being dragged end')
+            me.nodeBeingDragged = false
+            window.draggingNode = false
+        })
+
     },
     beforeDestroy(){
         console.log('before destroy called')
@@ -57,6 +71,8 @@ export default {
             , content: this.content
             , editing: this.editing
             , addingChild: this.addingChild
+            , nodeBeingDragged: this.nodeBeingDragged
+            , draggingNode: window.draggingNode
         }
     },
     computed : {
@@ -128,7 +144,7 @@ export default {
             this.tree.contentType == 'heading'
         },
         unlinkFromParent(){
-            if (confirm("Warning! Are you sure you would you like to delete this tree?")){
+            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")){
                 this.tree.unlinkFromParent()
             }
             removeTreeFromGraph(this.id)
