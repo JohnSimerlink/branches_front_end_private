@@ -184,8 +184,24 @@ function initSigma(){
         console.log('mousedown')
     })
     s.bind('click', onCanvasClick)
-    s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
+    // s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
+    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
+        console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
+    })
+    PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
+        console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
+        updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
+    })
     s.bind('overNode', hoverOverNode)
+    s.bind('dragEnd', function(){
+        console.log('dragend called!')
+    })
+    s.bind('drop', function(){
+        console.log('drop called!')
+    })
+    s.bind('dragstart', function(){
+        console.log('drag start called!')
+    })
     initialized = true;
     initSigmaPlugins()
 }
@@ -205,7 +221,7 @@ function printNodeInfo(e){
     console.log(e, e.data.node)
 }
 function hoverOverNode(e){
-    console.log('hoverOverNode event called', ...arguments)
+    // console.log('hoverOverNode event called', ...arguments)
     PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
     var node = e.data.node
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
@@ -227,10 +243,12 @@ export function syncGraphWithNode(treeId){
         s.refresh()
     })
 }
-function updateTreePosition(e){
-    let newX = e.data.node.x
-    let newY = e.data.node.y
-    let treeId = e.data.node.id;
+function updateTreePosition(data){
+    let {newX, newY, treeId} = data
+    console.log('update tree position called!', newX, newY, treeId, data)
+    // let newX = e.data.node.x
+    // let newY = e.data.node.y
+    // let treeId = e.data.node.id;
 
     if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
         return; //node isn't an actual node in the db - its like a shadow node or helper node
@@ -288,7 +306,7 @@ export function addTreeToGraph(parentTreeId, content) {
     return newTree;
 }
 function initSigmaPlugins() {
-    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
+    // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
     var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
     // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
     window.tooltips = tooltips;
