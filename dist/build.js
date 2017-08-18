@@ -4872,7 +4872,7 @@ function internalError(message) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pubsub_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_pubsub_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__users__ = __webpack_require__(17);
@@ -5325,6 +5325,363 @@ https://github.com/mroderick/PubSubJS
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["d"] = removeTreeFromGraph;
+/* harmony export (immutable) */ __webpack_exports__["c"] = proficiencyToColor;
+/* harmony export (immutable) */ __webpack_exports__["a"] = syncGraphWithNode;
+/* harmony export (immutable) */ __webpack_exports__["b"] = addTreeToGraph;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_login_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__objects_user__ = __webpack_require__(3);
+
+
+
+
+
+
+
+
+var initialized = false;
+var s,
+    g = {
+    nodes: [],
+    edges: []
+},
+    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
+    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
+
+window.g = g;
+window.s = s;
+sigma.settings.font = 'Fredoka One';
+
+var newNodeXOffset = -500,
+    newNodeYOffset = 20,
+    newChildTreeSuffix = "__newChildTree";
+var toolTipsConfig = {
+    node: [{
+        show: 'rightClickNode',
+        cssClass: 'sigma-tooltip',
+        position: 'right',
+        template: '',
+        renderer: function (node, template) {
+            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
+            switch (node.type) {
+                case 'tree':
+                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                    break;
+                case 'newChildTree':
+                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                    break;
+            }
+            var result = Mustache.render(template, node);
+
+            return result;
+        }
+    }],
+    stage: {
+        template: __webpack_require__(209)
+    }
+};
+loadTreeAndSubTrees(1).then(val => {
+    initSigma();
+});
+function loadTreeAndSubTrees(treeId) {
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.error('trees get err is', err));
+}
+function onGetTree(tree) {
+    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
+        return addTreeNodeToGraph(tree, content);
+    });
+
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : [];
+    var promises = childTreesPromises;
+    promises.push(contentPromise);
+
+    return Promise.all(promises);
+}
+
+function addTreeNodeToGraph(tree, content) {
+    const treeUINode = createTreeNodeFromTreeAndContent(tree, content);
+    g.nodes.push(treeUINode);
+    connectTreeToParent(tree, g);
+    return content.id;
+}
+
+function removeTreeFromGraph(treeId) {
+    s.graph.dropNode(treeId);
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
+        return Promise.all(childPromises).then(val => {
+            s.refresh();
+            return `removed all children of ${treeId}`;
+        });
+    });
+}
+
+//recursively load the entire tree
+// Instantiate sigma:
+function createTreeNodeFromTreeAndContent(tree, content) {
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        content: content,
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(tree),
+        type: 'tree'
+    };
+    return node;
+}
+/**
+ * Get tree colors for descending proficiency levels. Default to "existing node" color
+ * @param tree
+ * @returns {*}
+ */
+function getTreeColor(tree) {
+    let proficiency = tree.userProficiencyMap && tree.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_7__objects_user__["a" /* default */].getId()];
+    if (proficiency >= 0) return proficiencyToColor(proficiency);
+    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown;
+}
+function proficiencyToColor(proficiency) {
+    if (proficiency >= 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_4;
+    if (proficiency >= 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_3;
+    if (proficiency >= 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_2;
+    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
+}
+function getLabelFromContent(content) {
+    switch (content.type) {
+        case "fact":
+            return content.question;
+        case "heading":
+            return content.title;
+    }
+}
+function createEdgeId(nodeOneId, nodeTwoId) {
+    return nodeOneId + "__" + nodeTwoId;
+}
+function connectTreeToParent(tree, g) {
+    if (tree.parentId) {
+        const edge = {
+            id: createEdgeId(tree.parentId, tree.id),
+            source: tree.parentId,
+            target: tree.id,
+            size: 1,
+            color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown
+        };
+        g.edges.push(edge);
+    }
+}
+//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
+function initSigma() {
+    if (initialized) return;
+
+    sigma.renderers.def = sigma.renderers.canvas;
+    s = new sigma({
+        graph: g,
+        container: 'graph-container',
+        glyphScale: 0.7,
+        glyphFillColor: '#666',
+        glyphTextColor: 'white',
+        glyphStrokeColor: 'transparent',
+        glyphFont: 'FontAwesome',
+        glyphFontStyle: 'normal',
+        glyphTextThreshold: 6,
+        glyphThreshold: 3
+
+    });
+    window.s = s;
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    s.refresh();
+
+    s.bind('mousedown', function () {
+        console.log('mousedown');
+    });
+    s.bind('click', onCanvasClick
+    // s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
+    );__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.startDraggingNode', (eventName, node) => {
+        console.log('CANVAS.startDraggingNode subscribe called', eventName, node, node.id, node.x, node.y);
+    });
+    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.stopDraggingNode', (eventName, node) => {
+        console.log("canvas.stopDraggingNode subscribe called", eventName, node, node.id, node.x, node.y);
+        updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
+    });
+    s.bind('overNode', hoverOverNode);
+    s.bind('dragEnd', function () {
+        console.log('dragend called!');
+    });
+    s.bind('drop', function () {
+        console.log('drop called!');
+    });
+    s.bind('dragstart', function () {
+        console.log('drag start called!');
+    });
+    initialized = true;
+    initSigmaPlugins();
+}
+
+function onCanvasClick(e) {
+    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.publish('canvas.clicked', true);
+    console.log(e, e.data.x, e.data.y, e.data.clientX, e.data.clientY
+    // var X=e['data']['node']['renderer1:x'];
+    // var Y=e['data']['node']['renderer1:y'];
+
+    //console.log("X %s, Y %S", X, Y);
+    );
+}
+__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.clicked', function () {
+    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.publish('canvas.closeTooltip');
+});
+function printNodeInfo(e) {
+    console.log(e, e.data.node);
+}
+function hoverOverNode(e) {
+    // console.log('hoverOverNode event called', ...arguments)
+    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.publish('canvas.closeTooltip' // close any existing tooltips, so as to stop their timers from counting
+    );var node = e.data.node;
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function () {
+        var vm = new __WEBPACK_IMPORTED_MODULE_6_vue__["a" /* default */]({
+            el: '#vue'
+        });
+    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+    );
+}
+function syncGraphWithNode(treeId) {
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        var sigmaNode = s.graph.nodes(treeId);
+        console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y);
+        sigmaNode.x = tree.x;
+        sigmaNode.y = tree.y;
+        console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y);
+        s.refresh();
+    });
+}
+function updateTreePosition(data) {
+    let { newX, newY, treeId } = data;
+    console.log('update tree position called!', newX, newY, treeId, data
+    // let newX = e.data.node.x
+    // let newY = e.data.node.y
+    // let treeId = e.data.node.id;
+
+    );if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
+        return; //node isn't an actual node in the db - its like a shadow node or helper node
+    }
+    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20;
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        let deltaX = newX - tree.x;
+        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.addToX({ recursion: true, deltaX });
+        }
+        let deltaY = newY - tree.y;
+        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.addToY({ recursion: true, deltaY });
+        }
+        return tree;
+    });
+}
+
+//returns sigma tree node
+function addTreeToGraph(parentTreeId, content) {
+    //1. delete current addNewNode button
+    var parentTree = s.graph.nodes(parentTreeId);
+    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
+    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY);
+    //2. add new node to parent tree on UI
+    const newTree = {
+        id: tree.id,
+        parentId: parentTreeId,
+        contentId: content.id,
+        content: content,
+        x: newChildTreeX,
+        y: newChildTreeY,
+        children: {},
+        label: getLabelFromContent(content),
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
+        type: 'tree'
+        //2b. update x and y location in the db for the tree
+
+    };s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    const newEdge = {
+        id: parentTreeId + "__" + newTree.id,
+        source: parentTreeId,
+        target: newTree.id,
+        size: 1,
+        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
+    };
+    s.graph.addEdge(newEdge);
+
+    s.refresh();
+    return newTree;
+}
+function initSigmaPlugins() {
+    // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
+    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
+    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
+    window.tooltips = tooltips;
+    window.jump = jumpToAndOpenTreeId;
+
+    var myRenderer = s.renderers[0];
+
+    console.log('my renderenr is', myRenderer, s.renderers);
+}
+
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    let node = s.graph.nodes().find(function (node) {
+        return node.id === treeid;
+    });
+    focusNode(s.cameras[0], node);
+
+    console.log('node about to open is ', node);
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+}
+
+function focusNode(camera, node) {
+    if (!node) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    let cameraCoord = {
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
+        ratio: 0.1
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__ = __webpack_require__(168);
 //import {offlineFacts} from '../static/of'
@@ -5407,23 +5764,18 @@ class ContentItem {
     }
     //TODO : make timer for heading be the sum of the time of all the child facts
     startTimer() {
-        console.log("contentItem.js startTimer called");
         var self = this;
 
         if (!this.timerId) {
             //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                console.log('timer', self.timerId, ' was', self.timer);
                 self.timer = self.timer || 0;
                 self.timer++; // = fact.timer || 0
-                console.log('timer', self.timerId, ' is now', self.timer);
             }, 1000);
         }
     }
     saveTimer() {
-        console.log('content Item save timer called');
         this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
-        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap
@@ -5436,7 +5788,6 @@ class ContentItem {
     addToStudyQueue() {
         //don't display nextReviewTime if not in user's study queue
         this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = true;
-        console.log('settimer for user just called on this now,', this);
 
         var updates = {
             studiers: this.studiers
@@ -5487,7 +5838,7 @@ class ContentItem {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5511,12 +5862,12 @@ window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(9);
 
 
 
@@ -5549,7 +5900,7 @@ class Trees {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5588,7 +5939,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15285,332 +15636,6 @@ Vue$3.compile = compileToFunctions;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(160), __webpack_require__(16)))
 
 /***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = removeTreeFromGraph;
-/* harmony export (immutable) */ __webpack_exports__["b"] = proficiencyToColor;
-/* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_login_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__objects_user__ = __webpack_require__(3);
-
-
-
-
-
-
-
-
-var initialized = false;
-var s,
-    g = {
-    nodes: [],
-    edges: []
-},
-    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
-    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
-
-window.g = g;
-window.s = s;
-sigma.settings.font = 'Fredoka One';
-
-var newNodeXOffset = -500,
-    newNodeYOffset = 20,
-    newChildTreeSuffix = "__newChildTree";
-var toolTipsConfig = {
-    node: [{
-        show: 'rightClickNode',
-        cssClass: 'sigma-tooltip',
-        position: 'right',
-        template: '',
-        renderer: function (node, template) {
-            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
-            switch (node.type) {
-                case 'tree':
-                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                    break;
-                case 'newChildTree':
-                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                    break;
-            }
-            var result = Mustache.render(template, node);
-
-            return result;
-        }
-    }],
-    stage: {
-        template: __webpack_require__(209)
-    }
-};
-loadTreeAndSubTrees(1).then(val => {
-    initSigma();
-});
-function loadTreeAndSubTrees(treeId) {
-    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.error('trees get err is', err));
-}
-function onGetTree(tree) {
-    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
-        return addTreeNodeToGraph(tree, content);
-    });
-
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : [];
-    var promises = childTreesPromises;
-    promises.push(contentPromise);
-
-    return Promise.all(promises);
-}
-
-function addTreeNodeToGraph(tree, content) {
-    const treeUINode = createTreeNodeFromTreeAndContent(tree, content);
-    g.nodes.push(treeUINode);
-    connectTreeToParent(tree, g);
-    return content.id;
-}
-
-function removeTreeFromGraph(treeId) {
-    s.graph.dropNode(treeId);
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
-        return Promise.all(childPromises).then(val => {
-            s.refresh();
-            return `removed all children of ${treeId}`;
-        });
-    });
-}
-
-//recursively load the entire tree
-// Instantiate sigma:
-function createTreeNodeFromTreeAndContent(tree, content) {
-    const node = {
-        id: tree.id,
-        parentId: tree.parentId,
-        x: tree.x,
-        y: tree.y,
-        children: tree.children,
-        content: content,
-        label: getLabelFromContent(content),
-        size: 1,
-        color: getTreeColor(tree),
-        type: 'tree'
-    };
-    return node;
-}
-/**
- * Get tree colors for descending proficiency levels. Default to "existing node" color
- * @param tree
- * @returns {*}
- */
-function getTreeColor(tree) {
-    let proficiency = tree.userProficiencyMap && tree.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_7__objects_user__["a" /* default */].getId()];
-    if (proficiency >= 0) return proficiencyToColor(proficiency);
-    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown;
-}
-function proficiencyToColor(proficiency) {
-    if (proficiency >= 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_4;
-    if (proficiency >= 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_3;
-    if (proficiency >= 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_2;
-    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
-}
-function getLabelFromContent(content) {
-    switch (content.type) {
-        case "fact":
-            return content.question;
-        case "heading":
-            return content.title;
-    }
-}
-function createEdgeId(nodeOneId, nodeTwoId) {
-    return nodeOneId + "__" + nodeTwoId;
-}
-function connectTreeToParent(tree, g) {
-    if (tree.parentId) {
-        const edge = {
-            id: createEdgeId(tree.parentId, tree.id),
-            source: tree.parentId,
-            target: tree.id,
-            size: 1,
-            color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown
-        };
-        g.edges.push(edge);
-    }
-}
-//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
-
-function initSigma() {
-    if (initialized) return;
-
-    sigma.renderers.def = sigma.renderers.canvas;
-    s = new sigma({
-        graph: g,
-        container: 'graph-container',
-        glyphScale: 0.7,
-        glyphFillColor: '#666',
-        glyphTextColor: 'white',
-        glyphStrokeColor: 'transparent',
-        glyphFont: 'FontAwesome',
-        glyphFontStyle: 'normal',
-        glyphTextThreshold: 6,
-        glyphThreshold: 3
-
-    });
-    window.s = s;
-    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-    s.refresh();
-
-    s.bind('mousedown', function () {
-        console.log('mousedown');
-    });
-    s.bind('click', onCanvasClick);
-    s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
-    s.bind('overNode', hoverOverNode);
-    initialized = true;
-    initSigmaPlugins();
-}
-
-function onCanvasClick(e) {
-    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.publish('canvas.clicked', true);
-    console.log(e, e.data.x, e.data.y, e.data.clientX, e.data.clientY
-    // var X=e['data']['node']['renderer1:x'];
-    // var Y=e['data']['node']['renderer1:y'];
-
-    //console.log("X %s, Y %S", X, Y);
-    );
-}
-__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.clicked', function () {
-    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.publish('canvas.closeTooltip');
-});
-function printNodeInfo(e) {
-    console.log(e, e.data.node);
-}
-function hoverOverNode(e) {
-    console.log('hoverOverNode event called', ...arguments);
-    __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.publish('canvas.closeTooltip' // close any existing tooltips, so as to stop their timers from counting
-    );var node = e.data.node;
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-    setTimeout(function () {
-        var vm = new __WEBPACK_IMPORTED_MODULE_6_vue__["a" /* default */]({
-            el: '#vue'
-        });
-    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
-    );
-}
-function updateTreePosition(e) {
-    let newX = e.data.node.x;
-    let newY = e.data.node.y;
-    let treeId = e.data.node.id;
-
-    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
-        return; //node isn't an actual node in the db - its like a shadow node or helper node
-    }
-    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20;
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        if (Math.abs(tree.x - newX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.set('x', newX);
-        }
-        if (Math.abs(tree.y - newY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.set('y', newY);
-        }
-        return tree;
-    });
-}
-
-//returns sigma tree node
-function addTreeToGraph(parentTreeId, content) {
-    //1. delete current addNewNode button
-    var parentTree = s.graph.nodes(parentTreeId);
-    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
-    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
-    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY);
-    //2. add new node to parent tree on UI
-    const newTree = {
-        id: tree.id,
-        parentId: parentTreeId,
-        contentId: content.id,
-        content: content,
-        x: newChildTreeX,
-        y: newChildTreeY,
-        children: {},
-        label: getLabelFromContent(content),
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
-        type: 'tree'
-        //2b. update x and y location in the db for the tree
-
-    };s.graph.addNode(newTree);
-    //3. add edge between new node and parent tree
-    const newEdge = {
-        id: parentTreeId + "__" + newTree.id,
-        source: parentTreeId,
-        target: newTree.id,
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
-    };
-    s.graph.addEdge(newEdge);
-
-    s.refresh();
-    return newTree;
-}
-function initSigmaPlugins() {
-    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
-    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
-    window.tooltips = tooltips;
-    window.jump = jumpToAndOpenTreeId;
-
-    var myRenderer = s.renderers[0];
-
-    console.log('my renderenr is', myRenderer, s.renderers);
-}
-
-/**
- * Go to a given tree ID on the graph, centering the viewport on the tree
- */
-function jumpToAndOpenTreeId(treeid) {
-    //let tree = sigma.nodes[treeid];
-    let node = s.graph.nodes().find(function (node) {
-        return node.id === treeid;
-    });
-    focusNode(s.cameras[0], node);
-
-    console.log('node about to open is ', node);
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-}
-
-function focusNode(camera, node) {
-    if (!node) {
-        console.error("Tried to go to node");
-        console.error(node);
-        return;
-    }
-    let cameraCoord = {
-        x: node['read_cam0:x'],
-        y: node['read_cam0:y'],
-        ratio: 0.1
-    };
-    camera.goTo(cameraCoord);
-    // sigma.misc.animation.camera(
-    //     camera,
-    //     {
-    //         x: node['read_cammain:x'],
-    //         y: node['read_cammain:y'],
-    //         ratio: 0.075
-    //     },
-    //     {
-    //         duration: 150
-    //     }
-    // );
-}
-
-/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15941,7 +15966,7 @@ module.exports = g;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(9);
 
 
 
@@ -17028,7 +17053,7 @@ function makeQueryString(params) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = secondsToPretty;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
 
@@ -17125,8 +17150,8 @@ function login() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(8);
 
 
 
@@ -17166,7 +17191,7 @@ class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */]
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(8);
 
 
 
@@ -17191,9 +17216,9 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contentItem__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contentItem__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fact__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__heading__ = __webpack_require__(30);
 
@@ -17219,7 +17244,7 @@ function newTree(nodeType, parentTreeId, values) {
             break;
     }
 
-    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, newContent);
+    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__["b" /* addTreeToGraph */])(parentTreeId, newContent);
     //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
     //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
     __WEBPACK_IMPORTED_MODULE_1__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
@@ -17235,13 +17260,15 @@ function newTree(nodeType, parentTreeId, values) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_treesGraph__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(176);
 
 
 const treesRef = __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees');
 const trees = {};
+
 
 
 
@@ -17352,6 +17379,34 @@ class Tree {
         // this.treeRef.update(updates)
         __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update(updates);
         this[prop] = val;
+    }
+    addToX({ recursion, deltaX } = { recursion: false, deltaX: 0 }) {
+        var newX = this.x + deltaX;
+        this.set('x', newX);
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__components_treesGraph__["a" /* syncGraphWithNode */])(this.id);
+        if (!recursion) return;
+
+        console.log('addToX called on', this, ...arguments);
+        this.children && Object.keys(this.children).forEach(childId => {
+            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(childId).then(child => {
+                child.addToX({ recursion: true, deltaX });
+            });
+        });
+    }
+    addToY({ recursion, deltaY } = { recursion: false, deltaY: 0 }) {
+        var newY = this.y + deltaY;
+        this.set('y', newY);
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__components_treesGraph__["a" /* syncGraphWithNode */])(this.id);
+        if (!recursion) return;
+
+        console.log('addToY called on', this, ...arguments);
+        this.children && Object.keys(this.children).forEach(childId => {
+            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(childId).then(child => {
+                child.addToY({ recursion: true, deltaY });
+            });
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
@@ -30387,8 +30442,8 @@ process.umask = function() { return 0; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_header_branchesHeader__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_reviewAlgorithm_reviewSchedule__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_tree_tree__ = __webpack_require__(172);
@@ -30412,7 +30467,7 @@ __WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('toolbar', __WEBP
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(10);
 
 
 /***/ }),
@@ -30490,9 +30545,9 @@ module.exports = {
             self.user = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */];
             self.username = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.displayName;
             self.photoURL = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.photoURL;
-            console.log('user fbdata is', __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData
+            // console.log('user fbdata is',user.fbData)
             //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
-            );__WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
+            __WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
                 self.items = user.items;
                 self.user = user;
             });
@@ -30731,10 +30786,10 @@ function getProficiencyCategory(proficiency) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
@@ -30760,20 +30815,33 @@ function getProficiencyCategory(proficiency) {
         this.tree = {}; // init to empty object until promises resolve, so vue does not complain
         this.fact = {};
         this.content = {};
+        this.nodeBeingDragged = false;
         __WEBPACK_IMPORTED_MODULE_0__objects_trees__["a" /* Trees */].get(this.id).then(tree => {
             me.tree = tree;
             __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
                 me.content = content;
-                console.log('this.content in tree.js is ', me.content);
+                // console.log('this.content in tree.js is ', me.content)
                 me.startTimer();
             });
         }
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
         );__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.closeTooltip', function () {
-            console.log('canvas.closeTooltip subscribe called'
+            // console.log('canvas.closeTooltip subscribe called')
             //get reference to content, because by the time
-            );const content = me.content;
+            const content = me.content;
             content.saveTimer();
+        }
+        //todo replace with vuex
+        );__WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.startDraggingNode', function () {
+            // console.log('tree.js: node being dragged start')
+            me.nodeBeingDragged = true;
+            window.draggingNode = true;
+            console.log('me.nodeBeingDragged is now' + me.nodeBeingDragged);
+        });
+        __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('canvas.stopDraggingNode', function () {
+            // console.log('tree.js: node being dragged end')
+            me.nodeBeingDragged = false;
+            window.draggingNode = false;
         });
     },
     beforeDestroy() {
@@ -30797,7 +30865,9 @@ function getProficiencyCategory(proficiency) {
             tree: this.tree,
             content: this.content,
             editing: this.editing,
-            addingChild: this.addingChild
+            addingChild: this.addingChild,
+            nodeBeingDragged: this.nodeBeingDragged,
+            draggingNode: window.draggingNode
         };
     },
     computed: {
@@ -30809,7 +30879,7 @@ function getProficiencyCategory(proficiency) {
         },
         styleObject() {
             const styles = {};
-            styles['background-color'] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["b" /* proficiencyToColor */])(this.content.proficiency);
+            styles['background-color'] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["c" /* proficiencyToColor */])(this.content.proficiency);
             return styles;
         },
         timerMouseOverMessage() {
@@ -30819,12 +30889,9 @@ function getProficiencyCategory(proficiency) {
     methods: {
         //user methods
         startTimer() {
-            console.log('this.startTimer called');
             this.content.startTimer();
-            console.log('this.startTimer called FINISHED');
         },
         saveTimer() {
-            console.log('this.content.saveTimer in tree controller save timer is', this, this.content, this.content.saveTimer);
             var me = this;
             me.content.saveTimer();
         },
@@ -30872,10 +30939,10 @@ function getProficiencyCategory(proficiency) {
             this.tree.contentType == 'heading';
         },
         unlinkFromParent() {
-            if (confirm("Warning! Are you sure you would you like to delete this tree?")) {
+            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")) {
                 this.tree.unlinkFromParent();
             }
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["c" /* removeTreeFromGraph */])(this.id);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["d" /* removeTreeFromGraph */])(this.id);
         }
     }
 });
@@ -30890,7 +30957,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(12);
 
 
 
@@ -31552,7 +31619,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(10);
+var firebase = __webpack_require__(11);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -31855,7 +31922,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(10);
+            var firebase = __webpack_require__(11);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -32109,7 +32176,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(10);
+var _app = __webpack_require__(11);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -32170,7 +32237,7 @@ var _swController = __webpack_require__(184);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(10);
+var _app = __webpack_require__(11);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -33739,7 +33806,7 @@ var _reference = __webpack_require__(44);
 
 var _service = __webpack_require__(203);
 
-var _app = __webpack_require__(10);
+var _app = __webpack_require__(11);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -36002,7 +36069,7 @@ module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-la
 /* 211 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\">\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:mouseover=\"toggleAddChild\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        {{nodeBeingDragged}} {{draggingNode}}\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 212 */
