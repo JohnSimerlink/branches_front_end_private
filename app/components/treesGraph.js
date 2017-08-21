@@ -163,6 +163,7 @@ function initSigma(){
     if (initialized) return
 
     sigma.renderers.def = sigma.renderers.canvas
+    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
     s = new sigma({
         graph: g,
         container: 'graph-container',
@@ -330,6 +331,9 @@ function jumpToAndOpenTreeId(treeid) {
     console.log('node about to open is ',node)
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
 }
+setTimeout(function() {
+    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5')
+}, 8000)
 
 function focusNode(camera, node) {
     if (!node) {
