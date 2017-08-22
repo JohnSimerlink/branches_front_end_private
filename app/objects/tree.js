@@ -11,7 +11,7 @@ function loadObject(treeObj, self){
 }
 export class Tree {
 
-    constructor(contentId, contentType, parentId, x, y) {
+    constructor(contentId, contentType, parentId, parentDegree, x, y) {
         var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
@@ -123,7 +123,7 @@ export class Tree {
        syncGraphWithNode(this.id)
        if (!recursion) return
 
-        console.log('addToX called on', this, ...arguments)
+        // console.log('addToX called on', this, ...arguments)
         this.children && Object.keys(this.children).forEach(childId => {
             Trees.get(childId).then(child => {
                 child.addToX({recursion: true, deltaX})
@@ -137,13 +137,26 @@ export class Tree {
         syncGraphWithNode(this.id)
         if (!recursion) return
 
-        console.log('addToY called on', this, ...arguments)
+        // console.log('addToY called on', this, ...arguments)
         this.children && Object.keys(this.children).forEach(childId => {
             Trees.get(childId).then(child => {
                 child.addToY({recursion: true, deltaY})
             })
         })
 
+}
+    //promise
+    getPriority(){
+       var node = this
+       if (node.parentId) {
+           Trees.get(node.parentId).then(parent => {
+               return parent.getPriority() + 1
+           })
+       } else {
+           return new Promise((resolve, reject) => {
+               resolve(1)
+           })
+       }
     }
 }
 //TODO: get typeScript so we can have a schema for treeObj

@@ -79,52 +79,57 @@
 
     if (typeof sigma === 'undefined')
         throw 'sigma is not declared';
-
-    var packageSettings = {
-        width: 0,
-        height: 0,
-        numRowsOnScreen: 0,
-        numColumnsOnScreen: 5,
-        initialized: false
-    }
-
-    var labelPriorities = {}
-    window.labelPriorities = labelPriorities
-
-    var xOffset = 50
-    document.addEventListener('DOMContentLoaded', function(event){
-        var graphContainer = document.querySelector('#graph-container')
-        packageSettings.width = graphContainer.clientWidth
-        packageSettings.height = graphContainer.clientHeight
-        packageSettings.numRowsOnScreen = packageSettings.height / (sigma.settings.defaultLabelSize * .75)
-        packageSettings.columnWidth = packageSettings.width / packageSettings.numColumnsOnScreen
-        packageSettings.rowHeight = sigma.settings.defaultLabelSize * .75
-        packageSettings.initialized = true
-        clearLabelKnowledge()
-    })
-
-
-    function clearLabelKnowledge(){
-        for (var row = 0; row < packageSettings.numRowsOnScreen; row++ ) {
-            labelPriorities[row] = []
-            for (var column = 0; column < packageSettings.numColumnsOnScreen; column++) {
-                labelPriorities[row][column] = false
-            }
-        }
-    }
-
-    //assumes fixed label size
-    function determineSection(node){
-        var x = node['renderer1:x']
-        var y = node['renderer1:y']
-        var column = Math.floor(x / packageSettings.columnWidth)
-        var row = Math.floor(y / packageSettings.rowHeight)
-        var section = {row, column}
-        console.log('the x and y determined were', x,y)
-        console.log('the section determined was', section)
-        return {row, column}
-    }
-    // Initialize packages:
+    //
+    // var packageSettings = {
+    //     width: 0,
+    //     height: 0,
+    //     numRowsOnScreen: 0,
+    //     numColumnsOnScreen: 5,
+    //     initialized: false
+    // }
+    //
+    // var labelLevels = {}
+    // window.labelLevels = labelLevels
+    //
+    // var xOffset = 50
+    // document.addEventListener('DOMContentLoaded', function(event){
+    //     var graphContainer = document.querySelector('#graph-container')
+    //     packageSettings.width = graphContainer.clientWidth
+    //     packageSettings.height = graphContainer.clientHeight
+    //     packageSettings.numRowsOnScreen = packageSettings.height / (sigma.settings.defaultLabelSize * .75)
+    //     packageSettings.columnWidth = packageSettings.width / packageSettings.numColumnsOnScreen
+    //     packageSettings.rowHeight = sigma.settings.defaultLabelSize * .75
+    //     packageSettings.initialized = true
+    //     clearLabelKnowledge()
+    // })
+    //
+    // var A_BIG_NUMBER = 9001
+    // function clearLabelKnowledge(){
+    //     for (var row = 0; row < packageSettings.numRowsOnScreen; row++ ) {
+    //         labelLevels[row] = []
+    //         for (var column = 0; column < packageSettings.numColumnsOnScreen; column++) {
+    //             labelLevels[row][column] = {level: A_BIG_NUMBER}
+    //         }
+    //     }
+    // }
+    // var labels = []
+    //
+    // PubSub.subscribe('canvas.zoom', function(){
+    //     labels = []
+    // })
+    //
+    // //assumes fixed label size
+    // function determineSection(node){
+    //     var x = node['renderer1:x']
+    //     var y = node['renderer1:y']
+    //     var column = Math.floor(x / packageSettings.columnWidth)
+    //     var row = Math.floor(y / packageSettings.rowHeight)
+    //     var section = {row, column}
+    //     // console.log('the x and y determined were', x,y)
+    //     // console.log('the section determined was', section)
+    //     return {row, column}
+    // }
+    // // Initialize packages:
     sigma.utils.pkg('sigma.canvas.labels');
 
     /**
@@ -146,24 +151,29 @@
         settings('defaultLabelSize') :
         settings('labelSizeRatio') * size;
 
-        var section = determineSection(node)
-        // if (section.row < 0 || section.column < 0){
+        // var section = determineSection(node)
+        // // if (section.row < 0 || section.column < 0){
+        // //     return
+        // // }
+        //
+        // if (section.row <0 || section.row >= packageSettings.numRowsOnScreen || section.column < 0 || section.column >= packageSettings.numColumnsOnScreen ){
+        //     // console.log('item is off sector')
         //     return
         // }
-        if (section.row <0 || section.column < 0 ){
-            console.log('item is off sector')
-            return
-        }
-        labelPriorities[section.row][section.column] = labelPriorities[section.row][section.column] || {}
-        labelPriorities[section.row][section.column].priority = 9001 // = labelPriorities[section.row][section.column] || {}
-        labelPriorities[section.row][section.column].id = node.id //
-        labelPriorities[section.row][section.column].label = node.label //
-        labelPriorities[section.row][section.column].count = typeof labelPriorities[section.row][section.column].count == 'undefined' ?
-            1 : labelPriorities[section.row][section.column].count + 1 //    0//   = node.label //
-
+        // labels.push({id: node.id, label: node.label, row, column})
+        // if (node.level >= labelLevels[section.row][section.column].level) {
+        //    return
+        // }
+        // labelLevels[section.row][section.column] = labelLevels[section.row][section.column] || {}
+        // labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
+        // labelLevels[section.row][section.column].id = node.id //
+        // labelLevels[section.row][section.column].label = node.label //
+        // labelLevels[section.row][section.column].count = typeof labelLevels[section.row][section.column].count == 'undefined' ?
+        //     1 : labelLevels[section.row][section.column].count + 1 //    0//   = node.label //
+        //
 
         // {priority: 9001, id: node.id, label: node.label}
-        // if (labelPriorities[section.row][section.column])
+        // if (labelLevels[section.row][section.column])
 
         if (size < settings('labelThreshold'))
             return;
