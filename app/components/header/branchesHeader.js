@@ -3,7 +3,7 @@ import {Config} from '../../core/config'
 import {login} from '../../core/login'
 import user from '../../objects/user'
 import Users from '../../objects/users'
-import PubSub from 'pubsub-js'
+
 export default {
     template: require('./branches-header.html'),
     created () {
