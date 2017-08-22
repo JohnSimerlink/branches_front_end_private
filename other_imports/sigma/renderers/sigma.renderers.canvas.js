@@ -114,6 +114,7 @@
   sigma.renderers.canvas.prototype.render = function(options) {
     options = options || {};
 
+    window.resetLabelData()
     var a,
         i,
         k,
@@ -326,6 +327,7 @@
     }
 
     this.dispatchEvent('render');
+    PubSub.publish('canvas.rendered')
 
     return this;
   };
