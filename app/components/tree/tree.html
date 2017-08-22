@@ -1,6 +1,5 @@
 <div class="tree" v-bind:style="styleObject" v-show="!draggingNode">
     <div class="tree-fact" v-if="typeIsFact">
-        {{nodeBeingDragged}} {{draggingNode}}
         <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-fact-question">{{content.question}}</div>

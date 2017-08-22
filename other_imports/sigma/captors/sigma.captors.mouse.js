@@ -277,6 +277,8 @@
           ratio,
           animation;
 
+      console.log('double click handler called')
+      PubSub.publish('canvas.zoom')
       if (_settings('mouseEnabled')) {
         ratio = 1 / _settings('doubleClickZoomingRatio');
 
@@ -341,6 +343,8 @@
         else
           e.returnValue = false;
 
+        PubSub.publish('canvas.zoom')
+          console.log('wheel handler just called')
         e.stopPropagation();
         return false;
       }

@@ -14,10 +14,10 @@ var s,
     },
 
     positions = [
-    'top-right',
-    'top-left',
-    'bottom-left',
-    'bottom-right'
+        'top-right',
+        'top-left',
+        'bottom-left',
+        'bottom-right'
     ],
     icons = [
         "\uF11b",
@@ -64,26 +64,34 @@ var toolTipsConfig = {
         template:require('./rightClickMenu.html')
     }
 };
-loadTreeAndSubTrees(1).then( val => {initSigma();})
-function loadTreeAndSubTrees(treeId){
+loadTreeAndSubTrees(1,1).then( val => {initSigma();})
+function loadTreeAndSubTrees(treeId, level){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
     return Trees.get(treeId)
-        .then(onGetTree)
+        .then(tree => {
+            return onGetTree(tree, level)
+        })
         .catch( err => console.error('trees get err is', err))
 }
-function onGetTree(tree) {
-    var contentPromise = ContentItem.get(tree.contentId)
-        .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content)})
 
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : []
+function onGetTree(tree, level) {
+    var contentPromise = ContentItem.get(tree.contentId)
+        .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
+
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map((child) => {
+        return loadTreeAndSubTrees(child, level + 1)
+        }): []
+    //     loadTreeAndSubTrees
+    // }) : []
     var promises = childTreesPromises
     promises.push(contentPromise)
 
     return Promise.all(promises)
 }
 
-function addTreeNodeToGraph(tree,content){
-    const treeUINode = createTreeNodeFromTreeAndContent(tree,content)
+function addTreeNodeToGraph(tree,content, level){
+    const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
+
     g.nodes.push(treeUINode);
     connectTreeToParent(tree,g)
     return content.id
@@ -103,10 +111,11 @@ export function removeTreeFromGraph(treeId){
 
 //recursively load the entire tree
 // Instantiate sigma:
-function createTreeNodeFromTreeAndContent(tree, content){
+function createTreeNodeFromTreeAndContent(tree, content, level){
     const node = {
         id: tree.id,
         parentId: tree.parentId,
+        level,
         x: tree.x,
         y: tree.y,
         children: tree.children,
@@ -163,7 +172,7 @@ function initSigma(){
     if (initialized) return
 
     sigma.renderers.def = sigma.renderers.canvas
-    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
+    // sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
     s = new sigma({
         graph: g,
         container: 'graph-container',
@@ -237,10 +246,10 @@ function hoverOverNode(e){
 export function syncGraphWithNode(treeId){
     Trees.get(treeId).then(tree => {
         var sigmaNode = s.graph.nodes(treeId)
-        console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
+        // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
         sigmaNode.x = tree.x
         sigmaNode.y = tree.y
-        console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
+        // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
         s.refresh()
     })
 }
@@ -275,7 +284,7 @@ export function addTreeToGraph(parentTreeId, content) {
     var parentTree = s.graph.nodes(parentTreeId);
     var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
     var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
-    var tree = new Tree(content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY)
+    var tree = new Tree(content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY)
     //2. add new node to parent tree on UI
     const newTree = {
         id: tree.id,
@@ -316,10 +325,12 @@ function initSigmaPlugins() {
 
     var myRenderer = s.renderers[0];
 
-    console.log('my renderenr is', myRenderer, s.renderers)
+    // console.log('my renderenr is', myRenderer, s.renderers)
 }
 
-
+PubSub.subscribe('canvas.zoom', function(a,b,c,d){
+    console.log('canvas zoom called', a, b,c,d)
+})
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
  */
