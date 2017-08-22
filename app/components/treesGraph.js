@@ -60,9 +60,9 @@ var toolTipsConfig = {
                 return result
             }
         }],
-    stage: {
-        template:require('./rightClickMenu.html')
-    }
+    // stage: {
+    //     template:require('./rightClickMenu.html')
+    // }
 };
 loadTreeAndSubTrees(1,1).then( val => {initSigma();})
 function loadTreeAndSubTrees(treeId, level){
@@ -202,7 +202,7 @@ function initSigma(){
         // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
         updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
     })
-    s.bind('overNode', hoverOverNode)
+    // s.bind('overNode', hoverOverNode)
     s.bind('dragEnd', function(){
         console.log('dragend called!')
     })
@@ -211,6 +211,13 @@ function initSigma(){
     })
     s.bind('dragstart', function(){
         console.log('drag start called!')
+    })
+    s.bind('downNode', function() {
+        console.log('down node called')
+    })
+    PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
+        var node = data
+        openTooltip(node)
     })
     initialized = true;
     initSigmaPlugins()
@@ -230,10 +237,7 @@ PubSub.subscribe('canvas.clicked', function() {
 function printNodeInfo(e){
     console.log(e, e.data.node)
 }
-function hoverOverNode(e){
-    // console.log('hoverOverNode event called', ...arguments)
-    PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
-    var node = e.data.node
+function openTooltip(node){
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
         var vm = new Vue(
@@ -242,6 +246,11 @@ function hoverOverNode(e){
             }
         )
     },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+}
+function hoverOverNode(e){
+    // console.log('hoverOverNode event called', ...arguments)
+    PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
+    var node = e.data.node
 }
 export function syncGraphWithNode(treeId){
     Trees.get(treeId).then(tree => {
