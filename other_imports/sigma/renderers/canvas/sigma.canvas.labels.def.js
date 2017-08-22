@@ -119,15 +119,20 @@
     packageData.hideCount = 0
     packageData.recentHistory = []
 
-    PubSub.subscribe('canvas.zoom', function(){
+    PubSub.subscribe('canvas.zoom',resetLabelData)
+    PubSub.subscribe('canvas.clicked',function(){
+        console.log('labels.def.js: canvas click detected in  labels defjs')
+        resetLabelData()
+    })
+
+    function resetLabelData() {
         console.log('labels.def.js: labels at the start of canvas zoom subscriber ', labels, labels.length)
-        labels = {}
+        packageData.labels = {}
         packageData.displayCount = 0
         packageData.hideCount = 0
         packageData.recentHistory =[]
         console.log('labels.def.js: labels at the end of canvas zoom subscriber ', labels, labels.length)
-    })
-
+    }
     //assumes fixed label size
     function determineSection(node){
         var x = node['renderer1:x']
@@ -139,15 +144,18 @@
         // console.log('the section determined was', section)
         return {row, column}
     }
-    function sectionOffScreen(section){
+    function sectionOffScreen(section, node){
         if (section.row <0 || section.row >= packageData.numRowsOnScreen || section.column < 0 || section.column >= packageData.numColumnsOnScreen ){
-            console.log('item is off screen')
+            console.log('item is off screen', node && node.label)
             return true
         }
     }
     // Initialize packages:
     sigma.utils.pkg('sigma.canvas.labels');
 
+    PubSub.subscribe('canvas.nodesRendering', function(eventName,data){
+        console.log('labels.def.js: nodesRendering:', eventName, data, packageData, packageData.labels)
+    })
     /**
      * This label renderer will just display the label on the right of the node.
      *
@@ -156,6 +164,7 @@
      * @param  {configurable}             settings The settings function.
      */
     sigma.canvas.labels.prioritizable = function(node, context, settings) {
+        // debugger;
         packageData.recentHistory.push(arguments)
         // console.log("prioritizable label called", node)
         var fontSize,
@@ -169,12 +178,13 @@
         settings('labelSizeRatio') * size;
 
         var section = determineSection(node)
-        if (sectionOffScreen(section)){
+        if (sectionOffScreen(section,node)){
             packageData.hideCount++
             return
         } else {
+            console.log('section on screen', node.label)
             packageData.displayCount++
-            packageData.labels[node.id] = {label: node.label, row:section.row, column:section.column}
+            packageData.labels[node.label] = {id: node.id, label: node.label, row:section.row, column:section.column}
             // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
         }
 

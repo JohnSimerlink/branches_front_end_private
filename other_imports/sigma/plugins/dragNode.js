@@ -186,6 +186,7 @@
         function nodeMouseUp(event) {
             console.log('node mouse up for', _node, _node.x, _node.y)
             PubSub.publish('canvas.stopDraggingNode', _node)
+            PubSub.publish('canvas.nodeMouseUp', _node)
             _isMouseDown = false;
             _mouse.addEventListener('mousedown', nodeMouseDown);
             _body.removeEventListener('mousemove', nodeMouseMove);
