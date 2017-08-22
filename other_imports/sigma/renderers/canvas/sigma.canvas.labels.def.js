@@ -120,10 +120,10 @@
     packageData.recentHistory = []
 
     PubSub.subscribe('canvas.zoom',resetLabelData)
-    PubSub.subscribe('canvas.clicked',function(){
-        console.log('labels.def.js: canvas click detected in  labels defjs')
-        resetLabelData()
-    })
+    // PubSub.subscribe('canvas.clicked',function(){
+    //     console.log('labels.def.js: canvas click detected in  labels defjs')
+    //     resetLabelData()
+    // })
 
     function resetLabelData() {
         console.log('labels.def.js: labels at the start of canvas zoom subscriber ', labels, labels.length)
@@ -131,8 +131,10 @@
         packageData.displayCount = 0
         packageData.hideCount = 0
         packageData.recentHistory =[]
+        packageData.justReset = true
         console.log('labels.def.js: labels at the end of canvas zoom subscriber ', labels, labels.length)
     }
+    window.resetLabelData = resetLabelData
     //assumes fixed label size
     function determineSection(node){
         var x = node['renderer1:x']
