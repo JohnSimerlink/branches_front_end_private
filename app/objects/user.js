@@ -1,5 +1,5 @@
 import firebase from './firebaseService.js'
-import PubSub from 'pubsub-js'
+
 import Users from './users'
 class User {
 

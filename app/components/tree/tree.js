@@ -3,7 +3,7 @@ import {proficiencyToColor} from "../treesGraph"
 import {Fact} from '../../objects/fact'
 import ContentItem from '../../objects/contentItem'
 import timers from './timers'
-import PubSub from 'pubsub-js'
+
 import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
 import {secondsToPretty} from "../../core/filters"

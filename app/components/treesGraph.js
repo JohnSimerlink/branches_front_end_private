@@ -3,7 +3,7 @@ import ContentItem from '../objects/contentItem'
 import {Tree} from '../objects/tree.js'
 import {Globals} from '../core/globals.js'
 import '../core/login.js'
-import PubSub from 'pubsub-js'
+
 import Vue from 'vue'
 import user from '../objects/user'
 var initialized = false;
@@ -172,7 +172,7 @@ function initSigma(){
     if (initialized) return
 
     sigma.renderers.def = sigma.renderers.canvas
-    // sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
+    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
     s = new sigma({
         graph: g,
         container: 'graph-container',
@@ -196,10 +196,10 @@ function initSigma(){
     s.bind('click', onCanvasClick)
     // s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
     PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
-        console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
+        // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
     })
     PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
-        console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
+        // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
         updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
     })
     s.bind('overNode', hoverOverNode)
@@ -255,7 +255,7 @@ export function syncGraphWithNode(treeId){
 }
 function updateTreePosition(data){
     let {newX, newY, treeId} = data
-    console.log('update tree position called!', newX, newY, treeId, data)
+    // console.log('update tree position called!', newX, newY, treeId, data)
     // let newX = e.data.node.x
     // let newY = e.data.node.y
     // let treeId = e.data.node.id;
@@ -321,7 +321,7 @@ function initSigmaPlugins() {
     // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
     window.tooltips = tooltips;
     window.jump = jumpToAndOpenTreeId;
-
+    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5')
 
     var myRenderer = s.renderers[0];
 
@@ -329,7 +329,7 @@ function initSigmaPlugins() {
 }
 
 PubSub.subscribe('canvas.zoom', function(a,b,c,d){
-    console.log('canvas zoom called', a, b,c,d)
+    console.log('canvas zoom called in treesGraph js')
 })
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
@@ -342,9 +342,6 @@ function jumpToAndOpenTreeId(treeid) {
     console.log('node about to open is ',node)
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
 }
-setTimeout(function() {
-    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5')
-}, 8000)
 
 function focusNode(camera, node) {
     if (!node) {
