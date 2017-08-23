@@ -12,6 +12,7 @@ export default {
     props: ['id'],
     created () {
         var me = this;
+        console.log('tree.js:15 called', this)
 
         this.editing = false
         this.addingChild = false
@@ -33,6 +34,7 @@ export default {
             // console.log('canvas.closeTooltip subscribe called')
             //get reference to content, because by the time
             const content = me.content
+            console.log('tree.js 37: saveTimer about to be called')
             content.saveTimer()
         })
         //todo replace with vuex
@@ -48,22 +50,6 @@ export default {
             window.draggingNode = false
         })
 
-    },
-    beforeDestroy(){
-        console.log('before destroy called')
-        this.saveTimer()
-    },
-    destroy(){
-        console.log('destroy called')
-        this.saveTimer()
-    },
-    activated() {
-       console.log('activated called')
-    },
-    deactivated(){
-
-        console.log('deactivated called')
-        this.saveTimer()
     },
     data () {
         return {
@@ -95,9 +81,11 @@ export default {
         //user methods
         startTimer() {
             this.content.startTimer()
+            console.log('tree.js 99: startTimer called in tree.js')
         },
         saveTimer() {
             var me = this
+            console.log('tree.js 87: saveTimer called')
             me.content.saveTimer()
         },
         toggleEditing() {

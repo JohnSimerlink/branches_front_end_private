@@ -231,7 +231,19 @@ function onCanvasClick(e){
     //console.log("X %s, Y %S", X, Y);
 }
 PubSub.subscribe('canvas.clicked', function() {
-    PubSub.publish('canvas.closeTooltip')
+    if(window.numClicks){
+        window.numClicks++
+    } else {
+        window.numClicks = 1
+    }
+    console.log('TIMERFIX treesGraph.js 239: num clicks:', window.numClicks, ', currentClickedNode: ', window.currentClickedNode.toString(), 'currentNodeClicked: ', window.currentNodeClicked.toString())
+    if (window.currentNodeClicked){
+
+    } else {
+        PubSub.publish('canvas.closeTooltip')
+    }
+    window.currentNodeClicked = false
+
 })
 function printNodeInfo(e){
     console.log(e, e.data.node)
@@ -245,6 +257,7 @@ function openTooltip(node){
             }
         )
     },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+
 }
 function hoverOverNode(e){
     // console.log('hoverOverNode event called', ...arguments)

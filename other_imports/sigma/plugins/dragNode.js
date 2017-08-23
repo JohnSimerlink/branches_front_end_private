@@ -149,7 +149,6 @@
 
         function nodeMouseDown(event) {
             PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
-            console.log('nodeMouseDown called')
             _isMouseDown = true;
             var size = _s.graph.nodes().length;
 

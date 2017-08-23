@@ -80,15 +80,19 @@ export default class ContentItem {
     startTimer() {
         var self = this
 
+        console.log('contentItem.js 83: startTimer called')
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
                 self.timer  = self.timer || 0
                 self.timer++ // = fact.timer || 0
             }, 1000)
+        } else {
+            console.log('contentItem.js 90: startTimer didnt execute its logic because it already had a timerId of ', this.timerId)
         }
 
     }
     saveTimer(){
+        console.log('contentItem.js 95: saveTimer called')
         this.userTimeMap[user.getId()] = this.timer
 
         var updates = {
