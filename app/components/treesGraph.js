@@ -93,7 +93,7 @@ function addTreeNodeToGraph(tree,content, level){
     const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
 
     g.nodes.push(treeUINode);
-    connectTreeToParent(tree,g)
+    connectTreeToParent(tree, content, g)
     return content.id
 }
 
@@ -122,7 +122,7 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
         content: content,
         label: getLabelFromContent(content),
         size: 1,
-        color: getTreeColor(tree),
+        color: getTreeColor(content),
         type: 'tree',
     };
     return node;
@@ -132,11 +132,11 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
  * @param tree
  * @returns {*}
  */
-function getTreeColor(tree) {
-    let proficiency = tree.userProficiencyMap && tree.userProficiencyMap[user.getId()]
-    if (proficiency >= 0) return proficiencyToColor(proficiency)
-    return Globals.colors.proficiency_unknown
+function getTreeColor(content) {
+    let proficiency = content.userProficiencyMap && content.userProficiencyMap[user.getId()]
+    return proficiency >= 0 ? proficiencyToColor(proficiency) : Globals.colors.proficiency_unknown
 }
+
 export function proficiencyToColor(proficiency){
     if (proficiency >= 95) return Globals.colors.proficiency_4;
     if (proficiency >= 66) return Globals.colors.proficiency_3;
@@ -154,14 +154,14 @@ function getLabelFromContent(content) {
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
-function connectTreeToParent(tree, g){
+function connectTreeToParent(tree,content, g){
     if (tree.parentId) {
         const edge = {
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
             size: 1,
-            color: Globals.colors.proficiency_unknown
+            color: getTreeColor(content)
         };
         g.edges.push(edge);
     }
@@ -304,7 +304,7 @@ export function addTreeToGraph(parentTreeId, content) {
         children: {},
         label: getLabelFromContent(content),
         size: 1,
-        color: Globals.existingColor,
+        color: getTreeColor(content),
         type: 'tree',
     }
     //2b. update x and y location in the db for the tree
@@ -316,7 +316,7 @@ export function addTreeToGraph(parentTreeId, content) {
         source: parentTreeId,
         target: newTree.id,
         size: 1,
-        color: Globals.existingColor
+        color: getTreeColor(content)
     }
     s.graph.addEdge(newEdge)
 
