@@ -143,6 +143,10 @@
             return true
         }
     }
+    function getHeightFromNodeLevel(level){
+        // var height = window.s.settings('defaultLabelSize') + 2.5 * 8 / level
+        return window.s && window.s.settings('defaultLabelSize') + 2.5 * 8 / level || 14
+    }
     // Initialize packages:
     sigma.utils.pkg('sigma.canvas.labels');
 
@@ -164,9 +168,9 @@
         if (!node.label || typeof node.label !== 'string')
             return;
 
-        fontSize = (settings('labelSize') === 'fixed') ?
-        settings('defaultLabelSize') :
-        settings('labelSizeRatio') * size;
+        fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+        // settings('defaultLabelSize') :
+        // settings('labelSizeRatio') * size;
 
         var section = determineSection(node)
         if (sectionOffScreen(section,node)){
@@ -179,9 +183,8 @@
         if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
             return
         }
-        // } else {
-        // }
-        var info = {id: node.id, label: node.label, level: node.level, row:section.row, column:section.column}
+
+        var info = {id: node.id, label: node.label, level: node.level, row:section.row, column:section.column, height: getHeightFromNodeLevel(node.level)}
         packageData.labels[node.label] = info
         labelLevels[section.row][section.column] = info // labelLevels[section.row][section.column] || {}
         // labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
@@ -198,13 +201,14 @@
         //     return;
 
         context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
-            fontSize + 'px ' + settings('font');
+            fontSize /*+ 0 /node.level */ + 'px ' + settings('font');
         context.fillStyle = (settings('labelColor') === 'node') ?
             (node.color || settings('defaultNodeColor')) :
             settings('defaultLabelColor');
 
+        var label = node.label.length > 20 ? node.label.substring(0,19) + ' . . .' : node.label
         context.fillText(
-            node.label,
+            label,
             Math.round(node[prefix + 'x'] + size + 3),
             Math.round(node[prefix + 'y'] + fontSize / 3)
         );
