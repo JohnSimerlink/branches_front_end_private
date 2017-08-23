@@ -270,14 +270,15 @@
 
         if (nodes.length) {
           var node = nodes[0]
-          console.log('TIMERFIX: bindEvents.js clickNode detected on ', node.id, 'and currentClickedNode is', window.currentClickedNode)
+          // console.log('TIMERFIX: bindEvents.js clickNode detected on ', node.id, 'and currentClickedNode is', window.currentClickedNode)
           if (node.id == window.currentClickedNode){
-              window.currentNodeClicked = true
-              console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to true')
+              // window.currentNodeClicked = true
+              // console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to true')
           } else {
+              PubSub.publish('canvas.newNodeClicked')
               window.currentClickedNode = node.id
-              window.currentNodeClicked = false
-              console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to false')
+              // window.currentNodeClicked = false
+              // console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to false')
           }
           self.dispatchEvent('clickNode', {
             node: nodes[0],
@@ -296,8 +297,12 @@
             edge: edges,
             captor: e.data
           });
-        } else
-          self.dispatchEvent('clickStage', {captor: e.data});
+        } else {
+            window.currentClickedNode = null
+            self.dispatchEvent('clickStage', {captor: e.data});
+            PubSub.publish('canvas.stageClicked')
+        }
+
       }
 
       function onDoubleClick(e) {

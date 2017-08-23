@@ -230,20 +230,26 @@ function onCanvasClick(e){
 
     //console.log("X %s, Y %S", X, Y);
 }
-PubSub.subscribe('canvas.clicked', function() {
-    if(window.numClicks){
-        window.numClicks++
-    } else {
-        window.numClicks = 1
-    }
-    console.log('TIMERFIX treesGraph.js 239: num clicks:', window.numClicks, ', currentClickedNode: ', window.currentClickedNode.toString(), 'currentNodeClicked: ', window.currentNodeClicked.toString())
-    if (window.currentNodeClicked){
-
-    } else {
-        PubSub.publish('canvas.closeTooltip')
-    }
-    window.currentNodeClicked = false
-
+// PubSub.subscribe('canvas.clicked', function() {
+//     if(window.numClicks){
+//         window.numClicks++
+//     } else {
+//         window.numClicks = 1
+//     }
+//     console.log('TIMERFIX treesGraph.js 239: num clicks:', window.numClicks, ', currentClickedNode: ', window.currentClickedNode.toString(), 'currentNodeClicked: ', window.currentNodeClicked.toString())
+//     if (window.currentNodeClicked){
+//
+//     } else {
+//         PubSub.publish('canvas.closeTooltip')
+//     }
+//     window.currentNodeClicked = false
+// })
+PubSub.subscribe('canvas.newNodeClicked', function(){
+    // console
+    PubSub.publish('canvas.closeTooltip')
+})
+PubSub.subscribe('canvas.stageClicked', function(){
+    PubSub.publish('canvas.closeTooltip')
 })
 function printNodeInfo(e){
     console.log(e, e.data.node)
