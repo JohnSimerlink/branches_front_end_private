@@ -1,5 +1,4 @@
 import {caclulateMinutesTilNextReview} from './review'
-console.log('review.spec.js called')
 describe('Calculate Review from interaction history', function() {
     it('should return 2 for 1+1', function() {
         expect(2).toBe(2)

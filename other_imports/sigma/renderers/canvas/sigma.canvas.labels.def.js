@@ -15,7 +15,6 @@
    * @param  {configurable}             settings The settings function.
    */
   sigma.canvas.labels.def = function(node, context, settings) {
-    // console.log('label context is ', context)
     var fontSize,
         prefix = settings('prefix') || '',
         size = node[prefix + 'size'];
@@ -44,7 +43,6 @@
   };
 
     sigma.canvas.labels.def2 = function(node, context, settings) {
-        // console.log('DEF2 label context is ', context)
         var fontSize,
             prefix = settings('prefix') || '',
             size = node[prefix + 'size'];
@@ -80,26 +78,28 @@
     if (typeof sigma === 'undefined')
         throw 'sigma is not declared';
 
+    var labelLevels = {}
     var packageData = {
         width: 0,
         height: 0,
         numRowsOnScreen: 0,
         numColumnsOnScreen: 5,
-        initialized: false
+        initialized: false,
+        labels: {},
+        labelLevels: labelLevels,
     }
+
     window.packageData = packageData
-    //
-    var labelLevels = {}
-    window.labelLevels = labelLevels
 
     var xOffset = 50
+        var rowHeight = sigma.settings.defaultLabelSize * 1.75
     document.addEventListener('DOMContentLoaded', function(event){
         var graphContainer = document.querySelector('#graph-container')
         packageData.width = graphContainer.clientWidth
         packageData.height = graphContainer.clientHeight
-        packageData.numRowsOnScreen = packageData.height / (sigma.settings.defaultLabelSize * .75)
+        packageData.rowHeight = rowHeight
+        packageData.numRowsOnScreen = packageData.height / rowHeight /*packageData.height / (sigma.settings.defaultLabelSize * .75)*/
         packageData.columnWidth = packageData.width / packageData.numColumnsOnScreen
-        packageData.rowHeight = sigma.settings.defaultLabelSize * .75
         packageData.initialized = true
         clearLabelKnowledge()
     })
@@ -109,30 +109,24 @@
         for (var row = 0; row < packageData.numRowsOnScreen; row++ ) {
             labelLevels[row] = []
             for (var column = 0; column < packageData.numColumnsOnScreen; column++) {
-                labelLevels[row][column] = {level: A_BIG_NUMBER}
+                labelLevels[row][column] = {id: null, label: null, level: A_BIG_NUMBER}
             }
         }
     }
-    packageData.labels = {}
-    window.labels = packageData.labels
-    packageData.displayCount = 0
-    packageData.hideCount = 0
-    packageData.recentHistory = []
 
+    resetLabelData()
     PubSub.subscribe('canvas.zoom',resetLabelData)
     // PubSub.subscribe('canvas.clicked',function(){
-    //     console.log('labels.def.js: canvas click detected in  labels defjs')
     //     resetLabelData()
     // })
 
     function resetLabelData() {
-        console.log('labels.def.js: labels at the start of canvas zoom subscriber ', labels, labels.length)
         packageData.labels = {}
+        clearLabelKnowledge()
         packageData.displayCount = 0
         packageData.hideCount = 0
         packageData.recentHistory =[]
         packageData.justReset = true
-        console.log('labels.def.js: labels at the end of canvas zoom subscriber ', labels, labels.length)
     }
     window.resetLabelData = resetLabelData
     //assumes fixed label size
@@ -142,13 +136,10 @@
         var column = Math.floor(x / packageData.columnWidth)
         var row = Math.floor(y / packageData.rowHeight)
         var section = {row, column}
-        // console.log('the x and y determined were', x,y)
-        // console.log('the section determined was', section)
         return {row, column}
     }
     function sectionOffScreen(section, node){
         if (section.row <0 || section.row >= packageData.numRowsOnScreen || section.column < 0 || section.column >= packageData.numColumnsOnScreen ){
-            console.log('item is off screen', node && node.label)
             return true
         }
     }
@@ -156,7 +147,6 @@
     sigma.utils.pkg('sigma.canvas.labels');
 
     PubSub.subscribe('canvas.nodesRendering', function(eventName,data){
-        console.log('labels.def.js: nodesRendering:', eventName, data, packageData, packageData.labels)
     })
     /**
      * This label renderer will just display the label on the right of the node.
@@ -167,8 +157,7 @@
      */
     sigma.canvas.labels.prioritizable = function(node, context, settings) {
         // debugger;
-        packageData.recentHistory.push(arguments)
-        // console.log("prioritizable label called", node)
+        packageData.recentHistory.push(node)
         var fontSize,
             prefix = settings('prefix') || '',
             size = node[prefix + 'size'];
@@ -183,24 +172,21 @@
         if (sectionOffScreen(section,node)){
             packageData.hideCount++
             return
-        } else {
-            console.log('section on screen', node.label)
-            packageData.displayCount++
-            packageData.labels[node.label] = {id: node.id, label: node.label, row:section.row, column:section.column}
-            // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
-        }
-        var nodeAtThatSection = labelLevels[section.row][section.column]
-        if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
-           console.log('node level for node ',node, ' is greater= than', labelLevels[section.row][section.column], labelLevels[section.row][section.column].level)
-           return
-        } else {
-            console.log('node level for node', node, ' is <', labelLevels[section.row][section.column],)
         }
 
-        labelLevels[section.row][section.column] = labelLevels[section.row][section.column] || {}
-        labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
-        labelLevels[section.row][section.column].id = node.id //
-        labelLevels[section.row][section.column].label = node.label //
+            // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
+        var nodeAtThatSection = labelLevels[section.row][section.column]
+        if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
+            return
+        }
+        // } else {
+        // }
+        var info = {id: node.id, label: node.label, level: node.level, row:section.row, column:section.column}
+        packageData.labels[node.label] = info
+        labelLevels[section.row][section.column] = info // labelLevels[section.row][section.column] || {}
+        // labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
+        // labelLevels[section.row][section.column].id = node.id //
+        // labelLevels[section.row][section.column].label = node.label //
         labelLevels[section.row][section.column].count = typeof labelLevels[section.row][section.column].count == 'undefined' ?
             1 : labelLevels[section.row][section.column].count + 1 //    0//   = node.label //
 

@@ -48,7 +48,6 @@ export class Tree {
      * @param treeId
      */
     addChild(treeId) {
-        console.log('add child called in tree.js')
         // this.treeRef.child('/children').push(treeId)
         var children = this.children || {}
         children[treeId] = true
