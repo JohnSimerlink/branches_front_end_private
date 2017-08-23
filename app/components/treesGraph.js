@@ -191,7 +191,6 @@ function initSigma(){
     s.refresh();
 
     s.bind('mousedown', function(){
-        console.log('mousedown')
     })
     s.bind('click', onCanvasClick)
     // s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
