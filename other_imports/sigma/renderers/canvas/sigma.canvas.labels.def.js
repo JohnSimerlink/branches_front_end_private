@@ -189,27 +189,27 @@
             packageData.labels[node.label] = {id: node.id, label: node.label, row:section.row, column:section.column}
             // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
         }
+        var nodeAtThatSection = labelLevels[section.row][section.column]
+        if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
+           console.log('node level for node ',node, ' is greater= than', labelLevels[section.row][section.column], labelLevels[section.row][section.column].level)
+           return
+        } else {
+            console.log('node level for node', node, ' is <', labelLevels[section.row][section.column],)
+        }
 
-        // if (section.row <0 || section.row >= packageData.numRowsOnScreen || section.column < 0 || section.column >= packageData.numColumnsOnScreen ){
-        //     // console.log('item is off sector')
-        //     return
-        // }
-        // if (node.level >= labelLevels[section.row][section.column].level) {
-        //    return
-        // }
-        // labelLevels[section.row][section.column] = labelLevels[section.row][section.column] || {}
-        // labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
-        // labelLevels[section.row][section.column].id = node.id //
-        // labelLevels[section.row][section.column].label = node.label //
-        // labelLevels[section.row][section.column].count = typeof labelLevels[section.row][section.column].count == 'undefined' ?
-        //     1 : labelLevels[section.row][section.column].count + 1 //    0//   = node.label //
-        //
+        labelLevels[section.row][section.column] = labelLevels[section.row][section.column] || {}
+        labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
+        labelLevels[section.row][section.column].id = node.id //
+        labelLevels[section.row][section.column].label = node.label //
+        labelLevels[section.row][section.column].count = typeof labelLevels[section.row][section.column].count == 'undefined' ?
+            1 : labelLevels[section.row][section.column].count + 1 //    0//   = node.label //
+
 
         // {priority: 9001, id: node.id, label: node.label}
         // if (labelLevels[section.row][section.column])
 
-        if (size < settings('labelThreshold'))
-            return;
+        // if (size < settings('labelThreshold'))
+        //     return;
 
         context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
             fontSize + 'px ' + settings('font');
