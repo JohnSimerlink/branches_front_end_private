@@ -269,6 +269,16 @@
         edges = getEdges(e);
 
         if (nodes.length) {
+          var node = nodes[0]
+          console.log('TIMERFIX: bindEvents.js clickNode detected on ', node.id, 'and currentClickedNode is', window.currentClickedNode)
+          if (node.id == window.currentClickedNode){
+              window.currentNodeClicked = true
+              console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to true')
+          } else {
+              window.currentClickedNode = node.id
+              window.currentNodeClicked = false
+              console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to false')
+          }
           self.dispatchEvent('clickNode', {
             node: nodes[0],
             captor: e.data
