@@ -10,6 +10,8 @@ export default class ContentItem {
     constructor() {
     }
     init () {
+        this.trees = this.trees || {}
+
         this.userTimeMap = this.userTimeMap || {} ;
         this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
         this.timerId = null;
@@ -57,7 +59,7 @@ export default class ContentItem {
      */
     static create(contentItem) {
         let updates = {};
-        updates['/content/' + contentItem.id] = contentItem;
+        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
         console.log('updates in contentItem.create are', updates)
         firebase.database().ref().update(updates);
         return contentItem;
