@@ -2,11 +2,11 @@ import md5 from 'md5';
 import ContentItem from "./contentItem";
 import merge from 'lodash.merge'
 
-export class Heading extends ContentItem {
+export class Skill extends ContentItem {
 
     constructor ({title}){
         super();
-        this.type = 'heading';
+        this.type = 'skill';
 
         this.title = title;
         this.id = md5(JSON.stringify({title}));
@@ -19,7 +19,7 @@ export class Heading extends ContentItem {
             {
                 id: this.id,
                 title: this.title,
-                type: this.type,
+                type: this.skill,
             }
         )
     }

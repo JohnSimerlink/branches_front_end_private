@@ -27,6 +27,8 @@ export default class ContentItem {
 
         this.studiers = this.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
+
+        this.exercises = this.exercises || {}
     }
 
     static get(contentId) {
@@ -41,6 +43,7 @@ export default class ContentItem {
                     const contentData = snapshot.val()
                     const contentItem = new ContentItem() // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
                     for (let prop in contentData){ //copy over data into this new typed object
+                        if (!prop) continue //in case prop is undefined, which has happened before
                         contentItem[prop] = contentData[prop]
                     }
                     contentItem.init() // post constructor
@@ -49,6 +52,26 @@ export default class ContentItem {
                     resolve(contentItem)
                 }, reject)
             }
+        })
+    }
+    static getAll() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('content/').on("value", function(snapshot){
+                const contentData = snapshot.val()
+                Object.keys(contentData).forEach(contentDatumKey => {
+                    const contentDatum = contentData[contentDatumKey]
+                    if (!contentDatum) return // in case contentDatum is undefined which has happened before
+                    const contentItem = new ContentItem() // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
+                    for (let prop in contentDatum){ //copy over data into this new typed object
+                        if (!prop) continue //in case prop is undefined, which has happened before
+                        contentItem[prop] = contentDatum[prop]
+                    }
+                    contentItem.init() // post constructor
+
+                    content[contentItem.id] = contentItem // add to cache
+                })
+                resolve(content)
+            }, reject)
         })
     }
 
@@ -73,6 +96,7 @@ export default class ContentItem {
             userInteractionsMap: this.userInteractionsMap,
             userReviewTimeMap: this.userReviewTimeMap,
             studiers: this.studiers,
+            exercises: this.exercises,
         }
     }
     /**
@@ -118,6 +142,15 @@ export default class ContentItem {
             studiers: this.studiers
         }
         this.inStudyQueue = true
+
+        firebase.database().ref('content/' + this.id).update(updates)
+    }
+    addExercise(exercise){
+        this.exercises[exercise.id] = true
+
+        var updates = {
+            exercises: this.exercises
+        }
 
         firebase.database().ref('content/' + this.id).update(updates)
     }
