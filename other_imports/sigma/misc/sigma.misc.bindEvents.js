@@ -275,7 +275,9 @@
               // window.currentNodeClicked = true
               // console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to true')
           } else {
-              PubSub.publish('canvas.newNodeClicked')
+              if (window.currentClickedNode != null){
+                  PubSub.publish('canvas.differentNodeClicked', {oldNode: window.currentClickedNode, newNode: node.id})
+              }
               window.currentClickedNode = node.id
               // window.currentNodeClicked = false
               // console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to false')
@@ -298,9 +300,9 @@
             captor: e.data
           });
         } else {
+            PubSub.publish('canvas.stageClicked', {oldNode: window.currentClickedNode})
             window.currentClickedNode = null
             self.dispatchEvent('clickStage', {captor: e.data});
-            PubSub.publish('canvas.stageClicked')
         }
 
       }

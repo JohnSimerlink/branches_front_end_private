@@ -244,12 +244,13 @@ function onCanvasClick(e){
 //     }
 //     window.currentNodeClicked = false
 // })
-PubSub.subscribe('canvas.newNodeClicked', function(){
-    // console
-    PubSub.publish('canvas.closeTooltip')
+PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
+    console.log('canvas.newNodeClicked event detected')
+    PubSub.publish('canvas.closeTooltip', data)
 })
-PubSub.subscribe('canvas.stageClicked', function(){
-    PubSub.publish('canvas.closeTooltip')
+PubSub.subscribe('canvas.stageClicked', function(eventName, data){
+    console.log('canvas.stageClicked event detected')
+    PubSub.publish('canvas.closeTooltip', data)
 })
 function printNodeInfo(e){
     console.log(e, e.data.node)

@@ -30,8 +30,10 @@ export default {
 
         })
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
-        PubSub.subscribe('canvas.closeTooltip',function () {
-            // console.log('canvas.closeTooltip subscribe called')
+        PubSub.subscribe('canvas.closeTooltip',function (eventName, data) {
+            console.log('tree.js 34: canvas.closeTooltip subscribe called', eventName,data)
+            if (data.oldNode != me.id) return
+
             //get reference to content, because by the time
             const content = me.content
             console.log('tree.js 37: saveTimer about to be called')
