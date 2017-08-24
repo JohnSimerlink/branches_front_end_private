@@ -448,16 +448,23 @@
           }
 
         // Dispatch both single and multi events:
-        for (i = 0, l = newOverNodes.length; i < l; i++)
-          self.dispatchEvent('overNode', {
-            node: newOverNodes[i],
-            captor: e.data
-          });
-        for (i = 0, l = newOutNodes.length; i < l; i++)
-          self.dispatchEvent('outNode', {
-            node: newOutNodes[i],
-            captor: e.data
-          });
+        for (i = 0, l = newOverNodes.length; i < l; i++){
+            console.log('bindEvents.js 452: overNode called')
+            var data =  {
+                node: newOverNodes[i],
+                captor: e.data
+            }
+            self.dispatchEvent('overNode', data);
+            PubSub.publish('canvas.overNode', data)
+        }
+        for (i = 0, l = newOutNodes.length; i < l; i++){
+            self.dispatchEvent('outNode', {
+                node: newOutNodes[i],
+                captor: e.data
+            });
+            PubSub.publish('canvas.outNode', data)
+            console.log('canvas.outNode just called')
+        }
         if (newOverNodes.length)
           self.dispatchEvent('overNodes', {
             nodes: newOverNodes,

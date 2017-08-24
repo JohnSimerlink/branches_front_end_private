@@ -12,7 +12,6 @@ export default {
     props: ['id'],
     created () {
         var me = this;
-        console.log('tree.js:15 called', this)
 
         this.editing = false
         this.addingChild = false
@@ -31,24 +30,17 @@ export default {
         })
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
         PubSub.subscribe('canvas.closeTooltip',function (eventName, data) {
-            console.log('tree.js 34: canvas.closeTooltip subscribe called', eventName,data)
             if (data.oldNode != me.id) return
 
             //get reference to content, because by the time
             const content = me.content
-            console.log('tree.js 37: saveTimer about to be called')
             content.saveTimer()
         })
         //todo replace with vuex
         PubSub.subscribe('canvas.startDraggingNode', function() {
-            // console.log('tree.js: node being dragged start')
-            me.nodeBeingDragged = true
             window.draggingNode = true
-            console.log('me.nodeBeingDragged is now' + me.nodeBeingDragged)
         })
         PubSub.subscribe('canvas.stopDraggingNode', function() {
-            // console.log('tree.js: node being dragged end')
-            me.nodeBeingDragged = false
             window.draggingNode = false
         })
 
@@ -59,7 +51,6 @@ export default {
             , content: this.content
             , editing: this.editing
             , addingChild: this.addingChild
-            , nodeBeingDragged: this.nodeBeingDragged
             , draggingNode: window.draggingNode
         }
     },
@@ -83,12 +74,9 @@ export default {
         //user methods
         startTimer() {
             this.content.startTimer()
-            console.log('tree.js 99: startTimer called in tree.js')
         },
         saveTimer() {
-            var me = this
-            console.log('tree.js 87: saveTimer called')
-            me.content.saveTimer()
+            this.content.saveTimer()
         },
         toggleEditing() {
             this.editing = !this.editing
