@@ -160,7 +160,7 @@ function connectTreeToParent(tree,content, g){
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 1,
+            size: 5,
             color: getTreeColor(content)
         };
         g.edges.push(edge);
@@ -192,8 +192,17 @@ function initSigma(){
 
     s.bind('mousedown', function(){
     })
-    s.bind('click', onCanvasClick)
-    // s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
+    s.bind('overNode', hoverOverNode)
+    initialized = true;
+    initSigmaPlugins()
+    PubSub.subscribe('canvas.dragStart', (eventName, data) => {
+        var canvas = document.querySelector('#graph-container')
+        canvas.style.cursor = 'grabbing'
+    })
+    PubSub.subscribe('canvas.dragStop', (eventName, data) => {
+        var canvas = document.querySelector('#graph-container')
+        canvas.style.cursor = 'grab'
+    })
     PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
         // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
     })
@@ -201,57 +210,25 @@ function initSigma(){
         // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
         updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
     })
-    // s.bind('overNode', hoverOverNode)
-    s.bind('dragEnd', function(){
-        console.log('dragend called!')
-    })
-    s.bind('drop', function(){
-        console.log('drop called!')
-    })
-    s.bind('dragstart', function(){
-        console.log('drag start called!')
-    })
-    s.bind('downNode', function() {
-        console.log('down node called')
-    })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
         var node = data
         openTooltip(node)
     })
-    initialized = true;
-    initSigmaPlugins()
+    PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
+        PubSub.publish('canvas.closeTooltip', data)
+    })
+    PubSub.subscribe('canvas.stageClicked', function(eventName, data){
+        PubSub.publish('canvas.closeTooltip', data)
+    })
+    PubSub.subscribe('canvas.overNode', function(eventName, data){
+        var canvas = document.querySelector('#graph-container')
+        canvas.style.cursor = 'pointer'
+    })
+    PubSub.subscribe('canvas.outNode', function(eventName, data){
+        var canvas = document.querySelector('#graph-container')
+        canvas.style.cursor = 'grab'
+    })
 }
-
-function onCanvasClick(e){
-    PubSub.publish('canvas.clicked', true)
-    console.log(e, e.data.x,e.data.y,e.data.clientX,e.data.clientY)
-    // var X=e['data']['node']['renderer1:x'];
-    // var Y=e['data']['node']['renderer1:y'];
-
-    //console.log("X %s, Y %S", X, Y);
-}
-// PubSub.subscribe('canvas.clicked', function() {
-//     if(window.numClicks){
-//         window.numClicks++
-//     } else {
-//         window.numClicks = 1
-//     }
-//     console.log('TIMERFIX treesGraph.js 239: num clicks:', window.numClicks, ', currentClickedNode: ', window.currentClickedNode.toString(), 'currentNodeClicked: ', window.currentNodeClicked.toString())
-//     if (window.currentNodeClicked){
-//
-//     } else {
-//         PubSub.publish('canvas.closeTooltip')
-//     }
-//     window.currentNodeClicked = false
-// })
-PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
-    console.log('canvas.newNodeClicked event detected')
-    PubSub.publish('canvas.closeTooltip', data)
-})
-PubSub.subscribe('canvas.stageClicked', function(eventName, data){
-    console.log('canvas.stageClicked event detected')
-    PubSub.publish('canvas.closeTooltip', data)
-})
 function printNodeInfo(e){
     console.log(e, e.data.node)
 }
@@ -267,9 +244,9 @@ function openTooltip(node){
 
 }
 function hoverOverNode(e){
-    // console.log('hoverOverNode event called', ...arguments)
-    PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
-    var node = e.data.node
+    console.log('hoverOverNode event called', ...arguments)
+    // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
+    // var node = e.data.node
 }
 export function syncGraphWithNode(treeId){
     Trees.get(treeId).then(tree => {
@@ -335,7 +312,7 @@ export function addTreeToGraph(parentTreeId, content) {
         id: parentTreeId + "__" + newTree.id,
         source: parentTreeId,
         target: newTree.id,
-        size: 1,
+        size: 5,
         color: getTreeColor(content)
     }
     s.graph.addEdge(newEdge)
