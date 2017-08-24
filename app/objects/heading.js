@@ -11,6 +11,7 @@ export class Heading extends ContentItem {
         this.title = title;
         this.id = md5(JSON.stringify({title}));
         this.trees = {}
+        super.init()
     }
 
 }

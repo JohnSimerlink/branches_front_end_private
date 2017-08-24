@@ -1,5 +1,5 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor} from "../treesGraph"
+import {proficiencyToColor, syncGraphWithNode} from "../treesGraph"
 import {Fact} from '../../objects/fact'
 import ContentItem from '../../objects/contentItem'
 import timers from './timers'
@@ -86,15 +86,19 @@ export default {
         },
         setProficiencyToOne() {
             this.content.setProficiency(0)
+            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToTwo() {
             this.content.setProficiency(33)
+            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToThree() {
             this.content.setProficiency(66)
+            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToFour() {
             this.content.setProficiency(100)
+            syncGraphWithNode(this.tree.id)
         },
         toggleAddChild(){
             this.addingChild = !this.addingChild

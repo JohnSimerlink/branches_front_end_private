@@ -14,6 +14,7 @@ export class Fact extends ContentItem {
 
 
     if(window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+      super.init()
   }
 
   //bc certain properties used in the local js object in memory, shouldn't be stored in the db
