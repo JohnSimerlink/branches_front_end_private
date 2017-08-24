@@ -14,6 +14,7 @@ html, .tree, button {
 #graph-container {
     height: 600px;
     background-color: lightgray;
+    cursor: grab;
 }
 
 .sigma-tooltip {
@@ -132,6 +133,7 @@ html, .tree, button {
     justify-content: center;
 }
 .tree {
+    cursor: default;
     padding: 4px;
     width: 320px;
     border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
@@ -144,6 +146,10 @@ html, .tree, button {
 }
 .tree-current-fact-question {
     padding-bottom: 4px;
+}
+/*todo replace below with a class for the tree html component*/
+button {
+    cursor: pointer;
 }
 .header-photo {
     width: 25px;

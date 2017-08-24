@@ -99,6 +99,7 @@
           sigma.utils.mouseCoords(e));
 
         if (_isMouseDown) {
+          PubSub.publish('canvas.dragStart')
           _isMoving = true;
           _hasDragged = true;
 
@@ -151,6 +152,7 @@
     function _upHandler(e) {
       if (_settings('mouseEnabled') && _isMouseDown) {
         _isMouseDown = false;
+        PubSub.publish('canvas.dragStop')
         if (_movingTimeoutId)
           clearTimeout(_movingTimeoutId);
 

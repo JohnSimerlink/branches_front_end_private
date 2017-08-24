@@ -21,7 +21,6 @@ export default {
             self.user = user
             self.username = user.fbData.displayName
             self.photoURL = user.fbData.photoURL
-            // console.log('user fbdata is',user.fbData)
             //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
             Users.get(user.getId()).then(user => {
                 self.items = user.items
