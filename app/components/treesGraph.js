@@ -133,7 +133,6 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
  * @returns {*}
  */
 function getTreeColor(content) {
-    console.log('get treecolor content is', content)
     let proficiency = content.userProficiencyMap && content.userProficiencyMap[user.getId()]
     return proficiency >= 0 ? proficiencyToColor(proficiency) : Globals.colors.proficiency_unknown
 }

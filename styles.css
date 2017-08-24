@@ -138,6 +138,7 @@ html, .tree, button {
     width: 320px;
     border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
 }
+
 .tree-edit-button {
     cursor: pointer;
 }
@@ -166,4 +167,18 @@ button {
     border-top: 2px dotted #fff;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.exercise-creator-body {
+    display: flex;
+    flex-direction: row;
+}
+.exercise-creator-content-list {
+    flex: 30;
+}
+.exercise-creator-new-exercise {
+    flex: 30;
+}
+.exercise-creator-exercise-list {
+    flex: 30;
 }
