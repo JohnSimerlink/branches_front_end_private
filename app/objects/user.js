@@ -31,7 +31,6 @@ class User {
   }
 
   setItemProperties(itemId, obj){
-    console.log('=============user.setItemProperties just called for' + this.getId() + '=============')
 
     this.branchesData.items[itemId] = this.branchesData.items[itemId] || {}
     for (let prop in obj){
