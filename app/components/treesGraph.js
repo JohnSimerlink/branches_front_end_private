@@ -133,6 +133,7 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
  * @returns {*}
  */
 function getTreeColor(content) {
+    console.log('get treecolor content is', content)
     let proficiency = content.userProficiencyMap && content.userProficiencyMap[user.getId()]
     return proficiency >= 0 ? proficiencyToColor(proficiency) : Globals.colors.proficiency_unknown
 }
@@ -250,12 +251,17 @@ function hoverOverNode(e){
 }
 export function syncGraphWithNode(treeId){
     Trees.get(treeId).then(tree => {
-        var sigmaNode = s.graph.nodes(treeId)
-        // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
-        sigmaNode.x = tree.x
-        sigmaNode.y = tree.y
-        // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
-        s.refresh()
+        ContentItem.get(tree.contentId).then(content => {
+            var sigmaNode = s.graph.nodes(treeId)
+            // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
+            sigmaNode.x = tree.x
+            sigmaNode.y = tree.y
+            var color = getTreeColor(content)
+            console.log('color for node is', color)
+            sigmaNode.color = color
+            // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
+            s.refresh()
+        })
     })
 }
 function updateTreePosition(data){

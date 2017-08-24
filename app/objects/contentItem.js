@@ -58,11 +58,21 @@ export default class ContentItem {
     static create(contentItem) {
         let updates = {};
         updates['/content/' + contentItem.id] = contentItem;
+        console.log('updates in contentItem.create are', updates)
         firebase.database().ref().update(updates);
         return contentItem;
     }
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
 
+    getDBRepresentation(){
+        return {
+            userTimeMap: this.userTimeMap,
+            userProficiencyMap: this.userProficiencyMap,
+            userInteractionsMap: this.userInteractionsMap,
+            userReviewTimeMap: this.userReviewTimeMap,
+            studiers: this.studiers,
+        }
+    }
     /**
      * Add a tree to the given content item
      * @param treeId

@@ -270,17 +270,14 @@
 
         if (nodes.length) {
           var node = nodes[0]
-          // console.log('TIMERFIX: bindEvents.js clickNode detected on ', node.id, 'and currentClickedNode is', window.currentClickedNode)
           if (node.id == window.currentClickedNode){
               // window.currentNodeClicked = true
-              // console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to true')
           } else {
               if (window.currentClickedNode != null){
                   PubSub.publish('canvas.differentNodeClicked', {oldNode: window.currentClickedNode, newNode: node.id})
               }
               window.currentClickedNode = node.id
               // window.currentNodeClicked = false
-              // console.log('TIMERFIX: bindEvents.js window.currentNodeClicked set to false')
           }
           self.dispatchEvent('clickNode', {
             node: nodes[0],
@@ -449,7 +446,6 @@
 
         // Dispatch both single and multi events:
         for (i = 0, l = newOverNodes.length; i < l; i++){
-            console.log('bindEvents.js 452: overNode called')
             var data =  {
                 node: newOverNodes[i],
                 captor: e.data
@@ -463,7 +459,6 @@
                 captor: e.data
             });
             PubSub.publish('canvas.outNode', data)
-            console.log('canvas.outNode just called')
         }
         if (newOverNodes.length)
           self.dispatchEvent('overNodes', {
