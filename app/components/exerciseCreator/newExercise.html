@@ -1,1 +1,20 @@
-<div><h3>New Exercise Form</h3></div>
+<div>
+    <h3>Create New Exercise</h3>
+    <form>
+        <div class="new-exercise-question">Question
+            <textarea v-model="question"></textarea>
+        </div>
+        <div class="new-exercise-answer">Answer
+            <textarea v-model="answer"></textarea>
+        </div>
+        <ul class="new-exercise-content-items">
+            <li class="new-exercise-content-item" v-for="item in items">
+
+            </li>
+            <li class="new-exercise-add-content-item">
+                <input type="text" v-model="newItem"><button v-on:click='addContentItem' class="new-exercise-add-content-item-button">+</button>
+            </li>
+        </ul>
+        <button class="new-exercise-submit" v-on:click="createExercise">Create Exercise</button>
+    </form>
+</div>

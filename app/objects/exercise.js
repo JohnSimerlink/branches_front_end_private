@@ -1,38 +1,39 @@
 import md5 from 'md5';
 import ContentItem from "./contentItem";
 import merge from 'lodash.merge'
+import ExerciseQA from "./exerciseQA";
 
 const exercises = {} //cache
-export class Exercise {
-
-    //question and answer can both be user generated HTML that can include image links to imgur
-    constructor ({question, answer, contents = {}}){
-        this.question = question;
-        this.answer = answer;
-        this.id = md5(JSON.stringify({question, answer}));
-        this.contents = contents
+/**
+ * abstract class - only subtypes should be instantiated
+ */
+export default class Exercise {
+    constructor ({contentItems = {}}){
+        this.contentItems = contentItems
     }
+    init(){}
     addContent(contentId){
-        this.contents[contentId] = true
+        this.contentItems[contentId] = true
     }
     getDBRepresentation(){
         return {
-            id: this.id,
-            question: this.question,
-            answer: this.answer,
-            contents: this.contents
+            contentItems: this.contentItems
         }
     }
-    static create({question, answer, contents = {}}){
-        const exercise = new Exercise({question, answer, contents})
 
+    /**
+     *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
+     * @param exercise - must be an object that is a subclass of Exercise
+     * @returns {*}
+     */
+    static create(exercise){
         let updates = {};
         updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
         console.log('updates in contentItem.create are', updates)
         firebase.database().ref().update(updates);
-        return contentItem;
-
+        return exercise;
     }
+
     static get(exerciseId) {
         if(!exerciseId){
             throw "Content.get(exerciseId) error! exerciseId empty!"
@@ -43,7 +44,12 @@ export class Exercise {
             } else {
                 firebase.database().ref('exercises/' + exerciseId).on("value", function(snapshot){
                     const exerciseData = snapshot.val()
-                    const exercise = new Exercise(exerciseData) // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
+                    let exercise;
+                    switch (exerciseData.type){
+                        case 'QA':
+                            exercise = new ExerciseQA(exerciseData)
+                            break;
+                    }
                     exercises[exercise.id] = exercise // add to cache
                     resolve(exercise)
                 }, reject)

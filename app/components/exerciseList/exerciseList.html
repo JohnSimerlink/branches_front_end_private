@@ -1,1 +1,7 @@
-<div><h3>exercise list</h3></div>
+<ul class="exercise-list">
+    <li v-for="exercise in exercises">
+        <span>Id: {{exercise.id}}</span>
+        <span v-if="exercise.type=='QA'" class="exercise-QA"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>
+    </li>
+</ul>
+

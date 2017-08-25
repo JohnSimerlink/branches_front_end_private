@@ -5,6 +5,7 @@ import ContentItem from "./contentItem";
 
 import {Fact} from './fact';
 import {Heading} from './heading';
+import {Skill} from './skill';
 
 
 export function newTree(nodeType, parentTreeId, values){
@@ -16,6 +17,9 @@ export function newTree(nodeType, parentTreeId, values){
             break;
         case 'heading':
             newContent = ContentItem.create(new Heading(values));
+            break;
+        case 'skill':
+            newContent = ContentItem.create(new Skill(values));
             break;
         default:
             newContent = ContentItem.create(new Fact(values));
