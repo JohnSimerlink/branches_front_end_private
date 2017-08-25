@@ -1,9 +1,10 @@
 import md5 from 'md5';
 import ContentItem from "./contentItem";
 import merge from 'lodash.merge'
-import ExerciseQA from "./exerciseQA";
+// import ExerciseQA from "./exerciseQA";
 
 const exercises = {} //cache
+window.exercises = exercises
 /**
  * abstract class - only subtypes should be instantiated
  */
@@ -47,7 +48,7 @@ export default class Exercise {
                     let exercise;
                     switch (exerciseData.type){
                         case 'QA':
-                            exercise = new ExerciseQA(exerciseData)
+                            // exercise = new ExerciseQA(exerciseData)
                             break;
                     }
                     exercises[exercise.id] = exercise // add to cache
@@ -58,18 +59,15 @@ export default class Exercise {
     }
     static getAll() {
         return new Promise((resolve, reject) => {
-            if (exercises[exerciseId]){
-                resolve(exercises[exerciseId])
-            } else {
-                firebase.database().ref('exercises/').on("value", function(snapshot){
-                    const exercisesData = snapshot.val()
-                    Object.keys(exercisesData).forEach(exerciseData => {
-                        const exercise = new Exercise(exerciseData) // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
-                        exercises[exercise.id] = exercise // add to cache
-                    })
-                    resolve(exercises)
-                }, reject)
-            }
+            firebase.database().ref('exercises/').on("value", function(snapshot){
+                const exercisesData = snapshot.val()
+                exercisesData &&
+                Object.keys(exercisesData).forEach(exerciseData => {
+                    const exercise = new Exercise(exerciseData) // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
+                    exercises[exercise.id] = exercise // add to cache
+                })
+                resolve(exercises)
+            }, reject)
         })
     }
 }

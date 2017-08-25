@@ -36,8 +36,7 @@ window.s = s;
 sigma.settings.font = 'Fredoka One'
 
 var newNodeXOffset = -500,
-    newNodeYOffset = 20,
-    newChildTreeSuffix = "__newChildTree";
+    newNodeYOffset = 20;
 var toolTipsConfig = {
     node: [
         {
@@ -149,6 +148,8 @@ function getLabelFromContent(content) {
             return content.question
         case "heading":
             return content.title
+        case "skill":
+            return content.title
     }
 }
 function createEdgeId(nodeOneId, nodeTwoId){
@@ -190,9 +191,6 @@ function initSigma(){
     var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
     s.refresh();
 
-    s.bind('mousedown', function(){
-    })
-    s.bind('overNode', hoverOverNode)
     initialized = true;
     initSigmaPlugins()
     PubSub.subscribe('canvas.dragStart', (eventName, data) => {
@@ -244,7 +242,6 @@ function openTooltip(node){
 
 }
 function hoverOverNode(e){
-    console.log('hoverOverNode event called', ...arguments)
     // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
     // var node = e.data.node
 }
@@ -260,7 +257,7 @@ export function syncGraphWithNode(treeId){
             sigmaNode.color = color
 
             //update the edge
-            var edgeId = tree.parentId + "__" + treeId
+            var edgeId = createEdgeId(tree.parentId, treeId)
             var sigmaEdge = s.graph.edges(edgeId)
             sigmaEdge.color = color
 
@@ -320,7 +317,7 @@ export function addTreeToGraph(parentTreeId, content) {
     s.graph.addNode(newTree);
     //3. add edge between new node and parent tree
     const newEdge = {
-        id: parentTreeId + "__" + newTree.id,
+        id: createEdgeId(parentTreeId, newTree.id),
         source: parentTreeId,
         target: newTree.id,
         size: 5,

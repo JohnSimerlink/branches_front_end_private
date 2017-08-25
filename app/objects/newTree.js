@@ -1,3 +1,4 @@
+import merge from 'lodash.merge'
 import {addTreeToGraph} from '../components/treesGraph.js'
 import {Trees} from './trees'
 
@@ -10,7 +11,7 @@ import {Skill} from './skill';
 
 export function newTree(nodeType, parentTreeId, values){
     let newContent = {};
-
+    values = merge(values, {initialParentTreeId: parentTreeId})
     switch(nodeType) {
         case 'fact':
             newContent = ContentItem.create(new Fact(values));
