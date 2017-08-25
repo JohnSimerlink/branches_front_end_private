@@ -18,6 +18,9 @@ export default {
         contentIsHeading () {
             return this.type == 'heading'
         },
+        contentIsSkill () {
+            return this.type == 'skill'
+        },
     },
     methods: {
         createNewTree() {
@@ -29,6 +32,9 @@ export default {
                 case 'heading':
                     contentArgs = {title: this.title}
                     break;
+                case 'skill':
+                    contentArgs = {title: this.title}
+                    break;
             }
             newTree(this.type, this.parentid, contentArgs)
         },
@@ -37,6 +43,9 @@ export default {
         },
         setTypeToFact() {
             this.type = 'fact'
+        },
+        setTypeToSkill() {
+            this.type = 'skill'
         }
     }
 }
