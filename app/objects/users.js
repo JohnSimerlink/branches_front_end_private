@@ -16,7 +16,7 @@ export default class Users {
                 resolve(users[userId])
                 console.log('user found in cache')
             } else {
-                firebase.database().ref('users/' + userId).on("value", function onFirebaseUserGet(snapshot){
+                firebase.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot){
                     let userData = snapshot.val();
                     users[userId] = userData // add to cache
                     resolve(userData)

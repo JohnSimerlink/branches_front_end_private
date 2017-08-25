@@ -2,7 +2,7 @@ import {newTree} from '../../objects/newTree.js'
 //temporary hacky solution for controller
 export default {
     template: require('./newTree.html'),
-    props: ['parentid'],
+    props: ['parentid','initialparenttreecontenturi'],
     data () {
         return {
             question: '',
@@ -27,16 +27,16 @@ export default {
             let contentArgs;
             switch(this.type) {
                 case 'fact':
-                    contentArgs = {question: this.question, answer: this.answer}
+                    contentArgs = {question: this.question.trim(), answer: this.answer.trim()}
                     break;
                 case 'heading':
-                    contentArgs = {title: this.title}
+                    contentArgs = {title: this.title.trim()}
                     break;
                 case 'skill':
-                    contentArgs = {title: this.title}
+                    contentArgs = {title: this.title.trim()}
                     break;
             }
-            newTree(this.type, this.parentid, contentArgs)
+            newTree(this.type, this.parentid, initialParentTreeContentURI, contentArgs)
         },
         setTypeToHeading() {
             this.type = 'heading'

@@ -1,5 +1,5 @@
 import {Trees} from '../objects/trees.js'
-import ContentItem from '../objects/contentItem'
+import ContentItems from '../objects/contentItems'
 import {Tree} from '../objects/tree.js'
 import {Globals} from '../core/globals.js'
 import '../core/login.js'
@@ -74,7 +74,7 @@ function loadTreeAndSubTrees(treeId, level){
 }
 
 function onGetTree(tree, level) {
-    var contentPromise = ContentItem.get(tree.contentId)
+    var contentPromise = ContentItems.get(tree.contentId)
         .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
 
     var childTreesPromises = tree.children ? Object.keys(tree.children).map((child) => {
@@ -247,7 +247,7 @@ function hoverOverNode(e){
 }
 export function syncGraphWithNode(treeId){
     Trees.get(treeId).then(tree => {
-        ContentItem.get(tree.contentId).then(content => {
+        ContentItems.get(tree.contentId).then(content => {
             //update the node
             var sigmaNode = s.graph.nodes(treeId)
             // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)

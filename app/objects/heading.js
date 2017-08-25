@@ -1,24 +1,17 @@
 import md5 from 'md5';
 import ContentItem from "./contentItem";
 import merge from 'lodash.merge'
-import {calculateURI_skill_or_heading} from "./skill";
 
 export class Heading extends ContentItem {
-    constructor ({title, initialParentTreeId}){
-        if (initialParentTreeId){
-            super({initialParentTreeId})
-        } else {
-            super()
-        }
+    constructor (args /*={title, initialParentTreeId} and more */){
+        super(args)
         this.type = 'heading';
 
-        this.title = title;
-        this.id = md5(JSON.stringify({title,initialParentTreeId}));
+        this.title = args.title && args.title.trim();
+        this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId: args.initialParentTreeId}));
+        this.uri = this.initialParentTreeContentURI + "/" +encodeURIComponent(this.title)
+        console.log('this heading uri for ', this, 'is ',this.uri)
         super.init()
-    }
-    calculateURI(){
-        console.log('HEADING: this.calculateURI called for ', this)
-        calculateURI_skill_or_heading.call(this)
     }
     getDBRepresentation(){
         var baseRep = super.getDBRepresentation()

@@ -43,7 +43,7 @@ export default class Exercise {
             if (exercises[exerciseId]){
                 resolve(exercises[exerciseId])
             } else {
-                firebase.database().ref('exercises/' + exerciseId).on("value", function(snapshot){
+                firebase.database().ref('exercises/' + exerciseId).once("value", function(snapshot){
                     const exerciseData = snapshot.val()
                     let exercise;
                     switch (exerciseData.type){
@@ -59,7 +59,7 @@ export default class Exercise {
     }
     static getAll() {
         return new Promise((resolve, reject) => {
-            firebase.database().ref('exercises/').on("value", function(snapshot){
+            firebase.database().ref('exercises/').once("value", function(snapshot){
                 const exercisesData = snapshot.val()
                 exercisesData &&
                 Object.keys(exercisesData).forEach(exerciseData => {

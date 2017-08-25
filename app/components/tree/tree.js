@@ -1,8 +1,7 @@
 import {Trees} from '../../objects/trees'
 import {proficiencyToColor, syncGraphWithNode} from "../treesGraph"
 import {Fact} from '../../objects/fact'
-import ContentItem from '../../objects/contentItem'
-import timers from './timers'
+import ContentItems from '../../objects/contentItems'
 
 import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
@@ -21,7 +20,7 @@ export default {
         this.nodeBeingDragged = false
         Trees.get(this.id).then(tree => {
             me.tree = tree
-            ContentItem.get(tree.contentId).then(content => {
+            ContentItems.get(tree.contentId).then(content => {
                 me.content = content
                 console.log('content uri in tree.js is', content.uri)
                 // console.log('this.content in tree.js is ', me.content)
@@ -109,10 +108,10 @@ export default {
             switch (this.tree.contentType){
                 case 'fact':
                     var fact = new Fact({question: this.content.question, answer: this.content.answer})
-                    this.content = ContentItem.create(fact)
+                    this.content = ContentItems.create(fact)
                     break;
                 case 'heading':
-                    this.content = ContentItem.create(new Heading({title: this.content.title}))
+                    this.content = ContentItems.create(new Heading({title: this.content.title}))
                     break;
             }
             this.content.addTree(this.id)
