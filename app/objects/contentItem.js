@@ -9,101 +9,38 @@ export default class ContentItem {
 
     constructor(args) {
         this.initialParentTreeId = this.initialParentTreeId || (args && args.initialParentTreeId) || null
-    }
-    init () {
-        this.trees = this.trees || {}
+        this.initialParentTreeContentURI = this.initialParentTreeContentURI || (args && args.initialParentTreeContentURI) || null
+        this.trees = args.trees || {}
 
-        this.userTimeMap = this.userTimeMap || {} ;
+        this.userTimeMap = args.userTimeMap || {} ;
         this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
         this.timerId = null;
 
-        this.userProficiencyMap = this.userProficiencyMap || {}
+        this.userProficiencyMap = args.userProficiencyMap || {}
         this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || 0
 
-        this.userInteractionsMap = this.userInteractionsMap || {}
+        this.userInteractionsMap = args.userInteractionsMap || {}
         this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
 
-        this.userReviewTimeMap = this.userReviewTimeMap || {}
+        this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
 
-        this.studiers = this.studiers || {}
+        this.studiers = args.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
 
-        this.exercises = this.exercises || {}
+        this.exercises = args.exercises || {}
 
-        this.uri = this.uri || null
-        if (!this.uri){
-            console.log('this uri does not exist', this)
-            this.calculateURI()
-        } else {
-            console.log('this uri does exist')
-        }
+        this.uri = args.uri || null
+    }
+    init () {
     }
 
-    static get(contentId) {
-        if(!contentId){
-            throw "Content.get(contentId) error! contentId empty!"
-        }
-        return new Promise((resolve, reject) => {
-            if (content[contentId]){
-                resolve(content[contentId])
-            } else {
-                firebase.database().ref('content/' + contentId).on("value", function(snapshot){
-                    const contentData = snapshot.val()
-                    const contentItem = new ContentItem() // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
-                    for (let prop in contentData){ //copy over data into this new typed object
-                        if (!prop) continue //in case prop is undefined, which has happened before
-                        contentItem[prop] = contentData[prop]
-                    }
-                    contentItem.init() // post constructor
-
-                    content[contentItem.id] = contentItem // add to cache
-                    resolve(contentItem)
-                }, reject)
-            }
-        })
-    }
-    static getAll() {
-        return new Promise((resolve, reject) => {
-            firebase.database().ref('content/').on("value", function(snapshot){
-                const contentData = snapshot.val()
-                Object.keys(contentData).forEach(contentDatumKey => {
-                    const contentDatum = contentData[contentDatumKey]
-                    if (!contentDatum) return // in case contentDatum is undefined which has happened before
-                    switch (contentDatum.type){
-
-                    }
-                    const contentItem = new ContentItem() // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
-                    for (let prop in contentDatum){ //copy over data into this new typed object
-                        if (!prop) continue //in case prop is undefined, which has happened before
-                        contentItem[prop] = contentDatum[prop]
-                    }
-                    contentItem.init() // post constructor
-
-                    content[contentItem.id] = contentItem // add to cache
-                })
-                resolve(content)
-            }, reject)
-        })
-    }
-
-    /**
-     * Create a new content object in the database
-     * @param contentItem
-     * @returns newly created contentItem
-     */
-    static create(contentItem) {
-        let updates = {};
-        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates, contentItem, contentItem.getDBRepresentation())
-        firebase.database().ref().update(updates);
-        return contentItem;
-    }
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
 
     getDBRepresentation(){
         return {
             initialParentTreeId: this.initialParentTreeId,
+            initialParentTreeContentURI: this.initialParentTreeContentURI,
             userTimeMap: this.userTimeMap,
             userProficiencyMap: this.userProficiencyMap,
             userInteractionsMap: this.userInteractionsMap,
@@ -112,10 +49,6 @@ export default class ContentItem {
             exercises: this.exercises,
             uri: this.uri,
         }
-    }
-    //abstract -used by children onlyk
-    calculateURI(){
-
     }
     /**
      * Add a tree to the given content item

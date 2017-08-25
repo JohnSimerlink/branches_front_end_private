@@ -11,23 +11,20 @@ export class Skill extends ContentItem {
      * ^^ Both skills are different, but have the same title: "1st Person Plural"
      * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
    */
-    constructor ({title, initialParentTreeId}){
-        if (initialParentTreeId){
-            super({initialParentTreeId})
-        } else {
-            super()
-        }
+    constructor (args /* ={title, initialParentTreeId} */){
+        // if (initialParentTreeId){
+        //     super({initialParentTreeId})
+        // } else {
+        //     super()
+        // }
+        super(args)
         this.type = 'skill';
 
-        this.title = title;
+        this.title = args.title && args.title.trim();
         // this.calculateLongURI
-        this.id = md5(JSON.stringify({title,initialParentTreeId}));
+        this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId:args.initialParentTreeId}));
+        this.uri = this.initialParentTreeContentURI + "/" +encodeURIComponent(this.title)
         super.init()
-    }
-    //returns a promise and stores value in db
-    calculateURI(){
-        console.log('SKILL: this.calculateURI called for ', this)
-        calculateURI_skill_or_heading.call(this)
     }
 
     getDBRepresentation(){
@@ -43,24 +40,3 @@ export class Skill extends ContentItem {
     }
 }
 
-export function calculateURI_skill_or_heading(){
-
-    const me = this
-    return new Promise((resolve, reject) => {
-        if (me.uri){
-            resolve(uri) //property already calculated - no need to save it in dbh
-        } else {
-            Trees.get(me.initialParentTreeId).then(parentTree => {
-                ContentItem.get(parentTree.contentId).then(parentContentItem => {
-                    let uri;
-                    parentContentItem.calculateURI().then(parentURI => {
-                        uri = parentURI + "/" + me.title
-                        me.setProperty('uri',uri)
-                        console.log('the uri calculated for ',this, ' is', uri)
-                        resolve(uri)
-                    })
-                })
-            })
-        }
-    })
-}

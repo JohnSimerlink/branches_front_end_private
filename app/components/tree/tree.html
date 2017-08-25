@@ -50,6 +50,6 @@
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParent" ></i>
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
-        <newtree :parentid="id" v-show="addingChild"></newtree>
+        <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild"></newtree>
     </div>
 </div>

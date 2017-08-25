@@ -18,7 +18,7 @@ export class Trees {
             if (trees[treeId]){
                 resolve(trees[treeId])
             } else {
-                firebase.database().ref('trees/' + treeId).on("value", function onFirebaseTreeGet(snapshot){
+                firebase.database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot){
                     let treeData = snapshot.val();
                     var tree = new Tree(treeData)
                     trees[tree.id] = tree // add to cache
