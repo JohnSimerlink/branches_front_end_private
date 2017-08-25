@@ -1,19 +1,19 @@
 import Exercise from "../../objects/exercise";
-import ExerciseQA from "../../objects/exerciseQA";
+// import ExerciseQA from "../../objects/exerciseQA";
 
 export default {
     template: require('./newExercise.html'),
     created () {
         var me = this
         this.items = {}
-        this.item=""
+        this.newItem=""
         this.question=""
         this.answer=""
     },
     data () {
         return {
             items: this.items,
-            item: this.item,
+            newItem: this.newItem,
             question: this.question,
             answer: this.answer
         }
@@ -26,7 +26,7 @@ export default {
         },
         createExercise() {
            //TODO allow creation of other types of exercises than QA
-           ExerciseQA.create({question: this.question, answer: this.answer, contentItems:this.items})
+           // ExerciseQA.create({question: this.question, answer: this.answer, contentItems:this.items})
         }
     },
     computed : {

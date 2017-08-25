@@ -23,6 +23,7 @@ export default {
             me.tree = tree
             ContentItem.get(tree.contentId).then(content => {
                 me.content = content
+                console.log('content uri in tree.js is', content.uri)
                 // console.log('this.content in tree.js is ', me.content)
                 me.startTimer()
             })

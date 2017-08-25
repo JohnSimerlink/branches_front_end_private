@@ -7,7 +7,8 @@ import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 export default class ContentItem {
 
-    constructor() {
+    constructor(args) {
+        this.initialParentTreeId = this.initialParentTreeId || (args && args.initialParentTreeId) || null
     }
     init () {
         this.trees = this.trees || {}
@@ -29,6 +30,14 @@ export default class ContentItem {
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
 
         this.exercises = this.exercises || {}
+
+        this.uri = this.uri || null
+        if (!this.uri){
+            console.log('this uri does not exist', this)
+            this.calculateURI()
+        } else {
+            console.log('this uri does exist')
+        }
     }
 
     static get(contentId) {
@@ -61,6 +70,9 @@ export default class ContentItem {
                 Object.keys(contentData).forEach(contentDatumKey => {
                     const contentDatum = contentData[contentDatumKey]
                     if (!contentDatum) return // in case contentDatum is undefined which has happened before
+                    switch (contentDatum.type){
+
+                    }
                     const contentItem = new ContentItem() // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
                     for (let prop in contentDatum){ //copy over data into this new typed object
                         if (!prop) continue //in case prop is undefined, which has happened before
@@ -83,7 +95,7 @@ export default class ContentItem {
     static create(contentItem) {
         let updates = {};
         updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates)
+        console.log('updates in contentItem.create are', updates, contentItem, contentItem.getDBRepresentation())
         firebase.database().ref().update(updates);
         return contentItem;
     }
@@ -91,13 +103,19 @@ export default class ContentItem {
 
     getDBRepresentation(){
         return {
+            initialParentTreeId: this.initialParentTreeId,
             userTimeMap: this.userTimeMap,
             userProficiencyMap: this.userProficiencyMap,
             userInteractionsMap: this.userInteractionsMap,
             userReviewTimeMap: this.userReviewTimeMap,
             studiers: this.studiers,
             exercises: this.exercises,
+            uri: this.uri,
         }
+    }
+    //abstract -used by children onlyk
+    calculateURI(){
+
     }
     /**
      * Add a tree to the given content item
