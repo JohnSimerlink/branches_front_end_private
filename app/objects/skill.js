@@ -23,10 +23,12 @@ export class Skill extends ContentItem {
         this.title = args.title && args.title.trim();
         // this.calculateLongURI
         this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId:args.initialParentTreeId}));
-        this.uri = this.initialParentTreeContentURI + "/" +encodeURIComponent(this.title)
         super.init()
     }
 
+    getURIAddition(){
+        return "/" + encodeURIComponent(this.title)
+    }
     getDBRepresentation(){
         var baseRep = super.getDBRepresentation()
 

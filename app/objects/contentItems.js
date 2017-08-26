@@ -47,7 +47,14 @@ export default class ContentItems {
         return new Promise((resolve, reject) => {
             firebase.database().ref('content/').once("value", function(snapshot){
                 const contentData = snapshot.val()
-                Object.keys(contentData).forEach(contentDatumKey => {
+                Object.keys(contentData).filter(contentDatumKey => {
+                    const uri = contentData[contentDatumKey].uri
+                    if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                        return false
+                    }
+                    return true
+                }).
+                forEach(contentDatumKey => {
                     const contentDatum = contentData[contentDatumKey]
                     if (!contentDatum) return // in case contentDatum is undefined which has happened before
                     let contentItem = createContentItemFromData(contentDatum,contentDatumKey)
@@ -70,3 +77,5 @@ export default class ContentItems {
         return contentItem;
     }
 }
+
+window.ContentItems = ContentItems
