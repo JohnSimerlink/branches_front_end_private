@@ -9,9 +9,10 @@ export class Heading extends ContentItem {
 
         this.title = args.title && args.title.trim();
         this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId: args.initialParentTreeId}));
-        this.uri = this.initialParentTreeContentURI + "/" +encodeURIComponent(this.title)
-        console.log('this heading uri for ', this, 'is ',this.uri)
         super.init()
+    }
+    getURIAddition(){
+        return "/" + encodeURIComponent(this.title)
     }
     getDBRepresentation(){
         var baseRep = super.getDBRepresentation()

@@ -1,6 +1,3 @@
-//import {offlineFacts} from '../static/of'
-//import getFirebase from './firebaseService.js'
-//const firebase = getFirebase();
 const content = {}
 window.content = content //expose to window for easy debugging
 import user from './user'
@@ -33,6 +30,7 @@ export default class ContentItem {
         this.uri = args.uri || null
     }
     init () {
+        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -49,6 +47,56 @@ export default class ContentItem {
             exercises: this.exercises,
             uri: this.uri,
         }
+    }
+    getURIAddition(){
+
+    }
+    //removes the prefix "content/
+    getURIWithoutRootElement(){
+        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
+    }
+    getBreadCrumbs(){
+        let sections = this.getURIWithoutRootElement().split("/")
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        let sectionsResult = sections.reduce((accum, val) => {
+            if (val == "null"){
+                console.log('val was null')
+                return accum
+            } else {
+                console.log('val was not null. it was', val)
+            }
+            if (val == "content"){
+                console.log('val was content')
+                return accum
+            } else {
+                console.log('val was not content. it was', val)
+            }
+            return accum + " > " + decodeURIComponent(val)
+        } )
+        return sectionsResult
+        // console.log('breadcrumb result is', sectionsResult)
+        //
+        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
+        //     return total + decodeURIComponent(section) + " > "
+        // },"")
+        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
+        // return breadcrumbs
+    }
+    /**
+     * Used to update tree X and Y coordinates
+     * @param prop
+     * @param val
+     */
+    set(prop, val){
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {}
+        updates[prop] = val
+        // this.treeRef.update(updates)
+        firebase.database().ref('content/' +this.id).update(updates)
+        this[prop] = val
     }
     /**
      * Add a tree to the given content item

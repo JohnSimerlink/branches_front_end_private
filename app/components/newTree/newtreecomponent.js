@@ -1,4 +1,6 @@
 import {newTree} from '../../objects/newTree.js'
+import {Trees} from "../../objects/trees";
+import ContentItems from "../../objects/contentItems";
 //temporary hacky solution for controller
 export default {
     template: require('./newTree.html'),
@@ -36,7 +38,7 @@ export default {
                     contentArgs = {title: this.title.trim()}
                     break;
             }
-            newTree(this.type, this.parentid, initialParentTreeContentURI, contentArgs)
+            newTree(this.type, this.parentid, this.initialparenttreecontenturi, contentArgs)
         },
         setTypeToHeading() {
             this.type = 'heading'
@@ -48,4 +50,37 @@ export default {
             this.type = 'skill'
         }
     }
+}
+
+function establishURIs(){
+    console.log("establish URIs called")
+    Trees.get(1).then(tree => {
+        console.log('tree gotten for id 1 is', tree, tree.contentId)
+       ContentItems.get(tree.contentId).then(contentItem => {
+           console.log('contentItem gotten is', contentItem)
+           contentItem.set('uri', 'content/' + contentItem.title)
+           contentItem.set('initialParentTreeId', null)
+           contentItem.set('initialParentTreeContentURI', null)
+       }).then(() => {
+           tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
+       })
+    })
+}
+
+console.log('establish URIs is', establishURIs, window.establishURIs)
+
+function establishURIForContentAndThenAllChildren(treeId){
+    console.log('establish URI called for', treeId)
+   Trees.get(treeId).then(tree => {
+       Trees.get(tree.parentId).then(parentTree => {
+           ContentItems.get(parentTree.contentId).then(parentContentItem => {
+               ContentItems.get(tree.contentId).then(contentItem => {
+                   contentItem.set('uri', parentContentItem.uri + contentItem.getURIAddition())
+                   contentItem.set('initialParentTreeId', parentTree.id)
+                   contentItem.set('initialParentTreeContentURI', parentTree.uri)
+                   tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
+               })
+           })
+       })
+   })
 }
