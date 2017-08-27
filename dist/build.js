@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 171);
+/******/ 	return __webpack_require__(__webpack_require__.s = 173);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(210)("./" + name);
+            __webpack_require__(213)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(213)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(160)(module)))
 
 /***/ }),
 /* 1 */
@@ -4686,7 +4686,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(12);
+var _constants = __webpack_require__(14);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4872,10 +4872,8 @@ function internalError(message) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pubsub_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__users__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(16);
 
 
 
@@ -4887,11 +4885,10 @@ class User {
     const self = this;
     __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */].auth().onAuthStateChanged(function (user) {
       if (user) {
-        console.log('USER.js user just logged in in firebase auth state changed');
-        __WEBPACK_IMPORTED_MODULE_1_pubsub_js___default.a.publish('login');
+        PubSub.publish('login');
         self.loggedIn = true;
         self.fbData = user;
-        __WEBPACK_IMPORTED_MODULE_2__users__["a" /* default */].get(self.getId()).then(user => {
+        __WEBPACK_IMPORTED_MODULE_1__users__["a" /* default */].get(self.getId()).then(user => {
 
           self.branchesData = user || {};
 
@@ -4899,9 +4896,7 @@ class User {
           // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
         });
       } else {
-        console.log('USER.js user is not logged in');
         self.loggedIn = false;
-        // No user is signed in.
       }
     });
   }
@@ -4909,20 +4904,7 @@ class User {
     return this.fbData.uid;
   }
 
-  // addItemReviewTime(itemReviewTime){
-  //   console.log('=============user.addItemReviewTime just called=============')
-  //   this.branchesData.itemReviewTimeMap[itemReviewTime.id] = itemReviewTime.nextReviewTime
-  //
-  //     this.branchesData.items[]
-  //   var items = {}
-  //
-  //   let updates = {
-  //     itemReviewTimeMap: this.branchesData.itemReviewTimeMap
-  //   }
-  //   firebase.database().ref('users/' + this.getId()).update(updates)
-  // }
   setItemProperties(itemId, obj) {
-    console.log('=============user.setItemProperties just called for' + this.getId() + '=============');
 
     this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
     for (let prop in obj) {
@@ -4957,7 +4939,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(20);
+var _shared_promise = __webpack_require__(18);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -5075,6 +5057,391 @@ function clone(obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["d"] = removeTreeFromGraph;
+/* harmony export (immutable) */ __webpack_exports__["c"] = proficiencyToColor;
+/* harmony export (immutable) */ __webpack_exports__["a"] = syncGraphWithNode;
+/* harmony export (immutable) */ __webpack_exports__["b"] = addTreeToGraph;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_login_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_user__ = __webpack_require__(3);
+
+
+
+
+
+
+
+
+var initialized = false;
+var s,
+    g = {
+    nodes: [],
+    edges: []
+},
+    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
+    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
+
+window.g = g;
+window.s = s;
+sigma.settings.font = 'Fredoka One';
+
+var newNodeXOffset = -500,
+    newNodeYOffset = 20,
+    newChildTreeSuffix = "__newChildTree";
+var toolTipsConfig = {
+    node: [{
+        show: 'rightClickNode',
+        cssClass: 'sigma-tooltip',
+        position: 'right',
+        template: '',
+        renderer: function (node, template) {
+            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
+            switch (node.type) {
+                case 'tree':
+                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                    break;
+                case 'newChildTree':
+                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                    break;
+            }
+            var result = Mustache.render(template, node);
+
+            return result;
+        }
+    }]
+    // stage: {
+    //     template:require('./rightClickMenu.html')
+    // }
+};
+loadTreeAndSubTrees(1, 1).then(val => {
+    initSigma();
+});
+function loadTreeAndSubTrees(treeId, level) {
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        return onGetTree(tree, level);
+    }).catch(err => console.error('trees get err is', err));
+}
+
+function onGetTree(tree, level) {
+    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
+        return addTreeNodeToGraph(tree, content, level);
+    });
+
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
+        return loadTreeAndSubTrees(child, level + 1);
+    }) : [];
+    //     loadTreeAndSubTrees
+    // }) : []
+    var promises = childTreesPromises;
+    promises.push(contentPromise);
+
+    return Promise.all(promises);
+}
+
+function addTreeNodeToGraph(tree, content, level) {
+    const treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
+
+    g.nodes.push(treeUINode);
+    connectTreeToParent(tree, content, g);
+    return content.id;
+}
+
+function removeTreeFromGraph(treeId) {
+    s.graph.dropNode(treeId);
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
+        return Promise.all(childPromises).then(val => {
+            s.refresh();
+            return `removed all children of ${treeId}`;
+        });
+    });
+}
+
+//recursively load the entire tree
+// Instantiate sigma:
+function createTreeNodeFromTreeAndContent(tree, content, level) {
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        level,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        content: content,
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree'
+    };
+    return node;
+}
+/**
+ * Get tree colors for descending proficiency levels. Default to "existing node" color
+ * @param tree
+ * @returns {*}
+ */
+function getTreeColor(content) {
+    console.log('get treecolor content is', content);
+    let proficiency = content.userProficiencyMap && content.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */].getId()];
+    return proficiency >= 0 ? proficiencyToColor(proficiency) : __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown;
+}
+
+function proficiencyToColor(proficiency) {
+    if (proficiency >= 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_4;
+    if (proficiency >= 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_3;
+    if (proficiency >= 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_2;
+    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
+}
+function getLabelFromContent(content) {
+    switch (content.type) {
+        case "fact":
+            return content.question;
+        case "heading":
+            return content.title;
+    }
+}
+function createEdgeId(nodeOneId, nodeTwoId) {
+    return nodeOneId + "__" + nodeTwoId;
+}
+function connectTreeToParent(tree, content, g) {
+    if (tree.parentId) {
+        const edge = {
+            id: createEdgeId(tree.parentId, tree.id),
+            source: tree.parentId,
+            target: tree.id,
+            size: 5,
+            color: getTreeColor(content)
+        };
+        g.edges.push(edge);
+    }
+}
+//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
+function initSigma() {
+    if (initialized) return;
+
+    sigma.renderers.def = sigma.renderers.canvas;
+    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable;
+    s = new sigma({
+        graph: g,
+        container: 'graph-container',
+        glyphScale: 0.7,
+        glyphFillColor: '#666',
+        glyphTextColor: 'white',
+        glyphStrokeColor: 'transparent',
+        glyphFont: 'FontAwesome',
+        glyphFontStyle: 'normal',
+        glyphTextThreshold: 6,
+        glyphThreshold: 3
+
+    });
+    window.s = s;
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    s.refresh();
+
+    s.bind('mousedown', function () {});
+    s.bind('overNode', hoverOverNode);
+    initialized = true;
+    initSigmaPlugins();
+    PubSub.subscribe('canvas.dragStart', (eventName, data) => {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'grabbing';
+    });
+    PubSub.subscribe('canvas.dragStop', (eventName, data) => {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'grab';
+    });
+    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
+        // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
+    });
+    PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
+        // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
+        updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
+    });
+    PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
+        var node = data;
+        openTooltip(node);
+    });
+    PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
+        PubSub.publish('canvas.closeTooltip', data);
+    });
+    PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
+        PubSub.publish('canvas.closeTooltip', data);
+    });
+    PubSub.subscribe('canvas.overNode', function (eventName, data) {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'pointer';
+    });
+    PubSub.subscribe('canvas.outNode', function (eventName, data) {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'grab';
+    });
+}
+function printNodeInfo(e) {
+    console.log(e, e.data.node);
+}
+function openTooltip(node) {
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function () {
+        var vm = new __WEBPACK_IMPORTED_MODULE_5_vue__["a" /* default */]({
+            el: '#vue'
+        });
+    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+
+    );
+}
+function hoverOverNode(e) {
+    console.log('hoverOverNode event called', ...arguments
+    // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
+    // var node = e.data.node
+    );
+}
+function syncGraphWithNode(treeId) {
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
+            //update the node
+            var sigmaNode = s.graph.nodes(treeId
+            // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
+            );sigmaNode.x = tree.x;
+            sigmaNode.y = tree.y;
+            var color = getTreeColor(content);
+            sigmaNode.color = color;
+
+            //update the edge
+            var edgeId = tree.parentId + "__" + treeId;
+            var sigmaEdge = s.graph.edges(edgeId);
+            sigmaEdge.color = color;
+
+            // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
+            s.refresh();
+        });
+    });
+}
+function updateTreePosition(data) {
+    let { newX, newY, treeId } = data;
+    // console.log('update tree position called!', newX, newY, treeId, data)
+    // let newX = e.data.node.x
+    // let newY = e.data.node.y
+    // let treeId = e.data.node.id;
+
+    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
+        return; //node isn't an actual node in the db - its like a shadow node or helper node
+    }
+    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20;
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        let deltaX = newX - tree.x;
+        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.addToX({ recursion: true, deltaX });
+        }
+        let deltaY = newY - tree.y;
+        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.addToY({ recursion: true, deltaY });
+        }
+        return tree;
+    });
+}
+
+//returns sigma tree node
+function addTreeToGraph(parentTreeId, content) {
+    //1. delete current addNewNode button
+    var parentTree = s.graph.nodes(parentTreeId);
+    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
+    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY);
+    //2. add new node to parent tree on UI
+    const newTree = {
+        id: tree.id,
+        parentId: parentTreeId,
+        contentId: content.id,
+        content: content,
+        x: newChildTreeX,
+        y: newChildTreeY,
+        children: {},
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree'
+        //2b. update x and y location in the db for the tree
+
+    };s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    const newEdge = {
+        id: parentTreeId + "__" + newTree.id,
+        source: parentTreeId,
+        target: newTree.id,
+        size: 5,
+        color: getTreeColor(content)
+    };
+    s.graph.addEdge(newEdge);
+
+    s.refresh();
+    return newTree;
+}
+function initSigmaPlugins() {
+    // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
+    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
+    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
+    window.tooltips = tooltips;
+    window.jump = jumpToAndOpenTreeId;
+    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5');
+
+    var myRenderer = s.renderers[0];
+
+    // console.log('my renderenr is', myRenderer, s.renderers)
+}
+
+PubSub.subscribe('canvas.zoom', function (a, b, c, d) {
+    console.log('canvas zoom called in treesGraph js');
+}
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+);function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    let node = s.graph.nodes().find(function (node) {
+        return node.id === treeid;
+    });
+    focusNode(s.cameras[0], node);
+
+    console.log('node about to open is ', node);
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+}
+
+function focusNode(camera, node) {
+    if (!node) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    let cameraCoord = {
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
+        ratio: 0.1
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
+}
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__ = __webpack_require__(168);
 //import {offlineFacts} from '../static/of'
@@ -5088,6 +5455,8 @@ class ContentItem {
 
     constructor() {}
     init() {
+        this.trees = this.trees || {};
+
         this.userTimeMap = this.userTimeMap || {};
         this.timer = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userTimeMap && this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
         this.timerId = null;
@@ -5136,12 +5505,22 @@ class ContentItem {
      */
     static create(contentItem) {
         let updates = {};
-        updates['/content/' + contentItem.id] = contentItem;
+        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
+        console.log('updates in contentItem.create are', updates);
         firebase.database().ref().update(updates);
         return contentItem;
     }
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
 
+    getDBRepresentation() {
+        return {
+            userTimeMap: this.userTimeMap,
+            userProficiencyMap: this.userProficiencyMap,
+            userInteractionsMap: this.userInteractionsMap,
+            userReviewTimeMap: this.userReviewTimeMap,
+            studiers: this.studiers
+        };
+    }
     /**
      * Add a tree to the given content item
      * @param treeId
@@ -5169,19 +5548,18 @@ class ContentItem {
     }
     saveTimer() {
         this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
-        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap
         };
 
+        clearInterval(this.timerId);
         this.timerId = null;
         firebase.database().ref('content/' + this.id).update(updates);
     }
     addToStudyQueue() {
         //don't display nextReviewTime if not in user's study queue
         this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = true;
-        console.log('settimer for user just called on this now,', this);
 
         var updates = {
             studiers: this.studiers
@@ -5232,16 +5610,16 @@ class ContentItem {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(165);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
 
 
@@ -5256,12 +5634,12 @@ window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
 
 
 
@@ -5294,7 +5672,7 @@ class Trees {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5308,7 +5686,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(177);
+var _firebase_app = __webpack_require__(179);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -5333,570 +5711,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_RESULT__;/*
-Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
-License: MIT - http://mrgnrdrck.mit-license.org
-
-https://github.com/mroderick/PubSubJS
-*/
-(function (root, factory){
-	'use strict';
-
-	var PubSub = {};
-	root.PubSub = PubSub;
-	factory(PubSub);
-
-	// AMD support
-	if (true){
-		!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-	// CommonJS and Node.js module support
-	} else if (typeof exports === 'object'){
-		if (module !== undefined && module.exports) {
-			exports = module.exports = PubSub; // Node.js specific `module.exports`
-		}
-		exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
-		module.exports = exports = PubSub; // CommonJS
-	}
-
-}(( typeof window === 'object' && window ) || this, function (PubSub){
-	'use strict';
-
-	var messages = {},
-		lastUid = -1;
-
-	function hasKeys(obj){
-		var key;
-
-		for (key in obj){
-			if ( obj.hasOwnProperty(key) ){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 *	Returns a function that throws the passed exception, for use as argument for setTimeout
-	 *	@param { Object } ex An Error object
-	 */
-	function throwException( ex ){
-		return function reThrowException(){
-			throw ex;
-		};
-	}
-
-	function callSubscriberWithDelayedExceptions( subscriber, message, data ){
-		try {
-			subscriber( message, data );
-		} catch( ex ){
-			setTimeout( throwException( ex ), 0);
-		}
-	}
-
-	function callSubscriberWithImmediateExceptions( subscriber, message, data ){
-		subscriber( message, data );
-	}
-
-	function deliverMessage( originalMessage, matchedMessage, data, immediateExceptions ){
-		var subscribers = messages[matchedMessage],
-			callSubscriber = immediateExceptions ? callSubscriberWithImmediateExceptions : callSubscriberWithDelayedExceptions,
-			s;
-
-		if ( !messages.hasOwnProperty( matchedMessage ) ) {
-			return;
-		}
-
-		for (s in subscribers){
-			if ( subscribers.hasOwnProperty(s)){
-				callSubscriber( subscribers[s], originalMessage, data );
-			}
-		}
-	}
-
-	function createDeliveryFunction( message, data, immediateExceptions ){
-		return function deliverNamespaced(){
-			var topic = String( message ),
-				position = topic.lastIndexOf( '.' );
-
-			// deliver the message as it is now
-			deliverMessage(message, message, data, immediateExceptions);
-
-			// trim the hierarchy and deliver message to each level
-			while( position !== -1 ){
-				topic = topic.substr( 0, position );
-				position = topic.lastIndexOf('.');
-				deliverMessage( message, topic, data, immediateExceptions );
-			}
-		};
-	}
-
-	function messageHasSubscribers( message ){
-		var topic = String( message ),
-			found = Boolean(messages.hasOwnProperty( topic ) && hasKeys(messages[topic])),
-			position = topic.lastIndexOf( '.' );
-
-		while ( !found && position !== -1 ){
-			topic = topic.substr( 0, position );
-			position = topic.lastIndexOf( '.' );
-			found = Boolean(messages.hasOwnProperty( topic ) && hasKeys(messages[topic]));
-		}
-
-		return found;
-	}
-
-	function publish( message, data, sync, immediateExceptions ){
-		var deliver = createDeliveryFunction( message, data, immediateExceptions ),
-			hasSubscribers = messageHasSubscribers( message );
-
-		if ( !hasSubscribers ){
-			return false;
-		}
-
-		if ( sync === true ){
-			deliver();
-		} else {
-			setTimeout( deliver, 0 );
-		}
-		return true;
-	}
-
-	/**
-	 *	PubSub.publish( message[, data] ) -> Boolean
-	 *	- message (String): The message to publish
-	 *	- data: The data to pass to subscribers
-	 *	Publishes the the message, passing the data to it's subscribers
-	**/
-	PubSub.publish = function( message, data ){
-		return publish( message, data, false, PubSub.immediateExceptions );
-	};
-
-	/**
-	 *	PubSub.publishSync( message[, data] ) -> Boolean
-	 *	- message (String): The message to publish
-	 *	- data: The data to pass to subscribers
-	 *	Publishes the the message synchronously, passing the data to it's subscribers
-	**/
-	PubSub.publishSync = function( message, data ){
-		return publish( message, data, true, PubSub.immediateExceptions );
-	};
-
-	/**
-	 *	PubSub.subscribe( message, func ) -> String
-	 *	- message (String): The message to subscribe to
-	 *	- func (Function): The function to call when a new message is published
-	 *	Subscribes the passed function to the passed message. Every returned token is unique and should be stored if
-	 *	you need to unsubscribe
-	**/
-	PubSub.subscribe = function( message, func ){
-		if ( typeof func !== 'function'){
-			return false;
-		}
-
-		// message is not registered yet
-		if ( !messages.hasOwnProperty( message ) ){
-			messages[message] = {};
-		}
-
-		// forcing token as String, to allow for future expansions without breaking usage
-		// and allow for easy use as key names for the 'messages' object
-		var token = 'uid_' + String(++lastUid);
-		messages[message][token] = func;
-
-		// return token for unsubscribing
-		return token;
-	};
-
-	/* Public: Clears all subscriptions
-	 */
-	PubSub.clearAllSubscriptions = function clearAllSubscriptions(){
-		messages = {};
-	};
-
-	/*Public: Clear subscriptions by the topic
-	*/
-	PubSub.clearSubscriptions = function clearSubscriptions(topic){
-		var m;
-		for (m in messages){
-			if (messages.hasOwnProperty(m) && m.indexOf(topic) === 0){
-				delete messages[m];
-			}
-		}
-	};
-
-	/* Public: removes subscriptions.
-	 * When passed a token, removes a specific subscription.
-	 * When passed a function, removes all subscriptions for that function
-	 * When passed a topic, removes all subscriptions for that topic (hierarchy)
-	 *
-	 * value - A token, function or topic to unsubscribe.
-	 *
-	 * Examples
-	 *
-	 *		// Example 1 - unsubscribing with a token
-	 *		var token = PubSub.subscribe('mytopic', myFunc);
-	 *		PubSub.unsubscribe(token);
-	 *
-	 *		// Example 2 - unsubscribing with a function
-	 *		PubSub.unsubscribe(myFunc);
-	 *
-	 *		// Example 3 - unsubscribing a topic
-	 *		PubSub.unsubscribe('mytopic');
-	 */
-	PubSub.unsubscribe = function(value){
-		var descendantTopicExists = function(topic) {
-				var m;
-				for ( m in messages ){
-					if ( messages.hasOwnProperty(m) && m.indexOf(topic) === 0 ){
-						// a descendant of the topic exists:
-						return true;
-					}
-				}
-
-				return false;
-			},
-			isTopic    = typeof value === 'string' && ( messages.hasOwnProperty(value) || descendantTopicExists(value) ),
-			isToken    = !isTopic && typeof value === 'string',
-			isFunction = typeof value === 'function',
-			result = false,
-			m, message, t;
-
-		if (isTopic){
-			PubSub.clearSubscriptions(value);
-			return;
-		}
-
-		for ( m in messages ){
-			if ( messages.hasOwnProperty( m ) ){
-				message = messages[m];
-
-				if ( isToken && message[value] ){
-					delete message[value];
-					result = value;
-					// tokens are unique, so we can just stop here
-					break;
-				}
-
-				if (isFunction) {
-					for ( t in message ){
-						if (message.hasOwnProperty(t) && message[t] === value){
-							delete message[t];
-							result = true;
-						}
-					}
-				}
-			}
-		}
-
-		return result;
-	};
-}));
-
-
-/***/ }),
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _ERROR_MAP;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var CODES = {
-    AVAILABLE_IN_WINDOW: 'only-available-in-window',
-    AVAILABLE_IN_SW: 'only-available-in-sw',
-    SHOULD_BE_INHERITED: 'should-be-overriden',
-    BAD_SENDER_ID: 'bad-sender-id',
-    INCORRECT_GCM_SENDER_ID: 'incorrect-gcm-sender-id',
-    PERMISSION_DEFAULT: 'permission-default',
-    PERMISSION_BLOCKED: 'permission-blocked',
-    UNSUPPORTED_BROWSER: 'unsupported-browser',
-    NOTIFICATIONS_BLOCKED: 'notifications-blocked',
-    FAILED_DEFAULT_REGISTRATION: 'failed-serviceworker-registration',
-    SW_REGISTRATION_EXPECTED: 'sw-registration-expected',
-    GET_SUBSCRIPTION_FAILED: 'get-subscription-failed',
-    INVALID_SAVED_TOKEN: 'invalid-saved-token',
-    SW_REG_REDUNDANT: 'sw-reg-redundant',
-    TOKEN_SUBSCRIBE_FAILED: 'token-subscribe-failed',
-    TOKEN_SUBSCRIBE_NO_TOKEN: 'token-subscribe-no-token',
-    TOKEN_SUBSCRIBE_NO_PUSH_SET: 'token-subscribe-no-push-set',
-    USE_SW_BEFORE_GET_TOKEN: 'use-sw-before-get-token',
-    INVALID_DELETE_TOKEN: 'invalid-delete-token',
-    DELETE_TOKEN_NOT_FOUND: 'delete-token-not-found',
-    DELETE_SCOPE_NOT_FOUND: 'delete-scope-not-found',
-    BG_HANDLER_FUNCTION_EXPECTED: 'bg-handler-function-expected',
-    NO_WINDOW_CLIENT_TO_MSG: 'no-window-client-to-msg',
-    UNABLE_TO_RESUBSCRIBE: 'unable-to-resubscribe',
-    NO_FCM_TOKEN_FOR_RESUBSCRIBE: 'no-fcm-token-for-resubscribe',
-    FAILED_TO_DELETE_TOKEN: 'failed-to-delete-token',
-    NO_SW_IN_REG: 'no-sw-in-reg',
-    BAD_SCOPE: 'bad-scope',
-    BAD_VAPID_KEY: 'bad-vapid-key',
-    BAD_SUBSCRIPTION: 'bad-subscription',
-    BAD_TOKEN: 'bad-token',
-    BAD_PUSH_SET: 'bad-push-set',
-    FAILED_DELETE_VAPID_KEY: 'failed-delete-vapid-key'
-};
-var ERROR_MAP = (_ERROR_MAP = {}, _defineProperty(_ERROR_MAP, CODES.AVAILABLE_IN_WINDOW, 'This method is available in a Window context.'), _defineProperty(_ERROR_MAP, CODES.AVAILABLE_IN_SW, 'This method is available in a service worker ' + 'context.'), _defineProperty(_ERROR_MAP, CODES.SHOULD_BE_INHERITED, 'This method should be overriden by ' + 'extended classes.'), _defineProperty(_ERROR_MAP, CODES.BAD_SENDER_ID, 'Please ensure that \'messagingSenderId\' is set ' + 'correctly in the options passed into firebase.initializeApp().'), _defineProperty(_ERROR_MAP, CODES.PERMISSION_DEFAULT, 'The required permissions were not granted and ' + 'dismissed instead.'), _defineProperty(_ERROR_MAP, CODES.PERMISSION_BLOCKED, 'The required permissions were not granted and ' + 'blocked instead.'), _defineProperty(_ERROR_MAP, CODES.UNSUPPORTED_BROWSER, 'This browser doesn\'t support the API\'s ' + 'required to use the firebase SDK.'), _defineProperty(_ERROR_MAP, CODES.NOTIFICATIONS_BLOCKED, 'Notifications have been blocked.'), _defineProperty(_ERROR_MAP, CODES.FAILED_DEFAULT_REGISTRATION, 'We are unable to register the ' + 'default service worker. {$browserErrorMessage}'), _defineProperty(_ERROR_MAP, CODES.SW_REGISTRATION_EXPECTED, 'A service worker registration was the ' + 'expected input.'), _defineProperty(_ERROR_MAP, CODES.GET_SUBSCRIPTION_FAILED, 'There was an error when trying to get ' + 'any existing Push Subscriptions.'), _defineProperty(_ERROR_MAP, CODES.INVALID_SAVED_TOKEN, 'Unable to access details of the saved token.'), _defineProperty(_ERROR_MAP, CODES.SW_REG_REDUNDANT, 'The service worker being used for push was made ' + 'redundant.'), _defineProperty(_ERROR_MAP, CODES.TOKEN_SUBSCRIBE_FAILED, 'A problem occured while subscribing the ' + 'user to FCM: {$message}'), _defineProperty(_ERROR_MAP, CODES.TOKEN_SUBSCRIBE_NO_TOKEN, 'FCM returned no token when subscribing ' + 'the user to push.'), _defineProperty(_ERROR_MAP, CODES.TOKEN_SUBSCRIBE_NO_PUSH_SET, 'FCM returned an invalid response ' + 'when getting an FCM token.'), _defineProperty(_ERROR_MAP, CODES.USE_SW_BEFORE_GET_TOKEN, 'You must call useServiceWorker() before ' + 'calling getToken() to ensure your service worker is used.'), _defineProperty(_ERROR_MAP, CODES.INVALID_DELETE_TOKEN, 'You must pass a valid token into ' + 'deleteToken(), i.e. the token from getToken().'), _defineProperty(_ERROR_MAP, CODES.DELETE_TOKEN_NOT_FOUND, 'The deletion attempt for token could not ' + 'be performed as the token was not found.'), _defineProperty(_ERROR_MAP, CODES.DELETE_SCOPE_NOT_FOUND, 'The deletion attempt for service worker ' + 'scope could not be performed as the scope was not found.'), _defineProperty(_ERROR_MAP, CODES.BG_HANDLER_FUNCTION_EXPECTED, 'The input to ' + 'setBackgroundMessageHandler() must be a function.'), _defineProperty(_ERROR_MAP, CODES.NO_WINDOW_CLIENT_TO_MSG, 'An attempt was made to message a ' + 'non-existant window client.'), _defineProperty(_ERROR_MAP, CODES.UNABLE_TO_RESUBSCRIBE, 'There was an error while re-subscribing ' + 'the FCM token for push messaging. Will have to resubscribe the ' + 'user on next visit. {$message}'), _defineProperty(_ERROR_MAP, CODES.NO_FCM_TOKEN_FOR_RESUBSCRIBE, 'Could not find an FCM token ' + 'and as a result, unable to resubscribe. Will have to resubscribe the ' + 'user on next visit.'), _defineProperty(_ERROR_MAP, CODES.FAILED_TO_DELETE_TOKEN, 'Unable to delete the currently saved token.'), _defineProperty(_ERROR_MAP, CODES.NO_SW_IN_REG, 'Even though the service worker registration was ' + 'successful, there was a problem accessing the service worker itself.'), _defineProperty(_ERROR_MAP, CODES.INCORRECT_GCM_SENDER_ID, 'Please change your web app manifest\'s ' + '\'gcm_sender_id\' value to \'103953800507\' to use Firebase messaging.'), _defineProperty(_ERROR_MAP, CODES.BAD_SCOPE, 'The service worker scope must be a string with at ' + 'least one character.'), _defineProperty(_ERROR_MAP, CODES.BAD_VAPID_KEY, 'The public VAPID key must be a string with at ' + 'least one character.'), _defineProperty(_ERROR_MAP, CODES.BAD_SUBSCRIPTION, 'The subscription must be a valid ' + 'PushSubscription.'), _defineProperty(_ERROR_MAP, CODES.BAD_TOKEN, 'The FCM Token used for storage / lookup was not ' + 'a valid token string.'), _defineProperty(_ERROR_MAP, CODES.BAD_PUSH_SET, 'The FCM push set used for storage / lookup was not ' + 'not a valid push set string.'), _defineProperty(_ERROR_MAP, CODES.FAILED_DELETE_VAPID_KEY, 'The VAPID key could not be deleted.'), _ERROR_MAP);
-exports.default = {
-    codes: CODES,
-    map: ERROR_MAP
-};
-module.exports = exports['default'];
-//# sourceMappingURL=errors.js.map
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setDomainBase = setDomainBase;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Constants used in the Firebase Storage library.
- */
-/**
- * Domain and scheme for API calls.
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/var domainBase = exports.domainBase = 'https://firebasestorage.googleapis.com';
-/**
- * Domain and scheme for object downloads.
- */
-var downloadBase = exports.downloadBase = 'https://firebasestorage.googleapis.com';
-/**
- * Base URL for non-upload calls to the API.
- */
-var apiBaseUrl = exports.apiBaseUrl = '/v0';
-/**
- * Base URL for upload calls to the API.
- */
-var apiUploadBaseUrl = exports.apiUploadBaseUrl = '/v0';
-function setDomainBase(domainBase) {
-  domainBase = domainBase;
-}
-var configOption = exports.configOption = 'storageBucket';
-/**
- * 1 minute
- */
-var shortMaxOperationRetryTime = exports.shortMaxOperationRetryTime = 1 * 60 * 1000;
-/**
- * 2 minutes
- */
-var defaultMaxOperationRetryTime = exports.defaultMaxOperationRetryTime = 2 * 60 * 1000;
-/**
- * 10 minutes
- */
-var defaultMaxUploadRetryTime = exports.defaultMaxUploadRetryTime = 10 * 60 * 100;
-/**
- * This is the value of Number.MIN_SAFE_INTEGER, which is not well supported
- * enough for us to use it directly.
- */
-var minSafeInteger = exports.minSafeInteger = -9007199254740991;
-//# sourceMappingURL=constants.js.map
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Location = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
-/**
- * @fileoverview Functionality related to the parsing/composition of bucket/
- * object location.
- */
-
-
-var _error = __webpack_require__(2);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @struct
- */
-var Location = exports.Location = function () {
-    function Location(bucket, path) {
-        _classCallCheck(this, Location);
-
-        this.bucket = bucket;
-        this.path_ = path;
-    }
-
-    _createClass(Location, [{
-        key: 'fullServerUrl',
-        value: function fullServerUrl() {
-            var encode = encodeURIComponent;
-            return '/b/' + encode(this.bucket) + '/o/' + encode(this.path);
-        }
-    }, {
-        key: 'bucketOnlyServerUrl',
-        value: function bucketOnlyServerUrl() {
-            var encode = encodeURIComponent;
-            return '/b/' + encode(this.bucket) + '/o';
-        }
-    }, {
-        key: 'path',
-        get: function get() {
-            return this.path_;
-        }
-    }], [{
-        key: 'makeFromBucketSpec',
-        value: function makeFromBucketSpec(bucketString) {
-            var bucketLocation = void 0;
-            try {
-                bucketLocation = Location.makeFromUrl(bucketString);
-            } catch (e) {
-                // Not valid URL, use as-is. This lets you put bare bucket names in
-                // config.
-                return new Location(bucketString, '');
-            }
-            if (bucketLocation.path === '') {
-                return bucketLocation;
-            } else {
-                throw errorsExports.invalidDefaultBucket(bucketString);
-            }
-        }
-    }, {
-        key: 'makeFromUrl',
-        value: function makeFromUrl(url) {
-            var location = null;
-            var bucketDomain = '([A-Za-z0-9.\\-]+)';
-
-            var gsRegex = new RegExp('^gs://' + bucketDomain + '(/(.*))?$', 'i');
-
-            var httpRegex = new RegExp('^https?://firebasestorage\\.googleapis\\.com/' + 'v[A-Za-z0-9_]+' + '/b/' + bucketDomain + '/o' + '(/([^?#]*).*)?$', 'i');
-
-            var groups = [{ regex: gsRegex, indices: { bucket: 1, path: 3 }, postModify: function (loc) {
-                    if (loc.path.charAt(loc.path.length - 1) === '/') {
-                        loc.path_ = loc.path_.slice(0, -1);
-                    }
-                } }, { regex: httpRegex, indices: { bucket: 1, path: 3 }, postModify: function (loc) {
-                    loc.path_ = decodeURIComponent(loc.path);
-                } }];
-            for (var i = 0; i < groups.length; i++) {
-                var group = groups[i];
-                var captures = group.regex.exec(url);
-                if (captures) {
-                    var bucketValue = captures[group.indices.bucket];
-                    var pathValue = captures[group.indices.path];
-                    if (!pathValue) {
-                        pathValue = '';
-                    }
-                    location = new Location(bucketValue, pathValue);
-                    group.postModify(location);
-                    break;
-                }
-            }
-            if (location == null) {
-                throw errorsExports.invalidUrl(url);
-            }
-            return location;
-        }
-    }]);
-
-    return Location;
-}();
-//# sourceMappingURL=location.js.map
-
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports) {
 
 var g;
@@ -5923,1512 +5738,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = removeTreeFromGraph;
-/* harmony export (immutable) */ __webpack_exports__["a"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_config__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_login_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pubsub_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__tree_treecomponent__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__newTree_newtreecomponent__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vue__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__objects_user__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__core_login__ = __webpack_require__(17);
-
-
-
-
-
-
-
-
-
-
-
-
-var initialized = false;
-var s,
-    g = {
-    nodes: [],
-    edges: []
-};
-window.g = g;
-window.s = s;
-
-var newNodeXOffset = -100,
-    newNodeYOffset = 20,
-    newChildTreeSuffix = "__newChildTree";
-var toolTipsConfig = {
-    node: [{
-        show: 'rightClickNode',
-        cssClass: 'sigma-tooltip',
-        position: 'right',
-        template: '',
-        renderer: function (node, template) {
-            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
-            switch (node.type) {
-                case 'tree':
-                    if (__WEBPACK_IMPORTED_MODULE_4__core_config__["a" /* Config */].framework == 'vue') {
-                        template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                    }
-                    break;
-                case 'newChildTree':
-                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                    break;
-            }
-            var result = Mustache.render(template, node);
-
-            return result;
-        }
-    }],
-    stage: {
-        template: __webpack_require__(207)
-    }
-};
-var noOverlapConfig = {
-    nodeMargin: 2.0,
-    scaleNodes: 10,
-    permittedExpansion: 1.3,
-    gridSize: 50
-};
-loadTreeAndSubTrees(1).then(val => {
-    initSigma();
-});
-function loadTreeAndSubTrees(treeId) {
-    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(onGetTree).catch(err => console.error('trees get err is', err));
-}
-function onGetTree(tree) {
-    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItem__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
-        return addTreeNodeToGraph(tree, content);
-    });
-
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(loadTreeAndSubTrees) : [];
-    var promises = childTreesPromises;
-    promises.push(contentPromise);
-
-    return Promise.all(promises);
-}
-
-function addTreeNodeToGraph(tree, content) {
-    const treeUINode = createTreeNodeFromTreeAndContent(tree, content);
-    g.nodes.push(treeUINode);
-    addNewChildTreeToTree(treeUINode);
-    connectTreeToParent(tree, g);
-    return content.id;
-}
-
-function removeTreeFromGraph(treeId) {
-    s.graph.dropNode(treeId);
-    s.graph.dropNode(treeId + newChildTreeSuffix);
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
-        return Promise.all(childPromises).then(val => {
-            s.refresh();
-            return `removed all children of ${treeId}`;
-        });
-    });
-}
-//recursively load the entire tree
-// Instantiate sigma:
-function createTreeNodeFromTreeAndContent(tree, content) {
-    const node = {
-        id: tree.id,
-        parentId: tree.parentId,
-        x: tree.x,
-        y: tree.y,
-        children: tree.children,
-        content: content,
-        label: getLabelFromContent(content),
-        size: 1,
-        color: getTreeColor(tree),
-        type: 'tree'
-    };
-    return node;
-}
-/**
- * Get tree colors for descending proficiency levels. Default to "existing node" color
- * @param tree
- * @returns {*}
- */
-function getTreeColor(tree) {
-    if (tree.userProficiencyMap && tree.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_10__objects_user__["a" /* default */].getId()]) {
-        let treeProfLevel = tree.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_10__objects_user__["a" /* default */].getId()];
-        if (treeProfLevel > 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_4;
-        if (treeProfLevel > 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_3;
-        if (treeProfLevel > 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_2;
-    }
-    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].proficiency_1;
-}
-function getLabelFromContent(content) {
-    switch (content.type) {
-        case "fact":
-            return content.question;
-        case "heading":
-            return content.title;
-    }
-}
-function createEdgeId(nodeOneId, nodeTwoId) {
-    return nodeOneId + "__" + nodeTwoId;
-}
-function connectTreeToParent(tree, g) {
-    if (tree.parentId) {
-        const edge = {
-            id: createEdgeId(tree.parentId, tree.id),
-            source: tree.parentId,
-            target: tree.id,
-            size: 1,
-            color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
-        };
-        g.edges.push(edge);
-    }
-}
-//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
-
-function addNewChildTreeToTree(tree) {
-    if (tree.children) {}
-    const newChildTree = {
-        id: tree.id + newChildTreeSuffix, //"_newChildTree",
-        parentId: tree.id,
-        x: parseInt(tree.x) + newNodeXOffset + 100,
-        y: parseInt(tree.y) + newNodeYOffset,
-        label: '+',
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor,
-        type: 'newChildTree'
-    };
-    const shadowEdge = {
-        id: createEdgeId(tree.id, newChildTree.id),
-        source: tree.id,
-        target: newChildTree.id,
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].newColor
-    };
-    if (!initialized) {
-        g.nodes.push(newChildTree);
-        g.edges.push(shadowEdge);
-    } else {
-        s.graph.addNode(newChildTree);
-        s.graph.addEdge(shadowEdge);
-    }
-    if (initialized) {
-        s.refresh();
-    }
-}
-function initSigma() {
-    if (!initialized) {
-        sigma.renderers.def = sigma.renderers.canvas;
-        s = new sigma({
-            graph: g,
-            container: 'graph-container'
-        });
-        window.s = s;
-        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        s.refresh();
-
-        s.bind('click', onCanvasClick);
-        s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
-        s.bind('overNode', hoverOverNode);
-        initialized = true;
-    }
-    initSigmaPlugins();
-}
-function onCanvasClick(e) {
-    //console.log('canvas click!')
-    __WEBPACK_IMPORTED_MODULE_6_pubsub_js___default.a.publish('canvas.clicked', true
-    //console.log(e, e.data.node)
-    // var X=e['data']['node']['renderer1:x'];
-    // var Y=e['data']['node']['renderer1:y'];
-
-    );console.log(e.data);
-    //console.log("X %s, Y %S", X, Y);
-}
-function printNodeInfo(e) {
-    console.log(e, e.data.node);
-}
-function hoverOverNode(e) {
-    var node = e.data.node;
-    console.log('hover over node for node with id', node.id, 'just called'
-    // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
-    );tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-    setTimeout(function () {
-        var treeNodeDom = document.querySelector('.tree');
-        if (__WEBPACK_IMPORTED_MODULE_4__core_config__["a" /* Config */].framework == 'angular1') {
-            angular.bootstrap(treeNodeDom, ['branches']);
-        } else {
-            __WEBPACK_IMPORTED_MODULE_9_vue__["a" /* default */].component('tree', __WEBPACK_IMPORTED_MODULE_7__tree_treecomponent__["a" /* default */]);
-            __WEBPACK_IMPORTED_MODULE_9_vue__["a" /* default */].component('newtree', __WEBPACK_IMPORTED_MODULE_8__newTree_newtreecomponent__["a" /* default */]
-            // {
-            //     template: require('./tree/tree.html'), // '<div> {{movie}} this is the tree template</div>',
-            //     props: ['movie']
-            //     // render: h => h(TreeVue)
-            // })
-            );var vm = new __WEBPACK_IMPORTED_MODULE_9_vue__["a" /* default */]({
-                el: '#vue'
-            });
-        }
-    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
-    );
-}
-function updateTreePosition(e) {
-    console.log("outNODE just called");
-    let newX = e.data.node.x;
-    let newY = e.data.node.y;
-    let treeId = e.data.node.id;
-
-    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
-        return; //node isn't an actual node in the db - its like a shadow node or helper node
-    }
-    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20;
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        if (Math.abs(tree.x - newX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.set('x', newX);
-        }
-        if (Math.abs(tree.y - newY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.set('y', newY);
-        }
-        return tree;
-    });
-}
-
-//returns sigma tree node
-function addTreeToGraph(parentTreeId, content) {
-    //1. delete current addNewNode button
-    var currentNewChildTree = s.graph.nodes(parentTreeId + newChildTreeSuffix);
-    var newChildTreeX = parseInt(currentNewChildTree.x);
-    var newChildTreeY = parseInt(currentNewChildTree.y);
-    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, newChildTreeX, newChildTreeY);
-    //2. add new node to parent tree on UI
-    const newTree = {
-        id: tree.id,
-        parentId: parentTreeId,
-        contentId: content.id,
-        content: content,
-        x: newChildTreeX,
-        y: newChildTreeY,
-        children: {},
-        label: getLabelFromContent(content),
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor,
-        type: 'tree'
-        //2b. update x and y location in the db for the tree
-
-    };s.graph.dropNode(currentNewChildTree.id);
-    s.graph.addNode(newTree);
-    //3. add edge between new node and parent tree
-    const newEdge = {
-        id: parentTreeId + "__" + newTree.id,
-        source: parentTreeId,
-        target: newTree.id,
-        size: 1,
-        color: __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].existingColor
-    };
-    s.graph.addEdge(newEdge
-    //4. add shadow node
-    );addNewChildTreeToTree(newTree
-    //5. Re add shadow node to parent
-    );__WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(parentTreeId).then(addNewChildTreeToTree);
-
-    s.refresh();
-    return newTree;
-}
-function initSigmaPlugins() {
-    // Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
-
-    //Instantiate the nooverlap algorithm
-    var listener = s.configNoverlap(noOverlapConfig);
-    //s.startNoverlap();
-
-    window.tooltips = tooltips;
-    window.jump = jumpToAndOpenTreeId;
-}
-
-/**
- * Go to a given tree ID on the graph, centering the viewport on the tree
- */
-function jumpToAndOpenTreeId(treeid) {
-    //let tree = sigma.nodes[treeid];
-    let goToNode = s.graph.nodes().filter(function (node) {
-        return node.id === treeid;
-    });
-    focusNode(s.cameras[0], goToNode);
-}
-
-function focusNode(camera, node) {
-    if (!node || !node[0]) {
-        console.error("Tried to go to node");
-        console.error(node);
-        return;
-    }
-    let cameraCoord = {
-        x: node[0]['read_cam0:x'],
-        y: node[0]['read_cam0:y'],
-        ratio: 0.1
-    };
-    camera.goTo(cameraCoord);
-    // sigma.misc.animation.camera(
-    //     camera,
-    //     {
-    //         x: node['read_cammain:x'],
-    //         y: node['read_cammain:y'],
-    //         ratio: 0.075
-    //     },
-    //     {
-    //         duration: 150
-    //     }
-    // );
-}
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(172);
-
-const Config = {
-    env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
-    offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
-    version: 9,
-    framework: 'vue' // vue || angular1
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = Config;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = login;
-function login() {
-    var mobile = false;
-
-    if (mobile) {} else {
-        console.log('login called');
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function (result) {
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var token = result.credential.accessToken;
-            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
-            document.querySelector('.login-button').style.display = 'none';
-            console.log('login result', result);
-            Globals.username = result.user.displayName;
-            Globals.userId = result.user.uid;
-            PubSub.publish('login', { userId: result.user.uid });
-        }).catch(function (error) {
-            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN", error
-            // Handle Errors here.
-            );var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-        });
-    }
-}
-
-/***/ }),
-/* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
-
-
-
-const users = {}; // cache
-class Users {
-    //returns promise
-    static get(userId) {
-        console.log('USERS.get called');
-        if (!userId) {
-            throw "Users.get(userId) error!. userId empty";
-        }
-        return new Promise(function getUserPromise(resolve, reject) {
-
-            console.log('getUserPromise called'
-            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-            );if (users[userId]) {
-                resolve(users[userId]);
-            } else {
-                console.log('user not found in cache');
-                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('users/' + userId).on("value", function onFirebaseUserGet(snapshot) {
-                    let userData = snapshot.val();
-                    users[userId] = userData; // add to cache
-                    resolve(userData);
-                });
-            }
-        });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Users;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.patchCapture = patchCapture;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ERROR_NAME = 'FirebaseError';
-var captureStackTrace = Error.captureStackTrace;
-// Export for faking in tests
-function patchCapture(captureFake) {
-    var result = captureStackTrace;
-    captureStackTrace = captureFake;
-    return result;
-}
-
-var FirebaseError = exports.FirebaseError = function FirebaseError(code, message) {
-    _classCallCheck(this, FirebaseError);
-
-    this.code = code;
-    this.message = message;
-
-    // We want the stack value, if implemented by Error
-    if (captureStackTrace) {
-        // Patches this.stack, omitted calls above ErrorFactory#create
-        captureStackTrace(this, ErrorFactory.prototype.create);
-    } else {
-        var err = Error.apply(this, arguments);
-        this.name = ERROR_NAME;
-        // Make non-enumerable getter for the property.
-        Object.defineProperty(this, 'stack', {
-            get: function get() {
-                return err.stack;
-            }
-        });
-    }
-};
-// Back-door inheritance
-
-
-FirebaseError.prototype = Object.create(Error.prototype);
-FirebaseError.prototype.constructor = FirebaseError;
-FirebaseError.prototype.name = ERROR_NAME;
-
-var ErrorFactory = exports.ErrorFactory = function () {
-    function ErrorFactory(service, serviceName, errors) {
-        _classCallCheck(this, ErrorFactory);
-
-        this.service = service;
-        this.serviceName = serviceName;
-        this.errors = errors;
-        // Matches {$name}, by default.
-        this.pattern = /\{\$([^}]+)}/g;
-        // empty
-    }
-
-    _createClass(ErrorFactory, [{
-        key: 'create',
-        value: function create(code, data) {
-            if (data === undefined) {
-                data = {};
-            }
-            var template = this.errors[code];
-            var fullCode = this.service + '/' + code;
-            var message = void 0;
-            if (template === undefined) {
-                message = "Error";
-            } else {
-                message = template.replace(this.pattern, function (match, key) {
-                    var value = data[key];
-                    return value !== undefined ? value.toString() : '<' + key + '?>';
-                });
-            }
-            // Service: Error message (service/code).
-            message = this.serviceName + ': ' + message + ' (' + fullCode + ').';
-            var err = new FirebaseError(fullCode, message);
-            // Populate the Error object with message parts for programmatic
-            // accesses (e.g., e.file).
-            for (var prop in data) {
-                if (!data.hasOwnProperty(prop) || prop.slice(-1) === '_') {
-                    continue;
-                }
-                err[prop] = data[prop];
-            }
-            return err;
-        }
-    }]);
-
-    return ErrorFactory;
-}();
-//# sourceMappingURL=errors.js.map
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var scope = void 0;
-if (typeof global !== 'undefined') {
-    scope = global;
-} else if (typeof self !== 'undefined') {
-    scope = self;
-} else {
-    try {
-        scope = Function('return this')();
-    } catch (e) {
-        throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-}
-var PromiseImpl = scope.Promise || __webpack_require__(187);
-var local = exports.local = {
-    Promise: PromiseImpl,
-    GoogPromise: PromiseImpl
-};
-//# sourceMappingURL=shared_promise.js.map
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ArgSpec = undefined;
-exports.validate = validate;
-exports.and_ = and_;
-exports.stringSpec = stringSpec;
-exports.uploadDataSpec = uploadDataSpec;
-exports.metadataSpec = metadataSpec;
-exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
-exports.looseObjectSpec = looseObjectSpec;
-exports.nullFunctionSpec = nullFunctionSpec;
-
-var _error = __webpack_require__(2);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-var _metadata = __webpack_require__(23);
-
-var MetadataUtils = _interopRequireWildcard(_metadata);
-
-var _type = __webpack_require__(1);
-
-var type = _interopRequireWildcard(_type);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-/**
- * @param name Name of the function.
- * @param specs Argument specs.
- * @param passed The actual arguments passed to the function.
- * @throws {fbs.Error} If the arguments are invalid.
- */
-function validate(name, specs, passed) {
-    var minArgs = specs.length;
-    var maxArgs = specs.length;
-    for (var i = 0; i < specs.length; i++) {
-        if (specs[i].optional) {
-            minArgs = i;
-            break;
-        }
-    }
-    var validLength = minArgs <= passed.length && passed.length <= maxArgs;
-    if (!validLength) {
-        throw errorsExports.invalidArgumentCount(minArgs, maxArgs, name, passed.length);
-    }
-    for (var _i = 0; _i < passed.length; _i++) {
-        try {
-            specs[_i].validator(passed[_i]);
-        } catch (e) {
-            if (e instanceof Error) {
-                throw errorsExports.invalidArgument(_i, name, e.message);
-            } else {
-                throw errorsExports.invalidArgument(_i, name, e);
-            }
-        }
-    }
-}
-/**
- * @struct
- */
-
-var ArgSpec = exports.ArgSpec = function ArgSpec(validator, opt_optional) {
-    _classCallCheck(this, ArgSpec);
-
-    var self = this;
-    this.validator = function (p) {
-        if (self.optional && !type.isJustDef(p)) {
-            return;
-        }
-        validator(p);
-    };
-    this.optional = !!opt_optional;
-};
-
-function and_(v1, v2) {
-    return function (p) {
-        v1(p);
-        v2(p);
-    };
-}
-function stringSpec(opt_validator, opt_optional) {
-    function stringValidator(p) {
-        if (!type.isString(p)) {
-            throw 'Expected string.';
-        }
-    }
-    var validator = void 0;
-    if (opt_validator) {
-        validator = and_(stringValidator, opt_validator);
-    } else {
-        validator = stringValidator;
-    }
-    return new ArgSpec(validator, opt_optional);
-}
-function uploadDataSpec() {
-    return new ArgSpec(function (p) {
-        var valid = p instanceof Uint8Array || p instanceof ArrayBuffer || type.isNativeBlobDefined() && p instanceof Blob;
-        if (!valid) {
-            throw 'Expected Blob or File.';
-        }
-    });
-}
-function metadataSpec(opt_optional) {
-    return new ArgSpec(MetadataUtils.metadataValidator, opt_optional);
-}
-function nonNegativeNumberSpec() {
-    return new ArgSpec(function (p) {
-        var valid = type.isNumber(p) && p >= 0;
-        if (!valid) {
-            throw 'Expected a number 0 or greater.';
-        }
-    });
-}
-function looseObjectSpec(opt_validator, opt_optional) {
-    return new ArgSpec(function (p) {
-        var isLooseObject = p === null || type.isDef(p) && p instanceof Object;
-        if (!isLooseObject) {
-            throw 'Expected an Object.';
-        }
-        if (opt_validator !== undefined && opt_validator !== null) {
-            opt_validator(p);
-        }
-    }, opt_optional);
-}
-function nullFunctionSpec(opt_optional) {
-    return new ArgSpec(function (p) {
-        var valid = p === null || type.isFunction(p);
-        if (!valid) {
-            throw 'Expected a Function.';
-        }
-    }, opt_optional);
-}
-//# sourceMappingURL=args.js.map
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.contains = contains;
-exports.clone = clone;
-exports.remove = remove;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * Returns true if the object is contained in the array (compared with ===).
- * @template T
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/function contains(array, elem) {
-    return array.indexOf(elem) !== -1;
-}
-/**
- * Returns a shallow copy of the array or array-like object (e.g. arguments).
- * @template T
- */
-function clone(arraylike) {
-    return Array.prototype.slice.call(arraylike);
-}
-/**
- * Removes the given element from the given array, if it is contained.
- * Directly modifies the passed-in array.
- * @template T
- */
-function remove(array, elem) {
-    var i = array.indexOf(elem);
-    if (i !== -1) {
-        array.splice(i, 1);
-    }
-}
-//# sourceMappingURL=array.js.map
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Mapping = undefined;
-exports.noXform_ = noXform_;
-exports.xformPath = xformPath;
-exports.getMappings = getMappings;
-exports.addRef = addRef;
-exports.fromResource = fromResource;
-exports.fromResourceString = fromResourceString;
-exports.toResourceString = toResourceString;
-exports.metadataValidator = metadataValidator;
-
-var _json = __webpack_require__(194);
-
-var json = _interopRequireWildcard(_json);
-
-var _location = __webpack_require__(13);
-
-var _path = __webpack_require__(39);
-
-var path = _interopRequireWildcard(_path);
-
-var _type = __webpack_require__(1);
-
-var type = _interopRequireWildcard(_type);
-
-var _url = __webpack_require__(25);
-
-var UrlUtils = _interopRequireWildcard(_url);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-function noXform_(metadata, value) {
-    return value;
-}
-/**
- * @struct
- */
-
-var Mapping = exports.Mapping = function Mapping(server, opt_local, opt_writable, opt_xform) {
-    _classCallCheck(this, Mapping);
-
-    this.server = server;
-    this.local = opt_local || server;
-    this.writable = !!opt_writable;
-    this.xform = opt_xform || noXform_;
-};
-
-var mappings_ = null;
-function xformPath(fullPath) {
-    var valid = type.isString(fullPath);
-    if (!valid || fullPath.length < 2) {
-        return fullPath;
-    } else {
-        fullPath = fullPath;
-        return path.lastComponent(fullPath);
-    }
-}
-function getMappings() {
-    if (mappings_) {
-        return mappings_;
-    }
-    var mappings = [];
-    mappings.push(new Mapping('bucket'));
-    mappings.push(new Mapping('generation'));
-    mappings.push(new Mapping('metageneration'));
-    mappings.push(new Mapping('name', 'fullPath', true));
-
-    var nameMapping = new Mapping('name');
-    nameMapping.xform = function (metadata, fullPath) {
-        return xformPath(fullPath);
-    };
-    mappings.push(nameMapping);
-    /**
-     * Coerces the second param to a number, if it is defined.
-     */
-
-    var sizeMapping = new Mapping('size');
-    sizeMapping.xform = function (metadata, size) {
-        if (type.isDef(size)) {
-            return +size;
-        } else {
-            return size;
-        }
-    };
-    mappings.push(sizeMapping);
-    mappings.push(new Mapping('timeCreated'));
-    mappings.push(new Mapping('updated'));
-    mappings.push(new Mapping('md5Hash', null, true));
-    mappings.push(new Mapping('cacheControl', null, true));
-    mappings.push(new Mapping('contentDisposition', null, true));
-    mappings.push(new Mapping('contentEncoding', null, true));
-    mappings.push(new Mapping('contentLanguage', null, true));
-    mappings.push(new Mapping('contentType', null, true));
-    mappings.push(new Mapping('metadata', 'customMetadata', true));
-    /**
-     * Transforms a comma-separated string of tokens into a list of download
-     * URLs.
-     */
-
-    mappings.push(new Mapping('downloadTokens', 'downloadURLs', false, function (metadata, tokens) {
-        var valid = type.isString(tokens) && tokens.length > 0;
-        if (!valid) {
-            // This can happen if objects are uploaded through GCS and retrieved
-            // through list, so we don't want to throw an Error.
-            return [];
-        }
-        var encode = encodeURIComponent;
-        var tokensList = tokens.split(',');
-        var urls = tokensList.map(function (token) {
-            var bucket = metadata['bucket'];
-            var path = metadata['fullPath'];
-            var urlPart = '/b/' + encode(bucket) + '/o/' + encode(path);
-            var base = UrlUtils.makeDownloadUrl(urlPart);
-            var queryString = UrlUtils.makeQueryString({ 'alt': 'media', 'token': token });
-            return base + queryString;
-        });
-        return urls;
-    }));
-    mappings_ = mappings;
-    return mappings_;
-}
-function addRef(metadata, authWrapper) {
-    Object.defineProperty(metadata, 'ref', { get: function () {
-            var bucket = metadata['bucket'];
-            var path = metadata['fullPath'];
-            var loc = new _location.Location(bucket, path);
-            return authWrapper.makeStorageReference(loc);
-        } });
-}
-function fromResource(authWrapper, resource, mappings) {
-    var metadata = {};
-    metadata['type'] = 'file';
-    var len = mappings.length;
-    for (var i = 0; i < len; i++) {
-        var mapping = mappings[i];
-        metadata[mapping.local] = mapping.xform(metadata, resource[mapping.server]);
-    }
-    addRef(metadata, authWrapper);
-    return metadata;
-}
-function fromResourceString(authWrapper, resourceString, mappings) {
-    var obj = json.jsonObjectOrNull(resourceString);
-    if (obj === null) {
-        return null;
-    }
-
-    return fromResource(authWrapper, obj, mappings);
-}
-function toResourceString(metadata, mappings) {
-    var resource = {};
-    var len = mappings.length;
-    for (var i = 0; i < len; i++) {
-        var mapping = mappings[i];
-        if (mapping.writable) {
-            resource[mapping.server] = metadata[mapping.local];
-        }
-    }
-    return JSON.stringify(resource);
-}
-function metadataValidator(p) {
-    var validType = p && type.isObject(p);
-    if (!validType) {
-        throw 'Expected Metadata object.';
-    }
-    for (var key in p) {
-        var val = p[key];
-        if (key === 'customMetadata') {
-            if (!type.isObject(val)) {
-                throw 'Expected object for \'customMetadata\' mapping.';
-            }
-        } else {
-            if (type.isNonNullObject(val)) {
-                throw 'Mapping for \'' + key + '\' cannot be an object.';
-            }
-        }
-    }
-}
-//# sourceMappingURL=metadata.js.map
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.StringData = exports.StringFormat = undefined;
-exports.formatValidator = formatValidator;
-exports.dataFromString = dataFromString;
-exports.utf8Bytes_ = utf8Bytes_;
-exports.percentEncodedBytes_ = percentEncodedBytes_;
-exports.base64Bytes_ = base64Bytes_;
-exports.dataURLBytes_ = dataURLBytes_;
-exports.dataURLContentType_ = dataURLContentType_;
-
-var _error = __webpack_require__(2);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-var StringFormat = exports.StringFormat = {
-    RAW: 'raw',
-    BASE64: 'base64',
-    BASE64URL: 'base64url',
-    DATA_URL: 'data_url'
-};
-function formatValidator(stringFormat) {
-    switch (stringFormat) {
-        case StringFormat.RAW:
-        case StringFormat.BASE64:
-        case StringFormat.BASE64URL:
-        case StringFormat.DATA_URL:
-            return;
-        default:
-            throw 'Expected one of the event types: [' + StringFormat.RAW + ', ' + StringFormat.BASE64 + ', ' + StringFormat.BASE64URL + ', ' + StringFormat.DATA_URL + '].';
-    }
-}
-/**
- * @struct
- */
-
-var StringData = exports.StringData = function StringData(data, opt_contentType) {
-    _classCallCheck(this, StringData);
-
-    this.data = data;
-    this.contentType = opt_contentType || null;
-};
-
-function dataFromString(format, string) {
-    switch (format) {
-        case StringFormat.RAW:
-            return new StringData(utf8Bytes_(string));
-        case StringFormat.BASE64:
-        case StringFormat.BASE64URL:
-            return new StringData(base64Bytes_(format, string));
-        case StringFormat.DATA_URL:
-            return new StringData(dataURLBytes_(string), dataURLContentType_(string));
-    }
-    // assert(false);
-    throw errorsExports.unknown();
-}
-function utf8Bytes_(string) {
-    var b = [];
-    for (var i = 0; i < string.length; i++) {
-        var c = string.charCodeAt(i);
-        if (c <= 127) {
-            b.push(c);
-        } else {
-            if (c <= 2047) {
-                b.push(192 | c >> 6, 128 | c & 63);
-            } else {
-                if ((c & 64512) == 55296) {
-                    // The start of a surrogate pair.
-                    var valid = i < string.length - 1 && (string.charCodeAt(i + 1) & 64512) == 56320;
-                    if (!valid) {
-                        // The second surrogate wasn't there.
-                        b.push(239, 191, 189);
-                    } else {
-                        var hi = c;
-                        var lo = string.charCodeAt(++i);
-                        c = 65536 | (hi & 1023) << 10 | lo & 1023;
-                        b.push(240 | c >> 18, 128 | c >> 12 & 63, 128 | c >> 6 & 63, 128 | c & 63);
-                    }
-                } else {
-                    if ((c & 64512) == 56320) {
-                        // Invalid low surrogate.
-                        b.push(239, 191, 189);
-                    } else {
-                        b.push(224 | c >> 12, 128 | c >> 6 & 63, 128 | c & 63);
-                    }
-                }
-            }
-        }
-    }
-    return new Uint8Array(b);
-}
-function percentEncodedBytes_(string) {
-    var decoded = void 0;
-    try {
-        decoded = decodeURIComponent(string);
-    } catch (e) {
-        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Malformed data URL.');
-    }
-    return utf8Bytes_(decoded);
-}
-function base64Bytes_(format, string) {
-    switch (format) {
-        case StringFormat.BASE64:
-            {
-                var hasMinus = string.indexOf('-') !== -1;
-                var hasUnder = string.indexOf('_') !== -1;
-                if (hasMinus || hasUnder) {
-                    var invalidChar = hasMinus ? '-' : '_';
-                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + invalidChar + '\' found: is it base64url encoded?');
-                }
-                break;
-            }
-        case StringFormat.BASE64URL:
-            {
-                var hasPlus = string.indexOf('+') !== -1;
-                var hasSlash = string.indexOf('/') !== -1;
-                if (hasPlus || hasSlash) {
-                    var _invalidChar = hasPlus ? '+' : '/';
-                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + _invalidChar + '\' found: is it base64 encoded?');
-                }
-                string = string.replace(/-/g, '+').replace(/_/g, '/');
-                break;
-            }
-    }
-    var bytes = void 0;
-    try {
-        bytes = atob(string);
-    } catch (e) {
-        throw errorsExports.invalidFormat(format, 'Invalid character found');
-    }
-    var array = new Uint8Array(bytes.length);
-    for (var i = 0; i < bytes.length; i++) {
-        array[i] = bytes.charCodeAt(i);
-    }
-    return array;
-}
-/**
- * @struct
- */
-
-var DataURLParts = function DataURLParts(dataURL) {
-    _classCallCheck(this, DataURLParts);
-
-    this.base64 = false;
-    this.contentType = null;
-    var matches = dataURL.match(/^data:([^,]+)?,/);
-    if (matches === null) {
-        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Must be formatted \'data:[<mediatype>][;base64],<data>');
-    }
-    var middle = matches[1] || null;
-    if (middle != null) {
-        this.base64 = endsWith(middle, ';base64');
-        this.contentType = this.base64 ? middle.substring(0, middle.length - ';base64'.length) : middle;
-    }
-    this.rest = dataURL.substring(dataURL.indexOf(',') + 1);
-};
-
-function dataURLBytes_(string) {
-    var parts = new DataURLParts(string);
-    if (parts.base64) {
-        return base64Bytes_(StringFormat.BASE64, parts.rest);
-    } else {
-        return percentEncodedBytes_(parts.rest);
-    }
-}
-function dataURLContentType_(string) {
-    var parts = new DataURLParts(string);
-    return parts.contentType;
-}
-function endsWith(s, end) {
-    var longEnough = s.length >= end.length;
-    if (!longEnough) {
-        return false;
-    }
-    return s.substring(s.length - end.length) === end;
-}
-//# sourceMappingURL=string.js.map
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.makeNormalUrl = makeNormalUrl;
-exports.makeDownloadUrl = makeDownloadUrl;
-exports.makeUploadUrl = makeUploadUrl;
-exports.makeQueryString = makeQueryString;
-
-var _constants = __webpack_require__(12);
-
-var constants = _interopRequireWildcard(_constants);
-
-var _object = __webpack_require__(5);
-
-var object = _interopRequireWildcard(_object);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Functions to create and manipulate URLs for the server API.
- */
-function makeNormalUrl(urlPart) {
-    return constants.domainBase + constants.apiBaseUrl + urlPart;
-}
-function makeDownloadUrl(urlPart) {
-    return constants.downloadBase + constants.apiBaseUrl + urlPart;
-}
-function makeUploadUrl(urlPart) {
-    return constants.domainBase + constants.apiUploadBaseUrl + urlPart;
-}
-function makeQueryString(params) {
-    var encode = encodeURIComponent;
-    var queryPart = '?';
-    object.forEach(params, function (key, val) {
-        var nextPart = encode(key) + '=' + encode(val);
-        queryPart = queryPart + nextPart + '&';
-    });
-    // Chop off the extra '&' or '?' on the end
-    queryPart = queryPart.slice(0, -1);
-    return queryPart;
-}
-//# sourceMappingURL=url.js.map
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function(){
-  var crypt = __webpack_require__(175),
-      utf8 = __webpack_require__(32).utf8,
-      isBuffer = __webpack_require__(209),
-      bin = __webpack_require__(32).bin,
-
-  // The core
-  md5 = function (message, options) {
-    // Convert to byte array
-    if (message.constructor == String)
-      if (options && options.encoding === 'binary')
-        message = bin.stringToBytes(message);
-      else
-        message = utf8.stringToBytes(message);
-    else if (isBuffer(message))
-      message = Array.prototype.slice.call(message, 0);
-    else if (!Array.isArray(message))
-      message = message.toString();
-    // else, assume byte array already
-
-    var m = crypt.bytesToWords(message),
-        l = message.length * 8,
-        a =  1732584193,
-        b = -271733879,
-        c = -1732584194,
-        d =  271733878;
-
-    // Swap endian
-    for (var i = 0; i < m.length; i++) {
-      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
-             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
-    }
-
-    // Padding
-    m[l >>> 5] |= 0x80 << (l % 32);
-    m[(((l + 64) >>> 9) << 4) + 14] = l;
-
-    // Method shortcuts
-    var FF = md5._ff,
-        GG = md5._gg,
-        HH = md5._hh,
-        II = md5._ii;
-
-    for (var i = 0; i < m.length; i += 16) {
-
-      var aa = a,
-          bb = b,
-          cc = c,
-          dd = d;
-
-      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
-      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
-      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
-      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
-      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
-      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
-      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
-      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
-      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
-      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
-      c = FF(c, d, a, b, m[i+10], 17, -42063);
-      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
-      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
-      d = FF(d, a, b, c, m[i+13], 12, -40341101);
-      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
-      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
-
-      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
-      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
-      c = GG(c, d, a, b, m[i+11], 14,  643717713);
-      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
-      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
-      d = GG(d, a, b, c, m[i+10],  9,  38016083);
-      c = GG(c, d, a, b, m[i+15], 14, -660478335);
-      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
-      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
-      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
-      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
-      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
-      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
-      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
-      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
-      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
-
-      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
-      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
-      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
-      b = HH(b, c, d, a, m[i+14], 23, -35309556);
-      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
-      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
-      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
-      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
-      a = HH(a, b, c, d, m[i+13],  4,  681279174);
-      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
-      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
-      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
-      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
-      d = HH(d, a, b, c, m[i+12], 11, -421815835);
-      c = HH(c, d, a, b, m[i+15], 16,  530742520);
-      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
-
-      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
-      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
-      c = II(c, d, a, b, m[i+14], 15, -1416354905);
-      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
-      a = II(a, b, c, d, m[i+12],  6,  1700485571);
-      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
-      c = II(c, d, a, b, m[i+10], 15, -1051523);
-      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
-      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
-      d = II(d, a, b, c, m[i+15], 10, -30611744);
-      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
-      b = II(b, c, d, a, m[i+13], 21,  1309151649);
-      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
-      d = II(d, a, b, c, m[i+11], 10, -1120210379);
-      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
-      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
-
-      a = (a + aa) >>> 0;
-      b = (b + bb) >>> 0;
-      c = (c + cc) >>> 0;
-      d = (d + dd) >>> 0;
-    }
-
-    return crypt.endian([a, b, c, d]);
-  };
-
-  // Auxiliary functions
-  md5._ff  = function (a, b, c, d, x, s, t) {
-    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-  md5._gg  = function (a, b, c, d, x, s, t) {
-    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-  md5._hh  = function (a, b, c, d, x, s, t) {
-    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-  md5._ii  = function (a, b, c, d, x, s, t) {
-    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
-    return ((n << s) | (n >>> (32 - s))) + b;
-  };
-
-  // Package private blocksize
-  md5._blocksize = 16;
-  md5._digestsize = 16;
-
-  module.exports = function (message, options) {
-    if (message === undefined || message === null)
-      throw new Error('Illegal argument ' + message);
-
-    var digestbytes = crypt.wordsToBytes(md5(message, options));
-    return options && options.asBytes ? digestbytes :
-        options && options.asString ? bin.bytesToString(digestbytes) :
-        crypt.bytesToHex(digestbytes);
-  };
-
-})();
-
-
-/***/ }),
-/* 27 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17122,46 +15432,1530 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(159), __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(159), __webpack_require__(11)))
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ERROR_MAP;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var CODES = {
+    AVAILABLE_IN_WINDOW: 'only-available-in-window',
+    AVAILABLE_IN_SW: 'only-available-in-sw',
+    SHOULD_BE_INHERITED: 'should-be-overriden',
+    BAD_SENDER_ID: 'bad-sender-id',
+    INCORRECT_GCM_SENDER_ID: 'incorrect-gcm-sender-id',
+    PERMISSION_DEFAULT: 'permission-default',
+    PERMISSION_BLOCKED: 'permission-blocked',
+    UNSUPPORTED_BROWSER: 'unsupported-browser',
+    NOTIFICATIONS_BLOCKED: 'notifications-blocked',
+    FAILED_DEFAULT_REGISTRATION: 'failed-serviceworker-registration',
+    SW_REGISTRATION_EXPECTED: 'sw-registration-expected',
+    GET_SUBSCRIPTION_FAILED: 'get-subscription-failed',
+    INVALID_SAVED_TOKEN: 'invalid-saved-token',
+    SW_REG_REDUNDANT: 'sw-reg-redundant',
+    TOKEN_SUBSCRIBE_FAILED: 'token-subscribe-failed',
+    TOKEN_SUBSCRIBE_NO_TOKEN: 'token-subscribe-no-token',
+    TOKEN_SUBSCRIBE_NO_PUSH_SET: 'token-subscribe-no-push-set',
+    USE_SW_BEFORE_GET_TOKEN: 'use-sw-before-get-token',
+    INVALID_DELETE_TOKEN: 'invalid-delete-token',
+    DELETE_TOKEN_NOT_FOUND: 'delete-token-not-found',
+    DELETE_SCOPE_NOT_FOUND: 'delete-scope-not-found',
+    BG_HANDLER_FUNCTION_EXPECTED: 'bg-handler-function-expected',
+    NO_WINDOW_CLIENT_TO_MSG: 'no-window-client-to-msg',
+    UNABLE_TO_RESUBSCRIBE: 'unable-to-resubscribe',
+    NO_FCM_TOKEN_FOR_RESUBSCRIBE: 'no-fcm-token-for-resubscribe',
+    FAILED_TO_DELETE_TOKEN: 'failed-to-delete-token',
+    NO_SW_IN_REG: 'no-sw-in-reg',
+    BAD_SCOPE: 'bad-scope',
+    BAD_VAPID_KEY: 'bad-vapid-key',
+    BAD_SUBSCRIPTION: 'bad-subscription',
+    BAD_TOKEN: 'bad-token',
+    BAD_PUSH_SET: 'bad-push-set',
+    FAILED_DELETE_VAPID_KEY: 'failed-delete-vapid-key'
+};
+var ERROR_MAP = (_ERROR_MAP = {}, _defineProperty(_ERROR_MAP, CODES.AVAILABLE_IN_WINDOW, 'This method is available in a Window context.'), _defineProperty(_ERROR_MAP, CODES.AVAILABLE_IN_SW, 'This method is available in a service worker ' + 'context.'), _defineProperty(_ERROR_MAP, CODES.SHOULD_BE_INHERITED, 'This method should be overriden by ' + 'extended classes.'), _defineProperty(_ERROR_MAP, CODES.BAD_SENDER_ID, 'Please ensure that \'messagingSenderId\' is set ' + 'correctly in the options passed into firebase.initializeApp().'), _defineProperty(_ERROR_MAP, CODES.PERMISSION_DEFAULT, 'The required permissions were not granted and ' + 'dismissed instead.'), _defineProperty(_ERROR_MAP, CODES.PERMISSION_BLOCKED, 'The required permissions were not granted and ' + 'blocked instead.'), _defineProperty(_ERROR_MAP, CODES.UNSUPPORTED_BROWSER, 'This browser doesn\'t support the API\'s ' + 'required to use the firebase SDK.'), _defineProperty(_ERROR_MAP, CODES.NOTIFICATIONS_BLOCKED, 'Notifications have been blocked.'), _defineProperty(_ERROR_MAP, CODES.FAILED_DEFAULT_REGISTRATION, 'We are unable to register the ' + 'default service worker. {$browserErrorMessage}'), _defineProperty(_ERROR_MAP, CODES.SW_REGISTRATION_EXPECTED, 'A service worker registration was the ' + 'expected input.'), _defineProperty(_ERROR_MAP, CODES.GET_SUBSCRIPTION_FAILED, 'There was an error when trying to get ' + 'any existing Push Subscriptions.'), _defineProperty(_ERROR_MAP, CODES.INVALID_SAVED_TOKEN, 'Unable to access details of the saved token.'), _defineProperty(_ERROR_MAP, CODES.SW_REG_REDUNDANT, 'The service worker being used for push was made ' + 'redundant.'), _defineProperty(_ERROR_MAP, CODES.TOKEN_SUBSCRIBE_FAILED, 'A problem occured while subscribing the ' + 'user to FCM: {$message}'), _defineProperty(_ERROR_MAP, CODES.TOKEN_SUBSCRIBE_NO_TOKEN, 'FCM returned no token when subscribing ' + 'the user to push.'), _defineProperty(_ERROR_MAP, CODES.TOKEN_SUBSCRIBE_NO_PUSH_SET, 'FCM returned an invalid response ' + 'when getting an FCM token.'), _defineProperty(_ERROR_MAP, CODES.USE_SW_BEFORE_GET_TOKEN, 'You must call useServiceWorker() before ' + 'calling getToken() to ensure your service worker is used.'), _defineProperty(_ERROR_MAP, CODES.INVALID_DELETE_TOKEN, 'You must pass a valid token into ' + 'deleteToken(), i.e. the token from getToken().'), _defineProperty(_ERROR_MAP, CODES.DELETE_TOKEN_NOT_FOUND, 'The deletion attempt for token could not ' + 'be performed as the token was not found.'), _defineProperty(_ERROR_MAP, CODES.DELETE_SCOPE_NOT_FOUND, 'The deletion attempt for service worker ' + 'scope could not be performed as the scope was not found.'), _defineProperty(_ERROR_MAP, CODES.BG_HANDLER_FUNCTION_EXPECTED, 'The input to ' + 'setBackgroundMessageHandler() must be a function.'), _defineProperty(_ERROR_MAP, CODES.NO_WINDOW_CLIENT_TO_MSG, 'An attempt was made to message a ' + 'non-existant window client.'), _defineProperty(_ERROR_MAP, CODES.UNABLE_TO_RESUBSCRIBE, 'There was an error while re-subscribing ' + 'the FCM token for push messaging. Will have to resubscribe the ' + 'user on next visit. {$message}'), _defineProperty(_ERROR_MAP, CODES.NO_FCM_TOKEN_FOR_RESUBSCRIBE, 'Could not find an FCM token ' + 'and as a result, unable to resubscribe. Will have to resubscribe the ' + 'user on next visit.'), _defineProperty(_ERROR_MAP, CODES.FAILED_TO_DELETE_TOKEN, 'Unable to delete the currently saved token.'), _defineProperty(_ERROR_MAP, CODES.NO_SW_IN_REG, 'Even though the service worker registration was ' + 'successful, there was a problem accessing the service worker itself.'), _defineProperty(_ERROR_MAP, CODES.INCORRECT_GCM_SENDER_ID, 'Please change your web app manifest\'s ' + '\'gcm_sender_id\' value to \'103953800507\' to use Firebase messaging.'), _defineProperty(_ERROR_MAP, CODES.BAD_SCOPE, 'The service worker scope must be a string with at ' + 'least one character.'), _defineProperty(_ERROR_MAP, CODES.BAD_VAPID_KEY, 'The public VAPID key must be a string with at ' + 'least one character.'), _defineProperty(_ERROR_MAP, CODES.BAD_SUBSCRIPTION, 'The subscription must be a valid ' + 'PushSubscription.'), _defineProperty(_ERROR_MAP, CODES.BAD_TOKEN, 'The FCM Token used for storage / lookup was not ' + 'a valid token string.'), _defineProperty(_ERROR_MAP, CODES.BAD_PUSH_SET, 'The FCM push set used for storage / lookup was not ' + 'not a valid push set string.'), _defineProperty(_ERROR_MAP, CODES.FAILED_DELETE_VAPID_KEY, 'The VAPID key could not be deleted.'), _ERROR_MAP);
+exports.default = {
+    codes: CODES,
+    map: ERROR_MAP
+};
+module.exports = exports['default'];
+//# sourceMappingURL=errors.js.map
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setDomainBase = setDomainBase;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Constants used in the Firebase Storage library.
+ */
+/**
+ * Domain and scheme for API calls.
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/var domainBase = exports.domainBase = 'https://firebasestorage.googleapis.com';
+/**
+ * Domain and scheme for object downloads.
+ */
+var downloadBase = exports.downloadBase = 'https://firebasestorage.googleapis.com';
+/**
+ * Base URL for non-upload calls to the API.
+ */
+var apiBaseUrl = exports.apiBaseUrl = '/v0';
+/**
+ * Base URL for upload calls to the API.
+ */
+var apiUploadBaseUrl = exports.apiUploadBaseUrl = '/v0';
+function setDomainBase(domainBase) {
+  domainBase = domainBase;
+}
+var configOption = exports.configOption = 'storageBucket';
+/**
+ * 1 minute
+ */
+var shortMaxOperationRetryTime = exports.shortMaxOperationRetryTime = 1 * 60 * 1000;
+/**
+ * 2 minutes
+ */
+var defaultMaxOperationRetryTime = exports.defaultMaxOperationRetryTime = 2 * 60 * 1000;
+/**
+ * 10 minutes
+ */
+var defaultMaxUploadRetryTime = exports.defaultMaxUploadRetryTime = 10 * 60 * 100;
+/**
+ * This is the value of Number.MIN_SAFE_INTEGER, which is not well supported
+ * enough for us to use it directly.
+ */
+var minSafeInteger = exports.minSafeInteger = -9007199254740991;
+//# sourceMappingURL=constants.js.map
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Location = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
+/**
+ * @fileoverview Functionality related to the parsing/composition of bucket/
+ * object location.
+ */
+
+
+var _error = __webpack_require__(2);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @struct
+ */
+var Location = exports.Location = function () {
+    function Location(bucket, path) {
+        _classCallCheck(this, Location);
+
+        this.bucket = bucket;
+        this.path_ = path;
+    }
+
+    _createClass(Location, [{
+        key: 'fullServerUrl',
+        value: function fullServerUrl() {
+            var encode = encodeURIComponent;
+            return '/b/' + encode(this.bucket) + '/o/' + encode(this.path);
+        }
+    }, {
+        key: 'bucketOnlyServerUrl',
+        value: function bucketOnlyServerUrl() {
+            var encode = encodeURIComponent;
+            return '/b/' + encode(this.bucket) + '/o';
+        }
+    }, {
+        key: 'path',
+        get: function get() {
+            return this.path_;
+        }
+    }], [{
+        key: 'makeFromBucketSpec',
+        value: function makeFromBucketSpec(bucketString) {
+            var bucketLocation = void 0;
+            try {
+                bucketLocation = Location.makeFromUrl(bucketString);
+            } catch (e) {
+                // Not valid URL, use as-is. This lets you put bare bucket names in
+                // config.
+                return new Location(bucketString, '');
+            }
+            if (bucketLocation.path === '') {
+                return bucketLocation;
+            } else {
+                throw errorsExports.invalidDefaultBucket(bucketString);
+            }
+        }
+    }, {
+        key: 'makeFromUrl',
+        value: function makeFromUrl(url) {
+            var location = null;
+            var bucketDomain = '([A-Za-z0-9.\\-]+)';
+
+            var gsRegex = new RegExp('^gs://' + bucketDomain + '(/(.*))?$', 'i');
+
+            var httpRegex = new RegExp('^https?://firebasestorage\\.googleapis\\.com/' + 'v[A-Za-z0-9_]+' + '/b/' + bucketDomain + '/o' + '(/([^?#]*).*)?$', 'i');
+
+            var groups = [{ regex: gsRegex, indices: { bucket: 1, path: 3 }, postModify: function (loc) {
+                    if (loc.path.charAt(loc.path.length - 1) === '/') {
+                        loc.path_ = loc.path_.slice(0, -1);
+                    }
+                } }, { regex: httpRegex, indices: { bucket: 1, path: 3 }, postModify: function (loc) {
+                    loc.path_ = decodeURIComponent(loc.path);
+                } }];
+            for (var i = 0; i < groups.length; i++) {
+                var group = groups[i];
+                var captures = group.regex.exec(url);
+                if (captures) {
+                    var bucketValue = captures[group.indices.bucket];
+                    var pathValue = captures[group.indices.path];
+                    if (!pathValue) {
+                        pathValue = '';
+                    }
+                    location = new Location(bucketValue, pathValue);
+                    group.postModify(location);
+                    break;
+                }
+            }
+            if (location == null) {
+                throw errorsExports.invalidUrl(url);
+            }
+            return location;
+        }
+    }]);
+
+    return Location;
+}();
+//# sourceMappingURL=location.js.map
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
+
+
+
+const users = {}; // cache
+class Users {
+    //returns promise
+    static get(userId) {
+        if (!userId) {
+            throw "Users.get(userId) error!. userId empty";
+        }
+        return new Promise(function getUserPromise(resolve, reject) {
+
+            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+            if (users[userId]) {
+                resolve(users[userId]);
+                console.log('user found in cache');
+            } else {
+                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('users/' + userId).on("value", function onFirebaseUserGet(snapshot) {
+                    let userData = snapshot.val();
+                    users[userId] = userData; // add to cache
+                    resolve(userData);
+                });
+            }
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Users;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.patchCapture = patchCapture;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ERROR_NAME = 'FirebaseError';
+var captureStackTrace = Error.captureStackTrace;
+// Export for faking in tests
+function patchCapture(captureFake) {
+    var result = captureStackTrace;
+    captureStackTrace = captureFake;
+    return result;
+}
+
+var FirebaseError = exports.FirebaseError = function FirebaseError(code, message) {
+    _classCallCheck(this, FirebaseError);
+
+    this.code = code;
+    this.message = message;
+
+    // We want the stack value, if implemented by Error
+    if (captureStackTrace) {
+        // Patches this.stack, omitted calls above ErrorFactory#create
+        captureStackTrace(this, ErrorFactory.prototype.create);
+    } else {
+        var err = Error.apply(this, arguments);
+        this.name = ERROR_NAME;
+        // Make non-enumerable getter for the property.
+        Object.defineProperty(this, 'stack', {
+            get: function get() {
+                return err.stack;
+            }
+        });
+    }
+};
+// Back-door inheritance
+
+
+FirebaseError.prototype = Object.create(Error.prototype);
+FirebaseError.prototype.constructor = FirebaseError;
+FirebaseError.prototype.name = ERROR_NAME;
+
+var ErrorFactory = exports.ErrorFactory = function () {
+    function ErrorFactory(service, serviceName, errors) {
+        _classCallCheck(this, ErrorFactory);
+
+        this.service = service;
+        this.serviceName = serviceName;
+        this.errors = errors;
+        // Matches {$name}, by default.
+        this.pattern = /\{\$([^}]+)}/g;
+        // empty
+    }
+
+    _createClass(ErrorFactory, [{
+        key: 'create',
+        value: function create(code, data) {
+            if (data === undefined) {
+                data = {};
+            }
+            var template = this.errors[code];
+            var fullCode = this.service + '/' + code;
+            var message = void 0;
+            if (template === undefined) {
+                message = "Error";
+            } else {
+                message = template.replace(this.pattern, function (match, key) {
+                    var value = data[key];
+                    return value !== undefined ? value.toString() : '<' + key + '?>';
+                });
+            }
+            // Service: Error message (service/code).
+            message = this.serviceName + ': ' + message + ' (' + fullCode + ').';
+            var err = new FirebaseError(fullCode, message);
+            // Populate the Error object with message parts for programmatic
+            // accesses (e.g., e.file).
+            for (var prop in data) {
+                if (!data.hasOwnProperty(prop) || prop.slice(-1) === '_') {
+                    continue;
+                }
+                err[prop] = data[prop];
+            }
+            return err;
+        }
+    }]);
+
+    return ErrorFactory;
+}();
+//# sourceMappingURL=errors.js.map
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var scope = void 0;
+if (typeof global !== 'undefined') {
+    scope = global;
+} else if (typeof self !== 'undefined') {
+    scope = self;
+} else {
+    try {
+        scope = Function('return this')();
+    } catch (e) {
+        throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+}
+var PromiseImpl = scope.Promise || __webpack_require__(189);
+var local = exports.local = {
+    Promise: PromiseImpl,
+    GoogPromise: PromiseImpl
+};
+//# sourceMappingURL=shared_promise.js.map
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ArgSpec = undefined;
+exports.validate = validate;
+exports.and_ = and_;
+exports.stringSpec = stringSpec;
+exports.uploadDataSpec = uploadDataSpec;
+exports.metadataSpec = metadataSpec;
+exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
+exports.looseObjectSpec = looseObjectSpec;
+exports.nullFunctionSpec = nullFunctionSpec;
+
+var _error = __webpack_require__(2);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+var _metadata = __webpack_require__(21);
+
+var MetadataUtils = _interopRequireWildcard(_metadata);
+
+var _type = __webpack_require__(1);
+
+var type = _interopRequireWildcard(_type);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+/**
+ * @param name Name of the function.
+ * @param specs Argument specs.
+ * @param passed The actual arguments passed to the function.
+ * @throws {fbs.Error} If the arguments are invalid.
+ */
+function validate(name, specs, passed) {
+    var minArgs = specs.length;
+    var maxArgs = specs.length;
+    for (var i = 0; i < specs.length; i++) {
+        if (specs[i].optional) {
+            minArgs = i;
+            break;
+        }
+    }
+    var validLength = minArgs <= passed.length && passed.length <= maxArgs;
+    if (!validLength) {
+        throw errorsExports.invalidArgumentCount(minArgs, maxArgs, name, passed.length);
+    }
+    for (var _i = 0; _i < passed.length; _i++) {
+        try {
+            specs[_i].validator(passed[_i]);
+        } catch (e) {
+            if (e instanceof Error) {
+                throw errorsExports.invalidArgument(_i, name, e.message);
+            } else {
+                throw errorsExports.invalidArgument(_i, name, e);
+            }
+        }
+    }
+}
+/**
+ * @struct
+ */
+
+var ArgSpec = exports.ArgSpec = function ArgSpec(validator, opt_optional) {
+    _classCallCheck(this, ArgSpec);
+
+    var self = this;
+    this.validator = function (p) {
+        if (self.optional && !type.isJustDef(p)) {
+            return;
+        }
+        validator(p);
+    };
+    this.optional = !!opt_optional;
+};
+
+function and_(v1, v2) {
+    return function (p) {
+        v1(p);
+        v2(p);
+    };
+}
+function stringSpec(opt_validator, opt_optional) {
+    function stringValidator(p) {
+        if (!type.isString(p)) {
+            throw 'Expected string.';
+        }
+    }
+    var validator = void 0;
+    if (opt_validator) {
+        validator = and_(stringValidator, opt_validator);
+    } else {
+        validator = stringValidator;
+    }
+    return new ArgSpec(validator, opt_optional);
+}
+function uploadDataSpec() {
+    return new ArgSpec(function (p) {
+        var valid = p instanceof Uint8Array || p instanceof ArrayBuffer || type.isNativeBlobDefined() && p instanceof Blob;
+        if (!valid) {
+            throw 'Expected Blob or File.';
+        }
+    });
+}
+function metadataSpec(opt_optional) {
+    return new ArgSpec(MetadataUtils.metadataValidator, opt_optional);
+}
+function nonNegativeNumberSpec() {
+    return new ArgSpec(function (p) {
+        var valid = type.isNumber(p) && p >= 0;
+        if (!valid) {
+            throw 'Expected a number 0 or greater.';
+        }
+    });
+}
+function looseObjectSpec(opt_validator, opt_optional) {
+    return new ArgSpec(function (p) {
+        var isLooseObject = p === null || type.isDef(p) && p instanceof Object;
+        if (!isLooseObject) {
+            throw 'Expected an Object.';
+        }
+        if (opt_validator !== undefined && opt_validator !== null) {
+            opt_validator(p);
+        }
+    }, opt_optional);
+}
+function nullFunctionSpec(opt_optional) {
+    return new ArgSpec(function (p) {
+        var valid = p === null || type.isFunction(p);
+        if (!valid) {
+            throw 'Expected a Function.';
+        }
+    }, opt_optional);
+}
+//# sourceMappingURL=args.js.map
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.contains = contains;
+exports.clone = clone;
+exports.remove = remove;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * Returns true if the object is contained in the array (compared with ===).
+ * @template T
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/function contains(array, elem) {
+    return array.indexOf(elem) !== -1;
+}
+/**
+ * Returns a shallow copy of the array or array-like object (e.g. arguments).
+ * @template T
+ */
+function clone(arraylike) {
+    return Array.prototype.slice.call(arraylike);
+}
+/**
+ * Removes the given element from the given array, if it is contained.
+ * Directly modifies the passed-in array.
+ * @template T
+ */
+function remove(array, elem) {
+    var i = array.indexOf(elem);
+    if (i !== -1) {
+        array.splice(i, 1);
+    }
+}
+//# sourceMappingURL=array.js.map
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Mapping = undefined;
+exports.noXform_ = noXform_;
+exports.xformPath = xformPath;
+exports.getMappings = getMappings;
+exports.addRef = addRef;
+exports.fromResource = fromResource;
+exports.fromResourceString = fromResourceString;
+exports.toResourceString = toResourceString;
+exports.metadataValidator = metadataValidator;
+
+var _json = __webpack_require__(196);
+
+var json = _interopRequireWildcard(_json);
+
+var _location = __webpack_require__(15);
+
+var _path = __webpack_require__(39);
+
+var path = _interopRequireWildcard(_path);
+
+var _type = __webpack_require__(1);
+
+var type = _interopRequireWildcard(_type);
+
+var _url = __webpack_require__(23);
+
+var UrlUtils = _interopRequireWildcard(_url);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+function noXform_(metadata, value) {
+    return value;
+}
+/**
+ * @struct
+ */
+
+var Mapping = exports.Mapping = function Mapping(server, opt_local, opt_writable, opt_xform) {
+    _classCallCheck(this, Mapping);
+
+    this.server = server;
+    this.local = opt_local || server;
+    this.writable = !!opt_writable;
+    this.xform = opt_xform || noXform_;
+};
+
+var mappings_ = null;
+function xformPath(fullPath) {
+    var valid = type.isString(fullPath);
+    if (!valid || fullPath.length < 2) {
+        return fullPath;
+    } else {
+        fullPath = fullPath;
+        return path.lastComponent(fullPath);
+    }
+}
+function getMappings() {
+    if (mappings_) {
+        return mappings_;
+    }
+    var mappings = [];
+    mappings.push(new Mapping('bucket'));
+    mappings.push(new Mapping('generation'));
+    mappings.push(new Mapping('metageneration'));
+    mappings.push(new Mapping('name', 'fullPath', true));
+
+    var nameMapping = new Mapping('name');
+    nameMapping.xform = function (metadata, fullPath) {
+        return xformPath(fullPath);
+    };
+    mappings.push(nameMapping);
+    /**
+     * Coerces the second param to a number, if it is defined.
+     */
+
+    var sizeMapping = new Mapping('size');
+    sizeMapping.xform = function (metadata, size) {
+        if (type.isDef(size)) {
+            return +size;
+        } else {
+            return size;
+        }
+    };
+    mappings.push(sizeMapping);
+    mappings.push(new Mapping('timeCreated'));
+    mappings.push(new Mapping('updated'));
+    mappings.push(new Mapping('md5Hash', null, true));
+    mappings.push(new Mapping('cacheControl', null, true));
+    mappings.push(new Mapping('contentDisposition', null, true));
+    mappings.push(new Mapping('contentEncoding', null, true));
+    mappings.push(new Mapping('contentLanguage', null, true));
+    mappings.push(new Mapping('contentType', null, true));
+    mappings.push(new Mapping('metadata', 'customMetadata', true));
+    /**
+     * Transforms a comma-separated string of tokens into a list of download
+     * URLs.
+     */
+
+    mappings.push(new Mapping('downloadTokens', 'downloadURLs', false, function (metadata, tokens) {
+        var valid = type.isString(tokens) && tokens.length > 0;
+        if (!valid) {
+            // This can happen if objects are uploaded through GCS and retrieved
+            // through list, so we don't want to throw an Error.
+            return [];
+        }
+        var encode = encodeURIComponent;
+        var tokensList = tokens.split(',');
+        var urls = tokensList.map(function (token) {
+            var bucket = metadata['bucket'];
+            var path = metadata['fullPath'];
+            var urlPart = '/b/' + encode(bucket) + '/o/' + encode(path);
+            var base = UrlUtils.makeDownloadUrl(urlPart);
+            var queryString = UrlUtils.makeQueryString({ 'alt': 'media', 'token': token });
+            return base + queryString;
+        });
+        return urls;
+    }));
+    mappings_ = mappings;
+    return mappings_;
+}
+function addRef(metadata, authWrapper) {
+    Object.defineProperty(metadata, 'ref', { get: function () {
+            var bucket = metadata['bucket'];
+            var path = metadata['fullPath'];
+            var loc = new _location.Location(bucket, path);
+            return authWrapper.makeStorageReference(loc);
+        } });
+}
+function fromResource(authWrapper, resource, mappings) {
+    var metadata = {};
+    metadata['type'] = 'file';
+    var len = mappings.length;
+    for (var i = 0; i < len; i++) {
+        var mapping = mappings[i];
+        metadata[mapping.local] = mapping.xform(metadata, resource[mapping.server]);
+    }
+    addRef(metadata, authWrapper);
+    return metadata;
+}
+function fromResourceString(authWrapper, resourceString, mappings) {
+    var obj = json.jsonObjectOrNull(resourceString);
+    if (obj === null) {
+        return null;
+    }
+
+    return fromResource(authWrapper, obj, mappings);
+}
+function toResourceString(metadata, mappings) {
+    var resource = {};
+    var len = mappings.length;
+    for (var i = 0; i < len; i++) {
+        var mapping = mappings[i];
+        if (mapping.writable) {
+            resource[mapping.server] = metadata[mapping.local];
+        }
+    }
+    return JSON.stringify(resource);
+}
+function metadataValidator(p) {
+    var validType = p && type.isObject(p);
+    if (!validType) {
+        throw 'Expected Metadata object.';
+    }
+    for (var key in p) {
+        var val = p[key];
+        if (key === 'customMetadata') {
+            if (!type.isObject(val)) {
+                throw 'Expected object for \'customMetadata\' mapping.';
+            }
+        } else {
+            if (type.isNonNullObject(val)) {
+                throw 'Mapping for \'' + key + '\' cannot be an object.';
+            }
+        }
+    }
+}
+//# sourceMappingURL=metadata.js.map
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.StringData = exports.StringFormat = undefined;
+exports.formatValidator = formatValidator;
+exports.dataFromString = dataFromString;
+exports.utf8Bytes_ = utf8Bytes_;
+exports.percentEncodedBytes_ = percentEncodedBytes_;
+exports.base64Bytes_ = base64Bytes_;
+exports.dataURLBytes_ = dataURLBytes_;
+exports.dataURLContentType_ = dataURLContentType_;
+
+var _error = __webpack_require__(2);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+var StringFormat = exports.StringFormat = {
+    RAW: 'raw',
+    BASE64: 'base64',
+    BASE64URL: 'base64url',
+    DATA_URL: 'data_url'
+};
+function formatValidator(stringFormat) {
+    switch (stringFormat) {
+        case StringFormat.RAW:
+        case StringFormat.BASE64:
+        case StringFormat.BASE64URL:
+        case StringFormat.DATA_URL:
+            return;
+        default:
+            throw 'Expected one of the event types: [' + StringFormat.RAW + ', ' + StringFormat.BASE64 + ', ' + StringFormat.BASE64URL + ', ' + StringFormat.DATA_URL + '].';
+    }
+}
+/**
+ * @struct
+ */
+
+var StringData = exports.StringData = function StringData(data, opt_contentType) {
+    _classCallCheck(this, StringData);
+
+    this.data = data;
+    this.contentType = opt_contentType || null;
+};
+
+function dataFromString(format, string) {
+    switch (format) {
+        case StringFormat.RAW:
+            return new StringData(utf8Bytes_(string));
+        case StringFormat.BASE64:
+        case StringFormat.BASE64URL:
+            return new StringData(base64Bytes_(format, string));
+        case StringFormat.DATA_URL:
+            return new StringData(dataURLBytes_(string), dataURLContentType_(string));
+    }
+    // assert(false);
+    throw errorsExports.unknown();
+}
+function utf8Bytes_(string) {
+    var b = [];
+    for (var i = 0; i < string.length; i++) {
+        var c = string.charCodeAt(i);
+        if (c <= 127) {
+            b.push(c);
+        } else {
+            if (c <= 2047) {
+                b.push(192 | c >> 6, 128 | c & 63);
+            } else {
+                if ((c & 64512) == 55296) {
+                    // The start of a surrogate pair.
+                    var valid = i < string.length - 1 && (string.charCodeAt(i + 1) & 64512) == 56320;
+                    if (!valid) {
+                        // The second surrogate wasn't there.
+                        b.push(239, 191, 189);
+                    } else {
+                        var hi = c;
+                        var lo = string.charCodeAt(++i);
+                        c = 65536 | (hi & 1023) << 10 | lo & 1023;
+                        b.push(240 | c >> 18, 128 | c >> 12 & 63, 128 | c >> 6 & 63, 128 | c & 63);
+                    }
+                } else {
+                    if ((c & 64512) == 56320) {
+                        // Invalid low surrogate.
+                        b.push(239, 191, 189);
+                    } else {
+                        b.push(224 | c >> 12, 128 | c >> 6 & 63, 128 | c & 63);
+                    }
+                }
+            }
+        }
+    }
+    return new Uint8Array(b);
+}
+function percentEncodedBytes_(string) {
+    var decoded = void 0;
+    try {
+        decoded = decodeURIComponent(string);
+    } catch (e) {
+        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Malformed data URL.');
+    }
+    return utf8Bytes_(decoded);
+}
+function base64Bytes_(format, string) {
+    switch (format) {
+        case StringFormat.BASE64:
+            {
+                var hasMinus = string.indexOf('-') !== -1;
+                var hasUnder = string.indexOf('_') !== -1;
+                if (hasMinus || hasUnder) {
+                    var invalidChar = hasMinus ? '-' : '_';
+                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + invalidChar + '\' found: is it base64url encoded?');
+                }
+                break;
+            }
+        case StringFormat.BASE64URL:
+            {
+                var hasPlus = string.indexOf('+') !== -1;
+                var hasSlash = string.indexOf('/') !== -1;
+                if (hasPlus || hasSlash) {
+                    var _invalidChar = hasPlus ? '+' : '/';
+                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + _invalidChar + '\' found: is it base64 encoded?');
+                }
+                string = string.replace(/-/g, '+').replace(/_/g, '/');
+                break;
+            }
+    }
+    var bytes = void 0;
+    try {
+        bytes = atob(string);
+    } catch (e) {
+        throw errorsExports.invalidFormat(format, 'Invalid character found');
+    }
+    var array = new Uint8Array(bytes.length);
+    for (var i = 0; i < bytes.length; i++) {
+        array[i] = bytes.charCodeAt(i);
+    }
+    return array;
+}
+/**
+ * @struct
+ */
+
+var DataURLParts = function DataURLParts(dataURL) {
+    _classCallCheck(this, DataURLParts);
+
+    this.base64 = false;
+    this.contentType = null;
+    var matches = dataURL.match(/^data:([^,]+)?,/);
+    if (matches === null) {
+        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Must be formatted \'data:[<mediatype>][;base64],<data>');
+    }
+    var middle = matches[1] || null;
+    if (middle != null) {
+        this.base64 = endsWith(middle, ';base64');
+        this.contentType = this.base64 ? middle.substring(0, middle.length - ';base64'.length) : middle;
+    }
+    this.rest = dataURL.substring(dataURL.indexOf(',') + 1);
+};
+
+function dataURLBytes_(string) {
+    var parts = new DataURLParts(string);
+    if (parts.base64) {
+        return base64Bytes_(StringFormat.BASE64, parts.rest);
+    } else {
+        return percentEncodedBytes_(parts.rest);
+    }
+}
+function dataURLContentType_(string) {
+    var parts = new DataURLParts(string);
+    return parts.contentType;
+}
+function endsWith(s, end) {
+    var longEnough = s.length >= end.length;
+    if (!longEnough) {
+        return false;
+    }
+    return s.substring(s.length - end.length) === end;
+}
+//# sourceMappingURL=string.js.map
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.makeNormalUrl = makeNormalUrl;
+exports.makeDownloadUrl = makeDownloadUrl;
+exports.makeUploadUrl = makeUploadUrl;
+exports.makeQueryString = makeQueryString;
+
+var _constants = __webpack_require__(14);
+
+var constants = _interopRequireWildcard(_constants);
+
+var _object = __webpack_require__(5);
+
+var object = _interopRequireWildcard(_object);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Functions to create and manipulate URLs for the server API.
+ */
+function makeNormalUrl(urlPart) {
+    return constants.domainBase + constants.apiBaseUrl + urlPart;
+}
+function makeDownloadUrl(urlPart) {
+    return constants.downloadBase + constants.apiBaseUrl + urlPart;
+}
+function makeUploadUrl(urlPart) {
+    return constants.domainBase + constants.apiUploadBaseUrl + urlPart;
+}
+function makeQueryString(params) {
+    var encode = encodeURIComponent;
+    var queryPart = '?';
+    object.forEach(params, function (key, val) {
+        var nextPart = encode(key) + '=' + encode(val);
+        queryPart = queryPart + nextPart + '&';
+    });
+    // Chop off the extra '&' or '?' on the end
+    queryPart = queryPart.slice(0, -1);
+    return queryPart;
+}
+//# sourceMappingURL=url.js.map
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function(){
+  var crypt = __webpack_require__(177),
+      utf8 = __webpack_require__(32).utf8,
+      isBuffer = __webpack_require__(211),
+      bin = __webpack_require__(32).bin,
+
+  // The core
+  md5 = function (message, options) {
+    // Convert to byte array
+    if (message.constructor == String)
+      if (options && options.encoding === 'binary')
+        message = bin.stringToBytes(message);
+      else
+        message = utf8.stringToBytes(message);
+    else if (isBuffer(message))
+      message = Array.prototype.slice.call(message, 0);
+    else if (!Array.isArray(message))
+      message = message.toString();
+    // else, assume byte array already
+
+    var m = crypt.bytesToWords(message),
+        l = message.length * 8,
+        a =  1732584193,
+        b = -271733879,
+        c = -1732584194,
+        d =  271733878;
+
+    // Swap endian
+    for (var i = 0; i < m.length; i++) {
+      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
+             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
+    }
+
+    // Padding
+    m[l >>> 5] |= 0x80 << (l % 32);
+    m[(((l + 64) >>> 9) << 4) + 14] = l;
+
+    // Method shortcuts
+    var FF = md5._ff,
+        GG = md5._gg,
+        HH = md5._hh,
+        II = md5._ii;
+
+    for (var i = 0; i < m.length; i += 16) {
+
+      var aa = a,
+          bb = b,
+          cc = c,
+          dd = d;
+
+      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
+      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
+      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
+      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
+      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
+      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
+      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
+      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
+      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
+      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
+      c = FF(c, d, a, b, m[i+10], 17, -42063);
+      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
+      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
+      d = FF(d, a, b, c, m[i+13], 12, -40341101);
+      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
+      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
+
+      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
+      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
+      c = GG(c, d, a, b, m[i+11], 14,  643717713);
+      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
+      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
+      d = GG(d, a, b, c, m[i+10],  9,  38016083);
+      c = GG(c, d, a, b, m[i+15], 14, -660478335);
+      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
+      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
+      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
+      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
+      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
+      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
+      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
+      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
+      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
+
+      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
+      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
+      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
+      b = HH(b, c, d, a, m[i+14], 23, -35309556);
+      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
+      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
+      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
+      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
+      a = HH(a, b, c, d, m[i+13],  4,  681279174);
+      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
+      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
+      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
+      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
+      d = HH(d, a, b, c, m[i+12], 11, -421815835);
+      c = HH(c, d, a, b, m[i+15], 16,  530742520);
+      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
+
+      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
+      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
+      c = II(c, d, a, b, m[i+14], 15, -1416354905);
+      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
+      a = II(a, b, c, d, m[i+12],  6,  1700485571);
+      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
+      c = II(c, d, a, b, m[i+10], 15, -1051523);
+      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
+      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
+      d = II(d, a, b, c, m[i+15], 10, -30611744);
+      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
+      b = II(b, c, d, a, m[i+13], 21,  1309151649);
+      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
+      d = II(d, a, b, c, m[i+11], 10, -1120210379);
+      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
+      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
+
+      a = (a + aa) >>> 0;
+      b = (b + bb) >>> 0;
+      c = (c + cc) >>> 0;
+      d = (d + dd) >>> 0;
+    }
+
+    return crypt.endian([a, b, c, d]);
+  };
+
+  // Auxiliary functions
+  md5._ff  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._gg  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._hh  = function (a, b, c, d, x, s, t) {
+    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._ii  = function (a, b, c, d, x, s, t) {
+    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+
+  // Package private blocksize
+  md5._blocksize = 16;
+  md5._digestsize = 16;
+
+  module.exports = function (message, options) {
+    if (message === undefined || message === null)
+      throw new Error('Illegal argument ' + message);
+
+    var digestbytes = crypt.wordsToBytes(md5(message, options));
+    return options && options.asBytes ? digestbytes :
+        options && options.asString ? bin.bytesToString(digestbytes) :
+        crypt.bytesToHex(digestbytes);
+  };
+
+})();
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = secondsToPretty;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('timeFromNow', utcTimestamp => {
+    return __WEBPACK_IMPORTED_MODULE_1_moment___default()(utcTimestamp).fromNow();
+});
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('sortByNextReviewTime', arr => {
+    return arr.sort((a, b) => a.nextReviewTime > b.nextReviewTime);
+});
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('truncate', Math.floor);
+function secondsToPretty(seconds = 0) {
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    let hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+    let days = Math.floor(hours / 24);
+    hours = hours % 24;
+    let value, unit;
+    let result = '';
+    if (days) {
+        result += days + ' d ';
+    }
+    if (hours) {
+        result += hours + ' h ';
+    }
+    if (minutes) {
+        result += minutes + ' m ';
+    }
+    if (seconds) {
+        result += seconds + ' s ';
+    }
+    return result;
+}
+
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('secondsToPretty', secondsToPretty);
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(174);
+
+const Config = {
+    env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
+    offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
+    version: 10,
+    framework: 'vue' // vue || angular1
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = Config;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = login;
+function login() {
+    var mobile = false;
+
+    if (mobile) {} else {
+        console.log('login called');
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            document.querySelector('.login-user-name').innerHTML = result.user.displayName;
+            document.querySelector('.login-button').style.display = 'none';
+            console.log('login result', result);
+            Globals.username = result.user.displayName;
+            Globals.userId = result.user.uid;
+            PubSub.publish('login', { userId: result.user.uid });
+        }).catch(function (error) {
+            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN", error
+            // Handle Errors here.
+            );var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+        });
+    }
+}
 
 /***/ }),
 /* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItem__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_merge__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_merge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__contentItem__ = __webpack_require__(7);
+
 
 
 
  // from './firebaseService'
-class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */] {
-    //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-    constructor({ question, answer, id, userTimeMap, trees }) {
-        super();
-        this.type = 'fact';
-        this.question = question;
-        this.answer = answer;
-        this.id = id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
-        this.trees = {};
+class Fact extends __WEBPACK_IMPORTED_MODULE_4__contentItem__["a" /* default */] {
+  //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
+  constructor({ question, answer, id, userTimeMap, trees }) {
+    super();
+    this.type = 'fact';
+    this.question = question;
+    this.answer = answer;
+    this.id = id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: question, answer: answer }));
 
-        if (window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
-    }
+    if (window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+    super.init();
+  }
 
-    //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+  //bc certain properties used in the local js object in memory, shouldn't be stored in the db
 
-    getDBRepresentation() {
-        return {
-            id: this.id,
-            question: this.question,
-            answer: this.answer,
-            trees: this.trees,
-            userTimeMap: this.userTimeMap
-        };
-    }
+  getDBRepresentation() {
+    var baseRep = super.getDBRepresentation();
+
+    return __WEBPACK_IMPORTED_MODULE_3_lodash_merge___default()(baseRep, {
+      id: this.id,
+      question: this.question,
+      answer: this.answer,
+      type: this.type
+    });
+  }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
 
@@ -17171,9 +16965,9 @@ class Fact extends __WEBPACK_IMPORTED_MODULE_3__contentItem__["a" /* default */]
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(7);
 
 
 
@@ -17186,6 +16980,7 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
         this.title = title;
         this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ title }));
         this.trees = {};
+        super.init();
     }
 
 }
@@ -17198,9 +16993,9 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contentItem__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trees__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contentItem__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fact__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__heading__ = __webpack_require__(29);
 
@@ -17226,10 +17021,13 @@ function newTree(nodeType, parentTreeId, values) {
             break;
     }
 
-    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__["a" /* addTreeToGraph */])(parentTreeId, newContent);
+    console.log('new content just created is', newContent);
+    newContent.setProficiency(0);
+    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__components_treesGraph_js__["b" /* addTreeToGraph */])(parentTreeId, newContent);
+    console.log('new Tree created is', tree
     //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
     //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
-    __WEBPACK_IMPORTED_MODULE_1__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
+    );__WEBPACK_IMPORTED_MODULE_1__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
         parentTree.addChild(tree.id);
     });
     newContent.addTree(tree.id);
@@ -17240,15 +17038,17 @@ function newTree(nodeType, parentTreeId, values) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_treesGraph__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(176);
 
 
 const treesRef = __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees');
 const trees = {};
+
 
 
 
@@ -17257,7 +17057,7 @@ function loadObject(treeObj, self) {
 }
 class Tree {
 
-    constructor(contentId, contentType, parentId, x, y) {
+    constructor(contentId, contentType, parentId, parentDegree, x, y) {
         var treeObj;
         if (arguments[0] && typeof arguments[0] === 'object') {
             treeObj = arguments[0];
@@ -17293,9 +17093,8 @@ class Tree {
      * @param treeId
      */
     addChild(treeId) {
-        console.log('add child called in tree.js'
         // this.treeRef.child('/children').push(treeId)
-        );var children = this.children || {};
+        var children = this.children || {};
         children[treeId] = true;
         var updates = {
             children
@@ -17359,6 +17158,47 @@ class Tree {
         // this.treeRef.update(updates)
         __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update(updates);
         this[prop] = val;
+    }
+    addToX({ recursion, deltaX } = { recursion: false, deltaX: 0 }) {
+        var newX = this.x + deltaX;
+        this.set('x', newX);
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__components_treesGraph__["a" /* syncGraphWithNode */])(this.id);
+        if (!recursion) return;
+
+        // console.log('addToX called on', this, ...arguments)
+        this.children && Object.keys(this.children).forEach(childId => {
+            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(childId).then(child => {
+                child.addToX({ recursion: true, deltaX });
+            });
+        });
+    }
+    addToY({ recursion, deltaY } = { recursion: false, deltaY: 0 }) {
+        var newY = this.y + deltaY;
+        this.set('y', newY);
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__components_treesGraph__["a" /* syncGraphWithNode */])(this.id);
+        if (!recursion) return;
+
+        // console.log('addToY called on', this, ...arguments)
+        this.children && Object.keys(this.children).forEach(childId => {
+            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(childId).then(child => {
+                child.addToY({ recursion: true, deltaY });
+            });
+        });
+    }
+    //promise
+    getPriority() {
+        var node = this;
+        if (node.parentId) {
+            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(node.parentId).then(parent => {
+                return parent.getPriority() + 1;
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                resolve(1);
+            });
+        }
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
@@ -17439,7 +17279,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(20);
+var _shared_promise = __webpack_require__(18);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17734,13 +17574,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(19);
+var _errors = __webpack_require__(17);
 
-var _errors2 = __webpack_require__(11);
+var _errors2 = __webpack_require__(13);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(186);
+var _tokenManager = __webpack_require__(188);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -18120,11 +17960,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(193);
+var _fs = __webpack_require__(195);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(24);
+var _string = __webpack_require__(22);
 
 var string = _interopRequireWildcard(_string);
 
@@ -18368,7 +18208,7 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(22);
+var _array = __webpack_require__(20);
 
 var array = _interopRequireWildcard(_array);
 
@@ -18378,7 +18218,7 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(23);
+var _metadata = __webpack_require__(21);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -18386,13 +18226,13 @@ var _object = __webpack_require__(5);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(197);
+var _requestinfo = __webpack_require__(199);
 
 var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(25);
+var _url = __webpack_require__(23);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -18846,7 +18686,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(21);
+var _args = __webpack_require__(19);
 
 var args = _interopRequireWildcard(_args);
 
@@ -18856,9 +18696,9 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(13);
+var _location = __webpack_require__(15);
 
-var _metadata = __webpack_require__(23);
+var _metadata = __webpack_require__(21);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -18874,7 +18714,7 @@ var _requests = __webpack_require__(40);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(24);
+var _string = __webpack_require__(22);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -18882,7 +18722,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(202);
+var _task = __webpack_require__(204);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -30391,51 +30231,143 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 160 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 161 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_header_branchesHeader__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_reviewAlgorithm_reviewSchedule__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_tree_tree__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_newTree_newtreecomponent__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_toolbar_toolbar__ = __webpack_require__(170);
+
+
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('branchesHeader', __WEBPACK_IMPORTED_MODULE_2__components_header_branchesHeader__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('reviewSchedule', __WEBPACK_IMPORTED_MODULE_3__components_reviewAlgorithm_reviewSchedule__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('tree', __WEBPACK_IMPORTED_MODULE_4__components_tree_tree__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('newtree', __WEBPACK_IMPORTED_MODULE_5__components_newTree_newtreecomponent__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('toolbar', __WEBPACK_IMPORTED_MODULE_6__components_toolbar_toolbar__["a" /* default */]);
+
+/***/ }),
+/* 162 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(9);
+
+
+/***/ }),
+/* 163 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export toggleVisibility */
+function toggleVisibility(el) {
+    var style = el.style;
+    if (style.display == 'block') {
+        style.display = 'none';
+    } else {
+        style.display = 'block';
+    }
+}
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"apiKey": "AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A",
+	"authDomain": "branches-dev.firebaseapp.com",
+	"databaseURL": "https://branches-dev.firebaseio.com",
+	"projectId": "branches-dev",
+	"storageBucket": "branches-dev.appspot.com",
+	"messagingSenderId": "354929800016"
+};
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"apiKey": "AIzaSyARFLXLjlpf4zNk0uCNwSzUBIn0osDwfQI",
+	"authDomain": "branches-prod.firebaseapp.com",
+	"databaseURL": "https://branches-prod.firebaseio.com",
+	"projectId": "branches-prod",
+	"storageBucket": "branches-prod.appspot.com",
+	"messagingSenderId": "663497929399"
+};
+
+/***/ }),
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_user__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_users__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_users__ = __webpack_require__(16);
 
 
 
 
 
 
-//temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(204),
+    template: __webpack_require__(206),
     created() {
         const self = this;
         self.loggedIn = false;
         self.user = {};
         self.username = '';
-        // self.numItemsStudied = 0
         self.numItemsMastered = 0;
-        self.secondsSpentStudying = 1;
+        self.secondsSpentStudying = 1; // init to 1, not 0 to prevent divBy0 Error
         this.items = {};
 
-        __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('login', () => {
-            console.log('login detected inside branchesheader');
+        PubSub.subscribe('login', () => {
             self.loggedIn = true;
             self.user = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */];
             self.username = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.displayName;
+            self.photoURL = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.photoURL;
+            //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
             __WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
                 self.items = user.items;
-                console.log('user received in branchesheader component is', user, user.items, user.items.length);
                 self.user = user;
-                // self.numItemsStudied = user.items.length
-                // console.log('numItems studied is', self.numItemsStudied)
-                // console.log('user inside of branchesheader component is ', user, user.branchesData.items.length)
-                // self.numItemsStudied = self.user.branchesData.items.length
-            }
-            // console.log('branches header loggedIn is now', self.loggedIn)
-            );
+            });
         });
     },
     data() {
@@ -30444,8 +30376,8 @@ process.umask = function() { return 0; };
             user: this.user,
             loggedIn: this.loggedIn,
             username: this.username,
+            photoURL: this.photoURL,
             items: this.items
-            // numItemsStudied: this.numItemsStudied
         };
     },
     computed: {
@@ -30461,7 +30393,6 @@ process.umask = function() { return 0; };
                 if (this.items[key].proficiency >= 96) {
                     sum++;
                 }
-                console.log('items mastered reduce being called', sum);
                 return sum;
             }, 0);
             return numMastered;
@@ -30477,118 +30408,6 @@ process.umask = function() { return 0; };
 });
 
 /***/ }),
-/* 161 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_user__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pubsub_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_pubsub_js__);
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(206), // '<div> {{movie}} this is the tree template</div>',
-    created() {
-        var self = this;
-
-        this.loggedIn = false;
-        this.user = {};
-        this.itemReviewTimeMap = {};
-        this.content = {};
-        this.items = {};
-        __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.subscribe('login', () => {
-
-            self.loggedIn = true;
-
-            // console.log('Review schedule component: login detected')
-            // Users.get(user.getId()).then(user => {
-            //     console.log('review schedule component on login detect: on user get', user)
-            //     self.itemReviewTimeMap = user.branchesData.itemReviewTimeMap
-            // })
-            console.log('review schedule component on login detect: user object is', __WEBPACK_IMPORTED_MODULE_0__objects_user__["a" /* default */]);
-            __WEBPACK_IMPORTED_MODULE_1__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_0__objects_user__["a" /* default */].getId()).then(user => {
-                self.items = user.items;
-            });
-        });
-        this.num = 5;
-    },
-    data() {
-        return {
-            // itemReviewTimeMap: this.itemReviewTimeMap,
-            // numItemsToReview: this.itemReviewTimeMap.length,
-            num: 5,
-            loggedIn: this.loggedIn,
-            items: this.items
-        };
-    },
-    computed: {
-        numItemsToReview() {
-            return Object.keys(this.items).length;
-        }
-    }
-});
-
-/***/ }),
-/* 162 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(15);
-
-
-/***/ }),
-/* 163 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(8);
-
-
-/***/ }),
-/* 164 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export toggleVisibility */
-function toggleVisibility(el) {
-    var style = el.style;
-    if (style.display == 'block') {
-        style.display = 'none';
-    } else {
-        style.display = 'block';
-    }
-}
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"apiKey": "AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A",
-	"authDomain": "branches-dev.firebaseapp.com",
-	"databaseURL": "https://branches-dev.firebaseio.com",
-	"projectId": "branches-dev",
-	"storageBucket": "branches-dev.appspot.com",
-	"messagingSenderId": "354929800016"
-};
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"apiKey": "AIzaSyARFLXLjlpf4zNk0uCNwSzUBIn0osDwfQI",
-	"authDomain": "branches-prod.firebaseapp.com",
-	"databaseURL": "https://branches-prod.firebaseio.com",
-	"projectId": "branches-prod",
-	"storageBucket": "branches-prod.appspot.com",
-	"messagingSenderId": "663497929399"
-};
-
-/***/ }),
 /* 167 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30597,7 +30416,7 @@ module.exports = {
 
 //temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(205),
+    template: __webpack_require__(207),
     props: ['parentid'],
     data() {
         return {
@@ -30643,6 +30462,7 @@ module.exports = {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = calculateMillisecondsTilNextReview;
+//TODO: take into account if a user reviews the card to early - e.g. a user shouldn't be able to click "All the way baby" 5 times
 function calculateMinutesTilNextReview(dateProficiencyMap) {
     var minutesTilNextReview;
     const numInteractions = dateProficiencyMap.length;
@@ -30660,7 +30480,7 @@ function calculateMinutesTilNextReview(dateProficiencyMap) {
             break;
         case DAYYYAAAMN:
             minutesTilNextReview = 60 * 24; // 1 day
-            for (let i = numInteractions - 1; i >= 0; i--) {
+            for (let i = numInteractions - 1 - 1; i > 0; i--) {
                 // for every DAYYYAAAMN in a row the user got, multiply the time til next review by 5
                 var interaction = dateProficiencyMap[i];
                 var proficiencyCategory = getProficiencyCategory(interaction.proficiency);
@@ -30705,22 +30525,89 @@ function getProficiencyCategory(proficiency) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-//THIS BLANK FILE IS NECESSARY
-/* unused harmony default export */ var _unused_webpack_default_export = ({});
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_user__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(16);
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    template: __webpack_require__(208), // '<div> {{movie}} this is the tree template</div>',
+    created() {
+        var self = this;
+
+        this.loggedIn = false;
+        this.user = {};
+        this.itemReviewTimeMap = {};
+        this.content = {};
+        this.items = {};
+        PubSub.subscribe('login', () => {
+            self.loggedIn = true;
+            __WEBPACK_IMPORTED_MODULE_1__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_0__objects_user__["a" /* default */].getId()).then(user => {
+                self.items = user.items;
+            });
+        });
+        this.num = 5;
+    },
+    data() {
+        return {
+            num: 5,
+            loggedIn: this.loggedIn,
+            items: this.items
+        };
+    },
+    computed: {
+        numItemsToReview() {
+            return Object.keys(this.items).length;
+        }
+    }
+});
 
 /***/ }),
 /* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_fact__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timers__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pubsub_js__);
+
+//temporary hacky solution for controller
+/* harmony default export */ __webpack_exports__["a"] = ({
+    template: __webpack_require__(209),
+    created() {},
+    data() {
+        return {};
+    },
+    methods: {
+        activateLasso() {
+            lasso.activate();
+        },
+        deactivateLasso() {
+            lasso.deactivate();
+        }
+    }
+});
+
+/***/ }),
+/* 171 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//THIS BLANK FILE IS NECESSARY
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
+
+/***/ }),
+/* 172 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__objects_heading__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__treesGraph__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_filters__ = __webpack_require__(25);
+
+
 
 
 
@@ -30729,39 +30616,48 @@ function getProficiencyCategory(proficiency) {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(208), // '<div> {{movie}} this is the tree template</div>',
-    props: ['movie', 'id'],
+    template: __webpack_require__(210), // '<div> {{movie}} this is the tree template</div>',
+    props: ['id'],
     created() {
-        var self = this;
+        var me = this;
 
         this.editing = false;
+        this.addingChild = false;
         this.tree = {}; // init to empty object until promises resolve, so vue does not complain
         this.fact = {};
         this.content = {};
+        this.nodeBeingDragged = false;
         __WEBPACK_IMPORTED_MODULE_0__objects_trees__["a" /* Trees */].get(this.id).then(tree => {
-            self.tree = tree;
-            __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
-                self.content = content;
-                self.startTimer();
+            me.tree = tree;
+            __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].get(tree.contentId).then(content => {
+                me.content = content;
+                // console.log('this.content in tree.js is ', me.content)
+                me.startTimer();
             });
         }
-        // Trees.get(this.id).then( (tree) => {
-        //     self.tree = tree
-        //     Facts.get(tree.factId).then((fact) =>{
-        //         self.fact = fact
-        //         this.startTimer()
-        //     })
-        // })
-        );__WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('canvas.clicked', () => {
-            // console.log('canvas clicked!')
-            self.saveTimer();
+        //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
+        );PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
+            if (data.oldNode != me.id) return;
+
+            //get reference to content, because by the time
+            const content = me.content;
+            content.saveTimer();
+        }
+        //todo replace with vuex
+        );PubSub.subscribe('canvas.startDraggingNode', function () {
+            window.draggingNode = true;
+        });
+        PubSub.subscribe('canvas.stopDraggingNode', function () {
+            window.draggingNode = false;
         });
     },
     data() {
         return {
             tree: this.tree,
             content: this.content,
-            editing: this.editing
+            editing: this.editing,
+            addingChild: this.addingChild,
+            draggingNode: window.draggingNode
         };
     },
     computed: {
@@ -30770,12 +30666,19 @@ function getProficiencyCategory(proficiency) {
         },
         typeIsFact() {
             return this.tree.contentType == 'fact';
+        },
+        styleObject() {
+            const styles = {};
+            styles['background-color'] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["c" /* proficiencyToColor */])(this.content.proficiency);
+            return styles;
+        },
+        timerMouseOverMessage() {
+            return "You have spent " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__core_filters__["a" /* secondsToPretty */])(this.content.timer) + "studying this item";
         }
     },
     methods: {
         //user methods
         startTimer() {
-            console.log();
             this.content.startTimer();
         },
         saveTimer() {
@@ -30784,27 +30687,37 @@ function getProficiencyCategory(proficiency) {
         toggleEditing() {
             this.editing = !this.editing;
         },
+        toggleAddChild() {
+            this.addingChild = !this.addingChild;
+        },
         setProficiencyToOne() {
             this.content.setProficiency(0);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
         },
         setProficiencyToTwo() {
             this.content.setProficiency(33);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
         },
         setProficiencyToThree() {
             this.content.setProficiency(66);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
         },
         setProficiencyToFour() {
             this.content.setProficiency(100);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
+        },
+        toggleAddChild() {
+            this.addingChild = !this.addingChild;
         },
         //global methods
         changeContent() {
             switch (this.tree.contentType) {
                 case 'fact':
-                    var fact = new __WEBPACK_IMPORTED_MODULE_1__objects_fact__["a" /* Fact */]({ question: this.content.question, answer: this.content.answer });
-                    this.content = __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__["a" /* default */].create(fact);
+                    var fact = new __WEBPACK_IMPORTED_MODULE_2__objects_fact__["a" /* Fact */]({ question: this.content.question, answer: this.content.answer });
+                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].create(fact);
                     break;
                 case 'heading':
-                    this.content = __WEBPACK_IMPORTED_MODULE_2__objects_contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_5__objects_heading__["a" /* Heading */]({ title: this.content.title }));
+                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItem__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_5__objects_heading__["a" /* Heading */]({ title: this.content.title }));
                     break;
             }
             this.content.addTree(this.id);
@@ -30819,75 +30732,36 @@ function getProficiencyCategory(proficiency) {
             this.tree.contentType == 'heading';
         },
         unlinkFromParent() {
-            if (confirm("Warning! Are you sure you would you like to delete this tree?")) {
+            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")) {
                 this.tree.unlinkFromParent();
             }
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__treesGraph__["b" /* removeTreeFromGraph */])(this.id);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["d" /* removeTreeFromGraph */])(this.id);
         }
     }
 });
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_header_branchesHeaderComponent__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_reviewAlgorithm_reviewScheduleComponent__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(12);
 
 
 
 
 
-
-
-__WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].component('branchesHeader', __WEBPACK_IMPORTED_MODULE_5__components_header_branchesHeaderComponent__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].component('reviewSchedule', __WEBPACK_IMPORTED_MODULE_6__components_reviewAlgorithm_reviewScheduleComponent__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].filter('timeFromNow', utcTimestamp => {
-    return __WEBPACK_IMPORTED_MODULE_3_moment___default()(utcTimestamp).fromNow();
-});
-__WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].filter('sortByNextReviewTime', arr => {
-    return arr.sort((a, b) => a.nextReviewTime > b.nextReviewTime);
-});
-__WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */].filter('secondsToPretty', (seconds = 0) => {
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    let days = Math.floor(hours / 24);
-    console.log('minutes, hours, days', minutes, hours, days);
-    let unit, word;
-    if (days) {
-        unit = days;
-        word = "day";
-    } else if (hours) {
-        unit = hours;
-        word = 'hour';
-    } else if (minutes) {
-        unit = minutes;
-        word = 'minute';
-    } else {
-        unit = 0;
-        word = 'minutes';
-    }
-    if (unit > 1) {
-        word += 's';
-    }
-    var ret = unit + ' ' + word;
-    console.log('seconds pretty res is ', ret);
-    return unit + " " + word;
-});
 var vm = new __WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */]({
     el: '#branches-app'
 });
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30896,7 +30770,7 @@ const ENV = 'dev';
 /* harmony default export */ __webpack_exports__["a"] = (ENV);
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30904,23 +30778,26 @@ const Globals = {
     currentTreeSelected: null,
     existingColor: 'brown',
     newColor: 'lightgreen',
-    proficiency_4: 'blue',
-    proficiency_3: 'darkgreen',
-    proficiency_2: 'yellow',
-    proficiency_1: 'brown'
+    colors: {
+        proficiency_4: 'aqua',
+        proficiency_3: 'lawngreen',
+        proficiency_2: 'yellow',
+        proficiency_1: 'lightpink',
+        proficiency_unknown: 'gray'
+    }
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Globals;
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -31022,7 +30899,7 @@ const Globals = {
 
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31124,7 +31001,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31159,11 +31036,11 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(33);
 
-var _errors = __webpack_require__(19);
+var _errors = __webpack_require__(17);
 
-var _shared_promise = __webpack_require__(20);
+var _shared_promise = __webpack_require__(18);
 
-var _deep_copy = __webpack_require__(176);
+var _deep_copy = __webpack_require__(178);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31528,14 +31405,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(9);
+var firebase = __webpack_require__(10);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -31804,10 +31681,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -31838,7 +31715,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(9);
+            var firebase = __webpack_require__(10);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -32078,7 +31955,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32092,22 +31969,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(9);
+var _app = __webpack_require__(10);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(178);
+__webpack_require__(180);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(179);
-__webpack_require__(188);
+__webpack_require__(181);
+__webpack_require__(190);
 var AsyncStorage;
 
-__webpack_require__(181);
+__webpack_require__(183);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -32115,7 +31992,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32145,15 +32022,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(183);
+var _windowController = __webpack_require__(185);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(182);
+var _swController = __webpack_require__(184);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(9);
+var _app = __webpack_require__(10);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -32176,7 +32053,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32213,7 +32090,7 @@ var _controllerInterface = __webpack_require__(34);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(11);
+var _errors = __webpack_require__(13);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -32554,7 +32431,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32591,7 +32468,7 @@ var _controllerInterface = __webpack_require__(34);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(11);
+var _errors = __webpack_require__(13);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -32599,7 +32476,7 @@ var _workerPageMessage = __webpack_require__(37);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(185);
+var _defaultSw = __webpack_require__(187);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -32955,7 +32832,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32998,7 +32875,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33035,7 +32912,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33066,13 +32943,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(19);
+var _errors = __webpack_require__(17);
 
-var _errors2 = __webpack_require__(11);
+var _errors2 = __webpack_require__(13);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(184);
+var _arrayBufferToBase = __webpack_require__(186);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -33457,7 +33334,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -33694,10 +33571,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(212).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(215).setImmediate))
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33712,17 +33589,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(24);
+var _string = __webpack_require__(22);
 
 var _taskenums = __webpack_require__(41);
 
-var _xhriopool = __webpack_require__(200);
+var _xhriopool = __webpack_require__(202);
 
 var _reference = __webpack_require__(43);
 
-var _service = __webpack_require__(201);
+var _service = __webpack_require__(203);
 
-var _app = __webpack_require__(9);
+var _app = __webpack_require__(10);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -33767,7 +33644,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33825,7 +33702,7 @@ function async(f) {
 
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33842,7 +33719,7 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(12);
+var _constants = __webpack_require__(14);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -33850,15 +33727,15 @@ var _error2 = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(192);
+var _failrequest = __webpack_require__(194);
 
-var _location = __webpack_require__(13);
+var _location = __webpack_require__(15);
 
 var _promise_external = __webpack_require__(4);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(198);
+var _requestmap = __webpack_require__(200);
 
 var _type = __webpack_require__(1);
 
@@ -34007,7 +33884,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34139,7 +34016,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34198,7 +34075,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34279,7 +34156,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34335,7 +34212,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34395,7 +34272,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34435,11 +34312,11 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(22);
+var _array = __webpack_require__(20);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(191);
+var _backoff = __webpack_require__(193);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -34459,7 +34336,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(25);
+var _url = __webpack_require__(23);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -34668,7 +34545,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34715,7 +34592,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34751,7 +34628,7 @@ var _object = __webpack_require__(5);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(12);
+var _constants = __webpack_require__(14);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -34810,7 +34687,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35009,7 +34886,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35041,7 +34918,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(199);
+var _xhrio_network = __webpack_require__(201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35066,7 +34943,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35098,19 +34975,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(21);
+var _args = __webpack_require__(19);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(190);
+var _authwrapper = __webpack_require__(192);
 
-var _location = __webpack_require__(13);
+var _location = __webpack_require__(15);
 
 var _promise_external = __webpack_require__(4);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(196);
+var _request = __webpack_require__(198);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -35257,7 +35134,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 202 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35296,19 +35173,19 @@ var _taskenums = __webpack_require__(41);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(195);
+var _observer = __webpack_require__(197);
 
-var _tasksnapshot = __webpack_require__(203);
+var _tasksnapshot = __webpack_require__(205);
 
-var _args = __webpack_require__(21);
+var _args = __webpack_require__(19);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(22);
+var _array = __webpack_require__(20);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(189);
+var _async = __webpack_require__(191);
 
 var _error = __webpack_require__(2);
 
@@ -35900,7 +35777,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 203 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35952,37 +35829,37 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 204 */
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"header\">\r\n    <span class=\"header-left\">\r\n        <span class=\"header-version\"> Version: {{version}}</span>\r\n        <span class=\"header-plan\"><a href=\"https://docs.google.com/presentation/d/101sNSVZnh-olwaRi4hRR5u6KcFKF78LoV5FXYWGlIT4/edit?usp=sharing\">The Plan</a></span>\r\n        <span class=\"header-hire\"><a href=\"mailto:john@branches-app.com\">Work for Branches</a></span>\r\n        <span class=\"header-github\"><a href=\"https://github.com/branchesorg/branches_front_end\">Github</a></span>\r\n        <span class=\"header-todolist\"><a href=\"https://trello.com/b/lEER4Uqu\">Future Features</a></span>\r\n        <button class=\"login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n        <span class=\"login-user-name\" v-if=\"loggedIn\">{{username}}</span>\r\n    </span>\r\n    <span class=\"header-right\">\r\n        <span class=\"header-numItemsStudied\"> {{numItemsStudied}} Items Studied | </span>\r\n        <span class=\"header-numItemsMastered\"> {{numItemsMastered}} Items Mastered |</span>\r\n        <span class=\"header-timeSpent\"> {{secondsSpentStudying | secondsToPretty}} Spent Learning |</span>\r\n        <span class=\"header-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute}} Items Mastered Per Minute</span>\r\n    </span>\r\n</div>\r\n";
-
-/***/ }),
-/* 205 */
-/***/ (function(module, exports) {
-
-module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new Fact </div>\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create New Tree</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
-
-/***/ }),
 /* 206 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
+module.exports = "<div id=\"header-container\">\r\n    <button class=\"header login-button\"  v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='header' v-if=\"loggedIn\">\r\n        <span class=\"header-right\">\r\n            <span class=\"header-numItemsStudied\" title=\"Items studied\">\r\n                {{numItemsStudied}}\r\n                <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n            </span>\r\n            <span class=\"header-numItemsMastered\" title=\"Items mastered\">\r\n                {{numItemsMastered}}\r\n                <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n            </span>\r\n            <span class=\"header-timeSpent\">\r\n                <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n                =\r\n                {{secondsSpentStudying | secondsToPretty}}\r\n            </span>\r\n            <img class='header-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n            <!--<span class=\"header-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n        </span>\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 207 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"arrow\"></div>\r\n<div class=\"sigma-tooltip-header\"> Menu </div>\r\n";
+module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new child </div>\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 208 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\">\r\n    <div class=\"tree-timer\">TIMER:{{content.timer}}</div>\r\n    <div class=\"tree-contentid\">content id:{{content.id}}</div>\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-if=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\">\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <input class=\"tree-new-fact-answer\" v-model=\"content.answer\">\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-if=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">HEADING: {{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-if=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\">\r\n            <input class=\"tree-new-heading\" v-model=\"t.title\">\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-value\">Proficiency: {{content.proficiency}}</div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <button v-on:click=\"toggleEditing\">{{editing ? \"Stop Editing\" : \"Edit\"}}</button>\r\n    <button v-on:click=\"unlinkFromParent\">Delete</button>\r\n</div>\r\n";
+module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
 /* 209 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
+
+/***/ }),
+/* 211 */
 /***/ (function(module, exports) {
 
 /*!
@@ -36009,7 +35886,2221 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 210 */
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, module) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as the size to enable large array optimizations. */
+var LARGE_ARRAY_SIZE = 200;
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    arrayTag = '[object Array]',
+    boolTag = '[object Boolean]',
+    dateTag = '[object Date]',
+    errorTag = '[object Error]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    mapTag = '[object Map]',
+    numberTag = '[object Number]',
+    objectTag = '[object Object]',
+    promiseTag = '[object Promise]',
+    regexpTag = '[object RegExp]',
+    setTag = '[object Set]',
+    stringTag = '[object String]',
+    symbolTag = '[object Symbol]',
+    weakMapTag = '[object WeakMap]';
+
+var arrayBufferTag = '[object ArrayBuffer]',
+    dataViewTag = '[object DataView]',
+    float32Tag = '[object Float32Array]',
+    float64Tag = '[object Float64Array]',
+    int8Tag = '[object Int8Array]',
+    int16Tag = '[object Int16Array]',
+    int32Tag = '[object Int32Array]',
+    uint8Tag = '[object Uint8Array]',
+    uint8ClampedTag = '[object Uint8ClampedArray]',
+    uint16Tag = '[object Uint16Array]',
+    uint32Tag = '[object Uint32Array]';
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+/** Used to match `RegExp` flags from their coerced string values. */
+var reFlags = /\w*$/;
+
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/** Used to identify `toStringTag` values of typed arrays. */
+var typedArrayTags = {};
+typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+typedArrayTags[uint32Tag] = true;
+typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+typedArrayTags[errorTag] = typedArrayTags[funcTag] =
+typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+typedArrayTags[setTag] = typedArrayTags[stringTag] =
+typedArrayTags[weakMapTag] = false;
+
+/** Used to identify `toStringTag` values supported by `_.clone`. */
+var cloneableTags = {};
+cloneableTags[argsTag] = cloneableTags[arrayTag] =
+cloneableTags[arrayBufferTag] = cloneableTags[dataViewTag] =
+cloneableTags[boolTag] = cloneableTags[dateTag] =
+cloneableTags[float32Tag] = cloneableTags[float64Tag] =
+cloneableTags[int8Tag] = cloneableTags[int16Tag] =
+cloneableTags[int32Tag] = cloneableTags[mapTag] =
+cloneableTags[numberTag] = cloneableTags[objectTag] =
+cloneableTags[regexpTag] = cloneableTags[setTag] =
+cloneableTags[stringTag] = cloneableTags[symbolTag] =
+cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] =
+cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = true;
+cloneableTags[errorTag] = cloneableTags[funcTag] =
+cloneableTags[weakMapTag] = false;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Detect free variable `exports`. */
+var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Detect free variable `process` from Node.js. */
+var freeProcess = moduleExports && freeGlobal.process;
+
+/** Used to access faster Node.js helpers. */
+var nodeUtil = (function() {
+  try {
+    return freeProcess && freeProcess.binding('util');
+  } catch (e) {}
+}());
+
+/* Node.js helper references. */
+var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+
+/**
+ * Adds the key-value `pair` to `map`.
+ *
+ * @private
+ * @param {Object} map The map to modify.
+ * @param {Array} pair The key-value pair to add.
+ * @returns {Object} Returns `map`.
+ */
+function addMapEntry(map, pair) {
+  // Don't return `map.set` because it's not chainable in IE 11.
+  map.set(pair[0], pair[1]);
+  return map;
+}
+
+/**
+ * Adds `value` to `set`.
+ *
+ * @private
+ * @param {Object} set The set to modify.
+ * @param {*} value The value to add.
+ * @returns {Object} Returns `set`.
+ */
+function addSetEntry(set, value) {
+  // Don't return `set.add` because it's not chainable in IE 11.
+  set.add(value);
+  return set;
+}
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+/**
+ * A specialized version of `_.forEach` for arrays without support for
+ * iteratee shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns `array`.
+ */
+function arrayEach(array, iteratee) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  while (++index < length) {
+    if (iteratee(array[index], index, array) === false) {
+      break;
+    }
+  }
+  return array;
+}
+
+/**
+ * Appends the elements of `values` to `array`.
+ *
+ * @private
+ * @param {Array} array The array to modify.
+ * @param {Array} values The values to append.
+ * @returns {Array} Returns `array`.
+ */
+function arrayPush(array, values) {
+  var index = -1,
+      length = values.length,
+      offset = array.length;
+
+  while (++index < length) {
+    array[offset + index] = values[index];
+  }
+  return array;
+}
+
+/**
+ * A specialized version of `_.reduce` for arrays without support for
+ * iteratee shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {*} [accumulator] The initial value.
+ * @param {boolean} [initAccum] Specify using the first element of `array` as
+ *  the initial value.
+ * @returns {*} Returns the accumulated value.
+ */
+function arrayReduce(array, iteratee, accumulator, initAccum) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  if (initAccum && length) {
+    accumulator = array[++index];
+  }
+  while (++index < length) {
+    accumulator = iteratee(accumulator, array[index], index, array);
+  }
+  return accumulator;
+}
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.unary` without support for storing metadata.
+ *
+ * @private
+ * @param {Function} func The function to cap arguments for.
+ * @returns {Function} Returns the new capped function.
+ */
+function baseUnary(func) {
+  return function(value) {
+    return func(value);
+  };
+}
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+/**
+ * Checks if `value` is a host object in IE < 9.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+ */
+function isHostObject(value) {
+  // Many host objects are `Object` objects that can coerce to strings
+  // despite having improperly defined `toString` methods.
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
+  }
+  return result;
+}
+
+/**
+ * Converts `map` to its key-value pairs.
+ *
+ * @private
+ * @param {Object} map The map to convert.
+ * @returns {Array} Returns the key-value pairs.
+ */
+function mapToArray(map) {
+  var index = -1,
+      result = Array(map.size);
+
+  map.forEach(function(value, key) {
+    result[++index] = [key, value];
+  });
+  return result;
+}
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+/**
+ * Converts `set` to an array of its values.
+ *
+ * @private
+ * @param {Object} set The set to convert.
+ * @returns {Array} Returns the values.
+ */
+function setToArray(set) {
+  var index = -1,
+      result = Array(set.size);
+
+  set.forEach(function(value) {
+    result[++index] = value;
+  });
+  return result;
+}
+
+/** Used for built-in method references. */
+var arrayProto = Array.prototype,
+    funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to detect overreaching core-js shims. */
+var coreJsData = root['__core-js_shared__'];
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString.call(Object);
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/** Built-in value references. */
+var Buffer = moduleExports ? root.Buffer : undefined,
+    Symbol = root.Symbol,
+    Uint8Array = root.Uint8Array,
+    getPrototype = overArg(Object.getPrototypeOf, Object),
+    objectCreate = Object.create,
+    propertyIsEnumerable = objectProto.propertyIsEnumerable,
+    splice = arrayProto.splice;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeGetSymbols = Object.getOwnPropertySymbols,
+    nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined,
+    nativeKeys = overArg(Object.keys, Object),
+    nativeMax = Math.max;
+
+/* Built-in method references that are verified to be native. */
+var DataView = getNative(root, 'DataView'),
+    Map = getNative(root, 'Map'),
+    Promise = getNative(root, 'Promise'),
+    Set = getNative(root, 'Set'),
+    WeakMap = getNative(root, 'WeakMap'),
+    nativeCreate = getNative(Object, 'create');
+
+/** Used to detect maps, sets, and weakmaps. */
+var dataViewCtorString = toSource(DataView),
+    mapCtorString = toSource(Map),
+    promiseCtorString = toSource(Promise),
+    setCtorString = toSource(Set),
+    weakMapCtorString = toSource(WeakMap);
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+
+/**
+ * Creates a hash object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Hash(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+/**
+ * Removes all key-value entries from the hash.
+ *
+ * @private
+ * @name clear
+ * @memberOf Hash
+ */
+function hashClear() {
+  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+}
+
+/**
+ * Removes `key` and its value from the hash.
+ *
+ * @private
+ * @name delete
+ * @memberOf Hash
+ * @param {Object} hash The hash to modify.
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function hashDelete(key) {
+  return this.has(key) && delete this.__data__[key];
+}
+
+/**
+ * Gets the hash value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Hash
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function hashGet(key) {
+  var data = this.__data__;
+  if (nativeCreate) {
+    var result = data[key];
+    return result === HASH_UNDEFINED ? undefined : result;
+  }
+  return hasOwnProperty.call(data, key) ? data[key] : undefined;
+}
+
+/**
+ * Checks if a hash value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Hash
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function hashHas(key) {
+  var data = this.__data__;
+  return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+}
+
+/**
+ * Sets the hash `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Hash
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the hash instance.
+ */
+function hashSet(key, value) {
+  var data = this.__data__;
+  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+  return this;
+}
+
+// Add methods to `Hash`.
+Hash.prototype.clear = hashClear;
+Hash.prototype['delete'] = hashDelete;
+Hash.prototype.get = hashGet;
+Hash.prototype.has = hashHas;
+Hash.prototype.set = hashSet;
+
+/**
+ * Creates an list cache object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function ListCache(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+/**
+ * Removes all key-value entries from the list cache.
+ *
+ * @private
+ * @name clear
+ * @memberOf ListCache
+ */
+function listCacheClear() {
+  this.__data__ = [];
+}
+
+/**
+ * Removes `key` and its value from the list cache.
+ *
+ * @private
+ * @name delete
+ * @memberOf ListCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function listCacheDelete(key) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  return true;
+}
+
+/**
+ * Gets the list cache value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf ListCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function listCacheGet(key) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  return index < 0 ? undefined : data[index][1];
+}
+
+/**
+ * Checks if a list cache value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf ListCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function listCacheHas(key) {
+  return assocIndexOf(this.__data__, key) > -1;
+}
+
+/**
+ * Sets the list cache `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf ListCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the list cache instance.
+ */
+function listCacheSet(key, value) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  if (index < 0) {
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
+}
+
+// Add methods to `ListCache`.
+ListCache.prototype.clear = listCacheClear;
+ListCache.prototype['delete'] = listCacheDelete;
+ListCache.prototype.get = listCacheGet;
+ListCache.prototype.has = listCacheHas;
+ListCache.prototype.set = listCacheSet;
+
+/**
+ * Creates a map cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function MapCache(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+/**
+ * Removes all key-value entries from the map.
+ *
+ * @private
+ * @name clear
+ * @memberOf MapCache
+ */
+function mapCacheClear() {
+  this.__data__ = {
+    'hash': new Hash,
+    'map': new (Map || ListCache),
+    'string': new Hash
+  };
+}
+
+/**
+ * Removes `key` and its value from the map.
+ *
+ * @private
+ * @name delete
+ * @memberOf MapCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function mapCacheDelete(key) {
+  return getMapData(this, key)['delete'](key);
+}
+
+/**
+ * Gets the map value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf MapCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function mapCacheGet(key) {
+  return getMapData(this, key).get(key);
+}
+
+/**
+ * Checks if a map value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf MapCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function mapCacheHas(key) {
+  return getMapData(this, key).has(key);
+}
+
+/**
+ * Sets the map `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf MapCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the map cache instance.
+ */
+function mapCacheSet(key, value) {
+  getMapData(this, key).set(key, value);
+  return this;
+}
+
+// Add methods to `MapCache`.
+MapCache.prototype.clear = mapCacheClear;
+MapCache.prototype['delete'] = mapCacheDelete;
+MapCache.prototype.get = mapCacheGet;
+MapCache.prototype.has = mapCacheHas;
+MapCache.prototype.set = mapCacheSet;
+
+/**
+ * Creates a stack cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Stack(entries) {
+  this.__data__ = new ListCache(entries);
+}
+
+/**
+ * Removes all key-value entries from the stack.
+ *
+ * @private
+ * @name clear
+ * @memberOf Stack
+ */
+function stackClear() {
+  this.__data__ = new ListCache;
+}
+
+/**
+ * Removes `key` and its value from the stack.
+ *
+ * @private
+ * @name delete
+ * @memberOf Stack
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function stackDelete(key) {
+  return this.__data__['delete'](key);
+}
+
+/**
+ * Gets the stack value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Stack
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function stackGet(key) {
+  return this.__data__.get(key);
+}
+
+/**
+ * Checks if a stack value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Stack
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function stackHas(key) {
+  return this.__data__.has(key);
+}
+
+/**
+ * Sets the stack `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Stack
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the stack cache instance.
+ */
+function stackSet(key, value) {
+  var cache = this.__data__;
+  if (cache instanceof ListCache) {
+    var pairs = cache.__data__;
+    if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
+      pairs.push([key, value]);
+      return this;
+    }
+    cache = this.__data__ = new MapCache(pairs);
+  }
+  cache.set(key, value);
+  return this;
+}
+
+// Add methods to `Stack`.
+Stack.prototype.clear = stackClear;
+Stack.prototype['delete'] = stackDelete;
+Stack.prototype.get = stackGet;
+Stack.prototype.has = stackHas;
+Stack.prototype.set = stackSet;
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  // Safari 9 makes `arguments.length` enumerable in strict mode.
+  var result = (isArray(value) || isArguments(value))
+    ? baseTimes(value.length, String)
+    : [];
+
+  var length = result.length,
+      skipIndexes = !!length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) &&
+        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * This function is like `assignValue` except that it doesn't assign
+ * `undefined` values.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignMergeValue(object, key, value) {
+  if ((value !== undefined && !eq(object[key], value)) ||
+      (typeof key == 'number' && value === undefined && !(key in object))) {
+    object[key] = value;
+  }
+}
+
+/**
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    object[key] = value;
+  }
+}
+
+/**
+ * Gets the index at which the `key` is found in `array` of key-value pairs.
+ *
+ * @private
+ * @param {Array} array The array to inspect.
+ * @param {*} key The key to search for.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ */
+function assocIndexOf(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
+}
+
+/**
+ * The base implementation of `_.assign` without support for multiple sources
+ * or `customizer` functions.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @returns {Object} Returns `object`.
+ */
+function baseAssign(object, source) {
+  return object && copyObject(source, keys(source), object);
+}
+
+/**
+ * The base implementation of `_.clone` and `_.cloneDeep` which tracks
+ * traversed objects.
+ *
+ * @private
+ * @param {*} value The value to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @param {boolean} [isFull] Specify a clone including symbols.
+ * @param {Function} [customizer] The function to customize cloning.
+ * @param {string} [key] The key of `value`.
+ * @param {Object} [object] The parent object of `value`.
+ * @param {Object} [stack] Tracks traversed objects and their clone counterparts.
+ * @returns {*} Returns the cloned value.
+ */
+function baseClone(value, isDeep, isFull, customizer, key, object, stack) {
+  var result;
+  if (customizer) {
+    result = object ? customizer(value, key, object, stack) : customizer(value);
+  }
+  if (result !== undefined) {
+    return result;
+  }
+  if (!isObject(value)) {
+    return value;
+  }
+  var isArr = isArray(value);
+  if (isArr) {
+    result = initCloneArray(value);
+    if (!isDeep) {
+      return copyArray(value, result);
+    }
+  } else {
+    var tag = getTag(value),
+        isFunc = tag == funcTag || tag == genTag;
+
+    if (isBuffer(value)) {
+      return cloneBuffer(value, isDeep);
+    }
+    if (tag == objectTag || tag == argsTag || (isFunc && !object)) {
+      if (isHostObject(value)) {
+        return object ? value : {};
+      }
+      result = initCloneObject(isFunc ? {} : value);
+      if (!isDeep) {
+        return copySymbols(value, baseAssign(result, value));
+      }
+    } else {
+      if (!cloneableTags[tag]) {
+        return object ? value : {};
+      }
+      result = initCloneByTag(value, tag, baseClone, isDeep);
+    }
+  }
+  // Check for circular references and return its corresponding clone.
+  stack || (stack = new Stack);
+  var stacked = stack.get(value);
+  if (stacked) {
+    return stacked;
+  }
+  stack.set(value, result);
+
+  if (!isArr) {
+    var props = isFull ? getAllKeys(value) : keys(value);
+  }
+  arrayEach(props || value, function(subValue, key) {
+    if (props) {
+      key = subValue;
+      subValue = value[key];
+    }
+    // Recursively populate clone (susceptible to call stack limits).
+    assignValue(result, key, baseClone(subValue, isDeep, isFull, customizer, key, value, stack));
+  });
+  return result;
+}
+
+/**
+ * The base implementation of `_.create` without support for assigning
+ * properties to the created object.
+ *
+ * @private
+ * @param {Object} prototype The object to inherit from.
+ * @returns {Object} Returns the new object.
+ */
+function baseCreate(proto) {
+  return isObject(proto) ? objectCreate(proto) : {};
+}
+
+/**
+ * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
+ * `keysFunc` and `symbolsFunc` to get the enumerable property names and
+ * symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @param {Function} symbolsFunc The function to get the symbols of `object`.
+ * @returns {Array} Returns the array of property names and symbols.
+ */
+function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+  var result = keysFunc(object);
+  return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+}
+
+/**
+ * The base implementation of `getTag`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  return objectToString.call(value);
+}
+
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative(value) {
+  if (!isObject(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
+}
+
+/**
+ * The base implementation of `_.isTypedArray` without Node.js optimizations.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ */
+function baseIsTypedArray(value) {
+  return isObjectLike(value) &&
+    isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+}
+
+/**
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeys(object) {
+  if (!isPrototype(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeysIn(object) {
+  if (!isObject(object)) {
+    return nativeKeysIn(object);
+  }
+  var isProto = isPrototype(object),
+      result = [];
+
+  for (var key in object) {
+    if (!(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.merge` without support for multiple sources.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {number} srcIndex The index of `source`.
+ * @param {Function} [customizer] The function to customize merged values.
+ * @param {Object} [stack] Tracks traversed source values and their merged
+ *  counterparts.
+ */
+function baseMerge(object, source, srcIndex, customizer, stack) {
+  if (object === source) {
+    return;
+  }
+  if (!(isArray(source) || isTypedArray(source))) {
+    var props = baseKeysIn(source);
+  }
+  arrayEach(props || source, function(srcValue, key) {
+    if (props) {
+      key = srcValue;
+      srcValue = source[key];
+    }
+    if (isObject(srcValue)) {
+      stack || (stack = new Stack);
+      baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+    }
+    else {
+      var newValue = customizer
+        ? customizer(object[key], srcValue, (key + ''), object, source, stack)
+        : undefined;
+
+      if (newValue === undefined) {
+        newValue = srcValue;
+      }
+      assignMergeValue(object, key, newValue);
+    }
+  });
+}
+
+/**
+ * A specialized version of `baseMerge` for arrays and objects which performs
+ * deep merges and tracks traversed objects enabling objects with circular
+ * references to be merged.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {string} key The key of the value to merge.
+ * @param {number} srcIndex The index of `source`.
+ * @param {Function} mergeFunc The function to merge values.
+ * @param {Function} [customizer] The function to customize assigned values.
+ * @param {Object} [stack] Tracks traversed source values and their merged
+ *  counterparts.
+ */
+function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+  var objValue = object[key],
+      srcValue = source[key],
+      stacked = stack.get(srcValue);
+
+  if (stacked) {
+    assignMergeValue(object, key, stacked);
+    return;
+  }
+  var newValue = customizer
+    ? customizer(objValue, srcValue, (key + ''), object, source, stack)
+    : undefined;
+
+  var isCommon = newValue === undefined;
+
+  if (isCommon) {
+    newValue = srcValue;
+    if (isArray(srcValue) || isTypedArray(srcValue)) {
+      if (isArray(objValue)) {
+        newValue = objValue;
+      }
+      else if (isArrayLikeObject(objValue)) {
+        newValue = copyArray(objValue);
+      }
+      else {
+        isCommon = false;
+        newValue = baseClone(srcValue, true);
+      }
+    }
+    else if (isPlainObject(srcValue) || isArguments(srcValue)) {
+      if (isArguments(objValue)) {
+        newValue = toPlainObject(objValue);
+      }
+      else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
+        isCommon = false;
+        newValue = baseClone(srcValue, true);
+      }
+      else {
+        newValue = objValue;
+      }
+    }
+    else {
+      isCommon = false;
+    }
+  }
+  if (isCommon) {
+    // Recursively merge objects and arrays (susceptible to call stack limits).
+    stack.set(srcValue, newValue);
+    mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+    stack['delete'](srcValue);
+  }
+  assignMergeValue(object, key, newValue);
+}
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = array;
+    return apply(func, this, otherArgs);
+  };
+}
+
+/**
+ * Creates a clone of  `buffer`.
+ *
+ * @private
+ * @param {Buffer} buffer The buffer to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Buffer} Returns the cloned buffer.
+ */
+function cloneBuffer(buffer, isDeep) {
+  if (isDeep) {
+    return buffer.slice();
+  }
+  var result = new buffer.constructor(buffer.length);
+  buffer.copy(result);
+  return result;
+}
+
+/**
+ * Creates a clone of `arrayBuffer`.
+ *
+ * @private
+ * @param {ArrayBuffer} arrayBuffer The array buffer to clone.
+ * @returns {ArrayBuffer} Returns the cloned array buffer.
+ */
+function cloneArrayBuffer(arrayBuffer) {
+  var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+  new Uint8Array(result).set(new Uint8Array(arrayBuffer));
+  return result;
+}
+
+/**
+ * Creates a clone of `dataView`.
+ *
+ * @private
+ * @param {Object} dataView The data view to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the cloned data view.
+ */
+function cloneDataView(dataView, isDeep) {
+  var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
+  return new dataView.constructor(buffer, dataView.byteOffset, dataView.byteLength);
+}
+
+/**
+ * Creates a clone of `map`.
+ *
+ * @private
+ * @param {Object} map The map to clone.
+ * @param {Function} cloneFunc The function to clone values.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the cloned map.
+ */
+function cloneMap(map, isDeep, cloneFunc) {
+  var array = isDeep ? cloneFunc(mapToArray(map), true) : mapToArray(map);
+  return arrayReduce(array, addMapEntry, new map.constructor);
+}
+
+/**
+ * Creates a clone of `regexp`.
+ *
+ * @private
+ * @param {Object} regexp The regexp to clone.
+ * @returns {Object} Returns the cloned regexp.
+ */
+function cloneRegExp(regexp) {
+  var result = new regexp.constructor(regexp.source, reFlags.exec(regexp));
+  result.lastIndex = regexp.lastIndex;
+  return result;
+}
+
+/**
+ * Creates a clone of `set`.
+ *
+ * @private
+ * @param {Object} set The set to clone.
+ * @param {Function} cloneFunc The function to clone values.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the cloned set.
+ */
+function cloneSet(set, isDeep, cloneFunc) {
+  var array = isDeep ? cloneFunc(setToArray(set), true) : setToArray(set);
+  return arrayReduce(array, addSetEntry, new set.constructor);
+}
+
+/**
+ * Creates a clone of the `symbol` object.
+ *
+ * @private
+ * @param {Object} symbol The symbol object to clone.
+ * @returns {Object} Returns the cloned symbol object.
+ */
+function cloneSymbol(symbol) {
+  return symbolValueOf ? Object(symbolValueOf.call(symbol)) : {};
+}
+
+/**
+ * Creates a clone of `typedArray`.
+ *
+ * @private
+ * @param {Object} typedArray The typed array to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the cloned typed array.
+ */
+function cloneTypedArray(typedArray, isDeep) {
+  var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+  return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+}
+
+/**
+ * Copies the values of `source` to `array`.
+ *
+ * @private
+ * @param {Array} source The array to copy values from.
+ * @param {Array} [array=[]] The array to copy values to.
+ * @returns {Array} Returns `array`.
+ */
+function copyArray(source, array) {
+  var index = -1,
+      length = source.length;
+
+  array || (array = Array(length));
+  while (++index < length) {
+    array[index] = source[index];
+  }
+  return array;
+}
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object, customizer) {
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+
+    assignValue(object, key, newValue === undefined ? source[key] : newValue);
+  }
+  return object;
+}
+
+/**
+ * Copies own symbol properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy symbols from.
+ * @param {Object} [object={}] The object to copy symbols to.
+ * @returns {Object} Returns `object`.
+ */
+function copySymbols(source, object) {
+  return copyObject(source, getSymbols(source), object);
+}
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+/**
+ * Creates an array of own enumerable property names and symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names and symbols.
+ */
+function getAllKeys(object) {
+  return baseGetAllKeys(object, keys, getSymbols);
+}
+
+/**
+ * Gets the data for `map`.
+ *
+ * @private
+ * @param {Object} map The map to query.
+ * @param {string} key The reference key.
+ * @returns {*} Returns the map data.
+ */
+function getMapData(map, key) {
+  var data = map.__data__;
+  return isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
+}
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
+}
+
+/**
+ * Creates an array of the own enumerable symbol properties of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of symbols.
+ */
+var getSymbols = nativeGetSymbols ? overArg(nativeGetSymbols, Object) : stubArray;
+
+/**
+ * Gets the `toStringTag` of `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+var getTag = baseGetTag;
+
+// Fallback for data views, maps, sets, and weak maps in IE 11,
+// for data views in Edge < 14, and promises in Node.js.
+if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
+    (Map && getTag(new Map) != mapTag) ||
+    (Promise && getTag(Promise.resolve()) != promiseTag) ||
+    (Set && getTag(new Set) != setTag) ||
+    (WeakMap && getTag(new WeakMap) != weakMapTag)) {
+  getTag = function(value) {
+    var result = objectToString.call(value),
+        Ctor = result == objectTag ? value.constructor : undefined,
+        ctorString = Ctor ? toSource(Ctor) : undefined;
+
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString: return dataViewTag;
+        case mapCtorString: return mapTag;
+        case promiseCtorString: return promiseTag;
+        case setCtorString: return setTag;
+        case weakMapCtorString: return weakMapTag;
+      }
+    }
+    return result;
+  };
+}
+
+/**
+ * Initializes an array clone.
+ *
+ * @private
+ * @param {Array} array The array to clone.
+ * @returns {Array} Returns the initialized clone.
+ */
+function initCloneArray(array) {
+  var length = array.length,
+      result = array.constructor(length);
+
+  // Add properties assigned by `RegExp#exec`.
+  if (length && typeof array[0] == 'string' && hasOwnProperty.call(array, 'index')) {
+    result.index = array.index;
+    result.input = array.input;
+  }
+  return result;
+}
+
+/**
+ * Initializes an object clone.
+ *
+ * @private
+ * @param {Object} object The object to clone.
+ * @returns {Object} Returns the initialized clone.
+ */
+function initCloneObject(object) {
+  return (typeof object.constructor == 'function' && !isPrototype(object))
+    ? baseCreate(getPrototype(object))
+    : {};
+}
+
+/**
+ * Initializes an object clone based on its `toStringTag`.
+ *
+ * **Note:** This function only supports cloning values with tags of
+ * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+ *
+ * @private
+ * @param {Object} object The object to clone.
+ * @param {string} tag The `toStringTag` of the object to clone.
+ * @param {Function} cloneFunc The function to clone values.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the initialized clone.
+ */
+function initCloneByTag(object, tag, cloneFunc, isDeep) {
+  var Ctor = object.constructor;
+  switch (tag) {
+    case arrayBufferTag:
+      return cloneArrayBuffer(object);
+
+    case boolTag:
+    case dateTag:
+      return new Ctor(+object);
+
+    case dataViewTag:
+      return cloneDataView(object, isDeep);
+
+    case float32Tag: case float64Tag:
+    case int8Tag: case int16Tag: case int32Tag:
+    case uint8Tag: case uint8ClampedTag: case uint16Tag: case uint32Tag:
+      return cloneTypedArray(object, isDeep);
+
+    case mapTag:
+      return cloneMap(object, isDeep, cloneFunc);
+
+    case numberTag:
+    case stringTag:
+      return new Ctor(object);
+
+    case regexpTag:
+      return cloneRegExp(object);
+
+    case setTag:
+      return cloneSet(object, isDeep, cloneFunc);
+
+    case symbolTag:
+      return cloneSymbol(object);
+  }
+}
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+/**
+ * Checks if `value` is suitable for use as unique object key.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+ */
+function isKeyable(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
+}
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+  return value === proto;
+}
+
+/**
+ * This function is like
+ * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * except that it includes inherited enumerable properties.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function nativeKeysIn(object) {
+  var result = [];
+  if (object != null) {
+    for (var key in Object(object)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to process.
+ * @returns {string} Returns the source code.
+ */
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is a buffer.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.3.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+ * @example
+ *
+ * _.isBuffer(new Buffer(2));
+ * // => true
+ *
+ * _.isBuffer(new Uint8Array(2));
+ * // => false
+ */
+var isBuffer = nativeIsBuffer || stubFalse;
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * _.isPlainObject(new Foo);
+ * // => false
+ *
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
+ *
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
+ */
+function isPlainObject(value) {
+  if (!isObjectLike(value) ||
+      objectToString.call(value) != objectTag || isHostObject(value)) {
+    return false;
+  }
+  var proto = getPrototype(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  return (typeof Ctor == 'function' &&
+    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+}
+
+/**
+ * Checks if `value` is classified as a typed array.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ * @example
+ *
+ * _.isTypedArray(new Uint8Array);
+ * // => true
+ *
+ * _.isTypedArray([]);
+ * // => false
+ */
+var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+
+/**
+ * Converts `value` to a plain object flattening inherited enumerable string
+ * keyed properties of `value` to own properties of the plain object.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {Object} Returns the converted plain object.
+ * @example
+ *
+ * function Foo() {
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.assign({ 'a': 1 }, new Foo);
+ * // => { 'a': 1, 'b': 2 }
+ *
+ * _.assign({ 'a': 1 }, _.toPlainObject(new Foo));
+ * // => { 'a': 1, 'b': 2, 'c': 3 }
+ */
+function toPlainObject(value) {
+  return copyObject(value, keysIn(value));
+}
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
+
+/**
+ * Creates an array of the own and inherited enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keysIn(new Foo);
+ * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+ */
+function keysIn(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+}
+
+/**
+ * This method is like `_.assign` except that it recursively merges own and
+ * inherited enumerable string keyed properties of source objects into the
+ * destination object. Source properties that resolve to `undefined` are
+ * skipped if a destination value exists. Array and plain object properties
+ * are merged recursively. Other objects and value types are overridden by
+ * assignment. Source objects are applied from left to right. Subsequent
+ * sources overwrite property assignments of previous sources.
+ *
+ * **Note:** This method mutates `object`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.5.0
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * var object = {
+ *   'a': [{ 'b': 2 }, { 'd': 4 }]
+ * };
+ *
+ * var other = {
+ *   'a': [{ 'c': 3 }, { 'e': 5 }]
+ * };
+ *
+ * _.merge(object, other);
+ * // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
+ */
+var merge = createAssigner(function(object, source, srcIndex) {
+  baseMerge(object, source, srcIndex);
+});
+
+/**
+ * This method returns a new empty array.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.13.0
+ * @category Util
+ * @returns {Array} Returns the new empty array.
+ * @example
+ *
+ * var arrays = _.times(2, _.stubArray);
+ *
+ * console.log(arrays);
+ * // => [[], []]
+ *
+ * console.log(arrays[0] === arrays[1]);
+ * // => false
+ */
+function stubArray() {
+  return [];
+}
+
+/**
+ * This method returns `false`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.13.0
+ * @category Util
+ * @returns {boolean} Returns `false`.
+ * @example
+ *
+ * _.times(2, _.stubFalse);
+ * // => [false, false]
+ */
+function stubFalse() {
+  return false;
+}
+
+module.exports = merge;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(160)(module)))
+
+/***/ }),
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -36258,10 +38349,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 210;
+webpackContext.id = 213;
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -36451,10 +38542,10 @@ webpackContext.id = 210;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(159)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(159)))
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -36507,37 +38598,9 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(211);
+__webpack_require__(214);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
-
-
-/***/ }),
-/* 213 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
 
 
 /***/ })

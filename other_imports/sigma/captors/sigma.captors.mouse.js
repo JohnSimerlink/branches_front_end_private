@@ -99,6 +99,7 @@
           sigma.utils.mouseCoords(e));
 
         if (_isMouseDown) {
+          PubSub.publish('canvas.dragStart')
           _isMoving = true;
           _hasDragged = true;
 
@@ -151,6 +152,7 @@
     function _upHandler(e) {
       if (_settings('mouseEnabled') && _isMouseDown) {
         _isMouseDown = false;
+        PubSub.publish('canvas.dragStop')
         if (_movingTimeoutId)
           clearTimeout(_movingTimeoutId);
 
@@ -277,6 +279,7 @@
           ratio,
           animation;
 
+      PubSub.publish('canvas.zoom')
       if (_settings('mouseEnabled')) {
         ratio = 1 / _settings('doubleClickZoomingRatio');
 
@@ -341,6 +344,7 @@
         else
           e.returnValue = false;
 
+        PubSub.publish('canvas.zoom')
         e.stopPropagation();
         return false;
       }

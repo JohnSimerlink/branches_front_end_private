@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
     <link rel='stylesheet' href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 
 </style>
@@ -10,7 +12,7 @@
 </style>
 
 
-
+<script src="node_modules/pubsub-js/src/pubsub.js"></script>
 <!-- START SIGMA IMPORTS -->
 <script src="other_imports/sigma/sigma.core.js"></script>
 <script src="other_imports/sigma/conrad.js"></script>
@@ -65,16 +67,49 @@
     <script src="other_imports/sigma/plugins/sigma.plugins.animate.js"></script>
 <script src="other_imports/sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js"></script>
 <script src="other_imports/sigma/plugins/sigma.plugins.lasso.js"></script>
-<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>
+<!--<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>-->
 <script src="other_imports/sigma/plugins/sigma.plugins.select.js"></script>
 
-<script src="other_imports/sigma/plugins/sigma.renderers.halo/settings.js"></script>
-<script src="other_imports/sigma/plugins/sigma.renderers.halo/sigma.renderers.halo.js"></script>
+<script src="other_imports/sigma/renderers/sigma.renderers.halo/settings.js"></script>
+<script src="other_imports/sigma/renderers/sigma.renderers.halo/sigma.renderers.halo.js"></script>
+
+
+<script src="other_imports/sigma/renderers/sigma.renderers.glyphs/settings.js"></script>
+<script src="other_imports/sigma/renderers/sigma.renderers.glyphs/sigma.renderers.glyphs.js"></script>
+<script src="other_imports/sigma/renderers/canvas/sigma.canvas.labels.prioritizable.js"></script>
+
+
+
+
 
 <script src="other_imports/mustache/mustache.min.js"></script>
 </head>
 <body>
+
+<i class="fa fa-camera-retro fa-1x" style="color: rgba(0,0,0,0);"></i>
+
 <!-- FB Login -->
+<script>
+    var explorer = false
+
+    if (/MSIE 10/i.test(navigator.userAgent)) {
+       // This is internet explorer 10
+        explorer = true
+    }
+    if (/MSIE 9/i.test(navigator.userAgent) || /rv:11.0/i.test(navigator.userAgent)) {
+    // This is internet explorer 9 or 11
+       explorer = true
+    }
+    if (/Edge\/\d./i.test(navigator.userAgent)){
+    // This is Microsoft Edge
+        explorer = true
+    }
+    if (explorer) {
+        alert("Internet Explorer / Edge not supported! Use Chrome or Firefox. Things you wont' be able to do in IE/Edge: 1) Editing facts is harder, because you cant resize the textarea box. 2)Maybe other stuff")
+    }
+</script>
+
+
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -85,8 +120,6 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 <!-- END FB Login -->
     <div class='page'>
-        <div id="bootstrap">
-        </div>
         <div id="branches-app">
             <branches-header></branches-header>
             <toolbar></toolbar>

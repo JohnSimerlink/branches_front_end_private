@@ -585,6 +585,7 @@
    * @return {sigma} Returns the instance itself.
    */
   sigma.prototype.render = function() {
+    PubSub.publish('canvas.nodesRendering')
     var i,
         l,
         a,

@@ -1,5 +1,5 @@
 import firebase from './firebaseService.js'
-import PubSub from 'pubsub-js'
+
 import Users from './users'
 class User {
 
@@ -9,7 +9,6 @@ class User {
     const self = this;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        console.log('USER.js user just logged in in firebase auth state changed')
           PubSub.publish('login')
           self.loggedIn = true;
           self.fbData = user;
@@ -22,9 +21,7 @@ class User {
 
           })
       } else {
-        console.log('USER.js user is not logged in')
           self.loggedIn = false;
-        // No user is signed in.
       }
     });
 
@@ -33,20 +30,7 @@ class User {
     return this.fbData.uid
   }
 
-  // addItemReviewTime(itemReviewTime){
-  //   console.log('=============user.addItemReviewTime just called=============')
-  //   this.branchesData.itemReviewTimeMap[itemReviewTime.id] = itemReviewTime.nextReviewTime
-  //
-  //     this.branchesData.items[]
-  //   var items = {}
-  //
-  //   let updates = {
-  //     itemReviewTimeMap: this.branchesData.itemReviewTimeMap
-  //   }
-  //   firebase.database().ref('users/' + this.getId()).update(updates)
-  // }
   setItemProperties(itemId, obj){
-    console.log('=============user.setItemProperties just called for' + this.getId() + '=============')
 
     this.branchesData.items[itemId] = this.branchesData.items[itemId] || {}
     for (let prop in obj){
