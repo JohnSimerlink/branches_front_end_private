@@ -205,7 +205,6 @@ function initSigma(){
 
     // s.bind('mousedown', function(){
     // })
-    (utils.isMobile.any()) ? s.bind('overNode', mobileOverNode) : s.bind('overNode', hoverOverNode);
     initialized = true;
     initSigmaPlugins()
     PubSub.subscribe('canvas.dragStart', (eventName, data) => {
@@ -224,9 +223,8 @@ function initSigma(){
         updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
-        var node = data
-        openTooltip(node)
-    })
+        (utils.isMobile.any()) ? mobileOverNode(data) : openTooltip(data);
+    });
     PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
         PubSub.publish('canvas.closeTooltip', data)
     })
@@ -248,6 +246,7 @@ function printNodeInfo(e){
 
 
 function mobileOverNode(e) {
+    console.log("Mobile over node?");
     let node = e.data.node;
     let ele = document.getElementById('mobileAnswerTray');
     ele.setAttribute('treeid', node.id);
@@ -262,6 +261,7 @@ function hoverOverNode(e) {
     // Trees.get(node.id).then(tree => Facts.get(tree.factId).then(fact => fact.continueTimer()))
 }
 function openTooltip(node){
+    console.log("tooltip time");
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
         var vm = new Vue(
