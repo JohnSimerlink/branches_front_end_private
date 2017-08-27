@@ -63,6 +63,43 @@ export default class ContentItems {
             }, reject)
         })
     }
+    static getAllExceptForHeadings() {
+        return new Promise((resolve, reject) => {
+            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function(snapshot){
+                const contentData = snapshot.val()
+                Object.keys(contentData).filter(contentDatumKey => {
+                    const uri = contentData[contentDatumKey].uri
+                    if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                        return false
+                    }
+                    return true
+                }).
+                forEach(contentDatumKey => {
+                    const contentDatum = contentData[contentDatumKey]
+                    if (!contentDatum) return // in case contentDatum is undefined which has happened before
+                    let contentItem = createContentItemFromData(contentDatum,contentDatumKey)
+                })
+                resolve(content) //the cache containing all
+            }, reject)
+            const headingPromise = firebase.database().ref('content/').orderByChild('type').equalTo('heading').once("value", function(snapshot){
+                const contentData = snapshot.val()
+                Object.keys(contentData).filter(contentDatumKey => {
+                    const uri = contentData[contentDatumKey].uri
+                    if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                        return false
+                    }
+                    return true
+                }).
+                forEach(contentDatumKey => {
+                    const contentDatum = contentData[contentDatumKey]
+                    if (!contentDatum) return // in case contentDatum is undefined which has happened before
+                    let contentItem = createContentItemFromData(contentDatum,contentDatumKey)
+                })
+                resolve(content) //the cache containing all
+            }, reject)
+            Promise.all([skillPromise, headingPromise]).then()
+        })
+    }
 
     /**
      * Create a new content object in the database

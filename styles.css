@@ -182,3 +182,6 @@ button {
 .exercise-creator-exercise-list {
     flex: 30;
 }
+.contentList-item-id {
+    color: #A9A9A9;
+}

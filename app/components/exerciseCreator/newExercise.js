@@ -5,7 +5,7 @@ export default {
     template: require('./newExercise.html'),
     created () {
         var me = this
-        this.items = {}
+        this.items = {'250': true}
         this.newItem=""
         this.question=""
         this.answer=""
@@ -20,9 +20,10 @@ export default {
     },
     methods: {
         addContentItem() {
-            if (!this.item) return
-            this.items[this.item] = true
-            this.item=""
+
+            if (!this.newItem) return
+            this.items[this.newItem] = true
+            this.newItem=""
         },
         createExercise() {
            //TODO allow creation of other types of exercises than QA
