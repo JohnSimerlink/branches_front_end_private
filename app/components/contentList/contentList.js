@@ -6,7 +6,7 @@ export default {
         var me = this;
         this.items = {}
         
-        ContentItems.getAll().then(items => {
+        ContentItems.getAllExceptForHeadings().then(items => {
             console.log('all items returned are ', items)
             me.items = items
         })
