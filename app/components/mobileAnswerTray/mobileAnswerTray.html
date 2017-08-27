@@ -1,0 +1,16 @@
+<div class="mobileAnswerTray" id="mobileAnswerTray">
+    <div class="tray-answer">
+        <div class="tray-answer-text">
+            {{answerText}}
+        </div>
+        <div class="tray-answer-close" v-on:click="closeTray">
+            <span>X</span><!--TODO use glyphicon-->
+        </div>
+    </div>
+    <div class="tray-footer">
+        <div class="tray-footer-timer">
+            {{timeSpentReviewing}}
+        </div>
+    </div>
+
+</div>
