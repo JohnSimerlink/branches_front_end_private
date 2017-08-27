@@ -200,11 +200,11 @@ function initSigma(){
 
     });
     window.s = s;
-    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
     s.refresh();
 
-    // s.bind('mousedown', function(){
-    // })
+    s.bind('mousedown', function(){
+    })
     initialized = true;
     initSigmaPlugins()
     PubSub.subscribe('canvas.dragStart', (eventName, data) => {
@@ -223,7 +223,8 @@ function initSigma(){
         updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
-        (utils.isMobile.any()) ? mobileOverNode(data) : openTooltip(data);
+        var node = data;
+        (utils.isMobile.any()) ? mobileOverNode(node) : openTooltip(node);
     });
     PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
         PubSub.publish('canvas.closeTooltip', data)
@@ -236,7 +237,8 @@ function initSigma(){
         canvas.style.cursor = 'pointer'
     })
     PubSub.subscribe('canvas.outNode', function(eventName, data){
-        var canvas = document.querySelector('#graph-container')
+        mobileOutNode();
+        var canvas = document.querySelector('#graph-container');
         canvas.style.cursor = 'grab'
     })
 }
@@ -244,13 +246,16 @@ function printNodeInfo(e){
     console.log(e, e.data.node)
 }
 
+function mobileOutNode() {
+    let ele = document.getElementById('mobileAnswerTray');
+    ele.style.display = 'none';
+}
 
-function mobileOverNode(e) {
+function mobileOverNode(node) {
     console.log("Mobile over node?");
-    let node = e.data.node;
     let ele = document.getElementById('mobileAnswerTray');
     ele.setAttribute('treeid', node.id);
-    ele.style.display = 'block';
+    ele.style.display = 'flex';
     PubSub.publish('nodeSelect', node.id);
 }
 
