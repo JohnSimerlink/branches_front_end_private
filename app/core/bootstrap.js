@@ -5,10 +5,12 @@ import moment from 'moment'
 import Vue from 'vue'
 import Header from '../components/header/branchesHeader'
 import ReviewSchedule from '../components/reviewAlgorithm/reviewSchedule'
+import MobileAnswerTray from '../components/mobileAnswerTray/mobileAnswerTray'
 import Toolbar from '../components/toolbar/toolbar'
-Vue.component('branchesHeader', Header)
-Vue.component('reviewSchedule', ReviewSchedule)
-Vue.component('toolbar', Toolbar)
+Vue.component('branchesHeader', Header);
+Vue.component('reviewSchedule', ReviewSchedule);
+Vue.component('mobileAnswerTray', MobileAnswerTray);
+Vue.component('toolbar', Toolbar);
 Vue.filter('timeFromNow', utcTimestamp => {
     return moment(utcTimestamp).fromNow()
 })

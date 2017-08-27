@@ -9,6 +9,7 @@ import TreeComponent from './tree/tree'
 import NewTreeComponent from './newTree/newtreecomponent'
 import Vue from 'vue'
 import user from '../objects/user'
+import * as utils from '../core/utils';
 import * as login from '../core/login';
 var initialized = false;
 var s,
@@ -20,7 +21,7 @@ window.g = g
 window.s = s;
 
 var newNodeXOffset = -100,
-    newNodeYOffset = 20,
+    newNodeYOffset = 600,
     newChildTreeSuffix = "__newChildTree";
 var toolTipsConfig = {
     node: [
@@ -50,13 +51,17 @@ var toolTipsConfig = {
         template:require('./rightClickMenu.html')
     }
 };
-var noOverlapConfig = {
-    nodeMargin: 2.0,
-    scaleNodes: 10,
-    permittedExpansion: 1.3,
-    gridSize: 50
-};
-loadTreeAndSubTrees(1).then( val => {initSigma();})
+
+loadTreeAndSubTrees(1).then( val => {
+    initSigma();
+    initMobileMode();
+});
+function initMobileMode() {
+    //Manage zoom for mobile users
+    if (utils.isMobile.any()) {
+        s.cameras[0].goTo({x: 0, y: 0, angle: 0, ratio: 0.5});
+    }
+}
 function loadTreeAndSubTrees(treeId){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
     return Trees.get(treeId)
@@ -129,9 +134,9 @@ function getTreeColor(tree) {
 function getLabelFromContent(content) {
     switch (content.type){
         case "fact":
-            return content.question
+            return content.question;
         case "heading":
-            return content.title
+            return content.title;
     }
 }
 function createEdgeId(nodeOneId, nodeTwoId){
@@ -203,7 +208,10 @@ function initSigma(){
 
         s.bind('click', onCanvasClick)
         s.bind('outNode', updateTreePosition); // after dragging a node, a user's mouse will eventually leave the node, and we need to update the node's position on the graph
-        s.bind('overNode', hoverOverNode)
+
+        //Apply tap behavior conditionally
+        (utils.isMobile.any()) ? s.bind('overNode', mobileOverNode) : s.bind('overNode', hoverOverNode);
+
         initialized = true;
 
         initSigmaPlugins()
@@ -223,6 +231,16 @@ function onCanvasClick(e){
 function printNodeInfo(e){
     console.log(e, e.data.node)
 }
+
+
+function mobileOverNode(e) {
+    let node = e.data.node;
+    let ele = document.getElementById('mobileAnswerTray');
+    ele.setAttribute('treeid', node.id);
+    ele.style.display = 'block';
+    PubSub.publish('nodeSelect', node.id);
+}
+
 function hoverOverNode(e){
     var node = e.data.node
     console.log('hover over node for node with id', node.id, 'just called')
