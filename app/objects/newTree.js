@@ -22,7 +22,10 @@ export function newTree(nodeType, parentTreeId, values){
             break;
     }
 
+    console.log('new content just created is', newContent)
+    newContent.setProficiency(0)
     const tree = addTreeToGraph(parentTreeId, newContent);
+    console.log('new Tree created is', tree)
     //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
     //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
     Trees.get(parentTreeId).then(parentTree => {

@@ -3,6 +3,7 @@ import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Trees} from './trees.js'
+import {syncGraphWithNode}  from '../components/treesGraph'
 import timers from './timers'
 
 function loadObject(treeObj, self){
@@ -10,7 +11,7 @@ function loadObject(treeObj, self){
 }
 export class Tree {
 
-    constructor(contentId, contentType, parentId, x, y) {
+    constructor(contentId, contentType, parentId, parentDegree, x, y) {
         var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
@@ -47,7 +48,6 @@ export class Tree {
      * @param treeId
      */
     addChild(treeId) {
-        console.log('add child called in tree.js')
         // this.treeRef.child('/children').push(treeId)
         var children = this.children || {}
         children[treeId] = true
@@ -114,6 +114,48 @@ export class Tree {
         // this.treeRef.update(updates)
         firebase.database().ref('trees/' +this.id).update(updates)
         this[prop] = val
+    }
+    addToX({recursion,deltaX}={recursion:false, deltaX: 0}){
+       var newX = this.x + deltaX
+       this.set('x', newX)
+
+       syncGraphWithNode(this.id)
+       if (!recursion) return
+
+        // console.log('addToX called on', this, ...arguments)
+        this.children && Object.keys(this.children).forEach(childId => {
+            Trees.get(childId).then(child => {
+                child.addToX({recursion: true, deltaX})
+            })
+        })
+    }
+    addToY({recursion,deltaY}={recursion:false, deltaY: 0}){
+        var newY = this.y + deltaY
+        this.set('y', newY)
+
+        syncGraphWithNode(this.id)
+        if (!recursion) return
+
+        // console.log('addToY called on', this, ...arguments)
+        this.children && Object.keys(this.children).forEach(childId => {
+            Trees.get(childId).then(child => {
+                child.addToY({recursion: true, deltaY})
+            })
+        })
+
+}
+    //promise
+    getPriority(){
+       var node = this
+       if (node.parentId) {
+           Trees.get(node.parentId).then(parent => {
+               return parent.getPriority() + 1
+           })
+       } else {
+           return new Promise((resolve, reject) => {
+               resolve(1)
+           })
+       }
     }
 }
 //TODO: get typeScript so we can have a schema for treeObj

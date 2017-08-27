@@ -114,6 +114,7 @@
   sigma.renderers.canvas.prototype.render = function(options) {
     options = options || {};
 
+    window.resetLabelData()
     var a,
         i,
         k,
@@ -168,9 +169,14 @@
 
     // Find which nodes are on screen:
     this.edgesOnScreen = [];
-    this.nodesOnScreen = this.camera.quadtree.area(
-      this.camera.getRectangle(this.width, this.height)
-    );
+    var rect = this.camera.getRectangle(this.width, this.height);
+    // console.log('canvas.js: rect:', rect, this.width, this.height)
+      var nodesOnScreen = this.camera.quadtree.area(rect)
+      nodesOnScreen.sort((a,b) => a.level < b.level ? -1: 1)
+      // console.log('canvas.js: nodesOnScreen:', nodesOnScreen)
+    this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(
+      // this.camera.getRectangle(this.width, this.height)
+    // );
 
     for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++)
       index[a[i].id] = a[i];
@@ -322,6 +328,7 @@
     }
 
     this.dispatchEvent('render');
+    PubSub.publish('canvas.rendered')
 
     return this;
   };

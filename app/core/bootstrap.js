@@ -1,7 +1,7 @@
 import './components'
+import './filters'
 import './objects'
 import './utils'
-import moment from 'moment'
 import Vue from 'vue'
 import Header from '../components/header/branchesHeader'
 import ReviewSchedule from '../components/reviewAlgorithm/reviewSchedule'
@@ -43,6 +43,7 @@ Vue.filter('secondsToPretty', (seconds=0)  => {
     console.log('seconds pretty res is ', ret)
     return unit + " " + word
 })
+
 var vm = new Vue({
     el: '#branches-app'
 })

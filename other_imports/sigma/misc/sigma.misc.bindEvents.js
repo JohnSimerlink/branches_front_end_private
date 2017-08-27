@@ -269,6 +269,16 @@
         edges = getEdges(e);
 
         if (nodes.length) {
+          var node = nodes[0]
+          if (node.id == window.currentClickedNode){
+              // window.currentNodeClicked = true
+          } else {
+              if (window.currentClickedNode != null){
+                  PubSub.publish('canvas.differentNodeClicked', {oldNode: window.currentClickedNode, newNode: node.id})
+              }
+              window.currentClickedNode = node.id
+              // window.currentNodeClicked = false
+          }
           self.dispatchEvent('clickNode', {
             node: nodes[0],
             captor: e.data
@@ -286,8 +296,12 @@
             edge: edges,
             captor: e.data
           });
-        } else
-          self.dispatchEvent('clickStage', {captor: e.data});
+        } else {
+            PubSub.publish('canvas.stageClicked', {oldNode: window.currentClickedNode})
+            window.currentClickedNode = null
+            self.dispatchEvent('clickStage', {captor: e.data});
+        }
+
       }
 
       function onDoubleClick(e) {
@@ -431,16 +445,21 @@
           }
 
         // Dispatch both single and multi events:
-        for (i = 0, l = newOverNodes.length; i < l; i++)
-          self.dispatchEvent('overNode', {
-            node: newOverNodes[i],
-            captor: e.data
-          });
-        for (i = 0, l = newOutNodes.length; i < l; i++)
-          self.dispatchEvent('outNode', {
-            node: newOutNodes[i],
-            captor: e.data
-          });
+        for (i = 0, l = newOverNodes.length; i < l; i++){
+            var data =  {
+                node: newOverNodes[i],
+                captor: e.data
+            }
+            self.dispatchEvent('overNode', data);
+            PubSub.publish('canvas.overNode', data)
+        }
+        for (i = 0, l = newOutNodes.length; i < l; i++){
+            self.dispatchEvent('outNode', {
+                node: newOutNodes[i],
+                captor: e.data
+            });
+            PubSub.publish('canvas.outNode', data)
+        }
         if (newOverNodes.length)
           self.dispatchEvent('overNodes', {
             nodes: newOverNodes,

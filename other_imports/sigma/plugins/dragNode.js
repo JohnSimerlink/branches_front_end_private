@@ -105,6 +105,7 @@
         };
 
         function click(event) {
+            // console.log('dragNode click!')
             // event triggered at the end of the click
             _isMouseDown = false;
             _body.removeEventListener('mousemove', nodeMouseMove);
@@ -147,6 +148,7 @@
         };
 
         function nodeMouseDown(event) {
+            PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
             _isMouseDown = true;
             var size = _s.graph.nodes().length;
 
@@ -181,6 +183,9 @@
         };
 
         function nodeMouseUp(event) {
+            console.log('node mouse up for', _node, _node.x, _node.y)
+            PubSub.publish('canvas.stopDraggingNode', _node)
+            PubSub.publish('canvas.nodeMouseUp', _node)
             _isMouseDown = false;
             _mouse.addEventListener('mousedown', nodeMouseDown);
             _body.removeEventListener('mousemove', nodeMouseMove);

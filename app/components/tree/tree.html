@@ -1,34 +1,31 @@
-<div class="tree">
-    <div class="tree-timer">TIMER:{{content.timer}}</div>
-    <div class="tree-contentid">content id:{{content.id}}</div>
+<div class="tree" v-bind:style="styleObject" v-show="!draggingNode">
     <div class="tree-fact" v-if="typeIsFact">
-        <div class="tree-current-fact" v-if="!editing">
+        <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-fact-question">{{content.question}}</div>
             <div class="tree-current-fact-answer">{{content.answer}}</div>
         </div>
-        <div class="tree-new-fact" v-if="editing">
-            <input class="tree-id" v-model="content.id">
+        <div class="tree-new-fact" v-show="editing">
+            <input class="tree-id" v-model="content.id" hidden>
             <input class="tree-new-fact-question" v-model="content.question">
-            <input class="tree-new-fact-answer" v-model="content.answer">
+            <textarea class="tree-new-fact-answer" v-model="content.answer"></textarea>
             <button class="fact-new-save" v-on:click="changeContent">Save</button>
         </div>
     </div>
     <div class="tree-heading" v-if="typeIsHeading">
-        <div class="tree-current-fact" v-if="!editing">
+        <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
-            <div class="tree-current-heading">HEADING: {{content.title}}</div>
+            <div class="tree-current-heading">{{content.title}}</div>
         </div>
-        <div class="tree-new-fact" v-if="editing">
-            <input class="tree-id" v-model="content.id">
-            <input class="tree-new-heading" v-model="t.title">
+        <div class="tree-new-fact" v-show="editing">
+            <input class="tree-id" v-model="content.id" hidden>
+            <textarea class="tree-new-heading" v-model="content.title"></textarea>
             <button class="heading-new-save" v-on:click="changeContent">Save</button>
         </div>
     </div>
     <div class="tree-proficiency">
+        <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
-        <div class="tree-proficiency-value">Proficiency: {{content.proficiency}}</div>
-        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
         <div class="tree-proficiency-values">
             <button class="tree-proficiency-values-one" v-on:click="setProficiencyToOne">Not at all</button>
             <button class="tree-proficiency-values-two" v-on:click="setProficiencyToTwo">A lil'</button>
@@ -36,6 +33,20 @@
             <button class="tree-proficiency-values-four" v-on:click="setProficiencyToFour">All the way baby</button>
         </div>
     </div>
-    <button v-on:click="toggleEditing">{{editing ? "Stop Editing" : "Edit"}}</button>
-    <button v-on:click="unlinkFromParent">Delete</button>
+    <div class="tree-footer">
+        <div class="divider-horizontal"></div>
+        <div class="tree-footer-row">
+            <div class="tree-edit-button" v-on:click="toggleEditing">
+                <i :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}" aria-hidden="true"></i>
+            </div>
+            <div class="tree-add-child-button" v-on:click="toggleAddChild">
+                <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
+            </div>
+            <div class="tree-timer" :title="timerMouseOverMessage" >{{content.timer | secondsToPretty}} </div>
+            <div class="tree-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>
+            <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParent" ></i>
+        </div>
+        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
+        <newtree :parentid="id" v-show="addingChild"></newtree>
+    </div>
 </div>

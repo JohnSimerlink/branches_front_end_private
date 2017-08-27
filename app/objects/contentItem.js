@@ -10,6 +10,8 @@ export default class ContentItem {
     constructor() {
     }
     init () {
+        this.trees = this.trees || {}
+
         this.userTimeMap = this.userTimeMap || {} ;
         this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
         this.timerId = null;
@@ -57,12 +59,22 @@ export default class ContentItem {
      */
     static create(contentItem) {
         let updates = {};
-        updates['/content/' + contentItem.id] = contentItem;
+        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
+        console.log('updates in contentItem.create are', updates)
         firebase.database().ref().update(updates);
         return contentItem;
     }
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
 
+    getDBRepresentation(){
+        return {
+            userTimeMap: this.userTimeMap,
+            userProficiencyMap: this.userProficiencyMap,
+            userInteractionsMap: this.userInteractionsMap,
+            userReviewTimeMap: this.userReviewTimeMap,
+            studiers: this.studiers,
+        }
+    }
     /**
      * Add a tree to the given content item
      * @param treeId
@@ -82,7 +94,7 @@ export default class ContentItem {
 
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                self.timer = self.timer || 0
+                self.timer  = self.timer || 0
                 self.timer++ // = fact.timer || 0
             }, 1000)
         }
@@ -90,18 +102,17 @@ export default class ContentItem {
     }
     saveTimer(){
         this.userTimeMap[user.getId()] = this.timer
-        // console.log('settimer for user just called on this now,', this)
 
         var updates = {
             userTimeMap: this.userTimeMap
         }
 
+        clearInterval(this.timerId)
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
     }
     addToStudyQueue() { //don't display nextReviewTime if not in user's study queue
         this.studiers[user.getId()] = true
-        console.log('settimer for user just called on this now,', this)
 
         var updates = {
             studiers: this.studiers
