@@ -1,5 +1,5 @@
 import {Trees} from '../objects/trees.js'
-import ContentItem from '../objects/contentItem'
+import ContentItems from '../objects/contentItems'
 import {Tree} from '../objects/tree.js'
 import {Globals} from '../core/globals.js'
 import '../core/login.js'
@@ -36,8 +36,7 @@ window.s = s;
 sigma.settings.font = 'Fredoka One'
 
 var newNodeXOffset = -500,
-    newNodeYOffset = 20,
-    newChildTreeSuffix = "__newChildTree";
+    newNodeYOffset = 20;
 var toolTipsConfig = {
     node: [
         {
@@ -75,7 +74,7 @@ function loadTreeAndSubTrees(treeId, level){
 }
 
 function onGetTree(tree, level) {
-    var contentPromise = ContentItem.get(tree.contentId)
+    var contentPromise = ContentItems.get(tree.contentId)
         .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
 
     var childTreesPromises = tree.children ? Object.keys(tree.children).map((child) => {
@@ -133,7 +132,6 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
  * @returns {*}
  */
 function getTreeColor(content) {
-    console.log('get treecolor content is', content)
     let proficiency = content.userProficiencyMap && content.userProficiencyMap[user.getId()]
     return proficiency >= 0 ? proficiencyToColor(proficiency) : Globals.colors.proficiency_unknown
 }
@@ -149,6 +147,8 @@ function getLabelFromContent(content) {
         case "fact":
             return content.question
         case "heading":
+            return content.title
+        case "skill":
             return content.title
     }
 }
@@ -191,9 +191,6 @@ function initSigma(){
     var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
     s.refresh();
 
-    s.bind('mousedown', function(){
-    })
-    s.bind('overNode', hoverOverNode)
     initialized = true;
     initSigmaPlugins()
     PubSub.subscribe('canvas.dragStart', (eventName, data) => {
@@ -245,13 +242,12 @@ function openTooltip(node){
 
 }
 function hoverOverNode(e){
-    console.log('hoverOverNode event called', ...arguments)
     // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
     // var node = e.data.node
 }
 export function syncGraphWithNode(treeId){
     Trees.get(treeId).then(tree => {
-        ContentItem.get(tree.contentId).then(content => {
+        ContentItems.get(tree.contentId).then(content => {
             //update the node
             var sigmaNode = s.graph.nodes(treeId)
             // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
@@ -261,7 +257,7 @@ export function syncGraphWithNode(treeId){
             sigmaNode.color = color
 
             //update the edge
-            var edgeId = tree.parentId + "__" + treeId
+            var edgeId = createEdgeId(tree.parentId, treeId)
             var sigmaEdge = s.graph.edges(edgeId)
             sigmaEdge.color = color
 
@@ -321,7 +317,7 @@ export function addTreeToGraph(parentTreeId, content) {
     s.graph.addNode(newTree);
     //3. add edge between new node and parent tree
     const newEdge = {
-        id: parentTreeId + "__" + newTree.id,
+        id: createEdgeId(parentTreeId, newTree.id),
         source: parentTreeId,
         target: newTree.id,
         size: 5,

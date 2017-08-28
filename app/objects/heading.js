@@ -1,17 +1,29 @@
 import md5 from 'md5';
 import ContentItem from "./contentItem";
-
+import merge from 'lodash.merge'
 
 export class Heading extends ContentItem {
-
-    constructor ({title}){
-        super();
+    constructor (args /*={title, initialParentTreeId} and more */){
+        super(args)
         this.type = 'heading';
 
-        this.title = title;
-        this.id = md5(JSON.stringify({title}));
-        this.trees = {}
+        this.title = args.title && args.title.trim();
+        this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId: args.initialParentTreeId}));
         super.init()
+    }
+    getURIAddition(){
+        return "/" + encodeURIComponent(this.title)
+    }
+    getDBRepresentation(){
+        var baseRep = super.getDBRepresentation()
+
+        return merge(baseRep,
+            {
+                id: this.id,
+                title: this.title,
+                type: this.type,
+            }
+        )
     }
 
 }

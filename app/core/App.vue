@@ -27,9 +27,13 @@ import user from '../objects/user.js'
 
 export default {
   name: 'app',
+    created() {
+     this.home = true
+    },
   data () {
     return {
-        version: Config.version
+        version: Config.version,
+        home: this.home,
     }
   },
     methods: {
