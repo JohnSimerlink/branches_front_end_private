@@ -36,8 +36,8 @@ window.s = s;
 sigma.settings.font = 'Fredoka One'
 
 
-var newNodeXOffset = -500,
-    newNodeYOffset = 20;
+var newNodeXOffset = -2,
+    newNodeYOffset = 2;
 var toolTipsConfig = {
     node: [
         {
@@ -136,7 +136,6 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
  */
 function getTreeColor(content) {
     let proficiency = user && content.userProficiencyMap && content.userProficiencyMap[user.getId()]
-    console.log('proficiency is', proficiency)
     return proficiency >= 0 ? proficiencyToColor(proficiency) : Globals.colors.proficiency_unknown
 }
 
@@ -280,7 +279,7 @@ function updateTreePosition(data){
     if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
         return; //node isn't an actual node in the db - its like a shadow node or helper node
     }
-    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = 20
+    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1
     Trees.get(treeId).then( tree => {
         let deltaX = newX - tree.x
         if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
