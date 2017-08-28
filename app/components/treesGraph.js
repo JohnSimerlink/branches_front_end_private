@@ -35,6 +35,7 @@ window.g = g
 window.s = s;
 sigma.settings.font = 'Fredoka One'
 
+
 var newNodeXOffset = -500,
     newNodeYOffset = 20;
 var toolTipsConfig = {
@@ -63,7 +64,9 @@ var toolTipsConfig = {
     //     template:require('./rightClickMenu.html')
     // }
 };
-loadTreeAndSubTrees(1,1).then( val => {initSigma();})
+PubSub.subscribe('login', () => {
+    loadTreeAndSubTrees(1,1).then( val => {initSigma();})
+})
 function loadTreeAndSubTrees(treeId, level){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
     return Trees.get(treeId)
@@ -132,7 +135,8 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
  * @returns {*}
  */
 function getTreeColor(content) {
-    let proficiency = content.userProficiencyMap && content.userProficiencyMap[user.getId()]
+    let proficiency = user && content.userProficiencyMap && content.userProficiencyMap[user.getId()]
+    console.log('proficiency is', proficiency)
     return proficiency >= 0 ? proficiencyToColor(proficiency) : Globals.colors.proficiency_unknown
 }
 
