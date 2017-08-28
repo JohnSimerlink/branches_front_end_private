@@ -1,6 +1,14 @@
 <div class="exercise-creator">
     <header class="exercise-creator-header">
-         <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <div class="exercise-creator-header-left" v-on:click="goToHome">
+            <i class="exercise-creator-goToHome fa fa-arrow-left" aria-hidden="true"></i>
+        </div>
+        <div class="exercise-creator-header-right">
+            <div class="exercise-creator-breadcrumbs"> A > B > CD > E > F > G > H</div>
+            <div class="exercise-creator-create-button-container">
+                <div class="exercise-creator-create-button">CREATE EXERCISE</div>
+            </div>
+        </div>
     </header>
     <h2>Exercise Creator </h2>
     <div class="exercise-creator-body">

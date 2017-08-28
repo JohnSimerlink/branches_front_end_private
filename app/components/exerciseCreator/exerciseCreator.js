@@ -8,5 +8,10 @@ export default {
         }
     },
     computed : {
+    },
+    methods: {
+        goToHome() {
+            PubSub.publish('goToState.home')
+        }
     }
 }
