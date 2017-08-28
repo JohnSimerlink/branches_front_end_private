@@ -251,7 +251,10 @@ button {
     align-items: center;
 
 }
-
+.tree-debugging-info {
+   width: 100%;
+   word-wrap: break-word;
+}
 .exercise-creator-breadcrumbs{
     width: 100%;
 }
