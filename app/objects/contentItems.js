@@ -81,7 +81,7 @@ export default class ContentItems {
                 })
                 resolve(content) //the cache containing all
             }, reject)
-            const headingPromise = firebase.database().ref('content/').orderByChild('type').equalTo('heading').once("value", function(snapshot){
+            const factPromise = firebase.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function(snapshot){
                 const contentData = snapshot.val()
                 Object.keys(contentData).filter(contentDatumKey => {
                     const uri = contentData[contentDatumKey].uri
@@ -97,7 +97,7 @@ export default class ContentItems {
                 })
                 resolve(content) //the cache containing all
             }, reject)
-            Promise.all([skillPromise, headingPromise]).then()
+            Promise.all([skillPromise, factPromise]).then()
         })
     }
 
