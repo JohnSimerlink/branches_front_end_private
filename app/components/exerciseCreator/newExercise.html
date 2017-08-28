@@ -1,24 +1,11 @@
-<div>
-    <div class="new-exercise-question">Question
-        <!--<multi-select-and-search source="factsAndSkills" result="itemsSelected"></multi-select-and-search>-->
-        <ul>
-            <li v-for="id in selectedItemIds">
-                {{id}}
-            </li>
-        </ul>
-        <!--<div id="example3"></div>-->
-        <div class="input textarea clearfix example4"></div>
-        <textarea v-model="question"></textarea>
+<div class="new-exercise">
+    What items does your exercise test?
+    <div class="new-exercise-items input textarea clearfix example4"></div>
+    <div class="new-exercise-question ui form">Question
+        <textarea rows="2" v-model="question"></textarea>
     </div>
-    <div class="new-exercise-answer">Answer
-        <textarea v-model="answer"></textarea>
+    <div class="new-exercise-answer ui form">Answer
+        <textarea rows="2" v-model="answer"></textarea>
     </div>
-    <ul class="new-exercise-content-items">
-        <li class="new-exercise-content-item" v-for="item in items">
-        </li>
-        <li class="new-exercise-add-content-item">
-            <input type="text" v-model="newItem"><button v-on:click='addContentItem' class="new-exercise-add-content-item-button">+</button>
-        </li>
-    </ul>
-    <button class="new-exercise-submit" v-on:click="createExercise">Create Exercise</button>
+    <button class="new-exercise-submit ui button positive" v-on:click="createExercise">Create Exercise</button>
 </div>

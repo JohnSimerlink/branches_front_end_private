@@ -1,12 +1,13 @@
 import Exercise from "../../objects/exercise";
 // import ExerciseQA from "../../objects/exerciseQA";
-import Taggle from 'taggle'
+import ContentItems from "../../objects/contentItems";
+import invert from 'invert-object'
 
 export default {
     template: require('./newExercise.html'),
     created () {
         var me = this
-        this.items = [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
+        this.items = {} // [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
         // this.itemIds = {12345: true} //[12345]
         this.selectedItems = []
         this.selectedItemIds = []
@@ -15,55 +16,66 @@ export default {
         this.answer=""
         // this.factsAndSkills = [{breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345'},{breadcrumb: "Spanish > Senorita", id: '23456'}]
 
-        var breadcrumbIdMap = this.items.reduce((map, item) => {
-            map[item.breadcrumb] = item.id
-            return map
-        },{})
-        var idBreadcrumbMap = this.items.reduce((map, item) => {
-            map[item.id] = item.breadcrumb
-            return map
-        },{})
-        this.idBreadcrumbMap = idBreadcrumbMap
-        this.breadcrumbIdMap = breadcrumbIdMap
+        ContentItems.getAllExceptForHeadings().then(items => {
+            this.items = items
+            console.log('items received from api is', items)
+            var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
+                var item = items[key]
+                var breadCrumb = item.getBreadCrumbs()
+                map[breadCrumb] = item.id
+                return map
+            },{})
+            var idBreadcrumbMap = invert(breadcrumbIdMap)
+            // this.items.reduce((map, item) => {
+            //     map[item.id] = item.breadcrumb
+            //     return map
+            // },{})
+            this.idBreadcrumbMap = idBreadcrumbMap
+            this.breadcrumbIdMap = breadcrumbIdMap
+            initTagSearch()
+        })
         // hacky solution, but each breadcrumb should be uniquely mapped to a contentId so i guess no big deal
 
-        setTimeout(function() {
-            window.example4 = new Taggle($('.example4.textarea')[0], {
-                duplicateTagClass: 'bounce',
-                onTagRemove: function(event,breadcrumb){
-                    var id = breadcrumbIdMap[breadcrumb]
-                    var index = me.selectedItemIds.indexOf(id)
-                    me.selectedItemIds.splice(index,1)
-                    delete me.selectedItemIds[id]
-                }
-            });
-
-            var container = window.example4.getContainer();
-            var input = window.example4.getInput();
-            console.log('input is ', input)
-            console.log('container is ', container)
-
-            $(input).autocomplete({
-                source: me.items.map( x => x.breadcrumb),
-                appendTo: container,
-                position: { at: 'left bottom', of: container },
-                select: function(e, v) {
-                    console.log("added! at start selectedItemIds is ", me.selectedItemIds)
-                    e.preventDefault();
-                    // Add the tag if user clicks
-                    if (e.which === 1) {
-                        var breadcrumb = v.item.value
-                        var id = breadcrumbIdMap[breadcrumb]
-                        var alreadyExists = me.selectedItemIds.find(itemId => itemId == id)
-                        if (alreadyExists) return
-                        me.selectedItemIds.push(id) //[id.toString()] = true
-                        window.example4.add(breadcrumb);
-                        console.log('me selectedItemIds is now', me.selectedItemIds)
+        function initTagSearch(){
+            setTimeout(function() {
+                window.example4 = new Taggle($('.example4.textarea')[0], {
+                    duplicateTagClass: 'bounce',
+                    onTagRemove: function(event,breadcrumb){
+                        var id = me.breadcrumbIdMap[breadcrumb]
+                        var index = me.selectedItemIds.indexOf(id)
+                        me.selectedItemIds.splice(index,1)
+                        delete me.selectedItemIds[id]
                     }
-                }
-            });
-        },0)
+                });
 
+                var container = window.example4.getContainer();
+                var input = window.example4.getInput();
+                console.log('input is ', input)
+                console.log('container is ', container)
+
+                console.log("me items before autocomplete init is", me.items)
+                console.log("me breadcrumbIdmap before autocomplete init is", me.breadcrumbIdMap)
+                $(input).autocomplete({
+                    source: Object.keys(me.breadcrumbIdMap), //me.items.map( x => x.breadcrumb),
+                    appendTo: container,
+                    position: { at: 'left bottom', of: container },
+                    select: function(e, v) {
+                        console.log("added! at start selectedItemIds is ", me.selectedItemIds)
+                        e.preventDefault();
+                        // Add the tag if user clicks
+                        if (e.which === 1) {
+                            var breadcrumb = v.item.value
+                            var id = me.breadcrumbIdMap[breadcrumb]
+                            var alreadyExists = me.selectedItemIds.find(itemId => itemId == id)
+                            if (alreadyExists) return
+                            me.selectedItemIds.push(id) //[id.toString()] = true
+                            window.example4.add(breadcrumb);
+                            console.log('me selectedItemIds is now', me.selectedItemIds)
+                        }
+                    }
+                });
+            },0)
+        }
 
     },
     data () {

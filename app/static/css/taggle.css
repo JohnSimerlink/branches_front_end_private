@@ -97,7 +97,10 @@ p a:hover {
     border: none;
     outline: none;
     font-size: 16px;
-    font-weight: 300; }
+    font-weight: 300;
+    font-family: 'Fredoka One', cursive !important;
+    color: #555;
+}
 
 .taggle_list li {
     float: left;
@@ -329,53 +332,3 @@ textarea.input {
     display: inline-block;
     right: 3px; }
 
-.custom.delicious {
-    background-image: linear-gradient(to bottom, #eee 1%, #fff 15%);
-    border: 1px solid #AAA;
-    min-height: 50px; }
-.custom.delicious.active {
-    border-color: #3274D1;
-    background-image: linear-gradient(to bottom, #eee 1%, #fff 15%); }
-.custom.delicious .taggle {
-    color: #444;
-    border-radius: 0;
-    border-top-left-radius: 1.5rem;
-    border-bottom-left-radius: 1.5rem;
-    background-color: #ddd;
-    font-family: sans-serif;
-    font-size: 0.8rem;
-    padding: 5px;
-    padding-left: 20px; }
-.custom.delicious .taggle .close {
-    color: #aaa;
-    font-size: 0.9rem;
-    height: 0.7rem;
-    width: 0.7rem;
-    line-height: .1rem;
-    margin-top: 3px;
-    right: auto;
-    left: 5px; }
-.custom.delicious .taggle .close:hover {
-    color: #888; }
-
-.custom.stackoverflow {
-    border: 1px solid #ccc;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
-.custom.stackoverflow .taggle {
-    color: #3E6D8E;
-    border-radius: 0;
-    background-color: #E0EAF1;
-    font-weight: 200; }
-.custom.stackoverflow .taggle.taggle_hot {
-    background: #BDD0DD; }
-.custom.stackoverflow .taggle .close {
-    color: #aaa;
-    border-radius: 0.7rem;
-    font-size: 0.9rem;
-    height: 0.7rem;
-    width: 0.7rem;
-    line-height: .1rem;
-    margin-top: 3px; }
-.custom.stackoverflow .taggle .close:hover {
-    background: #C03434;
-    color: #fff; }

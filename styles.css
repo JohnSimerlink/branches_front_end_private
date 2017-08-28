@@ -1,5 +1,5 @@
 html, .tree, button {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka One', cursive !important;
 }
 html,body{min-height:100%;}
 body {
@@ -260,4 +260,7 @@ button {
 }
 .contentList-item-id {
     color: #A9A9A9;
+}
+.new-exercise-items {
+   z-index: 9001; /*teehee*/
 }
