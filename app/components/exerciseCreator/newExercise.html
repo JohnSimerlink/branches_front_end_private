@@ -2,12 +2,11 @@
     <div class="new-exercise-question">Question
         <!--<multi-select-and-search source="factsAndSkills" result="itemsSelected"></multi-select-and-search>-->
         <ul>
-            {{itemIds.length}}
-            <li v-for="id in itemIds">
+            <li v-for="id in selectedItemIds">
                 {{id}}
             </li>
         </ul>
-        <div id="example3"></div>
+        <!--<div id="example3"></div>-->
         <div class="input textarea clearfix example4"></div>
         <textarea v-model="question"></textarea>
     </div>
@@ -16,7 +15,6 @@
     </div>
     <ul class="new-exercise-content-items">
         <li class="new-exercise-content-item" v-for="item in items">
-
         </li>
         <li class="new-exercise-add-content-item">
             <input type="text" v-model="newItem"><button v-on:click='addContentItem' class="new-exercise-add-content-item-button">+</button>
