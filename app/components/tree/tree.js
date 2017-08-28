@@ -1,12 +1,12 @@
 import {Trees} from '../../objects/trees'
 import {proficiencyToColor, syncGraphWithNode} from "../treesGraph"
 import {Fact} from '../../objects/fact'
-import ContentItem from '../../objects/contentItem'
-import timers from './timers'
+import ContentItems from '../../objects/contentItems'
 
 import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
 import {secondsToPretty} from "../../core/filters"
+import {Skill} from "../../objects/skill";
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
@@ -21,8 +21,9 @@ export default {
         this.nodeBeingDragged = false
         Trees.get(this.id).then(tree => {
             me.tree = tree
-            ContentItem.get(tree.contentId).then(content => {
+            ContentItems.get(tree.contentId).then(content => {
                 me.content = content
+                console.log('content uri in tree.js is', content.uri)
                 // console.log('this.content in tree.js is ', me.content)
                 me.startTimer()
             })
@@ -60,6 +61,9 @@ export default {
         },
         typeIsFact() {
             return this.tree.contentType == 'fact'
+        },
+        typeIsSkill() {
+            return this.tree.contentType == 'skill'
         },
         styleObject(){
             const styles = {}
@@ -108,22 +112,21 @@ export default {
             switch (this.tree.contentType){
                 case 'fact':
                     var fact = new Fact({question: this.content.question, answer: this.content.answer})
-                    this.content = ContentItem.create(fact)
+                    this.content = ContentItems.create(fact)
                     break;
                 case 'heading':
-                    this.content = ContentItem.create(new Heading({title: this.content.title}))
+                    const heading = new Heading({title: this.content.title})
+                    this.content = ContentItems.create(heading)
+                    break;
+                case 'skill':
+                    const skill = new Skill({title: this.content.title})
+                    this.content = ContentItems.create(skill)
                     break;
             }
             this.content.addTree(this.id)
             this.tree.changeContent(this.content.id, this.tree.contentType)
 
             this.toggleEditing()
-        },
-        changeTypeToFact() {
-            this.tree.contentType == 'fact'
-        },
-        changeTypeToFact() {
-            this.tree.contentType == 'heading'
         },
         unlinkFromParent(){
             if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")){

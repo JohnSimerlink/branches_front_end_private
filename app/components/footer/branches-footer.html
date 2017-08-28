@@ -1,0 +1,25 @@
+<div id="footer-container" class="footer-container">
+    <button class="footer login-button" v-on:click="login" v-if="!loggedIn"> Login via Facebook </button>
+    <span class='footer' v-if="loggedIn">
+        <span class="footer-createExercise" v-on:click='goToExerciseCreator' title="Create an Exercise">
+            Create Exercise
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+        </span>
+        <span class="footer-numItemsStudied" title="Items studied">
+            {{numItemsStudied}}
+            <i class="fa fa-pagelines" aria-hidden="true"></i>
+        </span>
+        <span class="footer-numItemsMastered" title="Items mastered">
+            {{numItemsMastered}}
+            <i class="fa fa-tree" aria-hidden="true"></i>
+        </span>
+        <span class="footer-timeSpent">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            =
+            {{secondsSpentStudying | secondsToPretty}}
+        </span>
+        <img class='footer-photo' :src="photoURL" v-if="loggedIn">
+        <!--<span class="footer-itemsMasteredPerMinute"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->
+    </span>
+</div>
+
