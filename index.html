@@ -156,9 +156,23 @@
         '')
 </script>
 <script>
-    document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");
- window.scrollTo(0,1);// hide url / browser bar on mobile
+  document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");
+  function toggleFullScreen() {
+      var doc = window.document;
+      var docEl = doc.documentElement;
 
+      var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+      var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+      if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+        requestFullScreen.call(docEl);
+      }
+      else {
+        cancelFullScreen.call(doc);
+      }
+    }
+//window.scrollTo(0,1);// hide url / browser bar on mobile
+toggleFullScreen()
 </script>
 </body>
 </html>
