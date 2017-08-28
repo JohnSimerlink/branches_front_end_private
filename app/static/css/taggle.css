@@ -90,7 +90,8 @@ p a:hover {
 
 .taggle_list {
     float: left;
-    width: 100%; }
+    /*width: 100%;*/
+}
 
 .taggle_input {
     border: none;
