@@ -1,5 +1,5 @@
-<div id="footer-container">
-    <button class="footer login-button"  v-on:click="login" v-if="!loggedIn"> Login via Facebook </button>
+<div id="footer-container" class="footer-container">
+    <button class="footer login-button" v-on:click="login" v-if="!loggedIn"> Login via Facebook </button>
     <span class='footer' v-if="loggedIn">
         <span class="footer-createExercise" v-on:click='goToExerciseCreator' title="Create an Exercise">
             Create Exercise

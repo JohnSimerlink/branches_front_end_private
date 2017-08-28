@@ -11,6 +11,10 @@ var vm = new Vue({
             console.log('going to exercise creator')
            this.goToExerciseCreator()
         })
+        PubSub.subscribe('goToState.home', (eventName, data) => {
+            console.log('going to home')
+            this.goToHome()
+        })
     },
     data() {
         return {
@@ -28,6 +32,10 @@ var vm = new Vue({
     methods: {
         goToExerciseCreator(){
            this.state='exercisecreator'
+        },
+        goToHome(){
+            window.location = window.location //refresh the page lol
+            this.state='home'
         }
     }
 })
