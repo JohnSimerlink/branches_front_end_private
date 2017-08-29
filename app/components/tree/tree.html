@@ -1,10 +1,10 @@
 <div class="tree" v-bind:style="styleObject" v-show="!draggingNode">
-    <div class="tree-debugging-info">
-        URI: {{content.uri}} ---
-        INITIALParentID: {{content.initialParentId}} ---
-        contentID: {{content.id}}
-        TYPE: {{content.type}}
-    </div>
+    <!--<div class="tree-debugging-info">-->
+        <!--URI: {{content.uri}} -&#45;&#45;-->
+        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->
+        <!--contentID: {{content.id}}-->
+        <!--TYPE: {{content.type}}-->
+    <!--</div>-->
     <div class="tree-fact" v-if="typeIsFact">
         <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div class="tree-proficiency">
+    <div class="tree-proficiency" v-show="!addingChild">
         <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
         <div class="tree-proficiency-values">
@@ -56,13 +56,13 @@
             <button class="tree-proficiency-values-four" v-on:click="setProficiencyToFour">All the way baby</button>
         </div>
     </div>
-    <div class="tree-footer">
+    <div class="tree-footer" v-show="!addingChild">
         <div class="divider-horizontal"></div>
         <div class="tree-footer-row">
             <div class="tree-edit-button" v-on:click="toggleEditing">
                 <i :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}" aria-hidden="true"></i>
             </div>
-            <div class="tree-add-child-button" v-on:click="toggleAddChild">
+            <div class="tree-add-child-button" v-show="typeIsHeading" v-on:click="toggleAddChild">
                 <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" >{{content.timer | secondsToPretty}} </div>
@@ -70,6 +70,9 @@
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParent" ></i>
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
-        <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild"></newtree>
     </div>
+    <div v-show="addingChild" class="tree-add-child-button" v-on:click="toggleAddChild">
+        <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
+    </div>
+    <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading"></newtree>
 </div>
