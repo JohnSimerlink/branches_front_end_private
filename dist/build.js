@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(225)("./" + name);
+            __webpack_require__(227)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(164)(module)))
 
 /***/ }),
 /* 1 */
@@ -4872,8 +4872,8 @@ function internalError(message) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(12);
 
 
 
@@ -4910,8 +4910,8 @@ class Trees {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(23);
 
 
 
@@ -4977,7 +4977,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(24);
+var _shared_promise = __webpack_require__(25);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -5020,6 +5020,133 @@ function reject(error) {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__skill__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__heading__ = __webpack_require__(21);
+
+
+
+
+const factsAndSkills = {};
+const content = {};
+function createContentItemFromData(contentData, contentDatumKey) {
+    let contentItem;
+
+    switch (contentData.type) {
+        case 'fact':
+            contentItem = new __WEBPACK_IMPORTED_MODULE_0__fact__["a" /* Fact */](contentData);
+            factsAndSkills[contentItem.id] = contentItem;
+            break;
+        case 'skill':
+            contentItem = new __WEBPACK_IMPORTED_MODULE_1__skill__["a" /* Skill */](contentData);
+            factsAndSkills[contentItem.id] = contentItem;
+            break;
+        case 'heading':
+            contentItem = new __WEBPACK_IMPORTED_MODULE_2__heading__["a" /* Heading */](contentData);
+            break;
+        default:
+            console.error( //bc there was some corrupted data
+            'NO TYPE DETECTED for contentData', contentData, contentDatumKey);
+            contentItem = new __WEBPACK_IMPORTED_MODULE_0__fact__["a" /* Fact */](contentData);
+            break;
+    }
+    contentItem.init // post constructor
+
+    ();content[contentItem.id] = contentItem; // add to cache
+    return contentItem;
+}
+class ContentItems {
+    static get(contentId) {
+        if (!contentId) {
+            throw "Content.get(contentId) error! contentId empty!";
+        }
+        return new Promise((resolve, reject) => {
+            if (content[contentId]) {
+                resolve(content[contentId]);
+            } else {
+                firebase.database().ref('content/' + contentId).once("value", function (snapshot) {
+                    const contentData = snapshot.val();
+                    let contentItem = createContentItemFromData(contentData);
+                    resolve(contentItem);
+                }, reject);
+            }
+        });
+    }
+    static getAll() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('content/').once("value", function (snapshot) {
+                const contentData = snapshot.val();
+                Object.keys(contentData).filter(contentDatumKey => {
+                    const uri = contentData[contentDatumKey].uri;
+                    if (!uri || uri.indexOf("null") == 0) {
+                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                        return false;
+                    }
+                    return true;
+                }).forEach(contentDatumKey => {
+                    const contentDatum = contentData[contentDatumKey];
+                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+                    let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
+                });
+                resolve(content //the cache containing all
+                );
+            }, reject);
+        });
+    }
+    static getAllExceptForHeadings() {
+        function processSnapshot(snapshot, resolve) {
+            const contentData = snapshot.val();
+            Object.keys(contentData).filter(contentDatumKey => {
+                const uri = contentData[contentDatumKey].uri;
+                if (!uri || uri.indexOf("null") == 0) {
+                    //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                    return false;
+                }
+                return true;
+            }).forEach(contentDatumKey => {
+                const contentDatum = contentData[contentDatumKey];
+                if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+                let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
+            }
+            // resolve(content) //the cache containing all
+            );
+        }
+        return new Promise((resolve, reject) => {
+            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
+                processSnapshot(snapshot, resolve);
+            }, reject);
+            const factPromise = firebase.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function (snapshot) {
+                processSnapshot(snapshot, resolve);
+            }, reject);
+            Promise.all([skillPromise, factPromise]).then(() => {
+                resolve(factsAndSkills);
+            });
+        });
+    }
+
+    /**
+     * Create a new content object in the database
+     * @param contentItem
+     * @returns newly created contentItem
+     */
+    static create(contentItem) {
+        let updates = {};
+        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
+        console.log('updates in contentItem.create are', updates, contentItem, contentItem.getDBRepresentation());
+        firebase.database().ref().update(updates);
+        return contentItem;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItems;
+
+
+window.ContentItems = ContentItems;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5091,584 +5218,7 @@ function clone(obj) {
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = removeTreeFromGraph;
-/* harmony export (immutable) */ __webpack_exports__["c"] = proficiencyToColor;
-/* harmony export (immutable) */ __webpack_exports__["a"] = syncGraphWithNode;
-/* harmony export (immutable) */ __webpack_exports__["b"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_login_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_user__ = __webpack_require__(4);
-
-
-
-
-
-
-
-
-var initialized = false;
-var s,
-    g = {
-    nodes: [],
-    edges: []
-},
-    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
-    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
-
-window.g = g;
-window.s = s;
-sigma.settings.font = 'Fredoka One';
-
-var newNodeXOffset = -2,
-    newNodeYOffset = 2;
-var toolTipsConfig = {
-    node: [{
-        show: 'rightClickNode',
-        cssClass: 'sigma-tooltip',
-        position: 'right',
-        template: '',
-        renderer: function (node, template) {
-            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
-            switch (node.type) {
-                case 'tree':
-                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                    break;
-                case 'newChildTree':
-                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                    break;
-            }
-            var result = Mustache.render(template, node);
-
-            return result;
-        }
-    }]
-    // stage: {
-    //     template:require('./rightClickMenu.html')
-    // }
-};
-PubSub.subscribe('login', () => {
-    loadTreeAndSubTrees(1, 1).then(val => {
-        initSigma();
-    });
-});
-function loadTreeAndSubTrees(treeId, level) {
-    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        return onGetTree(tree, level);
-    }).catch(err => console.error('trees get err is', err));
-}
-
-function onGetTree(tree, level) {
-    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
-        return addTreeNodeToGraph(tree, content, level);
-    });
-
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
-        return loadTreeAndSubTrees(child, level + 1);
-    }) : [];
-    //     loadTreeAndSubTrees
-    // }) : []
-    var promises = childTreesPromises;
-    promises.push(contentPromise);
-
-    return Promise.all(promises);
-}
-
-function addTreeNodeToGraph(tree, content, level) {
-    const treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
-
-    g.nodes.push(treeUINode);
-    connectTreeToParent(tree, content, g);
-    return content.id;
-}
-
-function removeTreeFromGraph(treeId) {
-    s.graph.dropNode(treeId);
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
-        return Promise.all(childPromises).then(val => {
-            s.refresh();
-            return `removed all children of ${treeId}`;
-        });
-    });
-}
-
-//recursively load the entire tree
-// Instantiate sigma:
-function createTreeNodeFromTreeAndContent(tree, content, level) {
-    const node = {
-        id: tree.id,
-        parentId: tree.parentId,
-        level,
-        x: tree.x,
-        y: tree.y,
-        children: tree.children,
-        content: content,
-        label: getLabelFromContent(content),
-        size: 1,
-        color: getTreeColor(content),
-        type: 'tree'
-    };
-    return node;
-}
-/**
- * Get tree colors for descending proficiency levels. Default to "existing node" color
- * @param tree
- * @returns {*}
- */
-function getTreeColor(content) {
-    let proficiency = __WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */] && content.userProficiencyMap && content.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */].getId()];
-    return proficiency >= 0 ? proficiencyToColor(proficiency) : __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown;
-}
-
-function proficiencyToColor(proficiency) {
-    if (proficiency >= 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_4;
-    if (proficiency >= 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_3;
-    if (proficiency >= 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_2;
-    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
-}
-function getLabelFromContent(content) {
-    switch (content.type) {
-        case "fact":
-            return content.question;
-        case "heading":
-            return content.title;
-        case "skill":
-            return content.title;
-    }
-}
-function createEdgeId(nodeOneId, nodeTwoId) {
-    return nodeOneId + "__" + nodeTwoId;
-}
-function connectTreeToParent(tree, content, g) {
-    if (tree.parentId) {
-        const edge = {
-            id: createEdgeId(tree.parentId, tree.id),
-            source: tree.parentId,
-            target: tree.id,
-            size: 5,
-            color: getTreeColor(content)
-        };
-        g.edges.push(edge);
-    }
-}
-//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
-
-function initSigma() {
-    if (initialized) return;
-
-    sigma.renderers.def = sigma.renderers.canvas;
-    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable;
-    s = new sigma({
-        graph: g,
-        container: 'graph-container',
-        glyphScale: 0.7,
-        glyphFillColor: '#666',
-        glyphTextColor: 'white',
-        glyphStrokeColor: 'transparent',
-        glyphFont: 'FontAwesome',
-        glyphFontStyle: 'normal',
-        glyphTextThreshold: 6,
-        glyphThreshold: 3
-
-    });
-    window.s = s;
-    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-    s.refresh();
-
-    initialized = true;
-    initSigmaPlugins();
-    PubSub.subscribe('canvas.dragStart', (eventName, data) => {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grabbing';
-    });
-    PubSub.subscribe('canvas.dragStop', (eventName, data) => {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grab';
-    });
-    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
-        // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
-    });
-    PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
-        // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
-        updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
-    });
-    PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
-        var node = data;
-        openTooltip(node);
-    });
-    PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
-        PubSub.publish('canvas.closeTooltip', data);
-    });
-    PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
-        PubSub.publish('canvas.closeTooltip', data);
-    });
-    PubSub.subscribe('canvas.overNode', function (eventName, data) {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'pointer';
-    });
-    PubSub.subscribe('canvas.outNode', function (eventName, data) {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grab';
-    });
-}
-function printNodeInfo(e) {
-    console.log(e, e.data.node);
-}
-function openTooltip(node) {
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-    setTimeout(function () {
-        var vm = new __WEBPACK_IMPORTED_MODULE_5_vue__["a" /* default */]({
-            el: '#vue'
-        });
-    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
-
-    );
-}
-function hoverOverNode(e) {
-    // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
-    // var node = e.data.node
-}
-function syncGraphWithNode(treeId) {
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(content => {
-            //update the node
-            var sigmaNode = s.graph.nodes(treeId
-            // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
-            );sigmaNode.x = tree.x;
-            sigmaNode.y = tree.y;
-            var color = getTreeColor(content);
-            sigmaNode.color = color;
-
-            //update the edge
-            var edgeId = createEdgeId(tree.parentId, treeId);
-            var sigmaEdge = s.graph.edges(edgeId);
-            sigmaEdge.color = color;
-
-            // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
-            s.refresh();
-        });
-    });
-}
-function updateTreePosition(data) {
-    let { newX, newY, treeId } = data;
-    // console.log('update tree position called!', newX, newY, treeId, data)
-    // let newX = e.data.node.x
-    // let newY = e.data.node.y
-    // let treeId = e.data.node.id;
-
-    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
-        return; //node isn't an actual node in the db - its like a shadow node or helper node
-    }
-    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1;
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        let deltaX = newX - tree.x;
-        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.addToX({ recursion: true, deltaX });
-        }
-        let deltaY = newY - tree.y;
-        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.addToY({ recursion: true, deltaY });
-        }
-        return tree;
-    });
-}
-
-//returns sigma tree node
-function addTreeToGraph(parentTreeId, content) {
-    //1. delete current addNewNode button
-    var parentTree = s.graph.nodes(parentTreeId);
-    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
-    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
-    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY);
-    //2. add new node to parent tree on UI
-    const newTree = {
-        id: tree.id,
-        parentId: parentTreeId,
-        contentId: content.id,
-        content: content,
-        x: newChildTreeX,
-        y: newChildTreeY,
-        children: {},
-        label: getLabelFromContent(content),
-        size: 1,
-        color: getTreeColor(content),
-        type: 'tree'
-        //2b. update x and y location in the db for the tree
-
-    };s.graph.addNode(newTree);
-    //3. add edge between new node and parent tree
-    const newEdge = {
-        id: createEdgeId(parentTreeId, newTree.id),
-        source: parentTreeId,
-        target: newTree.id,
-        size: 5,
-        color: getTreeColor(content)
-    };
-    s.graph.addEdge(newEdge);
-
-    s.refresh();
-    return newTree;
-}
-function initSigmaPlugins() {
-    // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
-    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
-    window.tooltips = tooltips;
-    window.jump = jumpToAndOpenTreeId;
-    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5');
-
-    var myRenderer = s.renderers[0];
-
-    // console.log('my renderenr is', myRenderer, s.renderers)
-}
-
-PubSub.subscribe('canvas.zoom', function (a, b, c, d) {
-    console.log('canvas zoom called in treesGraph js');
-}
-/**
- * Go to a given tree ID on the graph, centering the viewport on the tree
- */
-);function jumpToAndOpenTreeId(treeid) {
-    //let tree = sigma.nodes[treeid];
-    let node = s.graph.nodes().find(function (node) {
-        return node.id === treeid;
-    });
-    focusNode(s.cameras[0], node);
-
-    console.log('node about to open is ', node);
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-}
-
-function focusNode(camera, node) {
-    if (!node) {
-        console.error("Tried to go to node");
-        console.error(node);
-        return;
-    }
-    let cameraCoord = {
-        x: node['read_cam0:x'],
-        y: node['read_cam0:y'],
-        ratio: 0.1
-    };
-    camera.goTo(cameraCoord);
-    // sigma.misc.animation.camera(
-    //     camera,
-    //     {
-    //         x: node['read_cammain:x'],
-    //         y: node['read_cammain:y'],
-    //         ratio: 0.075
-    //     },
-    //     {
-    //         duration: 150
-    //     }
-    // );
-}
-
-/***/ }),
 /* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__skill__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__heading__ = __webpack_require__(20);
-
-
-
-
-function createContentItemFromData(contentData, contentDatumKey) {
-    let contentItem;
-    switch (contentData.type) {
-        case 'fact':
-            contentItem = new __WEBPACK_IMPORTED_MODULE_0__fact__["a" /* Fact */](contentData);
-            break;
-        case 'skill':
-            contentItem = new __WEBPACK_IMPORTED_MODULE_1__skill__["a" /* Skill */](contentData);
-            break;
-        case 'heading':
-            contentItem = new __WEBPACK_IMPORTED_MODULE_2__heading__["a" /* Heading */](contentData);
-            break;
-        default:
-            console.error( //bc there was some corrupted data
-            'NO TYPE DETECTED for contentData', contentData, contentDatumKey);
-            contentItem = new __WEBPACK_IMPORTED_MODULE_0__fact__["a" /* Fact */](contentData);
-            break;
-    }
-    contentItem.init // post constructor
-
-    ();content[contentItem.id] = contentItem; // add to cache
-    return contentItem;
-}
-class ContentItems {
-    static get(contentId) {
-        if (!contentId) {
-            throw "Content.get(contentId) error! contentId empty!";
-        }
-        return new Promise((resolve, reject) => {
-            if (content[contentId]) {
-                resolve(content[contentId]);
-            } else {
-                firebase.database().ref('content/' + contentId).once("value", function (snapshot) {
-                    const contentData = snapshot.val();
-                    let contentItem = createContentItemFromData(contentData);
-                    resolve(contentItem);
-                }, reject);
-            }
-        });
-    }
-    static getAll() {
-        return new Promise((resolve, reject) => {
-            firebase.database().ref('content/').once("value", function (snapshot) {
-                const contentData = snapshot.val();
-                Object.keys(contentData).filter(contentDatumKey => {
-                    const uri = contentData[contentDatumKey].uri;
-                    if (!uri || uri.indexOf("null") == 0) {
-                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false;
-                    }
-                    return true;
-                }).forEach(contentDatumKey => {
-                    const contentDatum = contentData[contentDatumKey];
-                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                    let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                });
-                resolve(content //the cache containing all
-                );
-            }, reject);
-        });
-    }
-    static getAllExceptForHeadings() {
-        return new Promise((resolve, reject) => {
-            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
-                const contentData = snapshot.val();
-                Object.keys(contentData).filter(contentDatumKey => {
-                    const uri = contentData[contentDatumKey].uri;
-                    if (!uri || uri.indexOf("null") == 0) {
-                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false;
-                    }
-                    return true;
-                }).forEach(contentDatumKey => {
-                    const contentDatum = contentData[contentDatumKey];
-                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                    let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                });
-                resolve(content //the cache containing all
-                );
-            }, reject);
-            const headingPromise = firebase.database().ref('content/').orderByChild('type').equalTo('heading').once("value", function (snapshot) {
-                const contentData = snapshot.val();
-                Object.keys(contentData).filter(contentDatumKey => {
-                    const uri = contentData[contentDatumKey].uri;
-                    if (!uri || uri.indexOf("null") == 0) {
-                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false;
-                    }
-                    return true;
-                }).forEach(contentDatumKey => {
-                    const contentDatum = contentData[contentDatumKey];
-                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                    let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                });
-                resolve(content //the cache containing all
-                );
-            }, reject);
-            Promise.all([skillPromise, headingPromise]).then();
-        });
-    }
-
-    /**
-     * Create a new content object in the database
-     * @param contentItem
-     * @returns newly created contentItem
-     */
-    static create(contentItem) {
-        let updates = {};
-        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates, contentItem, contentItem.getDBRepresentation());
-        firebase.database().ref().update(updates);
-        return contentItem;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItems;
-
-
-window.ContentItems = ContentItems;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
-
-
-
-
-
-const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
-
-__WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
-
-window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from the console
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _firebase_app = __webpack_require__(187);
-
-// Export a single instance of firebase app
-var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
-                                                             * Copyright 2017 Google Inc.
-                                                             *
-                                                             * Licensed under the Apache License, Version 2.0 (the "License");
-                                                             * you may not use this file except in compliance with the License.
-                                                             * You may obtain a copy of the License at
-                                                             *
-                                                             *   http://www.apache.org/licenses/LICENSE-2.0
-                                                             *
-                                                             * Unless required by applicable law or agreed to in writing, software
-                                                             * distributed under the License is distributed on an "AS IS" BASIS,
-                                                             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                             * See the License for the specific language governing permissions and
-                                                             * limitations under the License.
-                                                             */
-// Import the createFirebaseNamespace function
-exports.default = firebase;
-module.exports = exports['default'];
-//# sourceMappingURL=app.js.map
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -7879,17 +7429,17 @@ function stubFalse() {
 
 module.exports = merge;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(30)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(164)(module)))
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(185),
-      utf8 = __webpack_require__(37).utf8,
-      isBuffer = __webpack_require__(224),
-      bin = __webpack_require__(37).bin,
+  var crypt = __webpack_require__(186),
+      utf8 = __webpack_require__(36).utf8,
+      isBuffer = __webpack_require__(226),
+      bin = __webpack_require__(36).bin,
 
   // The core
   md5 = function (message, options) {
@@ -8048,7 +7598,647 @@ module.exports = merge;
 
 
 /***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["d"] = removeTreeFromGraph;
+/* harmony export (immutable) */ __webpack_exports__["c"] = proficiencyToColor;
+/* harmony export (immutable) */ __webpack_exports__["a"] = syncGraphWithNode;
+/* harmony export (immutable) */ __webpack_exports__["b"] = addTreeToGraph;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_login_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_user__ = __webpack_require__(4);
+
+
+
+
+
+
+
+
+var initialized = false;
+var s,
+    g = {
+    nodes: [],
+    edges: []
+},
+    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
+    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
+
+window.g = g;
+window.s = s;
+sigma.settings.font = 'Fredoka One';
+
+var newNodeXOffset = -2,
+    newNodeYOffset = 2;
+var toolTipsConfig = {
+    node: [{
+        show: 'rightClickNode',
+        cssClass: 'sigma-tooltip',
+        position: 'right',
+        template: '',
+        renderer: function (node, template) {
+            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
+            switch (node.type) {
+                case 'tree':
+                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                    break;
+                case 'newChildTree':
+                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                    break;
+            }
+            var result = Mustache.render(template, node);
+
+            return result;
+        }
+    }]
+    // stage: {
+    //     template:require('./rightClickMenu.html')
+    // }
+};
+PubSub.subscribe('login', () => {
+    loadTreeAndSubTrees(1, 1).then(val => {
+        initSigma();
+    });
+});
+function loadTreeAndSubTrees(treeId, level) {
+    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        return onGetTree(tree, level);
+    }).catch(err => console.error('trees get err is', err));
+}
+
+function onGetTree(tree, level) {
+    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
+        return addTreeNodeToGraph(tree, content, level);
+    });
+
+    var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
+        return loadTreeAndSubTrees(child, level + 1);
+    }) : [];
+    //     loadTreeAndSubTrees
+    // }) : []
+    var promises = childTreesPromises;
+    promises.push(contentPromise);
+
+    return Promise.all(promises);
+}
+
+function addTreeNodeToGraph(tree, content, level) {
+    const treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
+
+    g.nodes.push(treeUINode);
+    connectTreeToParent(tree, content, g);
+    return content.id;
+}
+
+function removeTreeFromGraph(treeId) {
+    s.graph.dropNode(treeId);
+    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
+        return Promise.all(childPromises).then(val => {
+            s.refresh();
+            return `removed all children of ${treeId}`;
+        });
+    });
+}
+
+//recursively load the entire tree
+// Instantiate sigma:
+function createTreeNodeFromTreeAndContent(tree, content, level) {
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        level,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        content: content,
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree'
+    };
+    return node;
+}
+/**
+ * Get tree colors for descending proficiency levels. Default to "existing node" color
+ * @param tree
+ * @returns {*}
+ */
+function getTreeColor(content) {
+    let proficiency = __WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */] && content.userProficiencyMap && content.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */].getId()];
+    return proficiency >= 0 ? proficiencyToColor(proficiency) : __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown;
+}
+
+function proficiencyToColor(proficiency) {
+    if (proficiency >= 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_4;
+    if (proficiency >= 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_3;
+    if (proficiency >= 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_2;
+    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
+}
+function getLabelFromContent(content) {
+    switch (content.type) {
+        case "fact":
+            return content.question;
+        case "heading":
+            return content.title;
+        case "skill":
+            return content.title;
+    }
+}
+function createEdgeId(nodeOneId, nodeTwoId) {
+    return nodeOneId + "__" + nodeTwoId;
+}
+function connectTreeToParent(tree, content, g) {
+    if (tree.parentId) {
+        const edge = {
+            id: createEdgeId(tree.parentId, tree.id),
+            source: tree.parentId,
+            target: tree.id,
+            size: 5,
+            color: getTreeColor(content)
+        };
+        g.edges.push(edge);
+    }
+}
+//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
+function initSigma() {
+    if (initialized) return;
+
+    sigma.renderers.def = sigma.renderers.canvas;
+    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable;
+    s = new sigma({
+        graph: g,
+        container: 'graph-container',
+        glyphScale: 0.7,
+        glyphFillColor: '#666',
+        glyphTextColor: 'white',
+        glyphStrokeColor: 'transparent',
+        glyphFont: 'FontAwesome',
+        glyphFontStyle: 'normal',
+        glyphTextThreshold: 6,
+        glyphThreshold: 3
+
+    });
+    window.s = s;
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    s.refresh();
+
+    initialized = true;
+    initSigmaPlugins();
+    PubSub.subscribe('canvas.dragStart', (eventName, data) => {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'grabbing';
+    });
+    PubSub.subscribe('canvas.dragStop', (eventName, data) => {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'grab';
+    });
+    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
+        // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
+    });
+    PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
+        // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
+        updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
+    });
+    PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
+        var node = data;
+        openTooltip(node);
+    });
+    PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
+        PubSub.publish('canvas.closeTooltip', data);
+    });
+    PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
+        PubSub.publish('canvas.closeTooltip', data);
+    });
+    PubSub.subscribe('canvas.overNode', function (eventName, data) {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'pointer';
+    });
+    PubSub.subscribe('canvas.outNode', function (eventName, data) {
+        var canvas = document.querySelector('#graph-container');
+        canvas.style.cursor = 'grab';
+    });
+}
+function printNodeInfo(e) {
+    console.log(e, e.data.node);
+}
+function openTooltip(node) {
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function () {
+        var vm = new __WEBPACK_IMPORTED_MODULE_5_vue__["a" /* default */]({
+            el: '#vue'
+        });
+    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+
+    );
+}
+function hoverOverNode(e) {
+    // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
+    // var node = e.data.node
+}
+function syncGraphWithNode(treeId) {
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(content => {
+            //update the node
+            var sigmaNode = s.graph.nodes(treeId
+            // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
+            );sigmaNode.x = tree.x;
+            sigmaNode.y = tree.y;
+            var color = getTreeColor(content);
+            sigmaNode.color = color;
+
+            //update the edge
+            var edgeId = createEdgeId(tree.parentId, treeId);
+            var sigmaEdge = s.graph.edges(edgeId);
+            sigmaEdge.color = color;
+
+            // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
+            s.refresh();
+        });
+    });
+}
+function updateTreePosition(data) {
+    let { newX, newY, treeId } = data;
+    // console.log('update tree position called!', newX, newY, treeId, data)
+    // let newX = e.data.node.x
+    // let newY = e.data.node.y
+    // let treeId = e.data.node.id;
+
+    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
+        return; //node isn't an actual node in the db - its like a shadow node or helper node
+    }
+    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1;
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
+        let deltaX = newX - tree.x;
+        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.addToX({ recursion: true, deltaX });
+        }
+        let deltaY = newY - tree.y;
+        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+            tree.addToY({ recursion: true, deltaY });
+        }
+        return tree;
+    });
+}
+
+//returns sigma tree node
+function addTreeToGraph(parentTreeId, content) {
+    //1. delete current addNewNode button
+    var parentTree = s.graph.nodes(parentTreeId);
+    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
+    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY);
+    //2. add new node to parent tree on UI
+    const newTree = {
+        id: tree.id,
+        parentId: parentTreeId,
+        contentId: content.id,
+        content: content,
+        x: newChildTreeX,
+        y: newChildTreeY,
+        children: {},
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree'
+        //2b. update x and y location in the db for the tree
+
+    };s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    const newEdge = {
+        id: createEdgeId(parentTreeId, newTree.id),
+        source: parentTreeId,
+        target: newTree.id,
+        size: 5,
+        color: getTreeColor(content)
+    };
+    s.graph.addEdge(newEdge);
+
+    s.refresh();
+    return newTree;
+}
+function initSigmaPlugins() {
+    // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
+    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
+    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
+    window.tooltips = tooltips;
+    window.jump = jumpToAndOpenTreeId;
+    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5');
+
+    var myRenderer = s.renderers[0];
+
+    // console.log('my renderenr is', myRenderer, s.renderers)
+}
+
+PubSub.subscribe('canvas.zoom', function (a, b, c, d) {
+    console.log('canvas zoom called in treesGraph js');
+}
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+);function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    let node = s.graph.nodes().find(function (node) {
+        return node.id === treeid;
+    });
+    focusNode(s.cameras[0], node);
+
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+}
+
+function focusNode(camera, node) {
+    if (!node) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    let cameraCoord = {
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
+        ratio: 0.1
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
+}
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__ = __webpack_require__(177);
+const content = {};
+window.content = content; //expose to window for easy debugging
+
+
+class ContentItem {
+
+    constructor(args) {
+        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
+        this.initialParentTreeContentURI = this.initialParentTreeContentURI || args && args.initialParentTreeContentURI || null;
+        this.trees = args.trees || {};
+
+        this.userTimeMap = args.userTimeMap || {};
+        this.timer = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userTimeMap && this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+        this.timerId = null;
+
+        this.userProficiencyMap = args.userProficiencyMap || {};
+        this.proficiency = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+
+        this.userInteractionsMap = args.userInteractionsMap || {};
+        this.interactions = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userInteractionsMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || [];
+
+        this.userReviewTimeMap = args.userReviewTimeMap || {};
+        this.nextReviewTime = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userReviewTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+
+        this.studiers = args.studiers || {};
+        this.inStudyQueue = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()];
+
+        this.exercises = args.exercises || {};
+
+        this.uri = args.uri || null;
+    }
+    init() {
+        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition // this is for contentItems just created from a parent, not ones loaded from the db.
+        ();
+    }
+
+    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+
+    getDBRepresentation() {
+        return {
+            initialParentTreeId: this.initialParentTreeId,
+            initialParentTreeContentURI: this.initialParentTreeContentURI,
+            userTimeMap: this.userTimeMap,
+            userProficiencyMap: this.userProficiencyMap,
+            userInteractionsMap: this.userInteractionsMap,
+            userReviewTimeMap: this.userReviewTimeMap,
+            studiers: this.studiers,
+            exercises: this.exercises,
+            uri: this.uri
+        };
+    }
+    getURIAddition() {}
+    //removes the prefix "content/
+    getURIWithoutRootElement() {
+        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
+    }
+    getBreadCrumbs() {
+        let sections = this.getURIWithoutRootElement().split("/"
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        );let sectionsResult = sections.reduce((accum, val) => {
+            if (val == "null" || val == "content") {
+                //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                return accum;
+            }
+            return accum + " > " + decodeURIComponent(val);
+        });
+        return sectionsResult;
+        // console.log('breadcrumb result is', sectionsResult)
+        //
+        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
+        //     return total + decodeURIComponent(section) + " > "
+        // },"")
+        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
+        // return breadcrumbs
+    }
+    /**
+     * Used to update tree X and Y coordinates
+     * @param prop
+     * @param val
+     */
+    set(prop, val) {
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {};
+        updates[prop] = val;
+        // this.treeRef.update(updates)
+        firebase.database().ref('content/' + this.id).update(updates);
+        this[prop] = val;
+    }
+    /**
+     * Add a tree to the given content item
+     * @param treeId
+     */
+    addTree(treeId) {
+        this.trees[treeId] = true;
+        let trees = {};
+        trees[treeId] = true;
+        let updates = {
+            trees
+        };
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+    //TODO : make timer for heading be the sum of the time of all the child facts
+    startTimer() {
+        var self = this;
+
+        if (!this.timerId) {
+            //to prevent from two or more timers being created simultaneously on the content item
+            this.timerId = setInterval(function () {
+                self.timer = self.timer || 0;
+                self.timer++; // = fact.timer || 0
+            }, 1000);
+        }
+    }
+    saveTimer() {
+        this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
+
+        var updates = {
+            userTimeMap: this.userTimeMap
+        };
+
+        clearInterval(this.timerId);
+        this.timerId = null;
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+    addToStudyQueue() {
+        //don't display nextReviewTime if not in user's study queue
+        this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = true;
+
+        var updates = {
+            studiers: this.studiers
+        };
+        this.inStudyQueue = true;
+
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+    addExercise(exerciseId) {
+        this.exercises[exerciseId] = true;
+
+        var updates = {
+            exercises: this.exercises
+        };
+
+        firebase.database().ref('content/' + this.id).update(updates);
+    }
+    setProficiency(proficiency) {
+        !this.inStudyQueue && this.addToStudyQueue
+        //proficiency
+
+        //-proficiency stored under fact
+        ();this.proficiency = proficiency;
+        this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.proficiency;
+
+        var updates = {
+            userProficiencyMap: this.userProficiencyMap
+        };
+
+        firebase.database().ref('content/' + this.id).update(updates
+
+        //interactions
+        );this.interactions.push({ timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency });
+        this.userInteractionsMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.interactions;
+
+        var updates = {
+            userInteractionsMap: this.userInteractionsMap
+        };
+
+        firebase.database().ref('content/' + this.id).update(updates
+
+        //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
+        //user review time map
+        );const millisecondsTilNextReview = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__["a" /* calculateMillisecondsTilNextReview */])(this.interactions);
+        this.nextReviewTime = Date.now() + millisecondsTilNextReview;
+
+        this.userReviewTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.nextReviewTime;
+        var updates = {
+            userReviewTimeMap: this.userReviewTimeMap
+        };
+        firebase.database().ref('content/' + this.id).update(updates);
+
+        __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItem;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
+
+
+
+
+
+const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
+
+__WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
+
+window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from the console
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
+
+/***/ }),
 /* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _firebase_app = __webpack_require__(188);
+
+// Export a single instance of firebase app
+var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
+                                                             * Copyright 2017 Google Inc.
+                                                             *
+                                                             * Licensed under the Apache License, Version 2.0 (the "License");
+                                                             * you may not use this file except in compliance with the License.
+                                                             * You may obtain a copy of the License at
+                                                             *
+                                                             *   http://www.apache.org/licenses/LICENSE-2.0
+                                                             *
+                                                             * Unless required by applicable law or agreed to in writing, software
+                                                             * distributed under the License is distributed on an "AS IS" BASIS,
+                                                             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                             * See the License for the specific language governing permissions and
+                                                             * limitations under the License.
+                                                             */
+// Import the createFirebaseNamespace function
+exports.default = firebase;
+module.exports = exports['default'];
+//# sourceMappingURL=app.js.map
+
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports) {
 
 var g;
@@ -8075,7 +8265,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17769,210 +17959,7 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(164), __webpack_require__(13)))
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__ = __webpack_require__(177);
-const content = {};
-window.content = content; //expose to window for easy debugging
-
-
-class ContentItem {
-
-    constructor(args) {
-        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
-        this.initialParentTreeContentURI = this.initialParentTreeContentURI || args && args.initialParentTreeContentURI || null;
-        this.trees = args.trees || {};
-
-        this.userTimeMap = args.userTimeMap || {};
-        this.timer = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userTimeMap && this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
-        this.timerId = null;
-
-        this.userProficiencyMap = args.userProficiencyMap || {};
-        this.proficiency = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
-
-        this.userInteractionsMap = args.userInteractionsMap || {};
-        this.interactions = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userInteractionsMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || [];
-
-        this.userReviewTimeMap = args.userReviewTimeMap || {};
-        this.nextReviewTime = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userReviewTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
-
-        this.studiers = args.studiers || {};
-        this.inStudyQueue = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()];
-
-        this.exercises = args.exercises || {};
-
-        this.uri = args.uri || null;
-    }
-    init() {
-        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition // this is for contentItems just created from a parent, not ones loaded from the db.
-        ();
-    }
-
-    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
-
-    getDBRepresentation() {
-        return {
-            initialParentTreeId: this.initialParentTreeId,
-            initialParentTreeContentURI: this.initialParentTreeContentURI,
-            userTimeMap: this.userTimeMap,
-            userProficiencyMap: this.userProficiencyMap,
-            userInteractionsMap: this.userInteractionsMap,
-            userReviewTimeMap: this.userReviewTimeMap,
-            studiers: this.studiers,
-            exercises: this.exercises,
-            uri: this.uri
-        };
-    }
-    getURIAddition() {}
-    //removes the prefix "content/
-    getURIWithoutRootElement() {
-        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
-    }
-    getBreadCrumbs() {
-        let sections = this.getURIWithoutRootElement().split("/"
-        // console.log('breadcrumb sections for ', this,' are', sections)
-        );let sectionsResult = sections.reduce((accum, val) => {
-            if (val == "null") {
-                console.log('val was null');
-                return accum;
-            } else {
-                console.log('val was not null. it was', val);
-            }
-            if (val == "content") {
-                console.log('val was content');
-                return accum;
-            } else {
-                console.log('val was not content. it was', val);
-            }
-            return accum + " > " + decodeURIComponent(val);
-        });
-        return sectionsResult;
-        // console.log('breadcrumb result is', sectionsResult)
-        //
-        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-        //     return total + decodeURIComponent(section) + " > "
-        // },"")
-        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-        // return breadcrumbs
-    }
-    /**
-     * Used to update tree X and Y coordinates
-     * @param prop
-     * @param val
-     */
-    set(prop, val) {
-        if (this[prop] == val) {
-            return;
-        }
-
-        var updates = {};
-        updates[prop] = val;
-        // this.treeRef.update(updates)
-        firebase.database().ref('content/' + this.id).update(updates);
-        this[prop] = val;
-    }
-    /**
-     * Add a tree to the given content item
-     * @param treeId
-     */
-    addTree(treeId) {
-        this.trees[treeId] = true;
-        let trees = {};
-        trees[treeId] = true;
-        let updates = {
-            trees
-        };
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    //TODO : make timer for heading be the sum of the time of all the child facts
-    startTimer() {
-        var self = this;
-
-        if (!this.timerId) {
-            //to prevent from two or more timers being created simultaneously on the content item
-            this.timerId = setInterval(function () {
-                self.timer = self.timer || 0;
-                self.timer++; // = fact.timer || 0
-            }, 1000);
-        }
-    }
-    saveTimer() {
-        this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
-
-        var updates = {
-            userTimeMap: this.userTimeMap
-        };
-
-        clearInterval(this.timerId);
-        this.timerId = null;
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    addToStudyQueue() {
-        //don't display nextReviewTime if not in user's study queue
-        this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = true;
-
-        var updates = {
-            studiers: this.studiers
-        };
-        this.inStudyQueue = true;
-
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    addExercise(exercise) {
-        this.exercises[exercise.id] = true;
-
-        var updates = {
-            exercises: this.exercises
-        };
-
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    setProficiency(proficiency) {
-        !this.inStudyQueue && this.addToStudyQueue
-        //proficiency
-
-        //-proficiency stored under fact
-        ();this.proficiency = proficiency;
-        this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.proficiency;
-
-        var updates = {
-            userProficiencyMap: this.userProficiencyMap
-        };
-
-        firebase.database().ref('content/' + this.id).update(updates
-
-        //interactions
-        );this.interactions.push({ timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency });
-        this.userInteractionsMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.interactions;
-
-        var updates = {
-            userInteractionsMap: this.userInteractionsMap
-        };
-
-        firebase.database().ref('content/' + this.id).update(updates
-
-        //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-        //user review time map
-        );const millisecondsTilNextReview = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__["a" /* calculateMillisecondsTilNextReview */])(this.interactions);
-        this.nextReviewTime = Date.now() + millisecondsTilNextReview;
-
-        this.userReviewTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.nextReviewTime;
-        var updates = {
-            userReviewTimeMap: this.userReviewTimeMap
-        };
-        firebase.database().ref('content/' + this.id).update(updates);
-
-        __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItem;
-
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(163), __webpack_require__(14)))
 
 /***/ }),
 /* 16 */
@@ -18277,14 +18264,99 @@ var Location = exports.Location = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
+
+
+
+// import ExerciseQA from "./exerciseQA";
+
+const exercises = {}; //cache
+window.exercises = exercises;
+/**
+ * abstract class - only subtypes should be instantiated
+ */
+class Exercise {
+    constructor({ contentItemIds = {} }) {
+        this.contentItemIds = contentItemIds;
+    }
+    init() {}
+    addContent(contentId) {
+        this.contentItemIds[contentId] = true;
+    }
+    getDBRepresentation() {
+        return {
+            contentItemIds: this.contentItemIds
+        };
+    }
+
+    /**
+     *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
+     * @param exercise - must be an object that is a subclass of Exercise
+     * @returns {*}
+     */
+    static create(exercise) {
+        let updates = {};
+        updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
+        console.log('updates in exerciseItem.create are', updates);
+        firebase.database().ref().update(updates);
+        return exercise;
+    }
+
+    static get(exerciseId) {
+        if (!exerciseId) {
+            throw "Exercises.get(exerciseId) error! exerciseId empty!";
+        }
+        return new Promise((resolve, reject) => {
+            if (exercises[exerciseId]) {
+                resolve(exercises[exerciseId]);
+            } else {
+                firebase.database().ref('exercises/' + exerciseId).once("value", function (snapshot) {
+                    const exerciseData = snapshot.val();
+                    let exercise;
+                    switch (exerciseData.type) {
+                        case 'QA':
+                            // exercise = new ExerciseQA(exerciseData)
+                            break;
+                    }
+                    exercises[exercise.id] = exercise; // add to cache
+                    resolve(exercise);
+                }, reject);
+            }
+        });
+    }
+    static getAll() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('exercises/').once("value", function (snapshot) {
+                const exercisesData = snapshot.val();
+                exercisesData && Object.keys(exercisesData).forEach(exerciseData => {
+                    const exercise = new Exercise(exerciseData); // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
+                    exercises[exercise.id] = exercise; // add to cache
+                });
+                resolve(exercises);
+            }, reject);
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Exercise;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_merge__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_merge__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__contentItem__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__contentItem__ = __webpack_require__(11);
 
 
 
@@ -18330,14 +18402,14 @@ class Fact extends __WEBPACK_IMPORTED_MODULE_5__contentItem__["a" /* default */]
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
 
 
@@ -18370,14 +18442,14 @@ class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default 
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees__ = __webpack_require__(3);
 
@@ -18425,12 +18497,12 @@ class Skill extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default */
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(12);
 
 
 
@@ -18461,7 +18533,7 @@ class Users {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18568,7 +18640,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18608,17 +18680,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(197);
+var PromiseImpl = scope.Promise || __webpack_require__(198);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18645,7 +18717,7 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(27);
+var _metadata = __webpack_require__(28);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -18782,7 +18854,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18856,7 +18928,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18879,13 +18951,13 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(204);
+var _json = __webpack_require__(205);
 
 var json = _interopRequireWildcard(_json);
 
 var _location = __webpack_require__(18);
 
-var _path = __webpack_require__(44);
+var _path = __webpack_require__(43);
 
 var path = _interopRequireWildcard(_path);
 
@@ -18893,7 +18965,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(29);
+var _url = __webpack_require__(30);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -19066,7 +19138,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19276,7 +19348,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19298,7 +19370,7 @@ var _constants = __webpack_require__(17);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _object = __webpack_require__(6);
+var _object = __webpack_require__(7);
 
 var object = _interopRequireWildcard(_object);
 
@@ -19346,40 +19418,12 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
 /* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = secondsToPretty;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
 
@@ -19456,9 +19500,8 @@ function login() {
             Globals.userId = result.user.uid;
             PubSub.publish('login', { userId: result.user.uid });
         }).catch(function (error) {
-            console.error("LOGIN.JS: FIREBASE COULD NOT LOGIN", error
             // Handle Errors here.
-            );var errorCode = error.code;
+            var errorCode = error.code;
             var errorMessage = error.message;
             // The email of the user's account used.
             var email = error.email;
@@ -19473,100 +19516,15 @@ function login() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
-
-
-
-// import ExerciseQA from "./exerciseQA";
-
-const exercises = {}; //cache
-window.exercises = exercises;
-/**
- * abstract class - only subtypes should be instantiated
- */
-class Exercise {
-    constructor({ contentItems = {} }) {
-        this.contentItems = contentItems;
-    }
-    init() {}
-    addContent(contentId) {
-        this.contentItems[contentId] = true;
-    }
-    getDBRepresentation() {
-        return {
-            contentItems: this.contentItems
-        };
-    }
-
-    /**
-     *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
-     * @param exercise - must be an object that is a subclass of Exercise
-     * @returns {*}
-     */
-    static create(exercise) {
-        let updates = {};
-        updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates);
-        firebase.database().ref().update(updates);
-        return exercise;
-    }
-
-    static get(exerciseId) {
-        if (!exerciseId) {
-            throw "Content.get(exerciseId) error! exerciseId empty!";
-        }
-        return new Promise((resolve, reject) => {
-            if (exercises[exerciseId]) {
-                resolve(exercises[exerciseId]);
-            } else {
-                firebase.database().ref('exercises/' + exerciseId).once("value", function (snapshot) {
-                    const exerciseData = snapshot.val();
-                    let exercise;
-                    switch (exerciseData.type) {
-                        case 'QA':
-                            // exercise = new ExerciseQA(exerciseData)
-                            break;
-                    }
-                    exercises[exercise.id] = exercise; // add to cache
-                    resolve(exercise);
-                }, reject);
-            }
-        });
-    }
-    static getAll() {
-        return new Promise((resolve, reject) => {
-            firebase.database().ref('exercises/').once("value", function (snapshot) {
-                const exercisesData = snapshot.val();
-                exercisesData && Object.keys(exercisesData).forEach(exerciseData => {
-                    const exercise = new Exercise(exerciseData); // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
-                    exercises[exercise.id] = exercise; // add to cache
-                });
-                resolve(exercises);
-            }, reject);
-        });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Exercise;
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItems__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fact__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__skill__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItems__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fact__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__skill__ = __webpack_require__(22);
 
 
 
@@ -19608,16 +19566,16 @@ function newTree(nodeType, parentTreeId, initialParentTreeContentURI, values) {
 }
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_treesGraph__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_treesGraph__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(185);
 
 
 const treesRef = __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees');
@@ -19793,7 +19751,7 @@ class Tree {
 //invoke like a constructor - new Tree(parentId, factId)
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -19832,7 +19790,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19853,7 +19811,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(24);
+var _shared_promise = __webpack_require__(25);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20117,7 +20075,7 @@ function noop() {
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20148,17 +20106,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(23);
+var _errors = __webpack_require__(24);
 
 var _errors2 = __webpack_require__(16);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(196);
+var _tokenManager = __webpack_require__(197);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(41);
+var _notificationPermission = __webpack_require__(40);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -20357,7 +20315,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20400,7 +20358,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20438,7 +20396,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20497,7 +20455,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20534,11 +20492,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(203);
+var _fs = __webpack_require__(204);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(28);
+var _string = __webpack_require__(29);
 
 var string = _interopRequireWildcard(_string);
 
@@ -20663,7 +20621,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20753,7 +20711,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20782,31 +20740,31 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(26);
+var _array = __webpack_require__(27);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(43);
+var _blob = __webpack_require__(42);
 
 var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(27);
+var _metadata = __webpack_require__(28);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(6);
+var _object = __webpack_require__(7);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(207);
+var _requestinfo = __webpack_require__(208);
 
 var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(29);
+var _url = __webpack_require__(30);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -21107,7 +21065,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21184,7 +21142,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21225,7 +21183,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21260,11 +21218,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(25);
+var _args = __webpack_require__(26);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(43);
+var _blob = __webpack_require__(42);
 
 var _error = __webpack_require__(2);
 
@@ -21272,23 +21230,23 @@ var errorsExports = _interopRequireWildcard(_error);
 
 var _location = __webpack_require__(18);
 
-var _metadata = __webpack_require__(27);
+var _metadata = __webpack_require__(28);
 
 var metadata = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(6);
+var _object = __webpack_require__(7);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(44);
+var _path = __webpack_require__(43);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(45);
+var _requests = __webpack_require__(44);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(28);
+var _string = __webpack_require__(29);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -21296,7 +21254,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(212);
+var _task = __webpack_require__(213);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21534,7 +21492,7 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21612,7 +21570,7 @@ return af;
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21676,7 +21634,7 @@ return arDz;
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21740,7 +21698,7 @@ return arKw;
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21871,7 +21829,7 @@ return arLy;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21936,7 +21894,7 @@ return arMa;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22046,7 +22004,7 @@ return arSa;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22110,7 +22068,7 @@ return arTn;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22257,7 +22215,7 @@ return ar;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22367,7 +22325,7 @@ return az;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22506,7 +22464,7 @@ return be;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22601,7 +22559,7 @@ return bg;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22725,7 +22683,7 @@ return bn;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22849,7 +22807,7 @@ return bo;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22962,7 +22920,7 @@ return br;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23110,7 +23068,7 @@ return bs;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23203,7 +23161,7 @@ return ca;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23380,7 +23338,7 @@ return cs;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23448,7 +23406,7 @@ return cv;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23534,7 +23492,7 @@ return cy;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23599,7 +23557,7 @@ return da;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23683,7 +23641,7 @@ return deAt;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23766,7 +23724,7 @@ return deCh;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23849,7 +23807,7 @@ return de;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23954,7 +23912,7 @@ return dv;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24059,7 +24017,7 @@ return el;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24131,7 +24089,7 @@ return enAu;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24199,7 +24157,7 @@ return enCa;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24271,7 +24229,7 @@ return enGb;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24343,7 +24301,7 @@ return enIe;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24415,7 +24373,7 @@ return enNz;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24493,7 +24451,7 @@ return eo;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24580,7 +24538,7 @@ return esDo;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24668,7 +24626,7 @@ return es;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24753,7 +24711,7 @@ return et;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24824,7 +24782,7 @@ return eu;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24936,7 +24894,7 @@ return fa;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25048,7 +25006,7 @@ return fi;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25113,7 +25071,7 @@ return fo;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25192,7 +25150,7 @@ return frCa;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25275,7 +25233,7 @@ return frCh;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25363,7 +25321,7 @@ return fr;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25443,7 +25401,7 @@ return fy;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25524,7 +25482,7 @@ return gd;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25606,7 +25564,7 @@ return gl;
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25733,7 +25691,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25837,7 +25795,7 @@ return he;
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25966,7 +25924,7 @@ return hi;
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26116,7 +26074,7 @@ return hr;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26230,7 +26188,7 @@ return hu;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26330,7 +26288,7 @@ return hyAm;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26418,7 +26376,7 @@ return id;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26550,7 +26508,7 @@ return is;
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26625,7 +26583,7 @@ return it;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26710,7 +26668,7 @@ return ja;
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26798,7 +26756,7 @@ return jv;
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26892,7 +26850,7 @@ return ka;
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26984,7 +26942,7 @@ return kk;
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27047,7 +27005,7 @@ return km;
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27178,7 +27136,7 @@ return kn;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27252,7 +27210,7 @@ return ko;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27345,7 +27303,7 @@ return ky;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27487,7 +27445,7 @@ return lb;
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27562,7 +27520,7 @@ return lo;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27684,7 +27642,7 @@ return lt;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27786,7 +27744,7 @@ return lv;
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27902,7 +27860,7 @@ return me;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27971,7 +27929,7 @@ return mi;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28066,7 +28024,7 @@ return mk;
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28152,7 +28110,7 @@ return ml;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28316,7 +28274,7 @@ return mr;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28404,7 +28362,7 @@ return msMy;
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28491,7 +28449,7 @@ return ms;
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28592,7 +28550,7 @@ return my;
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28660,7 +28618,7 @@ return nb;
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28788,7 +28746,7 @@ return ne;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28881,7 +28839,7 @@ return nlBe;
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28974,7 +28932,7 @@ return nl;
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29039,7 +28997,7 @@ return nn;
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29168,7 +29126,7 @@ return paIn;
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29280,7 +29238,7 @@ return pl;
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29346,7 +29304,7 @@ return ptBr;
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29416,7 +29374,7 @@ return pt;
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29496,7 +29454,7 @@ return ro;
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29684,7 +29642,7 @@ return ru;
 
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29787,7 +29745,7 @@ return sd;
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29853,7 +29811,7 @@ return se;
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29929,7 +29887,7 @@ return si;
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30084,7 +30042,7 @@ return sk;
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30251,7 +30209,7 @@ return sl;
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30326,7 +30284,7 @@ return sq;
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30441,7 +30399,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30556,7 +30514,7 @@ return sr;
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30650,7 +30608,7 @@ return ss;
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30724,7 +30682,7 @@ return sv;
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30788,7 +30746,7 @@ return sw;
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30923,7 +30881,7 @@ return ta;
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31017,7 +30975,7 @@ return te;
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31090,7 +31048,7 @@ return tet;
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31162,7 +31120,7 @@ return th;
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31229,7 +31187,7 @@ return tlPh;
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31354,7 +31312,7 @@ return tlh;
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31449,7 +31407,7 @@ return tr;
 
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31545,7 +31503,7 @@ return tzl;
 
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31608,7 +31566,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31671,7 +31629,7 @@ return tzm;
 
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31827,7 +31785,7 @@ return uk;
 
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31931,7 +31889,7 @@ return ur;
 
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31994,7 +31952,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32057,7 +32015,7 @@ return uz;
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32141,7 +32099,7 @@ return vi;
 
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32214,7 +32172,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32279,7 +32237,7 @@ return yo;
 
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32395,7 +32353,7 @@ return zhCn;
 
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32505,7 +32463,7 @@ return zhHk;
 
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32614,7 +32572,7 @@ return zhTw;
 
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -32804,12 +32762,40 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
+/* 164 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
 /* 165 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_footer_branchesFooter__ = __webpack_require__(175);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_reviewAlgorithm_reviewSchedule__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_contentList_contentList__ = __webpack_require__(170);
@@ -32899,11 +32885,11 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_contentItems__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_contentItems__ = __webpack_require__(6);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(214),
+    template: __webpack_require__(215),
     created() {
         var me = this;
         this.items = {};
@@ -32932,7 +32918,7 @@ module.exports = {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(215),
+    template: __webpack_require__(216),
     created() {
         var me = this;
     },
@@ -32948,7 +32934,7 @@ module.exports = {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(216),
+    template: __webpack_require__(217),
     created() {
         var me = this;
     },
@@ -32968,82 +32954,148 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_exercise__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_taggle__ = __webpack_require__(227);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_taggle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_taggle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_exercise__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_exerciseQA__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_invert_object__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_invert_object___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_invert_object__);
 
-// import ExerciseQA from "../../objects/exerciseQA";
+
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(217),
+    template: __webpack_require__(218),
     created() {
         var me = this;
-        this.items = { '250': true };
-        this.itemIds = [12345];
-        this.newItem = "";
+        this.items = {}; // [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
+        // this.itemIds = {12345: true} //[12345]
+        this.selectedItems = [];
+        this.selectedItemIds = [];
         this.question = "";
         this.answer = "";
-        this.factsAndSkills = [{ breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345' }, { breadcrumb: "Spanish > Senorita", id: '23456' }];
+        this.tags = null;
 
-        var items = [{ breadcrumb: "Spanish > Hola", id: '12345' }, { breadcrumb: "Spanish > Senorita", id: '23456' }];
+        // this.factsAndSkills = [{breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345'},{breadcrumb: "Spanish > Senorita", id: '23456'}]
 
-        var breadcrumbIdMap = items.reduce((map, item) => {
-            map[item.breadcrumb] = item.id;
-            return map;
-        }, {}
-        //hacky solution, but each breadcrumb should be uniquely mapped to a contentId so i guess no big deal
+        __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].getAllExceptForHeadings().then(items => {
+            this.items = items;
+            console.log('items received from api is', items);
+            var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
+                var item = items[key];
+                var breadCrumb = item.getBreadCrumbs();
+                map[breadCrumb] = item.id;
+                return map;
+            }, {});
+            var idBreadcrumbMap = __WEBPACK_IMPORTED_MODULE_4_invert_object___default()(breadcrumbIdMap);
+            this.idBreadcrumbMap = idBreadcrumbMap;
+            this.breadcrumbIdMap = breadcrumbIdMap;
+            initTagSearch();
+        }
+        // hacky solution, but each breadcrumb should be uniquely mapped to a contentId so i guess no big deal
 
-        );setTimeout(function () {
-            window.example4 = new __WEBPACK_IMPORTED_MODULE_1_taggle___default.a($('.example4.textarea')[0], {
-                duplicateTagClass: 'bounce'
-            });
-
-            var container = window.example4.getContainer();
-            var input = window.example4.getInput();
-            console.log('input is ', input);
-            console.log('container is ', container);
-
-            $(input).autocomplete({
-                source: items.map(x => x.breadcrumb),
-                appendTo: container,
-                position: { at: 'left bottom', of: container },
-                select: function (e, v) {
-                    e.preventDefault();
-                    // Add the tag if user clicks
-                    if (e.which === 1) {
-                        var breadcrumb = v.item.value;
-                        var id = breadcrumbIdMap[breadcrumb];
-                        me.itemIds.push(id);
-                        window.example4.add(breadcrumb);
+        );function initTagSearch() {
+            setTimeout(function () {
+                me.tags = new Taggle($('.new-exercise-items.textarea')[0], {
+                    duplicateTagClass: 'bounce',
+                    onTagRemove: function (event, breadcrumb) {
+                        var id = me.breadcrumbIdMap[breadcrumb];
+                        var index = me.selectedItemIds.indexOf(id);
+                        me.selectedItemIds.splice(index, 1);
+                        delete me.selectedItemIds[id];
                     }
-                }
-            });
-        }, 0);
+                });
+
+                var container = me.tags.getContainer();
+                var input = me.tags.getInput();
+
+                $(input).autocomplete({
+                    source: Object.keys(me.breadcrumbIdMap), //me.items.map( x => x.breadcrumb),
+                    appendTo: container,
+                    position: { at: 'left bottom', of: container },
+                    select: function (e, v) {
+                        console.log("added! at start selectedItemIds is ", me.selectedItemIds);
+                        e.preventDefault();
+                        // Add the tag if user clicks
+                        if (e.which === 1) {
+                            var breadcrumb = v.item.value;
+                            var id = me.breadcrumbIdMap[breadcrumb];
+                            var alreadyExists = me.selectedItemIds.find(itemId => itemId == id);
+                            if (alreadyExists) return;
+                            me.selectedItemIds.push(id //[id.toString()] = true
+                            );me.tags.add(breadcrumb);
+                            console.log('me selectedItemIds is now', me.selectedItemIds);
+                        }
+                    }
+                });
+            }, 0);
+        }
     },
     data() {
         return {
             items: this.items,
-            newItem: this.newItem,
             question: this.question,
             answer: this.answer,
-            factsAndSkills: this.factsAndSkills,
-            itemIds: this.itemIds
+            selectedItems: this.selectedItems,
+            selectedItemIds: this.selectedItemIds,
+            factsAndSkills: [],
+            itemIds: this.itemIds,
+            type: 'fact'
         };
     },
-    methods: {
-        addContentItem() {
-
-            if (!this.newItem) return;
-            this.items[this.newItem] = true;
-            this.newItem = "";
-        },
-        createExercise() {
-            //TODO allow creation of other types of exercises than QA
-            // ExerciseQA.create({question: this.question, answer: this.answer, contentItems:this.items})
+    computed: {
+        selectedBreadcrumbs() {
+            var me = this;
+            const selectedBreadcrumbs = Object.keys(this.selectedItemIds).map(id => {
+                var breadcrumb = me.idBreadcrumbMap[id];
+                console.log('id and breadcrumb are ', id, breadcrumb);
+                return breadcrumb;
+            });
+            console.log('selected bread crumbs and itemIds are', selectedBreadcrumbs, this.selectedItemIds, me.idBreadcrumbMap);
+            return selectedBreadcrumbs;
         }
     },
-    computed: {}
+    methods: {
+        createExercise() {
+            //TODO allow creation of other types of exercises than QA
+            const exerciseData = {
+                question: this.question,
+                answer: this.answer,
+                contentItemIds: this.selectedItemIds.reduce((obj, key) => {
+                    obj[key] = true;
+                    return obj;
+                }, {})
+            };
+            console.log('exercise data is', exerciseData);
+            const exercise = __WEBPACK_IMPORTED_MODULE_1__objects_exerciseQA__["a" /* default */].create(exerciseData);
+            console.log('exercise created is ', exercise);
+
+            console.log('this.selectedItemIds is', this.selectedItemIds);
+            this.selectedItemIds.forEach(id => {
+                __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].get(id).then(contentItem => {
+                    console.log('contentItem gotten is ', id, contentItem, contentItem.toString());
+                    contentItem.addExercise(exercise.id);
+                    console.log('contentItem gotten is ', contentItem, contentItem.toString());
+                });
+            });
+
+            var snack = new __WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack___default.a({
+                domParent: document.querySelector('.new-exercise')
+            });
+            // show a snack for 4s
+            snack.show('Exercise created!', 4000);
+
+            //clear exercise
+            this.selectedItemIds = [];
+            this.question = "";
+            this.answer = "";
+            this.tags.removeAll();
+        }
+    }
 });
 
 /***/ }),
@@ -33051,11 +33103,11 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_exercise__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_exercise__ = __webpack_require__(19);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(218),
+    template: __webpack_require__(219),
     created() {
         var me = this;
         this.exercises = {};
@@ -33075,11 +33127,11 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_users__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_users__ = __webpack_require__(23);
 
 
 
@@ -33087,7 +33139,7 @@ module.exports = {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(219),
+    template: __webpack_require__(220),
     created() {
         const self = this;
         self.loggedIn = false;
@@ -33154,15 +33206,15 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__ = __webpack_require__(6);
 
 
 
 //temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(220),
+    template: __webpack_require__(221),
     props: ['parentid', 'initialparenttreecontenturi'],
     data() {
         return {
@@ -33225,8 +33277,6 @@ function establishURIs() {
         });
     });
 }
-
-console.log('establish URIs is', establishURIs, window.establishURIs);
 
 function establishURIForContentAndThenAllChildren(treeId) {
     console.log('establish URI called for', treeId);
@@ -33314,13 +33364,13 @@ function getProficiencyCategory(proficiency) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(23);
 
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(221), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(222), // '<div> {{movie}} this is the tree template</div>',
     created() {
         var self = this;
 
@@ -33359,7 +33409,7 @@ function getProficiencyCategory(proficiency) {
 
 //temporary hacky solution for controller
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(222),
+    template: __webpack_require__(223),
     created() {},
     data() {
         return {};
@@ -33380,12 +33430,12 @@ function getProficiencyCategory(proficiency) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_heading__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_heading__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_filters__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_skill__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_skill__ = __webpack_require__(22);
 
 
 
@@ -33396,7 +33446,7 @@ function getProficiencyCategory(proficiency) {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(223), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(224), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created() {
         var me = this;
@@ -33533,7 +33583,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(15);
 
 
 
@@ -33544,11 +33594,9 @@ var vm = new __WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */]({
     created() {
 
         PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
-            console.log('going to exercise creator');
             this.goToExerciseCreator();
         });
         PubSub.subscribe('goToState.home', (eventName, data) => {
-            console.log('going to home');
             this.goToHome();
         });
     },
@@ -33610,10 +33658,58 @@ const Globals = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony default export */ var _unused_webpack_default_export = ({});
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__exercise__ = __webpack_require__(19);
+
+
+
+
+
+class ExerciseQA extends __WEBPACK_IMPORTED_MODULE_3__exercise__["a" /* default */] {
+    constructor({ contentItemIds, question, answer }) {
+        super({ contentItemIds });
+        this.type = 'QA';
+
+        //question and answer can both be user generated HTML that can include image links to imgur - or I guess firebase stored images too
+        this.question = question;
+        this.answer = answer;
+        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question, answer }));
+        super.init();
+    }
+
+    getDBRepresentation() {
+        var baseRep = super.getDBRepresentation();
+
+        return __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default()(baseRep, {
+            id: this.id,
+            question: this.question,
+            answer: this.answer,
+            type: this.type
+        });
+    }
+
+    static create({ contentItemIds, question, answer }) {
+        const exerciseQA = new ExerciseQA({ contentItemIds, question, answer });
+        return super.create(exerciseQA);
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ExerciseQA;
+
 
 /***/ }),
 /* 185 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
+
+/***/ }),
+/* 186 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -33715,7 +33811,7 @@ const Globals = {
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33817,7 +33913,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33850,13 +33946,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(38);
+var _subscribe = __webpack_require__(37);
 
-var _errors = __webpack_require__(23);
+var _errors = __webpack_require__(24);
 
-var _shared_promise = __webpack_require__(24);
+var _shared_promise = __webpack_require__(25);
 
-var _deep_copy = __webpack_require__(186);
+var _deep_copy = __webpack_require__(187);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34221,14 +34317,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(10);
+var firebase = __webpack_require__(13);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -34497,10 +34593,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -34531,7 +34627,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(10);
+            var firebase = __webpack_require__(13);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -34771,7 +34867,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34785,22 +34881,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(10);
+var _app = __webpack_require__(13);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(188);
+__webpack_require__(189);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(189);
-__webpack_require__(198);
+__webpack_require__(190);
+__webpack_require__(199);
 var AsyncStorage;
 
-__webpack_require__(191);
+__webpack_require__(192);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -34808,7 +34904,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34838,15 +34934,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(193);
+var _windowController = __webpack_require__(194);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(192);
+var _swController = __webpack_require__(193);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(10);
+var _app = __webpack_require__(13);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -34869,7 +34965,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34902,7 +34998,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(39);
+var _controllerInterface = __webpack_require__(38);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
@@ -34910,11 +35006,11 @@ var _errors = __webpack_require__(16);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(42);
+var _workerPageMessage = __webpack_require__(41);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(40);
+var _fcmDetails = __webpack_require__(39);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -35247,7 +35343,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35280,7 +35376,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(39);
+var _controllerInterface = __webpack_require__(38);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
@@ -35288,19 +35384,19 @@ var _errors = __webpack_require__(16);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(42);
+var _workerPageMessage = __webpack_require__(41);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(195);
+var _defaultSw = __webpack_require__(196);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(41);
+var _notificationPermission = __webpack_require__(40);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(38);
+var _subscribe = __webpack_require__(37);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35648,7 +35744,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35691,7 +35787,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35728,7 +35824,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35759,17 +35855,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(23);
+var _errors = __webpack_require__(24);
 
 var _errors2 = __webpack_require__(16);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(194);
+var _arrayBufferToBase = __webpack_require__(195);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(40);
+var _fcmDetails = __webpack_require__(39);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -36150,7 +36246,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -36387,10 +36483,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(228).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(230).setImmediate))
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36405,17 +36501,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(28);
+var _string = __webpack_require__(29);
 
-var _taskenums = __webpack_require__(46);
+var _taskenums = __webpack_require__(45);
 
-var _xhriopool = __webpack_require__(210);
+var _xhriopool = __webpack_require__(211);
 
-var _reference = __webpack_require__(48);
+var _reference = __webpack_require__(47);
 
-var _service = __webpack_require__(211);
+var _service = __webpack_require__(212);
 
-var _app = __webpack_require__(10);
+var _app = __webpack_require__(13);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -36460,7 +36556,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36518,7 +36614,7 @@ function async(f) {
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36543,7 +36639,7 @@ var _error2 = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(202);
+var _failrequest = __webpack_require__(203);
 
 var _location = __webpack_require__(18);
 
@@ -36551,7 +36647,7 @@ var _promise_external = __webpack_require__(5);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(208);
+var _requestmap = __webpack_require__(209);
 
 var _type = __webpack_require__(1);
 
@@ -36700,7 +36796,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36832,7 +36928,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36891,7 +36987,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36972,7 +37068,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37028,7 +37124,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37088,7 +37184,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37128,11 +37224,11 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(26);
+var _array = __webpack_require__(27);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(201);
+var _backoff = __webpack_require__(202);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -37140,7 +37236,7 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(6);
+var _object = __webpack_require__(7);
 
 var object = _interopRequireWildcard(_object);
 
@@ -37152,11 +37248,11 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(29);
+var _url = __webpack_require__(30);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(47);
+var _xhrio = __webpack_require__(46);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -37361,7 +37457,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37408,7 +37504,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37440,7 +37536,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _object = __webpack_require__(6);
+var _object = __webpack_require__(7);
 
 var object = _interopRequireWildcard(_object);
 
@@ -37503,7 +37599,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37539,7 +37635,7 @@ var _error = __webpack_require__(2);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(6);
+var _object = __webpack_require__(7);
 
 var object = _interopRequireWildcard(_object);
 
@@ -37551,7 +37647,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(47);
+var _xhrio = __webpack_require__(46);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -37702,7 +37798,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37734,7 +37830,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(209);
+var _xhrio_network = __webpack_require__(210);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37759,7 +37855,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37791,11 +37887,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(25);
+var _args = __webpack_require__(26);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(200);
+var _authwrapper = __webpack_require__(201);
 
 var _location = __webpack_require__(18);
 
@@ -37803,11 +37899,11 @@ var _promise_external = __webpack_require__(5);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(206);
+var _request = __webpack_require__(207);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(48);
+var _reference = __webpack_require__(47);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -37950,7 +38046,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37985,23 +38081,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(46);
+var _taskenums = __webpack_require__(45);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(205);
+var _observer = __webpack_require__(206);
 
-var _tasksnapshot = __webpack_require__(213);
+var _tasksnapshot = __webpack_require__(214);
 
-var _args = __webpack_require__(25);
+var _args = __webpack_require__(26);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(26);
+var _array = __webpack_require__(27);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(199);
+var _async = __webpack_require__(200);
 
 var _error = __webpack_require__(2);
 
@@ -38011,7 +38107,7 @@ var _promise_external = __webpack_require__(5);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(45);
+var _requests = __webpack_require__(44);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -38593,7 +38689,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38645,67 +38741,87 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbs()}}</div>\r\n        <div class=\"contentList-item-id\">{{item.id}}</div>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 216 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <div class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n            <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n        </div>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"> A > B > CD > E > F > G > H</div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
-
-/***/ }),
 /* 217 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <div class=\"new-exercise-question\">Question\r\n        <!--<multi-select-and-search source=\"factsAndSkills\" result=\"itemsSelected\"></multi-select-and-search>-->\r\n        <ul>\r\n            {{itemIds.length}}\r\n            <li v-for=\"id in itemIds\">\r\n                {{id}}\r\n            </li>\r\n        </ul>\r\n        <div id=\"example3\"></div>\r\n        <div class=\"input textarea clearfix example4\"></div>\r\n        <textarea v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"new-exercise-answer\">Answer\r\n        <textarea v-model=\"answer\"></textarea>\r\n    </div>\r\n    <ul class=\"new-exercise-content-items\">\r\n        <li class=\"new-exercise-content-item\" v-for=\"item in items\">\r\n\r\n        </li>\r\n        <li class=\"new-exercise-add-content-item\">\r\n            <input type=\"text\" v-model=\"newItem\"><button v-on:click='addContentItem' class=\"new-exercise-add-content-item-button\">+</button>\r\n        </li>\r\n    </ul>\r\n    <button class=\"new-exercise-submit\" v-on:click=\"createExercise\">Create Exercise</button>\r\n</div>\r\n";
+module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <a class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n            <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n        </a>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"> A > B > CD > E > F > G > H</div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 218 */
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
+module.exports = "<div class=\"new-exercise\">\r\n    What items does your exercise test?\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n</div>\r\n";
 
 /***/ }),
 /* 219 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <span class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">\r\n            Create Exercise\r\n            <i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n\r\n";
+module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
 /* 220 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Skill: <input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">\r\n            Create Exercise\r\n            <i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>\r\n        </a>\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 221 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
+module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Skill: <input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 222 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
 /* 223 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
 
 /***/ }),
 /* 224 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <div class=\"tree-debugging-info\">\r\n        URI: {{content.uri}} ---\r\n        INITIALParentID: {{content.initialParentId}} ---\r\n        contentID: {{content.id}}\r\n        TYPE: {{content.type}}\r\n    </div>\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports) {
+
+
+var invert = function(input) {
+      var output = {}
+
+      Object.keys(input).forEach(function(key) {
+        var value = input[key]
+        output[value] = output[value] || []
+        output[value].push(key)
+      })
+
+      return output
+    }
+
+module.exports = invert
+
+
+/***/ }),
+/* 226 */
 /***/ (function(module, exports) {
 
 /*!
@@ -38732,240 +38848,240 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 49,
-	"./af.js": 49,
-	"./ar": 56,
-	"./ar-dz": 50,
-	"./ar-dz.js": 50,
-	"./ar-kw": 51,
-	"./ar-kw.js": 51,
-	"./ar-ly": 52,
-	"./ar-ly.js": 52,
-	"./ar-ma": 53,
-	"./ar-ma.js": 53,
-	"./ar-sa": 54,
-	"./ar-sa.js": 54,
-	"./ar-tn": 55,
-	"./ar-tn.js": 55,
-	"./ar.js": 56,
-	"./az": 57,
-	"./az.js": 57,
-	"./be": 58,
-	"./be.js": 58,
-	"./bg": 59,
-	"./bg.js": 59,
-	"./bn": 60,
-	"./bn.js": 60,
-	"./bo": 61,
-	"./bo.js": 61,
-	"./br": 62,
-	"./br.js": 62,
-	"./bs": 63,
-	"./bs.js": 63,
-	"./ca": 64,
-	"./ca.js": 64,
-	"./cs": 65,
-	"./cs.js": 65,
-	"./cv": 66,
-	"./cv.js": 66,
-	"./cy": 67,
-	"./cy.js": 67,
-	"./da": 68,
-	"./da.js": 68,
-	"./de": 71,
-	"./de-at": 69,
-	"./de-at.js": 69,
-	"./de-ch": 70,
-	"./de-ch.js": 70,
-	"./de.js": 71,
-	"./dv": 72,
-	"./dv.js": 72,
-	"./el": 73,
-	"./el.js": 73,
-	"./en-au": 74,
-	"./en-au.js": 74,
-	"./en-ca": 75,
-	"./en-ca.js": 75,
-	"./en-gb": 76,
-	"./en-gb.js": 76,
-	"./en-ie": 77,
-	"./en-ie.js": 77,
-	"./en-nz": 78,
-	"./en-nz.js": 78,
-	"./eo": 79,
-	"./eo.js": 79,
-	"./es": 81,
-	"./es-do": 80,
-	"./es-do.js": 80,
-	"./es.js": 81,
-	"./et": 82,
-	"./et.js": 82,
-	"./eu": 83,
-	"./eu.js": 83,
-	"./fa": 84,
-	"./fa.js": 84,
-	"./fi": 85,
-	"./fi.js": 85,
-	"./fo": 86,
-	"./fo.js": 86,
-	"./fr": 89,
-	"./fr-ca": 87,
-	"./fr-ca.js": 87,
-	"./fr-ch": 88,
-	"./fr-ch.js": 88,
-	"./fr.js": 89,
-	"./fy": 90,
-	"./fy.js": 90,
-	"./gd": 91,
-	"./gd.js": 91,
-	"./gl": 92,
-	"./gl.js": 92,
-	"./gom-latn": 93,
-	"./gom-latn.js": 93,
-	"./he": 94,
-	"./he.js": 94,
-	"./hi": 95,
-	"./hi.js": 95,
-	"./hr": 96,
-	"./hr.js": 96,
-	"./hu": 97,
-	"./hu.js": 97,
-	"./hy-am": 98,
-	"./hy-am.js": 98,
-	"./id": 99,
-	"./id.js": 99,
-	"./is": 100,
-	"./is.js": 100,
-	"./it": 101,
-	"./it.js": 101,
-	"./ja": 102,
-	"./ja.js": 102,
-	"./jv": 103,
-	"./jv.js": 103,
-	"./ka": 104,
-	"./ka.js": 104,
-	"./kk": 105,
-	"./kk.js": 105,
-	"./km": 106,
-	"./km.js": 106,
-	"./kn": 107,
-	"./kn.js": 107,
-	"./ko": 108,
-	"./ko.js": 108,
-	"./ky": 109,
-	"./ky.js": 109,
-	"./lb": 110,
-	"./lb.js": 110,
-	"./lo": 111,
-	"./lo.js": 111,
-	"./lt": 112,
-	"./lt.js": 112,
-	"./lv": 113,
-	"./lv.js": 113,
-	"./me": 114,
-	"./me.js": 114,
-	"./mi": 115,
-	"./mi.js": 115,
-	"./mk": 116,
-	"./mk.js": 116,
-	"./ml": 117,
-	"./ml.js": 117,
-	"./mr": 118,
-	"./mr.js": 118,
-	"./ms": 120,
-	"./ms-my": 119,
-	"./ms-my.js": 119,
-	"./ms.js": 120,
-	"./my": 121,
-	"./my.js": 121,
-	"./nb": 122,
-	"./nb.js": 122,
-	"./ne": 123,
-	"./ne.js": 123,
-	"./nl": 125,
-	"./nl-be": 124,
-	"./nl-be.js": 124,
-	"./nl.js": 125,
-	"./nn": 126,
-	"./nn.js": 126,
-	"./pa-in": 127,
-	"./pa-in.js": 127,
-	"./pl": 128,
-	"./pl.js": 128,
-	"./pt": 130,
-	"./pt-br": 129,
-	"./pt-br.js": 129,
-	"./pt.js": 130,
-	"./ro": 131,
-	"./ro.js": 131,
-	"./ru": 132,
-	"./ru.js": 132,
-	"./sd": 133,
-	"./sd.js": 133,
-	"./se": 134,
-	"./se.js": 134,
-	"./si": 135,
-	"./si.js": 135,
-	"./sk": 136,
-	"./sk.js": 136,
-	"./sl": 137,
-	"./sl.js": 137,
-	"./sq": 138,
-	"./sq.js": 138,
-	"./sr": 140,
-	"./sr-cyrl": 139,
-	"./sr-cyrl.js": 139,
-	"./sr.js": 140,
-	"./ss": 141,
-	"./ss.js": 141,
-	"./sv": 142,
-	"./sv.js": 142,
-	"./sw": 143,
-	"./sw.js": 143,
-	"./ta": 144,
-	"./ta.js": 144,
-	"./te": 145,
-	"./te.js": 145,
-	"./tet": 146,
-	"./tet.js": 146,
-	"./th": 147,
-	"./th.js": 147,
-	"./tl-ph": 148,
-	"./tl-ph.js": 148,
-	"./tlh": 149,
-	"./tlh.js": 149,
-	"./tr": 150,
-	"./tr.js": 150,
-	"./tzl": 151,
-	"./tzl.js": 151,
-	"./tzm": 153,
-	"./tzm-latn": 152,
-	"./tzm-latn.js": 152,
-	"./tzm.js": 153,
-	"./uk": 154,
-	"./uk.js": 154,
-	"./ur": 155,
-	"./ur.js": 155,
-	"./uz": 157,
-	"./uz-latn": 156,
-	"./uz-latn.js": 156,
-	"./uz.js": 157,
-	"./vi": 158,
-	"./vi.js": 158,
-	"./x-pseudo": 159,
-	"./x-pseudo.js": 159,
-	"./yo": 160,
-	"./yo.js": 160,
-	"./zh-cn": 161,
-	"./zh-cn.js": 161,
-	"./zh-hk": 162,
-	"./zh-hk.js": 162,
-	"./zh-tw": 163,
-	"./zh-tw.js": 163
+	"./af": 48,
+	"./af.js": 48,
+	"./ar": 55,
+	"./ar-dz": 49,
+	"./ar-dz.js": 49,
+	"./ar-kw": 50,
+	"./ar-kw.js": 50,
+	"./ar-ly": 51,
+	"./ar-ly.js": 51,
+	"./ar-ma": 52,
+	"./ar-ma.js": 52,
+	"./ar-sa": 53,
+	"./ar-sa.js": 53,
+	"./ar-tn": 54,
+	"./ar-tn.js": 54,
+	"./ar.js": 55,
+	"./az": 56,
+	"./az.js": 56,
+	"./be": 57,
+	"./be.js": 57,
+	"./bg": 58,
+	"./bg.js": 58,
+	"./bn": 59,
+	"./bn.js": 59,
+	"./bo": 60,
+	"./bo.js": 60,
+	"./br": 61,
+	"./br.js": 61,
+	"./bs": 62,
+	"./bs.js": 62,
+	"./ca": 63,
+	"./ca.js": 63,
+	"./cs": 64,
+	"./cs.js": 64,
+	"./cv": 65,
+	"./cv.js": 65,
+	"./cy": 66,
+	"./cy.js": 66,
+	"./da": 67,
+	"./da.js": 67,
+	"./de": 70,
+	"./de-at": 68,
+	"./de-at.js": 68,
+	"./de-ch": 69,
+	"./de-ch.js": 69,
+	"./de.js": 70,
+	"./dv": 71,
+	"./dv.js": 71,
+	"./el": 72,
+	"./el.js": 72,
+	"./en-au": 73,
+	"./en-au.js": 73,
+	"./en-ca": 74,
+	"./en-ca.js": 74,
+	"./en-gb": 75,
+	"./en-gb.js": 75,
+	"./en-ie": 76,
+	"./en-ie.js": 76,
+	"./en-nz": 77,
+	"./en-nz.js": 77,
+	"./eo": 78,
+	"./eo.js": 78,
+	"./es": 80,
+	"./es-do": 79,
+	"./es-do.js": 79,
+	"./es.js": 80,
+	"./et": 81,
+	"./et.js": 81,
+	"./eu": 82,
+	"./eu.js": 82,
+	"./fa": 83,
+	"./fa.js": 83,
+	"./fi": 84,
+	"./fi.js": 84,
+	"./fo": 85,
+	"./fo.js": 85,
+	"./fr": 88,
+	"./fr-ca": 86,
+	"./fr-ca.js": 86,
+	"./fr-ch": 87,
+	"./fr-ch.js": 87,
+	"./fr.js": 88,
+	"./fy": 89,
+	"./fy.js": 89,
+	"./gd": 90,
+	"./gd.js": 90,
+	"./gl": 91,
+	"./gl.js": 91,
+	"./gom-latn": 92,
+	"./gom-latn.js": 92,
+	"./he": 93,
+	"./he.js": 93,
+	"./hi": 94,
+	"./hi.js": 94,
+	"./hr": 95,
+	"./hr.js": 95,
+	"./hu": 96,
+	"./hu.js": 96,
+	"./hy-am": 97,
+	"./hy-am.js": 97,
+	"./id": 98,
+	"./id.js": 98,
+	"./is": 99,
+	"./is.js": 99,
+	"./it": 100,
+	"./it.js": 100,
+	"./ja": 101,
+	"./ja.js": 101,
+	"./jv": 102,
+	"./jv.js": 102,
+	"./ka": 103,
+	"./ka.js": 103,
+	"./kk": 104,
+	"./kk.js": 104,
+	"./km": 105,
+	"./km.js": 105,
+	"./kn": 106,
+	"./kn.js": 106,
+	"./ko": 107,
+	"./ko.js": 107,
+	"./ky": 108,
+	"./ky.js": 108,
+	"./lb": 109,
+	"./lb.js": 109,
+	"./lo": 110,
+	"./lo.js": 110,
+	"./lt": 111,
+	"./lt.js": 111,
+	"./lv": 112,
+	"./lv.js": 112,
+	"./me": 113,
+	"./me.js": 113,
+	"./mi": 114,
+	"./mi.js": 114,
+	"./mk": 115,
+	"./mk.js": 115,
+	"./ml": 116,
+	"./ml.js": 116,
+	"./mr": 117,
+	"./mr.js": 117,
+	"./ms": 119,
+	"./ms-my": 118,
+	"./ms-my.js": 118,
+	"./ms.js": 119,
+	"./my": 120,
+	"./my.js": 120,
+	"./nb": 121,
+	"./nb.js": 121,
+	"./ne": 122,
+	"./ne.js": 122,
+	"./nl": 124,
+	"./nl-be": 123,
+	"./nl-be.js": 123,
+	"./nl.js": 124,
+	"./nn": 125,
+	"./nn.js": 125,
+	"./pa-in": 126,
+	"./pa-in.js": 126,
+	"./pl": 127,
+	"./pl.js": 127,
+	"./pt": 129,
+	"./pt-br": 128,
+	"./pt-br.js": 128,
+	"./pt.js": 129,
+	"./ro": 130,
+	"./ro.js": 130,
+	"./ru": 131,
+	"./ru.js": 131,
+	"./sd": 132,
+	"./sd.js": 132,
+	"./se": 133,
+	"./se.js": 133,
+	"./si": 134,
+	"./si.js": 134,
+	"./sk": 135,
+	"./sk.js": 135,
+	"./sl": 136,
+	"./sl.js": 136,
+	"./sq": 137,
+	"./sq.js": 137,
+	"./sr": 139,
+	"./sr-cyrl": 138,
+	"./sr-cyrl.js": 138,
+	"./sr.js": 139,
+	"./ss": 140,
+	"./ss.js": 140,
+	"./sv": 141,
+	"./sv.js": 141,
+	"./sw": 142,
+	"./sw.js": 142,
+	"./ta": 143,
+	"./ta.js": 143,
+	"./te": 144,
+	"./te.js": 144,
+	"./tet": 145,
+	"./tet.js": 145,
+	"./th": 146,
+	"./th.js": 146,
+	"./tl-ph": 147,
+	"./tl-ph.js": 147,
+	"./tlh": 148,
+	"./tlh.js": 148,
+	"./tr": 149,
+	"./tr.js": 149,
+	"./tzl": 150,
+	"./tzl.js": 150,
+	"./tzm": 152,
+	"./tzm-latn": 151,
+	"./tzm-latn.js": 151,
+	"./tzm.js": 152,
+	"./uk": 153,
+	"./uk.js": 153,
+	"./ur": 154,
+	"./ur.js": 154,
+	"./uz": 156,
+	"./uz-latn": 155,
+	"./uz-latn.js": 155,
+	"./uz.js": 156,
+	"./vi": 157,
+	"./vi.js": 157,
+	"./x-pseudo": 158,
+	"./x-pseudo.js": 158,
+	"./yo": 159,
+	"./yo.js": 159,
+	"./zh-cn": 160,
+	"./zh-cn.js": 160,
+	"./zh-hk": 161,
+	"./zh-hk.js": 161,
+	"./zh-tw": 162,
+	"./zh-tw.js": 162
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -38981,10 +39097,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 225;
+webpackContext.id = 227;
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -39174,960 +39290,173 @@ webpackContext.id = 225;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(164)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(163)))
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* !
- * @author Sean Coker <sean@seancoker.com>
- * @version 1.12.0
- * @url http://sean.is/poppin/tags
- * @license MIT
- * @description Taggle is a dependency-less tagging library
+var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict'
+
+function injectStyleTag (document, fileName, cb) {
+  var style = document.getElementById(fileName)
+
+  if (style) {
+    cb(style)
+  } else {
+    var head = document.getElementsByTagName('head')[0]
+
+    style = document.createElement('style')
+    if (fileName != null) style.id = fileName
+    cb(style)
+    head.appendChild(style)
+  }
+
+  return style
+}
+
+module.exports = function (css, customDocument, fileName) {
+  var doc = customDocument || document
+  /* istanbul ignore if: not supported by Electron */
+  if (doc.createStyleSheet) {
+    var sheet = doc.createStyleSheet()
+    sheet.cssText = css
+    return sheet.ownerNode
+  } else {
+    return injectStyleTag(doc, fileName, function (style) {
+      /* istanbul ignore if: not supported by Electron */
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css
+      } else {
+        style.innerHTML = css
+      }
+    })
+  }
+}
+
+module.exports.byUrl = function (url) {
+  /* istanbul ignore if: not supported by Electron */
+  if (document.createStyleSheet) {
+    return document.createStyleSheet(url).ownerNode
+  } else {
+    var head = document.getElementsByTagName('head')[0]
+    var link = document.createElement('link')
+
+    link.rel = 'stylesheet'
+    link.href = url
+
+    head.appendChild(link)
+    return link
+  }
+}
+
+},{}],2:[function(require,module,exports){
+require('../styles/snack.min.css');
+
+/**
+ * Returns true content it is a DOM element
+ * @param {*} content
+ * @returns {boolean}
  */
+var isElement = function (content) {
+    return !!(
+        typeof HTMLElement === 'object' ? content instanceof HTMLElement : content &&
+        typeof content === 'object' && content !== null &&
+        content.nodeType === 1 && typeof content.nodeName === 'string'
+    );
+};
 
-(function(root, factory) {
-    'use strict';
-    var libName = 'Taggle';
+/**
+ * @class
+ * @constructor
+ *
+ * @property {object} options
+ * @property {Element} [options.domParent=document.body]
+ */
+function Snack(options) {
 
-    /* global define, module */
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-            var module = factory();
-            root[libName] = module;
-            return module;
-        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    }
-    else if (typeof module === 'object' && module.exports) {
-        module.exports = root[libName] = factory();
-    }
-    else {
-        root[libName] = factory();
-    }
-}(this, function() {
-    'use strict';
-    /////////////////////
-    // Default options //
-    /////////////////////
+    options = options || {};
 
-    var noop = function() {};
-    var retTrue = function() {
-        return true;
-    };
-    var BACKSPACE = 8;
-    var COMMA = 188;
-    var TAB = 9;
-    var ENTER = 13;
+    this.domParent = options.domParent || document.body;
 
-    var DEFAULTS = {
-        /**
-         * Class names to be added on each tag entered
-         * @type {String}
-         */
-        additionalTagClasses: '',
+    this.container = document.createElement('div');
+    this.element = document.createElement('div');
 
-        /**
-         * Allow duplicate tags to be entered in the field?
-         * @type {Boolean}
-         */
-        allowDuplicates: false,
+    this.container.classList.add('snack-container');
+    this.element.classList.add('snack');
 
-        /**
-         * Allow the saving of a tag on blur, rather than it being
-         * removed.
-         *
-         * @type {Boolean}
-         */
-        saveOnBlur: false,
+    this.container.appendChild(this.element);
+    this.domParent.appendChild(this.container);
 
-        /**
-         * Clear the input value when blurring.
-         *
-         * @type {Boolean}
-         */
-        clearOnBlur: true,
+}
+// constructor
+Snack.prototype.constructor = Snack;
+module.exports = Snack;
 
-        /**
-         * Class name that will be added onto duplicate existant tag
-         * @type {String}
-         * @todo
-         * @deprecated can be handled by onBeforeTagAdd
-         */
-        duplicateTagClass: '',
-
-        /**
-         * Class added to the container div when focused
-         * @type {String}
-         */
-        containerFocusClass: 'active',
-
-        /**
-         * Should the input be focused when the container is clicked?
-         * @type {Bool}
-         */
-        focusInputOnContainerClick: true,
-
-        /**
-         * Name added to the hidden inputs within each tag
-         * @type {String}
-         */
-        hiddenInputName: 'taggles[]',
-
-        /**
-         * Tags that should be preloaded in the div on load
-         * @type {Array}
-         */
-        tags: [],
-
-        /**
-         * The default delimeter character to split tags on
-         * @type {String}
-         * @todo Change this to just "delimiter: ','"
-         */
-        delimeter: ',',
-        delimiter: '',
-
-        /**
-         * Add an ID to each of the tags.
-         * @type {Boolean}
-         * @todo
-         * @deprecated make this the default in next version
-         */
-        attachTagId: false,
-
-        /**
-         * Tags that the user will be restricted to
-         * @type {Array}
-         */
-        allowedTags: [],
-
-        /**
-         * Tags that the user will not be able to add
-         * @type {Array}
-         */
-        disallowedTags: [],
-
-        /**
-         * Limit the number of tags that can be added
-         * @type {Number}
-         */
-        maxTags: null,
-
-        /**
-         * If within a form, you can specify the tab index flow
-         * @type {Number}
-         */
-        tabIndex: 1,
-
-        /**
-         * Placeholder string to be placed in an empty taggle field
-         * @type {String}
-         */
-        placeholder: 'Enter tags...',
-
-        /**
-         * Keycodes that will add a tag
-         * @type {Array}
-         */
-        submitKeys: [COMMA, TAB, ENTER],
-
-        /**
-         * Preserve case of tags being added ie
-         * "tag" is different than "Tag"
-         * @type {Boolean}
-         */
-        preserveCase: false,
-
-        /**
-         * Function hook called with the to-be-added input DOM element.
-         *
-         * @param  {HTMLElement} li The list item to be added
-         */
-        inputFormatter: noop,
-
-        /**
-         * Function hook called with the to-be-added tag DOM element.
-         * Use this function to edit the list item before it is appended
-         * to the DOM
-         * @param  {HTMLElement} li The list item to be added
-         */
-        tagFormatter: noop,
-
-        /**
-         * Function hook called before a tag is added. Return false
-         * to prevent tag from being added
-         * @param  {String} tag The tag to be added
-         */
-        onBeforeTagAdd: noop,
-
-        /**
-         * Function hook called when a tag is added
-         * @param  {Event} event Event triggered when tag was added
-         * @param  {String} tag The tag added
-         */
-        onTagAdd: noop,
-
-        /**
-         * Function hook called before a tag is removed. Return false
-         * to prevent tag from being removed
-         * @param  {String} tag The tag to be removed
-         */
-        onBeforeTagRemove: retTrue,
-
-        /**
-         * Function hook called when a tag is removed
-         * @param  {Event} event Event triggered when tag was removed
-         * @param  {String} tag The tag removed
-         */
-        onTagRemove: noop
-    };
-
-    //////////////////////
-    // Helper functions //
-    //////////////////////
-
-    function _extend() {
-        var master = arguments[0];
-        for (var i = 1, l = arguments.length; i < l; i++) {
-            var object = arguments[i];
-            for (var key in object) {
-                if (object.hasOwnProperty(key)) {
-                    master[key] = object[key];
-                }
-            }
-        }
-
-        return master;
-    }
-
-    function _isArray(arr) {
-        if (Array.isArray) {
-            return Array.isArray(arr);
-        }
-        return Object.prototype.toString.call(arr) === '[object Array]';
-    }
-
-    function _on(element, eventName, handler) {
-        if (element.addEventListener) {
-            element.addEventListener(eventName, handler, false);
-        }
-        else if (element.attachEvent) {
-            element.attachEvent('on' + eventName, handler);
-        }
-        else {
-            element['on' + eventName] = handler;
+Object.defineProperties(Snack, {
+    visible: {
+        get: function () {
+            return !!this._isVisible;
+        },
+        set: function (val) {
+            this[val ? 'show' : 'hide']();
         }
     }
+});
 
-    function _trim(str) {
-        return str.replace(/^\s+|\s+$/g, '');
+/**
+ * Toggles show/hide
+ */
+Snack.prototype.toggle = function () {
+    this.visible = !this.visible;
+};
+
+/**
+ * Show the snack
+ *
+ * @param {string} content
+ * @param {number} [timeout]
+ */
+Snack.prototype.show = function (content, timeout) {
+    if (isElement(content)) {
+        this.element.innerHTML = '';
+        this.element.appendChild(content);
+    } else {
+        this.element.innerHTML = content;
     }
-
-    function _setText(el, text) {
-        if (window.attachEvent && !window.addEventListener) { // <= IE8
-            el.innerText = text;
-        }
-        else {
-            el.textContent = text;
-        }
+    this.element.classList.add('snack-opened');
+    this._isVisible = true;
+    if (timeout) {
+        setTimeout(this.hide.bind(this), timeout);
     }
-
-    /**
-     * Constructor
-     * @param {Mixed} el ID of an element or the actual element
-     * @param {Object} options
-     */
-    var Taggle = function(el, options) {
-        // @todo uncomment this in next major version
-        // for (var key in (options || {})) {
-        //     if (!DEFAULTS.hasOwnProperty(key)) {
-        //         throw new Error('"' + key + '" is not a valid option.');
-        //     }
-        // }
-
-        this.settings = _extend({}, DEFAULTS, options);
-        this.measurements = {
-            container: {
-                rect: null,
-                style: null,
-                padding: null
-            }
-        };
-        this.container = el;
-        this.tag = {
-            values: [],
-            elements: []
-        };
-        this.list = document.createElement('ul');
-        this.inputLi = document.createElement('li');
-        this.input = document.createElement('input');
-        this.sizer = document.createElement('div');
-        this.pasting = false;
-        this.placeholder = null;
-        this.data = null;
-
-        if (this.settings.placeholder) {
-            this.placeholder = document.createElement('span');
-        }
-
-        if (typeof el === 'string') {
-            this.container = document.getElementById(el);
-        }
-
-        this._id = 0;
-        this._setMeasurements();
-        this._setupTextarea();
-        this._attachEvents();
-    };
-
-    /**
-     * Gets all the layout measurements up front
-     */
-    Taggle.prototype._setMeasurements = function() {
-        this.measurements.container.rect = this.container.getBoundingClientRect();
-        this.measurements.container.style = window.getComputedStyle(this.container);
-
-        var style = this.measurements.container.style;
-        var lpad = parseInt(style['padding-left'] || style.paddingLeft, 10);
-        var rpad = parseInt(style['padding-right'] || style.paddingRight, 10);
-        var lborder = parseInt(style['border-left-width'] || style.borderLeftWidth, 10);
-        var rborder = parseInt(style['border-right-width'] || style.borderRightWidth, 10);
-
-        this.measurements.container.padding = lpad + rpad + lborder + rborder;
-    };
-
-    /**
-     * Setup the div container for tags to be entered
-     */
-    Taggle.prototype._setupTextarea = function() {
-        var fontSize;
-
-        this.list.className = 'taggle_list';
-        this.input.type = 'text';
-        // Make sure no left/right padding messes with the input sizing
-        this.input.style.paddingLeft = 0;
-        this.input.style.paddingRight = 0;
-        this.input.className = 'taggle_input';
-        this.input.tabIndex = this.settings.tabIndex;
-        this.sizer.className = 'taggle_sizer';
-
-        if (this.settings.tags.length) {
-            for (var i = 0, len = this.settings.tags.length; i < len; i++) {
-                var taggle = this._createTag(this.settings.tags[i]);
-                this.list.appendChild(taggle);
-            }
-        }
-
-        if (this.placeholder) {
-            this.placeholder.style.opacity = 0;
-            this.placeholder.classList.add('taggle_placeholder');
-            this.container.appendChild(this.placeholder);
-            _setText(this.placeholder, this.settings.placeholder);
-
-            if (!this.settings.tags.length) {
-                this._showPlaceholder();
-            }
-        }
-
-        var formattedInput = this.settings.inputFormatter(this.input);
-        if (formattedInput) {
-            this.input = formattedInput;
-        }
-
-        this.inputLi.appendChild(this.input);
-        this.list.appendChild(this.inputLi);
-        this.container.appendChild(this.list);
-        this.container.appendChild(this.sizer);
-        fontSize = window.getComputedStyle(this.input).fontSize;
-        this.sizer.style.fontSize = fontSize;
-    };
-
-    /**
-     * Attaches neccessary events
-     */
-    Taggle.prototype._attachEvents = function() {
-        var self = this;
-
-        if (this.settings.focusInputOnContainerClick) {
-            _on(this.container, 'click', function() {
-                self.input.focus();
-            });
-        }
-
-        _on(this.input, 'focus', this._focusInput.bind(this));
-        _on(this.input, 'blur', this._blurEvent.bind(this));
-        _on(this.input, 'keydown', this._keydownEvents.bind(this));
-        _on(this.input, 'keyup', this._keyupEvents.bind(this));
-    };
-
-    /**
-     * Resizes the hidden input where user types to fill in the
-     * width of the div
-     */
-    Taggle.prototype._fixInputWidth = function() {
-        var width;
-        var inputRect;
-        var rect;
-        var leftPos;
-        var padding;
-
-        this._setMeasurements();
-
-        // Reset width incase we've broken to the next line on a backspace erase
-        this._setInputWidth();
-
-        inputRect = this.input.getBoundingClientRect();
-        rect = this.measurements.container.rect;
-        width = ~~rect.width;
-        // Could probably just use right - left all the time
-        // but eh, this check is mostly for IE8
-        if (!width) {
-            width = ~~rect.right - ~~rect.left;
-        }
-        leftPos = ~~inputRect.left - ~~rect.left;
-        padding = this.measurements.container.padding;
-
-        this._setInputWidth(width - leftPos - padding);
-    };
-
-    /**
-     * Returns whether or not the specified tag text can be added
-     * @param  {Event} e event causing the potentially added tag
-     * @param  {String} text tag value
-     * @return {Boolean}
-     */
-    Taggle.prototype._canAdd = function(e, text) {
-        if (!text) {
-            return false;
-        }
-        var limit = this.settings.maxTags;
-        if (limit !== null && limit <= this.getTagValues().length) {
-            return false;
-        }
-
-        if (this.settings.onBeforeTagAdd(e, text) === false) {
-            return false;
-        }
-
-        if (!this.settings.allowDuplicates && this._hasDupes(text)) {
-            return false;
-        }
-
-        var sensitive = this.settings.preserveCase;
-        var allowed = this.settings.allowedTags;
-
-        if (allowed.length && !this._tagIsInArray(text, allowed, sensitive)) {
-            return false;
-        }
-
-        var disallowed = this.settings.disallowedTags;
-        if (disallowed.length && this._tagIsInArray(text, disallowed, sensitive)) {
-            return false;
-        }
-
-        return true;
-    };
-
-    /**
-     * Returns whether a string is in an array based on case sensitivity
-     *
-     * @param  {String} text string to search for
-     * @param  {Array} arr array of strings to search through
-     * @param  {Boolean} caseSensitive
-     * @return {Boolean}
-     */
-    Taggle.prototype._tagIsInArray = function(text, arr, caseSensitive) {
-        if (caseSensitive) {
-            return arr.indexOf(text) !== -1;
-        }
-
-        var lowercased = [].slice.apply(arr).map(function(str) {
-            return str.toLowerCase();
-        });
-
-        return lowercased.indexOf(text) !== -1;
-    };
-
-    /**
-     * Appends tag with its corresponding input to the list
-     * @param  {Event} e
-     * @param  {String} text
-     */
-    Taggle.prototype._add = function(e, text) {
-        var self = this;
-        var values = text || '';
-
-        if (typeof text !== 'string') {
-            values = _trim(this.input.value);
-        }
-
-        var delimiter = this.settings.delimiter || this.settings.delimeter;
-
-        values.split(delimiter).map(function(val) {
-            return self._formatTag(val);
-        }).forEach(function(val) {
-            if (!self._canAdd(e, val)) {
-                return;
-            }
-
-            var li = self._createTag(val);
-            var lis = self.list.children;
-            var lastLi = lis[lis.length - 1];
-            self.list.insertBefore(li, lastLi);
-
-
-            val = self.tag.values[self.tag.values.length - 1];
-
-            self.settings.onTagAdd(e, val);
-
-            self.input.value = '';
-            self._fixInputWidth();
-            self._focusInput();
-        });
-    };
-
-    /**
-     * Removes last tag if it has already been probed
-     * @param  {Event} e
-     */
-    Taggle.prototype._checkLastTag = function(e) {
-        e = e || window.event;
-
-        var taggles = this.container.querySelectorAll('.taggle');
-        var lastTaggle = taggles[taggles.length - 1];
-        var hotClass = 'taggle_hot';
-        var heldDown = this.input.classList.contains('taggle_back');
-
-        // prevent holding backspace from deleting all tags
-        if (this.input.value === '' && e.keyCode === BACKSPACE && !heldDown) {
-            if (lastTaggle.classList.contains(hotClass)) {
-                this.input.classList.add('taggle_back');
-                this._remove(lastTaggle, e);
-                this._fixInputWidth();
-                this._focusInput();
-            }
-            else {
-                lastTaggle.classList.add(hotClass);
-            }
-        }
-        else if (lastTaggle.classList.contains(hotClass)) {
-            lastTaggle.classList.remove(hotClass);
-        }
-    };
-
-    /**
-     * Setter for the hidden input.
-     * @param {Number} width
-     */
-    Taggle.prototype._setInputWidth = function(width) {
-        this.input.style.width = (width || 10) + 'px';
-    };
-
-    /**
-     * Checks global tags array if provided tag exists
-     * @param  {String} text
-     * @return {Boolean}
-     */
-    Taggle.prototype._hasDupes = function(text) {
-        var needle = this.tag.values.indexOf(text);
-        var tagglelist = this.container.querySelector('.taggle_list');
-        var dupes;
-
-        if (this.settings.duplicateTagClass) {
-            dupes = tagglelist.querySelectorAll('.' + this.settings.duplicateTagClass);
-            for (var i = 0, len = dupes.length; i < len; i++) {
-                dupes[i].classList.remove(this.settings.duplicateTagClass);
-            }
-        }
-
-        // if found
-        if (needle > -1) {
-            if (this.settings.duplicateTagClass) {
-                tagglelist.childNodes[needle].classList.add(this.settings.duplicateTagClass);
-            }
-            return true;
-        }
-
-        return false;
-    };
-
-    /**
-     * Checks whether or not the key pressed is acceptable
-     * @param  {Number}  key code
-     * @return {Boolean}
-     */
-    Taggle.prototype._isConfirmKey = function(key) {
-        var confirmKey = false;
-
-        if (this.settings.submitKeys.indexOf(key) > -1) {
-            confirmKey = true;
-        }
-
-        return confirmKey;
-    };
-
-    // Event handlers
-
-    /**
-     * Handles focus state of div container.
-     */
-    Taggle.prototype._focusInput = function() {
-        this._fixInputWidth();
-
-        if (!this.container.classList.contains(this.settings.containerFocusClass)) {
-            this.container.classList.add(this.settings.containerFocusClass);
-        }
-
-        if (this.placeholder) {
-            this.placeholder.style.opacity = 0;
-        }
-    };
-
-    /**
-     * Runs all the events that need to happen on a blur
-     * @param  {Event} e
-     */
-    Taggle.prototype._blurEvent = function(e) {
-        if (this.container.classList.contains(this.settings.containerFocusClass)) {
-            this.container.classList.remove(this.settings.containerFocusClass);
-        }
-
-        if (this.settings.saveOnBlur) {
-            e = e || window.event;
-
-            this._listenForEndOfContainer();
-
-            if (this.input.value !== '') {
-                this._confirmValidTagEvent(e);
-                return;
-            }
-
-            if (this.tag.values.length) {
-                this._checkLastTag(e);
-            }
-        }
-        else if (this.settings.clearOnBlur) {
-            this.input.value = '';
-            this._setInputWidth();
-        }
-
-        if (!this.tag.values.length && !this.input.value) {
-            this._showPlaceholder();
-        }
-    };
-
-    /**
-     * Runs all the events that need to run on keydown
-     * @param  {Event} e
-     */
-    Taggle.prototype._keydownEvents = function(e) {
-        e = e || window.event;
-
-        var key = e.keyCode;
-        this.pasting = false;
-
-        this._listenForEndOfContainer();
-
-        if (key === 86 && e.metaKey) {
-            this.pasting = true;
-        }
-
-        if (this._isConfirmKey(key) && this.input.value !== '') {
-            this._confirmValidTagEvent(e);
-            return;
-        }
-
-        if (this.tag.values.length) {
-            this._checkLastTag(e);
-        }
-    };
-
-    /**
-     * Runs all the events that need to run on keyup
-     * @param  {Event} e
-     */
-    Taggle.prototype._keyupEvents = function(e) {
-        e = e || window.event;
-
-        this.input.classList.remove('taggle_back');
-
-        _setText(this.sizer, this.input.value);
-
-        if (this.pasting && this.input.value !== '') {
-            this._add(e);
-            this.pasting = false;
-        }
-    };
-
-    /**
-     * Confirms the inputted value to be converted to a tag
-     * @param  {Event} e
-     */
-    Taggle.prototype._confirmValidTagEvent = function(e) {
-        e = e || window.event;
-
-        // prevents from jumping out of textarea
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-        else {
-            e.returnValue = false;
-        }
-
-        this._add(e);
-    };
-
-    /**
-     * Approximates when the hidden input should break to the next line
-     */
-    Taggle.prototype._listenForEndOfContainer = function() {
-        var width = this.sizer.getBoundingClientRect().width;
-        var max = this.measurements.container.rect.width - this.measurements.container.padding;
-        var size = parseInt(this.sizer.style.fontSize, 10);
-
-        // 1.5 just seems to be a good multiplier here
-        if (width + (size * 1.5) > parseInt(this.input.style.width, 10)) {
-            this.input.style.width = max + 'px';
-        }
-    };
-
-    Taggle.prototype._createTag = function(text) {
-        var li = document.createElement('li');
-        var close = document.createElement('button');
-        var hidden = document.createElement('input');
-        var span = document.createElement('span');
-
-        text = this._formatTag(text);
-
-        close.innerHTML = '&times;';
-        close.className = 'close';
-        close.type = 'button';
-        _on(close, 'click', this._remove.bind(this, close));
-
-        _setText(span, text);
-        span.className = 'taggle_text';
-
-        li.className = 'taggle ' + this.settings.additionalTagClasses;
-
-        hidden.type = 'hidden';
-        hidden.value = text;
-        hidden.name = this.settings.hiddenInputName;
-
-        li.appendChild(span);
-        li.appendChild(close);
-        li.appendChild(hidden);
-
-        var formatted = this.settings.tagFormatter(li);
-
-        if (typeof formatted !== 'undefined') {
-            li = formatted;
-        }
-
-        if (!(li instanceof HTMLElement) || li.tagName !== 'LI') {
-            throw new Error('tagFormatter must return an li element');
-        }
-
-        if (this.settings.attachTagId) {
-            this._id += 1;
-            text = {
-                text: text,
-                id: this._id
-            };
-        }
-
-        this.tag.values.push(text);
-        this.tag.elements.push(li);
-
-        return li;
-    };
-
-    Taggle.prototype._showPlaceholder = function() {
-        if (this.placeholder) {
-            this.placeholder.style.opacity = 1;
-        }
-    };
-
-    /**
-     * Removes tag from the tags collection
-     * @param  {li} li List item to remove
-     * @param  {Event} e
-     */
-    Taggle.prototype._remove = function(li, e) {
-        var self = this;
-        var text;
-        var elem;
-        var index;
-
-        if (li.tagName.toLowerCase() !== 'li') {
-            li = li.parentNode;
-        }
-
-        elem = (li.tagName.toLowerCase() === 'a') ? li.parentNode : li;
-        index = this.tag.elements.indexOf(elem);
-
-        text = this.tag.values[index];
-
-        function done(error) {
-            if (error) {
-                return;
-            }
-
-            li.parentNode.removeChild(li);
-
-            // Going to assume the indicies match for now
-            self.tag.elements.splice(index, 1);
-            self.tag.values.splice(index, 1);
-
-            self.settings.onTagRemove(e, text);
-
-            self._focusInput();
-        }
-
-        var ret = this.settings.onBeforeTagRemove(e, text, done);
-
-        if (!ret) {
-            return;
-        }
-
-        done();
-    };
-
-    /**
-     * Format the text for a tag
-     * @param {String} text Tag text
-     * @return {String}
-     */
-    Taggle.prototype._formatTag = function(text) {
-        return this.settings.preserveCase ? text : text.toLowerCase();
-    };
-
-    Taggle.prototype.getTags = function() {
-        return {
-            elements: this.getTagElements(),
-            values: this.getTagValues()
-        };
-    };
-
-    // @todo
-    // @deprecated use getTags().elements
-    Taggle.prototype.getTagElements = function() {
-        return this.tag.elements;
-    };
-
-    // @todo
-    // @deprecated use getTags().values
-    Taggle.prototype.getTagValues = function() {
-        return [].slice.apply(this.tag.values);
-    };
-
-    Taggle.prototype.getInput = function() {
-        return this.input;
-    };
-
-    Taggle.prototype.getContainer = function() {
-        return this.container;
-    };
-
-    Taggle.prototype.add = function(text) {
-        var isArr = _isArray(text);
-
-        if (isArr) {
-            for (var i = 0, len = text.length; i < len; i++) {
-                if (typeof text[i] === 'string') {
-                    this._add(null, text[i]);
-                }
-            }
-        }
-        else {
-            this._add(null, text);
-        }
-
-        return this;
-    };
-
-    Taggle.prototype.remove = function(text, all) {
-        var len = this.tag.values.length - 1;
-        var found = false;
-
-        while (len > -1) {
-            var tagText = this.tag.values[len];
-            if (this.settings.attachTagId) {
-                tagText = tagText.text;
-            }
-
-            if (tagText === text) {
-                found = true;
-                this._remove(this.tag.elements[len]);
-            }
-
-            if (found && !all) {
-                break;
-            }
-
-            len--;
-        }
-
-        return this;
-    };
-
-    Taggle.prototype.removeAll = function() {
-        for (var i = this.tag.values.length - 1; i >= 0; i--) {
-            this._remove(this.tag.elements[i]);
-        }
-
-        this._showPlaceholder();
-
-        return this;
-    };
-
-    Taggle.prototype.setOptions = function(options) {
-        this.settings = _extend({}, this.settings, options || {});
-
-        return this;
-    };
-
-    Taggle.prototype.enable = function() {
-        var buttons = [].slice.call(this.container.querySelectorAll('button'));
-        var inputs = [].slice.call(this.container.querySelectorAll('input'));
-
-        buttons.concat(inputs).forEach(function(el) {
-            el.removeAttribute('disabled');
-        });
-
-        return this;
-    };
-
-    Taggle.prototype.disable = function() {
-        var buttons = [].slice.call(this.container.querySelectorAll('button'));
-        var inputs = [].slice.call(this.container.querySelectorAll('input'));
-
-        buttons.concat(inputs).forEach(function(el) {
-            el.setAttribute('disabled', '');
-        });
-
-        return this;
-    };
-
-    Taggle.prototype.setData = function(data) {
-        this.data = data;
-
-        return this;
-    };
-
-    Taggle.prototype.getData = function() {
-        return this.data;
-    };
-
-    return Taggle;
-}));
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module)))
+};
+/**
+ * Hide the snack
+ */
+Snack.prototype.hide = function () {
+    this.element.classList.remove('snack-opened');
+    this._isVisible = false;
+};
+/**
+ * destroy
+ */
+Snack.prototype.destroy = function () {
+    this.domParent.removeChild(this.container);
+};
+
+
+},{"../styles/snack.min.css":3}],3:[function(require,module,exports){
+var inject = require('./../node_modules/cssify');
+var css = ".snack-container{position:fixed;left:20px;bottom:0;z-index:99999}.snack{overflow:hidden;clear:both;min-width:288px;max-width:568px;cursor:pointer;opacity:0;background-color:#323232;color:#fff;font-size:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);height:0;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:translateY(200%);transform:translateY(200%)}.snack.snack-opened{height:auto;opacity:1;padding:14px 15px;margin-bottom:20px;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:none;transform:none}@media (max-width:767px){.snack-container{left:0!important;right:0;width:100%}.snack-container .snack{min-width:100%}.snack-container .snack.snack-opened{border-radius:0;margin-bottom:0}}\n";
+inject(css, undefined, '_19gnn7m');
+module.exports = css;
+
+},{"./../node_modules/cssify":1}]},{},[2])(2)
+});
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -40180,7 +39509,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(226);
+__webpack_require__(228);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
