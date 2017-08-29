@@ -4,7 +4,10 @@
     <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
     <link rel='stylesheet' href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="app/static/css/taggle.css">
+    <link rel="stylesheet" type="text/css" href="other_imports/semantic/semantic-ui.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
 </style>
@@ -12,6 +15,9 @@
 </style>
 
 
+<script src="other_imports/taggle/jquery-1.10.1.js"></script>
+<script src="other_imports/taggle/jquery-ui.js"></script>
+<script src="other_imports/taggle/taggle.js"></script>
 <script src="node_modules/pubsub-js/src/pubsub.js"></script>
 <!-- START SIGMA IMPORTS -->
 <script src="other_imports/sigma/sigma.core.js"></script>
@@ -64,7 +70,7 @@
 
 <!-- END SIGMA IMPORTS -->
 <script src="other_imports/sigma/plugins/dragNode.js"></script>
-    <script src="other_imports/sigma/plugins/sigma.plugins.animate.js"></script>
+<script src="other_imports/sigma/plugins/sigma.plugins.animate.js"></script>
 <script src="other_imports/sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js"></script>
 <script src="other_imports/sigma/plugins/sigma.plugins.lasso.js"></script>
 <!--<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>-->
@@ -76,7 +82,7 @@
 
 <script src="other_imports/sigma/renderers/sigma.renderers.glyphs/settings.js"></script>
 <script src="other_imports/sigma/renderers/sigma.renderers.glyphs/sigma.renderers.glyphs.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.labels.prioritizable.js"></script>
+<!--<script src="other_imports/sigma/renderers/canvas/sigma.canvas.labels.prioritizable.js"></script>-->
 
 
 
@@ -86,7 +92,7 @@
 </head>
 <body>
 
-<i class="fa fa-camera-retro fa-1x" style="color: rgba(0,0,0,0);"></i>
+<!--<i class="fa fa-camera-retro fa-1x" style="color: rgba(0,0,0,0);"></i>-->
 
 <!-- FB Login -->
 <script>
@@ -118,6 +124,7 @@
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=257685958060788";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+<<<<<<< HEAD
 <!-- END FB Login -->
     <div class='page'>
         <div id="branches-app">
@@ -133,5 +140,63 @@
     </div>
 
     <script>document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");</script>
+=======
+
+<script>
+    var graphContainer = document.querySelector('#graph-container')
+    //        graphContainer.style.height =
+    var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('body')[0],
+        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+    var footerSize = 40;//px
+//    graphContainer.style.height = y// - footerSize;
+    var graphHeight = y - footerSize
+    var bodyHeight = graphHeight
+    window.bodyHeight = bodyHeight
+
+    document.write('' +
+        '<div class="page">' +
+            '<div id="branches-app" class="branches-app">' +
+                '<!--<branches-header></branches-header>-->' +
+                '<!--<toolbar></toolbar>-->' +
+                '<div id="container" v-if="home">' +
+                    '<div id="graph-container" style="height:' + graphHeight + 'px;">' +
+                    '</div>' +
+                '</div>' +
+                '<exercise-creator-container style="height:' + graphHeight + 'px;" v-if="exercisecreator"></exercise-creator-container>' +
+                '<!--<review-schedule></review-schedule>-->' +
+                '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
+            '</div>' +
+        '</div>' +
+        '' +
+        '' +
+        '' +
+        '' +
+        '')
+</script>
+<script>
+  document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");
+  function toggleFullScreen() {
+      var doc = window.document;
+      var docEl = doc.documentElement;
+
+      var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+      var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+      if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+        requestFullScreen.call(docEl);
+      }
+      else {
+        cancelFullScreen.call(doc);
+      }
+    }
+//window.scrollTo(0,1);// hide url / browser bar on mobile
+toggleFullScreen()
+</script>
+>>>>>>> master
 </body>
 </html>

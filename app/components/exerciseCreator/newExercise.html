@@ -1,0 +1,11 @@
+<div class="new-exercise">
+    What items does your exercise test?
+    <div class="new-exercise-items input textarea clearfix example4"></div>
+    <div class="ui form">question
+        <textarea rows="2" id='new-exercise-question' v-model="question"></textarea>
+    </div>
+    <div class="ui form">answer
+        <textarea rows="2" id='new-exercise-answer' v-model="answer"></textarea>
+    </div>
+    <button class="new-exercise-submit ui button positive" v-on:click="createExercise">CREATE EXERCISE</button>
+</div>

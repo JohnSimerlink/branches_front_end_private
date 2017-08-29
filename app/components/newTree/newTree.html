@@ -1,10 +1,12 @@
 <div>
     <div class="arrow"></div>
     <div class="sigma-tooltip-header">Add a new child </div>
+    <!--<div class="sigma-tooltip-header">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->
     <div class="sigma-tooltip-body">
         <div class="newTree-type-selector">
             <button class="newTree-type-selector-heading-button" v-on:click="setTypeToHeading">Heading</button>
-            <button class="newTree-type-selector-heading-button" v-on:click="setTypeToFact">Fact</button>
+            <button class="newTree-type-selector-fact-button" v-on:click="setTypeToFact">Fact</button>
+            <button class="newTree-type-selector-skill-button" v-on:click="setTypeToSkill">Skill</button>
         </div>
         <p class="newTree-form">
             <p class="newTree-form tree-fact" v-if="contentIsFact">
@@ -16,6 +18,11 @@
             <p class="newTree-form tree-heading" v-if="contentIsHeading">
                 <input type="hidden" class="newTree-parentId" v-model="parentid">
                 Heading: <input class='newTree-heading' type='text' v-model="title"><br>
+                <button class='newTree-create-button' v-on:click="createNewTree">Create</button>
+            </p>
+            <p class="newTree-form tree-skill" v-if="contentIsSkill">
+                <input type="hidden" class="newTree-parentId" v-model="parentid">
+                Skill: <input class='newTree-skill' type='text' v-model="title"><br>
                 <button class='newTree-create-button' v-on:click="createNewTree">Create</button>
             </p>
         </p>
