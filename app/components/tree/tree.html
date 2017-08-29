@@ -1,4 +1,10 @@
 <div class="tree" v-bind:style="styleObject" v-show="!draggingNode">
+    <div class="tree-debugging-info">
+        URI: {{content.uri}} ---
+        INITIALParentID: {{content.initialParentId}} ---
+        contentID: {{content.id}}
+        TYPE: {{content.type}}
+    </div>
     <div class="tree-fact" v-if="typeIsFact">
         <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
@@ -9,7 +15,9 @@
             <input class="tree-id" v-model="content.id" hidden>
             <input class="tree-new-fact-question" v-model="content.question">
             <textarea class="tree-new-fact-answer" v-model="content.answer"></textarea>
-            <button class="fact-new-save" v-on:click="changeContent">Save</button>
+            <div>
+                <button class="fact-new-save" v-on:click="changeContent">Save</button>
+            </div>
         </div>
     </div>
     <div class="tree-heading" v-if="typeIsHeading">
@@ -20,7 +28,22 @@
         <div class="tree-new-fact" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
             <textarea class="tree-new-heading" v-model="content.title"></textarea>
-            <button class="heading-new-save" v-on:click="changeContent">Save</button>
+            <div>
+                <button class="heading-new-save" v-on:click="changeContent">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="tree-skill" v-if="typeIsSkill">
+        <div class="tree-current-skill" v-show="!editing">
+            <input type="text" class="tree-current-skill-id" :value="content.id" hidden>
+            <div class="tree-current-skill">{{content.title}}</div>
+        </div>
+        <div class="tree-new-skill" v-show="editing">
+            <input class="tree-id" v-model="content.id" hidden>
+            <textarea style="width: 100%" class="tree-new-skill" v-model="content.title"></textarea>
+            <div>
+                <button class="skill-new-save" v-on:click="changeContent">Save</button>
+            </div>
         </div>
     </div>
     <div class="tree-proficiency">
@@ -47,6 +70,6 @@
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParent" ></i>
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
-        <newtree :parentid="id" v-show="addingChild"></newtree>
+        <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild"></newtree>
     </div>
 </div>

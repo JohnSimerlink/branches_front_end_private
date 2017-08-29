@@ -5,7 +5,7 @@ import user from '../../objects/user'
 import Users from '../../objects/users'
 
 export default {
-    template: require('./branches-header.html'),
+    template: require('./branches-footer.html'),
     created () {
         const self = this
         self.loggedIn = false
@@ -62,6 +62,9 @@ export default {
         login () {
             this.loggedIn=true
             login()
-        }
+        },
+        goToExerciseCreator () {
+            PubSub.publish('goToState.exerciseCreator')
+        },
     }
 }

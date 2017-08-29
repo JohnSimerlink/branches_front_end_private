@@ -1,79 +1,93 @@
-//import {offlineFacts} from '../static/of'
-//import getFirebase from './firebaseService.js'
-//const firebase = getFirebase();
 const content = {}
 window.content = content //expose to window for easy debugging
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 export default class ContentItem {
 
-    constructor() {
-    }
-    init () {
-        this.trees = this.trees || {}
+    constructor(args) {
+        this.initialParentTreeId = this.initialParentTreeId || (args && args.initialParentTreeId) || null
+        this.initialParentTreeContentURI = this.initialParentTreeContentURI || (args && args.initialParentTreeContentURI) || null
+        this.trees = args.trees || {}
 
-        this.userTimeMap = this.userTimeMap || {} ;
+        this.userTimeMap = args.userTimeMap || {} ;
         this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
         this.timerId = null;
 
-        this.userProficiencyMap = this.userProficiencyMap || {}
+        this.userProficiencyMap = args.userProficiencyMap || {}
         this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || 0
 
-        this.userInteractionsMap = this.userInteractionsMap || {}
+        this.userInteractionsMap = args.userInteractionsMap || {}
         this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
 
-        this.userReviewTimeMap = this.userReviewTimeMap || {}
+        this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
 
-        this.studiers = this.studiers || {}
+        this.studiers = args.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
+
+        this.exercises = args.exercises || {}
+
+        this.uri = args.uri || null
+    }
+    init () {
+        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
-    static get(contentId) {
-        if(!contentId){
-            throw "Content.get(contentId) error! contentId empty!"
-        }
-        return new Promise((resolve, reject) => {
-            if (content[contentId]){
-                resolve(content[contentId])
-            } else {
-                firebase.database().ref('content/' + contentId).on("value", function(snapshot){
-                    const contentData = snapshot.val()
-                    const contentItem = new ContentItem() // make sure content item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
-                    for (let prop in contentData){ //copy over data into this new typed object
-                        contentItem[prop] = contentData[prop]
-                    }
-                    contentItem.init() // post constructor
-
-                    content[contentItem.id] = contentItem // add to cache
-                    resolve(contentItem)
-                }, reject)
-            }
-        })
-    }
-
-    /**
-     * Create a new content object in the database
-     * @param contentItem
-     * @returns newly created contentItem
-     */
-    static create(contentItem) {
-        let updates = {};
-        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates)
-        firebase.database().ref().update(updates);
-        return contentItem;
-    }
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
 
     getDBRepresentation(){
         return {
+            initialParentTreeId: this.initialParentTreeId,
+            initialParentTreeContentURI: this.initialParentTreeContentURI,
             userTimeMap: this.userTimeMap,
             userProficiencyMap: this.userProficiencyMap,
             userInteractionsMap: this.userInteractionsMap,
             userReviewTimeMap: this.userReviewTimeMap,
             studiers: this.studiers,
+            exercises: this.exercises,
+            uri: this.uri,
         }
+    }
+    getURIAddition(){
+
+    }
+    //removes the prefix "content/
+    getURIWithoutRootElement(){
+        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
+    }
+    getBreadCrumbs(){
+        let sections = this.getURIWithoutRootElement().split("/")
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        let sectionsResult = sections.reduce((accum, val) => {
+            if (val == "null" || val == "content"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                return accum
+            }
+            return accum + " > " + decodeURIComponent(val)
+        } )
+        return sectionsResult
+        // console.log('breadcrumb result is', sectionsResult)
+        //
+        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
+        //     return total + decodeURIComponent(section) + " > "
+        // },"")
+        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
+        // return breadcrumbs
+    }
+    /**
+     * Used to update tree X and Y coordinates
+     * @param prop
+     * @param val
+     */
+    set(prop, val){
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {}
+        updates[prop] = val
+        // this.treeRef.update(updates)
+        firebase.database().ref('content/' +this.id).update(updates)
+        this[prop] = val
     }
     /**
      * Add a tree to the given content item
@@ -118,6 +132,15 @@ export default class ContentItem {
             studiers: this.studiers
         }
         this.inStudyQueue = true
+
+        firebase.database().ref('content/' + this.id).update(updates)
+    }
+    addExercise(exerciseId){
+        this.exercises[exerciseId] = true
+
+        var updates = {
+            exercises: this.exercises
+        }
 
         firebase.database().ref('content/' + this.id).update(updates)
     }
