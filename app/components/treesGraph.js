@@ -355,7 +355,6 @@ function jumpToAndOpenTreeId(treeid) {
     let node = s.graph.nodes().find(function(node) { return node.id === treeid });
     focusNode(s.cameras[0], node);
 
-    console.log('node about to open is ',node)
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
 }
 

@@ -1,6 +1,8 @@
 import Exercise from "../../objects/exercise";
-// import ExerciseQA from "../../objects/exerciseQA";
+import ExerciseQA from "../../objects/exerciseQA";
 import ContentItems from "../../objects/contentItems";
+import Snack from '../../../node_modules/snack.js/dist/snack'
+
 import invert from 'invert-object'
 
 export default {
@@ -11,9 +13,11 @@ export default {
         // this.itemIds = {12345: true} //[12345]
         this.selectedItems = []
         this.selectedItemIds = []
-        this.newItem=""
         this.question=""
         this.answer=""
+        this.tags = null
+
+
         // this.factsAndSkills = [{breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345'},{breadcrumb: "Spanish > Senorita", id: '23456'}]
 
         ContentItems.getAllExceptForHeadings().then(items => {
@@ -26,10 +30,6 @@ export default {
                 return map
             },{})
             var idBreadcrumbMap = invert(breadcrumbIdMap)
-            // this.items.reduce((map, item) => {
-            //     map[item.id] = item.breadcrumb
-            //     return map
-            // },{})
             this.idBreadcrumbMap = idBreadcrumbMap
             this.breadcrumbIdMap = breadcrumbIdMap
             initTagSearch()
@@ -38,7 +38,7 @@ export default {
 
         function initTagSearch(){
             setTimeout(function() {
-                window.example4 = new Taggle($('.example4.textarea')[0], {
+                me.tags = new Taggle($('.new-exercise-items.textarea')[0], {
                     duplicateTagClass: 'bounce',
                     onTagRemove: function(event,breadcrumb){
                         var id = me.breadcrumbIdMap[breadcrumb]
@@ -48,13 +48,9 @@ export default {
                     }
                 });
 
-                var container = window.example4.getContainer();
-                var input = window.example4.getInput();
-                console.log('input is ', input)
-                console.log('container is ', container)
+                var container = me.tags.getContainer();
+                var input = me.tags.getInput();
 
-                console.log("me items before autocomplete init is", me.items)
-                console.log("me breadcrumbIdmap before autocomplete init is", me.breadcrumbIdMap)
                 $(input).autocomplete({
                     source: Object.keys(me.breadcrumbIdMap), //me.items.map( x => x.breadcrumb),
                     appendTo: container,
@@ -69,7 +65,7 @@ export default {
                             var alreadyExists = me.selectedItemIds.find(itemId => itemId == id)
                             if (alreadyExists) return
                             me.selectedItemIds.push(id) //[id.toString()] = true
-                            window.example4.add(breadcrumb);
+                            me.tags.add(breadcrumb);
                             console.log('me selectedItemIds is now', me.selectedItemIds)
                         }
                     }
@@ -81,7 +77,6 @@ export default {
     data () {
         return {
             items: this.items,
-            newItem: this.newItem,
             question: this.question,
             answer: this.answer,
             selectedItems: this.selectedItems,
@@ -104,23 +99,44 @@ export default {
             )
             return selectedBreadcrumbs
         },
-        favcolor() {
-            return 'blue'
-        },
-        contentIsFact () {
-            return this.type == 'fact'
-        },
     },
     methods: {
-        addContentItem() {
-
-            if (!this.newItem) return
-            this.items[this.newItem] = true
-            this.newItem=""
-        },
         createExercise() {
            //TODO allow creation of other types of exercises than QA
-           // ExerciseQA.create({question: this.question, answer: this.answer, contentItems:this.items})
+           const exerciseData = {
+               question: this.question,
+               answer: this.answer,
+               contentItemIds:
+                   this.selectedItemIds.reduce((obj,key) => {
+                       obj[key] = true;
+                       return obj
+               }, {})
+           }
+           console.log('exercise data is', exerciseData)
+           const exercise = ExerciseQA.create(exerciseData)
+            console.log('exercise created is ', exercise)
+
+            console.log('this.selectedItemIds is', this.selectedItemIds)
+           this.selectedItemIds.forEach(id => {
+               ContentItems.get(id).then(contentItem => {
+                   console.log('contentItem gotten is ',id, contentItem, contentItem.toString())
+                   contentItem.addExercise(exercise.id)
+                   console.log('contentItem gotten is ',contentItem, contentItem.toString())
+               })
+           })
+
+           var snack = new Snack({
+               domParent: document.querySelector('.new-exercise')
+           });
+            // show a snack for 4s
+            snack.show('Exercise created!', 4000);
+
+           //clear exercise
+            this.selectedItemIds = []
+            this.question = ""
+            this.answer = ""
+            this.tags.removeAll()
+
         }
     },
 }
