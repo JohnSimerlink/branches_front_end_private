@@ -59,7 +59,7 @@ export default class ContentItem {
         let sections = this.getURIWithoutRootElement().split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
-            if (val == "null" || val == "content"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+            if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
                 return accum
             }
             return accum + " > " + decodeURIComponent(val)
