@@ -67,7 +67,6 @@ function establishURIs(){
     })
 }
 
-console.log('establish URIs is', establishURIs, window.establishURIs)
 
 function establishURIForContentAndThenAllChildren(treeId){
     console.log('establish URI called for', treeId)

@@ -8,11 +8,9 @@ var vm = new Vue({
     created(){
 
         PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
-            console.log('going to exercise creator')
            this.goToExerciseCreator()
         })
         PubSub.subscribe('goToState.home', (eventName, data) => {
-            console.log('going to home')
             this.goToHome()
         })
     },

@@ -9,16 +9,16 @@ window.exercises = exercises
  * abstract class - only subtypes should be instantiated
  */
 export default class Exercise {
-    constructor ({contentItems = {}}){
-        this.contentItems = contentItems
+    constructor ({contentItemIds = {}}){
+        this.contentItemIds = contentItemIds
     }
     init(){}
     addContent(contentId){
-        this.contentItems[contentId] = true
+        this.contentItemIds[contentId] = true
     }
     getDBRepresentation(){
         return {
-            contentItems: this.contentItems
+            contentItemIds: this.contentItemIds
         }
     }
 
@@ -30,14 +30,14 @@ export default class Exercise {
     static create(exercise){
         let updates = {};
         updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates)
+        console.log('updates in exerciseItem.create are', updates)
         firebase.database().ref().update(updates);
         return exercise;
     }
 
     static get(exerciseId) {
         if(!exerciseId){
-            throw "Content.get(exerciseId) error! exerciseId empty!"
+            throw "Exercises.get(exerciseId) error! exerciseId empty!"
         }
         return new Promise((resolve, reject) => {
             if (exercises[exerciseId]){

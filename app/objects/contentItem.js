@@ -59,17 +59,8 @@ export default class ContentItem {
         let sections = this.getURIWithoutRootElement().split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
-            if (val == "null"){
-                console.log('val was null')
+            if (val == "null" || val == "content"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
                 return accum
-            } else {
-                console.log('val was not null. it was', val)
-            }
-            if (val == "content"){
-                console.log('val was content')
-                return accum
-            } else {
-                console.log('val was not content. it was', val)
             }
             return accum + " > " + decodeURIComponent(val)
         } )
@@ -144,8 +135,8 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
     }
-    addExercise(exercise){
-        this.exercises[exercise.id] = true
+    addExercise(exerciseId){
+        this.exercises[exerciseId] = true
 
         var updates = {
             exercises: this.exercises

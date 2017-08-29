@@ -264,3 +264,6 @@ button {
 .new-exercise-items {
    z-index: 9001; /*teehee*/
 }
+.new-exercise {
+    padding: 4px 4px 4px 4px;
+}
