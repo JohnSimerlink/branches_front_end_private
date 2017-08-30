@@ -18,11 +18,9 @@
    */
   sigma.canvas.edgehovers.def =
     function(edge, source, target, context, settings) {
-      console.log('edge hovered is ', edge, edge.id)
     if (window.awaitingEdgeConnection && edge.type !== EDGE_TYPES.SUGGESTED_CONNECTION){
       return
     } else {
-      // console.
     }
       var color = edge.color,
         prefix = settings('prefix') || '',

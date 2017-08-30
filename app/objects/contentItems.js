@@ -106,7 +106,6 @@ export default class ContentItems {
     static create(contentItem) {
         let updates = {};
         updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates, contentItem, contentItem.getDBRepresentation())
         firebase.database().ref().update(updates);
         return contentItem;
     }

@@ -170,12 +170,10 @@
     // Find which nodes are on screen:
     this.edgesOnScreen = [];
     var rect = this.camera.getRectangle(this.width, this.height);
-    // console.log('canvas.js: rect:', rect, this.width, this.height)
       this.graph.nodes().forEach(node => node.onScreen = false)
       var nodesOnScreen = this.camera.quadtree.area(rect)
       nodesOnScreen.sort((a,b) => a.level < b.level ? -1: 1)
       nodesOnScreen.forEach(node => node.onScreen = true)
-      // console.log('canvas.js: nodesOnScreen:', nodesOnScreen)
     this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(
       // this.camera.getRectangle(this.width, this.height)
     // );

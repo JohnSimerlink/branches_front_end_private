@@ -22,7 +22,6 @@ export default {
 
         ContentItems.getAllExceptForHeadings().then(items => {
             this.items = items
-            console.log('items received from api is', items)
             var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
                 var item = items[key]
                 var breadCrumb = item.getBreadCrumbs()
