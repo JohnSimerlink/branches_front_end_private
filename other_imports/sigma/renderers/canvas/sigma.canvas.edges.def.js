@@ -24,12 +24,9 @@
   }
 
   sigma.canvas.edges.def = function(edge, source, target, context, settings) {
-      if (edge.state == 'severed') {
-          return
-      }
-      if (!window.awaitingEdgeConnection && edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
-          return
-      }
+    if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION && !window.awaitingEdgeConnection){
+        return
+    }
     var color = edge.color,
         prefix = settings('prefix') || '',
         size = edge[prefix + 'size'] || 1,
@@ -50,11 +47,23 @@
           break;
       }
       if (window.awaitingEdgeConnection){
-        color = setOpacityOfRgbString(colorToRgbString(color), .5)
+        if(edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+          color = setOpacityOfRgbString(colorToRgbString(color), .8)
+        } else {
+          color = setOpacityOfRgbString(colorToRgbString(color), .1)
+        }
       }
 
     context.strokeStyle = color;
-    context.lineWidth = edge.state == 'pre-severed' || edge.type=== EDGE_TYPES.SUGGESTED_CONNECTION ? size * 3 * (window.haloEdgeSizeScalingFactor ): size * 3;
+      if (edge.state == 'pre-severed' || edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+          size = size * 3 * window.haloEdgeSizeScalingFactor
+          // console.log("if lineWidth is", context.lineWidth)
+      } else {
+          size = size * 3
+          // console.log(" else lineWidth is", context.lineWidth)
+      }
+
+      context.lineWidth = size
     context.beginPath();
     context.moveTo(
       source[prefix + 'x'],
@@ -76,6 +85,7 @@
             midY = (y1 + y2) / 2
 
         var X_LEG_SIZE = 20
+        context.strokeStyle = 'red'
         context.beginPath();
         context.moveTo(midX - X_LEG_SIZE, midY - X_LEG_SIZE)
         context.lineTo(midX + X_LEG_SIZE, midY + X_LEG_SIZE)
@@ -86,5 +96,8 @@
         context.lineTo(midX - X_LEG_SIZE, midY + X_LEG_SIZE)
         context.stroke()
     }
+    // if (window.suggestedConnectionClicked){
+    //     console.log("line width for edge", edge, " is ", context.lineWidth)
+    // }
   };
 })();

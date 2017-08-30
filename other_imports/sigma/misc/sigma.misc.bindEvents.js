@@ -267,7 +267,6 @@
 
         nodes = getNodes(e);
         edges = getEdges(e);
-        console.log('CLICKED!', nodes, edges)
 
         if (nodes.length) {
           var node = nodes[0]
