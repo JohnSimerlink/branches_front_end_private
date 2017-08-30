@@ -30,7 +30,6 @@ export default class Exercise {
     static create(exercise){
         let updates = {};
         updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-        console.log('updates in exerciseItem.create are', updates)
         firebase.database().ref().update(updates);
         return exercise;
     }

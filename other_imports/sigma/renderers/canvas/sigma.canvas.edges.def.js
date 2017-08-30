@@ -60,10 +60,8 @@
     context.strokeStyle = color;
       if (edge.state == 'pre-severed' || edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
           size = size * 3 * window.haloEdgeSizeScalingFactor
-          // console.log("if lineWidth is", context.lineWidth)
       } else {
           size = size * 3
-          // console.log(" else lineWidth is", context.lineWidth)
       }
 
       context.lineWidth = size
@@ -99,8 +97,5 @@
         context.lineTo(midX - X_LEG_SIZE, midY + X_LEG_SIZE)
         context.stroke()
     }
-    // if (window.suggestedConnectionClicked){
-    //     console.log("line width for edge", edge, " is ", context.lineWidth)
-    // }
   };
 })();

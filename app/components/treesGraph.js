@@ -208,10 +208,8 @@ function initSigma(){
         canvas.style.cursor = 'grab'
     })
     PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
-        // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
     })
     PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
-        // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
         updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
@@ -250,27 +248,20 @@ function initSigma(){
         canvas.style.cursor = 'grab'
     })
     PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
-        console.log('edge clicked', eventData)
         const edge = eventData.edge
         if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
-            console.log('edge type is edge types suggested connection')
             click_SUGGESTED_CONNECTION(edge)
             return
         }
         const target = s.graph.nodes(edge.target)
         if (window.awaitingDisconnectConfirmation && window.awaitingDisconnectConfirmationNodeId !== target.id){
             return
-        } else {
-            console.log('not an edge for the node being confirmed')
         }
         if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id){
            return
-        } else {
-            console.log('not an edge for the node waiting to be connected')
         }
         switch (edge.state) {
             case 'pre-severed':
-                console.log('switch edge presevered called')
                 target.state = 'awaitingEdgeConnection'
                 edge.state = 'severed'
                 window.awaitingEdgeConnection = true
@@ -285,19 +276,15 @@ function initSigma(){
                 break
             default:
                 window.edgeIdBeingChanged =edge.id
-                console.log('switch edge default called')
                 edge.state = 'pre-severed'
                 window.awaitingDisconnectConfirmationNodeId = target.id
                 window.awaitingDisconnectConfirmation = true
-                console.log('switch edge state to pre severed')
                 break;
         }
-        console.log('end of clickEdge handler reached')
         s.refresh()
     })
 }
 function click_SUGGESTED_CONNECTION(edge){
-    console.log('edge in click suggested connection is', edge)
     const permanentEdge = {
         id : createEdgeId(edge.source,edge.target),
         source: edge.source,
@@ -322,10 +309,8 @@ function click_SUGGESTED_CONNECTION(edge){
     // PubSub.publish('canvas.parentReconnect.reconnected')
 }
 function removeEdgeToParent(node){
-    console.log('removeEdgeToParent called', node)
     var parentId = node.parentId
     var edgeId = createEdgeId(parentId, node.id)
-    console.log("removeEdgeToParent edgeId is", edgeId)
     s.graph.dropEdge(edgeId)
 }
 window.haloSizeScalingFactor = 1.00
@@ -369,11 +354,8 @@ setInterval(() => {
 }, 100)
 
 function showPossibleEdges(parentlessNode){
-    console.log("showPossibleEdges", parentlessNode)
     var nodesOnScreen = s.graph.nodes().filter(node => node.onScreen) //>>>>> seems to be returning nothing >>// s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
-    console.log('nodes on screen is', nodesOnScreen)
     var headingsOnScreen = nodesOnScreen.filter(node => node.content.type == 'heading')// node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
-        console.log("headings on screen is", headingsOnScreen)
 
     headingsOnScreen
         .forEach(node => {
@@ -386,7 +368,6 @@ function showPossibleEdges(parentlessNode){
                type: EDGE_TYPES.SUGGESTED_CONNECTION
            }
            s.graph.addEdge(edge)
-           console.log('adding edge', edge)
            s.refresh()
 
         })
@@ -397,7 +378,6 @@ function removeSuggestedEdges(){
     const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id) //map(e => e.id).forEach(s.graph.dropEdge)
     edgeIdsToRemove.forEach(id => {
        s.graph.dropEdge(id)
-        console.log("SUGGESTED EDGE DROPPED FOR ", id)
     })
     // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
 }
@@ -429,7 +409,6 @@ export function syncGraphWithNode(treeId){
         ContentItems.get(tree.contentId).then(content => {
             //update the node
             var sigmaNode = s.graph.nodes(treeId)
-            // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
             sigmaNode.x = tree.x
             sigmaNode.y = tree.y
             var color = getTreeColor(content)
@@ -440,14 +419,12 @@ export function syncGraphWithNode(treeId){
             var sigmaEdge = s.graph.edges(edgeId)
             sigmaEdge.color = color
 
-            // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
             s.refresh()
         })
     })
 }
 function updateTreePosition(data){
     let {newX, newY, treeId} = data
-    // console.log('update tree position called!', newX, newY, treeId, data)
     // let newX = e.data.node.x
     // let newY = e.data.node.y
     // let treeId = e.data.node.id;
@@ -518,11 +495,9 @@ function initSigmaPlugins() {
 
     var myRenderer = s.renderers[0];
 
-    // console.log('my renderenr is', myRenderer, s.renderers)
 }
 
 PubSub.subscribe('canvas.zoom', function(a,b,c,d){
-    console.log('canvas zoom called in treesGraph js')
 })
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
