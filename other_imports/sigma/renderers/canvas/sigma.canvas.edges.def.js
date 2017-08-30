@@ -24,6 +24,9 @@
   }
 
   sigma.canvas.edges.def = function(edge, source, target, context, settings) {
+      if (edge.state == 'severed') {
+          return
+      }
     if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION && !window.awaitingEdgeConnection){
         return
     }

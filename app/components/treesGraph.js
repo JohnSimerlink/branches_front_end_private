@@ -226,6 +226,20 @@ function initSigma(){
     })
     PubSub.subscribe('canvas.stageClicked', function(eventName, data){
         PubSub.publish('canvas.closeTooltip', data)
+        if(window.edgeIdBeingChanged){
+            s.graph.edges(window.edgeIdBeingChanged).state = 'normal'
+        }
+        if(window.awaitingDisconnectConfirmationNodeId){
+            s.graph.nodes(window.awaitingDisconnectConfirmationNodeId).state = 'normal'
+        }
+        if(window.awaitingEdgeConnectionNodeId){
+            s.graph.nodes(window.awaitingEdgeConnectionNodeId).state = 'normal'
+        }
+        window.edgeIdBeingChanged = null
+        window.awaitingDisconnectConfirmation = false
+        window.awaitingEdgeConnection = false
+        window.awaitingDisconnectConfirmationNodeId = null
+        window.awaitingEdgeConnectionNodeId = null
     })
     PubSub.subscribe('canvas.overNode', function(eventName, data){
         var canvas = document.querySelector('#graph-container')
@@ -239,34 +253,46 @@ function initSigma(){
         console.log('edge clicked', eventData)
         const edge = eventData.edge
         if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+            console.log('edge type is edge types suggested connection')
             click_SUGGESTED_CONNECTION(edge)
+            return
         }
         const target = s.graph.nodes(edge.target)
         if (window.awaitingDisconnectConfirmation && window.awaitingDisconnectConfirmationNodeId !== target.id){
             return
+        } else {
+            console.log('not an edge for the node being confirmed')
         }
         if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id){
            return
+        } else {
+            console.log('not an edge for the node waiting to be connected')
         }
         switch (edge.state) {
             case 'pre-severed':
+                console.log('switch edge presevered called')
                 target.state = 'awaitingEdgeConnection'
+                edge.state = 'severed'
                 window.awaitingEdgeConnection = true
                 window.awaitingEdgeConnectionNodeId = target.id
                 window.awaitingDisconnectConfirmationNodeId = null
                 window.awaitingDisconnectConfirmation = false
-                s.graph.dropEdge(edge.id)
+                // s.graph.dropEdge(edge.id)
+
                 const parentlessNode = target
                 showPossibleEdges(parentlessNode)
 
                 break
             default:
+                window.edgeIdBeingChanged =edge.id
+                console.log('switch edge default called')
                 edge.state = 'pre-severed'
                 window.awaitingDisconnectConfirmationNodeId = target.id
                 window.awaitingDisconnectConfirmation = true
                 console.log('switch edge state to pre severed')
                 break;
         }
+        console.log('end of clickEdge handler reached')
         s.refresh()
     })
 }
@@ -288,6 +314,8 @@ function click_SUGGESTED_CONNECTION(edge){
         window.awaitingEdgeConnectionNodeId = null
         window.awaitingEdgeConnection = false
         removeSuggestedEdges()
+        const originalEdge = s.graph.edges(window.edgeIdBeingChanged)
+        originalEdge && s.graph.dropEdge(originalEdge.id)
         s.refresh()
         window.suggestedConnectionClicked = true
     })
@@ -369,6 +397,7 @@ function removeSuggestedEdges(){
     const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id) //map(e => e.id).forEach(s.graph.dropEdge)
     edgeIdsToRemove.forEach(id => {
        s.graph.dropEdge(id)
+        console.log("SUGGESTED EDGE DROPPED FOR ", id)
     })
     // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
 }
