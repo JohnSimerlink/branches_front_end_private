@@ -266,7 +266,7 @@
         self.dispatchEvent('click', e.data);
 
         nodes = getNodes(e);
-        edges = getEdges(e);
+        edges = getEdges(e).filter(e => e.state !== 'severedh');
 
         if (nodes.length) {
           var node = nodes[0]
@@ -490,6 +490,7 @@
             delete overEdges[k];
           }
 
+          newOverEdges = newOverEdges.filter(e => e.state !== 'severed')
         // Dispatch both single and multi events:
         for (i = 0, le = newOverEdges.length; i < le; i++)
           self.dispatchEvent('overEdge', {
