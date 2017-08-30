@@ -213,6 +213,10 @@ function initSigma(){
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
         var node = data
+        if (window.awaitingEdgeConnection){
+            console.log('STILL AWAITING EDGE CONNECTION')
+          return
+        }
         openTooltip(node)
     })
     PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
@@ -229,7 +233,90 @@ function initSigma(){
         var canvas = document.querySelector('#graph-container')
         canvas.style.cursor = 'grab'
     })
+    PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
+        console.log('edge clicked', eventData)
+        const edge = eventData.edge
+        const target = s.graph.nodes(edge.target)
+        if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id){
+           return
+        }
+        switch (edge.state) {
+            case 'pre-severed':
+                edge.state = 'severed'
+                target.state = 'awaitingEdgeConnection'
+                window.awaitingEdgeConnection = true
+                window.awaitingEdgeConnectionNodeId = target.id
+                const parentlessNode = target
+                showPossibleNodesToConnectTo(parentlessNode)
+
+
+                break
+            case 'severed':
+                edge.state = 'regular'
+                window.awaitingEdgeConnection = false
+                window.awaitingEdgeConnectionNodeId = null
+                break; //not interactable when invisible/severed
+            default:
+                edge.state = 'pre-severed'
+                console.log('switch edge state to pre severed')
+                break;
+        }
+        s.refresh()
+    })
 }
+window.haloSizeScalingFactor = 1.08
+setInterval(() => {
+    switch(window.haloSizeScalingFactor){
+        case 1.08:
+            window.haloSizeScalingFactor = 1.09
+        break;
+        case 1.09:
+            window.haloSizeScalingFactor = 1.10
+            break;
+        case 1.10:
+            window.haloSizeScalingFactor = 1.11
+            break;
+        case 1.11:
+            window.haloSizeScalingFactor = 1.12
+            break;
+        case 1.12:
+            window.haloSizeScalingFactor = 1.111
+            break;
+        case 1.111:
+            window.haloSizeScalingFactor = 1.101
+            break;
+        case 1.101:
+            window.haloSizeScalingFactor = 1.091
+            break;
+        case 1.091:
+            window.haloSizeScalingFactor = 1.08
+            break;
+    }
+    s.refresh()
+}, 100)
+
+function showPossibleNodesToConnectTo(parentlessNode){
+    console.log("showPossible nodes called", parentlessNode)
+    var headingsOnScreen = s.camera.quadtree.area(
+        s.camera.getRectangle(self.width, self.height)
+    ).filter(node => node.content.type == 'heading')
+        .forEach(node => {
+           const edge = {
+               id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
+               source: node.id,
+               target: parentlessNode.id,
+               size: 5,
+               color: pink,
+           }
+           s.graph.addEdge(edge)
+           console.log('adding edge', edge)
+           s.refresh()
+
+        })
+    var parentLessNode
+
+}
+
 function printNodeInfo(e){
     console.log(e, e.data.node)
 }

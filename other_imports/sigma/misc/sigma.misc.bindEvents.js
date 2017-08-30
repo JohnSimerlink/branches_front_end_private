@@ -267,6 +267,7 @@
 
         nodes = getNodes(e);
         edges = getEdges(e);
+        console.log('CLICKED!', nodes, edges)
 
         if (nodes.length) {
           var node = nodes[0]
@@ -288,10 +289,12 @@
             captor: e.data
           });
         } else if (edges.length) {
-          self.dispatchEvent('clickEdge', {
+          var eventData = {
             edge: edges[0],
             captor: e.data
-          });
+          }
+          PubSub.publish('canvas.clickEdge', eventData)
+          self.dispatchEvent('clickEdge', eventData);
           self.dispatchEvent('clickEdges', {
             edge: edges,
             captor: e.data

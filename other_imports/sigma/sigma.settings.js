@@ -211,7 +211,7 @@
     // {boolean} If set to false, the nodes cannot be hovered.
     enableHovering: true,
     // {boolean} If set to true, the edges can be hovered.
-    enableEdgeHovering: false,
+    enableEdgeHovering: true,
     // {number} The size of the area around the edges to activate hovering.
     edgeHoverPrecision: 5,
     // {boolean} If set to true, the rescale middleware will ignore node sizes
