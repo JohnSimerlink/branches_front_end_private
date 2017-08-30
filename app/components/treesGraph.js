@@ -7,6 +7,10 @@ import '../core/login.js'
 import Vue from 'vue'
 import user from '../objects/user'
 var initialized = false;
+const EDGE_TYPES = {
+    SUGGESTED_CONNECTION: 9001,
+    HIERARCHICAL: 9002,
+}
 var s,
     g = {
         nodes: [],
@@ -31,8 +35,6 @@ var s,
     ]
 
 
-window.g = g
-window.s = s;
 sigma.settings.font = 'Fredoka One'
 
 
@@ -165,7 +167,8 @@ function connectTreeToParent(tree,content, g){
             source: tree.parentId,
             target: tree.id,
             size: 5,
-            color: getTreeColor(content)
+            color: getTreeColor(content),
+            type: EDGE_TYPES.HIERARCHICAL,
         };
         g.edges.push(edge);
     }
@@ -191,6 +194,7 @@ function initSigma(){
 
     });
     window.s = s;
+    console.log('window .s is', window.s,s)
     var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
     s.refresh();
 
@@ -213,8 +217,8 @@ function initSigma(){
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
         var node = data
+        console.log('node clicked for ', node)
         if (window.awaitingEdgeConnection){
-            console.log('STILL AWAITING EDGE CONNECTION')
           return
         }
         openTooltip(node)
@@ -236,7 +240,13 @@ function initSigma(){
     PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
         console.log('edge clicked', eventData)
         const edge = eventData.edge
+        if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+            click_SUGGESTED_CONNECTION(edge)
+        }
         const target = s.graph.nodes(edge.target)
+        if (window.awaitingDisconnectConfirmation && window.awaitingDisconnectConfirmationNodeId !== target.id){
+            return
+        }
         if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id){
            return
         }
@@ -246,9 +256,11 @@ function initSigma(){
                 target.state = 'awaitingEdgeConnection'
                 window.awaitingEdgeConnection = true
                 window.awaitingEdgeConnectionNodeId = target.id
+                window.awaitingDisconnectConfirmationNodeId = null
+                window.awaitingDisconnectConfirmation = false
                 const parentlessNode = target
-                showPossibleNodesToConnectTo(parentlessNode)
-
+                showPossibleEdges(parentlessNode)
+                s.graph.dropEdge(edge.id)
 
                 break
             case 'severed':
@@ -258,63 +270,117 @@ function initSigma(){
                 break; //not interactable when invisible/severed
             default:
                 edge.state = 'pre-severed'
+                window.awaitingDisconnectConfirmationNodeId = target.id
+                window.awaitingDisconnectConfirmation = true
                 console.log('switch edge state to pre severed')
                 break;
         }
         s.refresh()
     })
 }
-window.haloSizeScalingFactor = 1.08
+function click_SUGGESTED_CONNECTION(edge){
+    console.log('edge in click suggested connection is', edge)
+    const permanentEdge = {
+        id : createEdgeId(edge.source,edge.target),
+        source: edge.source,
+        target: edge.target,
+        type : EDGE_TYPES.HIERARCHICAL,
+        color: edge.color,
+    }
+    const parentlessNode = s.graph.nodes(edge.target)
+    parentlessNode.state = 'normal'
+    Trees.get(parentlessNode.id).then(tree => {
+        tree.changeParent(edge.source)
+        // s.graph.dropEdge(edge.id)
+        s.graph.addEdge(permanentEdge)
+        window.awaitingEdgeConnectionNodeId = null
+        window.awaitingEdgeConnection = false
+        removeSuggestedEdges()
+        s.refresh()
+    })
+    // PubSub.publish('canvas.parentReconnect.reconnected')
+}
+function removeEdgeToParent(node){
+    console.log('removeEdgeToParent called', node)
+    var parentId = node.parentId
+    var edgeId = createEdgeId(parentId, node.id)
+    console.log("removeEdgeToParent edgeId is", edgeId)
+    s.graph.dropEdge(edgeId)
+}
+window.haloSizeScalingFactor = 1.00
+window.scalingOffset = 20
 setInterval(() => {
-    switch(window.haloSizeScalingFactor){
-        case 1.08:
-            window.haloSizeScalingFactor = 1.09
+    switch(window.scalingOffset){
+        case -20:
+            window.scalingOffset = -10
         break;
-        case 1.09:
-            window.haloSizeScalingFactor = 1.10
+        case -10:
+            window.scalingOffset = 0
             break;
-        case 1.10:
-            window.haloSizeScalingFactor = 1.11
+        case 0:
+            window.scalingOffset = 10
             break;
-        case 1.11:
-            window.haloSizeScalingFactor = 1.12
+        case 10:
+            window.scalingOffset = 20
             break;
-        case 1.12:
-            window.haloSizeScalingFactor = 1.111
+        case 20:
+            window.scalingOffset = 30
             break;
-        case 1.111:
-            window.haloSizeScalingFactor = 1.101
+        case 30:
+            window.scalingOffset = 21
             break;
-        case 1.101:
-            window.haloSizeScalingFactor = 1.091
+        case 21:
+            window.scalingOffset = 11
             break;
-        case 1.091:
-            window.haloSizeScalingFactor = 1.08
+        case 11:
+            window.scalingOffset = 1
+            break;
+        case 1:
+            window.scalingOffset = -9
+            break;
+        case -9:
+            window.scalingOffset = -20
             break;
     }
-    s.refresh()
+    window.haloSizeScalingFactor = 1 + window.scalingOffset / 1000
+    window.haloEdgeSizeScalingFactor = 1 + 4 * window.scalingOffset / 1000
+    s && s.refresh()
 }, 100)
 
-function showPossibleNodesToConnectTo(parentlessNode){
-    console.log("showPossible nodes called", parentlessNode)
-    var headingsOnScreen = s.camera.quadtree.area(
-        s.camera.getRectangle(self.width, self.height)
-    ).filter(node => node.content.type == 'heading')
+function showPossibleEdges(parentlessNode){
+    console.log("showPossibleEdges", parentlessNode)
+    var nodesOnScreen = s.graph.nodes().filter(node => node.onScreen) //>>>>> seems to be returning nothing >>// s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
+    console.log('nodes on screen is', nodesOnScreen)
+    var headingsOnScreen = nodesOnScreen.filter(node => node.content.type == 'heading')// node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
+        console.log("headings on screen is", headingsOnScreen)
+
+    headingsOnScreen
         .forEach(node => {
            const edge = {
                id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
                source: node.id,
                target: parentlessNode.id,
                size: 5,
-               color: pink,
+               color: parentlessNode.color,
+               type: EDGE_TYPES.SUGGESTED_CONNECTION
            }
            s.graph.addEdge(edge)
            console.log('adding edge', edge)
            s.refresh()
 
         })
-    var parentLessNode
+    // var parentLessNode
 
+}
+function removeSuggestedEdges(){
+    const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id) //map(e => e.id).forEach(s.graph.dropEdge)
+    edgeIdsToRemove.forEach(id => {
+        s.graph.dropEdge(id)
+    })
+}
+window.printNodesOnScreen = function() {
+    var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
+    console.log('nodes on screen is', nodesOnScreen)
 }
 
 function printNodeInfo(e){
@@ -411,7 +477,8 @@ export function addTreeToGraph(parentTreeId, content) {
         source: parentTreeId,
         target: newTree.id,
         size: 5,
-        color: getTreeColor(content)
+        color: getTreeColor(content),
+        type: EDGE_TYPES.HIERARCHICAL,
     }
     s.graph.addEdge(newEdge)
 
