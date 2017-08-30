@@ -1,6 +1,10 @@
 ;(function() {
   'use strict';
 
+  const EDGE_TYPES = {
+      SUGGESTED_CONNECTION: 9001,
+      HIERARCHICAL: 9002,
+  }
   sigma.utils.pkg('sigma.canvas.edges');
 
   /**
@@ -12,7 +16,20 @@
    * @param  {CanvasRenderingContext2D} context      The canvas context.
    * @param  {configurable}             settings     The settings function.
    */
+  function renderSeveredEdge(edge, source, target, context, settings){
+     return;
+  }
+  function renderPreSeveredEdge(edge, source, target, context, settings) {
+
+  }
+
   sigma.canvas.edges.def = function(edge, source, target, context, settings) {
+      if (edge.state == 'severed') {
+          return
+      }
+      if (!window.awaitingEdgeConnection && edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+          return
+      }
     var color = edge.color,
         prefix = settings('prefix') || '',
         size = edge[prefix + 'size'] || 1,
@@ -20,9 +37,6 @@
         defaultNodeColor = settings('defaultNodeColor'),
         defaultEdgeColor = settings('defaultEdgeColor');
 
-    if (edge.state == 'severed') {
-        return
-    }
     if (!color)
       switch (edgeColor) {
         case 'source':
@@ -36,12 +50,11 @@
           break;
       }
       if (window.awaitingEdgeConnection){
-        console.log('color is', color, colorToRgbString(color))
         color = setOpacityOfRgbString(colorToRgbString(color), .5)
       }
 
     context.strokeStyle = color;
-    context.lineWidth = edge.active ? size * 5: size * 3;
+    context.lineWidth = edge.state == 'pre-severed' || edge.type=== EDGE_TYPES.SUGGESTED_CONNECTION ? size * 3 * (window.haloEdgeSizeScalingFactor ): size * 3;
     context.beginPath();
     context.moveTo(
       source[prefix + 'x'],
@@ -62,7 +75,6 @@
         var midX = (x1 + x2) / 2,
             midY = (y1 + y2) / 2
 
-
         var X_LEG_SIZE = 20
         context.beginPath();
         context.moveTo(midX - X_LEG_SIZE, midY - X_LEG_SIZE)
@@ -74,11 +86,5 @@
         context.lineTo(midX - X_LEG_SIZE, midY + X_LEG_SIZE)
         context.stroke()
     }
-
-
-
-
-
-
   };
 })();

@@ -44,7 +44,6 @@
       }
     if (node.state == 'awaitingEdgeConnection'){
         // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-        size = size * 1.5
         var haloSize = size * window.haloSizeScalingFactor
 
         var center =
