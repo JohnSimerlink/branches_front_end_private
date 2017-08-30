@@ -1,6 +1,5 @@
-// import PubSub from 'pubsub-js'
 import {Trees} from '../../objects/trees';
-import ContentItem from '../../objects/contentItem';
+import ContentItems from '../../objects/contentItems';
 export default {
     template: require('./mobileAnswerTray.html'),
     created () {
@@ -18,7 +17,7 @@ export default {
             this.treeid = val;
             Trees.get(val).then(tree => {
                 self.tree = tree;
-                ContentItem.get(tree.contentId).then(content => {
+                ContentItems.get(tree.contentId).then(content => {
                     self.content = content;
                     console.log(content);
                 })
