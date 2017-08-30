@@ -25,6 +25,10 @@ module.exports = {
         }
       },
         {
+            test: /\.less$/,
+            loader: "style!css!less"
+        },
+        {
             test: /\.html$/,
             loader: 'html-loader',
             exclude: /node_modules/

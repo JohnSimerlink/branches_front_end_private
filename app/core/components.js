@@ -6,6 +6,8 @@ import ReviewSchedule from '../components/reviewAlgorithm/reviewSchedule'
 import ContentList from '../components/contentList/contentList'
 import ExerciseCreator from '../components/exerciseCreator/exerciseCreator'
 import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exerciseCreatorContainer'
+import TreeReview from '../components/treeReview/treeReview'
+import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import NewExercise from '../components/exerciseCreator/newExercise'
 import ExerciseList from '../components/exerciseList/exerciseList'
 import Tree from '../components/tree/tree'
@@ -17,6 +19,8 @@ Vue.component('reviewSchedule', ReviewSchedule)
 Vue.component('contentList', ContentList)
 Vue.component('exerciseCreator', ExerciseCreator)
 Vue.component('exerciseCreatorContainer', ExerciseCreatorContainer)
+Vue.component('treeReview', TreeReview)
+Vue.component('treeReviewContainer', TreeReviewContainer)
 Vue.component('exerciseList', ExerciseList)
 Vue.component('newExercise', NewExercise)
 Vue.component('tree', Tree)

@@ -10,30 +10,39 @@ var vm = new Vue({
         PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
            this.goToExerciseCreator()
         })
+        PubSub.subscribe('goToState.treeReview', (eventName, treeId) => {
+            this.goToTreeReview()
+        })
         PubSub.subscribe('goToState.home', (eventName, data) => {
             this.goToHome()
         })
     },
     data() {
         return {
-            state: 'home',
+            state: 'treeReview',
         }
     },
     computed: {
         home() {
            return this.state == 'home'
         },
-        exercisecreator() {
-            return this.state == 'exercisecreator'
+        exerciseCreator() {
+            return this.state == 'exerciseCreator'
+        },
+        treeReview() {
+            return this.state == 'treeReview'
         },
     },
     methods: {
-        goToExerciseCreator(){
-           this.state='exercisecreator'
-        },
         goToHome(){
-            window.location = window.location //refresh the page lol
+            window.location = window.location //refresh the page lol - for some reason graph seems to malfunction when not doing this
             this.state='home'
-        }
+        },
+        goToExerciseCreator(){
+           this.state='exerciseCreator'
+        },
+        goToTreeReview() {
+            this.state = 'treeReview'
+        },
     }
 })
