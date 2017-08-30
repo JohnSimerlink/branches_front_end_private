@@ -1,3 +1,4 @@
+import './exercise-creator.less'
 export default {
     template: require('./exerciseCreator.html'),
     created () {

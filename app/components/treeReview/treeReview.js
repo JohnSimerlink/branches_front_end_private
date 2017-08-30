@@ -2,6 +2,7 @@ import Exercise from "../../objects/exercise";
 import ExerciseQA from "../../objects/exerciseQA";
 import ContentItems from "../../objects/contentItems";
 import Snack from '../../../node_modules/snack.js/dist/snack'
+import './treeReview.less'
 
 import invert from 'invert-object'
 
