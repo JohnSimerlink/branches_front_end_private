@@ -7,6 +7,8 @@ import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
 import {secondsToPretty} from "../../core/filters"
 import {Skill} from "../../objects/skill";
+import './tree.less'
+
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
