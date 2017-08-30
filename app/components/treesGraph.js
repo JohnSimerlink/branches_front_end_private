@@ -194,7 +194,6 @@ function initSigma(){
 
     });
     window.s = s;
-    console.log('window .s is', window.s,s)
     var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
     s.refresh();
 
@@ -217,8 +216,7 @@ function initSigma(){
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
         var node = data
-        console.log('node clicked for ', node)
-        if (window.awaitingEdgeConnection){
+        if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
           return
         }
         openTooltip(node)
@@ -252,22 +250,16 @@ function initSigma(){
         }
         switch (edge.state) {
             case 'pre-severed':
-                edge.state = 'severed'
                 target.state = 'awaitingEdgeConnection'
                 window.awaitingEdgeConnection = true
                 window.awaitingEdgeConnectionNodeId = target.id
                 window.awaitingDisconnectConfirmationNodeId = null
                 window.awaitingDisconnectConfirmation = false
+                s.graph.dropEdge(edge.id)
                 const parentlessNode = target
                 showPossibleEdges(parentlessNode)
-                s.graph.dropEdge(edge.id)
 
                 break
-            case 'severed':
-                edge.state = 'regular'
-                window.awaitingEdgeConnection = false
-                window.awaitingEdgeConnectionNodeId = null
-                break; //not interactable when invisible/severed
             default:
                 edge.state = 'pre-severed'
                 window.awaitingDisconnectConfirmationNodeId = target.id
@@ -286,17 +278,18 @@ function click_SUGGESTED_CONNECTION(edge){
         target: edge.target,
         type : EDGE_TYPES.HIERARCHICAL,
         color: edge.color,
+        size: edge.size,
     }
     const parentlessNode = s.graph.nodes(edge.target)
     parentlessNode.state = 'normal'
     Trees.get(parentlessNode.id).then(tree => {
         tree.changeParent(edge.source)
-        // s.graph.dropEdge(edge.id)
         s.graph.addEdge(permanentEdge)
         window.awaitingEdgeConnectionNodeId = null
         window.awaitingEdgeConnection = false
         removeSuggestedEdges()
         s.refresh()
+        window.suggestedConnectionClicked = true
     })
     // PubSub.publish('canvas.parentReconnect.reconnected')
 }
@@ -375,8 +368,9 @@ function showPossibleEdges(parentlessNode){
 function removeSuggestedEdges(){
     const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id) //map(e => e.id).forEach(s.graph.dropEdge)
     edgeIdsToRemove.forEach(id => {
-        s.graph.dropEdge(id)
+       s.graph.dropEdge(id)
     })
+    // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
 }
 window.printNodesOnScreen = function() {
     var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
