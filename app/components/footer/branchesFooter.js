@@ -66,5 +66,8 @@ export default {
         goToExerciseCreator () {
             PubSub.publish('goToState.exerciseCreator')
         },
+        goToReviewTree () {
+            PubSub.publish('goToState.reviewTree')
+        },
     }
 }
