@@ -5135,7 +5135,6 @@ class ContentItems {
     static create(contentItem) {
         let updates = {};
         updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        console.log('updates in contentItem.create are', updates, contentItem, contentItem.getDBRepresentation());
         firebase.database().ref().update(updates);
         return contentItem;
     }
@@ -7622,6 +7621,10 @@ module.exports = merge;
 
 
 var initialized = false;
+const EDGE_TYPES = {
+    SUGGESTED_CONNECTION: 9001,
+    HIERARCHICAL: 9002
+};
 var s,
     g = {
     nodes: [],
@@ -7630,8 +7633,6 @@ var s,
     positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
     icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
 
-window.g = g;
-window.s = s;
 sigma.settings.font = 'Fredoka One';
 
 var newNodeXOffset = -2,
@@ -7762,7 +7763,8 @@ function connectTreeToParent(tree, content, g) {
             source: tree.parentId,
             target: tree.id,
             size: 5,
-            color: getTreeColor(content)
+            color: getTreeColor(content),
+            type: EDGE_TYPES.HIERARCHICAL
         };
         g.edges.push(edge);
     }
@@ -7801,15 +7803,15 @@ function initSigma() {
         var canvas = document.querySelector('#graph-container');
         canvas.style.cursor = 'grab';
     });
-    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
-        // console.log('CANVAS.startDraggingNode subscribe called',eventName, node, node.id, node.x, node.y)
-    });
+    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {});
     PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
-        // console.log("canvas.stopDraggingNode subscribe called",eventName, node, node.id, node.x, node.y)
         updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
     });
     PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
         var node = data;
+        if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection) {
+            return;
+        }
         openTooltip(node);
     });
     PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
@@ -7817,6 +7819,20 @@ function initSigma() {
     });
     PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
         PubSub.publish('canvas.closeTooltip', data);
+        if (window.edgeIdBeingChanged) {
+            s.graph.edges(window.edgeIdBeingChanged).state = 'normal';
+        }
+        if (window.awaitingDisconnectConfirmationNodeId) {
+            s.graph.nodes(window.awaitingDisconnectConfirmationNodeId).state = 'normal';
+        }
+        if (window.awaitingEdgeConnectionNodeId) {
+            s.graph.nodes(window.awaitingEdgeConnectionNodeId).state = 'normal';
+        }
+        window.edgeIdBeingChanged = null;
+        window.awaitingDisconnectConfirmation = false;
+        window.awaitingEdgeConnection = false;
+        window.awaitingDisconnectConfirmationNodeId = null;
+        window.awaitingEdgeConnectionNodeId = null;
     });
     PubSub.subscribe('canvas.overNode', function (eventName, data) {
         var canvas = document.querySelector('#graph-container');
@@ -7826,7 +7842,146 @@ function initSigma() {
         var canvas = document.querySelector('#graph-container');
         canvas.style.cursor = 'grab';
     });
+    PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
+        const edge = eventData.edge;
+        if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION) {
+            click_SUGGESTED_CONNECTION(edge);
+            return;
+        }
+        const target = s.graph.nodes(edge.target);
+        if (window.awaitingDisconnectConfirmation && window.awaitingDisconnectConfirmationNodeId !== target.id) {
+            return;
+        }
+        if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id) {
+            return;
+        }
+        switch (edge.state) {
+            case 'pre-severed':
+                target.state = 'awaitingEdgeConnection';
+                edge.state = 'severed';
+                window.awaitingEdgeConnection = true;
+                window.awaitingEdgeConnectionNodeId = target.id;
+                window.awaitingDisconnectConfirmationNodeId = null;
+                window.awaitingDisconnectConfirmation = false;
+                // s.graph.dropEdge(edge.id)
+
+                const parentlessNode = target;
+                showPossibleEdges(parentlessNode);
+
+                break;
+            default:
+                window.edgeIdBeingChanged = edge.id;
+                edge.state = 'pre-severed';
+                window.awaitingDisconnectConfirmationNodeId = target.id;
+                window.awaitingDisconnectConfirmation = true;
+                break;
+        }
+        s.refresh();
+    });
 }
+function click_SUGGESTED_CONNECTION(edge) {
+    const permanentEdge = {
+        id: createEdgeId(edge.source, edge.target),
+        source: edge.source,
+        target: edge.target,
+        type: EDGE_TYPES.HIERARCHICAL,
+        color: edge.color,
+        size: edge.size
+    };
+    const parentlessNode = s.graph.nodes(edge.target);
+    parentlessNode.state = 'normal';
+    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(parentlessNode.id).then(tree => {
+        tree.changeParent(edge.source);
+        s.graph.addEdge(permanentEdge);
+        window.awaitingEdgeConnectionNodeId = null;
+        window.awaitingEdgeConnection = false;
+        removeSuggestedEdges();
+        const originalEdge = s.graph.edges(window.edgeIdBeingChanged);
+        originalEdge && s.graph.dropEdge(originalEdge.id);
+        s.refresh();
+        window.suggestedConnectionClicked = true;
+    }
+    // PubSub.publish('canvas.parentReconnect.reconnected')
+    );
+}
+function removeEdgeToParent(node) {
+    var parentId = node.parentId;
+    var edgeId = createEdgeId(parentId, node.id);
+    s.graph.dropEdge(edgeId);
+}
+window.haloSizeScalingFactor = 1.00;
+window.scalingOffset = 20;
+setInterval(() => {
+    switch (window.scalingOffset) {
+        case -20:
+            window.scalingOffset = -10;
+            break;
+        case -10:
+            window.scalingOffset = 0;
+            break;
+        case 0:
+            window.scalingOffset = 10;
+            break;
+        case 10:
+            window.scalingOffset = 20;
+            break;
+        case 20:
+            window.scalingOffset = 30;
+            break;
+        case 30:
+            window.scalingOffset = 21;
+            break;
+        case 21:
+            window.scalingOffset = 11;
+            break;
+        case 11:
+            window.scalingOffset = 1;
+            break;
+        case 1:
+            window.scalingOffset = -9;
+            break;
+        case -9:
+            window.scalingOffset = -20;
+            break;
+    }
+    window.haloSizeScalingFactor = 1 + window.scalingOffset / 1000;
+    window.haloEdgeSizeScalingFactor = 1 + 4 * window.scalingOffset / 1000;
+    s && s.refresh();
+}, 100);
+
+function showPossibleEdges(parentlessNode) {
+    var nodesOnScreen = s.graph.nodes().filter(node => node.onScreen //>>>>> seems to be returning nothing >>// s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
+    );var headingsOnScreen = nodesOnScreen.filter(node => node.content.type == 'heading' // node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
+
+    );headingsOnScreen.forEach(node => {
+        const edge = {
+            id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
+            source: node.id,
+            target: parentlessNode.id,
+            size: 5,
+            color: parentlessNode.color,
+            type: EDGE_TYPES.SUGGESTED_CONNECTION
+        };
+        s.graph.addEdge(edge);
+        s.refresh();
+    }
+    // var parentLessNode
+
+    );
+}
+function removeSuggestedEdges() {
+    const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id //map(e => e.id).forEach(s.graph.dropEdge)
+    );edgeIdsToRemove.forEach(id => {
+        s.graph.dropEdge(id);
+    }
+    // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
+    );
+}
+window.printNodesOnScreen = function () {
+    var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height));
+    console.log('nodes on screen is', nodesOnScreen);
+};
+
 function printNodeInfo(e) {
     console.log(e, e.data.node);
 }
@@ -7848,9 +8003,8 @@ function syncGraphWithNode(treeId) {
     __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
         __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(content => {
             //update the node
-            var sigmaNode = s.graph.nodes(treeId
-            // console.log('sigmaNode X/Y initial =', sigmaNode, sigmaNode.x, sigmaNode.y)
-            );sigmaNode.x = tree.x;
+            var sigmaNode = s.graph.nodes(treeId);
+            sigmaNode.x = tree.x;
             sigmaNode.y = tree.y;
             var color = getTreeColor(content);
             sigmaNode.color = color;
@@ -7860,14 +8014,12 @@ function syncGraphWithNode(treeId) {
             var sigmaEdge = s.graph.edges(edgeId);
             sigmaEdge.color = color;
 
-            // console.log('sigmaNode X/Y after =', sigmaNode, sigmaNode.x, sigmaNode.y)
             s.refresh();
         });
     });
 }
 function updateTreePosition(data) {
     let { newX, newY, treeId } = data;
-    // console.log('update tree position called!', newX, newY, treeId, data)
     // let newX = e.data.node.x
     // let newY = e.data.node.y
     // let treeId = e.data.node.id;
@@ -7918,7 +8070,8 @@ function addTreeToGraph(parentTreeId, content) {
         source: parentTreeId,
         target: newTree.id,
         size: 5,
-        color: getTreeColor(content)
+        color: getTreeColor(content),
+        type: EDGE_TYPES.HIERARCHICAL
     };
     s.graph.addEdge(newEdge);
 
@@ -7934,13 +8087,9 @@ function initSigmaPlugins() {
     jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5');
 
     var myRenderer = s.renderers[0];
-
-    // console.log('my renderenr is', myRenderer, s.renderers)
 }
 
-PubSub.subscribe('canvas.zoom', function (a, b, c, d) {
-    console.log('canvas zoom called in treesGraph js');
-}
+PubSub.subscribe('canvas.zoom', function (a, b, c, d) {}
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
  */
@@ -8046,7 +8195,7 @@ class ContentItem {
         let sections = this.getURIWithoutRootElement().split("/"
         // console.log('breadcrumb sections for ', this,' are', sections)
         );let sectionsResult = sections.reduce((accum, val) => {
-            if (val == "null" || val == "content") {
+            if (val == "null" || val == "content" || val == "Everything") {
                 //filter out sections of the breadcrumbs we dont want // really just for the first section tho
                 return accum;
             }
@@ -18301,7 +18450,6 @@ class Exercise {
     static create(exercise) {
         let updates = {};
         updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-        console.log('updates in exerciseItem.create are', updates);
         firebase.database().ref().update(updates);
         return exercise;
     }
@@ -32984,7 +33132,6 @@ module.exports = {
 
         __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].getAllExceptForHeadings().then(items => {
             this.items = items;
-            console.log('items received from api is', items);
             var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
                 var item = items[key];
                 var breadCrumb = item.getBreadCrumbs();
@@ -38756,7 +38903,7 @@ module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-cre
 /* 217 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <a class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n            <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n        </a>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"> A > B > CD > E > F > G > H</div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <a class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n            <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n        </a>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 218 */
@@ -38798,7 +38945,7 @@ module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-la
 /* 224 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <div class=\"tree-debugging-info\">\r\n        URI: {{content.uri}} ---\r\n        INITIALParentID: {{content.initialParentId}} ---\r\n        contentID: {{content.id}}\r\n        TYPE: {{content.type}}\r\n    </div>\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n        <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild\"></newtree>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
 
 /***/ }),
 /* 225 */
