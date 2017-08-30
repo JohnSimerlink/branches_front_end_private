@@ -153,8 +153,9 @@ function getLabelFromContent(content) {
         case "fact":
             return content.question;
         case "heading":
-            return content.title
-            return content.title
+            return content.title;
+        case "skill":
+            return content.title;
     }
 }
 function createEdgeId(nodeOneId, nodeTwoId){
@@ -230,7 +231,7 @@ function initSigma(){
     PubSub.subscribe('canvas.outNode', function(eventName, data){
         mobileOutNode();
         var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grab'
+        canvas.style.cursor = '-webkit-grab'
     })
 }
 function printNodeInfo(e){

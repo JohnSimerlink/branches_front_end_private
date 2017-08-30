@@ -124,23 +124,6 @@
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=257685958060788";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-<<<<<<< HEAD
-<!-- END FB Login -->
-    <div class='page'>
-        <div id="branches-app">
-            <branches-header></branches-header>
-            <toolbar></toolbar>
-            <div id="container">
-                <div id="graph-container">
-                </div>
-            </div>
-            <mobile-answer-tray></mobile-answer-tray>
-            <!--<review-schedule></review-schedule>-->
-        </div>
-    </div>
-
-    <script>document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");</script>
-=======
 
 <script>
     var graphContainer = document.querySelector('#graph-container')
@@ -168,7 +151,7 @@
                     '</div>' +
                 '</div>' +
                 '<exercise-creator-container style="height:' + graphHeight + 'px;" v-if="exercisecreator"></exercise-creator-container>' +
-                '<!--<review-schedule></review-schedule>-->' +
+                '<mobile-answer-tray></mobile-answer-tray>' +
                 '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
             '</div>' +
         '</div>' +
@@ -197,6 +180,5 @@
 //window.scrollTo(0,1);// hide url / browser bar on mobile
 toggleFullScreen()
 </script>
->>>>>>> master
 </body>
 </html>
