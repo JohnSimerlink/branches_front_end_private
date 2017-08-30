@@ -1,4 +1,4 @@
-import PubSub from 'pubsub-js'
+// import PubSub from 'pubsub-js'
 import {Trees} from '../../objects/trees';
 import ContentItem from '../../objects/contentItem';
 export default {
