@@ -20,6 +20,9 @@
         defaultNodeColor = settings('defaultNodeColor'),
         defaultEdgeColor = settings('defaultEdgeColor');
 
+    if (edge.state == 'severed') {
+        return
+    }
     if (!color)
       switch (edgeColor) {
         case 'source':
@@ -32,9 +35,13 @@
           color = defaultEdgeColor;
           break;
       }
+      if (window.awaitingEdgeConnection){
+        console.log('color is', color, colorToRgbString(color))
+        color = setOpacityOfRgbString(colorToRgbString(color), .5)
+      }
 
     context.strokeStyle = color;
-    context.lineWidth = size;
+    context.lineWidth = edge.active ? size * 5: size * 3;
     context.beginPath();
     context.moveTo(
       source[prefix + 'x'],
@@ -45,5 +52,33 @@
       target[prefix + 'y']
     );
     context.stroke();
+
+    if (edge.state == "pre-severed") {
+
+        var x1 = source[prefix + 'x'],
+            x2= target[prefix + 'x'],
+            y1 = source[prefix + 'y'],
+            y2 = target[prefix + 'y']
+        var midX = (x1 + x2) / 2,
+            midY = (y1 + y2) / 2
+
+
+        var X_LEG_SIZE = 20
+        context.beginPath();
+        context.moveTo(midX - X_LEG_SIZE, midY - X_LEG_SIZE)
+        context.lineTo(midX + X_LEG_SIZE, midY + X_LEG_SIZE)
+        context.stroke()
+
+        context.beginPath();
+        context.moveTo(midX + X_LEG_SIZE, midY - X_LEG_SIZE)
+        context.lineTo(midX - X_LEG_SIZE, midY + X_LEG_SIZE)
+        context.stroke()
+    }
+
+
+
+
+
+
   };
 })();
