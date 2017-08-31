@@ -200,4 +200,16 @@ export default class ContentItem {
     isProficiencyFour(){
         return this.proficiency == PROFICIENCIES.FOUR
     }
+    //returns exerciseId of the best exercise for the user
+    //returns null if no exercise found
+    getBestExerciseId(){
+        const exerciseKeys = Object.keys(this.exercises);
+        if (exerciseKeys.length <= 0) {
+            return null
+        }
+        var keyIndex = Math.floor(Math.random() * exerciseKeys.length)
+        const exercise = exerciseKeys[keyIndex]
+
+        return exercise
+    }
 }

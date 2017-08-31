@@ -32,5 +32,13 @@ export default class ExerciseQA extends Exercise {
         const exerciseQA = new ExerciseQA({contentItemIds, question, answer})
         return super.create(exerciseQA)
     }
+    editQuestion(){
+        //create new exercise
+
+        //remove old exercise from any locations it was in - except user interactions
+            //as a property under certain contentItems
+
+        //add modified exercise to any locations it belongs in
+    }
 
 }

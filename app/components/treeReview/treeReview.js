@@ -7,12 +7,14 @@ import './treeReview.less'
 
 import {PROFICIENCIES} from '../proficiencyEnum'
 import invert from 'invert-object'
+import {Trees} from "../../objects/trees";
 
 export default {
     template: require('./treeReview.html'),
     created () {
         var me = this
         // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
+        this.treeid = '83cbe6ea3fa874449982b645f04d14a1'
         this.exercise = {}
         this.items = []
         this.breadcrumbsAllButLast = []
@@ -31,7 +33,15 @@ export default {
         // ]
         this.proficiencyForAllItems = PROFICIENCIES.UNKNOWN
         function initReview(){
+            Trees.get(me.treeid).then(tree => {
+                ContentItems.get(tree.contentId).then(contentItem => {
+                    me.exerciseId = contentItem.getBestExerciseId()
+                    initExercise()
+                })
+            })
             me.exerciseId = '536bd726cac153319de8f5e65aac1ce0'
+        }
+        function initExercise(){
             Exercises.get(me.exerciseId).then(exercise => {
                 me.breadcrumbs = [
                     {text: "Spanish",},
@@ -47,6 +57,7 @@ export default {
                         // item.title = item.id
                         item.title = item.getBreadCrumbs()
                         me.items.push(item)
+                        console.log('item id is', item.id)
                     })
                 })
             })
@@ -100,10 +111,17 @@ export default {
             return item.proficiency == PROFICIENCIES.ONE
         },
         nextQuestion(){
-
+            this.items.forEach(item => {
+                item.setProficiency(item.proficiency) // update the item's proficiency in the db. right now its just updated locally
+            })
         },
         flip() {
             this.flipped = !this.flipped
+        },
+        editExercise(){
+            window.exerciseToReplaceId = this.exerciseId
+            PubSub.publish('goToState.exerciseCreator')
         }
+
     },
 }

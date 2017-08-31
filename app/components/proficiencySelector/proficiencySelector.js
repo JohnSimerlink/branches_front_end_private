@@ -5,7 +5,6 @@ export default {
     props: ['value'],
     template: require('./proficiencySelector.html'),
     created () {
-        console.log("this value is",this.value)
     },
     data () {
         return {
