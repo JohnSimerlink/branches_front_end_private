@@ -21,7 +21,7 @@
             <i class="fa fa-undo" aria-hidden="true"></i>
         </div>
         <div class="tree-review-answer-container" v-if="flipped">
-            <div class="tree-review-answer">{{exercise.answer}}</div>
+            <div class="tree-review-answer">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i></div>
         </div>
         <div class="tree-review-proficiency-container" v-if="flipped">
             How well did you know this?
