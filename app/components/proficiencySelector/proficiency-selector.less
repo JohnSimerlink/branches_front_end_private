@@ -1,0 +1,34 @@
+@import '../tree/tree.less';
+.proficiency-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center
+}
+.proficiency-selector-item {
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+}
+.proficiency-selector-item-active {
+  min-width: 27px;
+  max-width: 27px;
+  min-height: 27px;
+  max-height: 27px;
+}
+.proficiency-selector-item-zero {
+  .tree-proficiency-unknown;
+}
+.proficiency-selector-item-one {
+  .tree-proficiency-values-one;
+}
+.proficiency-selector-item-two {
+  .tree-proficiency-values-two;
+}
+.proficiency-selector-item-three {
+  .tree-proficiency-values-three;
+}
+.proficiency-selector-item-four {
+  .tree-proficiency-values-four;
+}

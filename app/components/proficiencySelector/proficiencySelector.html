@@ -1,0 +1,7 @@
+<div class="proficiency-selector">
+    <div class="proficiency-selector-item proficiency-selector-item-zero" v-bind:class="{'proficiency-selector-item-active': proficiencyIsUnknown}"></div>
+    <div class="proficiency-selector-item proficiency-selector-item-one" v-bind:class="{'proficiency-selector-item-active': proficiencyIsOne}" v-on:click="setProficiencyToOne"></div>
+    <div class="proficiency-selector-item proficiency-selector-item-two" v-bind:class="{'proficiency-selector-item-active': proficiencyIsTwo}" v-on:click="setProficiencyToTwo"></div>
+    <div class="proficiency-selector-item proficiency-selector-item-three" v-bind:class="{'proficiency-selector-item-active': proficiencyIsThree}" v-on:click="setProficiencyToThree"></div>
+    <div class="proficiency-selector-item proficiency-selector-item-four" v-bind:class="{'proficiency-selector-item-active': proficiencyIsFour}" v-on:click="setProficiencyToFour"></div> {{value}}
+</div>
