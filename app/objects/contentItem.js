@@ -2,6 +2,8 @@ const content = {}
 window.content = content //expose to window for easy debugging
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
+import {PROFICIENCIES} from "../components/proficiencyEnum";
+
 export default class ContentItem {
 
     constructor(args) {
@@ -181,5 +183,21 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency});
+    }
+    //methods for html templates
+    isProficiencyUnknown(){
+        return this.proficiency == PROFICIENCIES.UNKNOWN
+    }
+    isProficiencyOne(){
+        return this.proficiency == PROFICIENCIES.ONE
+    }
+    isProficiencyTwo(){
+        return this.proficiency == PROFICIENCIES.TWO
+    }
+    isProficiencyThree(){
+        return this.proficiency == PROFICIENCIES.THREE
+    }
+    isProficiencyFour(){
+        return this.proficiency == PROFICIENCIES.FOUR
     }
 }

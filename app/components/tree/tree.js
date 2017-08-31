@@ -7,6 +7,7 @@ import {Heading} from "../../objects/heading";
 import {removeTreeFromGraph} from "../treesGraph"
 import {secondsToPretty} from "../../core/filters"
 import {Skill} from "../../objects/skill";
+import {PROFICIENCIES} from "../proficiencyEnum";
 import './tree.less'
 
 export default {
@@ -91,19 +92,19 @@ export default {
             this.addingChild = !this.addingChild
         },
         setProficiencyToOne() {
-            this.content.setProficiency(0)
+            this.content.setProficiency(PROFICIENCIES.ONE)
             syncGraphWithNode(this.tree.id)
         },
         setProficiencyToTwo() {
-            this.content.setProficiency(33)
+            this.content.setProficiency(PROFICIENCIES.TWO)
             syncGraphWithNode(this.tree.id)
         },
         setProficiencyToThree() {
-            this.content.setProficiency(66)
+            this.content.setProficiency(PROFICIENCIES.THREE)
             syncGraphWithNode(this.tree.id)
         },
         setProficiencyToFour() {
-            this.content.setProficiency(100)
+            this.content.setProficiency(PROFICIENCIES.FOUR)
             syncGraphWithNode(this.tree.id)
         },
         toggleAddChild(){

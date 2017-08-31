@@ -4,10 +4,10 @@
         <div class="tree-review-header-right">
             <span class="tree-review-breadcrumbs">
                 <span class="tree-review-breadcrumb" v-for="breadcrumb in breadcrumbsAllButLast">
-                    <span v-bind:class="breadcrumb.classObject">{{breadcrumb.text}} <span class="breadcrumb-arrow">> </span></span>
+                    <span >{{breadcrumb.text}} <span class="breadcrumb-arrow">> </span></span>
                 </span>
                 <span class="tree-review-breadcrumb">
-                    <span v-bind:class="lastBreadcrumb.classObject">{{lastBreadcrumb.text}}</span>
+                    <span >{{lastBreadcrumb.text}}</span>
                 </span>
             </span>
             <span class="tree-review-timer">
@@ -16,12 +16,14 @@
         </div>
     </header>
     <div class="tree-review-body">
-        <div class="tree-review-question">I love my mother</div>
-        <div class="tree-review-answer-container">
-            <div class="tree-review-answer">Amo mi madre</div>
-            <div class="tree-review-flip-arrow">Flip</div>
+        <div class="tree-review-question-container" v-on:click="flip">
+            <div class="tree-review-question" >{{exercise.question}}</div>
+            <i class="fa fa-undo" aria-hidden="true"></i>
         </div>
-        <div class="tree-review-proficiency-container">
+        <div class="tree-review-answer-container" v-if="flipped">
+            <div class="tree-review-answer">{{exercise.answer}}</div>
+        </div>
+        <div class="tree-review-proficiency-container" v-if="flipped">
             How well did you know this?
             <div v-if="oneItemTested">
             </div>
@@ -31,12 +33,12 @@
             <div class="tree-review-item-select-all-divider"></div>
             <div v-for="item in items">
                 <span class="tree-review-item">
-                    <span class="tree-review-item-title">{{item.title}}</span>
+                    <span class="tree-review-item-title" :class="{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}">{{item.title}}</span>
                     <proficiency-selector v-model="item.proficiency"></proficiency-selector>
                 </span>
             </div>
+            <button class="tree-review-next-question ui button positive" v-on:click="nextQuestion">Next Question</button>
         </div>
-        <button class="tree-review-next-question ui button positive" v-on:click="nextQuestion">Next Question</button>
     </div>
 </div>
 
