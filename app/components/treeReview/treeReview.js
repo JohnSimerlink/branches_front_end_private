@@ -15,54 +15,10 @@ export default {
         var me = this
         // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
         this.treeid = '83cbe6ea3fa874449982b645f04d14a1'
-        this.exercise = {}
-        this.items = []
-        this.breadcrumbsAllButLast = []
-        this.lastBreadcrumb = {}
         // this.items = []
-        initReview()
+        me.initReview()
 
-        // this.breadcrumbsPreActive = 'A > B > Cat'
-        // this.breadcrumbsActive = 'Dog'
-        // this.breadcrumbsPostActive = 'Eel > Wheel > Peel'
-        // this.itemIds = {12345: true} //[12345]
-        // this.items = [
-        //     {title: "2nd Person Singular", proficiency: PROFICIENCIES.UNKNOWN},
-        //     {title: "3rd Person Singular", proficiency: PROFICIENCIES.ONE},
-        //     {title: "1st Person Singular", proficiency: PROFICIENCIES.TWO},
-        // ]
         this.proficiencyForAllItems = PROFICIENCIES.UNKNOWN
-        function initReview(){
-            Trees.get(me.treeid).then(tree => {
-                ContentItems.get(tree.contentId).then(contentItem => {
-                    me.exerciseId = contentItem.getBestExerciseId()
-                    initExercise()
-                })
-            })
-            me.exerciseId = '536bd726cac153319de8f5e65aac1ce0'
-        }
-        function initExercise(){
-            Exercises.get(me.exerciseId).then(exercise => {
-                me.breadcrumbs = [
-                    {text: "Spanish",},
-                    {text: "Conjugating",},
-                    {text: "Indicative Mood",},
-                    {text: "1st Person Singular",},
-                ]
-                me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
-                me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
-                me.exercise = exercise
-                Object.keys(exercise.contentItemIds).forEach(itemId => {
-                    ContentItems.get(itemId).then(item => {
-                        // item.title = item.id
-                        item.title = item.getBreadCrumbs()
-                        me.items.push(item)
-                        console.log('item id is', item.id)
-                    })
-                })
-            })
-            me.flipped = false
-        }
     },
     data () {
         return {
@@ -95,6 +51,43 @@ export default {
         }
     },
     methods: {
+        initReview(){
+            this.flipped = false
+            this.exercise = {}
+            this.items = []
+            this.breadcrumbsAllButLast = []
+            this.lastBreadcrumb = {}
+            const me = this
+            Trees.get(me.treeid).then(tree => {
+                ContentItems.get(tree.contentId).then(contentItem => {
+                    me.exerciseId = contentItem.getBestExerciseId()
+                    me.initExercise()
+                })
+            })
+        },
+        initExercise(){
+            const me = this
+            Exercises.get(me.exerciseId).then(exercise => {
+                me.exercise = exercise
+                me.breadcrumbs = [
+                    {text: "Spanish",},
+                    {text: "Conjugating",},
+                    {text: "Indicative Mood",},
+                    {text: "1st Person Singular",},
+                ]
+                me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
+                me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
+                Object.keys(exercise.contentItemIds).forEach(itemId => {
+                    ContentItems.get(itemId).then(item => {
+                        // item.title = item.id
+                        item.title = item.getBreadCrumbsString()
+                        me.items.push(item)
+                        console.log('item id is', item.id)
+                    })
+                })
+            })
+            me.flipped = false
+        },
         updateProficiency(item, proficiency) {
             console.log('proficiency updated', item, proficiency)
         },
@@ -114,14 +107,32 @@ export default {
             this.items.forEach(item => {
                 item.setProficiency(item.proficiency) // update the item's proficiency in the db. right now its just updated locally
             })
+            var snack = new Snack({
+                domParent: document.querySelector('.tree-review')
+            });
+            // show a snack for 4s
+            snack.show('+300 points', 1000);
+            this.initReview()
         },
         flip() {
             this.flipped = !this.flipped
+            console.log('this.flip called')
+        },
+        flipIfNotFlipped() {
+            console.log('flipp if not flipped called')
+            if (!this.flipped){
+                this.flipped = true
+            }
         },
         editExercise(){
             window.exerciseToReplaceId = this.exerciseId
             PubSub.publish('goToState.exerciseCreator')
+        },
+        deleteExercise(){
+            if (confirm("Are you sure you want to delete this exercise? For every single user?")){
+                this.exercise.delete()
+                this.initReview()
+            }
         }
-
     },
 }

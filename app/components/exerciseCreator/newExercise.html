@@ -8,5 +8,5 @@
         <textarea rows="2" id='new-exercise-answer' v-model="answer"></textarea>
     </div>
     <button class="new-exercise-submit ui button positive" v-if='!window.exerciseToReplaceId' v-on:click="createExercise">CREATE EXERCISE</button>
-    <button class="new-exercise-submit ui button positive" v-if='window.exerciseToReplaceId' v-on:click="createExercise">EDIT EXERCISE</button>
+    <button class="new-exercise-submit ui button positive" v-if='window.exerciseToReplaceId' v-on:click="replaceExercise">SAVE CHANGES</button>
 </div>

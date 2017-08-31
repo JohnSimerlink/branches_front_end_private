@@ -57,7 +57,7 @@ export default class ContentItem {
     getURIWithoutRootElement(){
         return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
     }
-    getBreadCrumbs(){
+    getBreadCrumbsString(){
         let sections = this.getURIWithoutRootElement().split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
@@ -65,7 +65,7 @@ export default class ContentItem {
                 return accum
             }
             return accum + " > " + decodeURIComponent(val)
-        } )
+        })
         return sectionsResult
         // console.log('breadcrumb result is', sectionsResult)
         //
@@ -75,6 +75,7 @@ export default class ContentItem {
         // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
         // return breadcrumbs
     }
+
     /**
      * Used to update tree X and Y coordinates
      * @param prop
@@ -145,6 +146,10 @@ export default class ContentItem {
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
+    }
+    removeExercise(exerciseId){
+        delete this.exercises[exerciseId] // remove from local cache
+        firebase.database().ref('content/' + this.id +'/exercises/').child(exerciseId).remove() //delete from db
     }
     setProficiency(proficiency) {
         !this.inStudyQueue && this.addToStudyQueue()
