@@ -1,7 +1,10 @@
+@import '../common.less';
+
 .tree-review-container {
-  background-color: orange;
+  background-color: black;
+  color: white; //rgba(250,253, 255,1); //lightskyblue;
 }
-.tree-review {
+.tree-review-body {
   padding: 4px 8px 4px 8px;
 }
 .tree-review-header {
@@ -9,6 +12,8 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  background-color: @globalBackground;
+  padding: 4px 8px 4px 8px;
 }
 .tree-review-header-right {
   width: 100%;
@@ -40,4 +45,28 @@
 }
 .tree-review-next-question {
   float: right;
+}
+
+.tree-review-question-container {
+  padding: 18px 0px 18px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.tree-review-answer-container {
+  padding-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tree-review-flip-arrow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,40 +1,57 @@
 import Exercise from "../../objects/exercise";
+import Exercises from "../../objects/exercises";
 import ExerciseQA from "../../objects/exerciseQA";
 import ContentItems from "../../objects/contentItems";
 import Snack from '../../../node_modules/snack.js/dist/snack'
 import './treeReview.less'
 
-import {PROFICIENCIES} from '../proficiencySelector/proficiencySelector'
+import {PROFICIENCIES} from '../proficiencyEnum'
 import invert from 'invert-object'
 
 export default {
     template: require('./treeReview.html'),
     created () {
         var me = this
-        this.breadcrumbs = [
-            {text: "Spanish",},
-            {text: "Conjugating",},
-            {text: "Indicative Mood",},
-            {text: "1st Person Singular",},
-        ]
-        this.breadcrumbsAllButLast = this.breadcrumbs.splice(0,this.breadcrumbs.length - 1)
-        this.lastBreadcrumb = this.breadcrumbs[this.breadcrumbs.length - 1]
-        this.breadcrumbsPreActive = 'A > B > Cat'
-        this.breadcrumbsActive = 'Dog'
-        this.breadcrumbsPostActive = 'Eel > Wheel > Peel'
-        this.items = {} // [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
+        // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
+        this.exercise = {}
+        this.items = []
+        this.breadcrumbsAllButLast = []
+        this.lastBreadcrumb = {}
+        // this.items = []
+        initReview()
+
+        // this.breadcrumbsPreActive = 'A > B > Cat'
+        // this.breadcrumbsActive = 'Dog'
+        // this.breadcrumbsPostActive = 'Eel > Wheel > Peel'
         // this.itemIds = {12345: true} //[12345]
-        this.selectedItems = []
-        this.selectedItemIds = []
-        this.question=""
-        this.answer=""
-        this.tags = null
-        this.items = [
-            {title: "2nd Person Singular", proficiency: PROFICIENCIES.UNKNOWN},
-            {title: "3rd Person Singular", proficiency: PROFICIENCIES.ONE},
-            {title: "1st Person Singular", proficiency: PROFICIENCIES.TWO},
-        ]
+        // this.items = [
+        //     {title: "2nd Person Singular", proficiency: PROFICIENCIES.UNKNOWN},
+        //     {title: "3rd Person Singular", proficiency: PROFICIENCIES.ONE},
+        //     {title: "1st Person Singular", proficiency: PROFICIENCIES.TWO},
+        // ]
         this.proficiencyForAllItems = PROFICIENCIES.UNKNOWN
+        function initReview(){
+            me.exerciseId = '536bd726cac153319de8f5e65aac1ce0'
+            Exercises.get(me.exerciseId).then(exercise => {
+                me.breadcrumbs = [
+                    {text: "Spanish",},
+                    {text: "Conjugating",},
+                    {text: "Indicative Mood",},
+                    {text: "1st Person Singular",},
+                ]
+                me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
+                me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
+                me.exercise = exercise
+                Object.keys(exercise.contentItemIds).forEach(itemId => {
+                    ContentItems.get(itemId).then(item => {
+                        // item.title = item.id
+                        item.title = item.getBreadCrumbs()
+                        me.items.push(item)
+                    })
+                })
+            })
+            me.flipped = false
+        }
     },
     data () {
         return {
@@ -45,6 +62,8 @@ export default {
             breadcrumbsPostActive: this.breadcrumbsPostActive,
             items: this.items,
             proficiencyForAllItems: this.proficiencyForAllItems,
+            exercise: this.exercise,
+            flipped: this.flipped,
         }
     },
     computed: {
@@ -74,8 +93,17 @@ export default {
                 item.proficiency = me.proficiencyForAllItems
             })
         },
+        proficiencyUnknown(item){
+         return item.proficiency == PROFICIENCIES.UNKNOWN
+        },
+        proficiencyOne(item){
+            return item.proficiency == PROFICIENCIES.ONE
+        },
         nextQuestion(){
 
+        },
+        flip() {
+            this.flipped = !this.flipped
         }
     },
 }

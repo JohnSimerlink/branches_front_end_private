@@ -2,6 +2,7 @@ import './components'
 import './filters'
 import './objects'
 import './utils'
+import '../components/main.less'
 import Vue from 'vue'
 var vm = new Vue({
     el: '#branches-app',

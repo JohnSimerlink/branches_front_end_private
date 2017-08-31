@@ -4,6 +4,7 @@ import {Tree} from '../objects/tree.js'
 import {Globals} from '../core/globals.js'
 import '../core/login.js'
 
+
 import Vue from 'vue'
 import user from '../objects/user'
 var initialized = false;
@@ -214,6 +215,7 @@ function initSigma(){
     })
     PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
         var node = data
+        console.log(data)
         if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
           return
         }
