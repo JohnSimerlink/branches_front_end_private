@@ -34,16 +34,17 @@ export default {
             {title: "3rd Person Singular", proficiency: PROFICIENCIES.ONE},
             {title: "1st Person Singular", proficiency: PROFICIENCIES.TWO},
         ]
+        this.proficiencyForAllItems = PROFICIENCIES.UNKNOWN
     },
     data () {
         return {
-            oneItemTested: true,
             breadcrumbsAllButLast:this.breadcrumbsAllButLast,
             lastBreadcrumb:this.lastBreadcrumb,
             breadcrumbsPreActive: this.breadcrumbsPreActive,
             breadcrumbsActive: this.breadcrumbsActive,
             breadcrumbsPostActive: this.breadcrumbsPostActive,
             items: this.items,
+            proficiencyForAllItems: this.proficiencyForAllItems,
         }
     },
     computed: {
@@ -59,10 +60,22 @@ export default {
             )
             return selectedBreadcrumbs
         },
+        oneItemTested() {
+            return this.items.length == 0
+        }
     },
     methods: {
         updateProficiency(item, proficiency) {
             console.log('proficiency updated', item, proficiency)
+        },
+        updateProficiencyForAllItems(){
+            const me = this
+            this.items.forEach( item => {
+                item.proficiency = me.proficiencyForAllItems
+            })
+        },
+        nextQuestion(){
+
         }
     },
 }
