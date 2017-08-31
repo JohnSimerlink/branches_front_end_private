@@ -4,12 +4,6 @@ export default {
     created () {
         var me = this;
     },
-    data () {
-        return {
-        }
-    },
-    computed : {
-    },
     methods: {
         goToHome() {
             PubSub.publish('goToState.home')

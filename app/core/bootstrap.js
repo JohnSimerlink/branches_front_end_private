@@ -19,7 +19,7 @@ var vm = new Vue({
     },
     data() {
         return {
-            state: 'home',
+            state: 'treeReview',
         }
     },
     computed: {

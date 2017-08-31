@@ -13,6 +13,8 @@ import ExerciseList from '../components/exerciseList/exerciseList'
 import Tree from '../components/tree/tree'
 import NewTree from '../components/newTree/newtreecomponent'
 import Toolbar from '../components/toolbar/toolbar'
+import GoToHome from '../components/goToHome/goToHome'
+import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // Vue.component('branchesHeader', Header)
 Vue.component('branchesFooter', Footer)
 Vue.component('reviewSchedule', ReviewSchedule)
@@ -26,3 +28,5 @@ Vue.component('newExercise', NewExercise)
 Vue.component('tree', Tree)
 Vue.component('newtree', NewTree)
 Vue.component('toolbar', Toolbar)
+Vue.component('goToHome', GoToHome)
+Vue.component('proficiencySelector', ProficiencySelector)

@@ -1,19 +1,43 @@
 <div class="tree-review">
     <header class="tree-review-header">
-        <a class="tree-review-header-left" v-on:click="goToHome">
-            <i class="tree-review-goToHome fa fa-arrow-left" aria-hidden="true"></i>
-        </a>
+        <go-to-home></go-to-home>
         <div class="tree-review-header-right">
-            <div class="tree-review-breadcrumbs"><!-- A > B > CD > E > F > G > H --></div>
-            <div class="tree-review-create-button-container">
-                <div class="tree-review-create-button">TREE REVIEW</div>
-            </div>
+            <span class="tree-review-breadcrumbs">
+                <span class="tree-review-breadcrumb" v-for="breadcrumb in breadcrumbsAllButLast">
+                    <span v-bind:class="breadcrumb.classObject">{{breadcrumb.text}} <span class="breadcrumb-arrow">> </span></span>
+                </span>
+                <span class="tree-review-breadcrumb">
+                    <span v-bind:class="lastBreadcrumb.classObject">{{lastBreadcrumb.text}}</span>
+                </span>
+            </span>
+            <span class="tree-review-timer">
+                30m 5s
+            </span>
         </div>
     </header>
     <div class="tree-review-body">
-        <!--<content-list class="tree-review-content-list"></content-list>-->
-        <new-exercise class="tree-review-new-exercise"></new-exercise>
-        <!--<exercise-list class="tree-review-exercise-list"></exercise-list>-->
+        <div class="tree-review-question">I love my mother</div>
+        <div class="tree-review-answer-container">
+            <div class="tree-review-answer">Amo mi madre</div>
+            <div class="tree-review-flip-arrow">Flip</div>
+        </div>
+        <div class="tree-review-proficiency-container">
+            <div v-if="oneItemTested">
+                How well did you know this?
+            </div>
+            <div v-for="item in items">
+
+                <!--{{item.title}} : {{item.proficiency}} : <proficiency-selector proficiency="item.proficiency" item='item' v-on:change="updateProficiency"></proficiency-selector>-->
+                {{item.title}} : {{item.proficiency}} : <proficiency-selector v-model="item.proficiency"></proficiency-selector>
+                <!--<span class="proficiency-selector">-->
+                   <!--<span class="proficiency-selector-zero"></span>-->
+                   <!--<span class="proficiency-selector-one"></span>-->
+                   <!--<span class="proficiency-selector-two"></span>-->
+                   <!--<span class="proficiency-selector-three"></span>-->
+                   <!--<span class="proficiency-selector-four"></span>-->
+                <!--</span>-->
+            </div>
+        </div>
     </div>
 </div>
 
