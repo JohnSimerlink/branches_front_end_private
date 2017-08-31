@@ -33,7 +33,7 @@ export default {
             this.items = items
             var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
                 var item = items[key]
-                var breadCrumb = item.getBreadCrumbs()
+                var breadCrumb = item.getBreadCrumbsString()
                 map[breadCrumb] = item.id
                 return map
             },{})
@@ -154,10 +154,26 @@ export default {
 
         },
         replaceExercise(){
-            Exercises.get(this.exerciseToReplaceId).then(exercise => {
+            const exerciseData = this.getExerciseData()
+            //TODO allow creation of other types of exercises than QA
+            const newExercise = ExerciseQA.create(exerciseData)
 
+            Exercises.get(window.exerciseToReplaceId).then(exercise => {
+                exercise.contentItemIds.forEach(contentItemId => {
+                    ContentItems.get(contentItemId).then(contentItem => {
+                        contentItem.removeExercise(this.exerciseToReplaceId)
+                        contentItem.addExercise(newExercise.id)
+                    })
+                })
             })
 
+            var snack = new Snack({
+                domParent: document.querySelector('.new-exercise')
+            });
+            // show a snack for 4s
+            snack.show('Exercise edited!', 4000);
+
+            //TODO: eventually redirect the user back to the tree/exercise they were studying
 
         }
     },

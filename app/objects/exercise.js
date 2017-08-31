@@ -1,6 +1,8 @@
 /**
  * abstract class - only subtypes should be instantiated
  */
+import ContentItems from "./contentItems";
+
 export default class Exercise {
     constructor ({contentItemIds = {}}){
         this.contentItemIds = contentItemIds
@@ -25,6 +27,15 @@ export default class Exercise {
         updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
         firebase.database().ref().update(updates);
         return exercise;
+    }
+    delete() {
+        const me = this
+        //remove this exercise from any contentItems so it is unsearchable
+        Object.keys(this.contentItemIds).forEach(contentItemId => {
+            ContentItems.get(contentItemId).then(contentItem => {
+                contentItem.removeExercise(me.id)
+            })
+        })
     }
 
 }

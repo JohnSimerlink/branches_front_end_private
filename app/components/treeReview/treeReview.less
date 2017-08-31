@@ -4,8 +4,12 @@
   background-color: black;
   color: white; //rgba(250,253, 255,1); //lightskyblue;
 }
+.tree-review {
+  height: 100%;
+}
 .tree-review-body {
   padding: 4px 8px 4px 8px;
+  height: 100%;
 }
 .tree-review-header {
   display: flex;
@@ -62,10 +66,29 @@
   justify-content: center;
   align-items: center;
 }
-.tree-review-exercise-edit {
- margin-left: 8px;
+.tree-review-answer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.pointerFinger {
   cursor: pointer;
 }
+.red {
+  background-color: red;
+}
+.tree-review-modify-button {
+  margin-left: 8px;
+  .pointerFinger;
+}
+.tree-review-exercise-edit {
+  .tree-review-modify-button;
+}
+.tree-review-exercise-delete {
+  .tree-review-modify-button;
+}
+
 
 .tree-review-flip-arrow {
   width: 100%;
