@@ -22,22 +22,21 @@
             <div class="tree-review-flip-arrow">Flip</div>
         </div>
         <div class="tree-review-proficiency-container">
+            How well did you know this?
             <div v-if="oneItemTested">
-                How well did you know this?
             </div>
+            <div class="tree-review-item" v-if="!oneItemTested">
+                Mark all: <proficiency-selector v-on:input="updateProficiencyForAllItems" v-model="proficiencyForAllItems"></proficiency-selector>
+            </div>
+            <div class="tree-review-item-select-all-divider"></div>
             <div v-for="item in items">
-
-                <!--{{item.title}} : {{item.proficiency}} : <proficiency-selector proficiency="item.proficiency" item='item' v-on:change="updateProficiency"></proficiency-selector>-->
-                {{item.title}} : {{item.proficiency}} : <proficiency-selector v-model="item.proficiency"></proficiency-selector>
-                <!--<span class="proficiency-selector">-->
-                   <!--<span class="proficiency-selector-zero"></span>-->
-                   <!--<span class="proficiency-selector-one"></span>-->
-                   <!--<span class="proficiency-selector-two"></span>-->
-                   <!--<span class="proficiency-selector-three"></span>-->
-                   <!--<span class="proficiency-selector-four"></span>-->
-                <!--</span>-->
+                <span class="tree-review-item">
+                    <span class="tree-review-item-title">{{item.title}}</span>
+                    <proficiency-selector v-model="item.proficiency"></proficiency-selector>
+                </span>
             </div>
         </div>
+        <button class="tree-review-next-question ui button positive" v-on:click="nextQuestion">Next Question</button>
     </div>
 </div>
 
