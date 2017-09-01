@@ -4,6 +4,7 @@ import './objects'
 import './utils'
 import TreeReview from '../components/treeReview/treeReview'
 import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
+import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exerciseCreatorContainer'
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -28,7 +29,9 @@ const Bar = { template: '<div>bar</div>' }
 const routes = [
   { path: '/foo', component: Foo },
   { path: '/bar', component: Bar },
-  { path: '/review/:leafId', component: TreeReviewContainer, props: true },
+  { name: 'study', path: '/study/:leafId', component: TreeReviewContainer, props: true },
+  { path: '/create', component: ExerciseCreatorContainer, props: true },
+  { path: '/:treeId', component: KnawledgeMap, props: true },
   { path: '/', component: KnawledgeMap, props: true },
 ]
 
@@ -52,6 +55,7 @@ var vm = new Vue({
             this.goToHome()
         })
         console.log('THIS APP is', this)
+        // router.go('/83cbe6ea3fa874449982b645f04d14a1')
     },
     data() {
         return {

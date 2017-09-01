@@ -144,7 +144,7 @@ export default {
                domParent: document.querySelector('.new-exercise')
             });
             // show a snack for 4s
-            snack.show('Exercise created!', 4000);
+            snack.show('Exercise created! +1000 points', 4000); //TODO: make the number of points added be based on the supply and demand of the current exercises for the content items. We need to balance the content creators with content consumers, as we are creating a platform - as explained in "The Platform Revolution" book -  https://www.amazon.com/Platform-Revolution-Networked-Transforming-Economy/dp/0393249131. e.g. so you don't get 1000 Uber drivers in a city with only 300 people who need to be driven
 
             //clear exercise
             this.selectedItemIds = []
