@@ -1,8 +1,11 @@
 const content = {}
-window.content = content //expose to window for easy debugging
+if (typeof window !== 'undefined') {
+    window.content = content //expose to window for easy debugging
+}
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
+import {Trees} from './trees'
 
 export default class ContentItem {
 
@@ -32,7 +35,7 @@ export default class ContentItem {
         this.uri = args.uri || null
     }
     init () {
-        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -53,12 +56,16 @@ export default class ContentItem {
     getURIAddition(){
 
     }
+    getURIAdditionNotEncoded(){
+
+    }
     //removes the prefix "content/
     getURIWithoutRootElement(){
         return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
     }
     getBreadCrumbsString(){
         let sections = this.getURIWithoutRootElement().split("/")
+        console.log('sample sections in getbreadcrumbsstring are ', sections)
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
             if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
@@ -74,6 +81,18 @@ export default class ContentItem {
         // },"")
         // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
         // return breadcrumbs
+    }
+    getLastNBreadcrumbsString(n) {
+        let sections = this.getURIWithoutRootElement().split("/")
+        let result = getLastNBreadcrumbsStringFromList(sections)
+        return result
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        // let sectionsResult = sections.reduce((accum, val) => {
+        //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+        //         return accum
+        //     }
+        //     return accum + " > " + decodeURIComponent(val)
+        // })
     }
     getBreadCrumbs(){
 
@@ -220,4 +239,34 @@ export default class ContentItem {
 
         return exercise
     }
+}
+
+/**
+ *
+ * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
+ * @returns {string}
+ */
+export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
+    if (breadcrumbList.length <= n) {
+        return breadcrumbList
+    }
+
+    var breadcrumbListCopy = breadcrumbList.splice()
+    const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
+    const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
+
+    return result
+}
+
+function convertBreadcrumbListToString(breadcrumbList){
+    if (breadcrumbList.length <= 0) return []
+
+    const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
+    let result =
+        breadcrumbList.reduce((accum, val) => {
+            return decodeURIComponent(val) + " > "
+        },'')
+        + lastItem
+
+    return result
 }

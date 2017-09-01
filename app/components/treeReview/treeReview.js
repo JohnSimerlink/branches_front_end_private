@@ -14,7 +14,7 @@ export default {
     created () {
         var me = this
         // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
-        this.treeid = '83cbe6ea3fa874449982b645f04d14a1'
+        this.leafId = '83cbe6ea3fa874449982b645f04d14a1' // amar
         // this.items = []
         me.initReview()
 
@@ -58,7 +58,7 @@ export default {
             this.breadcrumbsAllButLast = []
             this.lastBreadcrumb = {}
             const me = this
-            Trees.get(me.treeid).then(tree => {
+            Trees.get(me.leafId).then(tree => {
                 ContentItems.get(tree.contentId).then(contentItem => {
                     me.exerciseId = contentItem.getBestExerciseId()
                     me.initExercise()
@@ -79,8 +79,15 @@ export default {
                 me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
                 Object.keys(exercise.contentItemIds).forEach(itemId => {
                     ContentItems.get(itemId).then(item => {
+                        switch(item.type){
+                            case 'fact':
+                                item.title = item.getURIAdditionNotEncoded()
+                                break;
+                            case 'skill':
+                                item.title = item.getLastNBreadcrumbsString(4)
+                                break;
+                        }
                         // item.title = item.id
-                        item.title = item.getBreadCrumbsString()
                         me.items.push(item)
                         console.log('item id is', item.id)
                     })

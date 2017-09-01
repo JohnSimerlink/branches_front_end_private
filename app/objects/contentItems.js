@@ -111,4 +111,6 @@ export default class ContentItems {
     }
 }
 
-window.ContentItems = ContentItems
+if (typeof window !== 'undefined') {
+    window.ContentItems = ContentItems
+}
