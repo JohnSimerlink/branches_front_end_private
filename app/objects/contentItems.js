@@ -1,3 +1,4 @@
+import firebase from './firebaseService.js'
 import {Fact} from "./fact";
 import {Skill} from "./skill";
 import {Heading} from "./heading";
