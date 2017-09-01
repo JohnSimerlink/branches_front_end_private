@@ -36,7 +36,9 @@ var s,
     ]
 
 
-sigma.settings.font = 'Fredoka One'
+if (typeof sigma !== 'undefined') {
+    sigma.settings.font = 'Fredoka One'
+}
 
 
 var newNodeXOffset = -2,
@@ -67,9 +69,14 @@ var toolTipsConfig = {
     //     template:require('./rightClickMenu.html')
     // }
 };
-PubSub.subscribe('login', () => {
-    loadTreeAndSubTrees(1,1).then( val => {initSigma();})
-})
+
+if (typeof PubSub !== 'undefined') {
+    PubSub.subscribe('login', () => {
+        loadTreeAndSubTrees(1, 1).then(val => {
+            initSigma();
+        })
+    })
+}
 function loadTreeAndSubTrees(treeId, level){
     //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
     return Trees.get(treeId)
@@ -315,9 +322,14 @@ function removeEdgeToParent(node){
     var edgeId = createEdgeId(parentId, node.id)
     s.graph.dropEdge(edgeId)
 }
-window.haloSizeScalingFactor = 1.00
-window.scalingOffset = 20
+if (typeof window !== 'undefined'){
+    window.haloSizeScalingFactor = 1.00
+    window.scalingOffset = 20
+}
 setInterval(() => {
+    if (typeof window == 'undefined'){
+        return
+    }
     switch(window.scalingOffset){
         case -20:
             window.scalingOffset = -10
@@ -383,9 +395,11 @@ function removeSuggestedEdges(){
     })
     // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
 }
-window.printNodesOnScreen = function() {
-    var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
-    console.log('nodes on screen is', nodesOnScreen)
+if (typeof window !== 'undefined'){
+    window.printNodesOnScreen = function() {
+        var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
+        console.log('nodes on screen is', nodesOnScreen)
+    }
 }
 
 function printNodeInfo(e){
@@ -499,8 +513,6 @@ function initSigmaPlugins() {
 
 }
 
-PubSub.subscribe('canvas.zoom', function(a,b,c,d){
-})
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
  */

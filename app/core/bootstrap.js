@@ -7,7 +7,6 @@ import Vue from 'vue'
 var vm = new Vue({
     el: '#branches-app',
     created(){
-
         PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
            this.goToExerciseCreator()
         })
