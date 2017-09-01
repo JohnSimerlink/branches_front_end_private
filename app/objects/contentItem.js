@@ -75,6 +75,9 @@ export default class ContentItem {
         // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
         // return breadcrumbs
     }
+    getBreadCrumbs(){
+
+    }
 
     /**
      * Used to update tree X and Y coordinates
