@@ -72,6 +72,7 @@
 
 
 <script src="other_imports/mustache/mustache.min.js"></script>
+<!--<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>-->
 </head>
 <body>
 
@@ -133,6 +134,7 @@
                     '<div id="graph-container" style="height:' + graphHeight + 'px;">' +
                     '</div>' +
                 '</div>' +
+                '<router-view style="height:' + graphHeight + 'px;" v-if="routing"></router-view>' +
                 '<exercise-creator-container style="height:' + graphHeight + 'px;" v-if="exerciseCreator"></exercise-creator-container>' +
                 '<tree-review-container style="height:' + graphHeight + 'px;" v-if="treeReview"></tree-review-container>' +
                 '<!--<review-schedule></review-schedule>-->' +
