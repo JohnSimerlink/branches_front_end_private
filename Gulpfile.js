@@ -25,7 +25,7 @@ gulp.task('build-test', function() {
     return build(paths.specSrc, paths.specDest);
 });
 
-// Run the unit tests without any coverage calculations
+// Run the unit test without any coverage calculations
 gulp.task('test', ['build-src', 'build-test'], function(cb) {
     new Server({
         configFile: __dirname + '/spec/karma.conf.js'
