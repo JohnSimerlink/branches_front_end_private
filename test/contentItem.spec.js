@@ -19,8 +19,8 @@ describe('Get Breadcrumbs', () => {
 describe('Get Last N Breadcrumbs', () => {
     it('should correctly get all the breadcrumb sections for Everyday Words Node in branches-dev 8/31 database', () => {
         let everydayWordsTreeNode = {}
-        Trees.get(EVERYDAY_WORDS_TREE_ID).then(tree => {
-            ContentItems.get(tree.contentId).then(contentItem => {
+        return Trees.get(EVERYDAY_WORDS_TREE_ID).then(tree => {
+            return ContentItems.get(tree.contentId).then(contentItem => {
                 const breadcrumbs = contentItem.getLastNBreadcrumbsString(4)
                 //Everything > Spanish > Vocab > Everyday Words
                 expect(breadcrumbs).to.equal("Hello World 1234")
