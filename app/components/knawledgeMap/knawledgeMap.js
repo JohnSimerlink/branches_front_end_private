@@ -57,7 +57,6 @@ const EDGE_TYPES = {
 function getTreeColor(content) {
     let proficiency = user && content.userProficiencyMap && content.userProficiencyMap[user.getId()]
     const color = proficiencyToColor(proficiency)
-    console.log('getTreeColor proficiency and color  are', proficiency, color)
     return color
 }
 export function removeTreeFromGraph(treeId){
@@ -351,6 +350,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         PubSub.subscribe('canvas.outNode', function(eventName, data){
             var canvas = document.querySelector('#graph-container')
+            if (!canvas || !canvas.style) return // maybe the user just clicked on the node which navigated the user to another route where the canvas is no longer present
             canvas.style.cursor = 'grab'
         })
         PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {

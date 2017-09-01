@@ -84,7 +84,6 @@ export default class ContentItem {
     }
     getLastNBreadcrumbsString(n) {
         let sections = this.getURIWithoutRootElement().split("/")
-        console.log('sections are ', sections)
         let result = getLastNBreadcrumbsStringFromList(sections, n)
         return result
         // console.log('breadcrumb sections for ', this,' are', sections)
@@ -231,7 +230,8 @@ export default class ContentItem {
     //returns exerciseId of the best exercise for the user
     //returns null if no exercise found
     getBestExerciseId(){
-        const exerciseKeys = Object.keys(this.exercises);
+        const exerciseKeys = Object.keys(this.exercises).filter(key => key !== 'undefined');// not sure how but some data keys are undefined
+        console.log('exercise keys in get best exercise id are', exerciseKeys)
         if (exerciseKeys.length <= 0) {
             return null
         }
@@ -254,7 +254,6 @@ export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
 
     var breadcrumbListCopy = breadcrumbList.slice()
     const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
-    console.log('lastNBreadcrumbSections are', lastNBreadcrumbSections)
     const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
 
     return result
@@ -270,7 +269,6 @@ function convertBreadcrumbListToString(breadcrumbList){
             return accum + decodeURIComponent(val) + " > "
         },'')
     let result = firstItems + lastItem
-    console.log("convert firstItem, lastItem, result are", firstItems, ' -- ', lastItem, ' -- ', result)
 
     return result
 }

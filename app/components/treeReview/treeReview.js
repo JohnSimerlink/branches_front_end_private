@@ -24,30 +24,15 @@ export default {
     },
     data () {
         return {
-            breadcrumbsAllButLast:this.breadcrumbsAllButLast,
-            lastBreadcrumb:this.lastBreadcrumb,
-            breadcrumbsPreActive: this.breadcrumbsPreActive,
-            breadcrumbsActive: this.breadcrumbsActive,
-            breadcrumbsPostActive: this.breadcrumbsPostActive,
-            items: this.items,
+            breadcrumbsAllButLast:[],
+            lastBreadcrumb: {},
+            items: [],
             proficiencyForAllItems: this.proficiencyForAllItems,
             exercise: this.exercise,
             flipped: this.flipped,
         }
     },
     computed: {
-        selectedBreadcrumbs() {
-            var me = this
-            const selectedBreadcrumbs = Object.keys(this.selectedItemIds).map(id =>  {
-                var breadcrumb = me.idBreadcrumbMap[id]
-                console.log('id and breadcrumb are ', id, breadcrumb)
-                return breadcrumb
-            })
-            console.log(
-                'selected bread crumbs and itemIds are', selectedBreadcrumbs, this.selectedItemIds, me.idBreadcrumbMap
-            )
-            return selectedBreadcrumbs
-        },
         oneItemTested() {
             return this.items.length == 0
         }
@@ -56,13 +41,21 @@ export default {
         initReview(){
             this.flipped = false
             this.exercise = {}
-            this.items = []
-            this.breadcrumbsAllButLast = []
-            this.lastBreadcrumb = {}
             const me = this
             Trees.get(me.leafId).then(tree => {
+                console.log('tree received in treeReview.js is', tree)
                 ContentItems.get(tree.contentId).then(contentItem => {
+                    console.log('content received in treeReview.js is', contentItem)
                     me.exerciseId = contentItem.getBestExerciseId()
+                    console.log('exercisedId received in treeReview.js is', me.exerciseId)
+                    me.breadcrumbs = [
+                        {text: "Spanish",},
+                        {text: "Conjugating",},
+                        {text: "Indicative Mood",},
+                        {text: "1st Person Singular",},
+                    ]
+                    me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
+                    me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
                     me.initExercise()
                 })
             })
@@ -71,14 +64,6 @@ export default {
             const me = this
             Exercises.get(me.exerciseId).then(exercise => {
                 me.exercise = exercise
-                me.breadcrumbs = [
-                    {text: "Spanish",},
-                    {text: "Conjugating",},
-                    {text: "Indicative Mood",},
-                    {text: "1st Person Singular",},
-                ]
-                me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
-                me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
                 Object.keys(exercise.contentItemIds).forEach(itemId => {
                     ContentItems.get(itemId).then(item => {
                         switch(item.type){
