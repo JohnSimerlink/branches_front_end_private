@@ -84,7 +84,7 @@ export default {
                                 item.title = item.getURIAdditionNotEncoded()
                                 break;
                             case 'skill':
-                                item.title = item.getLastNBreadcrumbsString(4)
+                                item.title = item.getLastNBreadcrumbsString(2)
                                 break;
                         }
                         // item.title = item.id

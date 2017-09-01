@@ -84,7 +84,8 @@ export default class ContentItem {
     }
     getLastNBreadcrumbsString(n) {
         let sections = this.getURIWithoutRootElement().split("/")
-        let result = getLastNBreadcrumbsStringFromList(sections)
+        console.log('sections are ', sections)
+        let result = getLastNBreadcrumbsStringFromList(sections, n)
         return result
         // console.log('breadcrumb sections for ', this,' are', sections)
         // let sectionsResult = sections.reduce((accum, val) => {
@@ -251,8 +252,9 @@ export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
         return breadcrumbList
     }
 
-    var breadcrumbListCopy = breadcrumbList.splice()
+    var breadcrumbListCopy = breadcrumbList.slice()
     const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
+    console.log('lastNBreadcrumbSections are', lastNBreadcrumbSections)
     const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
 
     return result
@@ -262,11 +264,13 @@ function convertBreadcrumbListToString(breadcrumbList){
     if (breadcrumbList.length <= 0) return []
 
     const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
-    let result =
+
+    let firstItems =
         breadcrumbList.reduce((accum, val) => {
-            return decodeURIComponent(val) + " > "
+            return accum + decodeURIComponent(val) + " > "
         },'')
-        + lastItem
+    let result = firstItems + lastItem
+    console.log("convert firstItem, lastItem, result are", firstItems, ' -- ', lastItem, ' -- ', result)
 
     return result
 }

@@ -18,7 +18,7 @@ export class Fact extends ContentItem {
     this.answer = args.answer && args.answer.trim();
     this.id = args.id || md5(JSON.stringify({question: this.question, answer: this.answer}));
 
-    if(window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+    if(typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
 
     super.init()
   }
