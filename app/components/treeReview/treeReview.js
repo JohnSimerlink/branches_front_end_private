@@ -15,8 +15,9 @@ export default {
     created () {
         var me = this
         // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
-        this.leafId = '83cbe6ea3fa874449982b645f04d14a1' // amar
+        // this.leafId = '83cbe6ea3fa874449982b645f04d14a1' // amar
         // this.items = []
+        console.log('treeReview.js: leafId is', this.leafId)
         me.initReview()
 
         this.proficiencyForAllItems = PROFICIENCIES.UNKNOWN

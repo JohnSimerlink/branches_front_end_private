@@ -2,6 +2,8 @@ import './components'
 import './filters'
 import './objects'
 import './utils'
+import TreeReview from '../components/treeReview/treeReview'
+import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -24,7 +26,9 @@ const Bar = { template: '<div>bar</div>' }
 // We'll talk about nested routes later.
 const routes = [
   { path: '/foo', component: Foo },
-  { path: '/bar', component: Bar }
+  { path: '/bar', component: Bar },
+  { path: '/review/:leafId', component: TreeReviewContainer, props: true },
+  { path: '/:treeId', component: TreeReviewContainer, props: true },
 ]
 
 // 3. Create the router instance and pass the `routes` option
@@ -38,7 +42,7 @@ var vm = new Vue({
     el: '#branches-app',
     created(){
         PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
-           this.goToExerciseCreator()
+            this.goToExerciseCreator()
         })
         PubSub.subscribe('goToState.treeReview', (eventName, treeId) => {
             this.goToTreeReview()
@@ -56,7 +60,7 @@ var vm = new Vue({
     },
     computed: {
         home() {
-           return this.state == 'home'
+            return this.state == 'home'
         },
         exerciseCreator() {
             return this.state == 'exerciseCreator'
