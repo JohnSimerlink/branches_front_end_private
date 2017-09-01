@@ -1,4 +1,6 @@
+import '../components/main.less'
 import '../components/treesGraph'
+
 import Vue from 'vue'
 // import Header from '../components/header/branchesHeader'
 import Footer from '../components/footer/branchesFooter'

@@ -1,4 +1,4 @@
-<div class="tree-review" >
+<div class="tree-review">
     <header class="tree-review-header">
         <go-to-home></go-to-home>
         <div class="tree-review-header-right">
@@ -17,7 +17,8 @@
     </header>
     <div class="tree-review-body" :class="{'pointerFinger': !flipped}" v-on:click="flipIfNotFlipped">
         <div class="tree-review-question-container" v-on:click.stop="flip">
-            <div class="tree-review-question" >{{exercise.question}} {{exercise.id}}</div>
+            <div class="tree-review-question" >{{exercise.question}}</div>
+             {{exercise.id}}
             <i class="fa fa-undo" aria-hidden="true"></i>
         </div>
         <div class="tree-review-answer-container" v-if="flipped">

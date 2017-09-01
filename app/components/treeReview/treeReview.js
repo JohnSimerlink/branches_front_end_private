@@ -10,6 +10,7 @@ import invert from 'invert-object'
 import {Trees} from "../../objects/trees";
 
 export default {
+    props: ['leafId'],
     template: require('./treeReview.html'),
     created () {
         var me = this
