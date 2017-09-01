@@ -4,6 +4,7 @@ import './objects'
 import './utils'
 import TreeReview from '../components/treeReview/treeReview'
 import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
+import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -28,7 +29,7 @@ const routes = [
   { path: '/foo', component: Foo },
   { path: '/bar', component: Bar },
   { path: '/review/:leafId', component: TreeReviewContainer, props: true },
-  { path: '/:treeId', component: TreeReviewContainer, props: true },
+  { path: '/', component: KnawledgeMap, props: true },
 ]
 
 // 3. Create the router instance and pass the `routes` option
