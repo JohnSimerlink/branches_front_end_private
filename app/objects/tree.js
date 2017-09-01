@@ -3,7 +3,7 @@ import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Trees} from './trees.js'
-import {syncGraphWithNode}  from '../components/treesGraph'
+import {syncGraphWithNode}  from '../components/knawledgeMap/knawledgeMap'
 import timers from './timers'
 
 function loadObject(treeObj, self){

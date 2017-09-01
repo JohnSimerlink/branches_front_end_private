@@ -1,10 +1,9 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor, syncGraphWithNode} from "../treesGraph"
+import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph} from "../knawledgeMap/knawledgeMap"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
 import {Heading} from "../../objects/heading";
-import {removeTreeFromGraph} from "../treesGraph"
 import {secondsToPretty} from "../../core/filters"
 import {Skill} from "../../objects/skill";
 import {PROFICIENCIES} from "../proficiencyEnum";
@@ -91,21 +90,21 @@ export default {
         toggleAddChild() {
             this.addingChild = !this.addingChild
         },
+        syncGraphWithNode(){
+            this.content.setProficiency(this.content.proficiency)// << it is necessary to call this method . bc we have to set userProficiecnyMap
+            syncGraphWithNode(this.tree.id)
+        },
         setProficiencyToOne() {
             this.content.setProficiency(PROFICIENCIES.ONE)
-            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToTwo() {
             this.content.setProficiency(PROFICIENCIES.TWO)
-            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToThree() {
             this.content.setProficiency(PROFICIENCIES.THREE)
-            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToFour() {
             this.content.setProficiency(PROFICIENCIES.FOUR)
-            syncGraphWithNode(this.tree.id)
         },
         toggleAddChild(){
             this.addingChild = !this.addingChild

@@ -30,15 +30,7 @@
 .tree-proficiency-unknown-text {
   color: @proficiencyUnknown;
 }
-.tree-footer-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.tree-proficiency-timeTilReview {
-  display: flex;
-  justify-content: center;
-}
+
 .tree {
   cursor: default;
   padding: 4px;
@@ -46,6 +38,28 @@
   border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
 }
 
+.tree-current-fact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tree-proficiency {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tree-proficiency-timeTilReview {
+  display: flex;
+  justify-content: center;
+}
+
+.tree-footer-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .tree-edit-button {
   cursor: pointer;
 }

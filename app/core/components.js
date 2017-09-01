@@ -1,5 +1,4 @@
 import '../components/main.less'
-import '../components/treesGraph'
 
 import Vue from 'vue'
 // import Header from '../components/header/branchesHeader'
