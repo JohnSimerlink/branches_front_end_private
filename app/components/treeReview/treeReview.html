@@ -17,14 +17,29 @@
     </header>
     <div class="tree-review-body" :class="{'pointerFinger': !flipped}" v-on:click="flipIfNotFlipped">
         <div class="tree-review-question-container" v-on:click.stop="flip">
-            <div class="tree-review-question" >{{exercise.question}}</div>
+            <div class="tree-review-no-exercise-found" v-if="!exercise.id">
+                <div class="tree-review-no-exercise-found-text">
+                   No exercise found for
+                    <span class="tree-review-breadcrumb" v-for="breadcrumb in breadcrumbsAllButLast">
+                        <span >{{breadcrumb.text}} <span class="breadcrumb-arrow">> </span></span>
+                    </span>
+                    <span class="tree-review-breadcrumb">
+                        <span >{{lastBreadcrumb.text}}</span>
+                    </span>
+                </div>
+                <!--<div class="tree-review-add-exercise">-->
+                    <!--Add an exercise for this skill-->
+                    <!--<router-link :to="create"></router-link>-->
+                <!--</div>-->
+            </div>
+            <div class="tree-review-question">{{exercise.question}}</div>
              {{exercise.id}}
-            <i class="fa fa-undo" aria-hidden="true"></i>
+            <i class="fa fa-undo" name='flip-icon' aria-hidden="true" v-if="exercise.id"></i>
         </div>
-        <div class="tree-review-answer-container" v-if="flipped">
+        <div class="tree-review-answer-container" v-if="exercise.id && flipped">
             <div class="tree-review-answer">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>
         </div>
-        <div class="tree-review-proficiency-container" v-if="flipped">
+        <div class="tree-review-proficiency-container" v-if="exercise.id && flipped">
             How well did you know this?
             <div v-if="oneItemTested">
             </div>
