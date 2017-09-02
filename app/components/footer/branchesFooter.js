@@ -1,4 +1,3 @@
-import {newTree} from '../../objects/newTree.js'
 import {Config} from '../../core/config'
 import {login} from '../../core/login'
 import user from '../../objects/user'

@@ -76,6 +76,7 @@ function getLabelFromContent(content) {
         case "fact":
             return content.question
         case "heading":
+            console.log("contenttitle is", content.title)
             return content.title
         case "skill":
             return content.title
@@ -137,7 +138,7 @@ export function addTreeToGraph(parentTreeId, content) {
         color: getTreeColor(content),
         type: 'tree',
     }
-    //2b. update x and y location in the db for the tree
+    console.log('label in addTreeToGraph is', newTree.label)
 
     s.graph.addNode(newTree);
     //3. add edge between new node and parent tree
@@ -214,15 +215,11 @@ function initKnawledgeMap(treeIdToJumpTo){
             .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
             .catch(err => console.error("CONTENTITEMS.get Err is", err))
 
-        var childTreesPromises = tree.children ? Object.keys(tree.children).map((child) => {
+        var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
             return loadTreeAndSubTrees(child, level + 1)
         }): []
-        //     loadTreeAndSubTrees
-        // }) : []
-        var promises = childTreesPromises
-        promises.push(contentPromise)
 
-        return Promise.all(promises)
+        return Promise.all([...childTreesPromises, contentPromise])
     }
 
     function addTreeNodeToGraph(tree,content, level){
