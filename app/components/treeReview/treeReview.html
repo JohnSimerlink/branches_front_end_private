@@ -17,7 +17,10 @@
     </header>
     <div class="tree-review-body" :class="{'pointerFinger': !flipped}" v-on:click="flipIfNotFlipped">
         <div class="tree-review-question-container" v-on:click.stop="flip">
-            <div class="tree-review-no-exercise-found" v-if="!exercise.id">
+            <div class="tree-review-loading" v-if="loading">
+                . . . loading . . .
+            </div>
+            <div class="tree-review-no-exercise-found" v-if="!loading &&!exercise.id">
                 <div class="tree-review-no-exercise-found-text">
                    No exercise found for
                     <span class="tree-review-breadcrumb" v-for="breadcrumb in breadcrumbsAllButLast">

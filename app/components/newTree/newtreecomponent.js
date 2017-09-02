@@ -75,9 +75,14 @@ function establishURIForContentAndThenAllChildren(treeId){
        Trees.get(tree.parentId).then(parentTree => {
            ContentItems.get(parentTree.contentId).then(parentContentItem => {
                ContentItems.get(tree.contentId).then(contentItem => {
-                   contentItem.set('uri', parentContentItem.uri + "/" + contentItem.getURIAddition())
+                   console.log(treeId + ": contentItem is ", contentItem)
+                   console.log(treeId + ": parent contentItem URI is ", parentContentItem.uri)
+                   let uri = parentContentItem.uri + "/" + contentItem.getURIAddition()
+                   console.log(treeId + ": URI is ", uri)
+                   console.log(treeId + ": children are ", tree.children && Object.keys(tree.children))
+                   contentItem.set('uri', uri)
                    contentItem.set('initialParentTreeId', parentTree.id)
-                   contentItem.set('initialParentTreeContentURI', parentTree.uri)
+                   contentItem.set('initialParentTreeContentURI', parentContentItem.uri)
                    tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
                })
            })
