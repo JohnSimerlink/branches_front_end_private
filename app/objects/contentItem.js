@@ -1,7 +1,12 @@
 const content = {}
-window.content = content //expose to window for easy debugging
+if (typeof window !== 'undefined') {
+    window.content = content //expose to window for easy debugging
+}
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
+import {PROFICIENCIES} from "../components/proficiencyEnum";
+import {Trees} from './trees'
+
 export default class ContentItem {
 
     constructor(args) {
@@ -30,7 +35,7 @@ export default class ContentItem {
         this.uri = args.uri || null
     }
     init () {
-        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -51,11 +56,14 @@ export default class ContentItem {
     getURIAddition(){
 
     }
+    getURIAdditionNotEncoded(){
+
+    }
     //removes the prefix "content/
     getURIWithoutRootElement(){
         return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
     }
-    getBreadCrumbs(){
+    getBreadCrumbsString(){
         let sections = this.getURIWithoutRootElement().split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
@@ -63,7 +71,7 @@ export default class ContentItem {
                 return accum
             }
             return accum + " > " + decodeURIComponent(val)
-        } )
+        })
         return sectionsResult
         // console.log('breadcrumb result is', sectionsResult)
         //
@@ -73,6 +81,34 @@ export default class ContentItem {
         // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
         // return breadcrumbs
     }
+    getBreadcrumbsObjArray() {
+        let sections = this.getURIWithoutRootElement().split("/")
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        let breadcrumbsObjArray = sections.reduce((accum, val) => {
+            if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                return accum
+            }
+            accum.push({text: decodeURIComponent(val)})
+            return accum
+        }, [])
+        return breadcrumbsObjArray
+    }
+    getLastNBreadcrumbsString(n) {
+        let sections = this.getURIWithoutRootElement().split("/")
+        let result = getLastNBreadcrumbsStringFromList(sections, n)
+        return result
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        // let sectionsResult = sections.reduce((accum, val) => {
+        //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+        //         return accum
+        //     }
+        //     return accum + " > " + decodeURIComponent(val)
+        // })
+    }
+    getBreadCrumbs(){
+
+    }
+
     /**
      * Used to update tree X and Y coordinates
      * @param prop
@@ -144,6 +180,14 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
     }
+    removeExercise(exerciseId){
+        delete this.exercises[exerciseId] // remove from local cache
+        firebase.database().ref('content/' + this.id +'/exercises/').child(exerciseId).remove() //delete from db
+    }
+    remove(){
+        firebase.database().ref('content/').child(this.id).remove() //delete from db
+        delete window.content[this.id]
+    }
     setProficiency(proficiency) {
         !this.inStudyQueue && this.addToStudyQueue()
         //proficiency
@@ -182,4 +226,64 @@ export default class ContentItem {
 
         user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency});
     }
+    //methods for html templates
+    isProficiencyUnknown(){
+        return this.proficiency == PROFICIENCIES.UNKNOWN
+    }
+    isProficiencyOne(){
+        return this.proficiency == PROFICIENCIES.ONE
+    }
+    isProficiencyTwo(){
+        return this.proficiency == PROFICIENCIES.TWO
+    }
+    isProficiencyThree(){
+        return this.proficiency == PROFICIENCIES.THREE
+    }
+    isProficiencyFour(){
+        return this.proficiency == PROFICIENCIES.FOUR
+    }
+    //returns exerciseId of the best exercise for the user
+    //returns null if no exercise found
+    getBestExerciseId(){
+        const exerciseKeys = Object.keys(this.exercises).filter(key => key !== 'undefined');// not sure how but some data keys are undefined
+        console.log('exercise keys in get best exercise id are', exerciseKeys)
+        if (exerciseKeys.length <= 0) {
+            return null
+        }
+        var keyIndex = Math.floor(Math.random() * exerciseKeys.length)
+        const exercise = exerciseKeys[keyIndex]
+
+        return exercise
+    }
+}
+
+/**
+ *
+ * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
+ * @returns {string}
+ */
+export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
+    if (breadcrumbList.length <= n) {
+        return breadcrumbList
+    }
+
+    var breadcrumbListCopy = breadcrumbList.slice()
+    const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
+    const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
+
+    return result
+}
+
+function convertBreadcrumbListToString(breadcrumbList){
+    if (breadcrumbList.length <= 0) return []
+
+    const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
+
+    let firstItems =
+        breadcrumbList.reduce((accum, val) => {
+            return accum + decodeURIComponent(val) + " > "
+        },'')
+    let result = firstItems + lastItem
+
+    return result
 }

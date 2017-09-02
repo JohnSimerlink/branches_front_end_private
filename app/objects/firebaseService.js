@@ -7,5 +7,7 @@ const firebaseConfig = Config.env == 'prod' ? firebaseProdConfig : firebaseDevCo
 
 firebase.initializeApp(firebaseConfig);
 
-window.firebase = firebase; // for debugging from the console
+if (typeof window !== 'undefined') {
+    window.firebase = firebase; // for debugging from the console
+}
 export default firebase;

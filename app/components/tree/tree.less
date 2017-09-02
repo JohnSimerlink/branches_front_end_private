@@ -1,0 +1,82 @@
+@import '../common.less';
+
+.tree-proficiency-one {
+  background-color: @proficiencyOne;
+}
+.tree-proficiency-two {
+  background-color: @proficiencyTwo;
+}
+.tree-proficiency-three {
+  background-color: @proficiencyThree;
+}
+.tree-proficiency-four {
+  background-color: @proficiencyFour;
+}
+.tree-proficiency-unknown {
+  background-color: @proficiencyUnknown;
+}
+.tree-proficiency-one-text {
+  color: @proficiencyOne;
+}
+.tree-proficiency-two-text {
+  color: @proficiencyTwo;
+}
+.tree-proficiency-three-text {
+  color: @proficiencyThree;
+}
+.tree-proficiency-four-text {
+  color: @proficiencyFour;
+}
+.tree-proficiency-unknown-text {
+  color: @proficiencyUnknown;
+}
+
+.tree {
+  cursor: default;
+  padding: 4px;
+  width: 320px;
+  border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
+}
+
+.tree-current-fact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tree-proficiency {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tree-proficiency-timeTilReview {
+  display: flex;
+  justify-content: center;
+}
+
+.tree-footer-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.tree-edit-button {
+  cursor: pointer;
+}
+.tree-delete-button {
+  cursor: pointer;
+}
+.tree-current-fact-question {
+  padding-bottom: 4px;
+}
+.tree-current-fact-answer {
+  padding-left: 4px;
+}
+.tree-debugging-info {
+  width: 100%;
+  word-wrap: break-word;
+}
+.tree-new-fact {
+  display: flex;
+  flex-direction: column;
+}

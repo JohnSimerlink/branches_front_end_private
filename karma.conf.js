@@ -1,96 +1,33 @@
-'use strict';
+ /* global module */
+module.exports = function (config) {
+	'use strict';
+	config.set({
+		autoWatch: true,
+		singleRun: true,
 
-//var appConfig =// require('./config');
-var appConfig = {
-    karma: {
-        browsers: ['PhantomJS'],
-        preprocessors: {
-            'test/*.html': ['html2js']
-        },
-        reporters: ['progress'],
-        autoWatch: true,
-        singleRun: false
-    }
-};
+		frameworks: ['jspm', 'jasmine'],
 
-module.exports = function(config) {
-  config.set({
+		jspm: {
+			config: 'src/config.js',
+			loadFiles: [
+				'src/*.spec.js'
+			],
+			serveFiles: [
+				'src/!(*spec).js'
+			]
+		},
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+		proxies: {
+			'/src/': '/base/src/',
+			'/jspm_packages/': '/src/jspm_packages/'
+		},
 
+		browsers: ['PhantomJS'],
 
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    // frameworks: ['mocha', 'chai', 'fixture'],
-    // or can be: ['jasmine'],
-      frameworks: ['jasmine'],
-
-    // list of files / patterns to load in the browser
-    files: [
-      'app/**/**/*.spec.js'
-    ],
-
-
-    // list of files to exclude
-    exclude: [
-    ],
-
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors:
-    //      https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-        'test-context.js': ['webpack']
-    },
-    webpack: {
-      module: {
-        loaders: [
-          { test: /\.js/, exclude: /node_modules/, loader: 'babel-loader'}
+		reporters: ['progress'],
+        files: [
+            'node_modules/babel-polyfill/dist/polyfill.js'
         ]
-      },
-      watch: true
-    },
-    webpackServer: {
-      noInfo: true
-    },
-      plugins: ['karma-jasmine','karma-phantomjs-launcher'],
+	});
 
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: appConfig.karma.reporters,
-
-
-    // web server port
-    port: 9876,
-
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR ||
-    //      config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-
-    // enable / disable watching file and executing tests
-    // whenever any file changes
-    autoWatch: appConfig.karma.autoWatch,
-
-
-    // start these browsers
-    // available browser launchers:
-    //  https://npmjs.org/browse/keyword/karma-launcher
-    browsers: appConfig.karma.browsers,
-
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    singleRun: appConfig.karma.singleRun
-  });
 };
-
