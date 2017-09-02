@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 181);
+/******/ 	return __webpack_require__(__webpack_require__.s = 194);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(227)("./" + name);
+            __webpack_require__(250)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(164)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(175)(module)))
 
 /***/ }),
 /* 1 */
@@ -4633,6 +4633,71 @@ function isNativeBlobDefined() {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Trees = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _tree = __webpack_require__(45);
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var trees = {}; // cache
+if (typeof window !== 'undefined') {
+    window.trees = trees; //expose to window for console debugging
+}
+
+var Trees = exports.Trees = function () {
+    function Trees() {
+        _classCallCheck(this, Trees);
+    }
+
+    _createClass(Trees, null, [{
+        key: 'getAll',
+        value: function getAll(success) {}
+        //returns promise
+
+    }, {
+        key: 'get',
+        value: function get(treeId) {
+            if (!treeId) {
+                throw "Trees.get(treeId) error!. treeId empty";
+            }
+            return new Promise(function getTreePromise(resolve, reject) {
+
+                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+                if (trees[treeId]) {
+                    resolve(trees[treeId]);
+                } else {
+                    _firebaseService2.default.database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot) {
+                        var treeData = snapshot.val();
+                        var tree = new _tree.Tree(treeData);
+                        trees[tree.id] = tree; // add to cache
+                        resolve(tree);
+                    });
+                }
+            });
+        }
+    }]);
+
+    return Trees;
+}();
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
@@ -4686,7 +4751,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4868,96 +4933,176 @@ function internalError(message) {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(12);
-
-
-
-const trees = {}; // cache
-window.trees = trees; //expose to window for console debugging
-class Trees {
-    static getAll(success) {}
-    //returns promise
-    static get(treeId) {
-        if (!treeId) {
-            throw "Trees.get(treeId) error!. treeId empty";
-        }
-        return new Promise(function getTreePromise(resolve, reject) {
-
-            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-            if (trees[treeId]) {
-                resolve(trees[treeId]);
-            } else {
-                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot) {
-                    let treeData = snapshot.val();
-                    var tree = new __WEBPACK_IMPORTED_MODULE_0__tree_js__["a" /* Tree */](treeData);
-                    trees[tree.id] = tree; // add to cache
-                    resolve(tree);
-                });
-            }
-        });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Trees;
-
-
-/***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(23);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-class User {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  constructor() {
-    this.loggedIn = false;
-    this.branchesData = {};
-    const self = this;
-    __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */].auth().onAuthStateChanged(function (user) {
-      if (user) {
-        PubSub.publish('login');
-        self.loggedIn = true;
-        self.fbData = user;
-        __WEBPACK_IMPORTED_MODULE_1__users__["a" /* default */].get(self.getId()).then(user => {
+var _firebaseService = __webpack_require__(7);
 
-          self.branchesData = user || {};
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-          self.branchesData.items = self.branchesData.items || {};
-          // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
-        });
-      } else {
-        self.loggedIn = false;
-      }
-    });
-  }
-  getId() {
-    return this.fbData.uid;
-  }
+var _fact = __webpack_require__(25);
 
-  setItemProperties(itemId, obj) {
+var _skill = __webpack_require__(27);
 
-    this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
-    for (let prop in obj) {
-      this.branchesData.items[itemId][prop] = obj[prop];
-    }
-    let updates = {
-      items: this.branchesData.items
-    };
-    __WEBPACK_IMPORTED_MODULE_0__firebaseService_js__["a" /* default */].database().ref('users/' + this.getId()).update(updates);
-  }
+var _heading = __webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var factsAndSkills = {};
+var content = {};
+if (typeof window !== 'undefined') {
+    window.content = content;
 }
 
-//user singleton
-const user = new User();
-/* harmony default export */ __webpack_exports__["a"] = (user);
+function createContentItemFromData(contentData, contentDatumKey) {
+    var contentItem = void 0;
+
+    switch (contentData.type) {
+        case 'fact':
+            contentItem = new _fact.Fact(contentData);
+            factsAndSkills[contentItem.id] = contentItem;
+            break;
+        case 'skill':
+            contentItem = new _skill.Skill(contentData);
+            factsAndSkills[contentItem.id] = contentItem;
+            break;
+        case 'heading':
+            contentItem = new _heading.Heading(contentData);
+            break;
+        default:
+            console.error( //bc there was some corrupted data
+            'NO TYPE DETECTED for contentData', contentData, contentDatumKey);
+            contentItem = new _fact.Fact(contentData);
+            break;
+    }
+    contentItem.init(); // post constructor
+
+    content[contentItem.id] = contentItem; // add to cache
+    return contentItem;
+}
+
+var ContentItems = function () {
+    function ContentItems() {
+        _classCallCheck(this, ContentItems);
+    }
+
+    _createClass(ContentItems, null, [{
+        key: "get",
+        value: function get(contentId) {
+            if (!contentId) {
+                throw "Content.get(contentId) error! contentId empty!";
+            }
+            return new Promise(function (resolve, reject) {
+                if (content[contentId]) {
+                    resolve(content[contentId]);
+                } else {
+                    _firebaseService2.default.database().ref('content/' + contentId).once("value", function (snapshot) {
+                        var contentData = snapshot.val();
+                        if (!contentData) {
+                            console.log("NO CONTENTDATA FOUND FOR", contentId);
+                            reject("ERROR!: no data found found for contentid of ", contentId);
+                        } else {
+                            var contentItem = createContentItemFromData(contentData);
+                            resolve(contentItem);
+                        }
+                    }, reject);
+                }
+            });
+        }
+    }, {
+        key: "getAll",
+        value: function getAll() {
+            return new Promise(function (resolve, reject) {
+                _firebaseService2.default.database().ref('content/').once("value", function (snapshot) {
+                    var contentData = snapshot.val();
+                    Object.keys(contentData).filter(function (contentDatumKey) {
+                        var uri = contentData[contentDatumKey].uri;
+                        if (!uri || uri.indexOf("null") == 0) {
+                            //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                            return false;
+                        }
+                        return true;
+                    }).forEach(function (contentDatumKey) {
+                        var contentDatum = contentData[contentDatumKey];
+                        if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+                        var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
+                    });
+                    resolve(content); //the cache containing all
+                }, reject);
+            });
+        }
+    }, {
+        key: "getAllExceptForHeadings",
+        value: function getAllExceptForHeadings() {
+            function processSnapshot(snapshot, resolve) {
+                var contentData = snapshot.val();
+                Object.keys(contentData).filter(function (contentDatumKey) {
+                    var uri = contentData[contentDatumKey].uri;
+                    if (!uri || uri.indexOf("null") == 0) {
+                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                        return false;
+                    }
+                    return true;
+                }).forEach(function (contentDatumKey) {
+                    var contentDatum = contentData[contentDatumKey];
+                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+                    var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
+                });
+                // resolve(content) //the cache containing all
+            }
+            return new Promise(function (resolve, reject) {
+                var skillPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
+                    processSnapshot(snapshot, resolve);
+                }, reject);
+                var factPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function (snapshot) {
+                    processSnapshot(snapshot, resolve);
+                }, reject);
+                Promise.all([skillPromise, factPromise]).then(function () {
+                    resolve(factsAndSkills);
+                });
+            });
+        }
+
+        /**
+         * Create a new content object in the database
+         * @param contentItem
+         * @returns newly created contentItem
+         */
+
+    }, {
+        key: "create",
+        value: function create(contentItem) {
+            var updates = {};
+            updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
+            _firebaseService2.default.database().ref().update(updates);
+            return contentItem;
+        }
+    }, {
+        key: "remove",
+        value: function remove(contentItemId) {
+            console.log('remove contentItemId called', contentItemId);
+            console.log("num items is", Object.keys(content).length);
+            delete content[contentItemId];
+            console.log("num items is now", Object.keys(content).length);
+            _firebaseService2.default.database().ref('content/').child(contentItemId).remove(); //.once("value", function(snapshot){
+        }
+    }]);
+
+    return ContentItems;
+}();
+
+exports.default = ContentItems;
 
 /***/ }),
 /* 5 */
@@ -4977,7 +5122,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(25);
+var _shared_promise = __webpack_require__(30);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -5020,132 +5165,197 @@ function reject(error) {
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fact__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__skill__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__heading__ = __webpack_require__(21);
 
 
-
-
-const factsAndSkills = {};
-const content = {};
-function createContentItemFromData(contentData, contentDatumKey) {
-    let contentItem;
-
-    switch (contentData.type) {
-        case 'fact':
-            contentItem = new __WEBPACK_IMPORTED_MODULE_0__fact__["a" /* Fact */](contentData);
-            factsAndSkills[contentItem.id] = contentItem;
-            break;
-        case 'skill':
-            contentItem = new __WEBPACK_IMPORTED_MODULE_1__skill__["a" /* Skill */](contentData);
-            factsAndSkills[contentItem.id] = contentItem;
-            break;
-        case 'heading':
-            contentItem = new __WEBPACK_IMPORTED_MODULE_2__heading__["a" /* Heading */](contentData);
-            break;
-        default:
-            console.error( //bc there was some corrupted data
-            'NO TYPE DETECTED for contentData', contentData, contentDatumKey);
-            contentItem = new __WEBPACK_IMPORTED_MODULE_0__fact__["a" /* Fact */](contentData);
-            break;
-    }
-    contentItem.init // post constructor
-
-    ();content[contentItem.id] = contentItem; // add to cache
-    return contentItem;
-}
-class ContentItems {
-    static get(contentId) {
-        if (!contentId) {
-            throw "Content.get(contentId) error! contentId empty!";
-        }
-        return new Promise((resolve, reject) => {
-            if (content[contentId]) {
-                resolve(content[contentId]);
-            } else {
-                firebase.database().ref('content/' + contentId).once("value", function (snapshot) {
-                    const contentData = snapshot.val();
-                    let contentItem = createContentItemFromData(contentData);
-                    resolve(contentItem);
-                }, reject);
-            }
-        });
-    }
-    static getAll() {
-        return new Promise((resolve, reject) => {
-            firebase.database().ref('content/').once("value", function (snapshot) {
-                const contentData = snapshot.val();
-                Object.keys(contentData).filter(contentDatumKey => {
-                    const uri = contentData[contentDatumKey].uri;
-                    if (!uri || uri.indexOf("null") == 0) {
-                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false;
-                    }
-                    return true;
-                }).forEach(contentDatumKey => {
-                    const contentDatum = contentData[contentDatumKey];
-                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                    let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                });
-                resolve(content //the cache containing all
-                );
-            }, reject);
-        });
-    }
-    static getAllExceptForHeadings() {
-        function processSnapshot(snapshot, resolve) {
-            const contentData = snapshot.val();
-            Object.keys(contentData).filter(contentDatumKey => {
-                const uri = contentData[contentDatumKey].uri;
-                if (!uri || uri.indexOf("null") == 0) {
-                    //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                    return false;
-                }
-                return true;
-            }).forEach(contentDatumKey => {
-                const contentDatum = contentData[contentDatumKey];
-                if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                let contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-            }
-            // resolve(content) //the cache containing all
-            );
-        }
-        return new Promise((resolve, reject) => {
-            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
-                processSnapshot(snapshot, resolve);
-            }, reject);
-            const factPromise = firebase.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function (snapshot) {
-                processSnapshot(snapshot, resolve);
-            }, reject);
-            Promise.all([skillPromise, factPromise]).then(() => {
-                resolve(factsAndSkills);
-            });
-        });
-    }
-
-    /**
-     * Create a new content object in the database
-     * @param contentItem
-     * @returns newly created contentItem
-     */
-    static create(contentItem) {
-        let updates = {};
-        updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-        firebase.database().ref().update(updates);
-        return contentItem;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItems;
-
-
-window.ContentItems = ContentItems;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var PROFICIENCIES = exports.PROFICIENCIES = {
+    UNKNOWN: 0,
+    ONE: 33,
+    TWO: 66,
+    THREE: 95,
+    FOUR: 100
+};
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _firebase = __webpack_require__(210);
+
+var firebase = _interopRequireWildcard(_firebase);
+
+var _config = __webpack_require__(41);
+
+var _firebaseDevConfig = __webpack_require__(181);
+
+var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
+
+var _firebaseProdConfig = __webpack_require__(182);
+
+var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var firebaseConfig = _config.Config.env == 'prod' ? _firebaseProdConfig2.default : _firebaseDevConfig2.default;
+
+firebase.initializeApp(firebaseConfig);
+
+if (typeof window !== 'undefined') {
+    window.firebase = firebase; // for debugging from the console
+}
+exports.default = firebase;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _users = __webpack_require__(28);
+
+var _users2 = _interopRequireDefault(_users);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+  function User() {
+    _classCallCheck(this, User);
+
+    this.loggedIn = false;
+    this.branchesData = {};
+    var self = this;
+    _firebaseService2.default.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        PubSub.publish('login');
+        self.loggedIn = true;
+        self.fbData = user;
+        _users2.default.get(self.getId()).then(function (user) {
+
+          self.branchesData = user || {};
+
+          self.branchesData.items = self.branchesData.items || {};
+          // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
+        });
+      } else {
+        self.loggedIn = false;
+      }
+    });
+  }
+
+  _createClass(User, [{
+    key: 'getId',
+    value: function getId() {
+      return this.fbData.uid;
+    }
+  }, {
+    key: 'setItemProperties',
+    value: function setItemProperties(itemId, obj) {
+
+      this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
+      for (var prop in obj) {
+        this.branchesData.items[itemId][prop] = obj[prop];
+      }
+      var updates = {
+        items: this.branchesData.items
+      };
+      _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+    }
+  }]);
+
+  return User;
+}();
+
+//user singleton
+
+
+var user = new User();
+exports.default = user;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5217,7 +5427,7 @@ function clone(obj) {
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -7428,17 +7638,17 @@ function stubFalse() {
 
 module.exports = merge;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(164)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(175)(module)))
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(186),
-      utf8 = __webpack_require__(36).utf8,
-      isBuffer = __webpack_require__(226),
-      bin = __webpack_require__(36).bin,
+  var crypt = __webpack_require__(199),
+      utf8 = __webpack_require__(46).utf8,
+      isBuffer = __webpack_require__(249),
+      bin = __webpack_require__(46).bin,
 
   // The core
   md5 = function (message, options) {
@@ -7597,758 +7807,822 @@ module.exports = merge;
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = removeTreeFromGraph;
-/* harmony export (immutable) */ __webpack_exports__["c"] = proficiencyToColor;
-/* harmony export (immutable) */ __webpack_exports__["a"] = syncGraphWithNode;
-/* harmony export (immutable) */ __webpack_exports__["b"] = addTreeToGraph;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_globals_js__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_login_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_user__ = __webpack_require__(4);
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
 
+var stylesInDom = {};
 
+var	memoize = function (fn) {
+	var memo;
 
-
-
-
-
-
-var initialized = false;
-const EDGE_TYPES = {
-    SUGGESTED_CONNECTION: 9001,
-    HIERARCHICAL: 9002
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
 };
-var s,
-    g = {
-    nodes: [],
-    edges: []
-},
-    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
-    icons = ["\uF11b", "\uF11c", "\uF11d", "\uF128", "\uF129", "\uF130", "\uF131", "\uF132"];
 
-sigma.settings.font = 'Fredoka One';
-
-var newNodeXOffset = -2,
-    newNodeYOffset = 2;
-var toolTipsConfig = {
-    node: [{
-        show: 'rightClickNode',
-        cssClass: 'sigma-tooltip',
-        position: 'right',
-        template: '',
-        renderer: function (node, template) {
-            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
-            switch (node.type) {
-                case 'tree':
-                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                    break;
-                case 'newChildTree':
-                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                    break;
-            }
-            var result = Mustache.render(template, node);
-
-            return result;
-        }
-    }]
-    // stage: {
-    //     template:require('./rightClickMenu.html')
-    // }
-};
-PubSub.subscribe('login', () => {
-    loadTreeAndSubTrees(1, 1).then(val => {
-        initSigma();
-    });
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
 });
-function loadTreeAndSubTrees(treeId, level) {
-    //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        return onGetTree(tree, level);
-    }).catch(err => console.error('trees get err is', err));
-}
 
-function onGetTree(tree, level) {
-    var contentPromise = __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(function onContentGet(content) {
-        return addTreeNodeToGraph(tree, content, level);
-    });
+var getElement = (function (fn) {
+	var memo = {};
 
-    var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
-        return loadTreeAndSubTrees(child, level + 1);
-    }) : [];
-    //     loadTreeAndSubTrees
-    // }) : []
-    var promises = childTreesPromises;
-    promises.push(contentPromise);
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
 
-    return Promise.all(promises);
-}
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
 
-function addTreeNodeToGraph(tree, content, level) {
-    const treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
 
-    g.nodes.push(treeUINode);
-    connectTreeToParent(tree, content, g);
-    return content.id;
-}
+var	fixUrls = __webpack_require__(258);
 
-function removeTreeFromGraph(treeId) {
-    s.graph.dropNode(treeId);
-    return __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
-        return Promise.all(childPromises).then(val => {
-            s.refresh();
-            return `removed all children of ${treeId}`;
-        });
-    });
-}
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
 
-//recursively load the entire tree
-// Instantiate sigma:
-function createTreeNodeFromTreeAndContent(tree, content, level) {
-    const node = {
-        id: tree.id,
-        parentId: tree.parentId,
-        level,
-        x: tree.x,
-        y: tree.y,
-        children: tree.children,
-        content: content,
-        label: getLabelFromContent(content),
-        size: 1,
-        color: getTreeColor(content),
-        type: 'tree'
-    };
-    return node;
-}
-/**
- * Get tree colors for descending proficiency levels. Default to "existing node" color
- * @param tree
- * @returns {*}
- */
-function getTreeColor(content) {
-    let proficiency = __WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */] && content.userProficiencyMap && content.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_6__objects_user__["a" /* default */].getId()];
-    return proficiency >= 0 ? proficiencyToColor(proficiency) : __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_unknown;
-}
+	options = options || {};
 
-function proficiencyToColor(proficiency) {
-    if (proficiency >= 95) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_4;
-    if (proficiency >= 66) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_3;
-    if (proficiency >= 33) return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_2;
-    return __WEBPACK_IMPORTED_MODULE_3__core_globals_js__["a" /* Globals */].colors.proficiency_1;
-}
-function getLabelFromContent(content) {
-    switch (content.type) {
-        case "fact":
-            return content.question;
-        case "heading":
-            return content.title;
-        case "skill":
-            return content.title;
-    }
-}
-function createEdgeId(nodeOneId, nodeTwoId) {
-    return nodeOneId + "__" + nodeTwoId;
-}
-function connectTreeToParent(tree, content, g) {
-    if (tree.parentId) {
-        const edge = {
-            id: createEdgeId(tree.parentId, tree.id),
-            source: tree.parentId,
-            target: tree.id,
-            size: 5,
-            color: getTreeColor(content),
-            type: EDGE_TYPES.HIERARCHICAL
-        };
-        g.edges.push(edge);
-    }
-}
-//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
 
-function initSigma() {
-    if (initialized) return;
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
 
-    sigma.renderers.def = sigma.renderers.canvas;
-    sigma.canvas.labels.def = sigma.canvas.labels.prioritizable;
-    s = new sigma({
-        graph: g,
-        container: 'graph-container',
-        glyphScale: 0.7,
-        glyphFillColor: '#666',
-        glyphTextColor: 'white',
-        glyphStrokeColor: 'transparent',
-        glyphFont: 'FontAwesome',
-        glyphFontStyle: 'normal',
-        glyphTextThreshold: 6,
-        glyphThreshold: 3
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
 
-    });
-    window.s = s;
-    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-    s.refresh();
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
 
-    initialized = true;
-    initSigmaPlugins();
-    PubSub.subscribe('canvas.dragStart', (eventName, data) => {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grabbing';
-    });
-    PubSub.subscribe('canvas.dragStop', (eventName, data) => {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grab';
-    });
-    PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {});
-    PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
-        updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
-    });
-    PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
-        var node = data;
-        if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection) {
-            return;
-        }
-        openTooltip(node);
-    });
-    PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
-        PubSub.publish('canvas.closeTooltip', data);
-    });
-    PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
-        PubSub.publish('canvas.closeTooltip', data);
-        if (window.edgeIdBeingChanged) {
-            s.graph.edges(window.edgeIdBeingChanged).state = 'normal';
-        }
-        if (window.awaitingDisconnectConfirmationNodeId) {
-            s.graph.nodes(window.awaitingDisconnectConfirmationNodeId).state = 'normal';
-        }
-        if (window.awaitingEdgeConnectionNodeId) {
-            s.graph.nodes(window.awaitingEdgeConnectionNodeId).state = 'normal';
-        }
-        window.edgeIdBeingChanged = null;
-        window.awaitingDisconnectConfirmation = false;
-        window.awaitingEdgeConnection = false;
-        window.awaitingDisconnectConfirmationNodeId = null;
-        window.awaitingEdgeConnectionNodeId = null;
-    });
-    PubSub.subscribe('canvas.overNode', function (eventName, data) {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'pointer';
-    });
-    PubSub.subscribe('canvas.outNode', function (eventName, data) {
-        var canvas = document.querySelector('#graph-container');
-        canvas.style.cursor = 'grab';
-    });
-    PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
-        const edge = eventData.edge;
-        if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION) {
-            click_SUGGESTED_CONNECTION(edge);
-            return;
-        }
-        const target = s.graph.nodes(edge.target);
-        if (window.awaitingDisconnectConfirmation && window.awaitingDisconnectConfirmationNodeId !== target.id) {
-            return;
-        }
-        if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id) {
-            return;
-        }
-        switch (edge.state) {
-            case 'pre-severed':
-                target.state = 'awaitingEdgeConnection';
-                edge.state = 'severed';
-                window.awaitingEdgeConnection = true;
-                window.awaitingEdgeConnectionNodeId = target.id;
-                window.awaitingDisconnectConfirmationNodeId = null;
-                window.awaitingDisconnectConfirmation = false;
-                // s.graph.dropEdge(edge.id)
+	var styles = listToStyles(list, options);
 
-                const parentlessNode = target;
-                showPossibleEdges(parentlessNode);
+	addStylesToDom(styles, options);
 
-                break;
-            default:
-                window.edgeIdBeingChanged = edge.id;
-                edge.state = 'pre-severed';
-                window.awaitingDisconnectConfirmationNodeId = target.id;
-                window.awaitingDisconnectConfirmation = true;
-                break;
-        }
-        s.refresh();
-    });
-}
-function click_SUGGESTED_CONNECTION(edge) {
-    const permanentEdge = {
-        id: createEdgeId(edge.source, edge.target),
-        source: edge.source,
-        target: edge.target,
-        type: EDGE_TYPES.HIERARCHICAL,
-        color: edge.color,
-        size: edge.size
-    };
-    const parentlessNode = s.graph.nodes(edge.target);
-    parentlessNode.state = 'normal';
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(parentlessNode.id).then(tree => {
-        tree.changeParent(edge.source);
-        s.graph.addEdge(permanentEdge);
-        window.awaitingEdgeConnectionNodeId = null;
-        window.awaitingEdgeConnection = false;
-        removeSuggestedEdges();
-        const originalEdge = s.graph.edges(window.edgeIdBeingChanged);
-        originalEdge && s.graph.dropEdge(originalEdge.id);
-        s.refresh();
-        window.suggestedConnectionClicked = true;
-    }
-    // PubSub.publish('canvas.parentReconnect.reconnected')
-    );
-}
-function removeEdgeToParent(node) {
-    var parentId = node.parentId;
-    var edgeId = createEdgeId(parentId, node.id);
-    s.graph.dropEdge(edgeId);
-}
-window.haloSizeScalingFactor = 1.00;
-window.scalingOffset = 20;
-setInterval(() => {
-    switch (window.scalingOffset) {
-        case -20:
-            window.scalingOffset = -10;
-            break;
-        case -10:
-            window.scalingOffset = 0;
-            break;
-        case 0:
-            window.scalingOffset = 10;
-            break;
-        case 10:
-            window.scalingOffset = 20;
-            break;
-        case 20:
-            window.scalingOffset = 30;
-            break;
-        case 30:
-            window.scalingOffset = 21;
-            break;
-        case 21:
-            window.scalingOffset = 11;
-            break;
-        case 11:
-            window.scalingOffset = 1;
-            break;
-        case 1:
-            window.scalingOffset = -9;
-            break;
-        case -9:
-            window.scalingOffset = -20;
-            break;
-    }
-    window.haloSizeScalingFactor = 1 + window.scalingOffset / 1000;
-    window.haloEdgeSizeScalingFactor = 1 + 4 * window.scalingOffset / 1000;
-    s && s.refresh();
-}, 100);
+	return function update (newList) {
+		var mayRemove = [];
 
-function showPossibleEdges(parentlessNode) {
-    var nodesOnScreen = s.graph.nodes().filter(node => node.onScreen //>>>>> seems to be returning nothing >>// s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
-    );var headingsOnScreen = nodesOnScreen.filter(node => node.content.type == 'heading' // node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
 
-    );headingsOnScreen.forEach(node => {
-        const edge = {
-            id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
-            source: node.id,
-            target: parentlessNode.id,
-            size: 5,
-            color: parentlessNode.color,
-            type: EDGE_TYPES.SUGGESTED_CONNECTION
-        };
-        s.graph.addEdge(edge);
-        s.refresh();
-    }
-    // var parentLessNode
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
 
-    );
-}
-function removeSuggestedEdges() {
-    const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id //map(e => e.id).forEach(s.graph.dropEdge)
-    );edgeIdsToRemove.forEach(id => {
-        s.graph.dropEdge(id);
-    }
-    // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
-    );
-}
-window.printNodesOnScreen = function () {
-    var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height));
-    console.log('nodes on screen is', nodesOnScreen);
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
 };
 
-function printNodeInfo(e) {
-    console.log(e, e.data.node);
-}
-function openTooltip(node) {
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-    setTimeout(function () {
-        var vm = new __WEBPACK_IMPORTED_MODULE_5_vue__["a" /* default */]({
-            el: '#vue'
-        });
-    }, 0 //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
 
-    );
-}
-function hoverOverNode(e) {
-    // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
-    // var node = e.data.node
-}
-function syncGraphWithNode(treeId) {
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        __WEBPACK_IMPORTED_MODULE_1__objects_contentItems__["a" /* default */].get(tree.contentId).then(content => {
-            //update the node
-            var sigmaNode = s.graph.nodes(treeId);
-            sigmaNode.x = tree.x;
-            sigmaNode.y = tree.y;
-            var color = getTreeColor(content);
-            sigmaNode.color = color;
+		if(domStyle) {
+			domStyle.refs++;
 
-            //update the edge
-            var edgeId = createEdgeId(tree.parentId, treeId);
-            var sigmaEdge = s.graph.edges(edgeId);
-            sigmaEdge.color = color;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
 
-            s.refresh();
-        });
-    });
-}
-function updateTreePosition(data) {
-    let { newX, newY, treeId } = data;
-    // let newX = e.data.node.x
-    // let newY = e.data.node.y
-    // let treeId = e.data.node.id;
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
 
-    if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')) {
-        return; //node isn't an actual node in the db - its like a shadow node or helper node
-    }
-    const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1;
-    __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__["a" /* Trees */].get(treeId).then(tree => {
-        let deltaX = newX - tree.x;
-        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.addToX({ recursion: true, deltaX });
-        }
-        let deltaY = newY - tree.y;
-        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
-            tree.addToY({ recursion: true, deltaY });
-        }
-        return tree;
-    });
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
 }
 
-//returns sigma tree node
-function addTreeToGraph(parentTreeId, content) {
-    //1. delete current addNewNode button
-    var parentTree = s.graph.nodes(parentTreeId);
-    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
-    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
-    var tree = new __WEBPACK_IMPORTED_MODULE_2__objects_tree_js__["a" /* Tree */](content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY);
-    //2. add new node to parent tree on UI
-    const newTree = {
-        id: tree.id,
-        parentId: parentTreeId,
-        contentId: content.id,
-        content: content,
-        x: newChildTreeX,
-        y: newChildTreeY,
-        children: {},
-        label: getLabelFromContent(content),
-        size: 1,
-        color: getTreeColor(content),
-        type: 'tree'
-        //2b. update x and y location in the db for the tree
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
 
-    };s.graph.addNode(newTree);
-    //3. add edge between new node and parent tree
-    const newEdge = {
-        id: createEdgeId(parentTreeId, newTree.id),
-        source: parentTreeId,
-        target: newTree.id,
-        size: 5,
-        color: getTreeColor(content),
-        type: EDGE_TYPES.HIERARCHICAL
-    };
-    s.graph.addEdge(newEdge);
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
 
-    s.refresh();
-    return newTree;
-}
-function initSigmaPlugins() {
-    // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
-    var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
-    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
-    window.tooltips = tooltips;
-    window.jump = jumpToAndOpenTreeId;
-    jumpToAndOpenTreeId('d739bbe3d09aa564f92d69e1ef3093f5');
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
 
-    var myRenderer = s.renderers[0];
+	return styles;
 }
 
-PubSub.subscribe('canvas.zoom', function (a, b, c, d) {}
-/**
- * Go to a given tree ID on the graph, centering the viewport on the tree
- */
-);function jumpToAndOpenTreeId(treeid) {
-    //let tree = sigma.nodes[treeid];
-    let node = s.graph.nodes().find(function (node) {
-        return node.id === treeid;
-    });
-    focusNode(s.cameras[0], node);
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
 
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
 }
 
-function focusNode(camera, node) {
-    if (!node) {
-        console.error("Tried to go to node");
-        console.error(node);
-        return;
-    }
-    let cameraCoord = {
-        x: node['read_cam0:x'],
-        y: node['read_cam0:y'],
-        ratio: 0.1
-    };
-    camera.goTo(cameraCoord);
-    // sigma.misc.animation.camera(
-    //     camera,
-    //     {
-    //         x: node['read_cammain:x'],
-    //         y: node['read_cammain:y'],
-    //         ratio: 0.075
-    //     },
-    //     {
-    //         duration: 150
-    //     }
-    // );
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
 }
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
 
 /***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__ = __webpack_require__(177);
-const content = {};
-window.content = content; //expose to window for easy debugging
 
 
-class ContentItem {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-    constructor(args) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.getLastNBreadcrumbsStringFromList = getLastNBreadcrumbsStringFromList;
+
+var _user = __webpack_require__(8);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _review = __webpack_require__(190);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+var _trees = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var content = {};
+if (typeof window !== 'undefined') {
+    window.content = content; //expose to window for easy debugging
+}
+
+var ContentItem = function () {
+    function ContentItem(args) {
+        _classCallCheck(this, ContentItem);
+
         this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
         this.initialParentTreeContentURI = this.initialParentTreeContentURI || args && args.initialParentTreeContentURI || null;
         this.trees = args.trees || {};
 
         this.userTimeMap = args.userTimeMap || {};
-        this.timer = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userTimeMap && this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+        this.timer = _user2.default.loggedIn && this.userTimeMap && this.userTimeMap[_user2.default.getId()] || 0;
         this.timerId = null;
 
         this.userProficiencyMap = args.userProficiencyMap || {};
-        this.proficiency = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
 
         this.userInteractionsMap = args.userInteractionsMap || {};
-        this.interactions = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userInteractionsMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || [];
+        this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
 
         this.userReviewTimeMap = args.userReviewTimeMap || {};
-        this.nextReviewTime = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.userReviewTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] || 0;
+        this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
 
         this.studiers = args.studiers || {};
-        this.inStudyQueue = __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].loggedIn && this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()];
+        this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
 
         this.exercises = args.exercises || {};
 
         this.uri = args.uri || null;
     }
-    init() {
-        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition // this is for contentItems just created from a parent, not ones loaded from the db.
-        ();
-    }
 
-    //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+    _createClass(ContentItem, [{
+        key: 'init',
+        value: function init() {
+            this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition(); // this is for contentItems just created from a parent, not ones loaded from the db.
+        }
 
-    getDBRepresentation() {
-        return {
-            initialParentTreeId: this.initialParentTreeId,
-            initialParentTreeContentURI: this.initialParentTreeContentURI,
-            userTimeMap: this.userTimeMap,
-            userProficiencyMap: this.userProficiencyMap,
-            userInteractionsMap: this.userInteractionsMap,
-            userReviewTimeMap: this.userReviewTimeMap,
-            studiers: this.studiers,
-            exercises: this.exercises,
-            uri: this.uri
-        };
-    }
-    getURIAddition() {}
-    //removes the prefix "content/
-    getURIWithoutRootElement() {
-        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
-    }
-    getBreadCrumbs() {
-        let sections = this.getURIWithoutRootElement().split("/"
-        // console.log('breadcrumb sections for ', this,' are', sections)
-        );let sectionsResult = sections.reduce((accum, val) => {
-            if (val == "null" || val == "content" || val == "Everything") {
-                //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+        //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            return {
+                initialParentTreeId: this.initialParentTreeId,
+                initialParentTreeContentURI: this.initialParentTreeContentURI,
+                userTimeMap: this.userTimeMap,
+                userProficiencyMap: this.userProficiencyMap,
+                userInteractionsMap: this.userInteractionsMap,
+                userReviewTimeMap: this.userReviewTimeMap,
+                studiers: this.studiers,
+                exercises: this.exercises,
+                uri: this.uri
+            };
+        }
+    }, {
+        key: 'getURIAddition',
+        value: function getURIAddition() {}
+    }, {
+        key: 'getURIAdditionNotEncoded',
+        value: function getURIAdditionNotEncoded() {}
+        //removes the prefix "content/
+
+    }, {
+        key: 'getURIWithoutRootElement',
+        value: function getURIWithoutRootElement() {
+            return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
+        }
+    }, {
+        key: 'getBreadCrumbsString',
+        value: function getBreadCrumbsString() {
+            var sections = this.getURIWithoutRootElement().split("/");
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            var sectionsResult = sections.reduce(function (accum, val) {
+                if (val == "null" || val == "content" || val == "Everything") {
+                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                    return accum;
+                }
+                return accum + " > " + decodeURIComponent(val);
+            });
+            return sectionsResult;
+            // console.log('breadcrumb result is', sectionsResult)
+            //
+            // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
+            //     return total + decodeURIComponent(section) + " > "
+            // },"")
+            // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
+            // return breadcrumbs
+        }
+    }, {
+        key: 'getBreadcrumbsObjArray',
+        value: function getBreadcrumbsObjArray() {
+            var sections = this.getURIWithoutRootElement().split("/");
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            var breadcrumbsObjArray = sections.reduce(function (accum, val) {
+                if (val == "null" || val == "content" || val == "Everything") {
+                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                    return accum;
+                }
+                accum.push({ text: decodeURIComponent(val) });
                 return accum;
+            }, []);
+            return breadcrumbsObjArray;
+        }
+    }, {
+        key: 'getLastNBreadcrumbsString',
+        value: function getLastNBreadcrumbsString(n) {
+            var sections = this.getURIWithoutRootElement().split("/");
+            var result = getLastNBreadcrumbsStringFromList(sections, n);
+            return result;
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            // let sectionsResult = sections.reduce((accum, val) => {
+            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+            //         return accum
+            //     }
+            //     return accum + " > " + decodeURIComponent(val)
+            // })
+        }
+    }, {
+        key: 'getBreadCrumbs',
+        value: function getBreadCrumbs() {}
+
+        /**
+         * Used to update tree X and Y coordinates
+         * @param prop
+         * @param val
+         */
+
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
             }
-            return accum + " > " + decodeURIComponent(val);
-        });
-        return sectionsResult;
-        // console.log('breadcrumb result is', sectionsResult)
-        //
-        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-        //     return total + decodeURIComponent(section) + " > "
-        // },"")
-        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-        // return breadcrumbs
-    }
-    /**
-     * Used to update tree X and Y coordinates
-     * @param prop
-     * @param val
-     */
-    set(prop, val) {
-        if (this[prop] == val) {
-            return;
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            firebase.database().ref('content/' + this.id).update(updates);
+            this[prop] = val;
         }
+        /**
+         * Add a tree to the given content item
+         * @param treeId
+         */
 
-        var updates = {};
-        updates[prop] = val;
-        // this.treeRef.update(updates)
-        firebase.database().ref('content/' + this.id).update(updates);
-        this[prop] = val;
-    }
-    /**
-     * Add a tree to the given content item
-     * @param treeId
-     */
-    addTree(treeId) {
-        this.trees[treeId] = true;
-        let trees = {};
-        trees[treeId] = true;
-        let updates = {
-            trees
-        };
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    //TODO : make timer for heading be the sum of the time of all the child facts
-    startTimer() {
-        var self = this;
-
-        if (!this.timerId) {
-            //to prevent from two or more timers being created simultaneously on the content item
-            this.timerId = setInterval(function () {
-                self.timer = self.timer || 0;
-                self.timer++; // = fact.timer || 0
-            }, 1000);
+    }, {
+        key: 'addTree',
+        value: function addTree(treeId) {
+            this.trees[treeId] = true;
+            var trees = {};
+            trees[treeId] = true;
+            var updates = {
+                trees: trees
+            };
+            firebase.database().ref('content/' + this.id).update(updates);
         }
+        //TODO : make timer for heading be the sum of the time of all the child facts
+
+    }, {
+        key: 'startTimer',
+        value: function startTimer() {
+            var self = this;
+
+            if (!this.timerId) {
+                //to prevent from two or more timers being created simultaneously on the content item
+                this.timerId = setInterval(function () {
+                    self.timer = self.timer || 0;
+                    self.timer++; // = fact.timer || 0
+                }, 1000);
+            }
+        }
+    }, {
+        key: 'saveTimer',
+        value: function saveTimer() {
+            this.userTimeMap[_user2.default.getId()] = this.timer;
+
+            var updates = {
+                userTimeMap: this.userTimeMap
+            };
+
+            clearInterval(this.timerId);
+            this.timerId = null;
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'addToStudyQueue',
+        value: function addToStudyQueue() {
+            //don't display nextReviewTime if not in user's study queue
+            this.studiers[_user2.default.getId()] = true;
+
+            var updates = {
+                studiers: this.studiers
+            };
+            this.inStudyQueue = true;
+
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'addExercise',
+        value: function addExercise(exerciseId) {
+            this.exercises[exerciseId] = true;
+
+            var updates = {
+                exercises: this.exercises
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'removeExercise',
+        value: function removeExercise(exerciseId) {
+            delete this.exercises[exerciseId]; // remove from local cache
+            firebase.database().ref('content/' + this.id + '/exercises/').child(exerciseId).remove(); //delete from db
+        }
+    }, {
+        key: 'remove',
+        value: function remove() {
+            firebase.database().ref('content/').child(this.id).remove(); //delete from db
+            delete window.content[this.id];
+        }
+    }, {
+        key: 'setProficiency',
+        value: function setProficiency(proficiency) {
+            !this.inStudyQueue && this.addToStudyQueue();
+            //proficiency
+
+            //-proficiency stored under fact
+            this.proficiency = proficiency;
+            this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
+
+            var updates = {
+                userProficiencyMap: this.userProficiencyMap
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            //interactions
+            this.interactions.push({ timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency });
+            this.userInteractionsMap[_user2.default.getId()] = this.interactions;
+
+            var updates = {
+                userInteractionsMap: this.userInteractionsMap
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
+            //user review time map
+            var millisecondsTilNextReview = (0, _review.calculateMillisecondsTilNextReview)(this.interactions);
+            this.nextReviewTime = Date.now() + millisecondsTilNextReview;
+
+            this.userReviewTimeMap[_user2.default.getId()] = this.nextReviewTime;
+            var updates = {
+                userReviewTimeMap: this.userReviewTimeMap
+            };
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            _user2.default.setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency: proficiency });
+        }
+        //methods for html templates
+
+    }, {
+        key: 'isProficiencyUnknown',
+        value: function isProficiencyUnknown() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+        }
+    }, {
+        key: 'isProficiencyOne',
+        value: function isProficiencyOne() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
+        }
+    }, {
+        key: 'isProficiencyTwo',
+        value: function isProficiencyTwo() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.TWO;
+        }
+    }, {
+        key: 'isProficiencyThree',
+        value: function isProficiencyThree() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.THREE;
+        }
+    }, {
+        key: 'isProficiencyFour',
+        value: function isProficiencyFour() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.FOUR;
+        }
+        //returns exerciseId of the best exercise for the user
+        //returns null if no exercise found
+
+    }, {
+        key: 'getBestExerciseId',
+        value: function getBestExerciseId() {
+            var exerciseKeys = Object.keys(this.exercises).filter(function (key) {
+                return key !== 'undefined';
+            }); // not sure how but some data keys are undefined
+            console.log('exercise keys in get best exercise id are', exerciseKeys);
+            if (exerciseKeys.length <= 0) {
+                return null;
+            }
+            var keyIndex = Math.floor(Math.random() * exerciseKeys.length);
+            var exercise = exerciseKeys[keyIndex];
+
+            return exercise;
+        }
+    }]);
+
+    return ContentItem;
+}();
+
+/**
+ *
+ * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
+ * @returns {string}
+ */
+
+
+exports.default = ContentItem;
+function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
+    if (breadcrumbList.length <= n) {
+        return breadcrumbList;
     }
-    saveTimer() {
-        this.userTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.timer;
 
-        var updates = {
-            userTimeMap: this.userTimeMap
-        };
+    var breadcrumbListCopy = breadcrumbList.slice();
+    var lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length);
+    var result = convertBreadcrumbListToString(lastNBreadcrumbSections);
 
-        clearInterval(this.timerId);
-        this.timerId = null;
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    addToStudyQueue() {
-        //don't display nextReviewTime if not in user's study queue
-        this.studiers[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = true;
-
-        var updates = {
-            studiers: this.studiers
-        };
-        this.inStudyQueue = true;
-
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    addExercise(exerciseId) {
-        this.exercises[exerciseId] = true;
-
-        var updates = {
-            exercises: this.exercises
-        };
-
-        firebase.database().ref('content/' + this.id).update(updates);
-    }
-    setProficiency(proficiency) {
-        !this.inStudyQueue && this.addToStudyQueue
-        //proficiency
-
-        //-proficiency stored under fact
-        ();this.proficiency = proficiency;
-        this.userProficiencyMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.proficiency;
-
-        var updates = {
-            userProficiencyMap: this.userProficiencyMap
-        };
-
-        firebase.database().ref('content/' + this.id).update(updates
-
-        //interactions
-        );this.interactions.push({ timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency });
-        this.userInteractionsMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.interactions;
-
-        var updates = {
-            userInteractionsMap: this.userInteractionsMap
-        };
-
-        firebase.database().ref('content/' + this.id).update(updates
-
-        //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-        //user review time map
-        );const millisecondsTilNextReview = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__components_reviewAlgorithm_review__["a" /* calculateMillisecondsTilNextReview */])(this.interactions);
-        this.nextReviewTime = Date.now() + millisecondsTilNextReview;
-
-        this.userReviewTimeMap[__WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].getId()] = this.nextReviewTime;
-        var updates = {
-            userReviewTimeMap: this.userReviewTimeMap
-        };
-        firebase.database().ref('content/' + this.id).update(updates);
-
-        __WEBPACK_IMPORTED_MODULE_0__user__["a" /* default */].setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency });
-    }
+    return result;
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = ContentItem;
 
+function convertBreadcrumbListToString(breadcrumbList) {
+    if (breadcrumbList.length <= 0) return [];
+
+    var lastItem = decodeURIComponent(breadcrumbList.splice(-1));
+
+    var firstItems = breadcrumbList.reduce(function (accum, val) {
+        return accum + decodeURIComponent(val) + " > ";
+    }, '');
+    var result = firstItems + lastItem;
+
+    return result;
+}
 
 /***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json__);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * abstract class - only subtypes should be instantiated
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
+var _contentItems = __webpack_require__(4);
 
-const firebaseConfig = __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].env == 'prod' ? __WEBPACK_IMPORTED_MODULE_3__firebase_prod_config_json___default.a : __WEBPACK_IMPORTED_MODULE_2__firebase_dev_config_json___default.a;
+var _contentItems2 = _interopRequireDefault(_contentItems);
 
-__WEBPACK_IMPORTED_MODULE_0_firebase__["initializeApp"](firebaseConfig);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.firebase = __WEBPACK_IMPORTED_MODULE_0_firebase__; // for debugging from the console
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_firebase__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Exercise = function () {
+    function Exercise(_ref) {
+        var _ref$contentItemIds = _ref.contentItemIds,
+            contentItemIds = _ref$contentItemIds === undefined ? {} : _ref$contentItemIds;
+
+        _classCallCheck(this, Exercise);
+
+        this.contentItemIds = contentItemIds;
+    }
+
+    _createClass(Exercise, [{
+        key: "init",
+        value: function init() {}
+    }, {
+        key: "addContent",
+        value: function addContent(contentId) {
+            this.contentItemIds[contentId] = true;
+        }
+    }, {
+        key: "getDBRepresentation",
+        value: function getDBRepresentation() {
+            return {
+                contentItemIds: this.contentItemIds
+            };
+        }
+
+        /**
+         *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
+         * @param exercise - must be an object that is a subclass of Exercise
+         * @returns {*}
+         */
+
+    }, {
+        key: "delete",
+        value: function _delete() {
+            var me = this;
+            //remove this exercise from any contentItems so it is unsearchable
+            Object.keys(this.contentItemIds).forEach(function (contentItemId) {
+                _contentItems2.default.get(contentItemId).then(function (contentItem) {
+                    contentItem.removeExercise(me.id);
+                });
+            });
+        }
+    }], [{
+        key: "create",
+        value: function create(exercise) {
+            var updates = {};
+            updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
+            firebase.database().ref().update(updates);
+            return exercise;
+        }
+    }]);
+
+    return Exercise;
+}();
+
+exports.default = Exercise;
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8362,7 +8636,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(188);
+var _firebase_app = __webpack_require__(207);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -8387,7 +8661,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports) {
 
 var g;
@@ -8414,10 +8688,624 @@ module.exports = g;
 
 
 /***/ }),
-/* 15 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.removeTreeFromGraph = removeTreeFromGraph;
+exports.proficiencyToColor = proficiencyToColor;
+exports.syncGraphWithNode = syncGraphWithNode;
+exports.addTreeToGraph = addTreeToGraph;
+
+var _trees = __webpack_require__(2);
+
+var _contentItems = __webpack_require__(4);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _tree = __webpack_require__(45);
+
+var _globals = __webpack_require__(196);
+
+var _dataKeys = __webpack_require__(198);
+
+var _dataKeys2 = _interopRequireDefault(_dataKeys);
+
+__webpack_require__(42);
+
+var _user = __webpack_require__(8);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _vue = __webpack_require__(19);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: ['treeId'],
+    template: __webpack_require__(241),
+    created: function created() {
+        var me = this;
+        // require('../treesGraph')
+        initKnawledgeMap.call(this, this.treeId);
+    },
+    data: function data() {
+        return {};
+    },
+
+    computed: {}
+};
+
+
+var s,
+    g = {
+    nodes: [],
+    edges: []
+},
+    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
+    icons = ['\uF11B', '\uF11C', '\uF11D', '\uF128', '\uF129', '\uF130', '\uF131', '\uF132'];
+
+var newNodeXOffset = -2,
+    newNodeYOffset = 2;
+var EDGE_TYPES = {
+    SUGGESTED_CONNECTION: 9001,
+    HIERARCHICAL: 9002
+};
+
+function getTreeColor(content) {
+    var proficiency = _user2.default && content.userProficiencyMap && content.userProficiencyMap[_user2.default.getId()];
+    var color = proficiencyToColor(proficiency);
+    return color;
+}
+function removeTreeFromGraph(treeId) {
+    s.graph.dropNode(treeId);
+    return _trees.Trees.get(treeId).then(function (tree) {
+        var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
+        return Promise.all(childPromises).then(function (val) {
+            s.refresh();
+            return 'removed all children of ' + treeId;
+        });
+    });
+}
+
+function getLabelFromContent(content) {
+    switch (content.type) {
+        case "fact":
+            return content.question;
+        case "heading":
+            return content.title;
+        case "skill":
+            return content.title;
+    }
+}
+
+function proficiencyToColor(proficiency) {
+    if (proficiency > _proficiencyEnum.PROFICIENCIES.THREE) return _globals.Globals.colors.proficiency_4;
+    if (proficiency > _proficiencyEnum.PROFICIENCIES.TWO) return _globals.Globals.colors.proficiency_3;
+    if (proficiency > _proficiencyEnum.PROFICIENCIES.ONE) return _globals.Globals.colors.proficiency_2;
+    if (proficiency > _proficiencyEnum.PROFICIENCIES.UNKNOWN) return _globals.Globals.colors.proficiency_1;
+    return _globals.Globals.colors.proficiency_unknown;
+}
+function createEdgeId(nodeOneId, nodeTwoId) {
+    return nodeOneId + "__" + nodeTwoId;
+}
+function syncGraphWithNode(treeId) {
+    console.log("knawledgeMap.js syncGraphWithNode called", treeId);
+    _trees.Trees.get(treeId).then(function (tree) {
+        console.log("knawledgeMap.js syncGraphWithNode called tree", tree);
+        _contentItems2.default.get(tree.contentId).then(function (content) {
+            console.log("knawledgeMap.js syncGraphWithNode called content", content, content.proficiency);
+            //update the node
+            var sigmaNode = s.graph.nodes(treeId);
+            sigmaNode.x = tree.x;
+            sigmaNode.y = tree.y;
+            var color = getTreeColor(content);
+            sigmaNode.color = color;
+            console.log('node color is now', color);
+
+            //update the edge
+            var edgeId = createEdgeId(tree.parentId, treeId);
+            var sigmaEdge = s.graph.edges(edgeId);
+            sigmaEdge.color = color;
+
+            s.refresh();
+        });
+    });
+}
+
+//returns sigma tree node
+function addTreeToGraph(parentTreeId, content) {
+    //1. delete current addNewNode button
+    var parentTree = s.graph.nodes(parentTreeId);
+    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
+    var tree = new _tree.Tree(content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY);
+    //2. add new node to parent tree on UI
+    var newTree = {
+        id: tree.id,
+        parentId: parentTreeId,
+        contentId: content.id,
+        content: content,
+        x: newChildTreeX,
+        y: newChildTreeY,
+        children: {},
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree'
+        //2b. update x and y location in the db for the tree
+
+    };s.graph.addNode(newTree);
+    //3. add edge between new node and parent tree
+    var newEdge = {
+        id: createEdgeId(parentTreeId, newTree.id),
+        source: parentTreeId,
+        target: newTree.id,
+        size: 5,
+        color: getTreeColor(content),
+        type: EDGE_TYPES.HIERARCHICAL
+    };
+    s.graph.addEdge(newEdge);
+
+    s.refresh();
+    return newTree;
+}
+
+function initKnawledgeMap(treeIdToJumpTo) {
+    var me = this; // bound/called
+
+    var initialized = false;
+
+    if (typeof sigma !== 'undefined') {
+        sigma.settings.font = 'Fredoka One';
+    }
+
+    var toolTipsConfig = {
+        node: [{
+            show: 'rightClickNode',
+            cssClass: 'sigma-tooltip',
+            position: 'bottom',
+            template: '',
+            renderer: function renderer(node, template) {
+                var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
+                switch (node.type) {
+                    case 'tree':
+                        template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                        break;
+                    case 'newChildTree':
+                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                        break;
+                }
+                var result = Mustache.render(template, node);
+
+                return result;
+            }
+        }]
+        // stage: {
+        //     template:require('./rightClickMenu.html')
+        // }
+    };
+
+    if (typeof PubSub !== 'undefined') {
+        PubSub.subscribe('login', function () {
+            loadTreeAndSubTrees(1, 1).then(function (val) {
+                initSigma();
+            });
+        });
+    }
+    function loadTreeAndSubTrees(treeId, level) {
+        //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
+        return _trees.Trees.get(treeId).then(function (tree) {
+            return onGetTree(tree, level);
+        }).catch(function (err) {
+            return console.error('trees get err is', err);
+        });
+    }
+
+    function onGetTree(tree, level) {
+        var contentPromise = _contentItems2.default.get(tree.contentId).then(function onContentGet(content) {
+            return addTreeNodeToGraph(tree, content, level);
+        }).catch(function (err) {
+            return console.error("CONTENTITEMS.get Err is", err);
+        });
+
+        var childTreesPromises = tree.children ? Object.keys(tree.children).map(function (child) {
+            return loadTreeAndSubTrees(child, level + 1);
+        }) : [];
+        //     loadTreeAndSubTrees
+        // }) : []
+        var promises = childTreesPromises;
+        promises.push(contentPromise);
+
+        return Promise.all(promises);
+    }
+
+    function addTreeNodeToGraph(tree, content, level) {
+        var treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
+
+        g.nodes.push(treeUINode);
+        connectTreeToParent(tree, content, g);
+        return content.id;
+    }
+
+    //recursively load the entire tree
+    // Instantiate sigma:
+    function createTreeNodeFromTreeAndContent(tree, content, level) {
+        var node = {
+            id: tree.id,
+            parentId: tree.parentId,
+            level: level,
+            x: tree.x,
+            y: tree.y,
+            children: tree.children,
+            content: content,
+            label: getLabelFromContent(content),
+            size: 1,
+            color: getTreeColor(content),
+            type: 'tree'
+        };
+        return node;
+    }
+    /**
+     * Get tree colors for descending proficiency levels. Default to "existing node" color
+     * @param tree
+     * @returns {*}
+     */
+    function connectTreeToParent(tree, content, g) {
+        if (tree.parentId) {
+            var edge = {
+                id: createEdgeId(tree.parentId, tree.id),
+                source: tree.parentId,
+                target: tree.id,
+                size: 5,
+                color: getTreeColor(content),
+                type: EDGE_TYPES.HIERARCHICAL
+            };
+            g.edges.push(edge);
+        }
+    }
+    //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+
+    function initSigma() {
+        if (initialized) return;
+
+        sigma.renderers.def = sigma.renderers.canvas;
+        sigma.canvas.labels.def = sigma.canvas.labels.prioritizable;
+        s = new sigma({
+            graph: g,
+            container: 'graph-container',
+            glyphScale: 0.7,
+            glyphFillColor: '#666',
+            glyphTextColor: 'white',
+            glyphStrokeColor: 'transparent',
+            glyphFont: 'FontAwesome',
+            glyphFontStyle: 'normal',
+            glyphTextThreshold: 6,
+            glyphThreshold: 3
+        });
+
+        window.s = s;
+        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+        s.refresh();
+
+        initialized = true;
+        initSigmaPlugins();
+        PubSub.subscribe('canvas.dragStart', function (eventName, data) {
+            var canvas = document.querySelector('#graph-container');
+            canvas.style.cursor = 'grabbing';
+        });
+        PubSub.subscribe('canvas.dragStop', function (eventName, data) {
+            var canvas = document.querySelector('#graph-container');
+            canvas.style.cursor = 'grab';
+        });
+        PubSub.subscribe('canvas.startDraggingNode', function (eventName, node) {});
+        PubSub.subscribe('canvas.stopDraggingNode', function (eventName, node) {
+            updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
+        });
+        PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
+            var node = data;
+            console.log(data);
+            if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection) {
+                return;
+            }
+            switch (node.content.type) {
+                case 'fact':
+                    openTooltip(node);
+                    break;
+                case 'heading':
+                    openTooltip(node);
+                    break;
+                default:
+                    me.$router.push({ name: 'study', params: { leafId: node.id } });
+                    console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id);
+                    break;
+            }
+        });
+        PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
+            PubSub.publish('canvas.closeTooltip', data);
+        });
+        PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
+            PubSub.publish('canvas.closeTooltip', data);
+            if (window.edgeIdBeingChanged) {
+                s.graph.edges(window.edgeIdBeingChanged).state = 'normal';
+            }
+            if (window.awaitingDisconnectConfirmationNodeId) {
+                s.graph.nodes(window.awaitingDisconnectConfirmationNodeId).state = 'normal';
+            }
+            if (window.awaitingEdgeConnectionNodeId) {
+                s.graph.nodes(window.awaitingEdgeConnectionNodeId).state = 'normal';
+            }
+            window.edgeIdBeingChanged = null;
+            window.awaitingDisconnectConfirmation = false;
+            window.awaitingEdgeConnection = false;
+            window.awaitingDisconnectConfirmationNodeId = null;
+            window.awaitingEdgeConnectionNodeId = null;
+        });
+        PubSub.subscribe('canvas.overNode', function (eventName, data) {
+            var canvas = document.querySelector('#graph-container');
+            canvas.style.cursor = 'pointer';
+        });
+        PubSub.subscribe('canvas.outNode', function (eventName, data) {
+            var canvas = document.querySelector('#graph-container');
+            if (!canvas || !canvas.style) return; // maybe the user just clicked on the node which navigated the user to another route where the canvas is no longer present
+            canvas.style.cursor = 'grab';
+        });
+        PubSub.subscribe('canvas.clickEdge', function (eventName, eventData) {
+            var edge = eventData.edge;
+            if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION) {
+                click_SUGGESTED_CONNECTION(edge);
+                return;
+            }
+            var target = s.graph.nodes(edge.target);
+            if (window.awaitingDisconnectConfirmation && window.awaitingDisconnectConfirmationNodeId !== target.id) {
+                return;
+            }
+            if (window.awaitingEdgeConnection && window.awaitingEdgeConnectionNodeId !== target.id) {
+                return;
+            }
+            switch (edge.state) {
+                case 'pre-severed':
+                    target.state = 'awaitingEdgeConnection';
+                    edge.state = 'severed';
+                    window.awaitingEdgeConnection = true;
+                    window.awaitingEdgeConnectionNodeId = target.id;
+                    window.awaitingDisconnectConfirmationNodeId = null;
+                    window.awaitingDisconnectConfirmation = false;
+                    // s.graph.dropEdge(edge.id)
+
+                    var parentlessNode = target;
+                    showPossibleEdges(parentlessNode);
+
+                    break;
+                default:
+                    window.edgeIdBeingChanged = edge.id;
+                    edge.state = 'pre-severed';
+                    window.awaitingDisconnectConfirmationNodeId = target.id;
+                    window.awaitingDisconnectConfirmation = true;
+                    break;
+            }
+            s.refresh();
+        });
+    }
+    function click_SUGGESTED_CONNECTION(edge) {
+        var permanentEdge = {
+            id: createEdgeId(edge.source, edge.target),
+            source: edge.source,
+            target: edge.target,
+            type: EDGE_TYPES.HIERARCHICAL,
+            color: edge.color,
+            size: edge.size
+        };
+        var parentlessNode = s.graph.nodes(edge.target);
+        parentlessNode.state = 'normal';
+        _trees.Trees.get(parentlessNode.id).then(function (tree) {
+            tree.changeParent(edge.source);
+            s.graph.addEdge(permanentEdge);
+            window.awaitingEdgeConnectionNodeId = null;
+            window.awaitingEdgeConnection = false;
+            removeSuggestedEdges();
+            var originalEdge = s.graph.edges(window.edgeIdBeingChanged);
+            originalEdge && s.graph.dropEdge(originalEdge.id);
+            s.refresh();
+            window.suggestedConnectionClicked = true;
+        });
+        // PubSub.publish('canvas.parentReconnect.reconnected')
+    }
+    function removeEdgeToParent(node) {
+        var parentId = node.parentId;
+        var edgeId = createEdgeId(parentId, node.id);
+        s.graph.dropEdge(edgeId);
+    }
+    if (typeof window !== 'undefined') {
+        window.haloSizeScalingFactor = 1.00;
+        window.scalingOffset = 20;
+    }
+    setInterval(function () {
+        if (typeof window == 'undefined') {
+            return;
+        }
+        switch (window.scalingOffset) {
+            case -20:
+                window.scalingOffset = -10;
+                break;
+            case -10:
+                window.scalingOffset = 0;
+                break;
+            case 0:
+                window.scalingOffset = 10;
+                break;
+            case 10:
+                window.scalingOffset = 20;
+                break;
+            case 20:
+                window.scalingOffset = 30;
+                break;
+            case 30:
+                window.scalingOffset = 21;
+                break;
+            case 21:
+                window.scalingOffset = 11;
+                break;
+            case 11:
+                window.scalingOffset = 1;
+                break;
+            case 1:
+                window.scalingOffset = -9;
+                break;
+            case -9:
+                window.scalingOffset = -20;
+                break;
+        }
+        window.haloSizeScalingFactor = 1 + window.scalingOffset / 1000;
+        window.haloEdgeSizeScalingFactor = 1 + 4 * window.scalingOffset / 1000;
+        s && s.refresh();
+    }, 100);
+
+    function showPossibleEdges(parentlessNode) {
+        var nodesOnScreen = s.graph.nodes().filter(function (node) {
+            return node.onScreen;
+        }); //>>>>> seems to be returning nothing >>// s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
+        var headingsOnScreen = nodesOnScreen.filter(function (node) {
+            return node.content.type == 'heading';
+        }); // node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
+
+        headingsOnScreen.forEach(function (node) {
+            var edge = {
+                id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
+                source: node.id,
+                target: parentlessNode.id,
+                size: 5,
+                color: parentlessNode.color,
+                type: EDGE_TYPES.SUGGESTED_CONNECTION
+            };
+            s.graph.addEdge(edge);
+            s.refresh();
+        });
+        // var parentLessNode
+    }
+    function removeSuggestedEdges() {
+        var edgeIdsToRemove = s.graph.edges().filter(function (e) {
+            return e.type === EDGE_TYPES.SUGGESTED_CONNECTION;
+        }).map(function (e) {
+            return e.id;
+        }); //map(e => e.id).forEach(s.graph.dropEdge)
+        edgeIdsToRemove.forEach(function (id) {
+            s.graph.dropEdge(id);
+        });
+        // edgeIdsToRemove.forEach(s.graph.dropEdge.bind(s))
+    }
+    if (typeof window !== 'undefined') {
+        window.printNodesOnScreen = function () {
+            var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height));
+            console.log('nodes on screen is', nodesOnScreen);
+        };
+    }
+
+    function printNodeInfo(e) {
+        console.log(e, e.data.node);
+    }
+    function openTooltip(node) {
+        tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+        setTimeout(function () {
+            var vm = new _vue2.default({
+                el: '#vue'
+            });
+        }, 0); //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+    }
+    function hoverOverNode(e) {
+        // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
+        // var node = e.data.node
+    }
+    function updateTreePosition(data) {
+        var newX = data.newX,
+            newY = data.newY,
+            treeId = data.treeId;
+        // let newX = e.data.node.x
+        // let newY = e.data.node.y
+        // let treeId = e.data.node.id;
+
+        if (!s.graph.nodes().find(function (node) {
+            return node.id == treeId && node.type === 'tree';
+        })) {
+            return; //node isn't an actual node in the db - its like a shadow node or helper node
+        }
+        var MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1;
+        _trees.Trees.get(treeId).then(function (tree) {
+            var deltaX = newX - tree.x;
+            if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+                tree.addToX({ recursion: true, deltaX: deltaX });
+            }
+            var deltaY = newY - tree.y;
+            if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES) {
+                tree.addToY({ recursion: true, deltaY: deltaY });
+            }
+            return tree;
+        });
+    }
+
+    function initSigmaPlugins() {
+        // Instantiate the tooltips plugin with a Mustache renderer for node tooltips:
+        var tooltips = sigma.plugins.tooltips(s, s.renderers[0], toolTipsConfig);
+        // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
+        window.tooltips = tooltips;
+        window.jump = jumpToAndOpenTreeId;
+        jumpToAndOpenTreeId(treeIdToJumpTo || _dataKeys2.default.TREE_IDS.AMAR);
+
+        var myRenderer = s.renderers[0];
+    }
+
+    /**
+     * Go to a given tree ID on the graph, centering the viewport on the tree
+     */
+    function jumpToAndOpenTreeId(treeid) {
+        //let tree = sigma.nodes[treeid];
+        var node = s.graph.nodes(treeid);
+        focusNode(s.cameras[0], node);
+
+        tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    }
+
+    function focusNode(camera, node) {
+        if (!node) {
+            console.error("Tried to go to node");
+            console.error(node);
+            return;
+        }
+        var cameraCoord = {
+            x: node['read_cam0:x'],
+            y: node['read_cam0:y'],
+            ratio: 0.1
+        };
+        camera.goTo(cameraCoord);
+        // sigma.misc.animation.camera(
+        //     camera,
+        //     {
+        //         x: node['read_cammain:x'],
+        //         y: node['read_cammain:y'],
+        //         ratio: 0.075
+        //     },
+        //     {
+        //         duration: 150
+        //     }
+        // );
+    }
+}
+
+/***/ }),
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(process, global) {/*!
  * Vue.js v2.3.4
  * (c) 2014-2017 Evan You
@@ -18106,12 +18994,12 @@ function getOuterHTML (el) {
 
 Vue$3.compile = compileToFunctions;
 
-/* harmony default export */ __webpack_exports__["a"] = (Vue$3);
+/* harmony default export */ __webpack_exports__["default"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(163), __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23), __webpack_require__(17)))
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18189,7 +19077,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18276,7 +19164,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18312,7 +19200,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -18409,203 +19297,510 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 23 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
+// shim for using process in browser
+var process = module.exports = {};
 
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
 
+var cachedSetTimeout;
+var cachedClearTimeout;
 
-// import ExerciseQA from "./exerciseQA";
-
-const exercises = {}; //cache
-window.exercises = exercises;
-/**
- * abstract class - only subtypes should be instantiated
- */
-class Exercise {
-    constructor({ contentItemIds = {} }) {
-        this.contentItemIds = contentItemIds;
-    }
-    init() {}
-    addContent(contentId) {
-        this.contentItemIds[contentId] = true;
-    }
-    getDBRepresentation() {
-        return {
-            contentItemIds: this.contentItemIds
-        };
-    }
-
-    /**
-     *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
-     * @param exercise - must be an object that is a subclass of Exercise
-     * @returns {*}
-     */
-    static create(exercise) {
-        let updates = {};
-        updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-        firebase.database().ref().update(updates);
-        return exercise;
-    }
-
-    static get(exerciseId) {
-        if (!exerciseId) {
-            throw "Exercises.get(exerciseId) error! exerciseId empty!";
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
         }
-        return new Promise((resolve, reject) => {
-            if (exercises[exerciseId]) {
-                resolve(exercises[exerciseId]);
-            } else {
-                firebase.database().ref('exercises/' + exerciseId).once("value", function (snapshot) {
-                    const exerciseData = snapshot.val();
-                    let exercise;
-                    switch (exerciseData.type) {
-                        case 'QA':
-                            // exercise = new ExerciseQA(exerciseData)
-                            break;
-                    }
-                    exercises[exercise.id] = exercise; // add to cache
-                    resolve(exercise);
-                }, reject);
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
             }
-        });
+        }
+        queueIndex = -1;
+        len = queue.length;
     }
-    static getAll() {
-        return new Promise((resolve, reject) => {
-            firebase.database().ref('exercises/').once("value", function (snapshot) {
-                const exercisesData = snapshot.val();
-                exercisesData && Object.keys(exercisesData).forEach(exerciseData => {
-                    const exercise = new Exercise(exerciseData); // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
-                    exercises[exercise.id] = exercise; // add to cache
-                });
-                resolve(exercises);
-            }, reject);
-        });
-    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Exercise;
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebaseService__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_merge__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__contentItem__ = __webpack_require__(11);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
- // from './firebaseService'
-class Fact extends __WEBPACK_IMPORTED_MODULE_5__contentItem__["a" /* default */] {
-    //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-    constructor(args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/) {
-        // if (initialParentTreeId){
-        //     super({initialParentTreeId})
-        // } else {
-        //     super()
-        // }
-        super(args);
-        this.type = 'fact';
-        this.question = args.question && args.question.trim();
-        this.answer = args.answer && args.answer.trim();
-        this.id = args.id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question: this.question, answer: this.answer }));
+var _md = __webpack_require__(12);
 
-        if (window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+var _md2 = _interopRequireDefault(_md);
 
-        super.init();
+var _contentItem = __webpack_require__(14);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _exercise = __webpack_require__(15);
+
+var _exercise2 = _interopRequireDefault(_exercise);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExerciseQA = function (_Exercise) {
+    _inherits(ExerciseQA, _Exercise);
+
+    function ExerciseQA(_ref) {
+        var contentItemIds = _ref.contentItemIds,
+            question = _ref.question,
+            answer = _ref.answer;
+
+        _classCallCheck(this, ExerciseQA);
+
+        var _this = _possibleConstructorReturn(this, (ExerciseQA.__proto__ || Object.getPrototypeOf(ExerciseQA)).call(this, { contentItemIds: contentItemIds }));
+
+        _this.type = 'QA';
+
+        //question and answer can both be user generated HTML that can include image links to imgur - or I guess firebase stored images too
+        _this.question = question;
+        _this.answer = answer;
+        _this.id = (0, _md2.default)(JSON.stringify({ question: question, answer: answer }));
+        _get(ExerciseQA.prototype.__proto__ || Object.getPrototypeOf(ExerciseQA.prototype), 'init', _this).call(_this);
+        return _this;
     }
 
-    //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+    _createClass(ExerciseQA, [{
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(ExerciseQA.prototype.__proto__ || Object.getPrototypeOf(ExerciseQA.prototype), 'getDBRepresentation', this).call(this);
 
-    getURIAddition() {
-        return "/" + encodeURIComponent(this.question + ":" + this.answer);
-    }
-    getDBRepresentation() {
-        var baseRep = super.getDBRepresentation();
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                question: this.question,
+                answer: this.answer,
+                type: this.type
+            });
+        }
+    }, {
+        key: 'editQuestion',
+        value: function editQuestion() {
+            //create new exercise
 
-        return __WEBPACK_IMPORTED_MODULE_4_lodash_merge___default()(baseRep, {
-            id: this.id,
-            question: this.question,
-            answer: this.answer,
-            type: this.type
-        });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Fact;
+            //remove old exercise from any locations it was in - except user interactions
+            //as a property under certain contentItems
 
+            //add modified exercise to any locations it belongs in
+        }
+    }], [{
+        key: 'create',
+        value: function create(_ref2) {
+            var contentItemIds = _ref2.contentItemIds,
+                question = _ref2.question,
+                answer = _ref2.answer;
+
+            var exerciseQA = new ExerciseQA({ contentItemIds: contentItemIds, question: question, answer: answer });
+            return _get(ExerciseQA.__proto__ || Object.getPrototypeOf(ExerciseQA), 'create', this).call(this, exerciseQA);
+        }
+    }]);
+
+    return ExerciseQA;
+}(_exercise2.default);
+
+exports.default = ExerciseQA;
 
 /***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Fact = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(12);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _user = __webpack_require__(8);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _trees = __webpack_require__(2);
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _contentItem = __webpack_require__(14);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// from './firebaseService'
+var Fact = exports.Fact = function (_ContentItem) {
+  _inherits(Fact, _ContentItem);
+
+  //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
+  function Fact(args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/) {
+    _classCallCheck(this, Fact);
+
+    var _this = _possibleConstructorReturn(this, (Fact.__proto__ || Object.getPrototypeOf(Fact)).call(this, args));
+    // if (initialParentTreeId){
+    //     super({initialParentTreeId})
+    // } else {
+    //     super()
+    // }
 
 
-class Heading extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default */] {
-    constructor(args /*={title, initialParentTreeId} and more */) {
-        super(args);
-        this.type = 'heading';
+    _this.type = 'fact';
+    _this.question = args.question && args.question.trim();
+    _this.answer = args.answer && args.answer.trim();
+    _this.id = args.id || (0, _md2.default)(JSON.stringify({ question: _this.question, answer: _this.answer }));
 
-        this.title = args.title && args.title.trim();
-        this.id = args.id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ title: this.title, initialParentTreeId: args.initialParentTreeId }));
-        super.init();
+    if (typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = _this; //TODO: john figure out what this does
+
+    _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'init', _this).call(_this);
+    return _this;
+  }
+
+  //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+
+  _createClass(Fact, [{
+    key: 'getURIAdditionNotEncoded',
+    value: function getURIAdditionNotEncoded() {
+      return this.question + ":" + this.answer;
     }
-    getURIAddition() {
-        return "/" + encodeURIComponent(this.title);
+  }, {
+    key: 'getURIAddition',
+    value: function getURIAddition() {
+      return encodeURIComponent(this.getURIAdditionNotEncoded());
     }
-    getDBRepresentation() {
-        var baseRep = super.getDBRepresentation();
+  }, {
+    key: 'getDBRepresentation',
+    value: function getDBRepresentation() {
+      var baseRep = _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'getDBRepresentation', this).call(this);
 
-        return __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default()(baseRep, {
-            id: this.id,
-            title: this.title,
-            type: this.type
-        });
+      return (0, _lodash2.default)(baseRep, {
+        id: this.id,
+        question: this.question,
+        answer: this.answer,
+        type: this.type
+      });
     }
+  }]);
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Heading;
-
+  return Fact;
+}(_contentItem2.default);
 
 /***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trees__ = __webpack_require__(3);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Heading = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(12);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(14);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Heading = exports.Heading = function (_ContentItem) {
+    _inherits(Heading, _ContentItem);
+
+    function Heading(args /*={title, initialParentTreeId} and more */) {
+        _classCallCheck(this, Heading);
+
+        var _this = _possibleConstructorReturn(this, (Heading.__proto__ || Object.getPrototypeOf(Heading)).call(this, args));
+
+        _this.type = 'heading';
+
+        _this.title = args.title && args.title.trim();
+        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
+        _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'init', _this).call(_this);
+        return _this;
+    }
+
+    _createClass(Heading, [{
+        key: 'getURIAddition',
+        value: function getURIAddition() {
+            return encodeURIComponent(this.title);
+        }
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'getDBRepresentation', this).call(this);
+
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                title: this.title,
+                type: this.type
+            });
+        }
+    }]);
+
+    return Heading;
+}(_contentItem2.default);
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Skill = undefined;
 
-class Skill extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default */] {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(12);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(14);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _trees = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Skill = exports.Skill = function (_ContentItem) {
+    _inherits(Skill, _ContentItem);
 
     /**ParentTreeId is used in skill and heading constructor so as to avoid ambiguity when calculating the id of two different skills with the same title
      * e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -ar Verbs > 1st Person Plural
@@ -18613,75 +19808,111 @@ class Skill extends __WEBPACK_IMPORTED_MODULE_1__contentItem__["a" /* default */
      * ^^ Both skills are different, but have the same title: "1st Person Plural"
      * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
     */
-    constructor(args /* ={title, initialParentTreeId} */) {
+    function Skill(args /* ={title, initialParentTreeId} */) {
+        _classCallCheck(this, Skill);
+
+        var _this = _possibleConstructorReturn(this, (Skill.__proto__ || Object.getPrototypeOf(Skill)).call(this, args));
         // if (initialParentTreeId){
         //     super({initialParentTreeId})
         // } else {
         //     super()
         // }
-        super(args);
-        this.type = 'skill';
 
-        this.title = args.title && args.title.trim();
+
+        _this.type = 'skill';
+
+        _this.title = args.title && args.title.trim();
         // this.calculateLongURI
-        this.id = args.id || __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ title: this.title, initialParentTreeId: args.initialParentTreeId }));
-        super.init();
+        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
+        _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'init', _this).call(_this);
+        return _this;
     }
 
-    getURIAddition() {
-        return "/" + encodeURIComponent(this.title);
-    }
-    getDBRepresentation() {
-        var baseRep = super.getDBRepresentation();
+    _createClass(Skill, [{
+        key: 'getURIAddition',
+        value: function getURIAddition() {
+            return encodeURIComponent(this.title);
+        }
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'getDBRepresentation', this).call(this);
 
-        return __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default()(baseRep, {
-            id: this.id,
-            title: this.title,
-            type: this.type
-        });
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Skill;
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                title: this.title,
+                type: this.type
+            });
+        }
+    }]);
 
+    return Skill;
+}(_contentItem2.default);
 
 /***/ }),
-/* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(12);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-const users = {}; // cache
-class Users {
-    //returns promise
-    static get(userId) {
-        if (!userId) {
-            throw "Users.get(userId) error!. userId empty";
-        }
-        return new Promise(function getUserPromise(resolve, reject) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-            //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-            if (users[userId]) {
-                resolve(users[userId]);
-                console.log('user found in cache');
-            } else {
-                __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot) {
-                    let userData = snapshot.val();
-                    users[userId] = userData; // add to cache
-                    resolve(userData);
-                });
-            }
-        });
+var _user = __webpack_require__(8);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var users = {}; // cache
+
+var Users = function () {
+    function Users() {
+        _classCallCheck(this, Users);
     }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Users;
 
+    _createClass(Users, null, [{
+        key: 'get',
+
+        //returns promise
+        value: function get(userId) {
+            if (!userId) {
+                throw "Users.get(userId) error!. userId empty";
+            }
+            return new Promise(function getUserPromise(resolve, reject) {
+
+                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+                if (users[userId]) {
+                    resolve(users[userId]);
+                    console.log('user found in cache');
+                } else {
+                    _firebaseService2.default.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot) {
+                        var userData = snapshot.val();
+                        users[userId] = userData; // add to cache
+                        resolve(userData);
+                    });
+                }
+            });
+        }
+    }]);
+
+    return Users;
+}();
+
+exports.default = Users;
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18788,7 +20019,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18828,17 +20059,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(198);
+var PromiseImpl = scope.Promise || __webpack_require__(217);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18861,11 +20092,11 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(28);
+var _metadata = __webpack_require__(33);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -19002,7 +20233,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19076,7 +20307,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19099,13 +20330,13 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(205);
+var _json = __webpack_require__(224);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(18);
+var _location = __webpack_require__(22);
 
-var _path = __webpack_require__(43);
+var _path = __webpack_require__(53);
 
 var path = _interopRequireWildcard(_path);
 
@@ -19113,7 +20344,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(30);
+var _url = __webpack_require__(35);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -19286,7 +20517,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 29 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19308,7 +20539,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -19496,7 +20727,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19514,11 +20745,11 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(21);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _object = __webpack_require__(7);
+var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
@@ -19566,33 +20797,312 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = secondsToPretty;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
 
 
-
-__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('timeFromNow', utcTimestamp => {
-    return __WEBPACK_IMPORTED_MODULE_1_moment___default()(utcTimestamp).fromNow();
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
-__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('sortByNextReviewTime', arr => {
-    return arr.sort((a, b) => a.nextReviewTime > b.nextReviewTime);
+
+var _contentItems = __webpack_require__(4);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    template: __webpack_require__(234),
+    created: function created() {
+        var me = this;
+        this.items = {};
+
+        _contentItems2.default.getAllExceptForHeadings().then(function (items) {
+            console.log('all items returned are ', items);
+            me.items = items;
+            Object.keys(me.items).forEach(function (key) {
+                var item = me.items[key];
+                console.log("item Id" + item.id + " ---- initialParentTreeContentURI: " + item.initialParentTreeContentURI + "---- item is", item);
+            });
+        });
+        this.num = 5;
+    },
+    data: function data() {
+        return {
+            items: this.items
+        };
+    },
+
+    computed: {
+        numItems: function numItems() {
+            return this.items && Object.keys(this.items).length;
+        }
+    },
+    methods: {
+        remove: function remove(item) {
+            _contentItems2.default.remove(item.id);
+        }
+    }
+};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
-__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('truncate', Math.floor);
-function secondsToPretty(seconds = 0) {
-    let minutes = Math.floor(seconds / 60);
+exports.default = {
+    props: ['contentItemId'],
+    template: __webpack_require__(235),
+    created: function created() {
+        var me = this;
+    },
+    data: function data() {
+        return {};
+    },
+
+    computed: {}
+};
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _exercise = __webpack_require__(15);
+
+var _exercise2 = _interopRequireDefault(_exercise);
+
+var _exercises = __webpack_require__(43);
+
+var _exercises2 = _interopRequireDefault(_exercises);
+
+var _exerciseQA = __webpack_require__(24);
+
+var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
+
+var _contentItems = __webpack_require__(4);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _snack = __webpack_require__(174);
+
+var _snack2 = _interopRequireDefault(_snack);
+
+__webpack_require__(256);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+var _invertObject = __webpack_require__(58);
+
+var _invertObject2 = _interopRequireDefault(_invertObject);
+
+var _trees = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: ['leafId'],
+    template: __webpack_require__(246),
+    created: function created() {
+        var me = this;
+        // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
+        // this.leafId = '83cbe6ea3fa874449982b645f04d14a1' // amar
+        // this.items = []
+        console.log('treeReview.js: leafId is', this.leafId);
+        me.initReview();
+
+        this.proficiencyForAllItems = _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+    },
+    data: function data() {
+        return {
+            loading: true,
+            breadcrumbsAllButLast: [],
+            lastBreadcrumb: {},
+            items: [],
+            proficiencyForAllItems: this.proficiencyForAllItems,
+            exercise: this.exercise,
+            flipped: this.flipped
+        };
+    },
+
+    computed: {
+        oneItemTested: function oneItemTested() {
+            return this.items.length === 1;
+        }
+    },
+    methods: {
+        initReview: function initReview() {
+            this.flipped = false;
+            this.exercise = {};
+            this.items = [];
+            var me = this;
+            this.loading = true;
+            _trees.Trees.get(me.leafId).then(function (tree) {
+                me.tree = tree;
+                _contentItems2.default.get(tree.contentId).then(function (contentItem) {
+                    me.breadcrumbs = contentItem.getBreadcrumbsObjArray();
+                    me.breadcrumbsAllButLast = me.breadcrumbs.splice(0, me.breadcrumbs.length - 1);
+                    me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1];
+
+                    me.exerciseId = contentItem.getBestExerciseId();
+                    if (!me.exerciseId) {
+                        me.loading = false;
+                    } else {
+                        me.initExercise();
+                    }
+                });
+            });
+        },
+        initExercise: function initExercise() {
+            var me = this;
+            _exercises2.default.get(me.exerciseId).then(function (exercise) {
+                me.exercise = exercise;
+                Object.keys(exercise.contentItemIds).forEach(function (itemId) {
+                    _contentItems2.default.get(itemId).then(function (item) {
+                        switch (item.type) {
+                            case 'fact':
+                                item.title = item.getURIAdditionNotEncoded();
+                                break;
+                            case 'skill':
+                                item.title = item.getLastNBreadcrumbsString(2);
+                                break;
+                        }
+                        // item.title = item.id
+                        me.items.push(item);
+                        me.loading = false;
+                    });
+                });
+            });
+            me.flipped = false;
+        },
+        updateProficiency: function updateProficiency(item, proficiency) {
+            console.log('proficiency updated', item, proficiency);
+        },
+        updateProficiencyForAllItems: function updateProficiencyForAllItems() {
+            var me = this;
+            this.items.forEach(function (item) {
+                item.proficiency = me.proficiencyForAllItems;
+            });
+        },
+        proficiencyUnknown: function proficiencyUnknown(item) {
+            return item.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+        },
+        proficiencyOne: function proficiencyOne(item) {
+            return item.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
+        },
+        nextQuestion: function nextQuestion() {
+            this.items.forEach(function (item) {
+                item.setProficiency(item.proficiency); // update the item's proficiency in the db. right now its just updated locally
+            });
+            var snack = new _snack2.default({
+                domParent: document.querySelector('.tree-review')
+            });
+            // show a snack for 4s
+            snack.show('+300 points', 1000);
+            this.initReview();
+        },
+        addExercise: function addExercise() {
+            this.$router.push({ name: 'create', params: { contentItemId: this.tree.contentId } });
+        },
+        flip: function flip() {
+            this.flipped = !this.flipped;
+        },
+        flipIfNotFlipped: function flipIfNotFlipped() {
+            if (!this.flipped) {
+                this.flipped = true;
+            }
+        },
+        editExercise: function editExercise() {
+            window.exerciseToReplaceId = this.exerciseId;
+            PubSub.publish('goToState.exerciseCreator');
+        },
+        deleteExercise: function deleteExercise() {
+            if (confirm("Are you sure you want to delete this exercise? For every single user?")) {
+                this.exercise.delete();
+                this.initReview();
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    template: __webpack_require__(247),
+    props: ['leafId'],
+    created: function created() {
+        console.log('tree review container leafId is', this.leafId);
+    }
+    //in browser navigate to  http://localhost:8080/#/study/83cbe6ea3fa874449982b645f04d14a1 - for amar
+    //in browser navigate to  http://localhost:8080/#/study/ac8b5a3a8898a48e70bb3a5c6eebfca0 - for an item with no exercises
+    //http://localhost:8080/#/study/83cbe6ea3fa874449982b645f04d14a1
+
+};
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.secondsToPretty = secondsToPretty;
+
+var _vue = __webpack_require__(19);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.filter('timeFromNow', function (utcTimestamp) {
+    return (0, _moment2.default)(utcTimestamp).fromNow();
+});
+_vue2.default.filter('sortByNextReviewTime', function (arr) {
+    return arr.sort(function (a, b) {
+        return a.nextReviewTime > b.nextReviewTime;
+    });
+});
+_vue2.default.filter('truncate', Math.floor);
+function secondsToPretty() {
+    var seconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    var minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
-    let hours = Math.floor(minutes / 60);
+    var hours = Math.floor(minutes / 60);
     minutes = minutes % 60;
-    let days = Math.floor(hours / 24);
+    var days = Math.floor(hours / 24);
     hours = hours % 24;
-    let value, unit;
-    let result = '';
+    var value = void 0,
+        unit = void 0;
+    var result = '';
     if (days) {
         result += days + ' d ';
     }
@@ -19608,30 +21118,44 @@ function secondsToPretty(seconds = 0) {
     return result;
 }
 
-__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].filter('secondsToPretty', secondsToPretty);
+_vue2.default.filter('secondsToPretty', secondsToPretty);
 
 /***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(182);
 
-const Config = {
-    env: __WEBPACK_IMPORTED_MODULE_0__env_js__["a" /* default */], // prod || dev
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Config = undefined;
+
+var _env = __webpack_require__(195);
+
+var _env2 = _interopRequireDefault(_env);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Config = exports.Config = {
+    env: _env2.default, // prod || dev
     offlineMode: false, // for when I'm trying to code/develop on a train/plane or some place without wifi
     version: 10,
     framework: 'vue' // vue || angular1
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = Config;
-
 
 /***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = login;
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.login = login;
 function login() {
     var mobile = false;
 
@@ -19660,86 +21184,213 @@ function login() {
 }
 
 /***/ }),
-/* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = newTree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contentItems__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fact__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__skill__ = __webpack_require__(22);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+// import ExerciseQA from "./exerciseQA";
 
 
+var _md = __webpack_require__(12);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(14);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _exercise = __webpack_require__(15);
+
+var _exercise2 = _interopRequireDefault(_exercise);
+
+var _exerciseQA = __webpack_require__(24);
+
+var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var exercises = {}; //cache
+window.exercises = exercises;
+
+var Exercises = function () {
+    function Exercises() {
+        _classCallCheck(this, Exercises);
+    }
+
+    _createClass(Exercises, null, [{
+        key: 'get',
+        value: function get(exerciseId) {
+            if (!exerciseId) {
+                throw "Exercises.get(exerciseId) error! exerciseId empty!";
+            }
+            return new Promise(function (resolve, reject) {
+                if (exercises[exerciseId]) {
+                    resolve(exercises[exerciseId]);
+                } else {
+                    firebase.database().ref('exercises/' + exerciseId).once("value", function (snapshot) {
+                        var exerciseData = snapshot.val();
+                        var exercise = void 0;
+                        switch (exerciseData.type) {
+                            case 'QA':
+                                exercise = new _exerciseQA2.default(exerciseData);
+                                break;
+                        }
+                        exercises[exercise.id] = exercise; // add to cache
+                        resolve(exercise);
+                    }, reject);
+                }
+            });
+        }
+    }, {
+        key: 'getAll',
+        value: function getAll() {
+            return new Promise(function (resolve, reject) {
+                firebase.database().ref('exercises/').once("value", function (snapshot) {
+                    var exercisesData = snapshot.val();
+                    exercisesData && Object.keys(exercisesData).forEach(function (exerciseData) {
+                        var exercise = new _exercise2.default(exerciseData); // make sure exercise item is of type ContentItem. ToDO: polymorphically invoke the correct subType constructor - eg new Fact()
+                        exercises[exercise.id] = exercise; // add to cache
+                    });
+                    resolve(exercises);
+                }, reject);
+            });
+        }
+    }]);
+
+    return Exercises;
+}();
+
+exports.default = Exercises;
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.newTree = newTree;
 
+var _lodash = __webpack_require__(11);
 
+var _lodash2 = _interopRequireDefault(_lodash);
 
+var _knawledgeMap = __webpack_require__(18);
+
+var _trees = __webpack_require__(2);
+
+var _contentItems = __webpack_require__(4);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _fact = __webpack_require__(25);
+
+var _heading = __webpack_require__(26);
+
+var _skill = __webpack_require__(27);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function newTree(nodeType, parentTreeId, initialParentTreeContentURI, values) {
-    let newContent = {};
-    values = __WEBPACK_IMPORTED_MODULE_0_lodash_merge___default()(values, { initialParentTreeId: parentTreeId, initialParentTreeContentURI });
+    var newContent = {};
+    values = (0, _lodash2.default)(values, { initialParentTreeId: parentTreeId, initialParentTreeContentURI: initialParentTreeContentURI });
     switch (nodeType) {
         case 'fact':
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItems__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__fact__["a" /* Fact */](values));
+            newContent = _contentItems2.default.create(new _fact.Fact(values));
             break;
         case 'heading':
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItems__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_5__heading__["a" /* Heading */](values));
+            newContent = _contentItems2.default.create(new _heading.Heading(values));
             break;
         case 'skill':
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItems__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_6__skill__["a" /* Skill */](values));
+            newContent = _contentItems2.default.create(new _skill.Skill(values));
             break;
         default:
-            newContent = __WEBPACK_IMPORTED_MODULE_3__contentItems__["a" /* default */].create(new __WEBPACK_IMPORTED_MODULE_4__fact__["a" /* Fact */](values));
+            newContent = _contentItems2.default.create(new _fact.Fact(values));
             break;
     }
 
     console.log('new content just created is', newContent);
-    newContent.setProficiency(0);
-    const tree = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__components_treesGraph_js__["b" /* addTreeToGraph */])(parentTreeId, newContent);
-    console.log('new Tree created is', tree
+    newContent.setProficiency(_proficiencyEnum.PROFICIENCIES.ONE);
+    var tree = (0, _knawledgeMap.addTreeToGraph)(parentTreeId, newContent);
+    console.log('new Tree created is', tree);
     //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
     //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
-    );__WEBPACK_IMPORTED_MODULE_2__trees__["a" /* Trees */].get(parentTreeId).then(parentTree => {
+    _trees.Trees.get(parentTreeId).then(function (parentTree) {
         parentTree.addChild(tree.id);
     });
     newContent.addTree(tree.id);
 }
 
 /***/ }),
-/* 35 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trees_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_treesGraph__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__timers__ = __webpack_require__(185);
 
 
-const treesRef = __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees');
-const trees = {};
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Tree = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _md = __webpack_require__(12);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _trees = __webpack_require__(2);
+
+var _knawledgeMap = __webpack_require__(18);
+
+var _timers = __webpack_require__(197);
+
+var _timers2 = _interopRequireDefault(_timers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var treesRef = _firebaseService2.default.database().ref('trees');
+var trees = {};
 
 
 function loadObject(treeObj, self) {
-    Object.keys(treeObj).forEach(key => self[key] = treeObj[key]);
+    Object.keys(treeObj).forEach(function (key) {
+        return self[key] = treeObj[key];
+    });
 }
-class Tree {
 
-    constructor(contentId, contentType, parentId, parentDegree, x, y) {
+var Tree = exports.Tree = function () {
+    function Tree(contentId, contentType, parentId, parentDegree, x, y) {
+        _classCallCheck(this, Tree);
+
         var treeObj;
-        if (arguments[0] && typeof arguments[0] === 'object') {
+        if (arguments[0] && _typeof(arguments[0]) === 'object') {
             treeObj = arguments[0];
             loadObject(treeObj, this);
             return;
@@ -19754,135 +21405,165 @@ class Tree {
         this.y = y;
 
         treeObj = { contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children };
-        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify(treeObj));
-        if (typeof arguments[0] === 'object') {
+        this.id = (0, _md2.default)(JSON.stringify(treeObj));
+        if (_typeof(arguments[0]) === 'object') {
             //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return;
         }
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
+        _firebaseService2.default.database().ref('trees/' + this.id).update({
             id: this.id,
-            contentId,
-            contentType,
-            parentId,
-            x,
-            y
+            contentId: contentId,
+            contentType: contentType,
+            parentId: parentId,
+            x: x,
+            y: y
         });
     }
     /**
      * Add a child tree to this tree
      * @param treeId
      */
-    addChild(treeId) {
-        // this.treeRef.child('/children').push(treeId)
-        var children = this.children || {};
-        children[treeId] = true;
-        var updates = {
-            children
-        };
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update(updates);
-    }
 
-    unlinkFromParent() {
-        var treeId = this.id;
-        __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(this.parentId).then(parentTree => {
-            parentTree.removeChild(treeId);
-        });
-        this.changeParent(null);
-    }
 
-    removeChild(childId) {
-        delete this.children[childId];
-
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({ children: this.children });
-    }
-
-    changeParent(newParentId) {
-        this.parentId = newParentId;
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
-            parentId: newParentId
-        });
-    }
-
-    changeFact(newfactid) {
-        this.factId = newfactid;
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
-            factId: newfactid
-        });
-    }
-
-    /**
-     * Change the content of a given node ("Tree")
-     * Available content types currently header and fact
-     */
-    changeContent(contentId, contentType) {
-        this.contentId = contentId;
-        this.contentType = contentType;
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update({
-            contentId,
-            contentType
-        });
-    }
-
-    /**
-     * Used to update tree X and Y coordinates
-     * @param prop
-     * @param val
-     */
-    set(prop, val) {
-        if (this[prop] == val) {
-            return;
+    _createClass(Tree, [{
+        key: 'addChild',
+        value: function addChild(treeId) {
+            // this.treeRef.child('/children').push(treeId)
+            var children = this.children || {};
+            children[treeId] = true;
+            var updates = {
+                children: children
+            };
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
         }
-
-        var updates = {};
-        updates[prop] = val;
-        // this.treeRef.update(updates)
-        __WEBPACK_IMPORTED_MODULE_1__firebaseService_js__["a" /* default */].database().ref('trees/' + this.id).update(updates);
-        this[prop] = val;
-    }
-    addToX({ recursion, deltaX } = { recursion: false, deltaX: 0 }) {
-        var newX = this.x + deltaX;
-        this.set('x', newX);
-
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__components_treesGraph__["a" /* syncGraphWithNode */])(this.id);
-        if (!recursion) return;
-
-        // console.log('addToX called on', this, ...arguments)
-        this.children && Object.keys(this.children).forEach(childId => {
-            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(childId).then(child => {
-                child.addToX({ recursion: true, deltaX });
+    }, {
+        key: 'unlinkFromParent',
+        value: function unlinkFromParent() {
+            var treeId = this.id;
+            _trees.Trees.get(this.parentId).then(function (parentTree) {
+                parentTree.removeChild(treeId);
             });
-        });
-    }
-    addToY({ recursion, deltaY } = { recursion: false, deltaY: 0 }) {
-        var newY = this.y + deltaY;
-        this.set('y', newY);
+            this.changeParent(null);
+        }
+    }, {
+        key: 'removeChild',
+        value: function removeChild(childId) {
+            delete this.children[childId];
 
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__components_treesGraph__["a" /* syncGraphWithNode */])(this.id);
-        if (!recursion) return;
-
-        // console.log('addToY called on', this, ...arguments)
-        this.children && Object.keys(this.children).forEach(childId => {
-            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(childId).then(child => {
-                child.addToY({ recursion: true, deltaY });
-            });
-        });
-    }
-    //promise
-    getPriority() {
-        var node = this;
-        if (node.parentId) {
-            __WEBPACK_IMPORTED_MODULE_2__trees_js__["a" /* Trees */].get(node.parentId).then(parent => {
-                return parent.getPriority() + 1;
-            });
-        } else {
-            return new Promise((resolve, reject) => {
-                resolve(1);
+            _firebaseService2.default.database().ref('trees/' + this.id).update({ children: this.children });
+        }
+    }, {
+        key: 'changeParent',
+        value: function changeParent(newParentId) {
+            this.parentId = newParentId;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                parentId: newParentId
             });
         }
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Tree;
+    }, {
+        key: 'changeFact',
+        value: function changeFact(newfactid) {
+            this.factId = newfactid;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                factId: newfactid
+            });
+        }
 
+        /**
+         * Change the content of a given node ("Tree")
+         * Available content types currently header and fact
+         */
+
+    }, {
+        key: 'changeContent',
+        value: function changeContent(contentId, contentType) {
+            this.contentId = contentId;
+            this.contentType = contentType;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                contentId: contentId,
+                contentType: contentType
+            });
+        }
+
+        /**
+         * Used to update tree X and Y coordinates
+         * @param prop
+         * @param val
+         */
+
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
+            }
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+            this[prop] = val;
+        }
+    }, {
+        key: 'addToX',
+        value: function addToX() {
+            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
+                recursion = _ref.recursion,
+                deltaX = _ref.deltaX;
+
+            var newX = this.x + deltaX;
+            this.set('x', newX);
+
+            (0, _knawledgeMap.syncGraphWithNode)(this.id);
+            if (!recursion) return;
+
+            // console.log('addToX called on', this, ...arguments)
+            this.children && Object.keys(this.children).forEach(function (childId) {
+                _trees.Trees.get(childId).then(function (child) {
+                    child.addToX({ recursion: true, deltaX: deltaX });
+                });
+            });
+        }
+    }, {
+        key: 'addToY',
+        value: function addToY() {
+            var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
+                recursion = _ref2.recursion,
+                deltaY = _ref2.deltaY;
+
+            var newY = this.y + deltaY;
+            this.set('y', newY);
+
+            (0, _knawledgeMap.syncGraphWithNode)(this.id);
+            if (!recursion) return;
+
+            // console.log('addToY called on', this, ...arguments)
+            this.children && Object.keys(this.children).forEach(function (childId) {
+                _trees.Trees.get(childId).then(function (child) {
+                    child.addToY({ recursion: true, deltaY: deltaY });
+                });
+            });
+        }
+        //promise
+
+    }, {
+        key: 'getPriority',
+        value: function getPriority() {
+            var node = this;
+            if (node.parentId) {
+                _trees.Trees.get(node.parentId).then(function (parent) {
+                    return parent.getPriority() + 1;
+                });
+            } else {
+                return new Promise(function (resolve, reject) {
+                    resolve(1);
+                });
+            }
+        }
+    }]);
+
+    return Tree;
+}();
 //TODO: get typeScript so we can have a schema for treeObj
 //treeObj  example
 /*
@@ -19899,7 +21580,7 @@ class Tree {
 //invoke like a constructor - new Tree(parentId, factId)
 
 /***/ }),
-/* 36 */
+/* 46 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -19938,7 +21619,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 37 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19959,7 +21640,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(25);
+var _shared_promise = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20223,7 +21904,7 @@ function noop() {
 
 
 /***/ }),
-/* 38 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20254,17 +21935,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(24);
+var _errors = __webpack_require__(29);
 
-var _errors2 = __webpack_require__(16);
+var _errors2 = __webpack_require__(20);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(197);
+var _tokenManager = __webpack_require__(216);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(40);
+var _notificationPermission = __webpack_require__(50);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -20463,7 +22144,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 39 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20506,7 +22187,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 40 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20544,7 +22225,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 41 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20603,7 +22284,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 42 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20640,11 +22321,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(204);
+var _fs = __webpack_require__(223);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(29);
+var _string = __webpack_require__(34);
 
 var string = _interopRequireWildcard(_string);
 
@@ -20769,7 +22450,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 43 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20859,7 +22540,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 44 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20888,31 +22569,31 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(27);
+var _array = __webpack_require__(32);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(42);
+var _blob = __webpack_require__(52);
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(28);
+var _metadata = __webpack_require__(33);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(7);
+var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(208);
+var _requestinfo = __webpack_require__(227);
 
 var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(30);
+var _url = __webpack_require__(35);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -21213,7 +22894,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 45 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21290,7 +22971,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 46 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21331,7 +23012,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 47 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21366,35 +23047,35 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(26);
+var _args = __webpack_require__(31);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(42);
+var _blob = __webpack_require__(52);
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(18);
+var _location = __webpack_require__(22);
 
-var _metadata = __webpack_require__(28);
+var _metadata = __webpack_require__(33);
 
 var metadata = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(7);
+var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(43);
+var _path = __webpack_require__(53);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(44);
+var _requests = __webpack_require__(54);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(29);
+var _string = __webpack_require__(34);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -21402,7 +23083,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(213);
+var _task = __webpack_require__(232);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21640,7 +23321,27 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 48 */
+/* 58 */
+/***/ (function(module, exports) {
+
+
+var invert = function(input) {
+      var output = {}
+
+      Object.keys(input).forEach(function(key) {
+        var value = input[key]
+        output[value] = output[value] || []
+        output[value].push(key)
+      })
+
+      return output
+    }
+
+module.exports = invert
+
+
+/***/ }),
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21718,7 +23419,7 @@ return af;
 
 
 /***/ }),
-/* 49 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21782,7 +23483,7 @@ return arDz;
 
 
 /***/ }),
-/* 50 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21846,7 +23547,7 @@ return arKw;
 
 
 /***/ }),
-/* 51 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21977,7 +23678,7 @@ return arLy;
 
 
 /***/ }),
-/* 52 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22042,7 +23743,7 @@ return arMa;
 
 
 /***/ }),
-/* 53 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22152,7 +23853,7 @@ return arSa;
 
 
 /***/ }),
-/* 54 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22216,7 +23917,7 @@ return arTn;
 
 
 /***/ }),
-/* 55 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22363,7 +24064,7 @@ return ar;
 
 
 /***/ }),
-/* 56 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22473,7 +24174,7 @@ return az;
 
 
 /***/ }),
-/* 57 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22612,7 +24313,7 @@ return be;
 
 
 /***/ }),
-/* 58 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22707,7 +24408,7 @@ return bg;
 
 
 /***/ }),
-/* 59 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22831,7 +24532,7 @@ return bn;
 
 
 /***/ }),
-/* 60 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22955,7 +24656,7 @@ return bo;
 
 
 /***/ }),
-/* 61 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23068,7 +24769,7 @@ return br;
 
 
 /***/ }),
-/* 62 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23216,7 +24917,7 @@ return bs;
 
 
 /***/ }),
-/* 63 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23309,7 +25010,7 @@ return ca;
 
 
 /***/ }),
-/* 64 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23486,7 +25187,7 @@ return cs;
 
 
 /***/ }),
-/* 65 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23554,7 +25255,7 @@ return cv;
 
 
 /***/ }),
-/* 66 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23640,7 +25341,7 @@ return cy;
 
 
 /***/ }),
-/* 67 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23705,7 +25406,7 @@ return da;
 
 
 /***/ }),
-/* 68 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23789,7 +25490,7 @@ return deAt;
 
 
 /***/ }),
-/* 69 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23872,7 +25573,7 @@ return deCh;
 
 
 /***/ }),
-/* 70 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23955,7 +25656,7 @@ return de;
 
 
 /***/ }),
-/* 71 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24060,7 +25761,7 @@ return dv;
 
 
 /***/ }),
-/* 72 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24165,7 +25866,7 @@ return el;
 
 
 /***/ }),
-/* 73 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24237,7 +25938,7 @@ return enAu;
 
 
 /***/ }),
-/* 74 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24305,7 +26006,7 @@ return enCa;
 
 
 /***/ }),
-/* 75 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24377,7 +26078,7 @@ return enGb;
 
 
 /***/ }),
-/* 76 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24449,7 +26150,7 @@ return enIe;
 
 
 /***/ }),
-/* 77 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24521,7 +26222,7 @@ return enNz;
 
 
 /***/ }),
-/* 78 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24599,7 +26300,7 @@ return eo;
 
 
 /***/ }),
-/* 79 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24686,7 +26387,7 @@ return esDo;
 
 
 /***/ }),
-/* 80 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24774,7 +26475,7 @@ return es;
 
 
 /***/ }),
-/* 81 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24859,7 +26560,7 @@ return et;
 
 
 /***/ }),
-/* 82 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24930,7 +26631,7 @@ return eu;
 
 
 /***/ }),
-/* 83 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25042,7 +26743,7 @@ return fa;
 
 
 /***/ }),
-/* 84 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25154,7 +26855,7 @@ return fi;
 
 
 /***/ }),
-/* 85 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25219,7 +26920,7 @@ return fo;
 
 
 /***/ }),
-/* 86 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25298,7 +26999,7 @@ return frCa;
 
 
 /***/ }),
-/* 87 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25381,7 +27082,7 @@ return frCh;
 
 
 /***/ }),
-/* 88 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25469,7 +27170,7 @@ return fr;
 
 
 /***/ }),
-/* 89 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25549,7 +27250,7 @@ return fy;
 
 
 /***/ }),
-/* 90 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25630,7 +27331,7 @@ return gd;
 
 
 /***/ }),
-/* 91 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25712,7 +27413,7 @@ return gl;
 
 
 /***/ }),
-/* 92 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25839,7 +27540,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 93 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25943,7 +27644,7 @@ return he;
 
 
 /***/ }),
-/* 94 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26072,7 +27773,7 @@ return hi;
 
 
 /***/ }),
-/* 95 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26222,7 +27923,7 @@ return hr;
 
 
 /***/ }),
-/* 96 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26336,7 +28037,7 @@ return hu;
 
 
 /***/ }),
-/* 97 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26436,7 +28137,7 @@ return hyAm;
 
 
 /***/ }),
-/* 98 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26524,7 +28225,7 @@ return id;
 
 
 /***/ }),
-/* 99 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26656,7 +28357,7 @@ return is;
 
 
 /***/ }),
-/* 100 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26731,7 +28432,7 @@ return it;
 
 
 /***/ }),
-/* 101 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26816,7 +28517,7 @@ return ja;
 
 
 /***/ }),
-/* 102 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26904,7 +28605,7 @@ return jv;
 
 
 /***/ }),
-/* 103 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26998,7 +28699,7 @@ return ka;
 
 
 /***/ }),
-/* 104 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27090,7 +28791,7 @@ return kk;
 
 
 /***/ }),
-/* 105 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27153,7 +28854,7 @@ return km;
 
 
 /***/ }),
-/* 106 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27284,7 +28985,7 @@ return kn;
 
 
 /***/ }),
-/* 107 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27358,7 +29059,7 @@ return ko;
 
 
 /***/ }),
-/* 108 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27451,7 +29152,7 @@ return ky;
 
 
 /***/ }),
-/* 109 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27593,7 +29294,7 @@ return lb;
 
 
 /***/ }),
-/* 110 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27668,7 +29369,7 @@ return lo;
 
 
 /***/ }),
-/* 111 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27790,7 +29491,7 @@ return lt;
 
 
 /***/ }),
-/* 112 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27892,7 +29593,7 @@ return lv;
 
 
 /***/ }),
-/* 113 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28008,7 +29709,7 @@ return me;
 
 
 /***/ }),
-/* 114 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28077,7 +29778,7 @@ return mi;
 
 
 /***/ }),
-/* 115 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28172,7 +29873,7 @@ return mk;
 
 
 /***/ }),
-/* 116 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28258,7 +29959,7 @@ return ml;
 
 
 /***/ }),
-/* 117 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28422,7 +30123,7 @@ return mr;
 
 
 /***/ }),
-/* 118 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28510,7 +30211,7 @@ return msMy;
 
 
 /***/ }),
-/* 119 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28597,7 +30298,7 @@ return ms;
 
 
 /***/ }),
-/* 120 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28698,7 +30399,7 @@ return my;
 
 
 /***/ }),
-/* 121 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28766,7 +30467,7 @@ return nb;
 
 
 /***/ }),
-/* 122 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28894,7 +30595,7 @@ return ne;
 
 
 /***/ }),
-/* 123 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28987,7 +30688,7 @@ return nlBe;
 
 
 /***/ }),
-/* 124 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29080,7 +30781,7 @@ return nl;
 
 
 /***/ }),
-/* 125 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29145,7 +30846,7 @@ return nn;
 
 
 /***/ }),
-/* 126 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29274,7 +30975,7 @@ return paIn;
 
 
 /***/ }),
-/* 127 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29386,7 +31087,7 @@ return pl;
 
 
 /***/ }),
-/* 128 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29452,7 +31153,7 @@ return ptBr;
 
 
 /***/ }),
-/* 129 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29522,7 +31223,7 @@ return pt;
 
 
 /***/ }),
-/* 130 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29602,7 +31303,7 @@ return ro;
 
 
 /***/ }),
-/* 131 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29790,7 +31491,7 @@ return ru;
 
 
 /***/ }),
-/* 132 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29893,7 +31594,7 @@ return sd;
 
 
 /***/ }),
-/* 133 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29959,7 +31660,7 @@ return se;
 
 
 /***/ }),
-/* 134 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30035,7 +31736,7 @@ return si;
 
 
 /***/ }),
-/* 135 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30190,7 +31891,7 @@ return sk;
 
 
 /***/ }),
-/* 136 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30357,7 +32058,7 @@ return sl;
 
 
 /***/ }),
-/* 137 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30432,7 +32133,7 @@ return sq;
 
 
 /***/ }),
-/* 138 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30547,7 +32248,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 139 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30662,7 +32363,7 @@ return sr;
 
 
 /***/ }),
-/* 140 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30756,7 +32457,7 @@ return ss;
 
 
 /***/ }),
-/* 141 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30830,7 +32531,7 @@ return sv;
 
 
 /***/ }),
-/* 142 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30894,7 +32595,7 @@ return sw;
 
 
 /***/ }),
-/* 143 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31029,7 +32730,7 @@ return ta;
 
 
 /***/ }),
-/* 144 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31123,7 +32824,7 @@ return te;
 
 
 /***/ }),
-/* 145 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31196,7 +32897,7 @@ return tet;
 
 
 /***/ }),
-/* 146 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31268,7 +32969,7 @@ return th;
 
 
 /***/ }),
-/* 147 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31335,7 +33036,7 @@ return tlPh;
 
 
 /***/ }),
-/* 148 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31460,7 +33161,7 @@ return tlh;
 
 
 /***/ }),
-/* 149 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31555,7 +33256,7 @@ return tr;
 
 
 /***/ }),
-/* 150 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31651,7 +33352,7 @@ return tzl;
 
 
 /***/ }),
-/* 151 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31714,7 +33415,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 152 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31777,7 +33478,7 @@ return tzm;
 
 
 /***/ }),
-/* 153 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31933,7 +33634,7 @@ return uk;
 
 
 /***/ }),
-/* 154 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32037,7 +33738,7 @@ return ur;
 
 
 /***/ }),
-/* 155 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32100,7 +33801,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 156 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32163,7 +33864,7 @@ return uz;
 
 
 /***/ }),
-/* 157 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32247,7 +33948,7 @@ return vi;
 
 
 /***/ }),
-/* 158 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32320,7 +34021,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 159 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32385,7 +34086,7 @@ return yo;
 
 
 /***/ }),
-/* 160 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32501,7 +34202,7 @@ return zhCn;
 
 
 /***/ }),
-/* 161 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32611,7 +34312,7 @@ return zhHk;
 
 
 /***/ }),
-/* 162 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32720,197 +34421,170 @@ return zhTw;
 
 
 /***/ }),
-/* 163 */
-/***/ (function(module, exports) {
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// shim for using process in browser
-var process = module.exports = {};
+var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict'
 
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
+function injectStyleTag (document, fileName, cb) {
+  var style = document.getElementById(fileName)
 
-var cachedSetTimeout;
-var cachedClearTimeout;
+  if (style) {
+    cb(style)
+  } else {
+    var head = document.getElementsByTagName('head')[0]
 
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
+    style = document.createElement('style')
+    if (fileName != null) style.id = fileName
+    cb(style)
+    head.appendChild(style)
+  }
+
+  return style
 }
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
+
+module.exports = function (css, customDocument, fileName) {
+  var doc = customDocument || document
+  /* istanbul ignore if: not supported by Electron */
+  if (doc.createStyleSheet) {
+    var sheet = doc.createStyleSheet()
+    sheet.cssText = css
+    return sheet.ownerNode
+  } else {
+    return injectStyleTag(doc, fileName, function (style) {
+      /* istanbul ignore if: not supported by Electron */
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css
+      } else {
+        style.innerHTML = css
+      }
+    })
+  }
 }
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
 
+module.exports.byUrl = function (url) {
+  /* istanbul ignore if: not supported by Electron */
+  if (document.createStyleSheet) {
+    return document.createStyleSheet(url).ownerNode
+  } else {
+    var head = document.getElementsByTagName('head')[0]
+    var link = document.createElement('link')
+
+    link.rel = 'stylesheet'
+    link.href = url
+
+    head.appendChild(link)
+    return link
+  }
+}
+
+},{}],2:[function(require,module,exports){
+require('../styles/snack.min.css');
+
+/**
+ * Returns true content it is a DOM element
+ * @param {*} content
+ * @returns {boolean}
+ */
+var isElement = function (content) {
+    return !!(
+        typeof HTMLElement === 'object' ? content instanceof HTMLElement : content &&
+        typeof content === 'object' && content !== null &&
+        content.nodeType === 1 && typeof content.nodeName === 'string'
+    );
+};
+
+/**
+ * @class
+ * @constructor
+ *
+ * @property {object} options
+ * @property {Element} [options.domParent=document.body]
+ */
+function Snack(options) {
+
+    options = options || {};
+
+    this.domParent = options.domParent || document.body;
+
+    this.container = document.createElement('div');
+    this.element = document.createElement('div');
+
+    this.container.classList.add('snack-container');
+    this.element.classList.add('snack');
+
+    this.container.appendChild(this.element);
+    this.domParent.appendChild(this.container);
 
 }
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
+// constructor
+Snack.prototype.constructor = Snack;
+module.exports = Snack;
+
+Object.defineProperties(Snack, {
+    visible: {
+        get: function () {
+            return !!this._isVisible;
+        },
+        set: function (val) {
+            this[val ? 'show' : 'hide']();
         }
     }
+});
 
+/**
+ * Toggles show/hide
+ */
+Snack.prototype.toggle = function () {
+    this.visible = !this.visible;
+};
 
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
+/**
+ * Show the snack
+ *
+ * @param {string} content
+ * @param {number} [timeout]
+ */
+Snack.prototype.show = function (content, timeout) {
+    if (isElement(content)) {
+        this.element.innerHTML = '';
+        this.element.appendChild(content);
     } else {
-        queueIndex = -1;
+        this.element.innerHTML = content;
     }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
+    this.element.classList.add('snack-opened');
+    this._isVisible = true;
+    if (timeout) {
+        setTimeout(this.hide.bind(this), timeout);
     }
 };
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
+/**
+ * Hide the snack
+ */
+Snack.prototype.hide = function () {
+    this.element.classList.remove('snack-opened');
+    this._isVisible = false;
 };
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
+/**
+ * destroy
+ */
+Snack.prototype.destroy = function () {
+    this.domParent.removeChild(this.container);
 };
 
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
 
+},{"../styles/snack.min.css":3}],3:[function(require,module,exports){
+var inject = require('./../node_modules/cssify');
+var css = ".snack-container{position:fixed;left:20px;bottom:0;z-index:99999}.snack{overflow:hidden;clear:both;min-width:288px;max-width:568px;cursor:pointer;opacity:0;background-color:#323232;color:#fff;font-size:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);height:0;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:translateY(200%);transform:translateY(200%)}.snack.snack-opened{height:auto;opacity:1;padding:14px 15px;margin-bottom:20px;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:none;transform:none}@media (max-width:767px){.snack-container{left:0!important;right:0;width:100%}.snack-container .snack{min-width:100%}.snack-container .snack.snack-opened{border-radius:0;margin-bottom:0}}\n";
+inject(css, undefined, '_19gnn7m');
+module.exports = css;
+
+},{"./../node_modules/cssify":1}]},{},[2])(2)
+});
 
 /***/ }),
-/* 164 */
+/* 175 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -32938,61 +34612,114 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 165 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_treesGraph__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_footer_branchesFooter__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_reviewAlgorithm_reviewSchedule__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_contentList_contentList__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_exerciseCreator_exerciseCreator__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_exerciseCreatorContainer_exerciseCreatorContainer__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_exerciseCreator_newExercise__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_exerciseList_exerciseList__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_tree_tree__ = __webpack_require__(180);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_newTree_newtreecomponent__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_toolbar_toolbar__ = __webpack_require__(179);
 
 
-// import Header from '../components/header/branchesHeader'
+__webpack_require__(254);
 
+var _vue = __webpack_require__(19);
 
+var _vue2 = _interopRequireDefault(_vue);
 
+var _branchesFooter = __webpack_require__(186);
 
+var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
+var _reviewSchedule = __webpack_require__(191);
 
+var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
+var _contentList = __webpack_require__(36);
 
+var _contentList2 = _interopRequireDefault(_contentList);
 
+var _exerciseCreator = __webpack_require__(183);
+
+var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
+
+var _exerciseCreatorContainer = __webpack_require__(37);
+
+var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
+
+var _treeReview = __webpack_require__(38);
+
+var _treeReview2 = _interopRequireDefault(_treeReview);
+
+var _treeReviewContainer = __webpack_require__(39);
+
+var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
+
+var _newExercise = __webpack_require__(184);
+
+var _newExercise2 = _interopRequireDefault(_newExercise);
+
+var _exerciseList = __webpack_require__(185);
+
+var _exerciseList2 = _interopRequireDefault(_exerciseList);
+
+var _tree = __webpack_require__(193);
+
+var _tree2 = _interopRequireDefault(_tree);
+
+var _newtreecomponent = __webpack_require__(188);
+
+var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
+
+var _toolbar = __webpack_require__(192);
+
+var _toolbar2 = _interopRequireDefault(_toolbar);
+
+var _goToHome = __webpack_require__(187);
+
+var _goToHome2 = _interopRequireDefault(_goToHome);
+
+var _proficiencySelector = __webpack_require__(189);
+
+var _proficiencySelector2 = _interopRequireDefault(_proficiencySelector);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Vue.component('branchesHeader', Header)
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('branchesFooter', __WEBPACK_IMPORTED_MODULE_2__components_footer_branchesFooter__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('reviewSchedule', __WEBPACK_IMPORTED_MODULE_3__components_reviewAlgorithm_reviewSchedule__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('contentList', __WEBPACK_IMPORTED_MODULE_4__components_contentList_contentList__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('exerciseCreator', __WEBPACK_IMPORTED_MODULE_5__components_exerciseCreator_exerciseCreator__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('exerciseCreatorContainer', __WEBPACK_IMPORTED_MODULE_6__components_exerciseCreatorContainer_exerciseCreatorContainer__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('exerciseList', __WEBPACK_IMPORTED_MODULE_8__components_exerciseList_exerciseList__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('newExercise', __WEBPACK_IMPORTED_MODULE_7__components_exerciseCreator_newExercise__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('tree', __WEBPACK_IMPORTED_MODULE_9__components_tree_tree__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('newtree', __WEBPACK_IMPORTED_MODULE_10__components_newTree_newtreecomponent__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].component('toolbar', __WEBPACK_IMPORTED_MODULE_11__components_toolbar_toolbar__["a" /* default */]);
+
+// import Header from '../components/header/branchesHeader'
+_vue2.default.component('branchesFooter', _branchesFooter2.default);
+_vue2.default.component('reviewSchedule', _reviewSchedule2.default);
+_vue2.default.component('contentList', _contentList2.default);
+_vue2.default.component('exerciseCreator', _exerciseCreator2.default);
+_vue2.default.component('exerciseCreatorContainer', _exerciseCreatorContainer2.default);
+_vue2.default.component('treeReview', _treeReview2.default);
+_vue2.default.component('treeReviewContainer', _treeReviewContainer2.default);
+_vue2.default.component('exerciseList', _exerciseList2.default);
+_vue2.default.component('newExercise', _newExercise2.default);
+_vue2.default.component('tree', _tree2.default);
+_vue2.default.component('newtree', _newtreecomponent2.default);
+_vue2.default.component('toolbar', _toolbar2.default);
+_vue2.default.component('goToHome', _goToHome2.default);
+_vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 
 /***/ }),
-/* 166 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees_js__ = __webpack_require__(3);
 
+
+__webpack_require__(2);
 
 /***/ }),
-/* 167 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* unused harmony export toggleVisibility */
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.toggleVisibility = toggleVisibility;
 function toggleVisibility(el) {
     var style = el.style;
     if (style.display == 'block') {
@@ -33003,7 +34730,3417 @@ function toggleVisibility(el) {
 }
 
 /***/ }),
-/* 168 */
+/* 179 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(process) {/**
+  * vue-router v2.7.0
+  * (c) 2017 Evan You
+  * @license MIT
+  */
+/*  */
+
+function assert (condition, message) {
+  if (!condition) {
+    throw new Error(("[vue-router] " + message))
+  }
+}
+
+function warn (condition, message) {
+  if (process.env.NODE_ENV !== 'production' && !condition) {
+    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
+  }
+}
+
+function isError (err) {
+  return Object.prototype.toString.call(err).indexOf('Error') > -1
+}
+
+var View = {
+  name: 'router-view',
+  functional: true,
+  props: {
+    name: {
+      type: String,
+      default: 'default'
+    }
+  },
+  render: function render (_, ref) {
+    var props = ref.props;
+    var children = ref.children;
+    var parent = ref.parent;
+    var data = ref.data;
+
+    data.routerView = true;
+
+    // directly use parent context's createElement() function
+    // so that components rendered by router-view can resolve named slots
+    var h = parent.$createElement;
+    var name = props.name;
+    var route = parent.$route;
+    var cache = parent._routerViewCache || (parent._routerViewCache = {});
+
+    // determine current view depth, also check to see if the tree
+    // has been toggled inactive but kept-alive.
+    var depth = 0;
+    var inactive = false;
+    while (parent && parent._routerRoot !== parent) {
+      if (parent.$vnode && parent.$vnode.data.routerView) {
+        depth++;
+      }
+      if (parent._inactive) {
+        inactive = true;
+      }
+      parent = parent.$parent;
+    }
+    data.routerViewDepth = depth;
+
+    // render previous view if the tree is inactive and kept-alive
+    if (inactive) {
+      return h(cache[name], data, children)
+    }
+
+    var matched = route.matched[depth];
+    // render empty node if no matched route
+    if (!matched) {
+      cache[name] = null;
+      return h()
+    }
+
+    var component = cache[name] = matched.components[name];
+
+    // attach instance registration hook
+    // this will be called in the instance's injected lifecycle hooks
+    data.registerRouteInstance = function (vm, val) {
+      // val could be undefined for unregistration
+      var current = matched.instances[name];
+      if (
+        (val && current !== vm) ||
+        (!val && current === vm)
+      ) {
+        matched.instances[name] = val;
+      }
+    }
+
+    // also regiseter instance in prepatch hook
+    // in case the same component instance is reused across different routes
+    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
+      matched.instances[name] = vnode.componentInstance;
+    };
+
+    // resolve props
+    data.props = resolveProps(route, matched.props && matched.props[name]);
+
+    return h(component, data, children)
+  }
+};
+
+function resolveProps (route, config) {
+  switch (typeof config) {
+    case 'undefined':
+      return
+    case 'object':
+      return config
+    case 'function':
+      return config(route)
+    case 'boolean':
+      return config ? route.params : undefined
+    default:
+      if (process.env.NODE_ENV !== 'production') {
+        warn(
+          false,
+          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
+          "expecting an object, function or boolean."
+        );
+      }
+  }
+}
+
+/*  */
+
+var encodeReserveRE = /[!'()*]/g;
+var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
+var commaRE = /%2C/g;
+
+// fixed encodeURIComponent which is more conformant to RFC3986:
+// - escapes [!'()*]
+// - preserve commas
+var encode = function (str) { return encodeURIComponent(str)
+  .replace(encodeReserveRE, encodeReserveReplacer)
+  .replace(commaRE, ','); };
+
+var decode = decodeURIComponent;
+
+function resolveQuery (
+  query,
+  extraQuery,
+  _parseQuery
+) {
+  if ( extraQuery === void 0 ) extraQuery = {};
+
+  var parse = _parseQuery || parseQuery;
+  var parsedQuery;
+  try {
+    parsedQuery = parse(query || '');
+  } catch (e) {
+    process.env.NODE_ENV !== 'production' && warn(false, e.message);
+    parsedQuery = {};
+  }
+  for (var key in extraQuery) {
+    var val = extraQuery[key];
+    parsedQuery[key] = Array.isArray(val) ? val.slice() : val;
+  }
+  return parsedQuery
+}
+
+function parseQuery (query) {
+  var res = {};
+
+  query = query.trim().replace(/^(\?|#|&)/, '');
+
+  if (!query) {
+    return res
+  }
+
+  query.split('&').forEach(function (param) {
+    var parts = param.replace(/\+/g, ' ').split('=');
+    var key = decode(parts.shift());
+    var val = parts.length > 0
+      ? decode(parts.join('='))
+      : null;
+
+    if (res[key] === undefined) {
+      res[key] = val;
+    } else if (Array.isArray(res[key])) {
+      res[key].push(val);
+    } else {
+      res[key] = [res[key], val];
+    }
+  });
+
+  return res
+}
+
+function stringifyQuery (obj) {
+  var res = obj ? Object.keys(obj).map(function (key) {
+    var val = obj[key];
+
+    if (val === undefined) {
+      return ''
+    }
+
+    if (val === null) {
+      return encode(key)
+    }
+
+    if (Array.isArray(val)) {
+      var result = [];
+      val.forEach(function (val2) {
+        if (val2 === undefined) {
+          return
+        }
+        if (val2 === null) {
+          result.push(encode(key));
+        } else {
+          result.push(encode(key) + '=' + encode(val2));
+        }
+      });
+      return result.join('&')
+    }
+
+    return encode(key) + '=' + encode(val)
+  }).filter(function (x) { return x.length > 0; }).join('&') : null;
+  return res ? ("?" + res) : ''
+}
+
+/*  */
+
+
+var trailingSlashRE = /\/?$/;
+
+function createRoute (
+  record,
+  location,
+  redirectedFrom,
+  router
+) {
+  var stringifyQuery$$1 = router && router.options.stringifyQuery;
+  var route = {
+    name: location.name || (record && record.name),
+    meta: (record && record.meta) || {},
+    path: location.path || '/',
+    hash: location.hash || '',
+    query: location.query || {},
+    params: location.params || {},
+    fullPath: getFullPath(location, stringifyQuery$$1),
+    matched: record ? formatMatch(record) : []
+  };
+  if (redirectedFrom) {
+    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery$$1);
+  }
+  return Object.freeze(route)
+}
+
+// the starting route that represents the initial state
+var START = createRoute(null, {
+  path: '/'
+});
+
+function formatMatch (record) {
+  var res = [];
+  while (record) {
+    res.unshift(record);
+    record = record.parent;
+  }
+  return res
+}
+
+function getFullPath (
+  ref,
+  _stringifyQuery
+) {
+  var path = ref.path;
+  var query = ref.query; if ( query === void 0 ) query = {};
+  var hash = ref.hash; if ( hash === void 0 ) hash = '';
+
+  var stringify = _stringifyQuery || stringifyQuery;
+  return (path || '/') + stringify(query) + hash
+}
+
+function isSameRoute (a, b) {
+  if (b === START) {
+    return a === b
+  } else if (!b) {
+    return false
+  } else if (a.path && b.path) {
+    return (
+      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query)
+    )
+  } else if (a.name && b.name) {
+    return (
+      a.name === b.name &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query) &&
+      isObjectEqual(a.params, b.params)
+    )
+  } else {
+    return false
+  }
+}
+
+function isObjectEqual (a, b) {
+  if ( a === void 0 ) a = {};
+  if ( b === void 0 ) b = {};
+
+  var aKeys = Object.keys(a);
+  var bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) {
+    return false
+  }
+  return aKeys.every(function (key) {
+    var aVal = a[key];
+    var bVal = b[key];
+    // check nested equality
+    if (typeof aVal === 'object' && typeof bVal === 'object') {
+      return isObjectEqual(aVal, bVal)
+    }
+    return String(aVal) === String(bVal)
+  })
+}
+
+function isIncludedRoute (current, target) {
+  return (
+    current.path.replace(trailingSlashRE, '/').indexOf(
+      target.path.replace(trailingSlashRE, '/')
+    ) === 0 &&
+    (!target.hash || current.hash === target.hash) &&
+    queryIncludes(current.query, target.query)
+  )
+}
+
+function queryIncludes (current, target) {
+  for (var key in target) {
+    if (!(key in current)) {
+      return false
+    }
+  }
+  return true
+}
+
+/*  */
+
+// work around weird flow bug
+var toTypes = [String, Object];
+var eventTypes = [String, Array];
+
+var Link = {
+  name: 'router-link',
+  props: {
+    to: {
+      type: toTypes,
+      required: true
+    },
+    tag: {
+      type: String,
+      default: 'a'
+    },
+    exact: Boolean,
+    append: Boolean,
+    replace: Boolean,
+    activeClass: String,
+    exactActiveClass: String,
+    event: {
+      type: eventTypes,
+      default: 'click'
+    }
+  },
+  render: function render (h) {
+    var this$1 = this;
+
+    var router = this.$router;
+    var current = this.$route;
+    var ref = router.resolve(this.to, current, this.append);
+    var location = ref.location;
+    var route = ref.route;
+    var href = ref.href;
+
+    var classes = {};
+    var globalActiveClass = router.options.linkActiveClass;
+    var globalExactActiveClass = router.options.linkExactActiveClass;
+    // Support global empty active class
+    var activeClassFallback = globalActiveClass == null
+            ? 'router-link-active'
+            : globalActiveClass;
+    var exactActiveClassFallback = globalExactActiveClass == null
+            ? 'router-link-exact-active'
+            : globalExactActiveClass;
+    var activeClass = this.activeClass == null
+            ? activeClassFallback
+            : this.activeClass;
+    var exactActiveClass = this.exactActiveClass == null
+            ? exactActiveClassFallback
+            : this.exactActiveClass;
+    var compareTarget = location.path
+      ? createRoute(null, location, null, router)
+      : route;
+
+    classes[exactActiveClass] = isSameRoute(current, compareTarget);
+    classes[activeClass] = this.exact
+      ? classes[exactActiveClass]
+      : isIncludedRoute(current, compareTarget);
+
+    var handler = function (e) {
+      if (guardEvent(e)) {
+        if (this$1.replace) {
+          router.replace(location);
+        } else {
+          router.push(location);
+        }
+      }
+    };
+
+    var on = { click: guardEvent };
+    if (Array.isArray(this.event)) {
+      this.event.forEach(function (e) { on[e] = handler; });
+    } else {
+      on[this.event] = handler;
+    }
+
+    var data = {
+      class: classes
+    };
+
+    if (this.tag === 'a') {
+      data.on = on;
+      data.attrs = { href: href };
+    } else {
+      // find the first <a> child and apply listener and href
+      var a = findAnchor(this.$slots.default);
+      if (a) {
+        // in case the <a> is a static node
+        a.isStatic = false;
+        var extend = _Vue.util.extend;
+        var aData = a.data = extend({}, a.data);
+        aData.on = on;
+        var aAttrs = a.data.attrs = extend({}, a.data.attrs);
+        aAttrs.href = href;
+      } else {
+        // doesn't have <a> child, apply listener to self
+        data.on = on;
+      }
+    }
+
+    return h(this.tag, data, this.$slots.default)
+  }
+};
+
+function guardEvent (e) {
+  // don't redirect with control keys
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
+  // don't redirect when preventDefault called
+  if (e.defaultPrevented) { return }
+  // don't redirect on right click
+  if (e.button !== undefined && e.button !== 0) { return }
+  // don't redirect if `target="_blank"`
+  if (e.currentTarget && e.currentTarget.getAttribute) {
+    var target = e.currentTarget.getAttribute('target');
+    if (/\b_blank\b/i.test(target)) { return }
+  }
+  // this may be a Weex event which doesn't have this method
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  return true
+}
+
+function findAnchor (children) {
+  if (children) {
+    var child;
+    for (var i = 0; i < children.length; i++) {
+      child = children[i];
+      if (child.tag === 'a') {
+        return child
+      }
+      if (child.children && (child = findAnchor(child.children))) {
+        return child
+      }
+    }
+  }
+}
+
+var _Vue;
+
+function install (Vue) {
+  if (install.installed) { return }
+  install.installed = true;
+
+  _Vue = Vue;
+
+  var isDef = function (v) { return v !== undefined; };
+
+  var registerInstance = function (vm, callVal) {
+    var i = vm.$options._parentVnode;
+    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
+      i(vm, callVal);
+    }
+  };
+
+  Vue.mixin({
+    beforeCreate: function beforeCreate () {
+      if (isDef(this.$options.router)) {
+        this._routerRoot = this;
+        this._router = this.$options.router;
+        this._router.init(this);
+        Vue.util.defineReactive(this, '_route', this._router.history.current);
+      } else {
+        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
+      }
+      registerInstance(this, this);
+    },
+    destroyed: function destroyed () {
+      registerInstance(this);
+    }
+  });
+
+  Object.defineProperty(Vue.prototype, '$router', {
+    get: function get () { return this._routerRoot._router }
+  });
+
+  Object.defineProperty(Vue.prototype, '$route', {
+    get: function get () { return this._routerRoot._route }
+  });
+
+  Vue.component('router-view', View);
+  Vue.component('router-link', Link);
+
+  var strats = Vue.config.optionMergeStrategies;
+  // use the same hook merging strategy for route hooks
+  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
+}
+
+/*  */
+
+var inBrowser = typeof window !== 'undefined';
+
+/*  */
+
+function resolvePath (
+  relative,
+  base,
+  append
+) {
+  var firstChar = relative.charAt(0);
+  if (firstChar === '/') {
+    return relative
+  }
+
+  if (firstChar === '?' || firstChar === '#') {
+    return base + relative
+  }
+
+  var stack = base.split('/');
+
+  // remove trailing segment if:
+  // - not appending
+  // - appending to trailing slash (last segment is empty)
+  if (!append || !stack[stack.length - 1]) {
+    stack.pop();
+  }
+
+  // resolve relative path
+  var segments = relative.replace(/^\//, '').split('/');
+  for (var i = 0; i < segments.length; i++) {
+    var segment = segments[i];
+    if (segment === '..') {
+      stack.pop();
+    } else if (segment !== '.') {
+      stack.push(segment);
+    }
+  }
+
+  // ensure leading slash
+  if (stack[0] !== '') {
+    stack.unshift('');
+  }
+
+  return stack.join('/')
+}
+
+function parsePath (path) {
+  var hash = '';
+  var query = '';
+
+  var hashIndex = path.indexOf('#');
+  if (hashIndex >= 0) {
+    hash = path.slice(hashIndex);
+    path = path.slice(0, hashIndex);
+  }
+
+  var queryIndex = path.indexOf('?');
+  if (queryIndex >= 0) {
+    query = path.slice(queryIndex + 1);
+    path = path.slice(0, queryIndex);
+  }
+
+  return {
+    path: path,
+    query: query,
+    hash: hash
+  }
+}
+
+function cleanPath (path) {
+  return path.replace(/\/\//g, '/')
+}
+
+var index$1 = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+/**
+ * Expose `pathToRegexp`.
+ */
+var index = pathToRegexp;
+var parse_1 = parse;
+var compile_1 = compile;
+var tokensToFunction_1 = tokensToFunction;
+var tokensToRegExp_1 = tokensToRegExp;
+
+/**
+ * The main path matching regexp utility.
+ *
+ * @type {RegExp}
+ */
+var PATH_REGEXP = new RegExp([
+  // Match escaped characters that would otherwise appear in future matches.
+  // This allows the user to escape special characters that won't transform.
+  '(\\\\.)',
+  // Match Express-style parameters and un-named parameters with a prefix
+  // and optional suffixes. Matches appear as:
+  //
+  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
+  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
+  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
+  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
+].join('|'), 'g');
+
+/**
+ * Parse a string for the raw tokens.
+ *
+ * @param  {string}  str
+ * @param  {Object=} options
+ * @return {!Array}
+ */
+function parse (str, options) {
+  var tokens = [];
+  var key = 0;
+  var index = 0;
+  var path = '';
+  var defaultDelimiter = options && options.delimiter || '/';
+  var res;
+
+  while ((res = PATH_REGEXP.exec(str)) != null) {
+    var m = res[0];
+    var escaped = res[1];
+    var offset = res.index;
+    path += str.slice(index, offset);
+    index = offset + m.length;
+
+    // Ignore already escaped sequences.
+    if (escaped) {
+      path += escaped[1];
+      continue
+    }
+
+    var next = str[index];
+    var prefix = res[2];
+    var name = res[3];
+    var capture = res[4];
+    var group = res[5];
+    var modifier = res[6];
+    var asterisk = res[7];
+
+    // Push the current path onto the tokens.
+    if (path) {
+      tokens.push(path);
+      path = '';
+    }
+
+    var partial = prefix != null && next != null && next !== prefix;
+    var repeat = modifier === '+' || modifier === '*';
+    var optional = modifier === '?' || modifier === '*';
+    var delimiter = res[2] || defaultDelimiter;
+    var pattern = capture || group;
+
+    tokens.push({
+      name: name || key++,
+      prefix: prefix || '',
+      delimiter: delimiter,
+      optional: optional,
+      repeat: repeat,
+      partial: partial,
+      asterisk: !!asterisk,
+      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
+    });
+  }
+
+  // Match any characters still remaining.
+  if (index < str.length) {
+    path += str.substr(index);
+  }
+
+  // If the path exists, push it onto the end.
+  if (path) {
+    tokens.push(path);
+  }
+
+  return tokens
+}
+
+/**
+ * Compile a string to a template function for the path.
+ *
+ * @param  {string}             str
+ * @param  {Object=}            options
+ * @return {!function(Object=, Object=)}
+ */
+function compile (str, options) {
+  return tokensToFunction(parse(str, options))
+}
+
+/**
+ * Prettier encoding of URI path segments.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+function encodeURIComponentPretty (str) {
+  return encodeURI(str).replace(/[\/?#]/g, function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
+  })
+}
+
+/**
+ * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+function encodeAsterisk (str) {
+  return encodeURI(str).replace(/[?#]/g, function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
+  })
+}
+
+/**
+ * Expose a method for transforming tokens into the path function.
+ */
+function tokensToFunction (tokens) {
+  // Compile all the tokens into regexps.
+  var matches = new Array(tokens.length);
+
+  // Compile all the patterns before compilation.
+  for (var i = 0; i < tokens.length; i++) {
+    if (typeof tokens[i] === 'object') {
+      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
+    }
+  }
+
+  return function (obj, opts) {
+    var path = '';
+    var data = obj || {};
+    var options = opts || {};
+    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
+
+    for (var i = 0; i < tokens.length; i++) {
+      var token = tokens[i];
+
+      if (typeof token === 'string') {
+        path += token;
+
+        continue
+      }
+
+      var value = data[token.name];
+      var segment;
+
+      if (value == null) {
+        if (token.optional) {
+          // Prepend partial segment prefixes.
+          if (token.partial) {
+            path += token.prefix;
+          }
+
+          continue
+        } else {
+          throw new TypeError('Expected "' + token.name + '" to be defined')
+        }
+      }
+
+      if (index$1(value)) {
+        if (!token.repeat) {
+          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
+        }
+
+        if (value.length === 0) {
+          if (token.optional) {
+            continue
+          } else {
+            throw new TypeError('Expected "' + token.name + '" to not be empty')
+          }
+        }
+
+        for (var j = 0; j < value.length; j++) {
+          segment = encode(value[j]);
+
+          if (!matches[i].test(segment)) {
+            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
+          }
+
+          path += (j === 0 ? token.prefix : token.delimiter) + segment;
+        }
+
+        continue
+      }
+
+      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
+
+      if (!matches[i].test(segment)) {
+        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
+      }
+
+      path += token.prefix + segment;
+    }
+
+    return path
+  }
+}
+
+/**
+ * Escape a regular expression string.
+ *
+ * @param  {string} str
+ * @return {string}
+ */
+function escapeString (str) {
+  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
+}
+
+/**
+ * Escape the capturing group by escaping special characters and meaning.
+ *
+ * @param  {string} group
+ * @return {string}
+ */
+function escapeGroup (group) {
+  return group.replace(/([=!:$\/()])/g, '\\$1')
+}
+
+/**
+ * Attach the keys as a property of the regexp.
+ *
+ * @param  {!RegExp} re
+ * @param  {Array}   keys
+ * @return {!RegExp}
+ */
+function attachKeys (re, keys) {
+  re.keys = keys;
+  return re
+}
+
+/**
+ * Get the flags for a regexp from the options.
+ *
+ * @param  {Object} options
+ * @return {string}
+ */
+function flags (options) {
+  return options.sensitive ? '' : 'i'
+}
+
+/**
+ * Pull out keys from a regexp.
+ *
+ * @param  {!RegExp} path
+ * @param  {!Array}  keys
+ * @return {!RegExp}
+ */
+function regexpToRegexp (path, keys) {
+  // Use a negative lookahead to match only capturing groups.
+  var groups = path.source.match(/\((?!\?)/g);
+
+  if (groups) {
+    for (var i = 0; i < groups.length; i++) {
+      keys.push({
+        name: i,
+        prefix: null,
+        delimiter: null,
+        optional: false,
+        repeat: false,
+        partial: false,
+        asterisk: false,
+        pattern: null
+      });
+    }
+  }
+
+  return attachKeys(path, keys)
+}
+
+/**
+ * Transform an array into a regexp.
+ *
+ * @param  {!Array}  path
+ * @param  {Array}   keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+function arrayToRegexp (path, keys, options) {
+  var parts = [];
+
+  for (var i = 0; i < path.length; i++) {
+    parts.push(pathToRegexp(path[i], keys, options).source);
+  }
+
+  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
+
+  return attachKeys(regexp, keys)
+}
+
+/**
+ * Create a path regexp from string input.
+ *
+ * @param  {string}  path
+ * @param  {!Array}  keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+function stringToRegexp (path, keys, options) {
+  return tokensToRegExp(parse(path, options), keys, options)
+}
+
+/**
+ * Expose a function for taking tokens and returning a RegExp.
+ *
+ * @param  {!Array}          tokens
+ * @param  {(Array|Object)=} keys
+ * @param  {Object=}         options
+ * @return {!RegExp}
+ */
+function tokensToRegExp (tokens, keys, options) {
+  if (!index$1(keys)) {
+    options = /** @type {!Object} */ (keys || options);
+    keys = [];
+  }
+
+  options = options || {};
+
+  var strict = options.strict;
+  var end = options.end !== false;
+  var route = '';
+
+  // Iterate over the tokens and create our regexp string.
+  for (var i = 0; i < tokens.length; i++) {
+    var token = tokens[i];
+
+    if (typeof token === 'string') {
+      route += escapeString(token);
+    } else {
+      var prefix = escapeString(token.prefix);
+      var capture = '(?:' + token.pattern + ')';
+
+      keys.push(token);
+
+      if (token.repeat) {
+        capture += '(?:' + prefix + capture + ')*';
+      }
+
+      if (token.optional) {
+        if (!token.partial) {
+          capture = '(?:' + prefix + '(' + capture + '))?';
+        } else {
+          capture = prefix + '(' + capture + ')?';
+        }
+      } else {
+        capture = prefix + '(' + capture + ')';
+      }
+
+      route += capture;
+    }
+  }
+
+  var delimiter = escapeString(options.delimiter || '/');
+  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
+
+  // In non-strict mode we allow a slash at the end of match. If the path to
+  // match already ends with a slash, we remove it for consistency. The slash
+  // is valid at the end of a path match, not in the middle. This is important
+  // in non-ending mode, where "/test/" shouldn't match "/test//route".
+  if (!strict) {
+    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
+  }
+
+  if (end) {
+    route += '$';
+  } else {
+    // In non-ending mode, we need the capturing groups to match as much as
+    // possible by using a positive lookahead to the end or next path segment.
+    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
+  }
+
+  return attachKeys(new RegExp('^' + route, flags(options)), keys)
+}
+
+/**
+ * Normalize the given path string, returning a regular expression.
+ *
+ * An empty array can be passed in for the keys, which will hold the
+ * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+ * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
+ *
+ * @param  {(string|RegExp|Array)} path
+ * @param  {(Array|Object)=}       keys
+ * @param  {Object=}               options
+ * @return {!RegExp}
+ */
+function pathToRegexp (path, keys, options) {
+  if (!index$1(keys)) {
+    options = /** @type {!Object} */ (keys || options);
+    keys = [];
+  }
+
+  options = options || {};
+
+  if (path instanceof RegExp) {
+    return regexpToRegexp(path, /** @type {!Array} */ (keys))
+  }
+
+  if (index$1(path)) {
+    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
+  }
+
+  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
+}
+
+index.parse = parse_1;
+index.compile = compile_1;
+index.tokensToFunction = tokensToFunction_1;
+index.tokensToRegExp = tokensToRegExp_1;
+
+/*  */
+
+var regexpCompileCache = Object.create(null);
+
+function fillParams (
+  path,
+  params,
+  routeMsg
+) {
+  try {
+    var filler =
+      regexpCompileCache[path] ||
+      (regexpCompileCache[path] = index.compile(path));
+    return filler(params || {}, { pretty: true })
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'production') {
+      warn(false, ("missing param for " + routeMsg + ": " + (e.message)));
+    }
+    return ''
+  }
+}
+
+/*  */
+
+function createRouteMap (
+  routes,
+  oldPathList,
+  oldPathMap,
+  oldNameMap
+) {
+  // the path list is used to control path matching priority
+  var pathList = oldPathList || [];
+  var pathMap = oldPathMap || Object.create(null);
+  var nameMap = oldNameMap || Object.create(null);
+
+  routes.forEach(function (route) {
+    addRouteRecord(pathList, pathMap, nameMap, route);
+  });
+
+  // ensure wildcard routes are always at the end
+  for (var i = 0, l = pathList.length; i < l; i++) {
+    if (pathList[i] === '*') {
+      pathList.push(pathList.splice(i, 1)[0]);
+      l--;
+      i--;
+    }
+  }
+
+  return {
+    pathList: pathList,
+    pathMap: pathMap,
+    nameMap: nameMap
+  }
+}
+
+function addRouteRecord (
+  pathList,
+  pathMap,
+  nameMap,
+  route,
+  parent,
+  matchAs
+) {
+  var path = route.path;
+  var name = route.name;
+  if (process.env.NODE_ENV !== 'production') {
+    assert(path != null, "\"path\" is required in a route configuration.");
+    assert(
+      typeof route.component !== 'string',
+      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
+      "string id. Use an actual component instead."
+    );
+  }
+
+  var normalizedPath = normalizePath(path, parent);
+  var pathToRegexpOptions = route.pathToRegexpOptions || {};
+
+  if (typeof route.caseSensitive === 'boolean') {
+    pathToRegexpOptions.sensitive = route.caseSensitive;
+  }
+
+  var record = {
+    path: normalizedPath,
+    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
+    components: route.components || { default: route.component },
+    instances: {},
+    name: name,
+    parent: parent,
+    matchAs: matchAs,
+    redirect: route.redirect,
+    beforeEnter: route.beforeEnter,
+    meta: route.meta || {},
+    props: route.props == null
+      ? {}
+      : route.components
+        ? route.props
+        : { default: route.props }
+  };
+
+  if (route.children) {
+    // Warn if route is named, does not redirect and has a default child route.
+    // If users navigate to this route by name, the default child will
+    // not be rendered (GH Issue #629)
+    if (process.env.NODE_ENV !== 'production') {
+      if (route.name && !route.redirect && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
+        warn(
+          false,
+          "Named Route '" + (route.name) + "' has a default child route. " +
+          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
+          "the default child route will not be rendered. Remove the name from " +
+          "this route and use the name of the default child route for named " +
+          "links instead."
+        );
+      }
+    }
+    route.children.forEach(function (child) {
+      var childMatchAs = matchAs
+        ? cleanPath((matchAs + "/" + (child.path)))
+        : undefined;
+      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
+    });
+  }
+
+  if (route.alias !== undefined) {
+    var aliases = Array.isArray(route.alias)
+      ? route.alias
+      : [route.alias];
+
+    aliases.forEach(function (alias) {
+      var aliasRoute = {
+        path: alias,
+        children: route.children
+      };
+      addRouteRecord(
+        pathList,
+        pathMap,
+        nameMap,
+        aliasRoute,
+        parent,
+        record.path || '/' // matchAs
+      );
+    });
+  }
+
+  if (!pathMap[record.path]) {
+    pathList.push(record.path);
+    pathMap[record.path] = record;
+  }
+
+  if (name) {
+    if (!nameMap[name]) {
+      nameMap[name] = record;
+    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
+      warn(
+        false,
+        "Duplicate named routes definition: " +
+        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
+      );
+    }
+  }
+}
+
+function compileRouteRegex (path, pathToRegexpOptions) {
+  var regex = index(path, [], pathToRegexpOptions);
+  if (process.env.NODE_ENV !== 'production') {
+    var keys = {};
+    regex.keys.forEach(function (key) {
+      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
+      keys[key.name] = true;
+    });
+  }
+  return regex
+}
+
+function normalizePath (path, parent) {
+  path = path.replace(/\/$/, '');
+  if (path[0] === '/') { return path }
+  if (parent == null) { return path }
+  return cleanPath(((parent.path) + "/" + path))
+}
+
+/*  */
+
+
+function normalizeLocation (
+  raw,
+  current,
+  append,
+  router
+) {
+  var next = typeof raw === 'string' ? { path: raw } : raw;
+  // named target
+  if (next.name || next._normalized) {
+    return next
+  }
+
+  // relative params
+  if (!next.path && next.params && current) {
+    next = assign({}, next);
+    next._normalized = true;
+    var params = assign(assign({}, current.params), next.params);
+    if (current.name) {
+      next.name = current.name;
+      next.params = params;
+    } else if (current.matched.length) {
+      var rawPath = current.matched[current.matched.length - 1].path;
+      next.path = fillParams(rawPath, params, ("path " + (current.path)));
+    } else if (process.env.NODE_ENV !== 'production') {
+      warn(false, "relative params navigation requires a current route.");
+    }
+    return next
+  }
+
+  var parsedPath = parsePath(next.path || '');
+  var basePath = (current && current.path) || '/';
+  var path = parsedPath.path
+    ? resolvePath(parsedPath.path, basePath, append || next.append)
+    : basePath;
+
+  var query = resolveQuery(
+    parsedPath.query,
+    next.query,
+    router && router.options.parseQuery
+  );
+
+  var hash = next.hash || parsedPath.hash;
+  if (hash && hash.charAt(0) !== '#') {
+    hash = "#" + hash;
+  }
+
+  return {
+    _normalized: true,
+    path: path,
+    query: query,
+    hash: hash
+  }
+}
+
+function assign (a, b) {
+  for (var key in b) {
+    a[key] = b[key];
+  }
+  return a
+}
+
+/*  */
+
+
+function createMatcher (
+  routes,
+  router
+) {
+  var ref = createRouteMap(routes);
+  var pathList = ref.pathList;
+  var pathMap = ref.pathMap;
+  var nameMap = ref.nameMap;
+
+  function addRoutes (routes) {
+    createRouteMap(routes, pathList, pathMap, nameMap);
+  }
+
+  function match (
+    raw,
+    currentRoute,
+    redirectedFrom
+  ) {
+    var location = normalizeLocation(raw, currentRoute, false, router);
+    var name = location.name;
+
+    if (name) {
+      var record = nameMap[name];
+      if (process.env.NODE_ENV !== 'production') {
+        warn(record, ("Route with name '" + name + "' does not exist"));
+      }
+      if (!record) { return _createRoute(null, location) }
+      var paramNames = record.regex.keys
+        .filter(function (key) { return !key.optional; })
+        .map(function (key) { return key.name; });
+
+      if (typeof location.params !== 'object') {
+        location.params = {};
+      }
+
+      if (currentRoute && typeof currentRoute.params === 'object') {
+        for (var key in currentRoute.params) {
+          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
+            location.params[key] = currentRoute.params[key];
+          }
+        }
+      }
+
+      if (record) {
+        location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
+        return _createRoute(record, location, redirectedFrom)
+      }
+    } else if (location.path) {
+      location.params = {};
+      for (var i = 0; i < pathList.length; i++) {
+        var path = pathList[i];
+        var record$1 = pathMap[path];
+        if (matchRoute(record$1.regex, location.path, location.params)) {
+          return _createRoute(record$1, location, redirectedFrom)
+        }
+      }
+    }
+    // no match
+    return _createRoute(null, location)
+  }
+
+  function redirect (
+    record,
+    location
+  ) {
+    var originalRedirect = record.redirect;
+    var redirect = typeof originalRedirect === 'function'
+        ? originalRedirect(createRoute(record, location, null, router))
+        : originalRedirect;
+
+    if (typeof redirect === 'string') {
+      redirect = { path: redirect };
+    }
+
+    if (!redirect || typeof redirect !== 'object') {
+      if (process.env.NODE_ENV !== 'production') {
+        warn(
+          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
+        );
+      }
+      return _createRoute(null, location)
+    }
+
+    var re = redirect;
+    var name = re.name;
+    var path = re.path;
+    var query = location.query;
+    var hash = location.hash;
+    var params = location.params;
+    query = re.hasOwnProperty('query') ? re.query : query;
+    hash = re.hasOwnProperty('hash') ? re.hash : hash;
+    params = re.hasOwnProperty('params') ? re.params : params;
+
+    if (name) {
+      // resolved named direct
+      var targetRecord = nameMap[name];
+      if (process.env.NODE_ENV !== 'production') {
+        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
+      }
+      return match({
+        _normalized: true,
+        name: name,
+        query: query,
+        hash: hash,
+        params: params
+      }, undefined, location)
+    } else if (path) {
+      // 1. resolve relative redirect
+      var rawPath = resolveRecordPath(path, record);
+      // 2. resolve params
+      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
+      // 3. rematch with existing query and hash
+      return match({
+        _normalized: true,
+        path: resolvedPath,
+        query: query,
+        hash: hash
+      }, undefined, location)
+    } else {
+      if (process.env.NODE_ENV !== 'production') {
+        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
+      }
+      return _createRoute(null, location)
+    }
+  }
+
+  function alias (
+    record,
+    location,
+    matchAs
+  ) {
+    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
+    var aliasedMatch = match({
+      _normalized: true,
+      path: aliasedPath
+    });
+    if (aliasedMatch) {
+      var matched = aliasedMatch.matched;
+      var aliasedRecord = matched[matched.length - 1];
+      location.params = aliasedMatch.params;
+      return _createRoute(aliasedRecord, location)
+    }
+    return _createRoute(null, location)
+  }
+
+  function _createRoute (
+    record,
+    location,
+    redirectedFrom
+  ) {
+    if (record && record.redirect) {
+      return redirect(record, redirectedFrom || location)
+    }
+    if (record && record.matchAs) {
+      return alias(record, location, record.matchAs)
+    }
+    return createRoute(record, location, redirectedFrom, router)
+  }
+
+  return {
+    match: match,
+    addRoutes: addRoutes
+  }
+}
+
+function matchRoute (
+  regex,
+  path,
+  params
+) {
+  var m = path.match(regex);
+
+  if (!m) {
+    return false
+  } else if (!params) {
+    return true
+  }
+
+  for (var i = 1, len = m.length; i < len; ++i) {
+    var key = regex.keys[i - 1];
+    var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
+    if (key) {
+      params[key.name] = val;
+    }
+  }
+
+  return true
+}
+
+function resolveRecordPath (path, record) {
+  return resolvePath(path, record.parent ? record.parent.path : '/', true)
+}
+
+/*  */
+
+
+var positionStore = Object.create(null);
+
+function setupScroll () {
+  window.addEventListener('popstate', function (e) {
+    saveScrollPosition();
+    if (e.state && e.state.key) {
+      setStateKey(e.state.key);
+    }
+  });
+}
+
+function handleScroll (
+  router,
+  to,
+  from,
+  isPop
+) {
+  if (!router.app) {
+    return
+  }
+
+  var behavior = router.options.scrollBehavior;
+  if (!behavior) {
+    return
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(typeof behavior === 'function', "scrollBehavior must be a function");
+  }
+
+  // wait until re-render finishes before scrolling
+  router.app.$nextTick(function () {
+    var position = getScrollPosition();
+    var shouldScroll = behavior(to, from, isPop ? position : null);
+    if (!shouldScroll) {
+      return
+    }
+    var isObject = typeof shouldScroll === 'object';
+    if (isObject && typeof shouldScroll.selector === 'string') {
+      var el = document.querySelector(shouldScroll.selector);
+      if (el) {
+        var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
+        offset = normalizeOffset(offset);
+        position = getElementPosition(el, offset);
+      } else if (isValidPosition(shouldScroll)) {
+        position = normalizePosition(shouldScroll);
+      }
+    } else if (isObject && isValidPosition(shouldScroll)) {
+      position = normalizePosition(shouldScroll);
+    }
+
+    if (position) {
+      window.scrollTo(position.x, position.y);
+    }
+  });
+}
+
+function saveScrollPosition () {
+  var key = getStateKey();
+  if (key) {
+    positionStore[key] = {
+      x: window.pageXOffset,
+      y: window.pageYOffset
+    };
+  }
+}
+
+function getScrollPosition () {
+  var key = getStateKey();
+  if (key) {
+    return positionStore[key]
+  }
+}
+
+function getElementPosition (el, offset) {
+  var docEl = document.documentElement;
+  var docRect = docEl.getBoundingClientRect();
+  var elRect = el.getBoundingClientRect();
+  return {
+    x: elRect.left - docRect.left - offset.x,
+    y: elRect.top - docRect.top - offset.y
+  }
+}
+
+function isValidPosition (obj) {
+  return isNumber(obj.x) || isNumber(obj.y)
+}
+
+function normalizePosition (obj) {
+  return {
+    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
+    y: isNumber(obj.y) ? obj.y : window.pageYOffset
+  }
+}
+
+function normalizeOffset (obj) {
+  return {
+    x: isNumber(obj.x) ? obj.x : 0,
+    y: isNumber(obj.y) ? obj.y : 0
+  }
+}
+
+function isNumber (v) {
+  return typeof v === 'number'
+}
+
+/*  */
+
+var supportsPushState = inBrowser && (function () {
+  var ua = window.navigator.userAgent;
+
+  if (
+    (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
+    ua.indexOf('Mobile Safari') !== -1 &&
+    ua.indexOf('Chrome') === -1 &&
+    ua.indexOf('Windows Phone') === -1
+  ) {
+    return false
+  }
+
+  return window.history && 'pushState' in window.history
+})();
+
+// use User Timing api (if present) for more accurate key precision
+var Time = inBrowser && window.performance && window.performance.now
+  ? window.performance
+  : Date;
+
+var _key = genKey();
+
+function genKey () {
+  return Time.now().toFixed(3)
+}
+
+function getStateKey () {
+  return _key
+}
+
+function setStateKey (key) {
+  _key = key;
+}
+
+function pushState (url, replace) {
+  saveScrollPosition();
+  // try...catch the pushState call to get around Safari
+  // DOM Exception 18 where it limits to 100 pushState calls
+  var history = window.history;
+  try {
+    if (replace) {
+      history.replaceState({ key: _key }, '', url);
+    } else {
+      _key = genKey();
+      history.pushState({ key: _key }, '', url);
+    }
+  } catch (e) {
+    window.location[replace ? 'replace' : 'assign'](url);
+  }
+}
+
+function replaceState (url) {
+  pushState(url, true);
+}
+
+/*  */
+
+function runQueue (queue, fn, cb) {
+  var step = function (index) {
+    if (index >= queue.length) {
+      cb();
+    } else {
+      if (queue[index]) {
+        fn(queue[index], function () {
+          step(index + 1);
+        });
+      } else {
+        step(index + 1);
+      }
+    }
+  };
+  step(0);
+}
+
+/*  */
+
+function resolveAsyncComponents (matched) {
+  return function (to, from, next) {
+    var hasAsync = false;
+    var pending = 0;
+    var error = null;
+
+    flatMapComponents(matched, function (def, _, match, key) {
+      // if it's a function and doesn't have cid attached,
+      // assume it's an async component resolve function.
+      // we are not using Vue's default async resolving mechanism because
+      // we want to halt the navigation until the incoming component has been
+      // resolved.
+      if (typeof def === 'function' && def.cid === undefined) {
+        hasAsync = true;
+        pending++;
+
+        var resolve = once(function (resolvedDef) {
+          if (resolvedDef.__esModule && resolvedDef.default) {
+            resolvedDef = resolvedDef.default;
+          }
+          // save resolved on async factory in case it's used elsewhere
+          def.resolved = typeof resolvedDef === 'function'
+            ? resolvedDef
+            : _Vue.extend(resolvedDef);
+          match.components[key] = resolvedDef;
+          pending--;
+          if (pending <= 0) {
+            next();
+          }
+        });
+
+        var reject = once(function (reason) {
+          var msg = "Failed to resolve async component " + key + ": " + reason;
+          process.env.NODE_ENV !== 'production' && warn(false, msg);
+          if (!error) {
+            error = isError(reason)
+              ? reason
+              : new Error(msg);
+            next(error);
+          }
+        });
+
+        var res;
+        try {
+          res = def(resolve, reject);
+        } catch (e) {
+          reject(e);
+        }
+        if (res) {
+          if (typeof res.then === 'function') {
+            res.then(resolve, reject);
+          } else {
+            // new syntax in Vue 2.3
+            var comp = res.component;
+            if (comp && typeof comp.then === 'function') {
+              comp.then(resolve, reject);
+            }
+          }
+        }
+      }
+    });
+
+    if (!hasAsync) { next(); }
+  }
+}
+
+function flatMapComponents (
+  matched,
+  fn
+) {
+  return flatten(matched.map(function (m) {
+    return Object.keys(m.components).map(function (key) { return fn(
+      m.components[key],
+      m.instances[key],
+      m, key
+    ); })
+  }))
+}
+
+function flatten (arr) {
+  return Array.prototype.concat.apply([], arr)
+}
+
+// in Webpack 2, require.ensure now also returns a Promise
+// so the resolve/reject functions may get called an extra time
+// if the user uses an arrow function shorthand that happens to
+// return that Promise.
+function once (fn) {
+  var called = false;
+  return function () {
+    var args = [], len = arguments.length;
+    while ( len-- ) args[ len ] = arguments[ len ];
+
+    if (called) { return }
+    called = true;
+    return fn.apply(this, args)
+  }
+}
+
+/*  */
+
+var History = function History (router, base) {
+  this.router = router;
+  this.base = normalizeBase(base);
+  // start with a route object that stands for "nowhere"
+  this.current = START;
+  this.pending = null;
+  this.ready = false;
+  this.readyCbs = [];
+  this.readyErrorCbs = [];
+  this.errorCbs = [];
+};
+
+History.prototype.listen = function listen (cb) {
+  this.cb = cb;
+};
+
+History.prototype.onReady = function onReady (cb, errorCb) {
+  if (this.ready) {
+    cb();
+  } else {
+    this.readyCbs.push(cb);
+    if (errorCb) {
+      this.readyErrorCbs.push(errorCb);
+    }
+  }
+};
+
+History.prototype.onError = function onError (errorCb) {
+  this.errorCbs.push(errorCb);
+};
+
+History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
+    var this$1 = this;
+
+  var route = this.router.match(location, this.current);
+  this.confirmTransition(route, function () {
+    this$1.updateRoute(route);
+    onComplete && onComplete(route);
+    this$1.ensureURL();
+
+    // fire ready cbs once
+    if (!this$1.ready) {
+      this$1.ready = true;
+      this$1.readyCbs.forEach(function (cb) { cb(route); });
+    }
+  }, function (err) {
+    if (onAbort) {
+      onAbort(err);
+    }
+    if (err && !this$1.ready) {
+      this$1.ready = true;
+      this$1.readyErrorCbs.forEach(function (cb) { cb(err); });
+    }
+  });
+};
+
+History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
+    var this$1 = this;
+
+  var current = this.current;
+  var abort = function (err) {
+    if (isError(err)) {
+      if (this$1.errorCbs.length) {
+        this$1.errorCbs.forEach(function (cb) { cb(err); });
+      } else {
+        warn(false, 'uncaught error during route navigation:');
+        console.error(err);
+      }
+    }
+    onAbort && onAbort(err);
+  };
+  if (
+    isSameRoute(route, current) &&
+    // in the case the route map has been dynamically appended to
+    route.matched.length === current.matched.length
+  ) {
+    this.ensureURL();
+    return abort()
+  }
+
+  var ref = resolveQueue(this.current.matched, route.matched);
+    var updated = ref.updated;
+    var deactivated = ref.deactivated;
+    var activated = ref.activated;
+
+  var queue = [].concat(
+    // in-component leave guards
+    extractLeaveGuards(deactivated),
+    // global before hooks
+    this.router.beforeHooks,
+    // in-component update hooks
+    extractUpdateHooks(updated),
+    // in-config enter guards
+    activated.map(function (m) { return m.beforeEnter; }),
+    // async components
+    resolveAsyncComponents(activated)
+  );
+
+  this.pending = route;
+  var iterator = function (hook, next) {
+    if (this$1.pending !== route) {
+      return abort()
+    }
+    try {
+      hook(route, current, function (to) {
+        if (to === false || isError(to)) {
+          // next(false) -> abort navigation, ensure current URL
+          this$1.ensureURL(true);
+          abort(to);
+        } else if (
+          typeof to === 'string' ||
+          (typeof to === 'object' && (
+            typeof to.path === 'string' ||
+            typeof to.name === 'string'
+          ))
+        ) {
+          // next('/') or next({ path: '/' }) -> redirect
+          abort();
+          if (typeof to === 'object' && to.replace) {
+            this$1.replace(to);
+          } else {
+            this$1.push(to);
+          }
+        } else {
+          // confirm transition and pass on the value
+          next(to);
+        }
+      });
+    } catch (e) {
+      abort(e);
+    }
+  };
+
+  runQueue(queue, iterator, function () {
+    var postEnterCbs = [];
+    var isValid = function () { return this$1.current === route; };
+    // wait until async components are resolved before
+    // extracting in-component enter guards
+    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
+    var queue = enterGuards.concat(this$1.router.resolveHooks);
+    runQueue(queue, iterator, function () {
+      if (this$1.pending !== route) {
+        return abort()
+      }
+      this$1.pending = null;
+      onComplete(route);
+      if (this$1.router.app) {
+        this$1.router.app.$nextTick(function () {
+          postEnterCbs.forEach(function (cb) { cb(); });
+        });
+      }
+    });
+  });
+};
+
+History.prototype.updateRoute = function updateRoute (route) {
+  var prev = this.current;
+  this.current = route;
+  this.cb && this.cb(route);
+  this.router.afterHooks.forEach(function (hook) {
+    hook && hook(route, prev);
+  });
+};
+
+function normalizeBase (base) {
+  if (!base) {
+    if (inBrowser) {
+      // respect <base> tag
+      var baseEl = document.querySelector('base');
+      base = (baseEl && baseEl.getAttribute('href')) || '/';
+      // strip full URL origin
+      base = base.replace(/^https?:\/\/[^\/]+/, '');
+    } else {
+      base = '/';
+    }
+  }
+  // make sure there's the starting slash
+  if (base.charAt(0) !== '/') {
+    base = '/' + base;
+  }
+  // remove trailing slash
+  return base.replace(/\/$/, '')
+}
+
+function resolveQueue (
+  current,
+  next
+) {
+  var i;
+  var max = Math.max(current.length, next.length);
+  for (i = 0; i < max; i++) {
+    if (current[i] !== next[i]) {
+      break
+    }
+  }
+  return {
+    updated: next.slice(0, i),
+    activated: next.slice(i),
+    deactivated: current.slice(i)
+  }
+}
+
+function extractGuards (
+  records,
+  name,
+  bind,
+  reverse
+) {
+  var guards = flatMapComponents(records, function (def, instance, match, key) {
+    var guard = extractGuard(def, name);
+    if (guard) {
+      return Array.isArray(guard)
+        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
+        : bind(guard, instance, match, key)
+    }
+  });
+  return flatten(reverse ? guards.reverse() : guards)
+}
+
+function extractGuard (
+  def,
+  key
+) {
+  if (typeof def !== 'function') {
+    // extend now so that global mixins are applied.
+    def = _Vue.extend(def);
+  }
+  return def.options[key]
+}
+
+function extractLeaveGuards (deactivated) {
+  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
+}
+
+function extractUpdateHooks (updated) {
+  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
+}
+
+function bindGuard (guard, instance) {
+  if (instance) {
+    return function boundRouteGuard () {
+      return guard.apply(instance, arguments)
+    }
+  }
+}
+
+function extractEnterGuards (
+  activated,
+  cbs,
+  isValid
+) {
+  return extractGuards(activated, 'beforeRouteEnter', function (guard, _, match, key) {
+    return bindEnterGuard(guard, match, key, cbs, isValid)
+  })
+}
+
+function bindEnterGuard (
+  guard,
+  match,
+  key,
+  cbs,
+  isValid
+) {
+  return function routeEnterGuard (to, from, next) {
+    return guard(to, from, function (cb) {
+      next(cb);
+      if (typeof cb === 'function') {
+        cbs.push(function () {
+          // #750
+          // if a router-view is wrapped with an out-in transition,
+          // the instance may not have been registered at this time.
+          // we will need to poll for registration until current route
+          // is no longer valid.
+          poll(cb, match.instances, key, isValid);
+        });
+      }
+    })
+  }
+}
+
+function poll (
+  cb, // somehow flow cannot infer this is a function
+  instances,
+  key,
+  isValid
+) {
+  if (instances[key]) {
+    cb(instances[key]);
+  } else if (isValid()) {
+    setTimeout(function () {
+      poll(cb, instances, key, isValid);
+    }, 16);
+  }
+}
+
+/*  */
+
+
+var HTML5History = (function (History$$1) {
+  function HTML5History (router, base) {
+    var this$1 = this;
+
+    History$$1.call(this, router, base);
+
+    var expectScroll = router.options.scrollBehavior;
+
+    if (expectScroll) {
+      setupScroll();
+    }
+
+    window.addEventListener('popstate', function (e) {
+      var current = this$1.current;
+      this$1.transitionTo(getLocation(this$1.base), function (route) {
+        if (expectScroll) {
+          handleScroll(router, route, current, true);
+        }
+      });
+    });
+  }
+
+  if ( History$$1 ) HTML5History.__proto__ = History$$1;
+  HTML5History.prototype = Object.create( History$$1 && History$$1.prototype );
+  HTML5History.prototype.constructor = HTML5History;
+
+  HTML5History.prototype.go = function go (n) {
+    window.history.go(n);
+  };
+
+  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(location, function (route) {
+      pushState(cleanPath(this$1.base + route.fullPath));
+      handleScroll(this$1.router, route, fromRoute, false);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(location, function (route) {
+      replaceState(cleanPath(this$1.base + route.fullPath));
+      handleScroll(this$1.router, route, fromRoute, false);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HTML5History.prototype.ensureURL = function ensureURL (push) {
+    if (getLocation(this.base) !== this.current.fullPath) {
+      var current = cleanPath(this.base + this.current.fullPath);
+      push ? pushState(current) : replaceState(current);
+    }
+  };
+
+  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
+    return getLocation(this.base)
+  };
+
+  return HTML5History;
+}(History));
+
+function getLocation (base) {
+  var path = window.location.pathname;
+  if (base && path.indexOf(base) === 0) {
+    path = path.slice(base.length);
+  }
+  return (path || '/') + window.location.search + window.location.hash
+}
+
+/*  */
+
+
+var HashHistory = (function (History$$1) {
+  function HashHistory (router, base, fallback) {
+    History$$1.call(this, router, base);
+    // check history fallback deeplinking
+    if (fallback && checkFallback(this.base)) {
+      return
+    }
+    ensureSlash();
+  }
+
+  if ( History$$1 ) HashHistory.__proto__ = History$$1;
+  HashHistory.prototype = Object.create( History$$1 && History$$1.prototype );
+  HashHistory.prototype.constructor = HashHistory;
+
+  // this is delayed until the app mounts
+  // to avoid the hashchange listener being fired too early
+  HashHistory.prototype.setupListeners = function setupListeners () {
+    var this$1 = this;
+
+    window.addEventListener('hashchange', function () {
+      if (!ensureSlash()) {
+        return
+      }
+      this$1.transitionTo(getHash(), function (route) {
+        replaceHash(route.fullPath);
+      });
+    });
+  };
+
+  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
+    this.transitionTo(location, function (route) {
+      pushHash(route.fullPath);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
+    this.transitionTo(location, function (route) {
+      replaceHash(route.fullPath);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HashHistory.prototype.go = function go (n) {
+    window.history.go(n);
+  };
+
+  HashHistory.prototype.ensureURL = function ensureURL (push) {
+    var current = this.current.fullPath;
+    if (getHash() !== current) {
+      push ? pushHash(current) : replaceHash(current);
+    }
+  };
+
+  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
+    return getHash()
+  };
+
+  return HashHistory;
+}(History));
+
+function checkFallback (base) {
+  var location = getLocation(base);
+  if (!/^\/#/.test(location)) {
+    window.location.replace(
+      cleanPath(base + '/#' + location)
+    );
+    return true
+  }
+}
+
+function ensureSlash () {
+  var path = getHash();
+  if (path.charAt(0) === '/') {
+    return true
+  }
+  replaceHash('/' + path);
+  return false
+}
+
+function getHash () {
+  // We can't use window.location.hash here because it's not
+  // consistent across browsers - Firefox will pre-decode it!
+  var href = window.location.href;
+  var index = href.indexOf('#');
+  return index === -1 ? '' : href.slice(index + 1)
+}
+
+function pushHash (path) {
+  window.location.hash = path;
+}
+
+function replaceHash (path) {
+  var href = window.location.href;
+  var i = href.indexOf('#');
+  var base = i >= 0 ? href.slice(0, i) : href;
+  window.location.replace((base + "#" + path));
+}
+
+/*  */
+
+
+var AbstractHistory = (function (History$$1) {
+  function AbstractHistory (router, base) {
+    History$$1.call(this, router, base);
+    this.stack = [];
+    this.index = -1;
+  }
+
+  if ( History$$1 ) AbstractHistory.__proto__ = History$$1;
+  AbstractHistory.prototype = Object.create( History$$1 && History$$1.prototype );
+  AbstractHistory.prototype.constructor = AbstractHistory;
+
+  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    this.transitionTo(location, function (route) {
+      this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
+      this$1.index++;
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    this.transitionTo(location, function (route) {
+      this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  AbstractHistory.prototype.go = function go (n) {
+    var this$1 = this;
+
+    var targetIndex = this.index + n;
+    if (targetIndex < 0 || targetIndex >= this.stack.length) {
+      return
+    }
+    var route = this.stack[targetIndex];
+    this.confirmTransition(route, function () {
+      this$1.index = targetIndex;
+      this$1.updateRoute(route);
+    });
+  };
+
+  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
+    var current = this.stack[this.stack.length - 1];
+    return current ? current.fullPath : '/'
+  };
+
+  AbstractHistory.prototype.ensureURL = function ensureURL () {
+    // noop
+  };
+
+  return AbstractHistory;
+}(History));
+
+/*  */
+
+var VueRouter = function VueRouter (options) {
+  if ( options === void 0 ) options = {};
+
+  this.app = null;
+  this.apps = [];
+  this.options = options;
+  this.beforeHooks = [];
+  this.resolveHooks = [];
+  this.afterHooks = [];
+  this.matcher = createMatcher(options.routes || [], this);
+
+  var mode = options.mode || 'hash';
+  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
+  if (this.fallback) {
+    mode = 'hash';
+  }
+  if (!inBrowser) {
+    mode = 'abstract';
+  }
+  this.mode = mode;
+
+  switch (mode) {
+    case 'history':
+      this.history = new HTML5History(this, options.base);
+      break
+    case 'hash':
+      this.history = new HashHistory(this, options.base, this.fallback);
+      break
+    case 'abstract':
+      this.history = new AbstractHistory(this, options.base);
+      break
+    default:
+      if (process.env.NODE_ENV !== 'production') {
+        assert(false, ("invalid mode: " + mode));
+      }
+  }
+};
+
+var prototypeAccessors = { currentRoute: {} };
+
+VueRouter.prototype.match = function match (
+  raw,
+  current,
+  redirectedFrom
+) {
+  return this.matcher.match(raw, current, redirectedFrom)
+};
+
+prototypeAccessors.currentRoute.get = function () {
+  return this.history && this.history.current
+};
+
+VueRouter.prototype.init = function init (app /* Vue component instance */) {
+    var this$1 = this;
+
+  process.env.NODE_ENV !== 'production' && assert(
+    install.installed,
+    "not installed. Make sure to call `Vue.use(VueRouter)` " +
+    "before creating root instance."
+  );
+
+  this.apps.push(app);
+
+  // main app already initialized.
+  if (this.app) {
+    return
+  }
+
+  this.app = app;
+
+  var history = this.history;
+
+  if (history instanceof HTML5History) {
+    history.transitionTo(history.getCurrentLocation());
+  } else if (history instanceof HashHistory) {
+    var setupHashListener = function () {
+      history.setupListeners();
+    };
+    history.transitionTo(
+      history.getCurrentLocation(),
+      setupHashListener,
+      setupHashListener
+    );
+  }
+
+  history.listen(function (route) {
+    this$1.apps.forEach(function (app) {
+      app._route = route;
+    });
+  });
+};
+
+VueRouter.prototype.beforeEach = function beforeEach (fn) {
+  return registerHook(this.beforeHooks, fn)
+};
+
+VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
+  return registerHook(this.resolveHooks, fn)
+};
+
+VueRouter.prototype.afterEach = function afterEach (fn) {
+  return registerHook(this.afterHooks, fn)
+};
+
+VueRouter.prototype.onReady = function onReady (cb, errorCb) {
+  this.history.onReady(cb, errorCb);
+};
+
+VueRouter.prototype.onError = function onError (errorCb) {
+  this.history.onError(errorCb);
+};
+
+VueRouter.prototype.push = function push (location, onComplete, onAbort) {
+  this.history.push(location, onComplete, onAbort);
+};
+
+VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
+  this.history.replace(location, onComplete, onAbort);
+};
+
+VueRouter.prototype.go = function go (n) {
+  this.history.go(n);
+};
+
+VueRouter.prototype.back = function back () {
+  this.go(-1);
+};
+
+VueRouter.prototype.forward = function forward () {
+  this.go(1);
+};
+
+VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
+  var route = to
+    ? to.matched
+      ? to
+      : this.resolve(to).route
+    : this.currentRoute;
+  if (!route) {
+    return []
+  }
+  return [].concat.apply([], route.matched.map(function (m) {
+    return Object.keys(m.components).map(function (key) {
+      return m.components[key]
+    })
+  }))
+};
+
+VueRouter.prototype.resolve = function resolve (
+  to,
+  current,
+  append
+) {
+  var location = normalizeLocation(
+    to,
+    current || this.history.current,
+    append,
+    this
+  );
+  var route = this.match(location, current);
+  var fullPath = route.redirectedFrom || route.fullPath;
+  var base = this.history.base;
+  var href = createHref(base, fullPath, this.mode);
+  return {
+    location: location,
+    route: route,
+    href: href,
+    // for backwards compat
+    normalizedTo: location,
+    resolved: route
+  }
+};
+
+VueRouter.prototype.addRoutes = function addRoutes (routes) {
+  this.matcher.addRoutes(routes);
+  if (this.history.current !== START) {
+    this.history.transitionTo(this.history.getCurrentLocation());
+  }
+};
+
+Object.defineProperties( VueRouter.prototype, prototypeAccessors );
+
+function registerHook (list, fn) {
+  list.push(fn);
+  return function () {
+    var i = list.indexOf(fn);
+    if (i > -1) { list.splice(i, 1); }
+  }
+}
+
+function createHref (base, fullPath, mode) {
+  var path = mode === 'hash' ? '#' + fullPath : fullPath;
+  return base ? cleanPath(base + '/' + path) : path
+}
+
+VueRouter.install = install;
+VueRouter.version = '2.7.0';
+
+if (inBrowser && window.Vue) {
+  window.Vue.use(VueRouter);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (VueRouter);
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
+
+/***/ }),
+/* 180 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v2.4.0
+ * (c) 2017 Evan You
+ * @license MIT
+ */
+var applyMixin = function (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+};
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+/**
+ * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
+
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  this._children = Object.create(null);
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors$1 = { namespaced: {} };
+
+prototypeAccessors$1.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors$1 );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (process.env.NODE_ENV !== 'production') {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (process.env.NODE_ENV !== 'production') {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+function assertRawModule (path, rawModule) {
+  ['getters', 'actions', 'mutations'].forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        typeof value === 'function',
+        makeAssertionMessage(path, key, type, value)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value) {
+  var buf = key + " should be function but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "Store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  if (typeof state === 'function') {
+    state = state();
+  }
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  if (Vue.config.devtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors = { state: {} };
+
+prototypeAccessors.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors.state.set = function (v) {
+  if (process.env.NODE_ENV !== 'production') {
+    assert(false, "Use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var entry = this._actions[type];
+  if (!entry) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  var subs = this._subscribers;
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule) {
+  if (typeof path === 'string') { path = [path]; }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path));
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); };
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var namespacedType = namespace + key;
+    registerAction(store, namespacedType, action, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (process.env.NODE_ENV !== 'production' && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (process.env.NODE_ENV !== 'production' && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (process.env.NODE_ENV !== 'production') {
+      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+// auto install in dist mode
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
+}
+
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      if (namespace && !getModuleByNamespace(this.$store, 'mapMutations', namespace)) {
+        return
+      }
+      return this.$store.commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (process.env.NODE_ENV !== 'production' && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      if (namespace && !getModuleByNamespace(this.$store, 'mapActions', namespace)) {
+        return
+      }
+      return this.$store.dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (process.env.NODE_ENV !== 'production' && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '2.4.0',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
+
+/***/ }),
+/* 181 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -33016,7 +38153,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 169 */
+/* 182 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -33029,132 +38166,135 @@ module.exports = {
 };
 
 /***/ }),
-/* 170 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_contentItems__ = __webpack_require__(6);
 
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(215),
-    created() {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+__webpack_require__(252);
+
+exports.default = {
+    props: ['contentItemId'],
+    template: __webpack_require__(236),
+    created: function created() {
         var me = this;
-        this.items = {};
-
-        __WEBPACK_IMPORTED_MODULE_0__objects_contentItems__["a" /* default */].getAllExceptForHeadings().then(items => {
-            console.log('all items returned are ', items);
-            me.items = items;
-        });
-        this.num = 5;
+        console.log("creator just created!");
     },
-    data() {
+    data: function data() {
         return {
-            items: this.items
+            window: window
         };
     },
-    computed: {
-        numItems() {
-            return Object.keys(this.items.length);
-        }
-    }
-});
 
-/***/ }),
-/* 171 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(216),
-    created() {
-        var me = this;
-    },
-    data() {
-        return {};
-    },
-    computed: {}
-});
-
-/***/ }),
-/* 172 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(217),
-    created() {
-        var me = this;
-    },
-    data() {
-        return {};
-    },
-    computed: {},
     methods: {
-        goToHome() {
+        goToHome: function goToHome() {
             PubSub.publish('goToState.home');
         }
     }
-});
+};
 
 /***/ }),
-/* 173 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_exercise__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_exerciseQA__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack__ = __webpack_require__(229);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_invert_object__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_invert_object___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_invert_object__);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
+var _exercise = __webpack_require__(15);
 
+var _exercise2 = _interopRequireDefault(_exercise);
 
+var _exerciseQA = __webpack_require__(24);
 
+var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(218),
-    created() {
+var _contentItems = __webpack_require__(4);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _snack = __webpack_require__(174);
+
+var _snack2 = _interopRequireDefault(_snack);
+
+var _invertObject = __webpack_require__(58);
+
+var _invertObject2 = _interopRequireDefault(_invertObject);
+
+var _exercises = __webpack_require__(43);
+
+var _exercises2 = _interopRequireDefault(_exercises);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: ['contentItemId'],
+    template: __webpack_require__(237),
+    created: function created() {
+        var _this = this;
+
         var me = this;
         this.items = {}; // [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
         // this.itemIds = {12345: true} //[12345]
         this.selectedItems = [];
         this.selectedItemIds = [];
+        if (this.contentItemId) {
+            this.selectedItemIds.push(this.contentItemId);
+        }
         this.question = "";
         this.answer = "";
         this.tags = null;
+        //TODO: replace with Vuex/redux store . . . or maybe a routing system
+        if (window.exerciseToReplaceId) {
+            _exercises2.default.get(window.exerciseToReplaceId).then(function (exercise) {
+                me.question = exercise.question;
+                me.answer = exercise.answer;
+                me.selectedItemIds = Object.keys(exercise.contentItemIds);
+            });
+        }
 
         // this.factsAndSkills = [{breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345'},{breadcrumb: "Spanish > Senorita", id: '23456'}]
 
-        __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].getAllExceptForHeadings().then(items => {
-            this.items = items;
-            var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
+        _contentItems2.default.getAllExceptForHeadings().then(function (items) {
+            _this.items = items;
+            var breadcrumbIdMap = Object.keys(_this.items).reduce(function (map, key) {
                 var item = items[key];
-                var breadCrumb = item.getBreadCrumbs();
+                var breadCrumb = item.getBreadCrumbsString();
                 map[breadCrumb] = item.id;
                 return map;
             }, {});
-            var idBreadcrumbMap = __WEBPACK_IMPORTED_MODULE_4_invert_object___default()(breadcrumbIdMap);
-            this.idBreadcrumbMap = idBreadcrumbMap;
-            this.breadcrumbIdMap = breadcrumbIdMap;
+            var idBreadcrumbMap = (0, _invertObject2.default)(breadcrumbIdMap);
+            _this.idBreadcrumbMap = idBreadcrumbMap;
+            _this.breadcrumbIdMap = breadcrumbIdMap;
             initTagSearch();
-        }
+        });
         // hacky solution, but each breadcrumb should be uniquely mapped to a contentId so i guess no big deal
 
-        );function initTagSearch() {
+        function initTagSearch() {
             setTimeout(function () {
                 me.tags = new Taggle($('.new-exercise-items.textarea')[0], {
                     duplicateTagClass: 'bounce',
-                    onTagRemove: function (event, breadcrumb) {
+                    onTagRemove: function onTagRemove(event, breadcrumb) {
                         var id = me.breadcrumbIdMap[breadcrumb];
                         var index = me.selectedItemIds.indexOf(id);
                         me.selectedItemIds.splice(index, 1);
                         delete me.selectedItemIds[id];
                     }
+                });
+                me.selectedItemIds.map(function (id) {
+                    return me.idBreadcrumbMap[id];
+                }).forEach(function (existingBreadcrumb) {
+                    console.log('existing breadcrumb', existingBreadcrumb);
+                    me.tags.add(existingBreadcrumb);
+                    // me.tags.add
                 });
 
                 var container = me.tags.getContainer();
@@ -33164,17 +38304,19 @@ module.exports = {
                     source: Object.keys(me.breadcrumbIdMap), //me.items.map( x => x.breadcrumb),
                     appendTo: container,
                     position: { at: 'left bottom', of: container },
-                    select: function (e, v) {
+                    select: function select(e, v) {
                         console.log("added! at start selectedItemIds is ", me.selectedItemIds);
                         e.preventDefault();
                         // Add the tag if user clicks
                         if (e.which === 1) {
                             var breadcrumb = v.item.value;
                             var id = me.breadcrumbIdMap[breadcrumb];
-                            var alreadyExists = me.selectedItemIds.find(itemId => itemId == id);
+                            var alreadyExists = me.selectedItemIds.find(function (itemId) {
+                                return itemId == id;
+                            });
                             if (alreadyExists) return;
-                            me.selectedItemIds.push(id //[id.toString()] = true
-                            );me.tags.add(breadcrumb);
+                            me.selectedItemIds.push(id); //[id.toString()] = true
+                            me.tags.add(breadcrumb);
                             console.log('me selectedItemIds is now', me.selectedItemIds);
                         }
                     }
@@ -33182,7 +38324,7 @@ module.exports = {
             }, 0);
         }
     },
-    data() {
+    data: function data() {
         return {
             items: this.items,
             question: this.question,
@@ -33191,13 +38333,15 @@ module.exports = {
             selectedItemIds: this.selectedItemIds,
             factsAndSkills: [],
             itemIds: this.itemIds,
-            type: 'fact'
+            type: 'fact',
+            window: window
         };
     },
+
     computed: {
-        selectedBreadcrumbs() {
+        selectedBreadcrumbs: function selectedBreadcrumbs() {
             var me = this;
-            const selectedBreadcrumbs = Object.keys(this.selectedItemIds).map(id => {
+            var selectedBreadcrumbs = Object.keys(this.selectedItemIds).map(function (id) {
                 var breadcrumb = me.idBreadcrumbMap[id];
                 console.log('id and breadcrumb are ', id, breadcrumb);
                 return breadcrumb;
@@ -33207,88 +38351,137 @@ module.exports = {
         }
     },
     methods: {
-        createExercise() {
-            //TODO allow creation of other types of exercises than QA
-            const exerciseData = {
+        getExerciseData: function getExerciseData() {
+            var exerciseData = {
                 question: this.question,
                 answer: this.answer,
-                contentItemIds: this.selectedItemIds.reduce((obj, key) => {
+                contentItemIds: this.selectedItemIds.reduce(function (obj, key) {
                     obj[key] = true;
                     return obj;
                 }, {})
             };
-            console.log('exercise data is', exerciseData);
-            const exercise = __WEBPACK_IMPORTED_MODULE_1__objects_exerciseQA__["a" /* default */].create(exerciseData);
-            console.log('exercise created is ', exercise);
+            return exerciseData;
+        },
+        createExercise: function createExercise() {
+            var exerciseData = this.getExerciseData();
+            //TODO allow creation of other types of exercises than QA
+            var exercise = _exerciseQA2.default.create(exerciseData);
 
-            console.log('this.selectedItemIds is', this.selectedItemIds);
-            this.selectedItemIds.forEach(id => {
-                __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].get(id).then(contentItem => {
-                    console.log('contentItem gotten is ', id, contentItem, contentItem.toString());
+            this.selectedItemIds.forEach(function (id) {
+                _contentItems2.default.get(id).then(function (contentItem) {
                     contentItem.addExercise(exercise.id);
-                    console.log('contentItem gotten is ', contentItem, contentItem.toString());
                 });
             });
 
-            var snack = new __WEBPACK_IMPORTED_MODULE_3__node_modules_snack_js_dist_snack___default.a({
+            var snack = new _snack2.default({
                 domParent: document.querySelector('.new-exercise')
             });
             // show a snack for 4s
-            snack.show('Exercise created!', 4000);
+            snack.show('Exercise created! +1000 points', 4000); //TODO: make the number of points added be based on the supply and demand of the current exercises for the content items. We need to balance the content creators with content consumers, as we are creating a platform - as explained in "The Platform Revolution" book -  https://www.amazon.com/Platform-Revolution-Networked-Transforming-Economy/dp/0393249131. e.g. so you don't get 1000 Uber drivers in a city with only 300 people who need to be driven
 
             //clear exercise
             this.selectedItemIds = [];
             this.question = "";
             this.answer = "";
             this.tags.removeAll();
+        },
+        replaceExercise: function replaceExercise() {
+            var _this2 = this;
+
+            var exerciseData = this.getExerciseData();
+            //TODO allow creation of other types of exercises than QA
+            var newExercise = _exerciseQA2.default.create(exerciseData);
+
+            _exercises2.default.get(window.exerciseToReplaceId).then(function (exercise) {
+                exercise.contentItemIds.forEach(function (contentItemId) {
+                    _contentItems2.default.get(contentItemId).then(function (contentItem) {
+                        contentItem.removeExercise(_this2.exerciseToReplaceId);
+                        contentItem.addExercise(newExercise.id);
+                    });
+                });
+            });
+
+            var snack = new _snack2.default({
+                domParent: document.querySelector('.new-exercise')
+            });
+            // show a snack for 4s
+            snack.show('Exercise edited!', 4000);
+
+            //TODO: eventually redirect the user back to the tree/exercise they were studying
         }
     }
-});
+};
+
+function convertItemIdsObjectToList(obj) {
+    return Object.keys(obj);
+}
 
 /***/ }),
-/* 174 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_exercise__ = __webpack_require__(19);
 
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(219),
-    created() {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _exercise = __webpack_require__(15);
+
+var _exercise2 = _interopRequireDefault(_exercise);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    template: __webpack_require__(238),
+    created: function created() {
+        var _this = this;
+
         var me = this;
         this.exercises = {};
-        __WEBPACK_IMPORTED_MODULE_0__objects_exercise__["a" /* default */].getAll().then(exercises => {
-            this.exercises = exercises;
+        _exercise2.default.getAll().then(function (exercises) {
+            _this.exercises = exercises;
         });
     },
-    data() {
+    data: function data() {
         return {
             exercises: this.exercises
         };
     }
-});
+};
 
 /***/ }),
-/* 175 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_config__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_login__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_users__ = __webpack_require__(23);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
+var _newTree = __webpack_require__(44);
 
+var _config = __webpack_require__(41);
 
+var _login2 = __webpack_require__(42);
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(220),
-    created() {
-        const self = this;
+var _user = __webpack_require__(8);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _users = __webpack_require__(28);
+
+var _users2 = _interopRequireDefault(_users);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    template: __webpack_require__(239),
+    created: function created() {
+        var self = this;
         self.loggedIn = false;
         self.user = {};
         self.username = '';
@@ -33296,21 +38489,21 @@ module.exports = {
         self.secondsSpentStudying = 1; // init to 1, not 0 to prevent divBy0 Error
         this.items = {};
 
-        PubSub.subscribe('login', () => {
+        PubSub.subscribe('login', function () {
             self.loggedIn = true;
-            self.user = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */];
-            self.username = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.displayName;
-            self.photoURL = __WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].fbData.photoURL;
+            self.user = _user2.default;
+            self.username = _user2.default.fbData.displayName;
+            self.photoURL = _user2.default.fbData.photoURL;
             //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
-            __WEBPACK_IMPORTED_MODULE_4__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_3__objects_user__["a" /* default */].getId()).then(user => {
+            _users2.default.get(_user2.default.getId()).then(function (user) {
                 self.items = user.items;
                 self.user = user;
             });
         });
     },
-    data() {
+    data: function data() {
         return {
-            version: __WEBPACK_IMPORTED_MODULE_1__core_config__["a" /* Config */].version,
+            version: _config.Config.version,
             user: this.user,
             loggedIn: this.loggedIn,
             username: this.username,
@@ -33318,17 +38511,20 @@ module.exports = {
             items: this.items
         };
     },
+
     computed: {
-        itemsMasteredPerMinute() {
+        itemsMasteredPerMinute: function itemsMasteredPerMinute() {
             return this.numItemsMastered / (this.secondsSpentStudying * 60);
         },
-        numItemsStudied() {
+        numItemsStudied: function numItemsStudied() {
             return Object.keys(this.items).length;
         },
-        numItemsMastered() {
+        numItemsMastered: function numItemsMastered() {
+            var _this = this;
+
             var itemsKeys = Object.keys(this.items);
-            var numMastered = itemsKeys.reduce((sum, key) => {
-                if (this.items[key].proficiency >= 96) {
+            var numMastered = itemsKeys.reduce(function (sum, key) {
+                if (_this.items[key].proficiency >= 96) {
                     sum++;
                 }
                 return sum;
@@ -33338,32 +38534,68 @@ module.exports = {
     },
 
     methods: {
-        login() {
+        login: function login() {
             this.loggedIn = true;
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core_login__["a" /* login */])();
+            (0, _login2.login)();
         },
-        goToExerciseCreator() {
+        goToExerciseCreator: function goToExerciseCreator() {
+            window.exerciseToReplaceId = null;
             PubSub.publish('goToState.exerciseCreator');
+        },
+        goToReviewTree: function goToReviewTree() {
+            PubSub.publish('goToState.reviewTree');
         }
     }
-});
+};
 
 /***/ }),
-/* 176 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__ = __webpack_require__(6);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+__webpack_require__(253);
+
+exports.default = {
+    template: __webpack_require__(240),
+    methods: {
+        goToHome: function goToHome() {
+            PubSub.publish('goToState.home');
+        }
+    }
+};
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _newTree = __webpack_require__(44);
+
+var _trees = __webpack_require__(2);
+
+var _contentItems = __webpack_require__(4);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //temporary hacky solution for controller
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(221),
+exports.default = {
+    template: __webpack_require__(242),
     props: ['parentid', 'initialparenttreecontenturi'],
-    data() {
+    data: function data() {
         return {
             question: '',
             answer: '',
@@ -33371,20 +38603,21 @@ module.exports = {
             type: 'fact'
         };
     },
+
     computed: {
-        contentIsFact() {
+        contentIsFact: function contentIsFact() {
             return this.type == 'fact';
         },
-        contentIsHeading() {
+        contentIsHeading: function contentIsHeading() {
             return this.type == 'heading';
         },
-        contentIsSkill() {
+        contentIsSkill: function contentIsSkill() {
             return this.type == 'skill';
         }
     },
     methods: {
-        createNewTree() {
-            let contentArgs;
+        createNewTree: function createNewTree() {
+            var contentArgs = void 0;
             switch (this.type) {
                 case 'fact':
                     contentArgs = { question: this.question.trim(), answer: this.answer.trim() };
@@ -33396,44 +38629,51 @@ module.exports = {
                     contentArgs = { title: this.title.trim() };
                     break;
             }
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__objects_newTree_js__["a" /* newTree */])(this.type, this.parentid, this.initialparenttreecontenturi, contentArgs);
+            (0, _newTree.newTree)(this.type, this.parentid, this.initialparenttreecontenturi, contentArgs);
         },
-        setTypeToHeading() {
+        setTypeToHeading: function setTypeToHeading() {
             this.type = 'heading';
         },
-        setTypeToFact() {
+        setTypeToFact: function setTypeToFact() {
             this.type = 'fact';
         },
-        setTypeToSkill() {
+        setTypeToSkill: function setTypeToSkill() {
             this.type = 'skill';
         }
     }
-});
+};
+
 
 function establishURIs() {
     console.log("establish URIs called");
-    __WEBPACK_IMPORTED_MODULE_1__objects_trees__["a" /* Trees */].get(1).then(tree => {
+    _trees.Trees.get(1).then(function (tree) {
         console.log('tree gotten for id 1 is', tree, tree.contentId);
-        __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].get(tree.contentId).then(contentItem => {
+        _contentItems2.default.get(tree.contentId).then(function (contentItem) {
             console.log('contentItem gotten is', contentItem);
             contentItem.set('uri', 'content/' + contentItem.title);
             contentItem.set('initialParentTreeId', null);
             contentItem.set('initialParentTreeContentURI', null);
-        }).then(() => {
+        }).then(function () {
             tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren);
         });
     });
 }
+window.establishURIs = establishURIs;
 
 function establishURIForContentAndThenAllChildren(treeId) {
     console.log('establish URI called for', treeId);
-    __WEBPACK_IMPORTED_MODULE_1__objects_trees__["a" /* Trees */].get(treeId).then(tree => {
-        __WEBPACK_IMPORTED_MODULE_1__objects_trees__["a" /* Trees */].get(tree.parentId).then(parentTree => {
-            __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].get(parentTree.contentId).then(parentContentItem => {
-                __WEBPACK_IMPORTED_MODULE_2__objects_contentItems__["a" /* default */].get(tree.contentId).then(contentItem => {
-                    contentItem.set('uri', parentContentItem.uri + contentItem.getURIAddition());
+    _trees.Trees.get(treeId).then(function (tree) {
+        _trees.Trees.get(tree.parentId).then(function (parentTree) {
+            _contentItems2.default.get(parentTree.contentId).then(function (parentContentItem) {
+                _contentItems2.default.get(tree.contentId).then(function (contentItem) {
+                    console.log(treeId + ": contentItem is ", contentItem);
+                    console.log(treeId + ": parent contentItem URI is ", parentContentItem.uri);
+                    var uri = parentContentItem.uri + "/" + contentItem.getURIAddition();
+                    console.log(treeId + ": URI is ", uri);
+                    console.log(treeId + ": children are ", tree.children && Object.keys(tree.children));
+                    contentItem.set('uri', uri);
                     contentItem.set('initialParentTreeId', parentTree.id);
-                    contentItem.set('initialParentTreeContentURI', parentTree.uri);
+                    contentItem.set('initialParentTreeContentURI', parentContentItem.uri);
                     tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren);
                 });
             });
@@ -33442,17 +38682,78 @@ function establishURIForContentAndThenAllChildren(treeId) {
 }
 
 /***/ }),
-/* 177 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = calculateMillisecondsTilNextReview;
-//TODO: take into account if a user reviews the card to early - e.g. a user shouldn't be able to click "All the way baby" 5 times
-function calculateMinutesTilNextReview(dateProficiencyMap) {
-    var minutesTilNextReview;
-    const numInteractions = dateProficiencyMap.length;
 
-    const mostRecentInteraction = dateProficiencyMap[numInteractions - 1];
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+__webpack_require__(255);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+exports.default = {
+    props: ['value'],
+    template: __webpack_require__(243),
+    created: function created() {},
+    data: function data() {
+        return {};
+    },
+
+    computed: {
+        proficiencyIsUnknown: function proficiencyIsUnknown() {
+            return this.value == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+        },
+        proficiencyIsOne: function proficiencyIsOne() {
+            return this.value == _proficiencyEnum.PROFICIENCIES.ONE;
+        },
+        proficiencyIsTwo: function proficiencyIsTwo() {
+            return this.value == _proficiencyEnum.PROFICIENCIES.TWO;
+        },
+        proficiencyIsThree: function proficiencyIsThree() {
+            return this.value == _proficiencyEnum.PROFICIENCIES.THREE;
+        },
+        proficiencyIsFour: function proficiencyIsFour() {
+            return this.value == _proficiencyEnum.PROFICIENCIES.FOUR;
+        }
+    },
+    methods: {
+        setProficiencyToOne: function setProficiencyToOne() {
+            this.$emit('input', _proficiencyEnum.PROFICIENCIES.ONE);
+        },
+        setProficiencyToTwo: function setProficiencyToTwo() {
+            this.$emit('input', _proficiencyEnum.PROFICIENCIES.TWO);
+        },
+        setProficiencyToThree: function setProficiencyToThree() {
+            this.$emit('input', _proficiencyEnum.PROFICIENCIES.THREE);
+        },
+        setProficiencyToFour: function setProficiencyToFour() {
+            this.$emit('input', _proficiencyEnum.PROFICIENCIES.FOUR);
+        }
+    }
+};
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.calculateMillisecondsTilNextReview = calculateMillisecondsTilNextReview;
+//TODO: take into account if a user reviews the card to early - e.g. a user shouldn't be able to click "All the way baby" 5 times
+function calculateMinutesTilNextReview(interactionsList) {
+    var minutesTilNextReview;
+    var numInteractions = interactionsList.length;
+
+    var mostRecentInteraction = interactionsList[numInteractions - 1];
     switch (getProficiencyCategory(mostRecentInteraction.proficiency)) {
         case USER_SUCKS:
             minutesTilNextReview = 2;
@@ -33465,9 +38766,9 @@ function calculateMinutesTilNextReview(dateProficiencyMap) {
             break;
         case DAYYYAAAMN:
             minutesTilNextReview = 60 * 24; // 1 day
-            for (let i = numInteractions - 1 - 1; i > 0; i--) {
+            for (var i = numInteractions - 1 - 1; i > 0; i--) {
                 // for every DAYYYAAAMN in a row the user got, multiply the time til next review by 5
-                var interaction = dateProficiencyMap[i];
+                var interaction = interactionsList[i];
                 var proficiencyCategory = getProficiencyCategory(interaction.proficiency);
                 if (proficiencyCategory === DAYYYAAAMN) {
                     minutesTilNextReview *= 5; //hot diggity
@@ -33478,13 +38779,13 @@ function calculateMinutesTilNextReview(dateProficiencyMap) {
     }
     return minutesTilNextReview;
 }
-function calculateMillisecondsTilNextReview(dateProficiencyMap) {
-    return calculateMinutesTilNextReview(dateProficiencyMap) * 60 * 1000;
+function calculateMillisecondsTilNextReview(interactionsList) {
+    return calculateMinutesTilNextReview(interactionsList) * 60 * 1000;
 }
-const USER_SUCKS = 1;
-const USER_OK = 2;
-const USERS_AIGHT = 3;
-const DAYYYAAAMN = 4;
+var USER_SUCKS = 1;
+var USER_OK = 2;
+var USERS_AIGHT = 3;
+var DAYYYAAAMN = 4;
 
 function getProficiencyCategory(proficiency) {
     //0 to 32
@@ -33506,19 +38807,29 @@ function getProficiencyCategory(proficiency) {
 }
 
 /***/ }),
-/* 178 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_user__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__objects_users__ = __webpack_require__(23);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
+var _user = __webpack_require__(8);
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(222), // '<div> {{movie}} this is the tree template</div>',
-    created() {
+var _user2 = _interopRequireDefault(_user);
+
+var _users = __webpack_require__(28);
+
+var _users2 = _interopRequireDefault(_users);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    template: __webpack_require__(244), // '<div> {{movie}} this is the tree template</div>',
+    created: function created() {
         var self = this;
 
         this.loggedIn = false;
@@ -33526,76 +38837,99 @@ function getProficiencyCategory(proficiency) {
         this.itemReviewTimeMap = {};
         this.content = {};
         this.items = {};
-        PubSub.subscribe('login', () => {
+        PubSub.subscribe('login', function () {
             self.loggedIn = true;
-            __WEBPACK_IMPORTED_MODULE_1__objects_users__["a" /* default */].get(__WEBPACK_IMPORTED_MODULE_0__objects_user__["a" /* default */].getId()).then(user => {
+            _users2.default.get(_user2.default.getId()).then(function (user) {
                 self.items = user.items;
             });
         });
         this.num = 5;
     },
-    data() {
+    data: function data() {
         return {
             num: 5,
             loggedIn: this.loggedIn,
             items: this.items
         };
     },
+
     computed: {
-        numItemsToReview() {
+        numItemsToReview: function numItemsToReview() {
             return Object.keys(this.items).length;
         }
     }
-});
+};
 
 /***/ }),
-/* 179 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 //temporary hacky solution for controller
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(223),
-    created() {},
-    data() {
+exports.default = {
+    template: __webpack_require__(245),
+    created: function created() {},
+    data: function data() {
         return {};
     },
+
     methods: {
-        activateLasso() {
+        activateLasso: function activateLasso() {
             lasso.activate();
         },
-        deactivateLasso() {
+        deactivateLasso: function deactivateLasso() {
             lasso.deactivate();
         }
     }
-});
+};
 
 /***/ }),
-/* 180 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__objects_trees__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__treesGraph__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects_fact__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__objects_heading__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_filters__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects_skill__ = __webpack_require__(22);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
+var _methods;
 
+var _trees = __webpack_require__(2);
 
+var _knawledgeMap = __webpack_require__(18);
 
+var _fact = __webpack_require__(25);
 
+var _contentItems = __webpack_require__(4);
 
+var _contentItems2 = _interopRequireDefault(_contentItems);
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    template: __webpack_require__(224), // '<div> {{movie}} this is the tree template</div>',
+var _heading = __webpack_require__(26);
+
+var _filters = __webpack_require__(40);
+
+var _skill = __webpack_require__(27);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+__webpack_require__(257);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+exports.default = {
+    template: __webpack_require__(248), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
-    created() {
+    created: function created() {
         var me = this;
 
         this.editing = false;
@@ -33604,32 +38938,32 @@ function getProficiencyCategory(proficiency) {
         this.fact = {};
         this.content = {};
         this.nodeBeingDragged = false;
-        __WEBPACK_IMPORTED_MODULE_0__objects_trees__["a" /* Trees */].get(this.id).then(tree => {
+        _trees.Trees.get(this.id).then(function (tree) {
             me.tree = tree;
-            __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__["a" /* default */].get(tree.contentId).then(content => {
+            _contentItems2.default.get(tree.contentId).then(function (content) {
                 me.content = content;
-                console.log('content uri in tree.js is', content.uri
+                console.log('content uri in tree.js is', content.uri);
                 // console.log('this.content in tree.js is ', me.content)
-                );me.startTimer();
+                me.startTimer();
             });
-        }
+        });
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
-        );PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
+        PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
             if (data.oldNode != me.id) return;
 
             //get reference to content, because by the time
-            const content = me.content;
+            var content = me.content;
             content.saveTimer();
-        }
+        });
         //todo replace with vuex
-        );PubSub.subscribe('canvas.startDraggingNode', function () {
+        PubSub.subscribe('canvas.startDraggingNode', function () {
             window.draggingNode = true;
         });
         PubSub.subscribe('canvas.stopDraggingNode', function () {
             window.draggingNode = false;
         });
     },
-    data() {
+    data: function data() {
         return {
             tree: this.tree,
             content: this.content,
@@ -33638,157 +38972,237 @@ function getProficiencyCategory(proficiency) {
             draggingNode: window.draggingNode
         };
     },
+
     computed: {
-        typeIsHeading() {
+        typeIsHeading: function typeIsHeading() {
             return this.tree.contentType == 'heading';
         },
-        typeIsFact() {
+        typeIsFact: function typeIsFact() {
             return this.tree.contentType == 'fact';
         },
-        typeIsSkill() {
+        typeIsSkill: function typeIsSkill() {
             return this.tree.contentType == 'skill';
         },
-        styleObject() {
-            const styles = {};
-            styles['background-color'] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["c" /* proficiencyToColor */])(this.content.proficiency);
+        styleObject: function styleObject() {
+            var styles = {};
+            styles['background-color'] = (0, _knawledgeMap.proficiencyToColor)(this.content.proficiency);
             return styles;
         },
-        timerMouseOverMessage() {
-            return "You have spent " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__core_filters__["a" /* secondsToPretty */])(this.content.timer) + "studying this item";
+        timerMouseOverMessage: function timerMouseOverMessage() {
+            return "You have spent " + (0, _filters.secondsToPretty)(this.content.timer) + "studying this item";
         }
     },
-    methods: {
+    methods: (_methods = {
         //user methods
-        startTimer() {
+        startTimer: function startTimer() {
             this.content.startTimer();
         },
-        saveTimer() {
+        saveTimer: function saveTimer() {
             this.content.saveTimer();
         },
-        toggleEditing() {
+        toggleEditing: function toggleEditing() {
             this.editing = !this.editing;
         },
-        toggleAddChild() {
+        toggleAddChild: function toggleAddChild() {
             this.addingChild = !this.addingChild;
         },
-        setProficiencyToOne() {
-            this.content.setProficiency(0);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
+        syncGraphWithNode: function syncGraphWithNode() {
+            this.content.setProficiency(this.content.proficiency); // << it is necessary to call this method . bc we have to set userProficiecnyMap
+            (0, _knawledgeMap.syncGraphWithNode)(this.tree.id);
         },
-        setProficiencyToTwo() {
-            this.content.setProficiency(33);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
+        setProficiencyToOne: function setProficiencyToOne() {
+            this.content.setProficiency(_proficiencyEnum.PROFICIENCIES.ONE);
         },
-        setProficiencyToThree() {
-            this.content.setProficiency(66);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
+        setProficiencyToTwo: function setProficiencyToTwo() {
+            this.content.setProficiency(_proficiencyEnum.PROFICIENCIES.TWO);
         },
-        setProficiencyToFour() {
-            this.content.setProficiency(100);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["a" /* syncGraphWithNode */])(this.tree.id);
+        setProficiencyToThree: function setProficiencyToThree() {
+            this.content.setProficiency(_proficiencyEnum.PROFICIENCIES.THREE);
         },
-        toggleAddChild() {
-            this.addingChild = !this.addingChild;
-        },
-        //global methods
-        changeContent() {
-            switch (this.tree.contentType) {
-                case 'fact':
-                    var fact = new __WEBPACK_IMPORTED_MODULE_2__objects_fact__["a" /* Fact */]({ question: this.content.question, answer: this.content.answer });
-                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__["a" /* default */].create(fact);
-                    break;
-                case 'heading':
-                    const heading = new __WEBPACK_IMPORTED_MODULE_4__objects_heading__["a" /* Heading */]({ title: this.content.title });
-                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__["a" /* default */].create(heading);
-                    break;
-                case 'skill':
-                    const skill = new __WEBPACK_IMPORTED_MODULE_6__objects_skill__["a" /* Skill */]({ title: this.content.title });
-                    this.content = __WEBPACK_IMPORTED_MODULE_3__objects_contentItems__["a" /* default */].create(skill);
-                    break;
-            }
-            this.content.addTree(this.id);
-            this.tree.changeContent(this.content.id, this.tree.contentType);
-
-            this.toggleEditing();
-        },
-        unlinkFromParent() {
-            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")) {
-                this.tree.unlinkFromParent();
-            }
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__treesGraph__["d" /* removeTreeFromGraph */])(this.id);
+        setProficiencyToFour: function setProficiencyToFour() {
+            this.content.setProficiency(_proficiencyEnum.PROFICIENCIES.FOUR);
         }
-    }
-});
+    }, _defineProperty(_methods, 'toggleAddChild', function toggleAddChild() {
+        this.addingChild = !this.addingChild;
+    }), _defineProperty(_methods, 'changeContent', function changeContent() {
+        switch (this.tree.contentType) {
+            case 'fact':
+                var fact = new _fact.Fact({ question: this.content.question, answer: this.content.answer });
+                this.content = _contentItems2.default.create(fact);
+                break;
+            case 'heading':
+                var heading = new _heading.Heading({ title: this.content.title });
+                this.content = _contentItems2.default.create(heading);
+                break;
+            case 'skill':
+                var skill = new _skill.Skill({ title: this.content.title });
+                this.content = _contentItems2.default.create(skill);
+                break;
+        }
+        this.content.addTree(this.id);
+        this.tree.changeContent(this.content.id, this.tree.contentType);
+
+        this.toggleEditing();
+    }), _defineProperty(_methods, 'unlinkFromParent', function unlinkFromParent() {
+        if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")) {
+            this.tree.unlinkFromParent();
+        }
+        (0, _knawledgeMap.removeTreeFromGraph)(this.id);
+    }), _methods)
+};
 
 /***/ }),
-/* 181 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(15);
 
 
+__webpack_require__(176);
 
+__webpack_require__(40);
 
+__webpack_require__(177);
 
-var vm = new __WEBPACK_IMPORTED_MODULE_4_vue__["a" /* default */]({
+__webpack_require__(178);
+
+var _treeReview = __webpack_require__(38);
+
+var _treeReview2 = _interopRequireDefault(_treeReview);
+
+var _contentList = __webpack_require__(36);
+
+var _contentList2 = _interopRequireDefault(_contentList);
+
+var _treeReviewContainer = __webpack_require__(39);
+
+var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
+
+var _exerciseCreatorContainer = __webpack_require__(37);
+
+var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
+
+var _knawledgeMap = __webpack_require__(18);
+
+var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
+
+var _vue = __webpack_require__(19);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _vueRouter = __webpack_require__(179);
+
+var _vueRouter2 = _interopRequireDefault(_vueRouter);
+
+var _vuex = __webpack_require__(180);
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.use(_vuex2.default);
+_vue2.default.use(_vueRouter2.default);
+var store = new _vuex2.default.Store({
+    state: {
+        count: 0
+    }
+});
+// 1. Define route components.
+// These can be imported from other files
+var Foo = { template: '<div>foo</div>' };
+var Bar = { template: '<div>bar</div>'
+
+    // 2. Define some routes
+    // Each route should map to a component. The "component" can
+    // either be an actual component constructor created via
+    // `Vue.extend()`, or just a component options object.
+    // We'll talk about nested routes later.
+};var routes = [{ path: '/foo', component: Foo }, { path: '/bar', component: Bar }, { path: '/study/:leafId', name: 'study', component: _treeReviewContainer2.default, props: true }, { path: '/create', name: 'create', component: _exerciseCreatorContainer2.default, props: true }, { path: '/contentList', name: 'contentList', component: _contentList2.default, props: true }, { path: '/:treeId', component: _knawledgeMap2.default, props: true }, { path: '/', component: _knawledgeMap2.default, props: true }];
+
+// 3. Create the router instance and pass the `routes` option
+// You can pass in additional options here, but let's
+// keep it simple for now.
+var router = new _vueRouter2.default({
+    routes: routes // short for `routes: routes`
+});
+
+var vm = new _vue2.default({
     el: '#branches-app',
-    created() {
+    created: function created() {
+        var _this = this;
 
-        PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
-            this.goToExerciseCreator();
+        PubSub.subscribe('goToState.exerciseCreator', function (eventName, data) {
+            _this.goToExerciseCreator();
         });
-        PubSub.subscribe('goToState.home', (eventName, data) => {
-            this.goToHome();
+        PubSub.subscribe('goToState.treeReview', function (eventName, treeId) {
+            _this.goToTreeReview();
         });
+        PubSub.subscribe('goToState.home', function (eventName, data) {
+            _this.goToHome();
+        });
+        console.log('THIS APP is', this);
+        // router.go('/83cbe6ea3fa874449982b645f04d14a1')
     },
-    data() {
+    data: function data() {
         return {
-            state: 'home'
+            state: 'none',
+            routing: true
         };
     },
+
     computed: {
-        home() {
+        home: function home() {
             return this.state == 'home';
         },
-        exercisecreator() {
-            return this.state == 'exercisecreator';
+        exerciseCreator: function exerciseCreator() {
+            return this.state == 'exerciseCreator';
+        },
+        treeReview: function treeReview() {
+            return this.state == 'treeReview';
         }
     },
     methods: {
-        goToExerciseCreator() {
-            this.state = 'exercisecreator';
-        },
-        goToHome() {
-            window.location = window.location; //refresh the page lol
+        goToHome: function goToHome() {
+            window.location = window.location; //refresh the page lol - for some reason graph seems to malfunction when not doing this
             this.state = 'home';
+        },
+        goToExerciseCreator: function goToExerciseCreator() {
+            this.state = 'exerciseCreator';
+        },
+        goToTreeReview: function goToTreeReview() {
+            this.state = 'treeReview';
         }
-    }
+    },
+    store: store,
+    router: router
 });
 
 /***/ }),
-/* 182 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-const ENV = 'dev';
 
-/* harmony default export */ __webpack_exports__["a"] = (ENV);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ENV = 'dev';
+
+exports.default = ENV;
 
 /***/ }),
-/* 183 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-const Globals = {
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var Globals = exports.Globals = {
     currentTreeSelected: null,
-    existingColor: 'brown',
-    newColor: 'lightgreen',
     colors: {
         proficiency_4: 'aqua',
         proficiency_3: 'lawngreen',
@@ -33797,66 +39211,39 @@ const Globals = {
         proficiency_unknown: 'gray'
     }
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = Globals;
-
 
 /***/ }),
-/* 184 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_md5___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_md5__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentItem__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__exercise__ = __webpack_require__(19);
 
 
-
-
-
-class ExerciseQA extends __WEBPACK_IMPORTED_MODULE_3__exercise__["a" /* default */] {
-    constructor({ contentItemIds, question, answer }) {
-        super({ contentItemIds });
-        this.type = 'QA';
-
-        //question and answer can both be user generated HTML that can include image links to imgur - or I guess firebase stored images too
-        this.question = question;
-        this.answer = answer;
-        this.id = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify({ question, answer }));
-        super.init();
-    }
-
-    getDBRepresentation() {
-        var baseRep = super.getDBRepresentation();
-
-        return __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default()(baseRep, {
-            id: this.id,
-            question: this.question,
-            answer: this.answer,
-            type: this.type
-        });
-    }
-
-    static create({ contentItemIds, question, answer }) {
-        const exerciseQA = new ExerciseQA({ contentItemIds, question, answer });
-        return super.create(exerciseQA);
-    }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ExerciseQA;
-
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {};
 
 /***/ }),
-/* 185 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* unused harmony default export */ var _unused_webpack_default_export = ({});
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    TREE_IDS: {
+        EVERYDAY_WORDS: 'd739bbe3d09aa564f92d69e1ef3093f5',
+        AMAR: '83cbe6ea3fa874449982b645f04d14a1',
+        FIRST_PERSON_PLURAL: 'efb44586e0ffc019548f2e4dc73e9236'
+    }
+};
 
 /***/ }),
-/* 186 */
+/* 199 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -33958,7 +39345,91 @@ class ExerciseQA extends __WEBPACK_IMPORTED_MODULE_3__exercise__["a" /* default 
 
 
 /***/ }),
-/* 187 */
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n}\n.exercise-creator-breadcrumbs {\n  width: 100%;\n}\n.exercise-creator {\n  background-color: rgba(135, 206, 250, 0.45);\n  height: 100%;\n}\n.exercise-creator-header {\n  display: flex;\n  flex-direction: row;\n  padding: 4px 8px 4px 8px;\n  background-color: skyblue;\n}\n.exercise-creator-body {\n  display: flex;\n  flex-direction: column;\n}\n.exercise-creator-content-list {\n  flex: 30;\n}\n.exercise-creator-new-exercise {\n  flex: 30;\n}\n.exercise-creator-exercise-list {\n  flex: 30;\n}\n.exercise-creator-goToHome {\n  cursor: pointer;\n  margin-right: 24px;\n}\n.exercise-creator-header-left {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n.exercise-creator-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.exercise-creator-create-button-container {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, "html,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n.sigma-tooltip {\n  max-width: 240px;\n  max-height: 280px;\n  background-color: #f9f7ed;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: lightpink;\n}\n.tree-proficiency-two {\n  background-color: yellow;\n}\n.tree-proficiency-three {\n  background-color: lawngreen;\n}\n.tree-proficiency-four {\n  background-color: aqua;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: lightpink;\n}\n.tree-proficiency-two-text {\n  color: yellow;\n}\n.tree-proficiency-three-text {\n  color: lawngreen;\n}\n.tree-proficiency-four-text {\n  color: aqua;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: lightpink;\n}\n.proficiency-selector-item-two {\n  background-color: yellow;\n}\n.proficiency-selector-item-three {\n  background-color: lawngreen;\n}\n.proficiency-selector-item-four {\n  background-color: aqua;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: lightpink;\n}\n.tree-proficiency-two {\n  background-color: yellow;\n}\n.tree-proficiency-three {\n  background-color: lawngreen;\n}\n.tree-proficiency-four {\n  background-color: aqua;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: lightpink;\n}\n.tree-proficiency-two-text {\n  color: yellow;\n}\n.tree-proficiency-three-text {\n  color: lawngreen;\n}\n.tree-proficiency-four-text {\n  color: aqua;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34060,7 +39531,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 188 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34093,13 +39564,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(37);
+var _subscribe = __webpack_require__(47);
 
-var _errors = __webpack_require__(24);
+var _errors = __webpack_require__(29);
 
-var _shared_promise = __webpack_require__(25);
+var _shared_promise = __webpack_require__(30);
 
-var _deep_copy = __webpack_require__(187);
+var _deep_copy = __webpack_require__(206);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34464,14 +39935,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 189 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(13);
+var firebase = __webpack_require__(16);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -34740,10 +40211,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 190 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -34774,7 +40245,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(13);
+            var firebase = __webpack_require__(16);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -35014,7 +40485,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 191 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35028,22 +40499,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(13);
+var _app = __webpack_require__(16);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(189);
+__webpack_require__(208);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(190);
-__webpack_require__(199);
+__webpack_require__(209);
+__webpack_require__(218);
 var AsyncStorage;
 
-__webpack_require__(192);
+__webpack_require__(211);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -35051,7 +40522,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 192 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35081,15 +40552,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(194);
+var _windowController = __webpack_require__(213);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(193);
+var _swController = __webpack_require__(212);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(13);
+var _app = __webpack_require__(16);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -35112,7 +40583,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 193 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35145,19 +40616,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(38);
+var _controllerInterface = __webpack_require__(48);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(16);
+var _errors = __webpack_require__(20);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(41);
+var _workerPageMessage = __webpack_require__(51);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(39);
+var _fcmDetails = __webpack_require__(49);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -35490,7 +40961,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 194 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35523,27 +40994,27 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(38);
+var _controllerInterface = __webpack_require__(48);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(16);
+var _errors = __webpack_require__(20);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(41);
+var _workerPageMessage = __webpack_require__(51);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(196);
+var _defaultSw = __webpack_require__(215);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(40);
+var _notificationPermission = __webpack_require__(50);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(37);
+var _subscribe = __webpack_require__(47);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35891,7 +41362,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 195 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35934,7 +41405,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 196 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35971,7 +41442,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 197 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36002,17 +41473,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(24);
+var _errors = __webpack_require__(29);
 
-var _errors2 = __webpack_require__(16);
+var _errors2 = __webpack_require__(20);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(195);
+var _arrayBufferToBase = __webpack_require__(214);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(39);
+var _fcmDetails = __webpack_require__(49);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -36393,7 +41864,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 198 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -36630,10 +42101,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(230).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(259).setImmediate))
 
 /***/ }),
-/* 199 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36648,17 +42119,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(29);
+var _string = __webpack_require__(34);
 
-var _taskenums = __webpack_require__(45);
+var _taskenums = __webpack_require__(55);
 
-var _xhriopool = __webpack_require__(211);
+var _xhriopool = __webpack_require__(230);
 
-var _reference = __webpack_require__(47);
+var _reference = __webpack_require__(57);
 
-var _service = __webpack_require__(212);
+var _service = __webpack_require__(231);
 
-var _app = __webpack_require__(13);
+var _app = __webpack_require__(16);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -36703,7 +42174,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 200 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36761,7 +42232,7 @@ function async(f) {
 
 
 /***/ }),
-/* 201 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36778,23 +42249,23 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(21);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(2);
+var _error2 = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(203);
+var _failrequest = __webpack_require__(222);
 
-var _location = __webpack_require__(18);
+var _location = __webpack_require__(22);
 
 var _promise_external = __webpack_require__(5);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(209);
+var _requestmap = __webpack_require__(228);
 
 var _type = __webpack_require__(1);
 
@@ -36943,7 +42414,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 202 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37075,7 +42546,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 203 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37134,7 +42605,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 204 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37215,7 +42686,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 205 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37271,7 +42742,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 206 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37331,7 +42802,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 207 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37371,19 +42842,19 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(27);
+var _array = __webpack_require__(32);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(202);
+var _backoff = __webpack_require__(221);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(7);
+var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
@@ -37395,11 +42866,11 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(30);
+var _url = __webpack_require__(35);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(46);
+var _xhrio = __webpack_require__(56);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -37604,7 +43075,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 208 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37651,7 +43122,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 209 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37683,11 +43154,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _object = __webpack_require__(7);
+var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(21);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -37746,7 +43217,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 210 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37778,11 +43249,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(7);
+var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
@@ -37794,7 +43265,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(46);
+var _xhrio = __webpack_require__(56);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -37945,7 +43416,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 211 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37977,7 +43448,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(210);
+var _xhrio_network = __webpack_require__(229);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38002,7 +43473,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 212 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38034,23 +43505,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(26);
+var _args = __webpack_require__(31);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(201);
+var _authwrapper = __webpack_require__(220);
 
-var _location = __webpack_require__(18);
+var _location = __webpack_require__(22);
 
 var _promise_external = __webpack_require__(5);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(207);
+var _request = __webpack_require__(226);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(47);
+var _reference = __webpack_require__(57);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -38193,7 +43664,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 213 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38228,25 +43699,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(45);
+var _taskenums = __webpack_require__(55);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(206);
+var _observer = __webpack_require__(225);
 
-var _tasksnapshot = __webpack_require__(214);
+var _tasksnapshot = __webpack_require__(233);
 
-var _args = __webpack_require__(26);
+var _args = __webpack_require__(31);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(27);
+var _array = __webpack_require__(32);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(200);
+var _async = __webpack_require__(219);
 
-var _error = __webpack_require__(2);
+var _error = __webpack_require__(3);
 
 var errors = _interopRequireWildcard(_error);
 
@@ -38254,7 +43725,7 @@ var _promise_external = __webpack_require__(5);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(44);
+var _requests = __webpack_require__(54);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -38836,7 +44307,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 214 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38888,87 +44359,97 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 215 */
+/* 234 */
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"item-list\">\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbs()}}</div>\r\n        <div class=\"contentList-item-id\">{{item.id}}</div>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
+module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.initialParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 216 */
+/* 235 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator></exercise-creator>\r\n</div>\r\n";
+module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 217 */
+/* 236 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <a class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n            <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n        </a>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-to-home></go-to-home>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\">id:{{window.exerciseToReplaceId}}<!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 218 */
+/* 237 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"new-exercise\">\r\n    What items does your exercise test?\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n</div>\r\n";
+module.exports = "<div class=\"new-exercise\">\r\n    What items does your exercise test? {{window.exerciseToReplaceId}} -- {{contentItemId}}\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 219 */
+/* 238 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
-/* 220 */
+/* 239 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">\r\n            Create Exercise\r\n            <i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>\r\n        </a>\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n\r\n";
+module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
-/* 221 */
+/* 240 */
+/***/ (function(module, exports) {
+
+module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n    <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
+
+/***/ }),
+/* 241 */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
+
+/***/ }),
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Skill: <input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
-/* 222 */
+/* 243 */
+/***/ (function(module, exports) {
+
+module.exports = "<span class=\"proficiency-selector\">\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click=\"setProficiencyToFour\"></span>\r\n</span>";
+
+/***/ }),
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
-/* 223 */
+/* 245 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
 
 /***/ }),
-/* 224 */
+/* 246 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <div class=\"tree-proficiency-values\">\r\n            <button class=\"tree-proficiency-values-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>\r\n            <button class=\"tree-proficiency-values-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>\r\n            <button class=\"tree-proficiency-values-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>\r\n            <button class=\"tree-proficiency-values-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-to-home></go-to-home>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                30m 5s\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 225 */
+/* 247 */
 /***/ (function(module, exports) {
 
-
-var invert = function(input) {
-      var output = {}
-
-      Object.keys(input).forEach(function(key) {
-        var value = input[key]
-        output[value] = output[value] || []
-        output[value].push(key)
-      })
-
-      return output
-    }
-
-module.exports = invert
-
+module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
 
 /***/ }),
-/* 226 */
+/* 248 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncGraphWithNode\" v-model=\"content.proficiency\"></proficiency-selector>\r\n        <!--<div class=\"tree-proficiency\">-->\r\n            <!--<button class=\"tree-proficiency-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>-->\r\n            <!--<button class=\"tree-proficiency-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>-->\r\n            <!--<button class=\"tree-proficiency-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>-->\r\n            <!--<button class=\"tree-proficiency-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>-->\r\n        <!--</div>-->\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
+
+/***/ }),
+/* 249 */
 /***/ (function(module, exports) {
 
 /*!
@@ -38995,240 +44476,240 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 227 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 48,
-	"./af.js": 48,
-	"./ar": 55,
-	"./ar-dz": 49,
-	"./ar-dz.js": 49,
-	"./ar-kw": 50,
-	"./ar-kw.js": 50,
-	"./ar-ly": 51,
-	"./ar-ly.js": 51,
-	"./ar-ma": 52,
-	"./ar-ma.js": 52,
-	"./ar-sa": 53,
-	"./ar-sa.js": 53,
-	"./ar-tn": 54,
-	"./ar-tn.js": 54,
-	"./ar.js": 55,
-	"./az": 56,
-	"./az.js": 56,
-	"./be": 57,
-	"./be.js": 57,
-	"./bg": 58,
-	"./bg.js": 58,
-	"./bn": 59,
-	"./bn.js": 59,
-	"./bo": 60,
-	"./bo.js": 60,
-	"./br": 61,
-	"./br.js": 61,
-	"./bs": 62,
-	"./bs.js": 62,
-	"./ca": 63,
-	"./ca.js": 63,
-	"./cs": 64,
-	"./cs.js": 64,
-	"./cv": 65,
-	"./cv.js": 65,
-	"./cy": 66,
-	"./cy.js": 66,
-	"./da": 67,
-	"./da.js": 67,
-	"./de": 70,
-	"./de-at": 68,
-	"./de-at.js": 68,
-	"./de-ch": 69,
-	"./de-ch.js": 69,
-	"./de.js": 70,
-	"./dv": 71,
-	"./dv.js": 71,
-	"./el": 72,
-	"./el.js": 72,
-	"./en-au": 73,
-	"./en-au.js": 73,
-	"./en-ca": 74,
-	"./en-ca.js": 74,
-	"./en-gb": 75,
-	"./en-gb.js": 75,
-	"./en-ie": 76,
-	"./en-ie.js": 76,
-	"./en-nz": 77,
-	"./en-nz.js": 77,
-	"./eo": 78,
-	"./eo.js": 78,
-	"./es": 80,
-	"./es-do": 79,
-	"./es-do.js": 79,
-	"./es.js": 80,
-	"./et": 81,
-	"./et.js": 81,
-	"./eu": 82,
-	"./eu.js": 82,
-	"./fa": 83,
-	"./fa.js": 83,
-	"./fi": 84,
-	"./fi.js": 84,
-	"./fo": 85,
-	"./fo.js": 85,
-	"./fr": 88,
-	"./fr-ca": 86,
-	"./fr-ca.js": 86,
-	"./fr-ch": 87,
-	"./fr-ch.js": 87,
-	"./fr.js": 88,
-	"./fy": 89,
-	"./fy.js": 89,
-	"./gd": 90,
-	"./gd.js": 90,
-	"./gl": 91,
-	"./gl.js": 91,
-	"./gom-latn": 92,
-	"./gom-latn.js": 92,
-	"./he": 93,
-	"./he.js": 93,
-	"./hi": 94,
-	"./hi.js": 94,
-	"./hr": 95,
-	"./hr.js": 95,
-	"./hu": 96,
-	"./hu.js": 96,
-	"./hy-am": 97,
-	"./hy-am.js": 97,
-	"./id": 98,
-	"./id.js": 98,
-	"./is": 99,
-	"./is.js": 99,
-	"./it": 100,
-	"./it.js": 100,
-	"./ja": 101,
-	"./ja.js": 101,
-	"./jv": 102,
-	"./jv.js": 102,
-	"./ka": 103,
-	"./ka.js": 103,
-	"./kk": 104,
-	"./kk.js": 104,
-	"./km": 105,
-	"./km.js": 105,
-	"./kn": 106,
-	"./kn.js": 106,
-	"./ko": 107,
-	"./ko.js": 107,
-	"./ky": 108,
-	"./ky.js": 108,
-	"./lb": 109,
-	"./lb.js": 109,
-	"./lo": 110,
-	"./lo.js": 110,
-	"./lt": 111,
-	"./lt.js": 111,
-	"./lv": 112,
-	"./lv.js": 112,
-	"./me": 113,
-	"./me.js": 113,
-	"./mi": 114,
-	"./mi.js": 114,
-	"./mk": 115,
-	"./mk.js": 115,
-	"./ml": 116,
-	"./ml.js": 116,
-	"./mr": 117,
-	"./mr.js": 117,
-	"./ms": 119,
-	"./ms-my": 118,
-	"./ms-my.js": 118,
-	"./ms.js": 119,
-	"./my": 120,
-	"./my.js": 120,
-	"./nb": 121,
-	"./nb.js": 121,
-	"./ne": 122,
-	"./ne.js": 122,
-	"./nl": 124,
-	"./nl-be": 123,
-	"./nl-be.js": 123,
-	"./nl.js": 124,
-	"./nn": 125,
-	"./nn.js": 125,
-	"./pa-in": 126,
-	"./pa-in.js": 126,
-	"./pl": 127,
-	"./pl.js": 127,
-	"./pt": 129,
-	"./pt-br": 128,
-	"./pt-br.js": 128,
-	"./pt.js": 129,
-	"./ro": 130,
-	"./ro.js": 130,
-	"./ru": 131,
-	"./ru.js": 131,
-	"./sd": 132,
-	"./sd.js": 132,
-	"./se": 133,
-	"./se.js": 133,
-	"./si": 134,
-	"./si.js": 134,
-	"./sk": 135,
-	"./sk.js": 135,
-	"./sl": 136,
-	"./sl.js": 136,
-	"./sq": 137,
-	"./sq.js": 137,
-	"./sr": 139,
-	"./sr-cyrl": 138,
-	"./sr-cyrl.js": 138,
-	"./sr.js": 139,
-	"./ss": 140,
-	"./ss.js": 140,
-	"./sv": 141,
-	"./sv.js": 141,
-	"./sw": 142,
-	"./sw.js": 142,
-	"./ta": 143,
-	"./ta.js": 143,
-	"./te": 144,
-	"./te.js": 144,
-	"./tet": 145,
-	"./tet.js": 145,
-	"./th": 146,
-	"./th.js": 146,
-	"./tl-ph": 147,
-	"./tl-ph.js": 147,
-	"./tlh": 148,
-	"./tlh.js": 148,
-	"./tr": 149,
-	"./tr.js": 149,
-	"./tzl": 150,
-	"./tzl.js": 150,
-	"./tzm": 152,
-	"./tzm-latn": 151,
-	"./tzm-latn.js": 151,
-	"./tzm.js": 152,
-	"./uk": 153,
-	"./uk.js": 153,
-	"./ur": 154,
-	"./ur.js": 154,
-	"./uz": 156,
-	"./uz-latn": 155,
-	"./uz-latn.js": 155,
-	"./uz.js": 156,
-	"./vi": 157,
-	"./vi.js": 157,
-	"./x-pseudo": 158,
-	"./x-pseudo.js": 158,
-	"./yo": 159,
-	"./yo.js": 159,
-	"./zh-cn": 160,
-	"./zh-cn.js": 160,
-	"./zh-hk": 161,
-	"./zh-hk.js": 161,
-	"./zh-tw": 162,
-	"./zh-tw.js": 162
+	"./af": 59,
+	"./af.js": 59,
+	"./ar": 66,
+	"./ar-dz": 60,
+	"./ar-dz.js": 60,
+	"./ar-kw": 61,
+	"./ar-kw.js": 61,
+	"./ar-ly": 62,
+	"./ar-ly.js": 62,
+	"./ar-ma": 63,
+	"./ar-ma.js": 63,
+	"./ar-sa": 64,
+	"./ar-sa.js": 64,
+	"./ar-tn": 65,
+	"./ar-tn.js": 65,
+	"./ar.js": 66,
+	"./az": 67,
+	"./az.js": 67,
+	"./be": 68,
+	"./be.js": 68,
+	"./bg": 69,
+	"./bg.js": 69,
+	"./bn": 70,
+	"./bn.js": 70,
+	"./bo": 71,
+	"./bo.js": 71,
+	"./br": 72,
+	"./br.js": 72,
+	"./bs": 73,
+	"./bs.js": 73,
+	"./ca": 74,
+	"./ca.js": 74,
+	"./cs": 75,
+	"./cs.js": 75,
+	"./cv": 76,
+	"./cv.js": 76,
+	"./cy": 77,
+	"./cy.js": 77,
+	"./da": 78,
+	"./da.js": 78,
+	"./de": 81,
+	"./de-at": 79,
+	"./de-at.js": 79,
+	"./de-ch": 80,
+	"./de-ch.js": 80,
+	"./de.js": 81,
+	"./dv": 82,
+	"./dv.js": 82,
+	"./el": 83,
+	"./el.js": 83,
+	"./en-au": 84,
+	"./en-au.js": 84,
+	"./en-ca": 85,
+	"./en-ca.js": 85,
+	"./en-gb": 86,
+	"./en-gb.js": 86,
+	"./en-ie": 87,
+	"./en-ie.js": 87,
+	"./en-nz": 88,
+	"./en-nz.js": 88,
+	"./eo": 89,
+	"./eo.js": 89,
+	"./es": 91,
+	"./es-do": 90,
+	"./es-do.js": 90,
+	"./es.js": 91,
+	"./et": 92,
+	"./et.js": 92,
+	"./eu": 93,
+	"./eu.js": 93,
+	"./fa": 94,
+	"./fa.js": 94,
+	"./fi": 95,
+	"./fi.js": 95,
+	"./fo": 96,
+	"./fo.js": 96,
+	"./fr": 99,
+	"./fr-ca": 97,
+	"./fr-ca.js": 97,
+	"./fr-ch": 98,
+	"./fr-ch.js": 98,
+	"./fr.js": 99,
+	"./fy": 100,
+	"./fy.js": 100,
+	"./gd": 101,
+	"./gd.js": 101,
+	"./gl": 102,
+	"./gl.js": 102,
+	"./gom-latn": 103,
+	"./gom-latn.js": 103,
+	"./he": 104,
+	"./he.js": 104,
+	"./hi": 105,
+	"./hi.js": 105,
+	"./hr": 106,
+	"./hr.js": 106,
+	"./hu": 107,
+	"./hu.js": 107,
+	"./hy-am": 108,
+	"./hy-am.js": 108,
+	"./id": 109,
+	"./id.js": 109,
+	"./is": 110,
+	"./is.js": 110,
+	"./it": 111,
+	"./it.js": 111,
+	"./ja": 112,
+	"./ja.js": 112,
+	"./jv": 113,
+	"./jv.js": 113,
+	"./ka": 114,
+	"./ka.js": 114,
+	"./kk": 115,
+	"./kk.js": 115,
+	"./km": 116,
+	"./km.js": 116,
+	"./kn": 117,
+	"./kn.js": 117,
+	"./ko": 118,
+	"./ko.js": 118,
+	"./ky": 119,
+	"./ky.js": 119,
+	"./lb": 120,
+	"./lb.js": 120,
+	"./lo": 121,
+	"./lo.js": 121,
+	"./lt": 122,
+	"./lt.js": 122,
+	"./lv": 123,
+	"./lv.js": 123,
+	"./me": 124,
+	"./me.js": 124,
+	"./mi": 125,
+	"./mi.js": 125,
+	"./mk": 126,
+	"./mk.js": 126,
+	"./ml": 127,
+	"./ml.js": 127,
+	"./mr": 128,
+	"./mr.js": 128,
+	"./ms": 130,
+	"./ms-my": 129,
+	"./ms-my.js": 129,
+	"./ms.js": 130,
+	"./my": 131,
+	"./my.js": 131,
+	"./nb": 132,
+	"./nb.js": 132,
+	"./ne": 133,
+	"./ne.js": 133,
+	"./nl": 135,
+	"./nl-be": 134,
+	"./nl-be.js": 134,
+	"./nl.js": 135,
+	"./nn": 136,
+	"./nn.js": 136,
+	"./pa-in": 137,
+	"./pa-in.js": 137,
+	"./pl": 138,
+	"./pl.js": 138,
+	"./pt": 140,
+	"./pt-br": 139,
+	"./pt-br.js": 139,
+	"./pt.js": 140,
+	"./ro": 141,
+	"./ro.js": 141,
+	"./ru": 142,
+	"./ru.js": 142,
+	"./sd": 143,
+	"./sd.js": 143,
+	"./se": 144,
+	"./se.js": 144,
+	"./si": 145,
+	"./si.js": 145,
+	"./sk": 146,
+	"./sk.js": 146,
+	"./sl": 147,
+	"./sl.js": 147,
+	"./sq": 148,
+	"./sq.js": 148,
+	"./sr": 150,
+	"./sr-cyrl": 149,
+	"./sr-cyrl.js": 149,
+	"./sr.js": 150,
+	"./ss": 151,
+	"./ss.js": 151,
+	"./sv": 152,
+	"./sv.js": 152,
+	"./sw": 153,
+	"./sw.js": 153,
+	"./ta": 154,
+	"./ta.js": 154,
+	"./te": 155,
+	"./te.js": 155,
+	"./tet": 156,
+	"./tet.js": 156,
+	"./th": 157,
+	"./th.js": 157,
+	"./tl-ph": 158,
+	"./tl-ph.js": 158,
+	"./tlh": 159,
+	"./tlh.js": 159,
+	"./tr": 160,
+	"./tr.js": 160,
+	"./tzl": 161,
+	"./tzl.js": 161,
+	"./tzm": 163,
+	"./tzm-latn": 162,
+	"./tzm-latn.js": 162,
+	"./tzm.js": 163,
+	"./uk": 164,
+	"./uk.js": 164,
+	"./ur": 165,
+	"./ur.js": 165,
+	"./uz": 167,
+	"./uz-latn": 166,
+	"./uz-latn.js": 166,
+	"./uz.js": 167,
+	"./vi": 168,
+	"./vi.js": 168,
+	"./x-pseudo": 169,
+	"./x-pseudo.js": 169,
+	"./yo": 170,
+	"./yo.js": 170,
+	"./zh-cn": 171,
+	"./zh-cn.js": 171,
+	"./zh-hk": 172,
+	"./zh-hk.js": 172,
+	"./zh-tw": 173,
+	"./zh-tw.js": 173
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -39244,10 +44725,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 227;
+webpackContext.id = 250;
 
 /***/ }),
-/* 228 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -39437,173 +44918,291 @@ webpackContext.id = 227;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(163)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(23)))
 
 /***/ }),
-/* 229 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict'
+// style-loader: Adds some css to the DOM by adding a <style> tag
 
-function injectStyleTag (document, fileName, cb) {
-  var style = document.getElementById(fileName)
+// load the styles
+var content = __webpack_require__(200);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
 
-  if (style) {
-    cb(style)
-  } else {
-    var head = document.getElementsByTagName('head')[0]
-
-    style = document.createElement('style')
-    if (fileName != null) style.id = fileName
-    cb(style)
-    head.appendChild(style)
-  }
-
-  return style
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(13)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./exercise-creator.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./exercise-creator.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
 }
-
-module.exports = function (css, customDocument, fileName) {
-  var doc = customDocument || document
-  /* istanbul ignore if: not supported by Electron */
-  if (doc.createStyleSheet) {
-    var sheet = doc.createStyleSheet()
-    sheet.cssText = css
-    return sheet.ownerNode
-  } else {
-    return injectStyleTag(doc, fileName, function (style) {
-      /* istanbul ignore if: not supported by Electron */
-      if (style.styleSheet) {
-        style.styleSheet.cssText = css
-      } else {
-        style.innerHTML = css
-      }
-    })
-  }
-}
-
-module.exports.byUrl = function (url) {
-  /* istanbul ignore if: not supported by Electron */
-  if (document.createStyleSheet) {
-    return document.createStyleSheet(url).ownerNode
-  } else {
-    var head = document.getElementsByTagName('head')[0]
-    var link = document.createElement('link')
-
-    link.rel = 'stylesheet'
-    link.href = url
-
-    head.appendChild(link)
-    return link
-  }
-}
-
-},{}],2:[function(require,module,exports){
-require('../styles/snack.min.css');
-
-/**
- * Returns true content it is a DOM element
- * @param {*} content
- * @returns {boolean}
- */
-var isElement = function (content) {
-    return !!(
-        typeof HTMLElement === 'object' ? content instanceof HTMLElement : content &&
-        typeof content === 'object' && content !== null &&
-        content.nodeType === 1 && typeof content.nodeName === 'string'
-    );
-};
-
-/**
- * @class
- * @constructor
- *
- * @property {object} options
- * @property {Element} [options.domParent=document.body]
- */
-function Snack(options) {
-
-    options = options || {};
-
-    this.domParent = options.domParent || document.body;
-
-    this.container = document.createElement('div');
-    this.element = document.createElement('div');
-
-    this.container.classList.add('snack-container');
-    this.element.classList.add('snack');
-
-    this.container.appendChild(this.element);
-    this.domParent.appendChild(this.container);
-
-}
-// constructor
-Snack.prototype.constructor = Snack;
-module.exports = Snack;
-
-Object.defineProperties(Snack, {
-    visible: {
-        get: function () {
-            return !!this._isVisible;
-        },
-        set: function (val) {
-            this[val ? 'show' : 'hide']();
-        }
-    }
-});
-
-/**
- * Toggles show/hide
- */
-Snack.prototype.toggle = function () {
-    this.visible = !this.visible;
-};
-
-/**
- * Show the snack
- *
- * @param {string} content
- * @param {number} [timeout]
- */
-Snack.prototype.show = function (content, timeout) {
-    if (isElement(content)) {
-        this.element.innerHTML = '';
-        this.element.appendChild(content);
-    } else {
-        this.element.innerHTML = content;
-    }
-    this.element.classList.add('snack-opened');
-    this._isVisible = true;
-    if (timeout) {
-        setTimeout(this.hide.bind(this), timeout);
-    }
-};
-/**
- * Hide the snack
- */
-Snack.prototype.hide = function () {
-    this.element.classList.remove('snack-opened');
-    this._isVisible = false;
-};
-/**
- * destroy
- */
-Snack.prototype.destroy = function () {
-    this.domParent.removeChild(this.container);
-};
-
-
-},{"../styles/snack.min.css":3}],3:[function(require,module,exports){
-var inject = require('./../node_modules/cssify');
-var css = ".snack-container{position:fixed;left:20px;bottom:0;z-index:99999}.snack{overflow:hidden;clear:both;min-width:288px;max-width:568px;cursor:pointer;opacity:0;background-color:#323232;color:#fff;font-size:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);height:0;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:translateY(200%);transform:translateY(200%)}.snack.snack-opened{height:auto;opacity:1;padding:14px 15px;margin-bottom:20px;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:none;transform:none}@media (max-width:767px){.snack-container{left:0!important;right:0;width:100%}.snack-container .snack{min-width:100%}.snack-container .snack.snack-opened{border-radius:0;margin-bottom:0}}\n";
-inject(css, undefined, '_19gnn7m');
-module.exports = css;
-
-},{"./../node_modules/cssify":1}]},{},[2])(2)
-});
 
 /***/ }),
-/* 230 */
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(201);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(13)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goToHome.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goToHome.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(202);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(13)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./main.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./main.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(203);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(13)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./proficiency-selector.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./proficiency-selector.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(204);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(13)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./treeReview.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./treeReview.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(205);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(13)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./tree.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./tree.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -39656,7 +45255,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(228);
+__webpack_require__(251);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
