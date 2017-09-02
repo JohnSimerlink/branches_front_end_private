@@ -5,9 +5,9 @@
         <!--<span>Id: {{item.id}}</span>-->
         <!--<span> list item</span>-->
         <div class="contentList-item-breadcrumb">{{item.getBreadCrumbsString()}}</div>
-        <div class="contentList-item-breadcrumb">{{item.uri}}</div>
-        <div class="contentList-item-breadcrumb">{{item.initialParentTreeContentURI}}</div>
-        <div class="contentList-item-id">{{item.id}}</div>
+        <div class="contentList-item-breadcrumb">URI: {{item.uri}}</div>
+        <div class="contentList-item-breadcrumb">INITIAL PARENT TREE CONTENT URI:{{item.initialParentTreeContentURI}}</div>
+        <div class="contentList-item-id"> ID: {{item.id}}</div>
         <button v-on:click="remove(item)">Remove</button>
         <!--<span>uri: {{item.uri}}</span>-->
         <!--<span v-if="item.type=='fact'" class="item-fact"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->

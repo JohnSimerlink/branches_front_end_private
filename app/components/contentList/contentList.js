@@ -9,6 +9,10 @@ export default {
         ContentItems.getAllExceptForHeadings().then(items => {
             console.log('all items returned are ', items)
             me.items = items
+            Object.keys(me.items).forEach(key => {
+                let item = me.items[key]
+                console.log("item Id" + item.id + " ---- initialParentTreeContentURI: " + item.initialParentTreeContentURI + "---- item is", item)
+            })
         })
         this.num = 5
     },

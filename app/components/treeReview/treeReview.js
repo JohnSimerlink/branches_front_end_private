@@ -41,7 +41,9 @@ export default {
         initReview(){
             this.flipped = false
             this.exercise = {}
+            this.items = []
             const me = this
+            this.loading = true;
             Trees.get(me.leafId).then(tree => {
                 me.tree = tree
                 console.log('tree received in treeReview.js is', tree)
@@ -80,6 +82,7 @@ export default {
                         // item.title = item.id
                         me.items.push(item)
                         console.log('item id is', item.id)
+                        me.loading = false
                     })
                 })
             })
