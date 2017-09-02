@@ -1,10 +1,14 @@
 <ul class="item-list">
+    {{numItems}}
     <li v-for="item in items">
         <!--<span>Type: {{item.type}}</span>-->
         <!--<span>Id: {{item.id}}</span>-->
         <!--<span> list item</span>-->
         <div class="contentList-item-breadcrumb">{{item.getBreadCrumbsString()}}</div>
+        <div class="contentList-item-breadcrumb">{{item.uri}}</div>
+        <div class="contentList-item-breadcrumb">{{item.initialParentTreeContentURI}}</div>
         <div class="contentList-item-id">{{item.id}}</div>
+        <button v-on:click="remove(item)">Remove</button>
         <!--<span>uri: {{item.uri}}</span>-->
         <!--<span v-if="item.type=='fact'" class="item-fact"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->
         <!--<span v-if="item.type=='heading'" class="item-heading"><span>HEADING: {{item.title}}</span></span>-->

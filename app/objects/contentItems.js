@@ -5,6 +5,10 @@ import {Heading} from "./heading";
 
 const factsAndSkills = {}
 const content = {}
+if (typeof window !== 'undefined') {
+    window.content = content
+}
+
 function createContentItemFromData(contentData, contentDatumKey){
     let contentItem
 
@@ -43,8 +47,13 @@ export default class ContentItems {
             } else {
                 firebase.database().ref('content/' + contentId).once("value", function(snapshot){
                     const contentData = snapshot.val()
-                    let contentItem = createContentItemFromData(contentData)
-                    resolve(contentItem)
+                    if (!contentData){
+                        console.log("NO CONTENTDATA FOUND FOR", contentId)
+                        reject("ERROR!: no data found found for contentid of ", contentId)
+                    } else {
+                        let contentItem = createContentItemFromData(contentData)
+                        resolve(contentItem)
+                    }
                 }, reject)
             }
         })
@@ -110,8 +119,11 @@ export default class ContentItems {
         firebase.database().ref().update(updates);
         return contentItem;
     }
-}
-
-if (typeof window !== 'undefined') {
-    window.ContentItems = ContentItems
+    static remove(contentItemId){
+        console.log('remove contentItemId called', contentItemId)
+        console.log("num items is", Object.keys(content).length)
+        delete content[contentItemId]
+        console.log("num items is now", Object.keys(content).length)
+        firebase.database().ref('content/').child(contentItemId).remove() //.once("value", function(snapshot){
+    }
 }

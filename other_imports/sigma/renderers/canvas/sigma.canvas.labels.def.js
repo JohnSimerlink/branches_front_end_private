@@ -95,6 +95,7 @@
         var rowHeight = sigma.settings.defaultLabelSize * 1.75
     document.addEventListener('DOMContentLoaded', function(event){
         var graphContainer = document.querySelector('#graph-container')
+        if (!graphContainer) return //e.g. a user is not on the knowledgeMap page
         packageData.width = graphContainer.clientWidth
         packageData.height = graphContainer.clientHeight
         packageData.rowHeight = rowHeight

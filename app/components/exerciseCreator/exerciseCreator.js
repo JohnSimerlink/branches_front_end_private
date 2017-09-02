@@ -1,5 +1,6 @@
 import './exercise-creator.less'
 export default {
+    props: ['contentItemId'],
     template: require('./exerciseCreator.html'),
     created () {
         var me = this;

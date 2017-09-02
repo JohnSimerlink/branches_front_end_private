@@ -19,7 +19,12 @@ export default {
     },
     computed: {
         numItems() {
-            return Object.keys(this.items.length)
+            return this.items && Object.keys(this.items).length
+        },
+    },
+    methods: {
+        remove(item) {
+            ContentItems.remove(item.id)
         }
     }
 }
