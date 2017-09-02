@@ -5,8 +5,6 @@ export default {
     created () {
         var me = this;
         console.log("creator just created!")
-
-
     },
     data() {
         return {
