@@ -1,18 +1,16 @@
 <div class="exercise-creator">
     <header class="exercise-creator-header">
-        <a class="exercise-creator-header-left" v-on:click="goToHome">
-            <i class="exercise-creator-goToHome fa fa-arrow-left" aria-hidden="true"></i>
-        </a>
+        <go-to-home></go-to-home>
         <div class="exercise-creator-header-right">
-            <div class="exercise-creator-breadcrumbs"><!-- A > B > CD > E > F > G > H --></div>
+            <div class="exercise-creator-breadcrumbs">id:{{window.exerciseToReplaceId}}<!-- A > B > CD > E > F > G > H --></div>
             <div class="exercise-creator-create-button-container">
-                <div class="exercise-creator-create-button">CREATE EXERCISE</div>
+                <!--<div class="exercise-creator-create-button">CREATE EXERCISE</div>-->
             </div>
         </div>
     </header>
     <div class="exercise-creator-body">
         <!--<content-list class="exercise-creator-content-list"></content-list>-->
-        <new-exercise class="exercise-creator-new-exercise"></new-exercise>
+        <new-exercise :contentItemId="contentItemId" class="exercise-creator-new-exercise"></new-exercise>
         <!--<exercise-list class="exercise-creator-exercise-list"></exercise-list>-->
     </div>
 </div>

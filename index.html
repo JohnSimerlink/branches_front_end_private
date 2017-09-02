@@ -72,6 +72,7 @@
 
 
 <script src="other_imports/mustache/mustache.min.js"></script>
+<!--<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>-->
 </head>
 <body>
 
@@ -109,8 +110,6 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <script>
-    var graphContainer = document.querySelector('#graph-container')
-    //        graphContainer.style.height =
     var w = window,
         d = document,
         e = d.documentElement,
@@ -119,29 +118,19 @@
         y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
     var footerSize = 40;//px
-//    graphContainer.style.height = y// - footerSize;
-    var graphHeight = y - footerSize
-    var bodyHeight = graphHeight
-    window.bodyHeight = bodyHeight
+    var bodyHeight = y - footerSize
 
+    //^^TODO: do via CSS
     document.write('' +
         '<div class="page">' +
             '<div id="branches-app" class="branches-app">' +
-                '<!--<branches-header></branches-header>-->' +
-                '<!--<toolbar></toolbar>-->' +
-                '<div id="container" v-if="home">' +
-                    '<div id="graph-container" style="height:' + graphHeight + 'px;">' +
-                    '</div>' +
-                '</div>' +
-                '<exercise-creator-container style="height:' + graphHeight + 'px;" v-if="exercisecreator"></exercise-creator-container>' +
+                '<router-view style="height:' + bodyHeight + 'px;" v-if="routing"></router-view>' +
+                '<exercise-creator-container style="height:' + bodyHeight + 'px;" v-if="exerciseCreator"></exercise-creator-container>' +
+                '<tree-review-container style="height:' + bodyHeight + 'px;" v-if="treeReview"></tree-review-container>' +
                 '<!--<review-schedule></review-schedule>-->' +
                 '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
             '</div>' +
         '</div>' +
-        '' +
-        '' +
-        '' +
-        '' +
         '')
 </script>
 <script>

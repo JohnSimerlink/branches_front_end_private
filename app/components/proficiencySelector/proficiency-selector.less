@@ -1,0 +1,38 @@
+@import '../tree/tree.less';
+.proficiency-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center
+}
+.proficiency-selector-item {
+  min-width: 25px;
+  max-width: 25px;
+  min-height: 25px;
+  max-height: 25px;
+  cursor: pointer;
+  //border-radius: 1px;
+}
+.proficiency-selector-item-active {
+  min-width: 35px;
+  max-width: 35px;
+  min-height: 35px;
+  max-height: 35px;
+  //box-shadow: 10px 10px 5px black;
+  border-style: outset; // << this looks ungly right now
+}
+.proficiency-selector-item-zero {
+  .tree-proficiency-unknown;
+}
+.proficiency-selector-item-one {
+  .tree-proficiency-one;
+}
+.proficiency-selector-item-two {
+  .tree-proficiency-two;
+}
+.proficiency-selector-item-three {
+  .tree-proficiency-three;
+}
+.proficiency-selector-item-four {
+  .tree-proficiency-four;
+}

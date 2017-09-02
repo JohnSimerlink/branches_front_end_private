@@ -12,7 +12,7 @@ export class Heading extends ContentItem {
         super.init()
     }
     getURIAddition(){
-        return "/" + encodeURIComponent(this.title)
+        return encodeURIComponent(this.title)
     }
     getDBRepresentation(){
         var baseRep = super.getDBRepresentation()

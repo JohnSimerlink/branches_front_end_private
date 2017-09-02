@@ -18,15 +18,18 @@ export class Fact extends ContentItem {
     this.answer = args.answer && args.answer.trim();
     this.id = args.id || md5(JSON.stringify({question: this.question, answer: this.answer}));
 
-    if(window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
+    if(typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = this; //TODO: john figure out what this does
 
     super.init()
   }
 
   //bc certain properties used in the local js object in memory, shouldn't be stored in the db
 
+    getURIAdditionNotEncoded(){
+      return this.question + ":" + this.answer
+    }
     getURIAddition(){
-      return "/" +encodeURIComponent(this.question + ":" + this.answer)
+      return encodeURIComponent(this.getURIAdditionNotEncoded())
     }
     getDBRepresentation(){
         var baseRep = super.getDBRepresentation()

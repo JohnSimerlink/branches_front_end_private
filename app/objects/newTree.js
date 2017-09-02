@@ -1,5 +1,5 @@
 import merge from 'lodash.merge'
-import {addTreeToGraph} from '../components/treesGraph.js'
+import {addTreeToGraph} from '../components/knawledgeMap/knawledgeMap'
 import {Trees} from './trees'
 
 import ContentItems from "./contentItems";
@@ -7,6 +7,7 @@ import ContentItems from "./contentItems";
 import {Fact} from './fact';
 import {Heading} from './heading';
 import {Skill} from './skill';
+import {PROFICIENCIES} from "../components/proficiencyEnum";
 
 
 export function newTree(nodeType, parentTreeId,initialParentTreeContentURI, values){
@@ -28,7 +29,7 @@ export function newTree(nodeType, parentTreeId,initialParentTreeContentURI, valu
     }
 
     console.log('new content just created is', newContent)
-    newContent.setProficiency(0)
+    newContent.setProficiency(PROFICIENCIES.ONE)
     const tree = addTreeToGraph(parentTreeId, newContent);
     console.log('new Tree created is', tree)
     //TODO add a new tree to db and UI by dispatching a new Tree REDUX action

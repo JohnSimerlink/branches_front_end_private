@@ -1,7 +1,5 @@
 export const Globals = {
     currentTreeSelected: null,
-    existingColor: 'brown',
-    newColor: 'lightgreen',
     colors: {
         proficiency_4: 'aqua',
         proficiency_3: 'lawngreen',

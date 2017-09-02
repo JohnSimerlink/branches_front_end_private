@@ -64,7 +64,11 @@ export default {
             login()
         },
         goToExerciseCreator () {
+            window.exerciseToReplaceId = null
             PubSub.publish('goToState.exerciseCreator')
+        },
+        goToReviewTree () {
+            PubSub.publish('goToState.reviewTree')
         },
     }
 }
