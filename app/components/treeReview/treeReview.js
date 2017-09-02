@@ -47,9 +47,7 @@ export default {
             this.loading = true;
             Trees.get(me.leafId).then(tree => {
                 me.tree = tree
-                console.log('tree received in treeReview.js is', tree)
                 ContentItems.get(tree.contentId).then(contentItem => {
-                    console.log('content received in treeReview.js is', contentItem)
                     me.breadcrumbs = contentItem.getBreadcrumbsObjArray()
                     me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
                     me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
@@ -58,7 +56,6 @@ export default {
                     if (!me.exerciseId) {
                         me.loading = false
                     } else {
-                        console.log('exercisedId received in treeReview.js is', me.exerciseId)
                         me.initExercise()
                     }
                 })
@@ -80,7 +77,6 @@ export default {
                         }
                         // item.title = item.id
                         me.items.push(item)
-                        console.log('item id is', item.id)
                         me.loading = false
                     })
                 })
@@ -118,10 +114,8 @@ export default {
         },
         flip() {
             this.flipped = !this.flipped
-            console.log('this.flip called')
         },
         flipIfNotFlipped() {
-            console.log('flipp if not flipped called')
             if (!this.flipped){
                 this.flipped = true
             }
