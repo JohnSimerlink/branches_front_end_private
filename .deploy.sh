@@ -9,7 +9,7 @@ npm run build
 git add dist
 git commit -m "Build and Deploy: $datetime"
 git push origin master
-git push production master
+git push production master -f
 
 
 echo "Deploy script finished! :D :D :D"
