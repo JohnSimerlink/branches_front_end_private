@@ -3,6 +3,7 @@ import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Trees} from './trees.js'
+import ContentItems from './contentItems'
 import {syncGraphWithNode}  from '../components/knawledgeMap/knawledgeMap'
 import timers from './timers'
 
@@ -76,8 +77,19 @@ export class Tree {
         firebase.database().ref('trees/' + this.id).update({
             parentId: newParentId
         })
+        // this.updatePrimaryParentTreeContentURI()
     }
-
+    updatePrimaryParentTreeContentURI(){
+        const me = this
+        Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)]).then(values => {
+            const [parentTree, contentItem] = values
+            contentItem.set('primaryParentTreeContentURI', parentTree.uri)
+            //update for all the children as well
+            me.children && Object.keys(me.children).forEach(childId => {
+                Trees.get(childId).then(childTree => childTree.updatePrimaryParentTreeContentURI())
+            })
+        })
+    }
     changeFact(newfactid) {
         this.factId = newfactid
         firebase.database().ref('trees/' + this.id).update({
