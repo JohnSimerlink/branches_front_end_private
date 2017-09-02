@@ -8,18 +8,15 @@ export default {
         self.content = {};
         self.treeid = '';
 
-        this.varsGoHere = "varhere";
 
         this.num = 5;
-        PubSub.subscribe('nodeSelect', () => {
-            let val = document.getElementById("mobileAnswerTray").getAttribute('treeid');
-            if (val === this.treeid) return;
-            this.treeid = val;
-            Trees.get(val).then(tree => {
+        PubSub.subscribe('canvas.nodeMouseUp', (eventName, node) => {
+            if (node.id === this.treeid) return;
+            this.treeid = node.id;
+            Trees.get(this.treeid).then(tree => {
                 self.tree = tree;
                 ContentItems.get(tree.contentId).then(content => {
                     self.content = content;
-                    console.log(content);
                 })
             })
         });
@@ -33,7 +30,7 @@ export default {
     },
     methods: {
         closeTray: function () {
-            //do Close
+            document.getElementById("mobileAnswerTray").remove();
         }
     },
     computed : {
@@ -52,7 +49,7 @@ export default {
     watch: {
         content: {
             handler: function(val) {
-                console.log(val);
+                //
             }
         },
         tree: {
