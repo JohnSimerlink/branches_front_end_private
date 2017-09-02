@@ -43,17 +43,20 @@ export default {
             this.exercise = {}
             const me = this
             Trees.get(me.leafId).then(tree => {
+                me.tree = tree
                 console.log('tree received in treeReview.js is', tree)
                 ContentItems.get(tree.contentId).then(contentItem => {
                     console.log('content received in treeReview.js is', contentItem)
                     me.exerciseId = contentItem.getBestExerciseId()
                     console.log('exercisedId received in treeReview.js is', me.exerciseId)
-                    me.breadcrumbs = [
-                        {text: "Spanish",},
-                        {text: "Conjugating",},
-                        {text: "Indicative Mood",},
-                        {text: "1st Person Singular",},
-                    ]
+
+                    me.breadcrumbs = contentItem.getBreadcrumbsObjArray()
+                    // me.breadcrumbs = [
+                    //     {text: "Spanish",},
+                    //     {text: "Conjugating",},
+                    //     {text: "Indicative Mood",},
+                    //     {text: "1st Person Singular",},
+                    // ]
                     me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
                     me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
                     me.initExercise()
@@ -92,7 +95,7 @@ export default {
             })
         },
         proficiencyUnknown(item){
-         return item.proficiency == PROFICIENCIES.UNKNOWN
+            return item.proficiency == PROFICIENCIES.UNKNOWN
         },
         proficiencyOne(item){
             return item.proficiency == PROFICIENCIES.ONE
@@ -107,6 +110,9 @@ export default {
             // show a snack for 4s
             snack.show('+300 points', 1000);
             this.initReview()
+        },
+        addExercise(){
+            this.$router.push({name: 'create', params: {contentItemId: this.tree.contentId }})
         },
         flip() {
             this.flipped = !this.flipped

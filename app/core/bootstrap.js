@@ -3,6 +3,7 @@ import './filters'
 import './objects'
 import './utils'
 import TreeReview from '../components/treeReview/treeReview'
+import ContentList from '../components/contentList/contentList'
 import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exerciseCreatorContainer'
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
@@ -29,8 +30,9 @@ const Bar = { template: '<div>bar</div>' }
 const routes = [
   { path: '/foo', component: Foo },
   { path: '/bar', component: Bar },
-  { name: 'study', path: '/study/:leafId', component: TreeReviewContainer, props: true },
-  { path: '/create', component: ExerciseCreatorContainer, props: true },
+  { path: '/study/:leafId', name: 'study', component: TreeReviewContainer, props: true },
+  { path: '/create', name: 'create',  component: ExerciseCreatorContainer, props: true },
+  { path: '/contentList', name: 'contentList',  component: ContentList, props: true },
   { path: '/:treeId', component: KnawledgeMap, props: true },
   { path: '/', component: KnawledgeMap, props: true },
 ]

@@ -27,13 +27,9 @@
                         <span >{{lastBreadcrumb.text}}</span>
                     </span>
                 </div>
-                <!--<div class="tree-review-add-exercise">-->
-                    <!--Add an exercise for this skill-->
-                    <!--<router-link :to="create"></router-link>-->
-                <!--</div>-->
+                <button class="tree-review-next-question ui button positive" v-on:click.stop="addExercise">Add an exercise for this skill</button>
             </div>
             <div class="tree-review-question">{{exercise.question}}</div>
-             {{exercise.id}}
             <i class="fa fa-undo" name='flip-icon' aria-hidden="true" v-if="exercise.id"></i>
         </div>
         <div class="tree-review-answer-container" v-if="exercise.id && flipped">

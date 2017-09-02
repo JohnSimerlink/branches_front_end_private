@@ -66,6 +66,7 @@ function establishURIs(){
        })
     })
 }
+window.establishURIs = establishURIs
 
 
 function establishURIForContentAndThenAllChildren(treeId){

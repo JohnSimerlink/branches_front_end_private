@@ -212,6 +212,7 @@ function initKnawledgeMap(treeIdToJumpTo){
     function onGetTree(tree, level) {
         var contentPromise = ContentItems.get(tree.contentId)
             .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
+            .catch(err => console.error("CONTENTITEMS.get Err is", err))
 
         var childTreesPromises = tree.children ? Object.keys(tree.children).map((child) => {
             return loadTreeAndSubTrees(child, level + 1)
@@ -318,9 +319,12 @@ function initKnawledgeMap(treeIdToJumpTo){
                 case 'fact':
                     openTooltip(node)
                     break;
+                case 'heading':
+                    openTooltip(node)
+                    break;
                 default:
-                    console.log('me in on click is', me)
                     me.$router.push({name: 'study', params: {leafId: node.id}})
+                    console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
                     break;
             }
         })

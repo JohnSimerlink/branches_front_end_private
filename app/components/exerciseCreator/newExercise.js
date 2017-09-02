@@ -7,6 +7,7 @@ import invert from 'invert-object'
 import Exercises from "../../objects/exercises";
 
 export default {
+    props: ['contentItemId'],
     template: require('./newExercise.html'),
     created () {
         var me = this
@@ -14,6 +15,9 @@ export default {
         // this.itemIds = {12345: true} //[12345]
         this.selectedItems = []
         this.selectedItemIds = []
+        if (this.contentItemId){
+            this.selectedItemIds.push(this.contentItemId)
+        }
         this.question=""
         this.answer=""
         this.tags = null

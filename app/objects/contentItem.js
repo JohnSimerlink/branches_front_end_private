@@ -65,7 +65,6 @@ export default class ContentItem {
     }
     getBreadCrumbsString(){
         let sections = this.getURIWithoutRootElement().split("/")
-        console.log('sample sections in getbreadcrumbsstring are ', sections)
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
             if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
@@ -81,6 +80,18 @@ export default class ContentItem {
         // },"")
         // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
         // return breadcrumbs
+    }
+    getBreadcrumbsObjArray() {
+        let sections = this.getURIWithoutRootElement().split("/")
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        let breadcrumbsObjArray = sections.reduce((accum, val) => {
+            if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                return accum
+            }
+            accum.push({text: decodeURIComponent(val)})
+            return accum
+        }, [])
+        return breadcrumbsObjArray
     }
     getLastNBreadcrumbsString(n) {
         let sections = this.getURIWithoutRootElement().split("/")
@@ -172,6 +183,10 @@ export default class ContentItem {
     removeExercise(exerciseId){
         delete this.exercises[exerciseId] // remove from local cache
         firebase.database().ref('content/' + this.id +'/exercises/').child(exerciseId).remove() //delete from db
+    }
+    remove(){
+        firebase.database().ref('content/').child(this.id).remove() //delete from db
+        delete window.content[this.id]
     }
     setProficiency(proficiency) {
         !this.inStudyQueue && this.addToStudyQueue()
