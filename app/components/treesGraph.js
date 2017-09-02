@@ -220,16 +220,17 @@ function initSigma(){
     });
     PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
         PubSub.publish('canvas.closeTooltip', data)
+        mobileOutNode();
     })
     PubSub.subscribe('canvas.stageClicked', function(eventName, data){
-        PubSub.publish('canvas.closeTooltip', data)
+        PubSub.publish('canvas.closeTooltip', data);
+        mobileOutNode();
     })
     PubSub.subscribe('canvas.overNode', function(eventName, data){
         var canvas = document.querySelector('#graph-container')
         canvas.style.cursor = 'pointer'
     })
     PubSub.subscribe('canvas.outNode', function(eventName, data){
-        mobileOutNode();
         var canvas = document.querySelector('#graph-container');
         canvas.style.cursor = '-webkit-grab'
     })
@@ -244,11 +245,11 @@ function mobileOutNode() {
 }
 
 function mobileOverNode(node) {
-    console.log("Mobile over node?");
+    //TODO append dom instead of modifying visibility of node
     let ele = document.getElementById('mobileAnswerTray');
     ele.setAttribute('treeid', node.id);
     ele.style.display = 'flex';
-    PubSub.publish('nodeSelect', node.id);
+    //PubSub.publish('nodeSelect', node.id);
 }
 
 function hoverOverNode(e) {
