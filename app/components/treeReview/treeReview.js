@@ -24,6 +24,7 @@ export default {
     },
     data () {
         return {
+            loading: true,
             breadcrumbsAllButLast:[],
             lastBreadcrumb: {},
             items: [],
@@ -34,7 +35,7 @@ export default {
     },
     computed: {
         oneItemTested() {
-            return this.items.length == 0
+            return this.items.length === 1
         }
     },
     methods: {
@@ -49,19 +50,17 @@ export default {
                 console.log('tree received in treeReview.js is', tree)
                 ContentItems.get(tree.contentId).then(contentItem => {
                     console.log('content received in treeReview.js is', contentItem)
-                    me.exerciseId = contentItem.getBestExerciseId()
-                    console.log('exercisedId received in treeReview.js is', me.exerciseId)
-
                     me.breadcrumbs = contentItem.getBreadcrumbsObjArray()
-                    // me.breadcrumbs = [
-                    //     {text: "Spanish",},
-                    //     {text: "Conjugating",},
-                    //     {text: "Indicative Mood",},
-                    //     {text: "1st Person Singular",},
-                    // ]
                     me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
                     me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
-                    me.initExercise()
+
+                    me.exerciseId = contentItem.getBestExerciseId()
+                    if (!me.exerciseId) {
+                        me.loading = false
+                    } else {
+                        console.log('exercisedId received in treeReview.js is', me.exerciseId)
+                        me.initExercise()
+                    }
                 })
             })
         },
