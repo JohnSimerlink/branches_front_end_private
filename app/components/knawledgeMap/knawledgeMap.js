@@ -47,8 +47,8 @@ var s,
         "\uF132"
     ]
 
-var newNodeXOffset = -2,
-    newNodeYOffset = 2;
+var initialized = false;
+
 const EDGE_TYPES = {
     SUGGESTED_CONNECTION: 9001,
     HIERARCHICAL: 9002,
@@ -69,6 +69,35 @@ export function removeTreeFromGraph(treeId){
         })
     })
 
+}
+
+function createTreeNodeFromTreeAndContent(tree, content, level){
+    const node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        level,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        content: content,
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree',
+    };
+    return node;
+}
+
+export function addTreeNodeToGraph(tree,content, level){
+    const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
+    console.log('new tree node is', treeUINode)
+    if(!initialized){
+        g.nodes.push(treeUINode);
+    } else {
+        s.graph.addNode(treeUINode)
+    }
+    connectTreeToParent(tree, content, g)
+    return content.id
 }
 
 function getLabelFromContent(content) {
@@ -117,6 +146,25 @@ export function syncGraphWithNode(treeId){
     })
 }
 
+function connectTreeToParent(tree,content, g){
+    if (tree.parentId) {
+        const edge = {
+            id: createEdgeId(tree.parentId, tree.id),
+            source: tree.parentId,
+            target: tree.id,
+            size: 5,
+            color: getTreeColor(content),
+            type: EDGE_TYPES.HIERARCHICAL,
+        };
+        if(!initialized){
+            g.edges.push(edge);
+            console.log('connect tree to parent just called with edge of', edge, 'via g edges push')
+        } else {
+            s.graph.addEdge(edge)
+            console.log('connect tree to parent just called with edge of', edge, 'via s graph addEdge')
+        }
+    }
+}
 //returns sigma tree node
 export function addTreeToGraph(parentTreeId, content) {
     //1. delete current addNewNode button
@@ -159,7 +207,6 @@ export function addTreeToGraph(parentTreeId, content) {
 function initKnawledgeMap(treeIdToJumpTo){
     var me = this;// bound/called
 
-    var initialized = false;
 
 
     if (typeof sigma !== 'undefined') {
@@ -222,51 +269,15 @@ function initKnawledgeMap(treeIdToJumpTo){
         return Promise.all([...childTreesPromises, contentPromise])
     }
 
-    function addTreeNodeToGraph(tree,content, level){
-        const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
-
-        g.nodes.push(treeUINode);
-        connectTreeToParent(tree, content, g)
-        return content.id
-    }
 
 
 //recursively load the entire tree
 // Instantiate sigma:
-    function createTreeNodeFromTreeAndContent(tree, content, level){
-        const node = {
-            id: tree.id,
-            parentId: tree.parentId,
-            level,
-            x: tree.x,
-            y: tree.y,
-            children: tree.children,
-            content: content,
-            label: getLabelFromContent(content),
-            size: 1,
-            color: getTreeColor(content),
-            type: 'tree',
-        };
-        return node;
-    }
     /**
      * Get tree colors for descending proficiency levels. Default to "existing node" color
      * @param tree
      * @returns {*}
      */
-    function connectTreeToParent(tree,content, g){
-        if (tree.parentId) {
-            const edge = {
-                id: createEdgeId(tree.parentId, tree.id),
-                source: tree.parentId,
-                target: tree.id,
-                size: 5,
-                color: getTreeColor(content),
-                type: EDGE_TYPES.HIERARCHICAL,
-            };
-            g.edges.push(edge);
-        }
-    }
 //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
 
     function initSigma(){
