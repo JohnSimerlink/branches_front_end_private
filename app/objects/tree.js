@@ -58,11 +58,13 @@ export class Tree {
         firebase.database().ref('trees/' +this.id).update(updates)
     }
 
-    unlinkFromParent(){
+    unlinkFromParentAndDeleteContent(){
        var treeId = this.id
+        console.log('unlink from parent called for ',this)
        Trees.get(this.parentId).then(parentTree => {
            parentTree.removeChild(treeId)
        })
+        Trees.get(treeId).then()
        this.changeParent(null)
     }
 

@@ -1,5 +1,5 @@
 export default {
-    props: ['contentItemId'],
+    props: ['contentItemId','exerciseToReplaceId'],
     template: require('./exerciseCreatorContainer.html'),
     created () {
         var me = this;

@@ -60,6 +60,7 @@ function getTreeColor(content) {
     return color
 }
 export function removeTreeFromGraph(treeId){
+    console.log('remove tree called for ', treeId)
     s.graph.dropNode(treeId)
     return Trees.get(treeId).then(tree => {
         const childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
@@ -439,6 +440,9 @@ function initKnawledgeMap(treeIdToJumpTo){
         if (typeof window == 'undefined'){
             return
         }
+        if (!window.awaitingEdgeConnection && !window.awaitingDisconnectConfirmation){
+            return
+        }
         switch(window.scalingOffset){
             case -20:
                 window.scalingOffset = -10
@@ -473,7 +477,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         window.haloSizeScalingFactor = 1 + window.scalingOffset / 1000
         window.haloEdgeSizeScalingFactor = 1 + 4 * window.scalingOffset / 1000
-        s && s.refresh()
+        // s && s.refresh() << comment out for performance reasons
     }, 100)
 
     function showPossibleEdges(parentlessNode){

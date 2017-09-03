@@ -130,9 +130,9 @@ export default {
 
             this.toggleEditing()
         },
-        unlinkFromParent(){
+        unlinkFromParentAndDeleteContent(){
             if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")){
-                this.tree.unlinkFromParent()
+                this.tree.unlinkFromParentAndDeleteContent()
             }
             removeTreeFromGraph(this.id)
         }
