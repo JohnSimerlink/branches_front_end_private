@@ -33,6 +33,8 @@ export default class ContentItem {
         this.exercises = args.exercises || {}
 
         this.uri = args.uri || null
+
+        this.type = args.type
     }
     init () {
         this.calculateURIBasedOnParentTreeContentURI()
@@ -110,6 +112,9 @@ export default class ContentItem {
 
     }
 
+    hasIndividualProficiency(){
+        return this.type === 'fact' || this.type === 'skill'
+    }
     /**
      * Used to update tree X and Y coordinates
      * @param prop
@@ -197,7 +202,7 @@ export default class ContentItem {
         !this.inStudyQueue && this.addToStudyQueue()
         //proficiency
 
-        //-proficiency stored under fact
+        //-proficiency stored as part of this content item
         this.proficiency = proficiency
         this.userProficiencyMap[user.getId()] = this.proficiency
 
@@ -206,6 +211,11 @@ export default class ContentItem {
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
+
+        //recalculate tree proficiency aggregation (the immediate tree will be the same as the proficiency for this content type of course), and bubble up the calculation through the parent trees all the way to the Everything tree
+        this.trees && Object.keys(this.trees).forEach(treeId => {
+            Trees.get(treeId).then(tree => tree.recalculateProficiencyAggregation())
+        })
 
 
         //interactions

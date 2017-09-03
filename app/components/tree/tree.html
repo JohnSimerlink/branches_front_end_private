@@ -21,6 +21,12 @@
         </div>
     </div>
     <div class="tree-heading" v-if="typeIsHeading">
+        {{proficiencyStats.UNKNOWN}} --
+        {{proficiencyStats.ONE}} --
+        {{proficiencyStats.TWO}} --
+        {{proficiencyStats.THREE}} --
+        {{proficiencyStats.FOUR}} --
+        <button v-on:click="recalculateProficiencyAggregation">Recalculate Proficiency Aggregation</button>
         <div class="tree-current-fact" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-heading">{{content.title}}</div>

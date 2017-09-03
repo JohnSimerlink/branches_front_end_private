@@ -6,10 +6,19 @@ import {Trees} from './trees.js'
 import ContentItems from './contentItems'
 import {syncGraphWithNode}  from '../components/knawledgeMap/knawledgeMap'
 import timers from './timers'
+import {PROFICIENCIES} from "../components/proficiencyEnum";
 
 function loadObject(treeObj, self){
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
+const blankProficiencyStats = {
+    UNKNOWN: 0,
+    ONE: 0,
+    TWO: 0,
+    THREE: 0,
+    FOUR: 0,
+}
+
 export class Tree {
 
     constructor(contentId, contentType, parentId, parentDegree, x, y) {
@@ -17,6 +26,7 @@ export class Tree {
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
             loadObject(treeObj, this)
+            this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || blankProficiencyStats
             return
         }
 
@@ -24,6 +34,8 @@ export class Tree {
         this.contentType = contentType
         this.parentId = parentId;
         this.children = {};
+        this.userProficiencyStatsMap = {}
+        this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || blankProficiencyStats
 
         this.x = x
         this.y = y
@@ -116,7 +128,18 @@ export class Tree {
            factId: newfactid
         })
     }
+    setProficiencyStats(proficiencyStats){
+        console.log(this.id, ': set Proficiency Stats called')
+        this.proficiencyStats = proficiencyStats
+        this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
+        this.userProficiencyStatsMap[user.getId()] = this.proficiencyStats
 
+        const updates = {
+            userProficiencyStatsMap: this.userProficiencyStatsMap
+        }
+        firebase.database().ref('trees/' + this.id).update(updates)
+        console.log(this.id, ': set Proficiency Stats called')
+    }
 
     /**
      * Change the content of a given node ("Tree")
@@ -189,6 +212,51 @@ export class Tree {
            })
        }
     }
+
+    recalculateProficiencyAggregation(){
+        console.log(this.id,'recalculateProficiencyAggregation called for', this)
+        const me = this
+        const proficiencyStats = blankProficiencyStats
+        ContentItems.get(this.contentId).then(contentItem => {
+            console.log(me.id, 'ContentItems.get called for', this, ' result is', contentItem)
+
+            if (contentItem.hasIndividualProficiency()){
+                console.log(me.id, 'ContentItem has individual proficiency')
+                let proficiency = contentItem.proficiency;
+                addValToProficiencyStats(proficiencyStats,proficiency)
+            } else {
+                console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
+                if (me.children){
+                    console.log(me.id, 'ContentItem HAS children')
+                    let addStatsFromChildrenPromises = me.children.map(childId => {
+                        console.log(me.id, 'trees get getting called for child ', childId)
+                        return Trees.get(childId).then(childTree => {
+                            let recalculateChildProficiencyAggregationPromise = new Promise((resolve, reject) => {
+                                resolve("resolved")
+                            })
+                            if (!childTree.proficiencyStats || !Object.keys(childTree.proficiencyStats).length){
+                                recalculateChildProficiencyAggregationPromise = childTree.recalculateProficiencyAggregation()
+                                console.log(me.id, 'recalculateProficiency getting called for child ', childId)
+                            }
+                            return recalculateChildProficiencyAggregationPromise.then(() => {
+                                addObjToProficiencyStats(proficiencyStats, childTree.proficiencyStats)
+                                console.log(me.id, 'addObjToProficiencyStats getting called for child ', childId, proficiencyStats, childTree.proficiencyStats)
+                            })
+                        })
+                    })
+                    Promise.all(addStatsFromChildrenPromises).then(() => {
+                        me.setProficiencyStats(proficiencyStats)
+                        me.set('proficiencyStats', proficiencyStats)
+                        Trees.get(me.parentId).then(parent => {
+                            parent.recalculateProficiencyAggregation()
+                        })
+                    })
+                }
+            }
+            // contentItem.proficiency
+        })
+
+    }
 }
 //TODO: get typeScript so we can have a schema for treeObj
 //treeObj  example
@@ -204,3 +272,26 @@ export class Tree {
  type: 'tree'
  */
 //invoke like a constructor - new Tree(parentId, factId)
+
+function addObjToProficiencyStats(proficiencyStats, proficiencyObj){
+    Object.keys(proficiencyObj).forEach(key => {
+        proficiencyStats[key] += proficiencyObj[key]
+    })
+}
+function addValToProficiencyStats(proficiencyStats, proficiency){
+    if (proficiency <= PROFICIENCIES.UNKNOWN){
+        proficiencyStats.UNKNOWN++
+    }
+    else if (proficiency <= PROFICIENCIES.ONE){
+        proficiencyStats.ONE++
+    }
+    else if (proficiency <= PROFICIENCIES.TWO){
+        proficiencyStats.TWO++
+    }
+    else if (proficiency <= PROFICIENCIES.THREE){
+        proficiencyStats.THREE++
+    }
+    else if (proficiency <= PROFICIENCIES.FOUR){
+        proficiencyStats.FOUR++
+    }
+}
