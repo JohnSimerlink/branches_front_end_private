@@ -11,7 +11,7 @@ export default {
             me.items = items
             Object.keys(me.items).forEach(key => {
                 let item = me.items[key]
-                console.log("item Id" + item.id + " ---- initialParentTreeContentURI: " + item.initialParentTreeContentURI + "---- item is", item)
+                console.log("item Id" + item.id + " ---- primaryParentTreeContentURI: " + item.primaryParentTreeContentURI + "---- item is", item)
             })
         })
         this.num = 5

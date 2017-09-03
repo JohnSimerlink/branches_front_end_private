@@ -11,7 +11,7 @@ export default class ContentItem {
 
     constructor(args) {
         this.initialParentTreeId = this.initialParentTreeId || (args && args.initialParentTreeId) || null
-        this.initialParentTreeContentURI = this.initialParentTreeContentURI || (args && args.initialParentTreeContentURI) || null
+        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || (args && args.primaryParentTreeContentURI) || null
         this.trees = args.trees || {}
 
         this.userTimeMap = args.userTimeMap || {} ;
@@ -36,7 +36,7 @@ export default class ContentItem {
     }
     init () {
         this.calculateURIBasedOnParentTreeContentURI()
-        // this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -44,7 +44,7 @@ export default class ContentItem {
     getDBRepresentation(){
         return {
             initialParentTreeId: this.initialParentTreeId,
-            initialParentTreeContentURI: this.initialParentTreeContentURI,
+            primaryParentTreeContentURI: this.primaryParentTreeContentURI,
             userTimeMap: this.userTimeMap,
             userProficiencyMap: this.userProficiencyMap,
             userInteractionsMap: this.userInteractionsMap,
@@ -140,7 +140,7 @@ export default class ContentItem {
         firebase.database().ref('content/' +this.id).update(updates)
     }
     calculateURIBasedOnParentTreeContentURI(){
-        const uri = this.initialParentTreeContentURI + "/" + this.getURIAddition()
+        const uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition()
         this.set('uri', uri)
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
