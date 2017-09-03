@@ -17,9 +17,9 @@ export default {
 
         this.editing = false
         this.addingChild = false
-        this.tree = {} // init to empty object until promises resolve, so vue does not complain
-        this.fact = {}
-        this.content = {}
+        // this.tree = {} // init to empty object until promises resolve, so vue does not complain
+        // this.fact = {}
+        // this.content = {}
         this.nodeBeingDragged = false
         Trees.get(this.id).then(tree => {
             me.tree = tree
@@ -50,11 +50,11 @@ export default {
     },
     data () {
         return {
-             tree: this.tree
-            , content: this.content
-            , editing: this.editing
-            , addingChild: this.addingChild
-            , draggingNode: window.draggingNode
+            tree:{}, //this.tree
+            content: {},// this.content
+            editing: this.editing,
+            addingChild: this.addingChild,
+            draggingNode: window.draggingNode,
         }
     },
     computed : {
@@ -93,6 +93,10 @@ export default {
         syncGraphWithNode(){
             this.content.setProficiency(this.content.proficiency)// << it is necessary to call this method . bc we have to set userProficiecnyMap
             syncGraphWithNode(this.tree.id)
+        },
+        recalculateProficiencyAggregation(){
+            this.tree.recalculateProficiencyAggregation()
+            // this.tree.
         },
         setProficiencyToOne() {
             this.content.setProficiency(PROFICIENCIES.ONE)

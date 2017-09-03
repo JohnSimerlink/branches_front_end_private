@@ -1,3 +1,4 @@
+import user from './user'
 import md5 from 'md5'
 import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');
@@ -129,7 +130,7 @@ export class Tree {
         })
     }
     setProficiencyStats(proficiencyStats){
-        console.log(this.id, ': set Proficiency Stats called')
+        console.log(this.id, ': set Proficiency Stats called', proficiencyStats)
         this.proficiencyStats = proficiencyStats
         this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
         this.userProficiencyStatsMap[user.getId()] = this.proficiencyStats
@@ -217,40 +218,44 @@ export class Tree {
         console.log(this.id,'recalculateProficiencyAggregation called for', this)
         const me = this
         const proficiencyStats = blankProficiencyStats
-        ContentItems.get(this.contentId).then(contentItem => {
+        return ContentItems.get(this.contentId).then(contentItem => {
             console.log(me.id, 'ContentItems.get called for', this, ' result is', contentItem)
 
             if (contentItem.hasIndividualProficiency()){
                 console.log(me.id, 'ContentItem has individual proficiency')
                 let proficiency = contentItem.proficiency;
                 addValToProficiencyStats(proficiencyStats,proficiency)
+                this.setProficiencyStats(proficiencyStats)
             } else {
                 console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
                 if (me.children){
                     console.log(me.id, 'ContentItem HAS children')
-                    let addStatsFromChildrenPromises = me.children.map(childId => {
+                    let addStatsFromChildrenPromises = Object.keys(me.children).map(childId => {
                         console.log(me.id, 'trees get getting called for child ', childId)
                         return Trees.get(childId).then(childTree => {
                             let recalculateChildProficiencyAggregationPromise = new Promise((resolve, reject) => {
                                 resolve("resolved")
                             })
-                            if (!childTree.proficiencyStats || !Object.keys(childTree.proficiencyStats).length){
+                            // if (!childTree.proficiencyStats || !Object.keys(childTree.proficiencyStats).length){
                                 recalculateChildProficiencyAggregationPromise = childTree.recalculateProficiencyAggregation()
                                 console.log(me.id, 'recalculateProficiency getting called for child ', childId)
-                            }
+                            // }
                             return recalculateChildProficiencyAggregationPromise.then(() => {
                                 addObjToProficiencyStats(proficiencyStats, childTree.proficiencyStats)
                                 console.log(me.id, 'addObjToProficiencyStats getting called for child ', childId, proficiencyStats, childTree.proficiencyStats)
                             })
                         })
                     })
-                    Promise.all(addStatsFromChildrenPromises).then(() => {
+                    return Promise.all(addStatsFromChildrenPromises).then(() => {
                         me.setProficiencyStats(proficiencyStats)
                         me.set('proficiencyStats', proficiencyStats)
-                        Trees.get(me.parentId).then(parent => {
-                            parent.recalculateProficiencyAggregation()
+                        return Trees.get(me.parentId).then(parent => {
+                            return parent.recalculateProficiencyAggregation()
                         })
                     })
+                }
+                else {
+                    console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
                 }
             }
             // contentItem.proficiency
@@ -279,6 +284,7 @@ function addObjToProficiencyStats(proficiencyStats, proficiencyObj){
     })
 }
 function addValToProficiencyStats(proficiencyStats, proficiency){
+    console.log('addVal to proficiencyStats called', proficiencyStats,proficiency)
     if (proficiency <= PROFICIENCIES.UNKNOWN){
         proficiencyStats.UNKNOWN++
     }
@@ -294,4 +300,5 @@ function addValToProficiencyStats(proficiencyStats, proficiency){
     else if (proficiency <= PROFICIENCIES.FOUR){
         proficiencyStats.FOUR++
     }
+    console.log('addVal to proficiencyStats finished', proficiencyStats,proficiency)
 }
