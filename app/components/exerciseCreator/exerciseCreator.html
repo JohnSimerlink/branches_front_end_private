@@ -1,8 +1,8 @@
 <div class="exercise-creator">
     <header class="exercise-creator-header">
-        <go-to-home></go-to-home>
+        <go-back></go-back>
         <div class="exercise-creator-header-right">
-            <div class="exercise-creator-breadcrumbs">id:{{window.exerciseToReplaceId}}<!-- A > B > CD > E > F > G > H --></div>
+            <div class="exercise-creator-breadcrumbs"><!-- A > B > CD > E > F > G > H --></div>
             <div class="exercise-creator-create-button-container">
                 <!--<div class="exercise-creator-create-button">CREATE EXERCISE</div>-->
             </div>
@@ -10,7 +10,7 @@
     </header>
     <div class="exercise-creator-body">
         <!--<content-list class="exercise-creator-content-list"></content-list>-->
-        <new-exercise :contentItemId="contentItemId" class="exercise-creator-new-exercise"></new-exercise>
+        <new-exercise :contentItemId="contentItemId" :exerciseToReplaceId="exerciseToReplaceId" class="exercise-creator-new-exercise"></new-exercise>
         <!--<exercise-list class="exercise-creator-exercise-list"></exercise-list>-->
     </div>
 </div>

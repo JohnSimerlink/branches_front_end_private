@@ -121,8 +121,9 @@ export default {
             }
         },
         editExercise(){
-            window.exerciseToReplaceId = this.exerciseId
-            PubSub.publish('goToState.exerciseCreator')
+            this.$router.push({name: 'edit', params: {exerciseToReplaceId: this.exerciseId}})
+            // window.exerciseToReplaceId = this.exerciseId
+            // PubSub.publish('goToState.exerciseCreator')
         },
         deleteExercise(){
             if (confirm("Are you sure you want to delete this exercise? For every single user?")){

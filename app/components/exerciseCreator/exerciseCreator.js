@@ -1,6 +1,6 @@
 import './exercise-creator.less'
 export default {
-    props: ['contentItemId'],
+    props: ['contentItemId','exerciseToReplaceId'],
     template: require('./exerciseCreator.html'),
     created () {
         var me = this;
@@ -12,7 +12,7 @@ export default {
         }
     },
     methods: {
-        goToHome() {
+        goBack() {
             PubSub.publish('goToState.home')
         }
     }

@@ -32,6 +32,7 @@ const routes = [
   { path: '/bar', component: Bar },
   { path: '/study/:leafId', name: 'study', component: TreeReviewContainer, props: true },
   { path: '/create', name: 'create',  component: ExerciseCreatorContainer, props: true },
+  { path: '/edit/:exerciseToReplaceId', name: 'edit',  component: ExerciseCreatorContainer, props: true },
   { path: '/contentList', name: 'contentList',  component: ContentList, props: true },
   { path: '/:treeId', component: KnawledgeMap, props: true },
   { path: '/', component: KnawledgeMap, props: true },
@@ -54,7 +55,7 @@ var vm = new Vue({
             this.goToTreeReview()
         })
         PubSub.subscribe('goToState.home', (eventName, data) => {
-            this.goToHome()
+            this.goBack()
         })
         console.log('THIS APP is', this)
         // router.go('/83cbe6ea3fa874449982b645f04d14a1')
@@ -77,7 +78,7 @@ var vm = new Vue({
         },
     },
     methods: {
-        goToHome(){
+        goBack(){
             window.location = window.location //refresh the page lol - for some reason graph seems to malfunction when not doing this
             this.state='home'
         },

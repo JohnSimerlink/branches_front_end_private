@@ -68,7 +68,7 @@
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" >{{content.timer | secondsToPretty}} </div>
             <!--<div class="tree-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>-->
-            <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParent" ></i>
+            <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-on:click="unlinkFromParentAndDeleteContent" ></i>
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
     </div>

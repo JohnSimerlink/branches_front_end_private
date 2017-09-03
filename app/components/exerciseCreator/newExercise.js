@@ -7,7 +7,7 @@ import invert from 'invert-object'
 import Exercises from "../../objects/exercises";
 
 export default {
-    props: ['contentItemId'],
+    props: ['contentItemId','exerciseToReplaceId'],
     template: require('./newExercise.html'),
     created () {
         var me = this
@@ -22,8 +22,8 @@ export default {
         this.answer=""
         this.tags = null
         //TODO: replace with Vuex/redux store . . . or maybe a routing system
-        if (window.exerciseToReplaceId){
-            Exercises.get(window.exerciseToReplaceId).then(exercise => {
+        if (this.exerciseToReplaceId){
+            Exercises.get(this.exerciseToReplaceId).then(exercise => {
                 me.question = exercise.question
                 me.answer = exercise.answer
                 me.selectedItemIds = Object.keys(exercise.contentItemIds)
@@ -89,6 +89,7 @@ export default {
                         }
                     }
                 });
+                me.loading = false
             },0)
         }
 
@@ -104,6 +105,7 @@ export default {
             itemIds: this.itemIds,
             type: 'fact',
             window,
+            loading: true
         }
     },
     computed: {
@@ -161,11 +163,12 @@ export default {
             const exerciseData = this.getExerciseData()
             //TODO allow creation of other types of exercises than QA
             const newExercise = ExerciseQA.create(exerciseData)
+            const me = this
 
-            Exercises.get(window.exerciseToReplaceId).then(exercise => {
+            Exercises.get(this.exerciseToReplaceId).then(exercise => {
                 exercise.contentItemIds.forEach(contentItemId => {
                     ContentItems.get(contentItemId).then(contentItem => {
-                        contentItem.removeExercise(this.exerciseToReplaceId)
+                        contentItem.removeExercise(me.exerciseToReplaceId)
                         contentItem.addExercise(newExercise.id)
                     })
                 })
