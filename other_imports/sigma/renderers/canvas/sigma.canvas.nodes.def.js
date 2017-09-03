@@ -11,6 +11,11 @@
    * @param  {configurable}             settings The settings function.
    */
   sigma.canvas.nodes.def = function(node, context, settings) {
+      if (node.content.type === 'heading') {
+        // renderHeading(node, context, settings)
+        //   return
+      }
+
     var prefix = settings('prefix') || '';
 
     var size = node[prefix + 'size'];
@@ -77,3 +82,7 @@
 
   };
 })();
+
+function renderHeading(node,context,settings){
+
+}

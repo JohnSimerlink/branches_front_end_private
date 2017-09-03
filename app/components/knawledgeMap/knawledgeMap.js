@@ -12,15 +12,15 @@ export default {
     props: ['treeId'],
     template: require('./knawledgeMap.html'),
     created () {
-        var me = this;
-        // require('../treesGraph')
-        initKnawledgeMap.call(this, this.treeId)
+        this.init()
     },
-    data () {
-        return {
+    watch: {
+        '$route': 'init',
+    },
+    methods: {
+        init(){
+            initKnawledgeMap.call(this, this.treeId)
         }
-    },
-    computed : {
     }
 }
 
@@ -91,7 +91,6 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
 
 export function addTreeNodeToGraph(tree,content, level){
     const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
-    console.log('new tree node is', treeUINode)
     if(!initialized){
         g.nodes.push(treeUINode);
     } else {
@@ -106,7 +105,6 @@ function getLabelFromContent(content) {
         case "fact":
             return content.question
         case "heading":
-            console.log("contenttitle is", content.title)
             return content.title
         case "skill":
             return content.title
@@ -159,10 +157,8 @@ function connectTreeToParent(tree,content, g){
         };
         if(!initialized){
             g.edges.push(edge);
-            console.log('connect tree to parent just called with edge of', edge, 'via g edges push')
         } else {
             s.graph.addEdge(edge)
-            console.log('connect tree to parent just called with edge of', edge, 'via s graph addEdge')
         }
     }
 }
