@@ -73,25 +73,39 @@ export class Tree {
     }
 
     changeParent(newParentId) {
+        const me = this
+        ContentItems.get(this.contentId).then(contentItem => {
+            // ContentItems.get(parentTree.id)
+            console.log('changeParent: old parent content Uri is', me.primaryParentTreeContentURI)
+            console.log('changeParent: this  content Uri is', contentItem.uri)
+        })
         this.parentId = newParentId
         firebase.database().ref('trees/' + this.id).update({
             parentId: newParentId
         })
+        console.log("changeParent called")
         this.updatePrimaryParentTreeContentURI()
+
     }
     updatePrimaryParentTreeContentURI(){
+        console.log("updatePrimaryParentTreeContentURI called for", this)
         const me = this
         return Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)]).then(values => {
             const [parentTree, contentItem] = values
-            contentItem.set('primaryParentTreeContentURI', parentTree.uri)
-            contentItem.calculateURIBasedOnParentTreeContentURI()
-            //update for all the children as well
-            const childUpdatePromises = me.children ? Object.keys(me.children).map(child => {
-                return Trees.get(childId).then(childTree => {
-                    return childTree.updatePrimaryParentTreeContentURI()
-                })
-            }) : []
-            return Promises.all(childUpdatePromises)
+            return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
+                contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri)
+                contentItem.calculateURIBasedOnParentTreeContentURI()
+
+                console.log('changeParent: NEW parent Uri is', parentTreeContentItem.uri)
+                console.log('changeParent: NEW this Uri is', contentItem.uri)
+                //update for all the children as well
+                const childUpdatePromises = me.children ? Object.keys(me.children).map(childId => {
+                    return Trees.get(childId).then(childTree => {
+                        return childTree.updatePrimaryParentTreeContentURI()
+                    })
+                }) : []
+                return Promise.all(childUpdatePromises)
+            })
         })
     }
     changeFact(newfactid) {

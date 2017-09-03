@@ -13,9 +13,9 @@ import {Tree} from "./tree";
 export const newNodeXOffset = -2
 export const newNodeYOffset = -2
 
-export function newTree(nodeType, parentTreeId,initialParentTreeContentURI, values){
+export function newTree(nodeType, parentTreeId,primaryParentTreeContentURI, values){
     let newContent = {};
-    values = merge(values, {initialParentTreeId: parentTreeId, initialParentTreeContentURI})
+    values = merge(values, {initialParentTreeId: parentTreeId, primaryParentTreeContentURI})
     switch(nodeType) {
         case 'fact':
             newContent = ContentItems.create(new Fact(values));

@@ -60,7 +60,7 @@ function establishURIs(){
            console.log('contentItem gotten is', contentItem)
            contentItem.set('uri', 'content/' + contentItem.title)
            contentItem.set('initialParentTreeId', null)
-           contentItem.set('initialParentTreeContentURI', null)
+           contentItem.set('primaryParentTreeContentURI', null)
        }).then(() => {
            tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
        })
@@ -82,7 +82,7 @@ function establishURIForContentAndThenAllChildren(treeId){
                    console.log(treeId + ": children are ", tree.children && Object.keys(tree.children))
                    contentItem.set('uri', uri)
                    contentItem.set('initialParentTreeId', parentTree.id)
-                   contentItem.set('initialParentTreeContentURI', parentContentItem.uri)
+                   contentItem.set('primaryParentTreeContentURI', parentContentItem.uri)
                    tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
                })
            })
