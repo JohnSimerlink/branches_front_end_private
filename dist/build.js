@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 194);
+/******/ 	return __webpack_require__(__webpack_require__.s = 193);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(175)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(174)(module)))
 
 /***/ }),
 /* 1 */
@@ -4642,7 +4642,7 @@ exports.Trees = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _tree = __webpack_require__(45);
+var _tree = __webpack_require__(28);
 
 var _firebaseService = __webpack_require__(7);
 
@@ -4695,6 +4695,178 @@ var Trees = exports.Trees = function () {
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _fact = __webpack_require__(25);
+
+var _skill = __webpack_require__(27);
+
+var _heading = __webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var factsAndSkills = {};
+var content = {};
+if (typeof window !== 'undefined') {
+    window.content = content;
+}
+
+function createContentItemFromData(contentData, contentDatumKey) {
+    var contentItem = void 0;
+
+    switch (contentData.type) {
+        case 'fact':
+            contentItem = new _fact.Fact(contentData);
+            factsAndSkills[contentItem.id] = contentItem;
+            break;
+        case 'skill':
+            contentItem = new _skill.Skill(contentData);
+            factsAndSkills[contentItem.id] = contentItem;
+            break;
+        case 'heading':
+            contentItem = new _heading.Heading(contentData);
+            break;
+        default:
+            console.error( //bc there was some corrupted data
+            'NO TYPE DETECTED for contentData', contentData, contentDatumKey);
+            contentItem = new _fact.Fact(contentData);
+            break;
+    }
+    contentItem.init(); // post constructor
+
+    content[contentItem.id] = contentItem; // add to cache
+    return contentItem;
+}
+
+var ContentItems = function () {
+    function ContentItems() {
+        _classCallCheck(this, ContentItems);
+    }
+
+    _createClass(ContentItems, null, [{
+        key: "get",
+        value: function get(contentId) {
+            if (!contentId) {
+                throw "Content.get(contentId) error! contentId empty!";
+            }
+            return new Promise(function (resolve, reject) {
+                if (content[contentId]) {
+                    resolve(content[contentId]);
+                } else {
+                    _firebaseService2.default.database().ref('content/' + contentId).once("value", function (snapshot) {
+                        var contentData = snapshot.val();
+                        if (!contentData) {
+                            console.log("NO CONTENTDATA FOUND FOR", contentId);
+                            reject("ERROR!: no data found found for contentid of ", contentId);
+                        } else {
+                            var contentItem = createContentItemFromData(contentData);
+                            resolve(contentItem);
+                        }
+                    }, reject);
+                }
+            });
+        }
+    }, {
+        key: "getAll",
+        value: function getAll() {
+            return new Promise(function (resolve, reject) {
+                _firebaseService2.default.database().ref('content/').once("value", function (snapshot) {
+                    var contentData = snapshot.val();
+                    Object.keys(contentData).filter(function (contentDatumKey) {
+                        var uri = contentData[contentDatumKey].uri;
+                        if (!uri || uri.indexOf("null") == 0) {
+                            //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                            return false;
+                        }
+                        return true;
+                    }).forEach(function (contentDatumKey) {
+                        var contentDatum = contentData[contentDatumKey];
+                        if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+                        var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
+                    });
+                    resolve(content); //the cache containing all
+                }, reject);
+            });
+        }
+    }, {
+        key: "getAllExceptForHeadings",
+        value: function getAllExceptForHeadings() {
+            function processSnapshot(snapshot, resolve) {
+                var contentData = snapshot.val();
+                Object.keys(contentData).filter(function (contentDatumKey) {
+                    var uri = contentData[contentDatumKey].uri;
+                    if (!uri || uri.indexOf("null") == 0) {
+                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+                        return false;
+                    }
+                    return true;
+                }).forEach(function (contentDatumKey) {
+                    var contentDatum = contentData[contentDatumKey];
+                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+                    var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
+                });
+                // resolve(content) //the cache containing all
+            }
+            return new Promise(function (resolve, reject) {
+                var skillPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
+                    processSnapshot(snapshot, resolve);
+                }, reject);
+                var factPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function (snapshot) {
+                    processSnapshot(snapshot, resolve);
+                }, reject);
+                Promise.all([skillPromise, factPromise]).then(function () {
+                    resolve(factsAndSkills);
+                });
+            });
+        }
+
+        /**
+         * Create a new content object in the database
+         * @param contentItem
+         * @returns newly created contentItem
+         */
+
+    }, {
+        key: "create",
+        value: function create(contentItem) {
+            var updates = {};
+            updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
+            _firebaseService2.default.database().ref().update(updates);
+            return contentItem;
+        }
+    }, {
+        key: "remove",
+        value: function remove(contentItemId) {
+            console.log('remove contentItemId called', contentItemId);
+            console.log("num items is", Object.keys(content).length);
+            delete content[contentItemId];
+            console.log("num items is now", Object.keys(content).length);
+            _firebaseService2.default.database().ref('content/').child(contentItemId).remove(); //.once("value", function(snapshot){
+        }
+    }]);
+
+    return ContentItems;
+}();
+
+exports.default = ContentItems;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4933,178 +5105,6 @@ function internalError(message) {
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _firebaseService = __webpack_require__(7);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-var _fact = __webpack_require__(25);
-
-var _skill = __webpack_require__(27);
-
-var _heading = __webpack_require__(26);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var factsAndSkills = {};
-var content = {};
-if (typeof window !== 'undefined') {
-    window.content = content;
-}
-
-function createContentItemFromData(contentData, contentDatumKey) {
-    var contentItem = void 0;
-
-    switch (contentData.type) {
-        case 'fact':
-            contentItem = new _fact.Fact(contentData);
-            factsAndSkills[contentItem.id] = contentItem;
-            break;
-        case 'skill':
-            contentItem = new _skill.Skill(contentData);
-            factsAndSkills[contentItem.id] = contentItem;
-            break;
-        case 'heading':
-            contentItem = new _heading.Heading(contentData);
-            break;
-        default:
-            console.error( //bc there was some corrupted data
-            'NO TYPE DETECTED for contentData', contentData, contentDatumKey);
-            contentItem = new _fact.Fact(contentData);
-            break;
-    }
-    contentItem.init(); // post constructor
-
-    content[contentItem.id] = contentItem; // add to cache
-    return contentItem;
-}
-
-var ContentItems = function () {
-    function ContentItems() {
-        _classCallCheck(this, ContentItems);
-    }
-
-    _createClass(ContentItems, null, [{
-        key: "get",
-        value: function get(contentId) {
-            if (!contentId) {
-                throw "Content.get(contentId) error! contentId empty!";
-            }
-            return new Promise(function (resolve, reject) {
-                if (content[contentId]) {
-                    resolve(content[contentId]);
-                } else {
-                    _firebaseService2.default.database().ref('content/' + contentId).once("value", function (snapshot) {
-                        var contentData = snapshot.val();
-                        if (!contentData) {
-                            console.log("NO CONTENTDATA FOUND FOR", contentId);
-                            reject("ERROR!: no data found found for contentid of ", contentId);
-                        } else {
-                            var contentItem = createContentItemFromData(contentData);
-                            resolve(contentItem);
-                        }
-                    }, reject);
-                }
-            });
-        }
-    }, {
-        key: "getAll",
-        value: function getAll() {
-            return new Promise(function (resolve, reject) {
-                _firebaseService2.default.database().ref('content/').once("value", function (snapshot) {
-                    var contentData = snapshot.val();
-                    Object.keys(contentData).filter(function (contentDatumKey) {
-                        var uri = contentData[contentDatumKey].uri;
-                        if (!uri || uri.indexOf("null") == 0) {
-                            //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                            return false;
-                        }
-                        return true;
-                    }).forEach(function (contentDatumKey) {
-                        var contentDatum = contentData[contentDatumKey];
-                        if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                        var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                    });
-                    resolve(content); //the cache containing all
-                }, reject);
-            });
-        }
-    }, {
-        key: "getAllExceptForHeadings",
-        value: function getAllExceptForHeadings() {
-            function processSnapshot(snapshot, resolve) {
-                var contentData = snapshot.val();
-                Object.keys(contentData).filter(function (contentDatumKey) {
-                    var uri = contentData[contentDatumKey].uri;
-                    if (!uri || uri.indexOf("null") == 0) {
-                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false;
-                    }
-                    return true;
-                }).forEach(function (contentDatumKey) {
-                    var contentDatum = contentData[contentDatumKey];
-                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                    var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                });
-                // resolve(content) //the cache containing all
-            }
-            return new Promise(function (resolve, reject) {
-                var skillPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
-                    processSnapshot(snapshot, resolve);
-                }, reject);
-                var factPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function (snapshot) {
-                    processSnapshot(snapshot, resolve);
-                }, reject);
-                Promise.all([skillPromise, factPromise]).then(function () {
-                    resolve(factsAndSkills);
-                });
-            });
-        }
-
-        /**
-         * Create a new content object in the database
-         * @param contentItem
-         * @returns newly created contentItem
-         */
-
-    }, {
-        key: "create",
-        value: function create(contentItem) {
-            var updates = {};
-            updates['/content/' + contentItem.id] = contentItem.getDBRepresentation();
-            _firebaseService2.default.database().ref().update(updates);
-            return contentItem;
-        }
-    }, {
-        key: "remove",
-        value: function remove(contentItemId) {
-            console.log('remove contentItemId called', contentItemId);
-            console.log("num items is", Object.keys(content).length);
-            delete content[contentItemId];
-            console.log("num items is now", Object.keys(content).length);
-            _firebaseService2.default.database().ref('content/').child(contentItemId).remove(); //.once("value", function(snapshot){
-        }
-    }]);
-
-    return ContentItems;
-}();
-
-exports.default = ContentItems;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5122,7 +5122,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(30);
+var _shared_promise = __webpack_require__(31);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -5196,13 +5196,13 @@ var _firebase = __webpack_require__(210);
 
 var firebase = _interopRequireWildcard(_firebase);
 
-var _config = __webpack_require__(41);
+var _config = __webpack_require__(42);
 
-var _firebaseDevConfig = __webpack_require__(181);
+var _firebaseDevConfig = __webpack_require__(180);
 
 var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
 
-var _firebaseProdConfig = __webpack_require__(182);
+var _firebaseProdConfig = __webpack_require__(181);
 
 var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
 
@@ -5236,7 +5236,7 @@ var _firebaseService = __webpack_require__(7);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _users = __webpack_require__(28);
+var _users = __webpack_require__(29);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -7638,7 +7638,7 @@ function stubFalse() {
 
 module.exports = merge;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(175)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(174)(module)))
 
 /***/ }),
 /* 12 */
@@ -7646,9 +7646,9 @@ module.exports = merge;
 
 (function(){
   var crypt = __webpack_require__(199),
-      utf8 = __webpack_require__(46).utf8,
+      utf8 = __webpack_require__(45).utf8,
       isBuffer = __webpack_require__(249),
-      bin = __webpack_require__(46).bin,
+      bin = __webpack_require__(45).bin,
 
   // The core
   md5 = function (message, options) {
@@ -8184,7 +8184,7 @@ var _user = __webpack_require__(8);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _review = __webpack_require__(190);
+var _review = __webpack_require__(189);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -8204,7 +8204,7 @@ var ContentItem = function () {
         _classCallCheck(this, ContentItem);
 
         this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
-        this.initialParentTreeContentURI = this.initialParentTreeContentURI || args && args.initialParentTreeContentURI || null;
+        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || args && args.primaryParentTreeContentURI || null;
         this.trees = args.trees || {};
 
         this.userTimeMap = args.userTimeMap || {};
@@ -8231,7 +8231,8 @@ var ContentItem = function () {
     _createClass(ContentItem, [{
         key: 'init',
         value: function init() {
-            this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition(); // this is for contentItems just created from a parent, not ones loaded from the db.
+            this.calculateURIBasedOnParentTreeContentURI();
+            // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
         }
 
         //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -8241,7 +8242,7 @@ var ContentItem = function () {
         value: function getDBRepresentation() {
             return {
                 initialParentTreeId: this.initialParentTreeId,
-                initialParentTreeContentURI: this.initialParentTreeContentURI,
+                primaryParentTreeContentURI: this.primaryParentTreeContentURI,
                 userTimeMap: this.userTimeMap,
                 userProficiencyMap: this.userProficiencyMap,
                 userInteractionsMap: this.userInteractionsMap,
@@ -8352,6 +8353,12 @@ var ContentItem = function () {
                 trees: trees
             };
             firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'calculateURIBasedOnParentTreeContentURI',
+        value: function calculateURIBasedOnParentTreeContentURI() {
+            var uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition();
+            this.set('uri', uri);
         }
         //TODO : make timer for heading be the sum of the time of all the child facts
 
@@ -8555,7 +8562,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -8698,25 +8705,26 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.removeTreeFromGraph = removeTreeFromGraph;
+exports.addTreeNodeToGraph = addTreeNodeToGraph;
 exports.proficiencyToColor = proficiencyToColor;
 exports.syncGraphWithNode = syncGraphWithNode;
 exports.addTreeToGraph = addTreeToGraph;
 
 var _trees = __webpack_require__(2);
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _tree = __webpack_require__(45);
+var _tree = __webpack_require__(28);
 
-var _globals = __webpack_require__(196);
+var _globals = __webpack_require__(195);
 
 var _dataKeys = __webpack_require__(198);
 
 var _dataKeys2 = _interopRequireDefault(_dataKeys);
 
-__webpack_require__(42);
+__webpack_require__(43);
 
 var _user = __webpack_require__(8);
 
@@ -8729,6 +8737,8 @@ var _vue2 = _interopRequireDefault(_vue);
 var _proficiencyEnum = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 exports.default = {
     props: ['treeId'],
@@ -8754,8 +8764,8 @@ var s,
     positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
     icons = ['\uF11B', '\uF11C', '\uF11D', '\uF128', '\uF129', '\uF130', '\uF131', '\uF132'];
 
-var newNodeXOffset = -2,
-    newNodeYOffset = 2;
+var initialized = false;
+
 var EDGE_TYPES = {
     SUGGESTED_CONNECTION: 9001,
     HIERARCHICAL: 9002
@@ -8767,6 +8777,7 @@ function getTreeColor(content) {
     return color;
 }
 function removeTreeFromGraph(treeId) {
+    console.log('remove tree called for ', treeId);
     s.graph.dropNode(treeId);
     return _trees.Trees.get(treeId).then(function (tree) {
         var childPromises = tree.children ? Object.keys(tree.children).map(removeTreeFromGraph) : [];
@@ -8777,11 +8788,41 @@ function removeTreeFromGraph(treeId) {
     });
 }
 
+function createTreeNodeFromTreeAndContent(tree, content, level) {
+    var node = {
+        id: tree.id,
+        parentId: tree.parentId,
+        level: level,
+        x: tree.x,
+        y: tree.y,
+        children: tree.children,
+        content: content,
+        label: getLabelFromContent(content),
+        size: 1,
+        color: getTreeColor(content),
+        type: 'tree'
+    };
+    return node;
+}
+
+function addTreeNodeToGraph(tree, content, level) {
+    var treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
+    console.log('new tree node is', treeUINode);
+    if (!initialized) {
+        g.nodes.push(treeUINode);
+    } else {
+        s.graph.addNode(treeUINode);
+    }
+    connectTreeToParent(tree, content, g);
+    return content.id;
+}
+
 function getLabelFromContent(content) {
     switch (content.type) {
         case "fact":
             return content.question;
         case "heading":
+            console.log("contenttitle is", content.title);
             return content.title;
         case "skill":
             return content.title;
@@ -8822,6 +8863,25 @@ function syncGraphWithNode(treeId) {
     });
 }
 
+function connectTreeToParent(tree, content, g) {
+    if (tree.parentId) {
+        var edge = {
+            id: createEdgeId(tree.parentId, tree.id),
+            source: tree.parentId,
+            target: tree.id,
+            size: 5,
+            color: getTreeColor(content),
+            type: EDGE_TYPES.HIERARCHICAL
+        };
+        if (!initialized) {
+            g.edges.push(edge);
+            console.log('connect tree to parent just called with edge of', edge, 'via g edges push');
+        } else {
+            s.graph.addEdge(edge);
+            console.log('connect tree to parent just called with edge of', edge, 'via s graph addEdge');
+        }
+    }
+}
 //returns sigma tree node
 function addTreeToGraph(parentTreeId, content) {
     //1. delete current addNewNode button
@@ -8842,9 +8902,10 @@ function addTreeToGraph(parentTreeId, content) {
         size: 1,
         color: getTreeColor(content),
         type: 'tree'
-        //2b. update x and y location in the db for the tree
+    };
+    console.log('label in addTreeToGraph is', newTree.label);
 
-    };s.graph.addNode(newTree);
+    s.graph.addNode(newTree);
     //3. add edge between new node and parent tree
     var newEdge = {
         id: createEdgeId(parentTreeId, newTree.id),
@@ -8863,7 +8924,6 @@ function addTreeToGraph(parentTreeId, content) {
 function initKnawledgeMap(treeIdToJumpTo) {
     var me = this; // bound/called
 
-    var initialized = false;
 
     if (typeof sigma !== 'undefined') {
         sigma.settings.font = 'Fredoka One';
@@ -8921,58 +8981,17 @@ function initKnawledgeMap(treeIdToJumpTo) {
         var childTreesPromises = tree.children ? Object.keys(tree.children).map(function (child) {
             return loadTreeAndSubTrees(child, level + 1);
         }) : [];
-        //     loadTreeAndSubTrees
-        // }) : []
-        var promises = childTreesPromises;
-        promises.push(contentPromise);
 
-        return Promise.all(promises);
-    }
-
-    function addTreeNodeToGraph(tree, content, level) {
-        var treeUINode = createTreeNodeFromTreeAndContent(tree, content, level);
-
-        g.nodes.push(treeUINode);
-        connectTreeToParent(tree, content, g);
-        return content.id;
+        return Promise.all([].concat(_toConsumableArray(childTreesPromises), [contentPromise]));
     }
 
     //recursively load the entire tree
     // Instantiate sigma:
-    function createTreeNodeFromTreeAndContent(tree, content, level) {
-        var node = {
-            id: tree.id,
-            parentId: tree.parentId,
-            level: level,
-            x: tree.x,
-            y: tree.y,
-            children: tree.children,
-            content: content,
-            label: getLabelFromContent(content),
-            size: 1,
-            color: getTreeColor(content),
-            type: 'tree'
-        };
-        return node;
-    }
     /**
      * Get tree colors for descending proficiency levels. Default to "existing node" color
      * @param tree
      * @returns {*}
      */
-    function connectTreeToParent(tree, content, g) {
-        if (tree.parentId) {
-            var edge = {
-                id: createEdgeId(tree.parentId, tree.id),
-                source: tree.parentId,
-                target: tree.id,
-                size: 5,
-                color: getTreeColor(content),
-                type: EDGE_TYPES.HIERARCHICAL
-            };
-            g.edges.push(edge);
-        }
-    }
     //returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
 
     function initSigma() {
@@ -9133,6 +9152,9 @@ function initKnawledgeMap(treeIdToJumpTo) {
         if (typeof window == 'undefined') {
             return;
         }
+        if (!window.awaitingEdgeConnection && !window.awaitingDisconnectConfirmation) {
+            return;
+        }
         switch (window.scalingOffset) {
             case -20:
                 window.scalingOffset = -10;
@@ -9167,7 +9189,7 @@ function initKnawledgeMap(treeIdToJumpTo) {
         }
         window.haloSizeScalingFactor = 1 + window.scalingOffset / 1000;
         window.haloEdgeSizeScalingFactor = 1 + 4 * window.scalingOffset / 1000;
-        s && s.refresh();
+        // s && s.refresh() << comment out for performance reasons
     }, 100);
 
     function showPossibleEdges(parentlessNode) {
@@ -19200,7 +19222,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -19859,6 +19881,288 @@ var Skill = exports.Skill = function (_ContentItem) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Tree = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _md = __webpack_require__(12);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _firebaseService = __webpack_require__(7);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _trees = __webpack_require__(2);
+
+var _contentItems = __webpack_require__(3);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _knawledgeMap = __webpack_require__(18);
+
+var _timers = __webpack_require__(197);
+
+var _timers2 = _interopRequireDefault(_timers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var treesRef = _firebaseService2.default.database().ref('trees');
+var trees = {};
+
+
+function loadObject(treeObj, self) {
+    Object.keys(treeObj).forEach(function (key) {
+        return self[key] = treeObj[key];
+    });
+}
+
+var Tree = exports.Tree = function () {
+    function Tree(contentId, contentType, parentId, parentDegree, x, y) {
+        _classCallCheck(this, Tree);
+
+        var treeObj;
+        if (arguments[0] && _typeof(arguments[0]) === 'object') {
+            treeObj = arguments[0];
+            loadObject(treeObj, this);
+            return;
+        }
+
+        this.contentId = contentId;
+        this.contentType = contentType;
+        this.parentId = parentId;
+        this.children = {};
+
+        this.x = x;
+        this.y = y;
+
+        treeObj = { contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children };
+        this.id = (0, _md2.default)(JSON.stringify(treeObj));
+        if (_typeof(arguments[0]) === 'object') {
+            //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
+            return;
+        }
+        _firebaseService2.default.database().ref('trees/' + this.id).update({
+            id: this.id,
+            contentId: contentId,
+            contentType: contentType,
+            parentId: parentId,
+            x: x,
+            y: y
+        });
+    }
+    /**
+     * Add a child tree to this tree
+     * @param treeId
+     */
+
+
+    _createClass(Tree, [{
+        key: 'addChild',
+        value: function addChild(treeId) {
+            // this.treeRef.child('/children').push(treeId)
+            var children = this.children || {};
+            children[treeId] = true;
+            var updates = {
+                children: children
+            };
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+        }
+    }, {
+        key: 'unlinkFromParentAndDeleteContent',
+        value: function unlinkFromParentAndDeleteContent() {
+            var treeId = this.id;
+            console.log('unlink from parent called for ', this);
+            _trees.Trees.get(this.parentId).then(function (parentTree) {
+                parentTree.removeChild(treeId);
+            });
+            _trees.Trees.get(treeId).then();
+            this.changeParent(null);
+        }
+    }, {
+        key: 'removeChild',
+        value: function removeChild(childId) {
+            delete this.children[childId];
+
+            _firebaseService2.default.database().ref('trees/' + this.id).update({ children: this.children });
+        }
+    }, {
+        key: 'changeParent',
+        value: function changeParent(newParentId) {
+            var me = this;
+            _contentItems2.default.get(this.contentId).then(function (contentItem) {
+                // ContentItems.get(parentTree.id)
+                console.log('changeParent: old parent content Uri is', me.primaryParentTreeContentURI);
+                console.log('changeParent: this  content Uri is', contentItem.uri);
+            });
+            this.parentId = newParentId;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                parentId: newParentId
+            });
+            console.log("changeParent called");
+            this.updatePrimaryParentTreeContentURI();
+        }
+    }, {
+        key: 'updatePrimaryParentTreeContentURI',
+        value: function updatePrimaryParentTreeContentURI() {
+            console.log("updatePrimaryParentTreeContentURI called for", this);
+            var me = this;
+            return Promise.all([_trees.Trees.get(this.parentId), _contentItems2.default.get(this.contentId)]).then(function (values) {
+                var _values = _slicedToArray(values, 2),
+                    parentTree = _values[0],
+                    contentItem = _values[1];
+
+                return _contentItems2.default.get(parentTree.contentId).then(function (parentTreeContentItem) {
+                    contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri);
+                    contentItem.calculateURIBasedOnParentTreeContentURI();
+
+                    console.log('changeParent: NEW parent Uri is', parentTreeContentItem.uri);
+                    console.log('changeParent: NEW this Uri is', contentItem.uri);
+                    //update for all the children as well
+                    var childUpdatePromises = me.children ? Object.keys(me.children).map(function (childId) {
+                        return _trees.Trees.get(childId).then(function (childTree) {
+                            return childTree.updatePrimaryParentTreeContentURI();
+                        });
+                    }) : [];
+                    return Promise.all(childUpdatePromises);
+                });
+            });
+        }
+    }, {
+        key: 'changeFact',
+        value: function changeFact(newfactid) {
+            this.factId = newfactid;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                factId: newfactid
+            });
+        }
+
+        /**
+         * Change the content of a given node ("Tree")
+         * Available content types currently header and fact
+         */
+
+    }, {
+        key: 'changeContent',
+        value: function changeContent(contentId, contentType) {
+            this.contentId = contentId;
+            this.contentType = contentType;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                contentId: contentId,
+                contentType: contentType
+            });
+        }
+
+        /**
+         * Used to update tree X and Y coordinates
+         * @param prop
+         * @param val
+         */
+
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
+            }
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+            this[prop] = val;
+        }
+    }, {
+        key: 'addToX',
+        value: function addToX() {
+            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
+                recursion = _ref.recursion,
+                deltaX = _ref.deltaX;
+
+            var newX = this.x + deltaX;
+            this.set('x', newX);
+
+            (0, _knawledgeMap.syncGraphWithNode)(this.id);
+            if (!recursion) return;
+
+            // console.log('addToX called on', this, ...arguments)
+            this.children && Object.keys(this.children).forEach(function (childId) {
+                _trees.Trees.get(childId).then(function (child) {
+                    child.addToX({ recursion: true, deltaX: deltaX });
+                });
+            });
+        }
+    }, {
+        key: 'addToY',
+        value: function addToY() {
+            var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
+                recursion = _ref2.recursion,
+                deltaY = _ref2.deltaY;
+
+            var newY = this.y + deltaY;
+            this.set('y', newY);
+
+            (0, _knawledgeMap.syncGraphWithNode)(this.id);
+            if (!recursion) return;
+
+            // console.log('addToY called on', this, ...arguments)
+            this.children && Object.keys(this.children).forEach(function (childId) {
+                _trees.Trees.get(childId).then(function (child) {
+                    child.addToY({ recursion: true, deltaY: deltaY });
+                });
+            });
+        }
+        //promise
+
+    }, {
+        key: 'getPriority',
+        value: function getPriority() {
+            var node = this;
+            if (node.parentId) {
+                _trees.Trees.get(node.parentId).then(function (parent) {
+                    return parent.getPriority() + 1;
+                });
+            } else {
+                return new Promise(function (resolve, reject) {
+                    resolve(1);
+                });
+            }
+        }
+    }]);
+
+    return Tree;
+}();
+//TODO: get typeScript so we can have a schema for treeObj
+//treeObj  example
+/*
+ parentId: parentTreeId,
+ factId: fact.id,
+ x: parseInt(currentNewChildTree.x),
+ y: parseInt(currentNewChildTree.y),
+ children: {},
+ label: fact.question + ' ' + fact.answer,
+ size: 1,
+ color: Globals.existingColor,
+ type: 'tree'
+ */
+//invoke like a constructor - new Tree(parentId, factId)
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -19912,7 +20216,7 @@ var Users = function () {
 exports.default = Users;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20019,7 +20323,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20069,7 +20373,7 @@ var local = exports.local = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20092,11 +20396,11 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(33);
+var _metadata = __webpack_require__(34);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -20233,7 +20537,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20307,7 +20611,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20336,7 +20640,7 @@ var json = _interopRequireWildcard(_json);
 
 var _location = __webpack_require__(22);
 
-var _path = __webpack_require__(53);
+var _path = __webpack_require__(52);
 
 var path = _interopRequireWildcard(_path);
 
@@ -20344,7 +20648,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(35);
+var _url = __webpack_require__(36);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -20517,7 +20821,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20539,7 +20843,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -20727,7 +21031,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20797,7 +21101,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20807,7 +21111,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -20824,7 +21128,7 @@ exports.default = {
             me.items = items;
             Object.keys(me.items).forEach(function (key) {
                 var item = me.items[key];
-                console.log("item Id" + item.id + " ---- initialParentTreeContentURI: " + item.initialParentTreeContentURI + "---- item is", item);
+                console.log("item Id" + item.id + " ---- primaryParentTreeContentURI: " + item.primaryParentTreeContentURI + "---- item is", item);
             });
         });
         this.num = 5;
@@ -20848,7 +21152,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20858,7 +21162,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['contentItemId'],
+    props: ['contentItemId', 'exerciseToReplaceId'],
     template: __webpack_require__(235),
     created: function created() {
         var me = this;
@@ -20871,7 +21175,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20885,7 +21189,7 @@ var _exercise = __webpack_require__(15);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exercises = __webpack_require__(43);
+var _exercises = __webpack_require__(44);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
@@ -20893,11 +21197,11 @@ var _exerciseQA = __webpack_require__(24);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(174);
+var _snack = __webpack_require__(173);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -20905,7 +21209,7 @@ __webpack_require__(256);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-var _invertObject = __webpack_require__(58);
+var _invertObject = __webpack_require__(57);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
@@ -21026,8 +21330,9 @@ exports.default = {
             }
         },
         editExercise: function editExercise() {
-            window.exerciseToReplaceId = this.exerciseId;
-            PubSub.publish('goToState.exerciseCreator');
+            this.$router.push({ name: 'edit', params: { exerciseToReplaceId: this.exerciseId } });
+            // window.exerciseToReplaceId = this.exerciseId
+            // PubSub.publish('goToState.exerciseCreator')
         },
         deleteExercise: function deleteExercise() {
             if (confirm("Are you sure you want to delete this exercise? For every single user?")) {
@@ -21039,7 +21344,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21061,7 +21366,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21121,7 +21426,7 @@ function secondsToPretty() {
 _vue2.default.filter('secondsToPretty', secondsToPretty);
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21132,7 +21437,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(195);
+var _env = __webpack_require__(194);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -21146,7 +21451,7 @@ var Config = exports.Config = {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21184,7 +21489,7 @@ function login() {
 }
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21276,311 +21581,7 @@ var Exercises = function () {
 exports.default = Exercises;
 
 /***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.newTree = newTree;
-
-var _lodash = __webpack_require__(11);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _knawledgeMap = __webpack_require__(18);
-
-var _trees = __webpack_require__(2);
-
-var _contentItems = __webpack_require__(4);
-
-var _contentItems2 = _interopRequireDefault(_contentItems);
-
-var _fact = __webpack_require__(25);
-
-var _heading = __webpack_require__(26);
-
-var _skill = __webpack_require__(27);
-
-var _proficiencyEnum = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function newTree(nodeType, parentTreeId, initialParentTreeContentURI, values) {
-    var newContent = {};
-    values = (0, _lodash2.default)(values, { initialParentTreeId: parentTreeId, initialParentTreeContentURI: initialParentTreeContentURI });
-    switch (nodeType) {
-        case 'fact':
-            newContent = _contentItems2.default.create(new _fact.Fact(values));
-            break;
-        case 'heading':
-            newContent = _contentItems2.default.create(new _heading.Heading(values));
-            break;
-        case 'skill':
-            newContent = _contentItems2.default.create(new _skill.Skill(values));
-            break;
-        default:
-            newContent = _contentItems2.default.create(new _fact.Fact(values));
-            break;
-    }
-
-    console.log('new content just created is', newContent);
-    newContent.setProficiency(_proficiencyEnum.PROFICIENCIES.ONE);
-    var tree = (0, _knawledgeMap.addTreeToGraph)(parentTreeId, newContent);
-    console.log('new Tree created is', tree);
-    //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
-    //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
-    _trees.Trees.get(parentTreeId).then(function (parentTree) {
-        parentTree.addChild(tree.id);
-    });
-    newContent.addTree(tree.id);
-}
-
-/***/ }),
 /* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Tree = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _md = __webpack_require__(12);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _firebaseService = __webpack_require__(7);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-var _trees = __webpack_require__(2);
-
-var _knawledgeMap = __webpack_require__(18);
-
-var _timers = __webpack_require__(197);
-
-var _timers2 = _interopRequireDefault(_timers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var treesRef = _firebaseService2.default.database().ref('trees');
-var trees = {};
-
-
-function loadObject(treeObj, self) {
-    Object.keys(treeObj).forEach(function (key) {
-        return self[key] = treeObj[key];
-    });
-}
-
-var Tree = exports.Tree = function () {
-    function Tree(contentId, contentType, parentId, parentDegree, x, y) {
-        _classCallCheck(this, Tree);
-
-        var treeObj;
-        if (arguments[0] && _typeof(arguments[0]) === 'object') {
-            treeObj = arguments[0];
-            loadObject(treeObj, this);
-            return;
-        }
-
-        this.contentId = contentId;
-        this.contentType = contentType;
-        this.parentId = parentId;
-        this.children = {};
-
-        this.x = x;
-        this.y = y;
-
-        treeObj = { contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children };
-        this.id = (0, _md2.default)(JSON.stringify(treeObj));
-        if (_typeof(arguments[0]) === 'object') {
-            //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
-            return;
-        }
-        _firebaseService2.default.database().ref('trees/' + this.id).update({
-            id: this.id,
-            contentId: contentId,
-            contentType: contentType,
-            parentId: parentId,
-            x: x,
-            y: y
-        });
-    }
-    /**
-     * Add a child tree to this tree
-     * @param treeId
-     */
-
-
-    _createClass(Tree, [{
-        key: 'addChild',
-        value: function addChild(treeId) {
-            // this.treeRef.child('/children').push(treeId)
-            var children = this.children || {};
-            children[treeId] = true;
-            var updates = {
-                children: children
-            };
-            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-        }
-    }, {
-        key: 'unlinkFromParent',
-        value: function unlinkFromParent() {
-            var treeId = this.id;
-            _trees.Trees.get(this.parentId).then(function (parentTree) {
-                parentTree.removeChild(treeId);
-            });
-            this.changeParent(null);
-        }
-    }, {
-        key: 'removeChild',
-        value: function removeChild(childId) {
-            delete this.children[childId];
-
-            _firebaseService2.default.database().ref('trees/' + this.id).update({ children: this.children });
-        }
-    }, {
-        key: 'changeParent',
-        value: function changeParent(newParentId) {
-            this.parentId = newParentId;
-            _firebaseService2.default.database().ref('trees/' + this.id).update({
-                parentId: newParentId
-            });
-        }
-    }, {
-        key: 'changeFact',
-        value: function changeFact(newfactid) {
-            this.factId = newfactid;
-            _firebaseService2.default.database().ref('trees/' + this.id).update({
-                factId: newfactid
-            });
-        }
-
-        /**
-         * Change the content of a given node ("Tree")
-         * Available content types currently header and fact
-         */
-
-    }, {
-        key: 'changeContent',
-        value: function changeContent(contentId, contentType) {
-            this.contentId = contentId;
-            this.contentType = contentType;
-            _firebaseService2.default.database().ref('trees/' + this.id).update({
-                contentId: contentId,
-                contentType: contentType
-            });
-        }
-
-        /**
-         * Used to update tree X and Y coordinates
-         * @param prop
-         * @param val
-         */
-
-    }, {
-        key: 'set',
-        value: function set(prop, val) {
-            if (this[prop] == val) {
-                return;
-            }
-
-            var updates = {};
-            updates[prop] = val;
-            // this.treeRef.update(updates)
-            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-            this[prop] = val;
-        }
-    }, {
-        key: 'addToX',
-        value: function addToX() {
-            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
-                recursion = _ref.recursion,
-                deltaX = _ref.deltaX;
-
-            var newX = this.x + deltaX;
-            this.set('x', newX);
-
-            (0, _knawledgeMap.syncGraphWithNode)(this.id);
-            if (!recursion) return;
-
-            // console.log('addToX called on', this, ...arguments)
-            this.children && Object.keys(this.children).forEach(function (childId) {
-                _trees.Trees.get(childId).then(function (child) {
-                    child.addToX({ recursion: true, deltaX: deltaX });
-                });
-            });
-        }
-    }, {
-        key: 'addToY',
-        value: function addToY() {
-            var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
-                recursion = _ref2.recursion,
-                deltaY = _ref2.deltaY;
-
-            var newY = this.y + deltaY;
-            this.set('y', newY);
-
-            (0, _knawledgeMap.syncGraphWithNode)(this.id);
-            if (!recursion) return;
-
-            // console.log('addToY called on', this, ...arguments)
-            this.children && Object.keys(this.children).forEach(function (childId) {
-                _trees.Trees.get(childId).then(function (child) {
-                    child.addToY({ recursion: true, deltaY: deltaY });
-                });
-            });
-        }
-        //promise
-
-    }, {
-        key: 'getPriority',
-        value: function getPriority() {
-            var node = this;
-            if (node.parentId) {
-                _trees.Trees.get(node.parentId).then(function (parent) {
-                    return parent.getPriority() + 1;
-                });
-            } else {
-                return new Promise(function (resolve, reject) {
-                    resolve(1);
-                });
-            }
-        }
-    }]);
-
-    return Tree;
-}();
-//TODO: get typeScript so we can have a schema for treeObj
-//treeObj  example
-/*
- parentId: parentTreeId,
- factId: fact.id,
- x: parseInt(currentNewChildTree.x),
- y: parseInt(currentNewChildTree.y),
- children: {},
- label: fact.question + ' ' + fact.answer,
- size: 1,
- color: Globals.existingColor,
- type: 'tree'
- */
-//invoke like a constructor - new Tree(parentId, factId)
-
-/***/ }),
-/* 46 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -21619,7 +21620,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21640,7 +21641,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(30);
+var _shared_promise = __webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21904,7 +21905,7 @@ function noop() {
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21935,7 +21936,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(29);
+var _errors = __webpack_require__(30);
 
 var _errors2 = __webpack_require__(20);
 
@@ -21945,7 +21946,7 @@ var _tokenManager = __webpack_require__(216);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(50);
+var _notificationPermission = __webpack_require__(49);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -22144,7 +22145,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22187,7 +22188,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22225,7 +22226,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22284,7 +22285,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22325,7 +22326,7 @@ var _fs = __webpack_require__(223);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(34);
+var _string = __webpack_require__(35);
 
 var string = _interopRequireWildcard(_string);
 
@@ -22450,7 +22451,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22540,7 +22541,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22569,17 +22570,17 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(32);
+var _array = __webpack_require__(33);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(52);
+var _blob = __webpack_require__(51);
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(33);
+var _metadata = __webpack_require__(34);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -22593,7 +22594,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(35);
+var _url = __webpack_require__(36);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -22894,7 +22895,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22971,7 +22972,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23012,7 +23013,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23047,19 +23048,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(31);
+var _args = __webpack_require__(32);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(52);
+var _blob = __webpack_require__(51);
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
 var _location = __webpack_require__(22);
 
-var _metadata = __webpack_require__(33);
+var _metadata = __webpack_require__(34);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -23067,15 +23068,15 @@ var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(53);
+var _path = __webpack_require__(52);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(54);
+var _requests = __webpack_require__(53);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(34);
+var _string = __webpack_require__(35);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -23321,7 +23322,7 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports) {
 
 
@@ -23341,7 +23342,7 @@ module.exports = invert
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23419,7 +23420,7 @@ return af;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23483,7 +23484,7 @@ return arDz;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23547,7 +23548,7 @@ return arKw;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23678,7 +23679,7 @@ return arLy;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23743,7 +23744,7 @@ return arMa;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23853,7 +23854,7 @@ return arSa;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23917,7 +23918,7 @@ return arTn;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24064,7 +24065,7 @@ return ar;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24174,7 +24175,7 @@ return az;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24313,7 +24314,7 @@ return be;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24408,7 +24409,7 @@ return bg;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24532,7 +24533,7 @@ return bn;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24656,7 +24657,7 @@ return bo;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24769,7 +24770,7 @@ return br;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24917,7 +24918,7 @@ return bs;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25010,7 +25011,7 @@ return ca;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25187,7 +25188,7 @@ return cs;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25255,7 +25256,7 @@ return cv;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25341,7 +25342,7 @@ return cy;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25406,7 +25407,7 @@ return da;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25490,7 +25491,7 @@ return deAt;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25573,7 +25574,7 @@ return deCh;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25656,7 +25657,7 @@ return de;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25761,7 +25762,7 @@ return dv;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25866,7 +25867,7 @@ return el;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25938,7 +25939,7 @@ return enAu;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26006,7 +26007,7 @@ return enCa;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26078,7 +26079,7 @@ return enGb;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26150,7 +26151,7 @@ return enIe;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26222,7 +26223,7 @@ return enNz;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26300,7 +26301,7 @@ return eo;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26387,7 +26388,7 @@ return esDo;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26475,7 +26476,7 @@ return es;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26560,7 +26561,7 @@ return et;
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26631,7 +26632,7 @@ return eu;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26743,7 +26744,7 @@ return fa;
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26855,7 +26856,7 @@ return fi;
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26920,7 +26921,7 @@ return fo;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26999,7 +27000,7 @@ return frCa;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27082,7 +27083,7 @@ return frCh;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27170,7 +27171,7 @@ return fr;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27250,7 +27251,7 @@ return fy;
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27331,7 +27332,7 @@ return gd;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27413,7 +27414,7 @@ return gl;
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27540,7 +27541,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27644,7 +27645,7 @@ return he;
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27773,7 +27774,7 @@ return hi;
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27923,7 +27924,7 @@ return hr;
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28037,7 +28038,7 @@ return hu;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28137,7 +28138,7 @@ return hyAm;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28225,7 +28226,7 @@ return id;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28357,7 +28358,7 @@ return is;
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28432,7 +28433,7 @@ return it;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28517,7 +28518,7 @@ return ja;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28605,7 +28606,7 @@ return jv;
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28699,7 +28700,7 @@ return ka;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28791,7 +28792,7 @@ return kk;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28854,7 +28855,7 @@ return km;
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28985,7 +28986,7 @@ return kn;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29059,7 +29060,7 @@ return ko;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29152,7 +29153,7 @@ return ky;
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29294,7 +29295,7 @@ return lb;
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29369,7 +29370,7 @@ return lo;
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29491,7 +29492,7 @@ return lt;
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29593,7 +29594,7 @@ return lv;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29709,7 +29710,7 @@ return me;
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29778,7 +29779,7 @@ return mi;
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29873,7 +29874,7 @@ return mk;
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29959,7 +29960,7 @@ return ml;
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30123,7 +30124,7 @@ return mr;
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30211,7 +30212,7 @@ return msMy;
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30298,7 +30299,7 @@ return ms;
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30399,7 +30400,7 @@ return my;
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30467,7 +30468,7 @@ return nb;
 
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30595,7 +30596,7 @@ return ne;
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30688,7 +30689,7 @@ return nlBe;
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30781,7 +30782,7 @@ return nl;
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30846,7 +30847,7 @@ return nn;
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30975,7 +30976,7 @@ return paIn;
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31087,7 +31088,7 @@ return pl;
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31153,7 +31154,7 @@ return ptBr;
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31223,7 +31224,7 @@ return pt;
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31303,7 +31304,7 @@ return ro;
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31491,7 +31492,7 @@ return ru;
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31594,7 +31595,7 @@ return sd;
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31660,7 +31661,7 @@ return se;
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31736,7 +31737,7 @@ return si;
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31891,7 +31892,7 @@ return sk;
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32058,7 +32059,7 @@ return sl;
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32133,7 +32134,7 @@ return sq;
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32248,7 +32249,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32363,7 +32364,7 @@ return sr;
 
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32457,7 +32458,7 @@ return ss;
 
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32531,7 +32532,7 @@ return sv;
 
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32595,7 +32596,7 @@ return sw;
 
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32730,7 +32731,7 @@ return ta;
 
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32824,7 +32825,7 @@ return te;
 
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32897,7 +32898,7 @@ return tet;
 
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32969,7 +32970,7 @@ return th;
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33036,7 +33037,7 @@ return tlPh;
 
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33161,7 +33162,7 @@ return tlh;
 
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33256,7 +33257,7 @@ return tr;
 
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33352,7 +33353,7 @@ return tzl;
 
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33415,7 +33416,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33478,7 +33479,7 @@ return tzm;
 
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33634,7 +33635,7 @@ return uk;
 
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33738,7 +33739,7 @@ return ur;
 
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33801,7 +33802,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33864,7 +33865,7 @@ return uz;
 
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33948,7 +33949,7 @@ return vi;
 
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34021,7 +34022,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 170 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34086,7 +34087,7 @@ return yo;
 
 
 /***/ }),
-/* 171 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34202,7 +34203,7 @@ return zhCn;
 
 
 /***/ }),
-/* 172 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34312,7 +34313,7 @@ return zhHk;
 
 
 /***/ }),
-/* 173 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34421,7 +34422,7 @@ return zhTw;
 
 
 /***/ }),
-/* 174 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -34584,7 +34585,7 @@ module.exports = css;
 });
 
 /***/ }),
-/* 175 */
+/* 174 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -34612,7 +34613,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 176 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34624,59 +34625,59 @@ var _vue = __webpack_require__(19);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _branchesFooter = __webpack_require__(186);
+var _branchesFooter = __webpack_require__(185);
 
 var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
-var _reviewSchedule = __webpack_require__(191);
+var _reviewSchedule = __webpack_require__(190);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
-var _contentList = __webpack_require__(36);
+var _contentList = __webpack_require__(37);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _exerciseCreator = __webpack_require__(183);
+var _exerciseCreator = __webpack_require__(182);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
-var _exerciseCreatorContainer = __webpack_require__(37);
+var _exerciseCreatorContainer = __webpack_require__(38);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _treeReview = __webpack_require__(38);
+var _treeReview = __webpack_require__(39);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _treeReviewContainer = __webpack_require__(39);
+var _treeReviewContainer = __webpack_require__(40);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _newExercise = __webpack_require__(184);
+var _newExercise = __webpack_require__(183);
 
 var _newExercise2 = _interopRequireDefault(_newExercise);
 
-var _exerciseList = __webpack_require__(185);
+var _exerciseList = __webpack_require__(184);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(193);
+var _tree = __webpack_require__(192);
 
 var _tree2 = _interopRequireDefault(_tree);
 
-var _newtreecomponent = __webpack_require__(188);
+var _newtreecomponent = __webpack_require__(187);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(192);
+var _toolbar = __webpack_require__(191);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
-var _goToHome = __webpack_require__(187);
+var _goBack = __webpack_require__(186);
 
-var _goToHome2 = _interopRequireDefault(_goToHome);
+var _goBack2 = _interopRequireDefault(_goBack);
 
-var _proficiencySelector = __webpack_require__(189);
+var _proficiencySelector = __webpack_require__(188);
 
 var _proficiencySelector2 = _interopRequireDefault(_proficiencySelector);
 
@@ -34697,11 +34698,11 @@ _vue2.default.component('newExercise', _newExercise2.default);
 _vue2.default.component('tree', _tree2.default);
 _vue2.default.component('newtree', _newtreecomponent2.default);
 _vue2.default.component('toolbar', _toolbar2.default);
-_vue2.default.component('goToHome', _goToHome2.default);
+_vue2.default.component('goBack', _goBack2.default);
 _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 
 /***/ }),
-/* 177 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34710,7 +34711,7 @@ _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 __webpack_require__(2);
 
 /***/ }),
-/* 178 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34730,7 +34731,7 @@ function toggleVisibility(el) {
 }
 
 /***/ }),
-/* 179 */
+/* 178 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37244,7 +37245,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
 
 /***/ }),
-/* 180 */
+/* 179 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38140,7 +38141,7 @@ var index_esm = {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
 
 /***/ }),
-/* 181 */
+/* 180 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38153,7 +38154,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 182 */
+/* 181 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38166,7 +38167,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 183 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38179,7 +38180,7 @@ Object.defineProperty(exports, "__esModule", {
 __webpack_require__(252);
 
 exports.default = {
-    props: ['contentItemId'],
+    props: ['contentItemId', 'exerciseToReplaceId'],
     template: __webpack_require__(236),
     created: function created() {
         var me = this;
@@ -38192,14 +38193,14 @@ exports.default = {
     },
 
     methods: {
-        goToHome: function goToHome() {
+        goBack: function goBack() {
             PubSub.publish('goToState.home');
         }
     }
 };
 
 /***/ }),
-/* 184 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38217,26 +38218,26 @@ var _exerciseQA = __webpack_require__(24);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(174);
+var _snack = __webpack_require__(173);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-var _invertObject = __webpack_require__(58);
+var _invertObject = __webpack_require__(57);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
-var _exercises = __webpack_require__(43);
+var _exercises = __webpack_require__(44);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: ['contentItemId'],
+    props: ['contentItemId', 'exerciseToReplaceId'],
     template: __webpack_require__(237),
     created: function created() {
         var _this = this;
@@ -38253,8 +38254,8 @@ exports.default = {
         this.answer = "";
         this.tags = null;
         //TODO: replace with Vuex/redux store . . . or maybe a routing system
-        if (window.exerciseToReplaceId) {
-            _exercises2.default.get(window.exerciseToReplaceId).then(function (exercise) {
+        if (this.exerciseToReplaceId) {
+            _exercises2.default.get(this.exerciseToReplaceId).then(function (exercise) {
                 me.question = exercise.question;
                 me.answer = exercise.answer;
                 me.selectedItemIds = Object.keys(exercise.contentItemIds);
@@ -38321,6 +38322,7 @@ exports.default = {
                         }
                     }
                 });
+                me.loading = false;
             }, 0);
         }
     },
@@ -38334,7 +38336,8 @@ exports.default = {
             factsAndSkills: [],
             itemIds: this.itemIds,
             type: 'fact',
-            window: window
+            window: window,
+            loading: true
         };
     },
 
@@ -38386,16 +38389,15 @@ exports.default = {
             this.tags.removeAll();
         },
         replaceExercise: function replaceExercise() {
-            var _this2 = this;
-
             var exerciseData = this.getExerciseData();
             //TODO allow creation of other types of exercises than QA
             var newExercise = _exerciseQA2.default.create(exerciseData);
+            var me = this;
 
-            _exercises2.default.get(window.exerciseToReplaceId).then(function (exercise) {
+            _exercises2.default.get(this.exerciseToReplaceId).then(function (exercise) {
                 exercise.contentItemIds.forEach(function (contentItemId) {
                     _contentItems2.default.get(contentItemId).then(function (contentItem) {
-                        contentItem.removeExercise(_this2.exerciseToReplaceId);
+                        contentItem.removeExercise(me.exerciseToReplaceId);
                         contentItem.addExercise(newExercise.id);
                     });
                 });
@@ -38417,7 +38419,7 @@ function convertItemIdsObjectToList(obj) {
 }
 
 /***/ }),
-/* 185 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38452,7 +38454,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 186 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38462,17 +38464,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _newTree = __webpack_require__(44);
+var _config = __webpack_require__(42);
 
-var _config = __webpack_require__(41);
-
-var _login2 = __webpack_require__(42);
+var _login2 = __webpack_require__(43);
 
 var _user = __webpack_require__(8);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(28);
+var _users = __webpack_require__(29);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -38549,7 +38549,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 187 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38564,14 +38564,15 @@ __webpack_require__(253);
 exports.default = {
     template: __webpack_require__(240),
     methods: {
-        goToHome: function goToHome() {
-            PubSub.publish('goToState.home');
+        goBack: function goBack() {
+            this.$router.go(-1);
+            // PubSub.publish('goToState.home')
         }
     }
 };
 
 /***/ }),
-/* 188 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38581,11 +38582,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _newTree = __webpack_require__(44);
+var _newTree = __webpack_require__(196);
 
 var _trees = __webpack_require__(2);
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -38652,7 +38653,7 @@ function establishURIs() {
             console.log('contentItem gotten is', contentItem);
             contentItem.set('uri', 'content/' + contentItem.title);
             contentItem.set('initialParentTreeId', null);
-            contentItem.set('initialParentTreeContentURI', null);
+            contentItem.set('primaryParentTreeContentURI', null);
         }).then(function () {
             tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren);
         });
@@ -38673,7 +38674,7 @@ function establishURIForContentAndThenAllChildren(treeId) {
                     console.log(treeId + ": children are ", tree.children && Object.keys(tree.children));
                     contentItem.set('uri', uri);
                     contentItem.set('initialParentTreeId', parentTree.id);
-                    contentItem.set('initialParentTreeContentURI', parentContentItem.uri);
+                    contentItem.set('primaryParentTreeContentURI', parentContentItem.uri);
                     tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren);
                 });
             });
@@ -38682,7 +38683,7 @@ function establishURIForContentAndThenAllChildren(treeId) {
 }
 
 /***/ }),
-/* 189 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38738,7 +38739,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 190 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38807,7 +38808,7 @@ function getProficiencyCategory(proficiency) {
 }
 
 /***/ }),
-/* 191 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38821,7 +38822,7 @@ var _user = __webpack_require__(8);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(28);
+var _users = __webpack_require__(29);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -38861,7 +38862,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 192 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38890,7 +38891,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38908,13 +38909,13 @@ var _knawledgeMap = __webpack_require__(18);
 
 var _fact = __webpack_require__(25);
 
-var _contentItems = __webpack_require__(4);
+var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _heading = __webpack_require__(26);
 
-var _filters = __webpack_require__(40);
+var _filters = __webpack_require__(41);
 
 var _skill = __webpack_require__(27);
 
@@ -39043,42 +39044,42 @@ exports.default = {
         this.tree.changeContent(this.content.id, this.tree.contentType);
 
         this.toggleEditing();
-    }), _defineProperty(_methods, 'unlinkFromParent', function unlinkFromParent() {
+    }), _defineProperty(_methods, 'unlinkFromParentAndDeleteContent', function unlinkFromParentAndDeleteContent() {
         if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")) {
-            this.tree.unlinkFromParent();
+            this.tree.unlinkFromParentAndDeleteContent();
         }
         (0, _knawledgeMap.removeTreeFromGraph)(this.id);
     }), _methods)
 };
 
 /***/ }),
-/* 194 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(176);
+__webpack_require__(175);
 
-__webpack_require__(40);
+__webpack_require__(41);
+
+__webpack_require__(176);
 
 __webpack_require__(177);
 
-__webpack_require__(178);
-
-var _treeReview = __webpack_require__(38);
+var _treeReview = __webpack_require__(39);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _contentList = __webpack_require__(36);
+var _contentList = __webpack_require__(37);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _treeReviewContainer = __webpack_require__(39);
+var _treeReviewContainer = __webpack_require__(40);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _exerciseCreatorContainer = __webpack_require__(37);
+var _exerciseCreatorContainer = __webpack_require__(38);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
@@ -39090,11 +39091,11 @@ var _vue = __webpack_require__(19);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(179);
+var _vueRouter = __webpack_require__(178);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _vuex = __webpack_require__(180);
+var _vuex = __webpack_require__(179);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
@@ -39117,7 +39118,7 @@ var Bar = { template: '<div>bar</div>'
     // either be an actual component constructor created via
     // `Vue.extend()`, or just a component options object.
     // We'll talk about nested routes later.
-};var routes = [{ path: '/foo', component: Foo }, { path: '/bar', component: Bar }, { path: '/study/:leafId', name: 'study', component: _treeReviewContainer2.default, props: true }, { path: '/create', name: 'create', component: _exerciseCreatorContainer2.default, props: true }, { path: '/contentList', name: 'contentList', component: _contentList2.default, props: true }, { path: '/:treeId', component: _knawledgeMap2.default, props: true }, { path: '/', component: _knawledgeMap2.default, props: true }];
+};var routes = [{ path: '/foo', component: Foo }, { path: '/bar', component: Bar }, { path: '/study/:leafId', name: 'study', component: _treeReviewContainer2.default, props: true }, { path: '/create', name: 'create', component: _exerciseCreatorContainer2.default, props: true }, { path: '/edit/:exerciseToReplaceId', name: 'edit', component: _exerciseCreatorContainer2.default, props: true }, { path: '/contentList', name: 'contentList', component: _contentList2.default, props: true }, { path: '/:treeId', component: _knawledgeMap2.default, props: true }, { path: '/', component: _knawledgeMap2.default, props: true }];
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
@@ -39138,7 +39139,7 @@ var vm = new _vue2.default({
             _this.goToTreeReview();
         });
         PubSub.subscribe('goToState.home', function (eventName, data) {
-            _this.goToHome();
+            _this.goBack();
         });
         console.log('THIS APP is', this);
         // router.go('/83cbe6ea3fa874449982b645f04d14a1')
@@ -39162,7 +39163,7 @@ var vm = new _vue2.default({
         }
     },
     methods: {
-        goToHome: function goToHome() {
+        goBack: function goBack() {
             window.location = window.location; //refresh the page lol - for some reason graph seems to malfunction when not doing this
             this.state = 'home';
         },
@@ -39178,7 +39179,7 @@ var vm = new _vue2.default({
 });
 
 /***/ }),
-/* 195 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39192,7 +39193,7 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 196 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39211,6 +39212,85 @@ var Globals = exports.Globals = {
         proficiency_unknown: 'gray'
     }
 };
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.newNodeYOffset = exports.newNodeXOffset = undefined;
+exports.newTree = newTree;
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _knawledgeMap = __webpack_require__(18);
+
+var _trees = __webpack_require__(2);
+
+var _contentItems = __webpack_require__(3);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _fact = __webpack_require__(25);
+
+var _heading = __webpack_require__(26);
+
+var _skill = __webpack_require__(27);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+var _tree = __webpack_require__(28);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var newNodeXOffset = exports.newNodeXOffset = -2;
+var newNodeYOffset = exports.newNodeYOffset = -2;
+
+function newTree(nodeType, parentTreeId, primaryParentTreeContentURI, values) {
+    var newContent = {};
+    values = (0, _lodash2.default)(values, { initialParentTreeId: parentTreeId, primaryParentTreeContentURI: primaryParentTreeContentURI });
+    switch (nodeType) {
+        case 'fact':
+            newContent = _contentItems2.default.create(new _fact.Fact(values));
+            break;
+        case 'heading':
+            newContent = _contentItems2.default.create(new _heading.Heading(values));
+            break;
+        case 'skill':
+            newContent = _contentItems2.default.create(new _skill.Skill(values));
+            break;
+        default:
+            newContent = _contentItems2.default.create(new _fact.Fact(values));
+            break;
+    }
+    newContent.setProficiency(_proficiencyEnum.PROFICIENCIES.ONE);
+
+    _trees.Trees.get(parentTreeId).then(function (parentTree) {
+        var level = 5; // eventually get the laevel from the property on the parent tree - but right now that is not stored in db
+        var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+        var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
+        var tree = new _tree.Tree(newContent.id, newContent.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY);
+        parentTree.addChild(tree.id);
+        newContent.addTree(tree.id);
+        (0, _knawledgeMap.addTreeNodeToGraph)(tree, newContent, level);
+    });
+    //
+    //
+    // console.log('new content just created is', newContent)
+    // const tree = addTreeToGraph(parentTreeId, newContent);
+    // console.log('new Tree created is', tree)
+    // //TODO add a new tree to db and UI by dispatching a new Tree REDUX action
+    // //TODO: ^^^ and that action should use the Trees/Tree ORMs we have rather than manually using the db api (bc we may want to swap out db)
+    // Trees.get(parentTreeId).then(parentTree => {
+    // });
+}
 
 /***/ }),
 /* 197 */
@@ -39353,7 +39433,7 @@ exports = module.exports = __webpack_require__(9)();
 
 
 // module
-exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n}\n.exercise-creator-breadcrumbs {\n  width: 100%;\n}\n.exercise-creator {\n  background-color: rgba(135, 206, 250, 0.45);\n  height: 100%;\n}\n.exercise-creator-header {\n  display: flex;\n  flex-direction: row;\n  padding: 4px 8px 4px 8px;\n  background-color: skyblue;\n}\n.exercise-creator-body {\n  display: flex;\n  flex-direction: column;\n}\n.exercise-creator-content-list {\n  flex: 30;\n}\n.exercise-creator-new-exercise {\n  flex: 30;\n}\n.exercise-creator-exercise-list {\n  flex: 30;\n}\n.exercise-creator-goToHome {\n  cursor: pointer;\n  margin-right: 24px;\n}\n.exercise-creator-header-left {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n.exercise-creator-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.exercise-creator-create-button-container {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n}\n", ""]);
+exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n}\n.exercise-creator-breadcrumbs {\n  width: 100%;\n}\n.exercise-creator {\n  background-color: rgba(135, 206, 250, 0.45);\n  height: 100%;\n}\n.exercise-creator-header {\n  display: flex;\n  flex-direction: row;\n  padding: 4px 8px 4px 8px;\n  background-color: skyblue;\n}\n.exercise-creator-body {\n  display: flex;\n  flex-direction: column;\n}\n.exercise-creator-content-list {\n  flex: 30;\n}\n.exercise-creator-new-exercise {\n  flex: 30;\n}\n.exercise-creator-exercise-list {\n  flex: 30;\n}\n.exercise-creator-goBack {\n  cursor: pointer;\n  margin-right: 24px;\n}\n.exercise-creator-header-left {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n.exercise-creator-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.exercise-creator-create-button-container {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -39564,11 +39644,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(47);
+var _subscribe = __webpack_require__(46);
 
-var _errors = __webpack_require__(29);
+var _errors = __webpack_require__(30);
 
-var _shared_promise = __webpack_require__(30);
+var _shared_promise = __webpack_require__(31);
 
 var _deep_copy = __webpack_require__(206);
 
@@ -40616,7 +40696,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(48);
+var _controllerInterface = __webpack_require__(47);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
@@ -40624,11 +40704,11 @@ var _errors = __webpack_require__(20);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(51);
+var _workerPageMessage = __webpack_require__(50);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(49);
+var _fcmDetails = __webpack_require__(48);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -40994,7 +41074,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(48);
+var _controllerInterface = __webpack_require__(47);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
@@ -41002,7 +41082,7 @@ var _errors = __webpack_require__(20);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(51);
+var _workerPageMessage = __webpack_require__(50);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
@@ -41010,11 +41090,11 @@ var _defaultSw = __webpack_require__(215);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(50);
+var _notificationPermission = __webpack_require__(49);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(47);
+var _subscribe = __webpack_require__(46);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41473,7 +41553,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(29);
+var _errors = __webpack_require__(30);
 
 var _errors2 = __webpack_require__(20);
 
@@ -41483,7 +41563,7 @@ var _arrayBufferToBase = __webpack_require__(214);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(49);
+var _fcmDetails = __webpack_require__(48);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -42119,13 +42199,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(34);
+var _string = __webpack_require__(35);
 
-var _taskenums = __webpack_require__(55);
+var _taskenums = __webpack_require__(54);
 
 var _xhriopool = __webpack_require__(230);
 
-var _reference = __webpack_require__(57);
+var _reference = __webpack_require__(56);
 
 var _service = __webpack_require__(231);
 
@@ -42253,7 +42333,7 @@ var _constants = __webpack_require__(21);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(3);
+var _error2 = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
@@ -42842,7 +42922,7 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(32);
+var _array = __webpack_require__(33);
 
 var array = _interopRequireWildcard(_array);
 
@@ -42850,7 +42930,7 @@ var _backoff = __webpack_require__(221);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -42866,11 +42946,11 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(35);
+var _url = __webpack_require__(36);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(56);
+var _xhrio = __webpack_require__(55);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -43249,7 +43329,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -43265,7 +43345,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(56);
+var _xhrio = __webpack_require__(55);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -43505,7 +43585,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(31);
+var _args = __webpack_require__(32);
 
 var args = _interopRequireWildcard(_args);
 
@@ -43521,7 +43601,7 @@ var _request = __webpack_require__(226);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(57);
+var _reference = __webpack_require__(56);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -43699,7 +43779,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(55);
+var _taskenums = __webpack_require__(54);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
@@ -43707,17 +43787,17 @@ var _observer = __webpack_require__(225);
 
 var _tasksnapshot = __webpack_require__(233);
 
-var _args = __webpack_require__(31);
+var _args = __webpack_require__(32);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(32);
+var _array = __webpack_require__(33);
 
 var fbsArray = _interopRequireWildcard(_array);
 
 var _async = __webpack_require__(219);
 
-var _error = __webpack_require__(3);
+var _error = __webpack_require__(4);
 
 var errors = _interopRequireWildcard(_error);
 
@@ -43725,7 +43805,7 @@ var _promise_external = __webpack_require__(5);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(54);
+var _requests = __webpack_require__(53);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -44362,25 +44442,25 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 /* 234 */
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.initialParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
+module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
 /* 235 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\"></exercise-creator>\r\n</div>\r\n";
+module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
 /* 236 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-to-home></go-to-home>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\">id:{{window.exerciseToReplaceId}}<!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 237 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"new-exercise\">\r\n    What items does your exercise test? {{window.exerciseToReplaceId}} -- {{contentItemId}}\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
+module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
 /* 238 */
@@ -44398,7 +44478,7 @@ module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n  
 /* 240 */
 /***/ (function(module, exports) {
 
-module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goToHome\">\r\n    <i class=\"exercise-creator-goToHome fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
+module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
 /* 241 */
@@ -44434,7 +44514,7 @@ module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-la
 /* 246 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-to-home></go-to-home>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                30m 5s\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                30m 5s\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 247 */
@@ -44446,7 +44526,7 @@ module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leaf
 /* 248 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncGraphWithNode\" v-model=\"content.proficiency\"></proficiency-selector>\r\n        <!--<div class=\"tree-proficiency\">-->\r\n            <!--<button class=\"tree-proficiency-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>-->\r\n            <!--<button class=\"tree-proficiency-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>-->\r\n            <!--<button class=\"tree-proficiency-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>-->\r\n            <!--<button class=\"tree-proficiency-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>-->\r\n        <!--</div>-->\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncGraphWithNode\" v-model=\"content.proficiency\"></proficiency-selector>\r\n        <!--<div class=\"tree-proficiency\">-->\r\n            <!--<button class=\"tree-proficiency-one\" v-on:click=\"setProficiencyToOne\">Not at all</button>-->\r\n            <!--<button class=\"tree-proficiency-two\" v-on:click=\"setProficiencyToTwo\">A lil'</button>-->\r\n            <!--<button class=\"tree-proficiency-three\" v-on:click=\"setProficiencyToThree\">Mostly</button>-->\r\n            <!--<button class=\"tree-proficiency-four\" v-on:click=\"setProficiencyToFour\">All the way baby</button>-->\r\n        <!--</div>-->\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" >{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-on:click=\"unlinkFromParentAndDeleteContent\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
 
 /***/ }),
 /* 249 */
@@ -44480,236 +44560,236 @@ function isSlowBuffer (obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 59,
-	"./af.js": 59,
-	"./ar": 66,
-	"./ar-dz": 60,
-	"./ar-dz.js": 60,
-	"./ar-kw": 61,
-	"./ar-kw.js": 61,
-	"./ar-ly": 62,
-	"./ar-ly.js": 62,
-	"./ar-ma": 63,
-	"./ar-ma.js": 63,
-	"./ar-sa": 64,
-	"./ar-sa.js": 64,
-	"./ar-tn": 65,
-	"./ar-tn.js": 65,
-	"./ar.js": 66,
-	"./az": 67,
-	"./az.js": 67,
-	"./be": 68,
-	"./be.js": 68,
-	"./bg": 69,
-	"./bg.js": 69,
-	"./bn": 70,
-	"./bn.js": 70,
-	"./bo": 71,
-	"./bo.js": 71,
-	"./br": 72,
-	"./br.js": 72,
-	"./bs": 73,
-	"./bs.js": 73,
-	"./ca": 74,
-	"./ca.js": 74,
-	"./cs": 75,
-	"./cs.js": 75,
-	"./cv": 76,
-	"./cv.js": 76,
-	"./cy": 77,
-	"./cy.js": 77,
-	"./da": 78,
-	"./da.js": 78,
-	"./de": 81,
-	"./de-at": 79,
-	"./de-at.js": 79,
-	"./de-ch": 80,
-	"./de-ch.js": 80,
-	"./de.js": 81,
-	"./dv": 82,
-	"./dv.js": 82,
-	"./el": 83,
-	"./el.js": 83,
-	"./en-au": 84,
-	"./en-au.js": 84,
-	"./en-ca": 85,
-	"./en-ca.js": 85,
-	"./en-gb": 86,
-	"./en-gb.js": 86,
-	"./en-ie": 87,
-	"./en-ie.js": 87,
-	"./en-nz": 88,
-	"./en-nz.js": 88,
-	"./eo": 89,
-	"./eo.js": 89,
-	"./es": 91,
-	"./es-do": 90,
-	"./es-do.js": 90,
-	"./es.js": 91,
-	"./et": 92,
-	"./et.js": 92,
-	"./eu": 93,
-	"./eu.js": 93,
-	"./fa": 94,
-	"./fa.js": 94,
-	"./fi": 95,
-	"./fi.js": 95,
-	"./fo": 96,
-	"./fo.js": 96,
-	"./fr": 99,
-	"./fr-ca": 97,
-	"./fr-ca.js": 97,
-	"./fr-ch": 98,
-	"./fr-ch.js": 98,
-	"./fr.js": 99,
-	"./fy": 100,
-	"./fy.js": 100,
-	"./gd": 101,
-	"./gd.js": 101,
-	"./gl": 102,
-	"./gl.js": 102,
-	"./gom-latn": 103,
-	"./gom-latn.js": 103,
-	"./he": 104,
-	"./he.js": 104,
-	"./hi": 105,
-	"./hi.js": 105,
-	"./hr": 106,
-	"./hr.js": 106,
-	"./hu": 107,
-	"./hu.js": 107,
-	"./hy-am": 108,
-	"./hy-am.js": 108,
-	"./id": 109,
-	"./id.js": 109,
-	"./is": 110,
-	"./is.js": 110,
-	"./it": 111,
-	"./it.js": 111,
-	"./ja": 112,
-	"./ja.js": 112,
-	"./jv": 113,
-	"./jv.js": 113,
-	"./ka": 114,
-	"./ka.js": 114,
-	"./kk": 115,
-	"./kk.js": 115,
-	"./km": 116,
-	"./km.js": 116,
-	"./kn": 117,
-	"./kn.js": 117,
-	"./ko": 118,
-	"./ko.js": 118,
-	"./ky": 119,
-	"./ky.js": 119,
-	"./lb": 120,
-	"./lb.js": 120,
-	"./lo": 121,
-	"./lo.js": 121,
-	"./lt": 122,
-	"./lt.js": 122,
-	"./lv": 123,
-	"./lv.js": 123,
-	"./me": 124,
-	"./me.js": 124,
-	"./mi": 125,
-	"./mi.js": 125,
-	"./mk": 126,
-	"./mk.js": 126,
-	"./ml": 127,
-	"./ml.js": 127,
-	"./mr": 128,
-	"./mr.js": 128,
-	"./ms": 130,
-	"./ms-my": 129,
-	"./ms-my.js": 129,
-	"./ms.js": 130,
-	"./my": 131,
-	"./my.js": 131,
-	"./nb": 132,
-	"./nb.js": 132,
-	"./ne": 133,
-	"./ne.js": 133,
-	"./nl": 135,
-	"./nl-be": 134,
-	"./nl-be.js": 134,
-	"./nl.js": 135,
-	"./nn": 136,
-	"./nn.js": 136,
-	"./pa-in": 137,
-	"./pa-in.js": 137,
-	"./pl": 138,
-	"./pl.js": 138,
-	"./pt": 140,
-	"./pt-br": 139,
-	"./pt-br.js": 139,
-	"./pt.js": 140,
-	"./ro": 141,
-	"./ro.js": 141,
-	"./ru": 142,
-	"./ru.js": 142,
-	"./sd": 143,
-	"./sd.js": 143,
-	"./se": 144,
-	"./se.js": 144,
-	"./si": 145,
-	"./si.js": 145,
-	"./sk": 146,
-	"./sk.js": 146,
-	"./sl": 147,
-	"./sl.js": 147,
-	"./sq": 148,
-	"./sq.js": 148,
-	"./sr": 150,
-	"./sr-cyrl": 149,
-	"./sr-cyrl.js": 149,
-	"./sr.js": 150,
-	"./ss": 151,
-	"./ss.js": 151,
-	"./sv": 152,
-	"./sv.js": 152,
-	"./sw": 153,
-	"./sw.js": 153,
-	"./ta": 154,
-	"./ta.js": 154,
-	"./te": 155,
-	"./te.js": 155,
-	"./tet": 156,
-	"./tet.js": 156,
-	"./th": 157,
-	"./th.js": 157,
-	"./tl-ph": 158,
-	"./tl-ph.js": 158,
-	"./tlh": 159,
-	"./tlh.js": 159,
-	"./tr": 160,
-	"./tr.js": 160,
-	"./tzl": 161,
-	"./tzl.js": 161,
-	"./tzm": 163,
-	"./tzm-latn": 162,
-	"./tzm-latn.js": 162,
-	"./tzm.js": 163,
-	"./uk": 164,
-	"./uk.js": 164,
-	"./ur": 165,
-	"./ur.js": 165,
-	"./uz": 167,
-	"./uz-latn": 166,
-	"./uz-latn.js": 166,
-	"./uz.js": 167,
-	"./vi": 168,
-	"./vi.js": 168,
-	"./x-pseudo": 169,
-	"./x-pseudo.js": 169,
-	"./yo": 170,
-	"./yo.js": 170,
-	"./zh-cn": 171,
-	"./zh-cn.js": 171,
-	"./zh-hk": 172,
-	"./zh-hk.js": 172,
-	"./zh-tw": 173,
-	"./zh-tw.js": 173
+	"./af": 58,
+	"./af.js": 58,
+	"./ar": 65,
+	"./ar-dz": 59,
+	"./ar-dz.js": 59,
+	"./ar-kw": 60,
+	"./ar-kw.js": 60,
+	"./ar-ly": 61,
+	"./ar-ly.js": 61,
+	"./ar-ma": 62,
+	"./ar-ma.js": 62,
+	"./ar-sa": 63,
+	"./ar-sa.js": 63,
+	"./ar-tn": 64,
+	"./ar-tn.js": 64,
+	"./ar.js": 65,
+	"./az": 66,
+	"./az.js": 66,
+	"./be": 67,
+	"./be.js": 67,
+	"./bg": 68,
+	"./bg.js": 68,
+	"./bn": 69,
+	"./bn.js": 69,
+	"./bo": 70,
+	"./bo.js": 70,
+	"./br": 71,
+	"./br.js": 71,
+	"./bs": 72,
+	"./bs.js": 72,
+	"./ca": 73,
+	"./ca.js": 73,
+	"./cs": 74,
+	"./cs.js": 74,
+	"./cv": 75,
+	"./cv.js": 75,
+	"./cy": 76,
+	"./cy.js": 76,
+	"./da": 77,
+	"./da.js": 77,
+	"./de": 80,
+	"./de-at": 78,
+	"./de-at.js": 78,
+	"./de-ch": 79,
+	"./de-ch.js": 79,
+	"./de.js": 80,
+	"./dv": 81,
+	"./dv.js": 81,
+	"./el": 82,
+	"./el.js": 82,
+	"./en-au": 83,
+	"./en-au.js": 83,
+	"./en-ca": 84,
+	"./en-ca.js": 84,
+	"./en-gb": 85,
+	"./en-gb.js": 85,
+	"./en-ie": 86,
+	"./en-ie.js": 86,
+	"./en-nz": 87,
+	"./en-nz.js": 87,
+	"./eo": 88,
+	"./eo.js": 88,
+	"./es": 90,
+	"./es-do": 89,
+	"./es-do.js": 89,
+	"./es.js": 90,
+	"./et": 91,
+	"./et.js": 91,
+	"./eu": 92,
+	"./eu.js": 92,
+	"./fa": 93,
+	"./fa.js": 93,
+	"./fi": 94,
+	"./fi.js": 94,
+	"./fo": 95,
+	"./fo.js": 95,
+	"./fr": 98,
+	"./fr-ca": 96,
+	"./fr-ca.js": 96,
+	"./fr-ch": 97,
+	"./fr-ch.js": 97,
+	"./fr.js": 98,
+	"./fy": 99,
+	"./fy.js": 99,
+	"./gd": 100,
+	"./gd.js": 100,
+	"./gl": 101,
+	"./gl.js": 101,
+	"./gom-latn": 102,
+	"./gom-latn.js": 102,
+	"./he": 103,
+	"./he.js": 103,
+	"./hi": 104,
+	"./hi.js": 104,
+	"./hr": 105,
+	"./hr.js": 105,
+	"./hu": 106,
+	"./hu.js": 106,
+	"./hy-am": 107,
+	"./hy-am.js": 107,
+	"./id": 108,
+	"./id.js": 108,
+	"./is": 109,
+	"./is.js": 109,
+	"./it": 110,
+	"./it.js": 110,
+	"./ja": 111,
+	"./ja.js": 111,
+	"./jv": 112,
+	"./jv.js": 112,
+	"./ka": 113,
+	"./ka.js": 113,
+	"./kk": 114,
+	"./kk.js": 114,
+	"./km": 115,
+	"./km.js": 115,
+	"./kn": 116,
+	"./kn.js": 116,
+	"./ko": 117,
+	"./ko.js": 117,
+	"./ky": 118,
+	"./ky.js": 118,
+	"./lb": 119,
+	"./lb.js": 119,
+	"./lo": 120,
+	"./lo.js": 120,
+	"./lt": 121,
+	"./lt.js": 121,
+	"./lv": 122,
+	"./lv.js": 122,
+	"./me": 123,
+	"./me.js": 123,
+	"./mi": 124,
+	"./mi.js": 124,
+	"./mk": 125,
+	"./mk.js": 125,
+	"./ml": 126,
+	"./ml.js": 126,
+	"./mr": 127,
+	"./mr.js": 127,
+	"./ms": 129,
+	"./ms-my": 128,
+	"./ms-my.js": 128,
+	"./ms.js": 129,
+	"./my": 130,
+	"./my.js": 130,
+	"./nb": 131,
+	"./nb.js": 131,
+	"./ne": 132,
+	"./ne.js": 132,
+	"./nl": 134,
+	"./nl-be": 133,
+	"./nl-be.js": 133,
+	"./nl.js": 134,
+	"./nn": 135,
+	"./nn.js": 135,
+	"./pa-in": 136,
+	"./pa-in.js": 136,
+	"./pl": 137,
+	"./pl.js": 137,
+	"./pt": 139,
+	"./pt-br": 138,
+	"./pt-br.js": 138,
+	"./pt.js": 139,
+	"./ro": 140,
+	"./ro.js": 140,
+	"./ru": 141,
+	"./ru.js": 141,
+	"./sd": 142,
+	"./sd.js": 142,
+	"./se": 143,
+	"./se.js": 143,
+	"./si": 144,
+	"./si.js": 144,
+	"./sk": 145,
+	"./sk.js": 145,
+	"./sl": 146,
+	"./sl.js": 146,
+	"./sq": 147,
+	"./sq.js": 147,
+	"./sr": 149,
+	"./sr-cyrl": 148,
+	"./sr-cyrl.js": 148,
+	"./sr.js": 149,
+	"./ss": 150,
+	"./ss.js": 150,
+	"./sv": 151,
+	"./sv.js": 151,
+	"./sw": 152,
+	"./sw.js": 152,
+	"./ta": 153,
+	"./ta.js": 153,
+	"./te": 154,
+	"./te.js": 154,
+	"./tet": 155,
+	"./tet.js": 155,
+	"./th": 156,
+	"./th.js": 156,
+	"./tl-ph": 157,
+	"./tl-ph.js": 157,
+	"./tlh": 158,
+	"./tlh.js": 158,
+	"./tr": 159,
+	"./tr.js": 159,
+	"./tzl": 160,
+	"./tzl.js": 160,
+	"./tzm": 162,
+	"./tzm-latn": 161,
+	"./tzm-latn.js": 161,
+	"./tzm.js": 162,
+	"./uk": 163,
+	"./uk.js": 163,
+	"./ur": 164,
+	"./ur.js": 164,
+	"./uz": 166,
+	"./uz-latn": 165,
+	"./uz-latn.js": 165,
+	"./uz.js": 166,
+	"./vi": 167,
+	"./vi.js": 167,
+	"./x-pseudo": 168,
+	"./x-pseudo.js": 168,
+	"./yo": 169,
+	"./yo.js": 169,
+	"./zh-cn": 170,
+	"./zh-cn.js": 170,
+	"./zh-hk": 171,
+	"./zh-hk.js": 171,
+	"./zh-tw": 172,
+	"./zh-tw.js": 172
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -44972,8 +45052,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goToHome.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goToHome.less");
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goBack.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goBack.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
