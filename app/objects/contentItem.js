@@ -35,7 +35,8 @@ export default class ContentItem {
         this.uri = args.uri || null
     }
     init () {
-        this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        this.calculateURIBasedOnParentTreeContentURI()
+        // this.uri = this.uri || this.initialParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -137,6 +138,10 @@ export default class ContentItem {
             trees
         };
         firebase.database().ref('content/' +this.id).update(updates)
+    }
+    calculateURIBasedOnParentTreeContentURI(){
+        const uri = this.initialParentTreeContentURI + "/" + this.getURIAddition()
+        this.set('uri', uri)
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
     startTimer() {

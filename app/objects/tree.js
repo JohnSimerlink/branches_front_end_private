@@ -77,17 +77,21 @@ export class Tree {
         firebase.database().ref('trees/' + this.id).update({
             parentId: newParentId
         })
-        // this.updatePrimaryParentTreeContentURI()
+        this.updatePrimaryParentTreeContentURI()
     }
     updatePrimaryParentTreeContentURI(){
         const me = this
-        Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)]).then(values => {
+        return Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)]).then(values => {
             const [parentTree, contentItem] = values
             contentItem.set('primaryParentTreeContentURI', parentTree.uri)
+            contentItem.calculateURIBasedOnParentTreeContentURI()
             //update for all the children as well
-            me.children && Object.keys(me.children).forEach(childId => {
-                Trees.get(childId).then(childTree => childTree.updatePrimaryParentTreeContentURI())
-            })
+            const childUpdatePromises = me.children ? Object.keys(me.children).map(child => {
+                return Trees.get(childId).then(childTree => {
+                    return childTree.updatePrimaryParentTreeContentURI()
+                })
+            }) : []
+            return Promises.all(childUpdatePromises)
         })
     }
     changeFact(newfactid) {
