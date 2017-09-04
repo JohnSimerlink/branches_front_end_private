@@ -33,4 +33,20 @@ export class Trees {
         delete trees[id];
         firebase.database().ref('trees/').child(id).remove() //.once("value", function(snapshot){
     }
+    static async adoptChild(newParentId, childId){
+        const task1 = Trees._handleChildAndOldParent(newParentId, childId),
+            task2 = Trees._handleNewParent(newParentId, childId)
+        [await task1, await task2]
+    }
+    static async _handleChildAndOldParent(newParentId,childId){
+        const child = await Trees.get(childId)
+        const oldParentPromise = Trees.get(child.parentId)
+        child.changeParent(newParentId)
+        const oldParent = await oldParentPromise
+        oldParent.removeChild(child.id)
+    }
+    static async _handleNewParent(newParentId,childId){
+        const newParent = await Trees.get(newParentId)
+        newParent.addChild(childId)
+    }
 }

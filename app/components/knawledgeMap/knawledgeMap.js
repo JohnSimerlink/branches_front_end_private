@@ -398,19 +398,25 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
     }
     async function click_SUGGESTED_CONNECTION(edge){
+        const childBeingAdoptedId = edge.target
+        const newParentId = edge.source
+
+        Trees.adoptChild(newParentId,childBeingAdoptedId)
+        handleAdoptionProcessUIUpdate(childBeingAdoptedId, newParentId, edge)
+    }
+
+    function handleAdoptionProcessUIUpdate(childBeingAdoptedId, newParentId, edge){
+        const childBeingAdoptedUINode = s.graph.nodes(childBeingAdoptedId)
+        childBeingAdoptedUINode.state = 'normal'
+
         const permanentEdge = {
-            id : createEdgeId(edge.source,edge.target),
-            source: edge.source,
-            target: edge.target,
+            id : createEdgeId(newParentId,childBeingAdoptedId),
+            source: newParentId,
+            target: childBeingAdoptedId,
             type : EDGE_TYPES.HIERARCHICAL,
             color: edge.color,
             size: edge.size,
         }
-        const parentlessNode = s.graph.nodes(edge.target)
-        parentlessNode.state = 'normal'
-        const tree = await Trees.get(parentlessNode.id)
-        tree.changeParent(edge.source)
-
         s.graph.addEdge(permanentEdge)
         window.awaitingEdgeConnectionNodeId = null
         window.awaitingEdgeConnection = false
@@ -420,7 +426,9 @@ function initKnawledgeMap(treeIdToJumpTo){
         s.refresh()
         window.suggestedConnectionClicked = true
         // PubSub.publish('canvas.parentReconnect.reconnected')
+
     }
+
     function removeEdgeToParent(node){
         var parentId = node.parentId
         var edgeId = createEdgeId(parentId, node.id)
