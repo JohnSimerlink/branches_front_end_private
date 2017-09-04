@@ -95,16 +95,15 @@ export default class ContentItems {
             })
             // resolve(content) //the cache containing all
         }
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function(snapshot){
                 processSnapshot(snapshot, resolve)
             }, reject)
             const factPromise = firebase.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function(snapshot){
                 processSnapshot(snapshot, resolve)
             }, reject)
-            Promise.all([skillPromise, factPromise]).then( () => {
-                resolve(factsAndSkills)
-            })
+            await Promise.all([skillPromise, factPromise])
+            resolve(factsAndSkills)
         })
     }
 

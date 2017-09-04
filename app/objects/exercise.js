@@ -28,13 +28,12 @@ export default class Exercise {
         firebase.database().ref().update(updates);
         return exercise;
     }
-    delete() {
+   remove() {
         const me = this
         //remove this exercise from any contentItems so it is unsearchable
-        Object.keys(this.contentItemIds).forEach(contentItemId => {
-            ContentItems.get(contentItemId).then(contentItem => {
-                contentItem.removeExercise(me.id)
-            })
+        Object.keys(this.contentItemIds).forEach(async contentItemId => {
+            const contentItem = ContentItems.get(contentItemId)
+            contentItem.removeExercise(me.id)
         })
     }
 

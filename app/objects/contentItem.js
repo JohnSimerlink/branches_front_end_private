@@ -213,8 +213,9 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //recalculate tree proficiency aggregation (the immediate tree will be the same as the proficiency for this content type of course), and bubble up the calculation through the parent trees all the way to the Everything tree
-        this.trees && Object.keys(this.trees).forEach(treeId => {
-            Trees.get(treeId).then(tree => tree.recalculateProficiencyAggregation())
+        this.trees && Object.keys(this.trees).forEach(async treeId => {
+            const tree = await Trees.get(treeId)
+            tree.recalculateProficiencyAggregation()
         })
 
 

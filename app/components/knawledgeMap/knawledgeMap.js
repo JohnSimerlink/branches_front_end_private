@@ -397,7 +397,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             s.refresh()
         })
     }
-    function click_SUGGESTED_CONNECTION(edge){
+    async function click_SUGGESTED_CONNECTION(edge){
         const permanentEdge = {
             id : createEdgeId(edge.source,edge.target),
             source: edge.source,
@@ -408,17 +408,17 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         const parentlessNode = s.graph.nodes(edge.target)
         parentlessNode.state = 'normal'
-        Trees.get(parentlessNode.id).then(tree => {
-            tree.changeParent(edge.source)
-            s.graph.addEdge(permanentEdge)
-            window.awaitingEdgeConnectionNodeId = null
-            window.awaitingEdgeConnection = false
-            removeSuggestedEdges()
-            const originalEdge = s.graph.edges(window.edgeIdBeingChanged)
-            originalEdge && s.graph.dropEdge(originalEdge.id)
-            s.refresh()
-            window.suggestedConnectionClicked = true
-        })
+        const tree = await Trees.get(parentlessNode.id)
+        tree.changeParent(edge.source)
+
+        s.graph.addEdge(permanentEdge)
+        window.awaitingEdgeConnectionNodeId = null
+        window.awaitingEdgeConnection = false
+        removeSuggestedEdges()
+        const originalEdge = s.graph.edges(window.edgeIdBeingChanged)
+        originalEdge && s.graph.dropEdge(originalEdge.id)
+        s.refresh()
+        window.suggestedConnectionClicked = true
         // PubSub.publish('canvas.parentReconnect.reconnected')
     }
     function removeEdgeToParent(node){
@@ -537,17 +537,16 @@ function initKnawledgeMap(treeIdToJumpTo){
             return; //node isn't an actual node in the db - its like a shadow node or helper node
         }
         const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1
-        Trees.get(treeId).then( tree => {
-            let deltaX = newX - tree.x
-            if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
-                tree.addToX({recursion: true, deltaX})
-            }
-            let deltaY = newY - tree.y
-            if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
-                tree.addToY({recursion: true, deltaY})
-            }
-            return tree
-        })
+        const tree = Trees.get(treeId)
+        let deltaX = newX - tree.x
+        if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
+            tree.addToX({recursion: true, deltaX})
+        }
+        let deltaY = newY - tree.y
+        if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
+            tree.addToY({recursion: true, deltaY})
+        }
+        return tree
     }
 
 

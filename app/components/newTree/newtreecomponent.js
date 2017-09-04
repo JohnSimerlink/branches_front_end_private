@@ -52,40 +52,36 @@ export default {
     }
 }
 
-function establishURIs(){
-    console.log("establish URIs called")
-    Trees.get(1).then(tree => {
-        console.log('tree gotten for id 1 is', tree, tree.contentId)
-       ContentItems.get(tree.contentId).then(contentItem => {
-           console.log('contentItem gotten is', contentItem)
-           contentItem.set('uri', 'content/' + contentItem.title)
-           contentItem.set('initialParentTreeId', null)
-           contentItem.set('primaryParentTreeContentURI', null)
-       }).then(() => {
-           tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
-       })
-    })
+async function establishURIs(){
+   console.log("establish URIs called")
+   const tree = await Trees.get(1)
+   console.log('tree gotten for id 1 is', tree, tree.contentId)
+
+   const contentItem = await ContentItems.get(tree.contentId)
+   console.log('contentItem gotten is', contentItem)
+
+   contentItem.set('uri', 'content/' + contentItem.title)
+   contentItem.set('initialParentTreeId', null)
+   contentItem.set('primaryParentTreeContentURI', null)
+
+   tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
 }
 window.establishURIs = establishURIs
 
 
-function establishURIForContentAndThenAllChildren(treeId){
+async function establishURIForContentAndThenAllChildren(treeId){
     console.log('establish URI called for', treeId)
-   Trees.get(treeId).then(tree => {
-       Trees.get(tree.parentId).then(parentTree => {
-           ContentItems.get(parentTree.contentId).then(parentContentItem => {
-               ContentItems.get(tree.contentId).then(contentItem => {
-                   console.log(treeId + ": contentItem is ", contentItem)
-                   console.log(treeId + ": parent contentItem URI is ", parentContentItem.uri)
-                   let uri = parentContentItem.uri + "/" + contentItem.getURIAddition()
-                   console.log(treeId + ": URI is ", uri)
-                   console.log(treeId + ": children are ", tree.children && Object.keys(tree.children))
-                   contentItem.set('uri', uri)
-                   contentItem.set('initialParentTreeId', parentTree.id)
-                   contentItem.set('primaryParentTreeContentURI', parentContentItem.uri)
-                   tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
-               })
-           })
-       })
-   })
+   const tree = await Trees.get(treeId)
+   const parentTree = await Trees.get(tree.parentId)
+   const contentItem = await ContentItems.get(tree.contentId)
+   const parentContentItem = await ContentItems.get(parentTree.contentId)
+   console.log(treeId + ": contentItem is ", contentItem)
+   console.log(treeId + ": parent contentItem URI is ", parentContentItem.uri)
+   let uri = parentContentItem.uri + "/" + contentItem.getURIAddition()
+   console.log(treeId + ": URI is ", uri)
+   console.log(treeId + ": children are ", tree.children && Object.keys(tree.children))
+   contentItem.set('uri', uri)
+   contentItem.set('initialParentTreeId', parentTree.id)
+   contentItem.set('primaryParentTreeContentURI', parentContentItem.uri)
+   tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
 }

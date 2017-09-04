@@ -2,23 +2,16 @@ import ContentItems from '../../objects/contentItems'
 
 export default {
     template: require('./contentList.html'),
-    created () {
-        var me = this;
-        this.items = {}
-        
-        ContentItems.getAllExceptForHeadings().then(items => {
-            console.log('all items returned are ', items)
-            me.items = items
-            Object.keys(me.items).forEach(key => {
-                let item = me.items[key]
-                console.log("item Id" + item.id + " ---- primaryParentTreeContentURI: " + item.primaryParentTreeContentURI + "---- item is", item)
-            })
+    async created () {
+        this.items = await ContentItems.getAllExceptForHeadings()
+        Object.keys(this.items).forEach(key => {
+            let item = this.items[key]
+            console.log("item Id" + item.id + " ---- primaryParentTreeContentURI: " + item.primaryParentTreeContentURI + "---- item is", item)
         })
-        this.num = 5
     },
     data () {
         return {
-            items: this.items
+            items: {}
         }
     },
     computed: {
