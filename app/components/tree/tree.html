@@ -56,7 +56,7 @@
     <div class="tree-proficiency" v-show="!addingChild">
         <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
-        <proficiency-selector v-on:input="syncGraphWithNode" v-model="content.proficiency"></proficiency-selector>
+        <proficiency-selector v-on:input="syncProficiency" v-model="content.proficiency"></proficiency-selector>
         <!--<div class="tree-proficiency">-->
             <!--<button class="tree-proficiency-one" v-on:click="setProficiencyToOne">Not at all</button>-->
             <!--<button class="tree-proficiency-two" v-on:click="setProficiencyToTwo">A lil'</button>-->

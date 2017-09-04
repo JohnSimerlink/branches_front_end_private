@@ -112,7 +112,7 @@ export default class ContentItem {
 
     }
 
-    hasIndividualProficiency(){
+    isLeafType(){
         return this.type === 'fact' || this.type === 'skill'
     }
     /**
@@ -198,29 +198,20 @@ export default class ContentItem {
         firebase.database().ref('content/').child(this.id).remove() //delete from db
         delete window.content[this.id]
     }
-    setProficiency(proficiency) {
+    saveProficiency(){
         !this.inStudyQueue && this.addToStudyQueue()
-        //proficiency
 
-        //-proficiency stored as part of this content item
-        this.proficiency = proficiency
+        //content
         this.userProficiencyMap[user.getId()] = this.proficiency
 
         var updates = {
-           userProficiencyMap : this.userProficiencyMap
+            userProficiencyMap : this.userProficiencyMap
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
 
-        //recalculate tree proficiency aggregation (the immediate tree will be the same as the proficiency for this content type of course), and bubble up the calculation through the parent trees all the way to the Everything tree
-        this.trees && Object.keys(this.trees).forEach(async treeId => {
-            const tree = await Trees.get(treeId)
-            tree.recalculateProficiencyAggregation()
-        })
-
-
         //interactions
-        this.interactions.push({timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency})
+        this.interactions.push({timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: this.proficiency})
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
@@ -229,8 +220,7 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
 
-        //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-        //user review time map
+        //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
         const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
         this.nextReviewTime = Date.now() + millisecondsTilNextReview
 
@@ -240,7 +230,12 @@ export default class ContentItem {
         }
         firebase.database().ref('content/' + this.id).update(updates)
 
-        user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency});
+        user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency: this.proficiency});
+    }
+    setProficiency(proficiency) {
+        //-proficiency stored as part of this content item
+        this.proficiency = proficiency
+        this.saveProficiency()
     }
     //methods for html templates
     isProficiencyUnknown(){

@@ -86,13 +86,16 @@ export default {
         toggleAddChild() {
             this.addingChild = !this.addingChild
         },
-        syncGraphWithNode(){
-            this.content.setProficiency(this.content.proficiency)// << it is necessary to call this method . bc we have to set userProficiecnyMap
+        syncProficiency() {
+            this.content.saveProficiency() //  this.content.proficiency is already set I thinkh
+            this.tree.recalculateProficiencyAggregation() // << i don't like that this gets calle
             syncGraphWithNode(this.tree.id)
         },
-        recalculateProficiencyAggregation(){
+        recalculateProficiencyAggregation() {
             this.tree.recalculateProficiencyAggregation()
-            // this.tree.
+        },
+        syncGraphWithNode(){
+            syncGraphWithNode(this.tree.id)
         },
         setProficiencyToOne() {
             this.content.setProficiency(PROFICIENCIES.ONE)
