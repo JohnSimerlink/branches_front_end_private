@@ -31,6 +31,7 @@
     "angular-mocks": "^1.4.9",
     "babel-core": "^6.26.0",
     "babel-loader": "^6.4.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.5.1",
     "babel-preset-es2015": "^6.24.1",

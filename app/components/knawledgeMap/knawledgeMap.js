@@ -59,15 +59,14 @@ function getTreeColor(content) {
     const color = proficiencyToColor(proficiency)
     return color
 }
-export function removeTreeFromGraph(treeId){
+export async function removeTreeFromGraph(treeId){
     console.log('remove tree called for ', treeId)
     s.graph.dropNode(treeId)
-    return Trees.get(treeId).then(tree => {
-        const childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
-        return Promise.all(childPromises).then(val => {
-            s.refresh()
-            return `removed all children of ${treeId}`
-        })
+    const tree = await Trees.get(treeId)
+    const childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
+    return Promise.all(childPromises).then(val => {
+        s.refresh()
+        return `removed all children of ${treeId}`
     })
 
 }
@@ -93,10 +92,12 @@ export function addTreeNodeToGraph(tree,content, level){
     const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
     if(!initialized){
         g.nodes.push(treeUINode);
+        connectTreeToParent(tree, content, g)
     } else {
         s.graph.addNode(treeUINode)
+        connectTreeToParent(tree, content, g)
+        s.refresh()
     }
-    connectTreeToParent(tree, content, g)
     return content.id
 }
 
@@ -121,28 +122,24 @@ export function proficiencyToColor(proficiency){
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
-export function syncGraphWithNode(treeId){
-    console.log("knawledgeMap.js syncGraphWithNode called",treeId)
-    Trees.get(treeId).then(tree => {
-        console.log("knawledgeMap.js syncGraphWithNode called tree",tree)
-        ContentItems.get(tree.contentId).then(content => {
-            console.log("knawledgeMap.js syncGraphWithNode called content",content, content.proficiency)
+export async function syncGraphWithNode(treeId){
+    const tree = await Trees.get(treeId)
+    const content = await ContentItems.get(tree.contentId)
             //update the node
-            var sigmaNode = s.graph.nodes(treeId)
-            sigmaNode.x = tree.x
-            sigmaNode.y = tree.y
-            var color = getTreeColor(content)
-            sigmaNode.color = color
-            console.log('node color is now', color)
+    var sigmaNode = s.graph.nodes(treeId)
+    sigmaNode.x = tree.x
+    sigmaNode.y = tree.y
+    var color = getTreeColor(content)
+    sigmaNode.color = color
+    console.log('node color is now', color)
+    console.log('sigmaNode and tree are', sigmaNode, tree)
 
-            //update the edge
-            var edgeId = createEdgeId(tree.parentId, treeId)
-            var sigmaEdge = s.graph.edges(edgeId)
-            sigmaEdge.color = color
+    //update the edge
+    var edgeId = createEdgeId(tree.parentId, treeId)
+    var sigmaEdge = s.graph.edges(edgeId)
+    sigmaEdge.color = color
 
-            s.refresh()
-        })
-    })
+    s.refresh()
 }
 
 function connectTreeToParent(tree,content, g){
@@ -239,10 +236,9 @@ function initKnawledgeMap(treeIdToJumpTo){
     };
 
     if (typeof PubSub !== 'undefined') {
-        PubSub.subscribe('login', () => {
-            loadTreeAndSubTrees(1, 1).then(val => {
-                initSigma();
-            })
+        PubSub.subscribe('login', async () => {
+            await loadTreeAndSubTrees(1, 1)
+            initSigma()
         })
     }
     async function loadTreeAndSubTrees(treeId, level){
