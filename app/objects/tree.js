@@ -113,23 +113,19 @@ export class Tree {
         this.updatePrimaryParentTreeContentURI()
 
     }
-    updatePrimaryParentTreeContentURI(){
-        const me = this
-        return Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)]).then(values => {
-            const [parentTree, contentItem] = values
-            return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
-                contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri)
-                contentItem.calculateURIBasedOnParentTreeContentURI()
+    async updatePrimaryParentTreeContentURI(){
+        const [parentTree, contentItem] = await Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)])
+        const parentTreeContentItem = await ContentItems.get(parentTree.contentId)
+        // return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
+        contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri)
+        contentItem.calculateURIBasedOnParentTreeContentURI()
 
-                //update for all the children as well
-                const childUpdatePromises = me.children ? Object.keys(me.children).map(childId => {
-                    return Trees.get(childId).then(childTree => {
-                        return childTree.updatePrimaryParentTreeContentURI()
-                    })
-                }) : []
-                return Promise.all(childUpdatePromises)
-            })
-        })
+        //update for all the children as well
+        const childUpdatePromises = this.children ? Object.keys(this.children).map(async childId => {
+            const childTree = await Trees.get(childId)
+            return childTree.updatePrimaryParentTreeContentURI()
+        }) : []
+        return Promise.all(childUpdatePromises)
     }
     changeFact(newfactid) {
         this.factId = newfactid
@@ -187,10 +183,9 @@ export class Tree {
        if (!recursion) return
 
         // console.log('addToX called on', this, ...arguments)
-        this.children && Object.keys(this.children).forEach(childId => {
-            Trees.get(childId).then(child => {
-                child.addToX({recursion: true, deltaX})
-            })
+        this.children && Object.keys(this.children).forEach(async childId => {
+            const child = await Trees.get(childId)
+            child.addToX({recursion: true, deltaX})
         })
     }
     addToY({recursion,deltaY}={recursion:false, deltaY: 0}){
@@ -201,82 +196,67 @@ export class Tree {
         if (!recursion) return
 
         // console.log('addToY called on', this, ...arguments)
-        this.children && Object.keys(this.children).forEach(childId => {
-            Trees.get(childId).then(child => {
-                child.addToY({recursion: true, deltaY})
-            })
+        this.children && Object.keys(this.children).forEach(async childId => {
+            const child = await Trees.get(childId)
+            child.addToY({recursion: true, deltaY})
         })
 
-}
-    //promise
-    getPriority(){
-       var node = this
-       if (node.parentId) {
-           Trees.get(node.parentId).then(parent => {
-               return parent.getPriority() + 1
-           })
-       } else {
-           return new Promise((resolve, reject) => {
-               resolve(1)
-           })
-       }
     }
 
-    recalculateProficiencyAggregation(){
+    async recalculateProficiencyAggregation(){
         console.log(this.id,'recalculateProficiencyAggregation called for', this)
         const me = this
         let proficiencyStats = blankProficiencyStats
-        return ContentItems.get(this.contentId).then(contentItem => {
-            console.log(me.id, 'ContentItems.get called for', this, ' result is', contentItem)
+        const contentItem = await ContentItems.get(this.contentId)
+        console.log(me.id, 'ContentItems.get called for', this, ' result is', contentItem)
 
-            if (contentItem.hasIndividualProficiency()){
-                console.log(me.id, 'ContentItem has individual proficiency')
-                let proficiency = contentItem.proficiency;
-                proficiencyStats = addValToProficiencyStats(proficiencyStats,proficiency)
+        if (contentItem.hasIndividualProficiency()){
+            console.log(me.id, 'ContentItem has individual proficiency')
+            let proficiency = contentItem.proficiency;
+            proficiencyStats = addValToProficiencyStats(proficiencyStats,proficiency)
+            this.setProficiencyStats(proficiencyStats)
+        } else {
+            if (!me.children){ //this shouldn't ever happen tho
                 this.setProficiencyStats(proficiencyStats)
-            } else {
-                if (!me.children){ //this shouldn't ever happen tho
-                    this.setProficiencyStats(proficiencyStats)
-                    return
-                }
-                // Promise.all(Object.keys(me.children).map(Trees.get))
-                //     .then(childTrees => childTrees.forEach(tree => {
-                //
-                //     }))
-                Promise.all(Object.keys(me.children).map(Trees.get).map())
-                // console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
-                // if (me.children){
-                //     console.log(me.id, 'ContentItem HAS children')
-                //     let addStatsFromChildrenPromises = Object.keys(me.children).map(childId => {
-                //         console.log(me.id, 'trees get getting called for child ', childId)
-                //         return Trees.get(childId).then(childTree => {
-                //             let recalculateChildProficiencyAggregationPromise = new Promise((resolve, reject) => {
-                //                 resolve("resolved")
-                //             })
-                //             // if (!childTree.proficiencyStats || !Object.keys(childTree.proficiencyStats).length){
-                //                 recalculateChildProficiencyAggregationPromise = childTree.recalculateProficiencyAggregation()
-                //                 console.log(me.id, 'recalculateProficiency getting called for child ', childId)
-                //             // }
-                //             return recalculateChildProficiencyAggregationPromise.then(() => {
-                //                 addObjToProficiencyStats(proficiencyStats, childTree.proficiencyStats)
-                //                 console.log(me.id, 'addObjToProficiencyStats getting called for child ', childId, proficiencyStats, childTree.proficiencyStats)
-                //             })
-                //         })
-                //     })
-                //     return Promise.all(addStatsFromChildrenPromises).then(() => {
-                //         me.setProficiencyStats(proficiencyStats)
-                //         me.set('proficiencyStats', proficiencyStats)
-                //         return Trees.get(me.parentId).then(parent => {
-                //             return parent.recalculateProficiencyAggregation()
-                //         })
-                //     })
-                // }
-                // else {
-                //     console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
-                // }
+                return
             }
-            // contentItem.proficiency
-        })
+            // Promise.all(Object.keys(me.children).map(Trees.get))
+            //     .then(childTrees => childTrees.forEach(tree => {
+            //
+            //     }))
+            Promise.all(Object.keys(me.children).map(Trees.get).map())
+            // console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
+        // if (me.children){
+        //     console.log(me.id, 'ContentItem HAS children')
+        //     let addStatsFromChildrenPromises = Object.keys(me.children).map(childId => {
+        //         console.log(me.id, 'trees get getting called for child ', childId)
+        //         return Trees.get(childId).then(childTree => {
+        //             let recalculateChildProficiencyAggregationPromise = new Promise((resolve, reject) => {
+        //                 resolve("resolved")
+        //             })
+        //             // if (!childTree.proficiencyStats || !Object.keys(childTree.proficiencyStats).length){
+        //                 recalculateChildProficiencyAggregationPromise = childTree.recalculateProficiencyAggregation()
+        //                 console.log(me.id, 'recalculateProficiency getting called for child ', childId)
+        //             // }
+        //             return recalculateChildProficiencyAggregationPromise.then(() => {
+        //                 addObjToProficiencyStats(proficiencyStats, childTree.proficiencyStats)
+        //                 console.log(me.id, 'addObjToProficiencyStats getting called for child ', childId, proficiencyStats, childTree.proficiencyStats)
+        //             })
+        //         })
+        //     })
+        //     return Promise.all(addStatsFromChildrenPromises).then(() => {
+        //         me.setProficiencyStats(proficiencyStats)
+        //         me.set('proficiencyStats', proficiencyStats)
+        //         return Trees.get(me.parentId).then(parent => {
+        //             return parent.recalculateProficiencyAggregation()
+        //         })
+        //     })
+        // }
+        // else {
+        //     console.log(me.id, 'ContentItem DOES NOT haveindividual proficiency')
+        // }
+        }
+        // contentItem.proficiency
 
     }
 }

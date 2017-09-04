@@ -39,47 +39,45 @@ export default {
         }
     },
     methods: {
-        initReview(){
+        async initReview(){
             this.flipped = false
             this.exercise = {}
             this.items = []
             const me = this
             this.loading = true;
-            Trees.get(me.leafId).then(tree => {
-                me.tree = tree
-                ContentItems.get(tree.contentId).then(contentItem => {
-                    me.breadcrumbs = contentItem.getBreadcrumbsObjArray()
-                    me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
-                    me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
 
-                    me.exerciseId = contentItem.getBestExerciseId()
-                    if (!me.exerciseId) {
-                        me.loading = false
-                    } else {
-                        me.initExercise()
-                    }
-                })
-            })
+            const tree = await Trees.get(me.leafId)
+            me.tree = tree
+            const contentItem = await ContentItems.get(tree.contentId)
+
+            me.breadcrumbs = contentItem.getBreadcrumbsObjArray()
+            me.breadcrumbsAllButLast = me.breadcrumbs.splice(0,me.breadcrumbs.length - 1)
+            me.lastBreadcrumb = me.breadcrumbs[me.breadcrumbs.length - 1]
+
+            me.exerciseId = contentItem.getBestExerciseId()
+            if (!me.exerciseId) {
+                me.loading = false
+            } else {
+                me.initExercise()
+            }
         },
-        initExercise(){
+        async initExercise(){
             const me = this
-            Exercises.get(me.exerciseId).then(exercise => {
-                me.exercise = exercise
-                Object.keys(exercise.contentItemIds).forEach(itemId => {
-                    ContentItems.get(itemId).then(item => {
-                        switch(item.type){
-                            case 'fact':
-                                item.title = item.getURIAdditionNotEncoded()
-                                break;
-                            case 'skill':
-                                item.title = item.getLastNBreadcrumbsString(2)
-                                break;
-                        }
-                        // item.title = item.id
-                        me.items.push(item)
-                        me.loading = false
-                    })
-                })
+            const exercise = await Exercises.get(me.exerciseId)
+            me.exercise = exercise
+            Object.keys(exercise.contentItemIds).forEach(async itemId => {
+                const item = await ContentItems.get(itemId)
+                switch(item.type){
+                    case 'fact':
+                        item.title = item.getURIAdditionNotEncoded()
+                        break;
+                    case 'skill':
+                        item.title = item.getLastNBreadcrumbsString(2)
+                        break;
+                }
+                // item.title = item.id
+                me.items.push(item)
+                me.loading = false
             })
             me.flipped = false
         },
