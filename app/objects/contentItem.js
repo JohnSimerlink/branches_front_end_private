@@ -198,6 +198,18 @@ export default class ContentItem {
         firebase.database().ref('content/').child(this.id).remove() //delete from db
         delete window.content[this.id]
     }
+    recalculateProficiencyAggregationForTreeChain(){
+        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
+            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        const calculationPromises = treePromises.map(async treePromise => {
+            const tree = await treePromise
+            return tree.recalculateProficiencyAggregation()
+        })
+        return Promise.all(calculationPromises)
+    }
+    async recalculateProficiencyAggregationGivenTreePromise(treePromise){
+        const tree = await treePromise
+    }
     saveProficiency(){
         !this.inStudyQueue && this.addToStudyQueue()
 
