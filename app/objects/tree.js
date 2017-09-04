@@ -71,14 +71,25 @@ export class Tree {
         firebase.database().ref('trees/' +this.id).update(updates)
     }
 
-    unlinkFromParentAndDeleteContent(){
-       var treeId = this.id
-        console.log('unlink from parent called for ',this)
-       Trees.get(this.parentId).then(parentTree => {
-           parentTree.removeChild(treeId)
-       })
-        Trees.get(treeId).then()
-       this.changeParent(null)
+    removeAndDisconnectFromParent(){
+        const me = this
+        Trees.get(this.parentId).then(parentTree => {
+            parentTree.removeChild(me.id)
+        })
+        this.remove()
+
+    }
+    remove() {
+        console.log(this.id, ": tree . remove called")
+        const me = this
+        ContentItems.remove(this.contentId)
+        Trees.remove(this.id)
+        const removeChildPromises = this.children ?
+            Object.keys(this.children)
+            .map(Trees.get)
+            .map(childPromise => childPromise.then(child => child.remove()))
+         : []
+        return Promise.all(removeChildPromises)
     }
 
     removeChild(childId) {

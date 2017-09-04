@@ -29,4 +29,8 @@ export class Trees {
             }
         })
     }
+    static remove(id){
+        delete trees[id];
+        firebase.database().ref('trees/').child(id).remove() //.once("value", function(snapshot){
+    }
 }
