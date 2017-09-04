@@ -125,7 +125,7 @@ export default {
         },
         deleteExercise(){
             if (confirm("Are you sure you want to delete this exercise? For every single user?")){
-                this.exercise.delete()
+                this.exercise.remove()
                 this.initReview()
             }
         }

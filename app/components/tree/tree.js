@@ -13,7 +13,7 @@ import './tree.less'
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
-    created () {
+    async created () {
         var me = this;
 
         this.editing = false
@@ -22,16 +22,10 @@ export default {
         // this.fact = {}
         // this.content = {}
         this.nodeBeingDragged = false
-        Trees.get(this.id).then(tree => {
-            me.tree = tree
-            ContentItems.get(tree.contentId).then(content => {
-                me.content = content
-                console.log('content uri in tree.js is', content.uri)
-                // console.log('this.content in tree.js is ', me.content)
-                me.startTimer()
-            })
+        this.tree = await Trees.get(this.id)
+        this.content = await ContentItems.get(this.tree.contentId)
+        this.startTimer()
 
-        })
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
         PubSub.subscribe('canvas.closeTooltip',function (eventName, data) {
             if (data.oldNode != me.id) return
@@ -136,11 +130,10 @@ export default {
 
             this.toggleEditing()
         },
-        remove() {
+        async remove() {
             if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")){
-                removeTreeFromGraph(this.id).then(()=> {
-                    this.tree.removeAndDisconnectFromParent()
-                })
+                await removeTreeFromGraph(this.id)
+                this.tree.removeAndDisconnectFromParent()
             }
         }
     }

@@ -71,11 +71,10 @@ export class Tree {
         firebase.database().ref('trees/' +this.id).update(updates)
     }
 
-    removeAndDisconnectFromParent(){
+    async removeAndDisconnectFromParent(){
         const me = this
-        Trees.get(this.parentId).then(parentTree => {
-            parentTree.removeChild(me.id)
-        })
+        const parentTree = await Trees.get(this.parentId)
+        parentTree.removeChild(me.id)
         this.remove()
 
     }
@@ -87,7 +86,10 @@ export class Tree {
         const removeChildPromises = this.children ?
             Object.keys(this.children)
             .map(Trees.get)
-            .map(childPromise => childPromise.then(child => child.remove()))
+            .map(async childPromise => {
+                const child = await childPromise
+                child.remove()
+            })
          : []
         return Promise.all(removeChildPromises)
     }
@@ -100,11 +102,6 @@ export class Tree {
 
     changeParent(newParentId) {
         const me = this
-        ContentItems.get(this.contentId).then(contentItem => {
-            // ContentItems.get(parentTree.id)
-            console.log('changeParent: old parent content Uri is', me.primaryParentTreeContentURI)
-            console.log('changeParent: this  content Uri is', contentItem.uri)
-        })
         this.parentId = newParentId
         firebase.database().ref('trees/' + this.id).update({
             parentId: newParentId

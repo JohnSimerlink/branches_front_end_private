@@ -9,9 +9,8 @@ import Exercises from "../../objects/exercises";
 export default {
     props: ['contentItemId','exerciseToReplaceId'],
     template: require('./newExercise.html'),
-    created () {
+    async created () {
         var me = this
-        this.items = {} // [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
         // this.itemIds = {12345: true} //[12345]
         this.selectedItems = []
         this.selectedItemIds = []
@@ -23,29 +22,25 @@ export default {
         this.tags = null
         //TODO: replace with Vuex/redux store . . . or maybe a routing system
         if (this.exerciseToReplaceId){
-            Exercises.get(this.exerciseToReplaceId).then(exercise => {
-                me.question = exercise.question
-                me.answer = exercise.answer
-                me.selectedItemIds = Object.keys(exercise.contentItemIds)
-            })
+            const exercise = await Exercises.get(this.exerciseToReplaceId)
+            me.question = exercise.question
+            me.answer = exercise.answer
+            me.selectedItemIds = Object.keys(exercise.contentItemIds)
         }
 
 
         // this.factsAndSkills = [{breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345'},{breadcrumb: "Spanish > Senorita", id: '23456'}]
-
-        ContentItems.getAllExceptForHeadings().then(items => {
-            this.items = items
-            var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
-                var item = items[key]
-                var breadCrumb = item.getBreadCrumbsString()
-                map[breadCrumb] = item.id
-                return map
-            },{})
-            var idBreadcrumbMap = invert(breadcrumbIdMap)
-            this.idBreadcrumbMap = idBreadcrumbMap
-            this.breadcrumbIdMap = breadcrumbIdMap
-            initTagSearch()
-        })
+        this.items = await ContentItems.getAllExceptForHeadings()
+        var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
+            var item = me.items[key]
+            var breadCrumb = item.getBreadCrumbsString()
+            map[breadCrumb] = item.id
+            return map
+        },{})
+        var idBreadcrumbMap = invert(breadcrumbIdMap)
+        this.idBreadcrumbMap = idBreadcrumbMap
+        this.breadcrumbIdMap = breadcrumbIdMap
+        initTagSearch()
         // hacky solution, but each breadcrumb should be uniquely mapped to a contentId so i guess no big deal
 
         function initTagSearch(){
@@ -140,10 +135,9 @@ export default {
             //TODO allow creation of other types of exercises than QA
             const exercise = ExerciseQA.create(exerciseData)
 
-            this.selectedItemIds.forEach(id => {
-               ContentItems.get(id).then(contentItem => {
-                   contentItem.addExercise(exercise.id)
-               })
+            this.selectedItemIds.forEach(async id => {
+                const contentItem = await ContentItems.get(id)
+                contentItem.addExercise(exercise.id)
             })
 
             var snack = new Snack({
@@ -159,19 +153,17 @@ export default {
             this.tags.removeAll()
 
         },
-        replaceExercise(){
+        async replaceExercise(){
             const exerciseData = this.getExerciseData()
             //TODO allow creation of other types of exercises than QA
             const newExercise = ExerciseQA.create(exerciseData)
             const me = this
 
-            Exercises.get(this.exerciseToReplaceId).then(exercise => {
-                exercise.contentItemIds.forEach(contentItemId => {
-                    ContentItems.get(contentItemId).then(contentItem => {
-                        contentItem.removeExercise(me.exerciseToReplaceId)
-                        contentItem.addExercise(newExercise.id)
-                    })
-                })
+            const exercise = await Exercises.get(this.exerciseToReplaceId)
+            exercise.contentItemIds.forEach(async contentItemId => {
+                const contentIdem = await ContentItems.get(contentItemId)
+                contentItem.removeExercise(me.exerciseToReplaceId)
+                contentItem.addExercise(newExercise.id)
             })
 
             var snack = new Snack({
