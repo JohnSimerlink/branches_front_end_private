@@ -134,11 +134,12 @@ export default {
 
             this.toggleEditing()
         },
-        unlinkFromParentAndDeleteContent(){
-            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")){
-                this.tree.unlinkFromParentAndDeleteContent()
+        remove() {
+            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")){
+                removeTreeFromGraph(this.id).then(()=> {
+                    this.tree.removeAndDisconnectFromParent()
+                })
             }
-            removeTreeFromGraph(this.id)
         }
     }
 }
