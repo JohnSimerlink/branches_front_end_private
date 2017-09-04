@@ -245,25 +245,27 @@ function initKnawledgeMap(treeIdToJumpTo){
             })
         })
     }
-    function loadTreeAndSubTrees(treeId, level){
+    async function loadTreeAndSubTrees(treeId, level){
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-        return Trees.get(treeId)
-            .then(tree => {
-                return onGetTree(tree, level)
-            })
-            .catch( err => console.error('trees get err is', err))
+        const tree = await Trees.get(treeId)
+        return onGetTree(tree, level)
     }
 
-    function onGetTree(tree, level) {
-        var contentPromise = ContentItems.get(tree.contentId)
-            .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
-            .catch(err => console.error("CONTENTITEMS.get Err is", err))
+    async function onGetTree(tree, level) {
+        // var contentPromise = ContentItems.get(tree.contentId)
+        try {
+            const content = await ContentItems.get(tree.contentId)
+            addTreeNodeToGraph(tree, content, level)
+        } catch( err) {
+            console.error("CONTENTITEMS.get Err is", err)
+        }
+            // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
 
         var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
             return loadTreeAndSubTrees(child, level + 1)
         }): []
 
-        return Promise.all([...childTreesPromises, contentPromise])
+        return Promise.all([...childTreesPromises])
     }
 
 
