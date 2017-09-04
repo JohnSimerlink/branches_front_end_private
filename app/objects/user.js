@@ -29,6 +29,9 @@ class User {
   getId(){
     return this.fbData.uid
   }
+  isAdmin(){
+      return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'
+  }
 
   setItemProperties(itemId, obj){
 

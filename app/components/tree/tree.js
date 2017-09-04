@@ -3,6 +3,7 @@ import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph} from "../kna
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
+import user from '../../objects/user'
 import {Heading} from "../../objects/heading";
 import {secondsToPretty} from "../../core/filters"
 import {Skill} from "../../objects/skill";
@@ -55,6 +56,7 @@ export default {
             editing: this.editing,
             addingChild: this.addingChild,
             draggingNode: window.draggingNode,
+            user,
         }
     },
     computed : {
