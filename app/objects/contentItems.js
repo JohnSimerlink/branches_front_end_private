@@ -49,7 +49,7 @@ export default class ContentItems {
                     const contentData = snapshot.val()
                     if (!contentData){
                         console.log("NO CONTENTDATA FOUND FOR", contentId)
-                        reject("ERROR!: no data found found for contentid of ", contentId)
+                        reject("ERROR!: no data found found for contentid of " + contentId)
                     } else {
                         let contentItem = createContentItemFromData(contentData)
                         resolve(contentItem)
@@ -124,5 +124,16 @@ export default class ContentItems {
         delete content[contentItemId]
         console.log("num items is now", Object.keys(content).length)
         firebase.database().ref('content/').child(contentItemId).remove() //.once("value", function(snapshot){
+    }
+    static async recalculateProficiencyAggregationForEntireGraph(){
+        const content = await ContentItems.getAll()
+        const contentItemKeys = Object.keys(content)
+
+        return Promise.all(
+            contentItemKeys.map(async key => {
+                const contentItem = content[key]
+                await contentItem.recalculateProficiencyAggregationForTreeChain()
+            })
+        )
     }
 }

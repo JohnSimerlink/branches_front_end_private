@@ -1,5 +1,8 @@
 <ul class="item-list">
     {{numItems}}
+    <button v-on:click="recalculateProficiencyAggregationForAll">
+       Recalculate Aggregation
+    </button>
     <li v-for="item in items">
         <!--<span>Type: {{item.type}}</span>-->
         <!--<span>Id: {{item.id}}</span>-->

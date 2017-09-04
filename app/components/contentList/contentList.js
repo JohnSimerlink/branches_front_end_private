@@ -22,6 +22,9 @@ export default {
     methods: {
         remove(item) {
             ContentItems.remove(item.id)
+        },
+        recalculateProficiencyAggregationForAll(){
+           ContentItems.recalculateProficiencyAggregationForEntireGraph()
         }
     }
 }

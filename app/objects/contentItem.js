@@ -207,9 +207,6 @@ export default class ContentItem {
         })
         return Promise.all(calculationPromises)
     }
-    async recalculateProficiencyAggregationGivenTreePromise(treePromise){
-        const tree = await treePromise
-    }
     saveProficiency(){
         !this.inStudyQueue && this.addToStudyQueue()
 

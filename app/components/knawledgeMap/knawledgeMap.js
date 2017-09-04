@@ -60,7 +60,6 @@ function getTreeColor(content) {
     return color
 }
 export async function removeTreeFromGraph(treeId){
-    console.log('remove tree called for ', treeId)
     s.graph.dropNode(treeId)
     const tree = await Trees.get(treeId)
     const childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
@@ -131,8 +130,6 @@ export async function syncGraphWithNode(treeId){
     sigmaNode.y = tree.y
     var color = getTreeColor(content)
     sigmaNode.color = color
-    console.log('node color is now', color)
-    console.log('sigmaNode and tree are', sigmaNode, tree)
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -238,7 +235,12 @@ function initKnawledgeMap(treeIdToJumpTo){
     if (typeof PubSub !== 'undefined') {
         PubSub.subscribe('login', async () => {
             await loadTreeAndSubTrees(1, 1)
-            initSigma()
+            try {
+                initSigma()
+            } catch (err) {
+                console.error('initSigma Error', err)
+                alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
+            }
         })
     }
     async function loadTreeAndSubTrees(treeId, level){
@@ -256,7 +258,6 @@ function initKnawledgeMap(treeIdToJumpTo){
             console.error("CONTENTITEMS.get Err is", err)
         }
             // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
-
         var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
             return loadTreeAndSubTrees(child, level + 1)
         }): []
@@ -280,18 +281,52 @@ function initKnawledgeMap(treeIdToJumpTo){
 
         sigma.renderers.def = sigma.renderers.canvas
         sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
-        s = new sigma({
-            graph: g,
-            container: 'graph-container',
-            glyphScale: 0.7,
-            glyphFillColor: '#666',
-            glyphTextColor: 'white',
-            glyphStrokeColor: 'transparent',
-            glyphFont: 'FontAwesome',
-            glyphFontStyle: 'normal',
-            glyphTextThreshold: 6,
-            glyphThreshold: 3
-        });
+        try {
+            s = new sigma({
+                graph: g,
+                container: 'graph-container',
+                glyphScale: 0.7,
+                glyphFillColor: '#666',
+                glyphTextColor: 'white',
+                glyphStrokeColor: 'transparent',
+                glyphFont: 'FontAwesome',
+                glyphFontStyle: 'normal',
+                glyphTextThreshold: 6,
+                glyphThreshold: 3
+            });
+        } catch (err){
+            const nodes = {}
+            var nodesArr = g.nodes.map(node => {
+               nodes[node.id] = true
+               return node.id
+            } )
+            const sources = {}
+            var sourcesArr = g.edges.map(edge => {
+                sources[edge.source] = true
+                return edge.source
+            })
+            const targets = {}
+            var targetsArr = g.edges.map(edge => {
+                targets[edge.target] = true
+                return edge.target
+            })
+            var invalidSources = sourcesArr.filter( s => !nodes[s])
+            var invalidTargets = targetsArr.filter( t => !nodes[t])
+            console.error("the following targets are invalid", invalidTargets)
+            console.error("the following sources are invalid", invalidSources)
+            console.log("invalid targets instanceof Array", invalidTargets instanceof Array, invalidTargets.map)
+            const invalidTargetPromises = invalidTargets.map(target =>{
+                return Trees.get(target)
+            })
+            (async () => {
+                console.log('async iife called')
+                const targetTrees = await Promise.all(invalidTargetPromises)
+                targetTrees.forEach(tree => {
+                    console.log('invalid target tree is ', tree, tree.id, tree.parentId)
+                })
+            })()
+
+        }
 
         window.s = s;
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
@@ -535,7 +570,8 @@ function initKnawledgeMap(treeIdToJumpTo){
         // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
         // var node = e.data.node
     }
-    function updateTreePosition(data){
+    async function updateTreePosition(data){
+        console.log("update tree Position called")
         let {newX, newY, treeId} = data
         // let newX = e.data.node.x
         // let newY = e.data.node.y
@@ -545,7 +581,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             return; //node isn't an actual node in the db - its like a shadow node or helper node
         }
         const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1
-        const tree = Trees.get(treeId)
+        const tree = await Trees.get(treeId)
         let deltaX = newX - tree.x
         if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
             tree.addToX({recursion: true, deltaX})
@@ -564,7 +600,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
         window.tooltips = tooltips;
         window.jump = jumpToAndOpenTreeId;
-        jumpToAndOpenTreeId(treeIdToJumpTo || DataKeys.TREE_IDS.AMAR)
+        jumpToAndOpenTreeId(treeIdToJumpTo || DataKeys.TREE_IDS.EVERYDAY_WORDS)
 
         var myRenderer = s.renderers[0];
 

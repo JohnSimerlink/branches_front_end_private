@@ -70,7 +70,10 @@ export default {
         },
         timerMouseOverMessage(){
             return "You have spent " + secondsToPretty(this.content.timer) + "studying this item"
-        }
+        },
+        numChildren() {
+            return this.tree && this.tree.children instanceof Object ? Object.keys(this.tree.children).length : 0
+        },
     },
     methods: {
         //user methods
@@ -121,7 +124,7 @@ export default {
         async remove() {
             if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")){
                 await removeTreeFromGraph(this.id)
-                this.tree.removeAndDisconnectFromParent()
+                return this.tree.removeAndDisconnectFromParent()
             }
         }
     }
