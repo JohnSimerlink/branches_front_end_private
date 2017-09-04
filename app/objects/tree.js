@@ -19,6 +19,13 @@ const blankProficiencyStats = {
     THREE: 0,
     FOUR: 0,
 }
+const unknownProficiencyStats = {
+    UNKNOWN: 1,
+    ONE: 0,
+    TWO: 0,
+    THREE: 0,
+    FOUR: 0,
+}
 
 export class Tree {
 
@@ -27,7 +34,7 @@ export class Tree {
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
             loadObject(treeObj, this)
-            this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || blankProficiencyStats
+            this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
             return
         }
 
@@ -36,7 +43,7 @@ export class Tree {
         this.parentId = parentId;
         this.children = {};
         this.userProficiencyStatsMap = {}
-        this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || blankProficiencyStats
+        this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
 
         this.x = x
         this.y = y

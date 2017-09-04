@@ -98,7 +98,8 @@ export default {
         },
         nextQuestion(){
             this.items.forEach(item => {
-                item.setProficiency(item.proficiency) // update the item's proficiency in the db. right now its just updated locally
+                item.saveProficiency() // update the item's proficiency in the db. right now its just updated locally
+                item.recalculateProficiencyAggregationForTreeChain()
             })
             var snack = new Snack({
                 domParent: document.querySelector('.tree-review')

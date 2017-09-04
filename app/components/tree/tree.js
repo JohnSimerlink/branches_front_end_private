@@ -87,27 +87,12 @@ export default {
             this.addingChild = !this.addingChild
         },
         syncProficiency() {
-            this.content.saveProficiency() //  this.content.proficiency is already set I thinkh
-            this.tree.recalculateProficiencyAggregation() // << i don't like that this gets calle
-            syncGraphWithNode(this.tree.id)
-        },
-        recalculateProficiencyAggregation() {
-            this.tree.recalculateProficiencyAggregation()
+            this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
+            this.content.recalculateProficiencyAggregationForTreeChain()
+            this.syncGraphWithNode()
         },
         syncGraphWithNode(){
             syncGraphWithNode(this.tree.id)
-        },
-        setProficiencyToOne() {
-            this.content.setProficiency(PROFICIENCIES.ONE)
-        },
-        setProficiencyToTwo() {
-            this.content.setProficiency(PROFICIENCIES.TWO)
-        },
-        setProficiencyToThree() {
-            this.content.setProficiency(PROFICIENCIES.THREE)
-        },
-        setProficiencyToFour() {
-            this.content.setProficiency(PROFICIENCIES.FOUR)
         },
         toggleAddChild(){
             this.addingChild = !this.addingChild
