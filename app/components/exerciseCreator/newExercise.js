@@ -9,16 +9,25 @@ import Exercises from "../../objects/exercises";
 export default {
     props: ['contentItemId','exerciseToReplaceId'],
     template: require('./newExercise.html'),
+    data () {
+        return {
+            items: {},
+            question: "",
+            answer: "",
+            selectedItems: [],
+            selectedItemIds: [],
+            factsAndSkills: [],
+            itemIds: this.itemIds,
+            type: 'fact',
+            window,
+            loading: true,
+        }
+    },
     async created () {
         var me = this
-        // this.itemIds = {12345: true} //[12345]
-        this.selectedItems = []
-        this.selectedItemIds = []
         if (this.contentItemId){
             this.selectedItemIds.push(this.contentItemId)
         }
-        this.question=""
-        this.answer=""
         this.tags = null
         //TODO: replace with Vuex/redux store . . . or maybe a routing system
         if (this.exerciseToReplaceId){
@@ -88,20 +97,6 @@ export default {
             },0)
         }
 
-    },
-    data () {
-        return {
-            items: this.items,
-            question: this.question,
-            answer: this.answer,
-            selectedItems: this.selectedItems,
-            selectedItemIds: this.selectedItemIds,
-            factsAndSkills: [],
-            itemIds: this.itemIds,
-            type: 'fact',
-            window,
-            loading: true
-        }
     },
     computed: {
         selectedBreadcrumbs() {
