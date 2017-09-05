@@ -71,13 +71,10 @@ export async function removeTreeFromGraph(treeId){
 }
 
 function createTreeNodeFromTreeAndContent(tree, content, level){
+    console.log("create tree node from tere and content called")
     const node = {
-        id: tree.id,
-        parentId: tree.parentId,
+        ...tree,
         level,
-        x: tree.x,
-        y: tree.y,
-        children: tree.children,
         content: content,
         label: getLabelFromContent(content),
         size: 1,
