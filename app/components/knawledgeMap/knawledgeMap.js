@@ -292,36 +292,37 @@ function initKnawledgeMap(treeIdToJumpTo){
                 glyphThreshold: 3
             });
         } catch (err){
-            const nodes = {}
-            var nodesArr = g.nodes.map(node => {
-               nodes[node.id] = true
-               return node.id
-            } )
-            const sources = {}
-            var sourcesArr = g.edges.map(edge => {
-                sources[edge.source] = true
-                return edge.source
-            })
-            const targets = {}
-            var targetsArr = g.edges.map(edge => {
-                targets[edge.target] = true
-                return edge.target
-            })
-            var invalidSources = sourcesArr.filter( s => !nodes[s])
-            var invalidTargets = targetsArr.filter( t => !nodes[t])
-            console.error("the following targets are invalid", invalidTargets)
-            console.error("the following sources are invalid", invalidSources)
-            console.log("invalid targets instanceof Array", invalidTargets instanceof Array, invalidTargets.map)
-            const invalidTargetPromises = invalidTargets.map(target =>{
-                return Trees.get(target)
-            })
-            (async () => {
-                console.log('async iife called')
-                const targetTrees = await Promise.all(invalidTargetPromises)
-                targetTrees.forEach(tree => {
-                    console.log('invalid target tree is ', tree, tree.id, tree.parentId)
-                })
-            })()
+            console.error('error in init KnawledgeMap is ', err)
+            // const nodes = {}
+            // var nodesArr = g.nodes.map(node => {
+            //    nodes[node.id] = true
+            //    return node.id
+            // } )
+            // const sources = {}
+            // var sourcesArr = g.edges.map(edge => {
+            //     sources[edge.source] = true
+            //     return edge.source
+            // })
+            // const targets = {}
+            // var targetsArr = g.edges.map(edge => {
+            //     targets[edge.target] = true
+            //     return edge.target
+            // })
+            // var invalidSources = sourcesArr.filter( s => !nodes[s])
+            // var invalidTargets = targetsArr.filter( t => !nodes[t])
+            // console.error("the following targets are invalid", invalidTargets)
+            // console.error("the following sources are invalid", invalidSources)
+            // console.log("invalid targets instanceof Array", invalidTargets instanceof Array, invalidTargets.map)
+            // const invalidTargetPromises = invalidTargets.map(target =>{
+            //     return Trees.get(target)
+            // })
+            // (async () => {
+            //     console.log('async iife called')
+            //     const targetTrees = await Promise.all(invalidTargetPromises)
+            //     targetTrees.forEach(tree => {
+            //         console.log('invalid target tree is ', tree, tree.id, tree.parentId)
+            //     })
+            // })()
 
         }
 
