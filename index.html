@@ -110,28 +110,30 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <script>
-    var w = window,
-        d = document,
-        e = d.documentElement,
-        g = d.getElementsByTagName('body')[0],
-        x = w.innerWidth || e.clientWidth || g.clientWidth,
-        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    (function(){
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            b = d.getElementsByTagName('body')[0],
+            x = w.innerWidth || e.clientWidth || b.clientWidth,
+            y = w.innerHeight|| e.clientHeight|| b.clientHeight;
 
-    var footerSize = 40;//px
-    var bodyHeight = y - footerSize
+        var footerSize = 40;//px
+        var bodyHeight = y - footerSize
 
-    //^^TODO: do via CSS
-    document.write('' +
-        '<div class="page">' +
+        //^^TODO: do via CSS
+        document.write('' +
+            '<div class="page">' +
             '<div id="branches-app" class="branches-app">' +
-                '<router-view style="height:' + bodyHeight + 'px;" v-if="routing"></router-view>' +
-                '<exercise-creator-container style="height:' + bodyHeight + 'px;" v-if="exerciseCreator"></exercise-creator-container>' +
-                '<tree-review-container style="height:' + bodyHeight + 'px;" v-if="treeReview"></tree-review-container>' +
-                '<!--<review-schedule></review-schedule>-->' +
-                '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
+            '<router-view style="height:' + bodyHeight + 'px;" v-if="routing"></router-view>' +
+            '<exercise-creator-container style="height:' + bodyHeight + 'px;" v-if="exerciseCreator"></exercise-creator-container>' +
+            '<tree-review-container style="height:' + bodyHeight + 'px;" v-if="treeReview"></tree-review-container>' +
+            '<!--<review-schedule></review-schedule>-->' +
+            '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
             '</div>' +
-        '</div>' +
-        '')
+            '</div>' +
+            '')
+    })()
 </script>
 <script>
   document.write("<script type='text/javascript' src='/dist/build.js?v=" + Date.now() + "'><\/script>");

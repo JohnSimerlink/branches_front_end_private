@@ -1,5 +1,5 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph} from "../knawledgeMap/knawledgeMap"
+import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph,refreshGraph} from "../knawledgeMap/knawledgeMap"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
@@ -18,9 +18,6 @@ export default {
 
         this.editing = false
         this.addingChild = false
-        // this.tree = {} // init to empty object until promises resolve, so vue does not complain
-        // this.fact = {}
-        // this.content = {}
         this.nodeBeingDragged = false
         this.tree = await Trees.get(this.id)
         this.content = await ContentItems.get(this.tree.contentId)
@@ -91,7 +88,7 @@ export default {
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
-            this.content.recalculateProficiencyAggregationForTreeChain()
+            this.content.recalculateProficiencyAggregationForTreeChain().then(refreshGraph)
             this.syncGraphWithNode()
         },
         syncGraphWithNode(){

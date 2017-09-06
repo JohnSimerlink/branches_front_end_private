@@ -71,7 +71,14 @@ export async function removeTreeFromGraph(treeId){
 }
 
 function createTreeNodeFromTreeAndContent(tree, content, level){
-    console.log("create tree node from tere and content called")
+    // var node = tree
+    // node.level = level
+    // node.content = content
+    // node.label = getLabelFromContent(content)
+    // node.size = 1
+    // node.color = getTreeColor(content)
+    // node.type = 'tree'
+
     const node = {
         ...tree,
         level,
@@ -121,12 +128,14 @@ function createEdgeId(nodeOneId, nodeTwoId){
 export async function syncGraphWithNode(treeId){
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
-            //update the node
+
+    //update the node
     var sigmaNode = s.graph.nodes(treeId)
     sigmaNode.x = tree.x
     sigmaNode.y = tree.y
     var color = getTreeColor(content)
     sigmaNode.color = color
+    // sigmaNode.proficiencyStats =
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -135,7 +144,9 @@ export async function syncGraphWithNode(treeId){
 
     s.refresh()
 }
-
+export function refreshGraph(){
+    s.refresh()
+}
 function connectTreeToParent(tree,content, g){
     if (tree.parentId) {
         const edge = {
