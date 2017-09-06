@@ -15,7 +15,6 @@ export class Trees {
            throw "Trees.get(treeId) error!. treeId empty"
         }
         return new Promise( function getTreePromise (resolve, reject) {
-
             //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
             if (trees[treeId]){
                 resolve(trees[treeId])
@@ -50,3 +49,4 @@ export class Trees {
         newParent.addChild(childId)
     }
 }
+window.Trees = Trees
