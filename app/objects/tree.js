@@ -120,6 +120,7 @@ export class Tree {
         this.updatePrimaryParentTreeContentURI()
 
     }
+    // async sync
     async updatePrimaryParentTreeContentURI(){
         const [parentTree, contentItem] = await Promise.all([Trees.get(this.parentId), ContentItems.get(this.contentId)])
         const parentTreeContentItem = await ContentItems.get(parentTree.contentId)

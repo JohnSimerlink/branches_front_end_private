@@ -135,7 +135,7 @@ export async function syncGraphWithNode(treeId){
     sigmaNode.y = tree.y
     var color = getTreeColor(content)
     sigmaNode.color = color
-    // sigmaNode.proficiencyStats =
+    sigmaNode.proficiencyStats = tree.proficiencyStats
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)

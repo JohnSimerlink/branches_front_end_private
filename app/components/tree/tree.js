@@ -88,11 +88,30 @@ export default {
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
-            this.content.recalculateProficiencyAggregationForTreeChain().then(refreshGraph)
+            this.content.recalculateProficiencyAggregationForTreeChain()
+                .then(this.syncTreeChainWithUI)
+                .then(refreshGraph)
             this.syncGraphWithNode()
         },
-        syncGraphWithNode(){
+        async syncTreeChainWithUI() {
+            console.log(this.tree.id, "syncTreeChainWithUI called")
             syncGraphWithNode(this.tree.id)
+            // this.syncGraphWithNode()
+            let parentId = this.tree.parentId;
+            let parent
+            let num = 1
+            while (parentId){
+                console.log(this.tree.id, "parent going to be synced is", parentId, "[" + num + "]")
+                syncGraphWithNode(parentId)
+                parent = await Trees.get(parentId)
+                console.log(this.tree.id, "parent received is", parent, "[" + num + "]")
+                parentId = parent.parentId
+                console.log(this.tree.id, "new parentId is", parentId, "[" + num + "]")
+                num++
+            }
+        },
+        async syncGraphWithNode(){
+            await syncGraphWithNode(this.tree.id)
         },
         toggleAddChild(){
             this.addingChild = !this.addingChild
