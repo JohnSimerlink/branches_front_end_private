@@ -149,6 +149,10 @@ export function proficiencyToColor(proficiency){
     return Globals.colors.proficiency_1;
 }
 function getLabelFromContent(content) {
+    if (!content || !content.type) {
+        console.error("Invalid content type", content);
+        return;
+    }
     switch (content.type){
         case "fact":
             return content.question;
@@ -219,11 +223,13 @@ function initSigma(){
         (utils.isMobile.any()) ? mobileOverNode(node) : openTooltip(node);
     });
     PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
-        PubSub.publish('canvas.closeTooltip', data)
-        mobileOutNode();
+        console.log("Diff click event rec'd");
+        PubSub.publish('canvas.closeTooltip', data);
+        //mobileOutNode();
     })
     PubSub.subscribe('canvas.stageClicked', function(eventName, data){
         PubSub.publish('canvas.closeTooltip', data);
+        console.log("stage click event rec'd");
         mobileOutNode();
     })
     PubSub.subscribe('canvas.overNode', function(eventName, data){
@@ -242,6 +248,7 @@ function printNodeInfo(e){
 function mobileOutNode() {
     let ele = document.getElementById('mobileAnswerTray');
     ele.style.display = 'none';
+    console.log("Mobile OUT");
 }
 
 function mobileOverNode(node) {
@@ -249,6 +256,7 @@ function mobileOverNode(node) {
     let ele = document.getElementById('mobileAnswerTray');
     ele.setAttribute('treeid', node.id);
     ele.style.display = 'flex';
+    console.log("Mobile OVER");
     //PubSub.publish('nodeSelect', node.id);
 }
 

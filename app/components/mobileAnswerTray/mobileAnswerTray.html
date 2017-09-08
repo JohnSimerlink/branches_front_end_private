@@ -1,15 +1,14 @@
 <div class="mobileAnswerTray" id="mobileAnswerTray">
     <div class="tray-title">
         <div class="tray-answer-title">
-            <!--{{answerText}}-->
-            This is where the fact or title will be. It's worth mentioning that titles or questions can be very long.
+            {{content.title || content.question}}
         </div>
         <div class="tray-answer-close" v-on:click="closeTray">
             <span>X</span><!--TODO use glyphicon-->
         </div>
     </div>
     <div class="tray-answer-body">
-        <p>This is where the body of the text will be, if available. Only facts have questions and answers right now, while headings only have a single field. This is where the body of the text will be, if available. Only facts have questions and answers right now, while headings only have a single field. This is where the body of the text will be, if available. Only facts have questions and answers right now, while headings only have a single field.</p>
+        <p>{{content.answer}}</p>
     </div>
     <div class="tray-footer">
         <div class="tray-footer-timer">
