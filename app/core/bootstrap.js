@@ -10,6 +10,7 @@ import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
+import {Tree} from "../objects/tree";
 Vue.use(Vuex)
 Vue.use(VueRouter)
 const store = new Vuex.Store({
@@ -36,6 +37,7 @@ const routes = [
   { path: '/contentList', name: 'contentList',  component: ContentList, props: true },
   { path: '/:treeId', component: KnawledgeMap, props: true },
   { path: '/', component: KnawledgeMap, props: true },
+  { path: 'trees/:treeId/', component: Tree, props: true },
 ]
 
 // 3. Create the router instance and pass the `routes` option
