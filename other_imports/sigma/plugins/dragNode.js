@@ -84,6 +84,7 @@
          * Unbind all event listeners.
          */
         this.unbindAll = function() {
+
             _mouse.removeEventListener('mousedown', nodeMouseDown);
             _body.removeEventListener('mousemove', nodeMouseMove);
             _body.removeEventListener('mouseup', nodeMouseUp);
@@ -105,6 +106,7 @@
         };
 
         function click(event) {
+            //console.log("Click " + _isMouseDown);
             // event triggered at the end of the click
             _isMouseDown = false;
             _body.removeEventListener('mousemove', nodeMouseMove);
@@ -117,7 +119,11 @@
 
         function nodeMouseOver(event) {
             // Don't treat the node if it is already registered
+            //console.log("nodemouseover w " + event.data.node.id);
             if (_hoverIndex[event.data.node.id]) {
+                //console.log(_hoverIndex);
+                //console.log("nodemouseover duplicate ");
+
                 return;
             }
 
@@ -128,18 +134,24 @@
             if(_hoverStack.length && ! _isMouseDown) {
                 // Set the current node to be the last one in the array
                 _node = _hoverStack[_hoverStack.length - 1];
+                //console.log("SET NODE!");
                 _mouse.addEventListener('mousedown', nodeMouseDown);
             }
         };
 
         function treatOutNode(event) {
+            //console.log("Treat out node");
             // Remove the node from the array
             var indexCheck = _hoverStack.map(function(e) { return e; }).indexOf(event.data.node);
-            _hoverStack.splice(indexCheck, 1);
-            delete _hoverIndex[event.data.node.id];
+            if (indexCheck > -1) {
+                let node = _hoverStack.splice(indexCheck, 1);
+                delete _hoverIndex[event.data.node.id];
+                //console.log("Node deleted from stacks");
+            }
 
             if(_hoverStack.length && ! _isMouseDown) {
                 // On out, set the current node to be the next stated in array
+                //console.log("outnode set node" + (_node == null));
                 _node = _hoverStack[_hoverStack.length - 1];
             } else {
                 _mouse.removeEventListener('mousedown', nodeMouseDown);
@@ -147,7 +159,8 @@
         };
 
         function nodeMouseDown(event) {
-            PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
+            //console.log("MOUSEDOWN ", event);
+            if (_node) PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
             _isMouseDown = true;
             var size = _s.graph.nodes().length;
 
@@ -155,6 +168,7 @@
             // linear interpolation. So treat it as if a user is dragging
             // the graph
             if (_node && size > 1) {
+                //console.log("In mousedown w node");
                 _mouse.removeEventListener('mousedown', nodeMouseDown);
                 _body.addEventListener('mousemove', nodeMouseMove);
                 _body.addEventListener('mouseup', nodeMouseUp);
@@ -184,6 +198,7 @@
         function nodeMouseUp(event) {
             PubSub.publish('canvas.stopDraggingNode', _node)
             PubSub.publish('canvas.nodeMouseUp', _node)
+            //console.log("node mouse up");
             _isMouseDown = false;
             _mouse.addEventListener('mousedown', nodeMouseDown);
             _body.removeEventListener('mousemove', nodeMouseMove);

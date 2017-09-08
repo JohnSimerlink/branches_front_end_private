@@ -130,9 +130,9 @@ body {
 .mobileAnswerTray {
     display: flex;
     flex-direction:column;
-    height: 40%;
     max-height: 40%;
     padding: 0 6px;
+    height: 40%;
 }
 .tray-title {
     padding: 16px 24px;
@@ -161,6 +161,8 @@ body {
 .tray-answer-body > p {
     margin: 0;
     color: rgba(0,0,0,0.87);
+    word-wrap: break-word;
+    overflow: scroll;
 }
 .tray-footer {
     background-color: #0d71bb;

@@ -17,6 +17,10 @@ export default {
                 self.tree = tree;
                 ContentItems.get(tree.contentId).then(content => {
                     self.content = content;
+                    console.log("contentitem is", content);
+                    console.log(content.question);
+                    console.log(content.answer);
+                    console.log(Object.keys(content));
                 })
             })
         });
@@ -30,7 +34,7 @@ export default {
     },
     methods: {
         closeTray: function () {
-            document.getElementById("mobileAnswerTray").remove();
+            document.getElementById("mobileAnswerTray").style.display = 'none';
         }
     },
     computed : {
