@@ -15,6 +15,7 @@ class User {
           Users.get(self.getId()).then(user => {
 
             self.branchesData = user || {}
+            self.camera = self.branchesData.camera
 
             self.branchesData.items = self.branchesData.items || {}
             // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
@@ -44,6 +45,16 @@ class User {
     }
     firebase.database().ref('users/' + this.getId()).update(updates)
   }
+  setCamera({angle, ratio, x, y}){
+      const camera = {angle, ratio, x, y}
+      console.log('camera in setCamera is ', camera)
+      let updates = {
+          camera
+      }
+      firebase.database().ref('users/' + this.getId()).update(updates)
+      me.camera = me.branchesData.camera = camera
+  }
+
 }
 
 //user singleton

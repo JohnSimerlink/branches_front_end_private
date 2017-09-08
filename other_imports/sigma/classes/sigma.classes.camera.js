@@ -65,6 +65,7 @@
       }
 
     this.dispatchEvent('coordinatesUpdated');
+    PubSub.publish('canvas.coordinatesUpdated', c)
     return this;
   };
 
@@ -124,7 +125,7 @@
         (edges[i][read + 'size'] || 0) /
         edgeRatio;
     }
-
+    // PubSub.publish('canvas.coordinatesUpdated')
     return this;
   };
 

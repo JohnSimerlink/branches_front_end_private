@@ -37,6 +37,40 @@
   width: 320px;
   border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
 }
+.tree-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-heading-leaf-proficiencies {
+  display: flex;
+  flex-direction: row;
+}
+.tree-heading-leaf-num {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.tree-heading-leaf-num-unknown {
+  .tree-heading-leaf-num;
+  color: white;
+}
+.tree-heading-leaf-num-one {
+  .tree-heading-leaf-num;
+  .tree-proficiency-one-text;
+}
+.tree-heading-leaf-num-two {
+  .tree-heading-leaf-num;
+  .tree-proficiency-two-text;
+}
+.tree-heading-leaf-num-three {
+  .tree-heading-leaf-num;
+  .tree-proficiency-three-text;
+}
+.tree-heading-leaf-num-four {
+  .tree-heading-leaf-num;
+  .tree-proficiency-four-text;
+}
 
 .tree-current-fact {
   display: flex;
