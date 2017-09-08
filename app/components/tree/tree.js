@@ -9,6 +9,8 @@ import {secondsToPretty} from "../../core/filters"
 import {Skill} from "../../objects/skill";
 import {PROFICIENCIES} from "../proficiencyEnum";
 import './tree.less'
+import {goToFromMap} from "../knawledgeMap/knawledgeMap";
+
 
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
@@ -86,6 +88,11 @@ export default {
         },
         toggleAddChild() {
             this.addingChild = !this.addingChild
+        },
+        studySkill() {
+            console.log('study skill called!', this, this.$router)
+            goToFromMap({name: 'study', params: {leafId: this.id}})
+            // this.$router.push()
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db

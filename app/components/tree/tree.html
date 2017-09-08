@@ -52,12 +52,13 @@
         <div class="tree-current-skill" v-show="!editing">
             <input type="text" class="tree-current-skill-id" :value="content.id" hidden>
             <div class="tree-current-skill">{{content.title}}</div>
+            <button class="tree-skill-study ui button positive" v-on:click="studySkill">Study this skill</button>
         </div>
         <div class="tree-new-skill" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
             <textarea style="width: 100%" class="tree-new-skill" v-model="content.title"></textarea>
             <div>
-                <button class="skill-new-save" v-on:click="changeContent">Save</button>
+                <button class="skill-new-save ui button positive" v-on:click="changeContent">Save</button>
             </div>
         </div>
     </div>

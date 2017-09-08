@@ -46,6 +46,11 @@ class User {
     firebase.database().ref('users/' + this.getId()).update(updates)
   }
   setCamera({angle, ratio, x, y}){
+      const me = this
+      angle = angle || me.camera.angle
+      ratio = ratio || me.camera.ratio
+      x = x || me.camera.x
+      y = y || me.camera.y
       const camera = {angle, ratio, x, y}
       console.log('camera in setCamera is ', camera)
       let updates = {

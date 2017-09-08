@@ -8,11 +8,13 @@ import user from '../../objects/user'
 
 import Vue from 'vue'
 import {PROFICIENCIES} from "../proficiencyEnum";
+let router
 export default {
     props: ['treeId'],
     template: require('./knawledgeMap.html'),
     created () {
         this.init()
+        router = this.$router
     },
     watch: {
         '$route': 'init',
@@ -203,6 +205,9 @@ export function addTreeToGraph(parentTreeId, content) {
     return newTree;
 }
 
+export function goToFromMap(path){
+    router.push(path)
+}
 function initKnawledgeMap(treeIdToJumpTo){
     var me = this;// bound/called
 
@@ -344,10 +349,8 @@ function initKnawledgeMap(treeIdToJumpTo){
         initialized = true;
         initSigmaPlugins()
         s.bind('coordinatesUpdated', function(){
-            console.log("coordinates updated arguments", arguments)
         })
         PubSub.subscribe('canvas.coordinatesUpdated', function(eventName, coordinates){
-            console.log('coordinates received in subscribe are', coordinates)
             user.setCamera(coordinates)
         })
         PubSub.subscribe('canvas.dragStart', (eventName, data) => {
@@ -379,9 +382,14 @@ function initKnawledgeMap(treeIdToJumpTo){
                 case 'heading':
                     openTooltip(node)
                     break;
+                case 'skill':
+                    console.log('node mouse up on skill!!!',node)
+                    openTooltip(node)
+                    break;
                 default:
-                    me.$router.push({name: 'study', params: {leafId: node.id}})
-                    console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
+                    // console.log()
+                    // me.$router.push({name: 'study', params: {leafId: node.id}})
+                    // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
                     break;
             }
         })
