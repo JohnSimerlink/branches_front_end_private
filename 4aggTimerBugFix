@@ -1,0 +1,66 @@
+diff --git a/app/objects/tree.js b/app/objects/tree.js
+index 5d373de..6a2d859 100644
+--- a/app/objects/tree.js
++++ b/app/objects/tree.js
+@@ -48,7 +48,6 @@ export class Tree {
+         this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
+         this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
+ 
+-
+         this.x = x
+         this.y = y
+ 
+@@ -87,7 +86,6 @@ export class Tree {
+         const parentTree = await Trees.get(this.parentId)
+         parentTree.removeChild(me.id)
+         this.remove()
+-
+     }
+     remove() {
+         console.log(this.id, ": tree . remove called")
+@@ -157,9 +155,9 @@ export class Tree {
+         console.log(this.id, ': set Proficiency Stats called')
+     }
+     setAggregationTimer(timer){
+-        this.timer = timer
++        this.aggregationTimer = timer
+         this.userAggregationTimerMap = this.userAggregationTimerMap || {}
+-        this.userAggregationTimerMap[user.getId()] = this.timer
++        this.userAggregationTimerMap[user.getId()] = this.aggregationTimer
+ 
+         const updates = {
+             userAggregationTimerMap: this.userAggregationTimerMap
+@@ -266,10 +264,11 @@ export class Tree {
+     }
+     async calculateAggregationTimerForLeaf(){
+         let contentItem = await ContentItems.get(this.contentId)
+-        console.log("calculateAggregationTimerForLeaf timer is", contentItem.timer)
++        console.log(this.id,"calculateAggregationTimerForLeaf timer is", contentItem.timer)
+         return contentItem.timer
+     }
+     async calculateAggregationTimerForNotLeaf(){
++        const me = this
+         let timer = 0
+         if (!this.children || !Object.keys(this.children).length) return timer
+         const children = await Promise.all(
+@@ -280,9 +279,9 @@ export class Tree {
+ 
+         children.forEach(child => {
+             timer += +child.aggregationTimer
+-            console.log('child timer is', child.aggregationTimer, 'timer is now', timer)
++            console.log(me.id, 'child timer (', child.id, ') is', child.aggregationTimer, 'timer is now', timer)
+         })
+-        console.log("calculateAggregationTimerForNotLeaf timer is", timer)
++        console.log(me.id, "calculateAggregationTimerForNotLeaf timer is", timer)
+         return timer
+     }
+     async calculateAggregationTimer(){
+@@ -293,7 +292,7 @@ export class Tree {
+         } else {
+             timer = await this.calculateAggregationTimerForNotLeaf()
+         }
+-        console.log("timer about to be passed into setAggregationTimer is", timer)
++        console.log(this.id, "timer about to be passed into setAggregationTimer is", timer)
+         this.setAggregationTimer(timer)
+ 
+         if (!this.parentId) return

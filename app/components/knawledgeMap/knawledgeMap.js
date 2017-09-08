@@ -343,22 +343,32 @@ function initKnawledgeMap(treeIdToJumpTo){
 
         initialized = true;
         initSigmaPlugins()
+        s.bind('coordinatesUpdated', function(){
+            console.log("coordinates updated arguments", arguments)
+        })
+        PubSub.subscribe('canvas.coordinatesUpdated', function(eventName, coordinates){
+            console.log('coordinates received in subscribe are', coordinates)
+            user.setCamera(coordinates)
+        })
         PubSub.subscribe('canvas.dragStart', (eventName, data) => {
             var canvas = document.querySelector('#graph-container')
             canvas.style.cursor = 'grabbing'
         })
         PubSub.subscribe('canvas.dragStop', (eventName, data) => {
+            // console.log('dragStop', eventName, data)
             var canvas = document.querySelector('#graph-container')
             canvas.style.cursor = 'grab'
         })
         PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
         })
         PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
+            console.log('stopDraggingNode', eventName, node)
             updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
         })
         PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
             var node = data
-            console.log(data)
+            console.log('nodeMouseUp',eventName, data)
+            // console.log('nodeMouseUp', eventName, data)
             if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
                 return
             }
@@ -377,6 +387,9 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
             PubSub.publish('canvas.closeTooltip', data)
+        })
+        PubSub.subscribe('canvas.cameraChange', function(eventName, data){
+            console.log('camera change',eventName, data)
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
             PubSub.publish('canvas.closeTooltip', data)
@@ -609,8 +622,9 @@ function initKnawledgeMap(treeIdToJumpTo){
         // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0],activeState);
         window.tooltips = tooltips;
         window.jump = jumpToAndOpenTreeId;
-        jumpToAndOpenTreeId(treeIdToJumpTo || DataKeys.TREE_IDS.EVERYDAY_WORDS)
-
+        // jumpToAndOpenTreeId(treeIdToJumpTo || DataKeys.TREE_IDS.EVERYDAY_WORDS)
+        s.camera.goTo(user.camera)
+        console.log('camera going to', user.camera)
         var myRenderer = s.renderers[0];
 
     }

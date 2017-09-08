@@ -1,0 +1,35 @@
+diff --git a/app/components/knawledgeMap/knawledgeMap.js b/app/components/knawledgeMap/knawledgeMap.js
+index ab11fb4..f7039b1 100644
+--- a/app/components/knawledgeMap/knawledgeMap.js
++++ b/app/components/knawledgeMap/knawledgeMap.js
+@@ -143,7 +143,9 @@ export async function syncGraphWithNode(treeId){
+ 
+     s.refresh()
+ }
+-
++export function refreshGraph(){
++    s.refresh()
++}
+ function connectTreeToParent(tree,content, g){
+     if (tree.parentId) {
+         const edge = {
+diff --git a/app/components/tree/tree.js b/app/components/tree/tree.js
+index 12cd2fe..2a5d913 100644
+--- a/app/components/tree/tree.js
++++ b/app/components/tree/tree.js
+@@ -1,5 +1,5 @@
+ import {Trees} from '../../objects/trees'
+-import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph} from "../knawledgeMap/knawledgeMap"
++import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph,refreshGraph} from "../knawledgeMap/knawledgeMap"
+ import {Fact} from '../../objects/fact'
+ import ContentItems from '../../objects/contentItems'
+ 
+@@ -88,7 +88,7 @@ export default {
+         },
+         syncProficiency() {
+             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
+-            this.content.recalculateProficiencyAggregationForTreeChain()
++            this.content.recalculateProficiencyAggregationForTreeChain().then(refreshGraph)
+             this.syncGraphWithNode()
+         },
+         syncGraphWithNode(){

@@ -62,7 +62,8 @@ export default {
         },
         styleObject(){
             const styles = {}
-            styles['background-color'] = proficiencyToColor(this.content.proficiency)
+
+            styles['background-color'] = this.typeIsHeading ? proficiencyToColor(PROFICIENCIES.UNKNOWN) : proficiencyToColor(this.content.proficiency)
             return styles
         },
         timerMouseOverMessage(){
@@ -139,8 +140,8 @@ export default {
         },
         async remove() {
             if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")){
-                await removeTreeFromGraph(this.id)
-                return this.tree.removeAndDisconnectFromParent()
+                removeTreeFromGraph(this.id)
+                return this.tree.remove()
             }
         }
     }
