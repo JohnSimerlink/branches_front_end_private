@@ -64,8 +64,12 @@ export default {
         },
         styleObject(){
             const styles = {}
-
-            styles['background-color'] = this.typeIsHeading ? proficiencyToColor(PROFICIENCIES.UNKNOWN) : proficiencyToColor(this.content.proficiency)
+            if(this.typeIsHeading){
+                styles['background-color'] = 'black'
+                styles['color'] = 'white'
+            } else {
+                styles['background-color'] = proficiencyToColor(this.content.proficiency)
+            }
             return styles
         },
         timerMouseOverMessage(){

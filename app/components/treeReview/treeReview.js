@@ -14,6 +14,9 @@ export default {
     template: require('./treeReview.html'),
     created () {
         var me = this
+        this.tree = {
+            aggregationTimer: 0
+        }
         // this.exerciseId = '8e0e2cc5be752c843ccfb4114a35ba78'
         // this.leafId = '83cbe6ea3fa874449982b645f04d14a1' // amar
         // this.items = []
@@ -24,6 +27,7 @@ export default {
     },
     data () {
         return {
+            tree: this.tree,
             loading: true,
             breadcrumbsAllButLast:[],
             lastBreadcrumb: {},
@@ -77,6 +81,7 @@ export default {
                 }
                 // item.title = item.id
                 me.items.push(item)
+                item.startTimer()
                 me.loading = false
             })
             me.flipped = false
@@ -100,6 +105,7 @@ export default {
             this.items.forEach(item => {
                 item.saveProficiency() // update the item's proficiency in the db. right now its just updated locally
                 item.recalculateProficiencyAggregationForTreeChain()
+                item.saveTimer()
             })
             var snack = new Snack({
                 domParent: document.querySelector('.tree-review')
