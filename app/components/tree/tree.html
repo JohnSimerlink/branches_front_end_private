@@ -27,6 +27,16 @@
         <div class="tree-current-heading" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-heading">{{content.title}}</div>
+            <div class="tree-heading-aggregationTimer">
+                {{tree.aggregationTimer | secondsToPretty}}
+            </div>
+            <div class="tree-heading-leaf-proficiencies">
+                <div class="tree-heading-leaf-num-unknown">{{tree.proficiencyStats.UNKNOWN}}</div>
+                <div class="tree-heading-leaf-num-one">{{tree.proficiencyStats.ONE}}</div>
+                <div class="tree-heading-leaf-num-two">{{tree.proficiencyStats.TWO}}</div>
+                <div class="tree-heading-leaf-num-three">{{tree.proficiencyStats.THREE}}</div>
+                <div class="tree-heading-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>
+            </div>
         </div>
         <div class="tree-new-heading" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
@@ -35,18 +45,6 @@
                 <button class="heading-new-save" v-on:click="changeContent">Save</button>
             </div>
         </div>
-        <div class="tree-heading-aggregationTimer">
-            {{tree.aggregationTimer | secondsToPretty}}
-        </div>
-        <div class="tree-heading-leaf-proficiencies">
-            <div class="tree-heading-leaf-num-unknown">{{tree.proficiencyStats.UNKNOWN}}</div>
-            <div class="tree-heading-leaf-num-one">{{tree.proficiencyStats.ONE}}</div>
-            <div class="tree-heading-leaf-num-two">{{tree.proficiencyStats.TWO}}</div>
-            <div class="tree-heading-leaf-num-three">{{tree.proficiencyStats.THREE}}</div>
-            <div class="tree-heading-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>
-        </div>
-
-        <div>num children: {{numChildren}}</div>
     </div>
     <div class="tree-skill" v-if="typeIsSkill">
         <div class="tree-current-skill" v-show="!editing">

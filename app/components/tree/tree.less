@@ -37,7 +37,17 @@
   width: 320px;
   border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
 }
-.tree-heading {
+.tree-current-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tree-new-skill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tree-current-skill {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +63,7 @@
 }
 .tree-heading-leaf-num-unknown {
   .tree-heading-leaf-num;
-  color: white;
+  .tree-proficiency-unknown-text;
 }
 .tree-heading-leaf-num-one {
   .tree-heading-leaf-num;
