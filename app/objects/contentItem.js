@@ -232,7 +232,7 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //interactions
-        this.interactions.push({timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: this.proficiency})
+        this.interactions.push({timestamp: Date.now(), proficiency: this.proficiency})
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
