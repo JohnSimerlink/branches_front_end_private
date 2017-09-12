@@ -14,6 +14,16 @@ export default {
         }
     },
     computed: {
+        headingSelectorStyle () {
+            return this.contentIsHeading ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
+        },
+        factSelectorStyle () {
+            return this.contentIsFact ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
+        },
+        skillSelectorStyle () {
+            return this.contentIsSkill ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
+        },
+
         contentIsFact () {
             return this.type == 'fact'
         },

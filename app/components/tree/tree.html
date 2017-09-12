@@ -16,11 +16,11 @@
             <input class="tree-new-fact-question" v-model="content.question">
             <textarea class="tree-new-fact-answer" v-model="content.answer"></textarea>
             <div>
-                <button class="fact-new-save" v-on:click="changeContent">Save</button>
+                <button class="fact-new-save" v-on:click.stop="changeContent">Save</button>
             </div>
         </div>
     </div>
-    <div class="tree-heading" v-if="typeIsHeading">
+    <div class="tree-heading" v-if="typeIsHeading" v-on:click="toggleEditingAndAddChild">
         <!-- {{numChildren}} -->
         <!--{{tree.id}} &#45;&#45;-->
         <!--<button v-on:click="recalculateProficiencyAggregation">Recalculate Proficiency Aggregation</button>-->
@@ -83,5 +83,5 @@
     <div v-show="addingChild" class="tree-add-child-button" v-on:click="toggleAddChild">
         <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
     </div>
-    <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading"></newtree>
+    <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading" v-on:click="toggleEditingAndAddChild"></newtree>
 </div>
