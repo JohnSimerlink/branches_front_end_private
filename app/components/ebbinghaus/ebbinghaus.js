@@ -5,8 +5,8 @@ const STATES = {
     QUIZZING: "quizzing",
     ANSWER: "answer",
 }
-const TIME_SHOWING = 0 //00000
-const TIME_SUBTRACTING_BY_7 = 0 //64000
+const TIME_SHOWING = 16000 //00000
+const TIME_SUBTRACTING_BY_7 = 32000 //64000
 export default {
     template: require('./ebbinghaus.html'),
     created () {

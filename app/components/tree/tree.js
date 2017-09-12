@@ -93,6 +93,11 @@ export default {
         toggleAddChild() {
             this.addingChild = !this.addingChild
         },
+
+        toggleEditingAndAddChild() {
+            this.addingChild = !this.addingChild
+            this.editing = this.addingChild
+        },
         studySkill() {
             console.log('study skill called!', this, this.$router)
             goToFromMap({name: 'study', params: {leafId: this.id}})
