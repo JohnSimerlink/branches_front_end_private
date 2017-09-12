@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 193);
+/******/ 	return __webpack_require__(__webpack_require__.s = 194);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(249)("./" + name);
+            __webpack_require__(251)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -5336,17 +5336,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _firebase = __webpack_require__(209);
+var _firebase = __webpack_require__(210);
 
 var firebase = _interopRequireWildcard(_firebase);
 
 var _config = __webpack_require__(42);
 
-var _firebaseDevConfig = __webpack_require__(180);
+var _firebaseDevConfig = __webpack_require__(181);
 
 var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
 
-var _firebaseProdConfig = __webpack_require__(181);
+var _firebaseProdConfig = __webpack_require__(182);
 
 var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
 
@@ -7710,9 +7710,9 @@ module.exports = merge;
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(198),
+  var crypt = __webpack_require__(199),
       utf8 = __webpack_require__(45).utf8,
-      isBuffer = __webpack_require__(248),
+      isBuffer = __webpack_require__(250),
       bin = __webpack_require__(45).bin,
 
   // The core
@@ -7918,7 +7918,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(257);
+var	fixUrls = __webpack_require__(259);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -8249,7 +8249,7 @@ var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _review = __webpack_require__(189);
+var _review = __webpack_require__(190);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -8738,7 +8738,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(206);
+var _firebase_app = __webpack_require__(207);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -8818,9 +8818,9 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _tree = __webpack_require__(19);
 
-var _globals = __webpack_require__(195);
+var _globals = __webpack_require__(196);
 
-var _dataKeys = __webpack_require__(197);
+var _dataKeys = __webpack_require__(198);
 
 var _dataKeys2 = _interopRequireDefault(_dataKeys);
 
@@ -8843,7 +8843,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var router = void 0;
 exports.default = {
     props: ['treeId'],
-    template: __webpack_require__(240),
+    template: __webpack_require__(242),
     created: function created() {
         this.init();
         router = this.$router;
@@ -20662,7 +20662,7 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(216);
+var PromiseImpl = scope.Promise || __webpack_require__(217);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
@@ -20933,7 +20933,7 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(223);
+var _json = __webpack_require__(224);
 
 var json = _interopRequireWildcard(_json);
 
@@ -21417,7 +21417,7 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(233),
+    template: __webpack_require__(234),
     created: async function created() {
         var _this = this;
 
@@ -21460,7 +21460,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(234),
+    template: __webpack_require__(236),
     created: function created() {
         var me = this;
     },
@@ -21502,7 +21502,7 @@ var _snack = __webpack_require__(173);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-__webpack_require__(255);
+__webpack_require__(257);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -21516,7 +21516,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     props: ['leafId'],
-    template: __webpack_require__(245),
+    template: __webpack_require__(247),
     created: function created() {
         var me = this;
         this.tree = {
@@ -21655,7 +21655,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    template: __webpack_require__(246),
+    template: __webpack_require__(248),
     props: ['leafId'],
     created: function created() {
         console.log('tree review container leafId is', this.leafId);
@@ -21738,7 +21738,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(194);
+var _env = __webpack_require__(195);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -22243,7 +22243,7 @@ var _errors2 = __webpack_require__(21);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(215);
+var _tokenManager = __webpack_require__(216);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -22623,7 +22623,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(222);
+var _fs = __webpack_require__(223);
 
 var fs = _interopRequireWildcard(_fs);
 
@@ -22889,7 +22889,7 @@ var _object = __webpack_require__(10);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(226);
+var _requestinfo = __webpack_require__(227);
 
 var _type = __webpack_require__(1);
 
@@ -23385,7 +23385,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(231);
+var _task = __webpack_require__(232);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -34920,17 +34920,108 @@ module.exports = function(module) {
 "use strict";
 
 
-__webpack_require__(253);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var STATES = {
+    SHOWING: "showing",
+    SUBTRACTING_BY_7: "subtracting_by_7",
+    QUIZZING: "quizzing",
+    ANSWER: "answer"
+};
+var TIME_SHOWING = 0; //00000
+var TIME_SUBTRACTING_BY_7 = 0; //64000
+exports.default = {
+    template: __webpack_require__(235),
+    created: function created() {
+        var _this = this;
+
+        var numTriplets = 3;
+        this.triplets = [];
+        for (var i = 0; i < numTriplets; i++) {
+            var triplet = randomMeaninglessTriplet();
+            this.triplets.push(triplet);
+        }
+        this.state = STATES.SHOWING;
+        setTimeout(function () {
+            _this.state = STATES.SUBTRACTING_BY_7;
+        }, TIME_SHOWING);
+        setTimeout(function () {
+            _this.state = STATES.QUIZZING;
+        }, TIME_SHOWING + TIME_SUBTRACTING_BY_7);
+    },
+    data: function data() {
+        return {
+            triplets: this.triplets,
+            state: 'showing'
+
+        };
+    },
+
+    computed: {
+        stateIsShowing: function stateIsShowing() {
+            return this.state === STATES.SHOWING;
+        },
+        stateIsSubtractingBy7: function stateIsSubtractingBy7() {
+            return this.state === STATES.SUBTRACTING_BY_7;
+        },
+        stateIsQuizzing: function stateIsQuizzing() {
+            return this.state === STATES.QUIZZING;
+        },
+        stateIsAnswer: function stateIsAnswer() {
+            return this.state === STATES.ANSWER;
+        }
+    },
+    methods: {
+        showAnswer: function showAnswer() {
+            this.state = STATES.ANSWER;
+        }
+    }
+};
+
+
+function randomMeaninglessTriplet() {
+    var meaningfulTripletsForJohn = ['lsd', 'lds', 'dsl', 'hrc', 'dmv', 'cbs', 'kfc', 'mtn', 'gdp', 'frs', 'cds', 'std', 'gwt', 'dtf', 'cpr', 'csr', 'phx', 'hjb', 'dsk', 'snp', 'pbj', 'cht', 'hbs', 'cpx', 'ftv', 'bsh', 'bch', 'crm', 'vgl', 'jks', 'dmz', 'bmv', 'dmv'];
+    var numLetters = 26;
+    var CHAR_CODE_A = 97;
+    var triplet = "";
+    do {
+        for (var i = 0; i < 3; i++) {
+            var consonant = getRandomConsonant();
+            while (triplet.indexOf(consonant) >= 0) {
+                consonant = getRandomConsonant();
+            }
+            triplet += consonant;
+        }
+    } while (meaningfulTripletsForJohn.indexOf(triplet) >= 0);
+    return triplet;
+}
+function getRandomConsonant() {
+    var consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z'];
+    var consonantIndex = Math.floor(Math.random() * consonants.length);
+    var consonant = consonants[consonantIndex];
+    return consonant;
+}
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(255);
 
 var _vue = __webpack_require__(20);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _branchesFooter = __webpack_require__(185);
+var _branchesFooter = __webpack_require__(186);
 
 var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
-var _reviewSchedule = __webpack_require__(190);
+var _reviewSchedule = __webpack_require__(191);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
@@ -34938,7 +35029,7 @@ var _contentList = __webpack_require__(37);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _exerciseCreator = __webpack_require__(182);
+var _exerciseCreator = __webpack_require__(183);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
@@ -34954,31 +35045,31 @@ var _treeReviewContainer = __webpack_require__(40);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _newExercise = __webpack_require__(183);
+var _newExercise = __webpack_require__(184);
 
 var _newExercise2 = _interopRequireDefault(_newExercise);
 
-var _exerciseList = __webpack_require__(184);
+var _exerciseList = __webpack_require__(185);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(192);
+var _tree = __webpack_require__(193);
 
 var _tree2 = _interopRequireDefault(_tree);
 
-var _newtreecomponent = __webpack_require__(187);
+var _newtreecomponent = __webpack_require__(188);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(191);
+var _toolbar = __webpack_require__(192);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
-var _goBack = __webpack_require__(186);
+var _goBack = __webpack_require__(187);
 
 var _goBack2 = _interopRequireDefault(_goBack);
 
-var _proficiencySelector = __webpack_require__(188);
+var _proficiencySelector = __webpack_require__(189);
 
 var _proficiencySelector2 = _interopRequireDefault(_proficiencySelector);
 
@@ -35003,7 +35094,7 @@ _vue2.default.component('goBack', _goBack2.default);
 _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35012,7 +35103,7 @@ _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 __webpack_require__(2);
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35032,7 +35123,7 @@ function toggleVisibility(el) {
 }
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37546,7 +37637,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(24)))
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38442,7 +38533,7 @@ var index_esm = {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(24)))
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38455,7 +38546,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38468,7 +38559,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38478,11 +38569,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(251);
+__webpack_require__(253);
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(235),
+    template: __webpack_require__(237),
     created: function created() {
         var me = this;
         console.log("creator just created!");
@@ -38501,7 +38592,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38539,7 +38630,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(236),
+    template: __webpack_require__(238),
     data: function data() {
         return {
             items: {},
@@ -38705,7 +38796,7 @@ function convertItemIdsObjectToList(obj) {
 }
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38722,7 +38813,7 @@ var _exercise2 = _interopRequireDefault(_exercise);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(237),
+    template: __webpack_require__(239),
     created: async function created() {
         this.exercises = await _exercise2.default.getAll();
     },
@@ -38734,7 +38825,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38759,7 +38850,7 @@ var _users2 = _interopRequireDefault(_users);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(238),
+    template: __webpack_require__(240),
     created: function created() {
         var self = this;
         self.loggedIn = false;
@@ -38829,29 +38920,6 @@ exports.default = {
 };
 
 /***/ }),
-/* 186 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-__webpack_require__(252);
-
-exports.default = {
-    template: __webpack_require__(239),
-    methods: {
-        goBack: function goBack() {
-            this.$router.go(-1);
-            // PubSub.publish('goToState.home')
-        }
-    }
-};
-
-/***/ }),
 /* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -38862,7 +38930,30 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _newTree = __webpack_require__(196);
+__webpack_require__(254);
+
+exports.default = {
+    template: __webpack_require__(241),
+    methods: {
+        goBack: function goBack() {
+            this.$router.go(-1);
+            // PubSub.publish('goToState.home')
+        }
+    }
+};
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _newTree = __webpack_require__(197);
 
 var _trees = __webpack_require__(2);
 
@@ -38874,7 +38965,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(241),
+    template: __webpack_require__(243),
     props: ['parentid', 'initialparenttreecontenturi'],
     data: function data() {
         return {
@@ -38959,7 +39050,7 @@ async function establishURIForContentAndThenAllChildren(treeId) {
 }
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38969,13 +39060,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(254);
+__webpack_require__(256);
 
 var _proficiencyEnum = __webpack_require__(6);
 
 exports.default = {
     props: ['value'],
-    template: __webpack_require__(242),
+    template: __webpack_require__(244),
     created: function created() {},
     data: function data() {
         return {};
@@ -39015,7 +39106,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39084,7 +39175,7 @@ function getProficiencyCategory(proficiency) {
 }
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39105,7 +39196,7 @@ var _users2 = _interopRequireDefault(_users);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(243), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(245), // '<div> {{movie}} this is the tree template</div>',
     created: function created() {
         var self = this;
 
@@ -39138,7 +39229,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39150,7 +39241,7 @@ Object.defineProperty(exports, "__esModule", {
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(244),
+    template: __webpack_require__(246),
     created: function created() {},
     data: function data() {
         return {};
@@ -39167,7 +39258,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39201,14 +39292,14 @@ var _skill = __webpack_require__(28);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-__webpack_require__(256);
+__webpack_require__(258);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 exports.default = {
-    template: __webpack_require__(247), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created: async function created() {
         var me = this;
@@ -39348,19 +39439,19 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(175);
+__webpack_require__(176);
 
 __webpack_require__(41);
 
-__webpack_require__(176);
-
 __webpack_require__(177);
+
+__webpack_require__(178);
 
 var _treeReview = __webpack_require__(39);
 
@@ -39382,15 +39473,19 @@ var _knawledgeMap = __webpack_require__(18);
 
 var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
 
+var _ebbinghaus = __webpack_require__(175);
+
+var _ebbinghaus2 = _interopRequireDefault(_ebbinghaus);
+
 var _vue = __webpack_require__(20);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(178);
+var _vueRouter = __webpack_require__(179);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _vuex = __webpack_require__(179);
+var _vuex = __webpack_require__(180);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
@@ -39415,7 +39510,7 @@ var Bar = { template: '<div>bar</div>'
     // either be an actual component constructor created via
     // `Vue.extend()`, or just a component options object.
     // We'll talk about nested routes later.
-};var routes = [{ path: '/foo', component: Foo }, { path: '/bar', component: Bar }, { path: '/study/:leafId', name: 'study', component: _treeReviewContainer2.default, props: true }, { path: '/create', name: 'create', component: _exerciseCreatorContainer2.default, props: true }, { path: '/edit/:exerciseToReplaceId', name: 'edit', component: _exerciseCreatorContainer2.default, props: true }, { path: '/contentList', name: 'contentList', component: _contentList2.default, props: true }, { path: '/:treeId', component: _knawledgeMap2.default, props: true }, { path: '/', component: _knawledgeMap2.default, props: true }, { path: 'trees/:treeId/', component: _tree.Tree, props: true }];
+};var routes = [{ path: '/foo', component: Foo }, { path: '/bar', component: Bar }, { path: '/study/:leafId', name: 'study', component: _treeReviewContainer2.default, props: true }, { path: '/create', name: 'create', component: _exerciseCreatorContainer2.default, props: true }, { path: '/ebbinghaus', name: 'ebbinghaus', component: _ebbinghaus2.default, props: true }, { path: '/edit/:exerciseToReplaceId', name: 'edit', component: _exerciseCreatorContainer2.default, props: true }, { path: '/contentList', name: 'contentList', component: _contentList2.default, props: true }, { path: '/:treeId', component: _knawledgeMap2.default, props: true }, { path: '/', component: _knawledgeMap2.default, props: true }, { path: 'trees/:treeId/', component: _tree.Tree, props: true }];
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
@@ -39476,7 +39571,7 @@ var vm = new _vue2.default({
 });
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39490,7 +39585,7 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39502,16 +39597,16 @@ Object.defineProperty(exports, "__esModule", {
 var Globals = exports.Globals = {
     currentTreeSelected: null,
     colors: {
-        proficiency_4: 'aqua',
-        proficiency_3: 'lawngreen',
-        proficiency_2: 'yellow',
-        proficiency_1: 'lightpink',
+        proficiency_4: 'lawngreen',
+        proficiency_3: 'yellow',
+        proficiency_2: 'orange',
+        proficiency_1: 'red',
         proficiency_unknown: 'gray'
     }
 };
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39589,7 +39684,7 @@ async function newTree(nodeType, parentTreeId, primaryParentTreeContentURI, valu
 }
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39607,7 +39702,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -39709,7 +39804,7 @@ exports.default = {
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)();
@@ -39723,7 +39818,7 @@ exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)();
@@ -39737,7 +39832,7 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)();
@@ -39751,20 +39846,6 @@ exports.push([module.i, "html,\n.tree,\nbutton {\n  font-family: 'Fredoka One', 
 
 
 /***/ }),
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(9)();
-// imports
-
-
-// module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: lightpink;\n}\n.tree-proficiency-two {\n  background-color: yellow;\n}\n.tree-proficiency-three {\n  background-color: lawngreen;\n}\n.tree-proficiency-four {\n  background-color: aqua;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: lightpink;\n}\n.tree-proficiency-two-text {\n  color: yellow;\n}\n.tree-proficiency-three-text {\n  color: lawngreen;\n}\n.tree-proficiency-four-text {\n  color: aqua;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lightpink;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: aqua;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: lightpink;\n}\n.proficiency-selector-item-two {\n  background-color: yellow;\n}\n.proficiency-selector-item-three {\n  background-color: lawngreen;\n}\n.proficiency-selector-item-four {\n  background-color: aqua;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
 /* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39773,7 +39854,7 @@ exports = module.exports = __webpack_require__(9)();
 
 
 // module
-exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
 
 // exports
 
@@ -39787,13 +39868,27 @@ exports = module.exports = __webpack_require__(9)();
 
 
 // module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: lightpink;\n}\n.tree-proficiency-two {\n  background-color: yellow;\n}\n.tree-proficiency-three {\n  background-color: lawngreen;\n}\n.tree-proficiency-four {\n  background-color: aqua;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: lightpink;\n}\n.tree-proficiency-two-text {\n  color: yellow;\n}\n.tree-proficiency-three-text {\n  color: lawngreen;\n}\n.tree-proficiency-four-text {\n  color: aqua;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lightpink;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: aqua;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n", ""]);
+exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39895,7 +39990,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39934,7 +40029,7 @@ var _errors = __webpack_require__(30);
 
 var _shared_promise = __webpack_require__(31);
 
-var _deep_copy = __webpack_require__(205);
+var _deep_copy = __webpack_require__(206);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40299,7 +40394,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
@@ -40578,7 +40673,7 @@ c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAu
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -40849,7 +40944,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40867,18 +40962,18 @@ var _app = __webpack_require__(16);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(207);
+__webpack_require__(208);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(208);
-__webpack_require__(217);
+__webpack_require__(209);
+__webpack_require__(218);
 var AsyncStorage;
 
-__webpack_require__(210);
+__webpack_require__(211);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -40886,7 +40981,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40916,11 +41011,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(212);
+var _windowController = __webpack_require__(213);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(211);
+var _swController = __webpack_require__(212);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -40947,7 +41042,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41325,7 +41420,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41370,7 +41465,7 @@ var _workerPageMessage = __webpack_require__(50);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(214);
+var _defaultSw = __webpack_require__(215);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -41726,7 +41821,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41769,7 +41864,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41806,7 +41901,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41843,7 +41938,7 @@ var _errors2 = __webpack_require__(21);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(213);
+var _arrayBufferToBase = __webpack_require__(214);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -42228,7 +42323,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -42465,10 +42560,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(258).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(260).setImmediate))
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42487,11 +42582,11 @@ var _string = __webpack_require__(35);
 
 var _taskenums = __webpack_require__(54);
 
-var _xhriopool = __webpack_require__(229);
+var _xhriopool = __webpack_require__(230);
 
 var _reference = __webpack_require__(56);
 
-var _service = __webpack_require__(230);
+var _service = __webpack_require__(231);
 
 var _app = __webpack_require__(16);
 
@@ -42538,7 +42633,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42596,7 +42691,7 @@ function async(f) {
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42621,7 +42716,7 @@ var _error2 = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(221);
+var _failrequest = __webpack_require__(222);
 
 var _location = __webpack_require__(23);
 
@@ -42629,7 +42724,7 @@ var _promise_external = __webpack_require__(7);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(227);
+var _requestmap = __webpack_require__(228);
 
 var _type = __webpack_require__(1);
 
@@ -42778,7 +42873,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42910,7 +43005,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42969,7 +43064,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43050,7 +43145,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43106,7 +43201,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43166,7 +43261,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43210,7 +43305,7 @@ var _array = __webpack_require__(33);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(220);
+var _backoff = __webpack_require__(221);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -43439,7 +43534,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43486,7 +43581,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43581,7 +43676,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43780,7 +43875,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43812,7 +43907,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(228);
+var _xhrio_network = __webpack_require__(229);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43837,7 +43932,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43873,7 +43968,7 @@ var _args = __webpack_require__(32);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(219);
+var _authwrapper = __webpack_require__(220);
 
 var _location = __webpack_require__(23);
 
@@ -43881,7 +43976,7 @@ var _promise_external = __webpack_require__(7);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(225);
+var _request = __webpack_require__(226);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -44028,7 +44123,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44067,9 +44162,9 @@ var _taskenums = __webpack_require__(54);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(224);
+var _observer = __webpack_require__(225);
 
-var _tasksnapshot = __webpack_require__(232);
+var _tasksnapshot = __webpack_require__(233);
 
 var _args = __webpack_require__(32);
 
@@ -44079,7 +44174,7 @@ var _array = __webpack_require__(33);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(218);
+var _async = __webpack_require__(219);
 
 var _error = __webpack_require__(4);
 
@@ -44671,7 +44766,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44723,97 +44818,103 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <button v-on:click=\"recalculateProficiencyAggregationForAll\">\r\n       Recalculate Aggregation\r\n    </button>\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 234 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
-
-/***/ }),
 /* 235 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<ul>\r\n    <div>state: {{state}}</div>\r\n   <li v-for=\"triplet in triplets\" v-if=\"stateIsShowing || stateIsAnswer\">{{triplet}}</li>\r\n   <h3 v-if=\"stateIsSubtractingBy7\">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>\r\n   <div><input type=\"text\" v-for=\"triplet in triplets\" v-if=\"stateIsQuizzing || stateIsAnswer\"></div>\r\n   <button v-if=\"stateIsQuizzing\" v-on:click=\"showAnswer\">Show Answer</button>\r\n</ul>";
 
 /***/ }),
 /* 236 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
+module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
 /* 237 */
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
+module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 238 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
+module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
 /* 239 */
 /***/ (function(module, exports) {
 
-module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
+module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
 /* 240 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
+module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 241 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Skill: <input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
 /* 242 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"proficiency-selector\">\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click=\"setProficiencyToFour\"></span>\r\n</span>";
+module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
 
 /***/ }),
 /* 243 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
+module.exports = "<div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"sigma-tooltip-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <div class=\"sigma-tooltip-body\">\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button\" v-on:click=\"setTypeToHeading\">Heading</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Question: <input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                Answer: <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Heading: <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                Skill: <input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 244 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+module.exports = "<span class=\"proficiency-selector\">\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
 /* 245 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
 /* 246 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
 
 /***/ }),
 /* 247 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n            <button class=\"tree-skill-study ui button positive\" v-on:click=\"studySkill\">Study this skill</button>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save ui button positive\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncProficiency\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 248 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n            <button class=\"tree-skill-study ui button positive\" v-on:click=\"studySkill\">Study this skill</button>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save ui button positive\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncProficiency\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\"></newtree>\r\n</div>\r\n";
+
+/***/ }),
+/* 250 */
 /***/ (function(module, exports) {
 
 /*!
@@ -44840,7 +44941,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -45089,10 +45190,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 249;
+webpackContext.id = 251;
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -45285,13 +45386,13 @@ webpackContext.id = 249;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(24)))
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(199);
+var content = __webpack_require__(200);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45316,13 +45417,13 @@ if(false) {
 }
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(200);
+var content = __webpack_require__(201);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45347,13 +45448,13 @@ if(false) {
 }
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(201);
+var content = __webpack_require__(202);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45378,13 +45479,13 @@ if(false) {
 }
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(202);
+var content = __webpack_require__(203);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45409,13 +45510,13 @@ if(false) {
 }
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(204);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45440,13 +45541,13 @@ if(false) {
 }
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(205);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45471,7 +45572,7 @@ if(false) {
 }
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports) {
 
 
@@ -45566,7 +45667,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -45619,7 +45720,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(250);
+__webpack_require__(252);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
