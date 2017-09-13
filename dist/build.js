@@ -8531,7 +8531,7 @@ var ContentItem = function () {
             firebase.database().ref('content/' + this.id).update(updates);
 
             //interactions
-            this.interactions.push({ timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: this.proficiency });
+            this.interactions.push({ timestamp: Date.now(), proficiency: this.proficiency });
             this.userInteractionsMap[_user2.default.getId()] = this.interactions;
 
             var updates = {
@@ -9606,6 +9606,7 @@ var Tree = exports.Tree = function () {
     _createClass(Tree, [{
         key: 'addChild',
         value: function addChild(treeId) {
+            console.log("tree.js addChild called!", this, JSON.stringify(this.children), treeId);
             // this.treeRef.child('/children').push(treeId)
             var children = this.children || {};
             children[treeId] = true;
@@ -9613,6 +9614,7 @@ var Tree = exports.Tree = function () {
                 children: children
             };
             _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+            console.log("tree.js END of addChild!", this, JSON.stringify(this.children));
         }
     }, {
         key: 'removeAndDisconnectFromParent',
@@ -44870,7 +44872,7 @@ module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in ex
 /* 240 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
+module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 241 */
