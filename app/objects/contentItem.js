@@ -232,7 +232,9 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //interactions
-        this.interactions.push({timestamp: Date.now(), proficiency: this.proficiency})
+        const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null
+        const millisecondsSinceLastInteraction = mostRecentInteraction ? Date.now() - mostRecentInteraction.timestamp : 0
+        this.interactions.push({timestamp: Date.now(), timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency})
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
