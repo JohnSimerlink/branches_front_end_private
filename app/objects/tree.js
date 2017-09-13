@@ -72,6 +72,7 @@ export class Tree {
      * @param treeId
      */
     addChild(treeId) {
+        console.log("tree.js addChild called!", this, JSON.stringify(this.children), treeId)
         // this.treeRef.child('/children').push(treeId)
         var children = this.children || {}
         children[treeId] = true
@@ -79,6 +80,7 @@ export class Tree {
             children
         }
         firebase.database().ref('trees/' +this.id).update(updates)
+        console.log("tree.js END of addChild!", this, JSON.stringify(this.children))
     }
 
     async removeAndDisconnectFromParent(){
