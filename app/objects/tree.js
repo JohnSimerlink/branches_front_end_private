@@ -71,7 +71,7 @@ export class Tree {
      * Add a child tree to this tree
      * @param treeId
      */
-    addChild(treeId) {
+    async addChild(treeId) {
         console.log("TREE.JS", this.id, " add child of ",treeId, this, JSON.stringify(this.children))
         // this.treeRef.child('/children').push(treeId)
         this.children = this.children || {}
@@ -79,8 +79,13 @@ export class Tree {
         var updates = {
             children: this.children
         }
-        firebase.database().ref('trees/' +this.id).update(updates)
         console.log("TREE.JS", this.id, "END add child of ",treeId, this, JSON.stringify(this.children))
+        try {
+            console.log('firebase update for addChild about to be called')
+            await firebase.database().ref('trees/' +this.id).update(updates)
+        } catch (err){
+            console.error(' error for addChild firebase call', err)
+        }
     }
 
     async removeAndDisconnectFromParent(){
