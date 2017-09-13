@@ -1,5 +1,5 @@
 import merge from 'lodash.merge'
-import {addTreeNodeToGraph, cameraToGraphPosition, graphToCameraPosition, getTreeUINode} from '../components/knawledgeMap/knawledgeMap'
+import {addTreeNodeToGraph, getCamera, cameraToGraphPosition, graphToCameraPosition, getTreeUINode} from '../components/knawledgeMap/knawledgeMap'
 import {Trees} from './trees'
 
 import ContentItems from "./contentItems";
@@ -11,8 +11,8 @@ import {PROFICIENCIES} from "../components/proficiencyEnum";
 import {Tree} from "./tree";
 
 
-export const newNodeXOffset = -100
-export const newNodeYOffset = -100
+export const newNodeXOffset = -25
+export const newNodeYOffset = -25
 
 export async function newTree(nodeType, parentTreeId,primaryParentTreeContentURI, values){
     let newContent = {};
@@ -35,14 +35,26 @@ export async function newTree(nodeType, parentTreeId,primaryParentTreeContentURI
 
     const parentTreeUINode = getTreeUINode(parentTreeId)
     let level = 5 // eventually get the laevel from the property on the parent tree - but right now that is not stored in db
-    console.log('newTree.js parentTree UI Node', parentTreeUINode, parentTreeUINode['renderer1:x'],parentTreeUINode['renderer1:y'], cameraToGraphPosition(parentTreeUINode['renderer1:x'],parentTreeUINode['renderer1:y']), cameraToGraphPosition(parentTreeUINode['read_cam0:x'],parentTreeUINode['read_cam0:y']))
+    // console.log('newTree.js parentTree UI Node', parentTreeUINode, parentTreeUINode['renderer1:x'],parentTreeUINode['renderer1:y'], cameraToGraphPosition(parentTreeUINode['renderer1:x'],parentTreeUINode['renderer1:y']), cameraToGraphPosition(parentTreeUINode['read_cam0:x'],parentTreeUINode['read_cam0:y']))
+
+
+    // const cameraScaleFactor = 1/ getCamera().ratio
+    let xOffset = newNodeXOffset * getCamera().ratio
+    let yOffset = newNodeXOffset * getCamera().ratio
+
     const {x: parentTreeCameraX, y: parentTreeCameraY} = graphToCameraPosition(parentTreeUINode.x, parentTreeUINode.y)
-    let newChildTreeCameraX = parentTreeCameraX + newNodeXOffset
-    let newChildTreeCameraY = parentTreeCameraY + newNodeYOffset
+    let newChildTreeCameraX = parentTreeCameraX + xOffset
+    let newChildTreeCameraY = parentTreeCameraY + yOffset
     var newChildTreeGraphPosition = cameraToGraphPosition(newChildTreeCameraX, newChildTreeCameraY)
-    console.log("graphPosition is", newChildTreeGraphPosition)
     const {x: newChildTreeX, y: newChildTreeY} = newChildTreeGraphPosition
-    console.log('newChildTreeX', newChildTreeX, 'newChildTreeY', newChildTreeY)
+
+    console.log('1: ParentTree Position is', parentTreeUINode.x, parentTreeUINode.y)
+    console.log('2: ParentTree camera Position is', parentTreeCameraX, parentTreeCameraY)
+    console.log('3: ChildTree camera Position is', newChildTreeCameraX, newChildTreeCameraY)
+    console.log("4: ChildTree Position is", newChildTreeGraphPosition.x,newChildTreeGraphPosition.y)
+    console.log("5: zoom is", getCamera().ratio)
+
+
     var tree = new Tree(newContent.id, newContent.type, parentTreeId, parentTreeUINode.degree + 1, newChildTreeX, newChildTreeY)
 
     newContent.addTree(tree.id)

@@ -217,16 +217,19 @@ export function goToFromMap(path){
     router.push(path)
 }
 export function cameraToGraphPosition(x,y){
-    console.log('cameraToGraphPosition called',x,y)
+    // console.log('cameraToGraphPosition called',x,y)
     const graphPosition = s.camera.graphPosition(x,y)
-    console.log('cameraToGraphPosition called. result is', graphPosition)
+    // console.log('cameraToGraphPosition called. result is', graphPosition)
     return graphPosition
 }
 export function graphToCameraPosition(x,y){
-    console.log('cameraToGraphPosition called',x,y)
+    // console.log('cameraToGraphPosition called',x,y)
     const cameraPosition = s.camera.cameraPosition(x,y)
-    console.log('cameraToGraphPosition called. result is', cameraPosition)
+    // console.log('cameraToGraphPosition called. result is', cameraPosition)
     return cameraPosition
+}
+export function getCamera(){
+    return s.camera
 }
 export function getTreeUINode(nodeId){
     return s.graph.nodes(nodeId)
@@ -293,7 +296,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         } catch( err) {
             console.error("CONTENTITEMS.get Err is", err)
         }
-            // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
+        // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
         var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
             return loadTreeAndSubTrees(child, level + 1)
         }): []
