@@ -5259,7 +5259,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var PROFICIENCIES = exports.PROFICIENCIES = {
     UNKNOWN: 0,
-    ONE: 0,
+    ONE: 1,
     TWO: 33,
     THREE: 67,
     FOUR: 100
