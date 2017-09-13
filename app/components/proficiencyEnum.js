@@ -1,7 +1,7 @@
 export const PROFICIENCIES = {
     UNKNOWN: 0,
-    ONE: 33,
-    TWO: 66,
-    THREE: 95,
+    ONE: 0,
+    TWO: 33,
+    THREE: 67,
     FOUR: 100
 }
