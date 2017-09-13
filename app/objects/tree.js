@@ -72,14 +72,12 @@ export class Tree {
      * @param treeId
      */
     async addChild(treeId) {
-        console.log("TREE.JS", this.id, " add child of ",treeId, this, JSON.stringify(this.children))
         // this.treeRef.child('/children').push(treeId)
         this.children = this.children || {}
         this.children[treeId] = true
         var updates = {
             children: this.children
         }
-        console.log("TREE.JS", this.id, "END add child of ",treeId, this, JSON.stringify(this.children))
         try {
             console.log('firebase update for addChild about to be called')
             await firebase.database().ref('trees/' +this.id).update(updates)
