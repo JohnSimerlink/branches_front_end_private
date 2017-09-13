@@ -9606,15 +9606,15 @@ var Tree = exports.Tree = function () {
     _createClass(Tree, [{
         key: 'addChild',
         value: function addChild(treeId) {
-            console.log("tree.js addChild called!", this, JSON.stringify(this.children), treeId);
+            console.log("TREE.JS", this.id, " add child of ", treeId, this, JSON.stringify(this.children));
             // this.treeRef.child('/children').push(treeId)
-            var children = this.children || {};
-            children[treeId] = true;
+            this.children = this.children || {};
+            this.children[treeId] = true;
             var updates = {
-                children: children
+                children: this.children
             };
             _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-            console.log("tree.js END of addChild!", this, JSON.stringify(this.children));
+            console.log("TREE.JS", this.id, "END add child of ", treeId, this, JSON.stringify(this.children));
         }
     }, {
         key: 'removeAndDisconnectFromParent',
@@ -44896,7 +44896,7 @@ module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal
 /* 244 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"proficiency-selector\">\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click=\"setProficiencyToFour\"></span>\r\n</span>";
+module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
 /* 245 */
