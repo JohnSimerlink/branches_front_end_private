@@ -16,6 +16,7 @@ import NewTree from '../components/newTree/newtreecomponent'
 import Toolbar from '../components/toolbar/toolbar'
 import GoBack from '../components/goBack/goBack'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
+import ItemHistory from '../components/itemHistory/itemHistory'
 // Vue.component('branchesHeader', Header)
 Vue.component('branchesFooter', Footer)
 Vue.component('reviewSchedule', ReviewSchedule)
@@ -31,3 +32,4 @@ Vue.component('newtree', NewTree)
 Vue.component('toolbar', Toolbar)
 Vue.component('goBack', GoBack)
 Vue.component('proficiencySelector', ProficiencySelector)
+Vue.component('itemHistory', ItemHistory)

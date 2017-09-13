@@ -1,0 +1,9 @@
+<div>
+    <div class="ct-chart ct-perfect-fourth"></div>
+    <h3>List of Interactions</h3>
+    <ul>
+        <li v-for="interaction in interactions">
+            {{interaction.timestamp | timeFromNow}} || {{interaction.timeSpent}} || {{interaction.millisecondsSinceLastInteraction}} || {{interaction.proficiency}}
+        </li>
+    </ul>
+</div>

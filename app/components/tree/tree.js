@@ -47,6 +47,7 @@ export default {
             tree:{}, //this.tree
             content: {},// this.content
             editing: this.editing,
+            showHistory: false,
             addingChild: this.addingChild,
             draggingNode: window.draggingNode,
             user,
@@ -69,6 +70,10 @@ export default {
                 styles['color'] = 'white'
             } else {
                 styles['background-color'] = proficiencyToColor(this.content.proficiency)
+                if (this.showHistory){
+                    styles['background-color'] = 'black'
+                    styles['color'] = 'white'
+                }
             }
             return styles
         },
@@ -93,7 +98,10 @@ export default {
         toggleAddChild() {
             this.addingChild = !this.addingChild
         },
-
+        toggleHistory(){
+            if (this.typeisHeading) return
+            this.showHistory = !this.showHistory
+        },
         toggleEditingAndAddChild() {
             this.addingChild = !this.addingChild
             this.editing = this.addingChild

@@ -84,6 +84,9 @@ export class Tree {
         } catch (err){
             console.error(' error for addChild firebase call', err)
         }
+        this.updatePrimaryParentTreeContentURI()
+        this.recalculateProficiencyAggregation()
+        this.calculateAggregationTimer()
     }
 
     async removeAndDisconnectFromParent(){
@@ -126,7 +129,8 @@ export class Tree {
             parentId: newParentId
         })
         this.updatePrimaryParentTreeContentURI()
-
+        this.recalculateProficiencyAggregation()
+        this.calculateAggregationTimer()
     }
     // async sync
     async updatePrimaryParentTreeContentURI(){
