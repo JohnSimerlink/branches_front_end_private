@@ -52,7 +52,6 @@ class User {
       x = x || me.camera.x
       y = y || me.camera.y
       const camera = {angle, ratio, x, y}
-      console.log('camera in setCamera is ', camera)
       let updates = {
           camera
       }

@@ -5,7 +5,7 @@ import {Globals} from '../../core/globals.js'
 import DataKeys from '../../../dataKeys'
 import '../../core/login.js'
 import user from '../../objects/user'
-
+import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
 import {PROFICIENCIES} from "../proficiencyEnum";
 let router
@@ -94,14 +94,22 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
 }
 
 export function addTreeNodeToGraph(tree,content, level){
-    const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
-    if(!initialized){
-        g.nodes.push(treeUINode);
-        connectTreeToParent(tree, content, g)
-    } else {
-        s.graph.addNode(treeUINode)
-        connectTreeToParent(tree, content, g)
-        s.refresh()
+    try {
+        const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
+        if(!initialized){
+            g.nodes.push(treeUINode);
+            connectTreeToParent(tree, content, g)
+        } else {
+            s.graph.addNode(treeUINode)
+            connectTreeToParent(tree, content, g)
+            s.refresh()
+        }
+    } catch (err) {
+        var snack = new Snack({
+            domParent: document.querySelector('.new-exercise')
+        });
+        // show a snack for 4s
+        snack.show(err, 4000)
     }
     return content.id
 }
@@ -207,6 +215,21 @@ export function addTreeToGraph(parentTreeId, content) {
 
 export function goToFromMap(path){
     router.push(path)
+}
+export function cameraToGraphPosition(x,y){
+    console.log('cameraToGraphPosition called',x,y)
+    const graphPosition = s.camera.graphPosition(x,y)
+    console.log('cameraToGraphPosition called. result is', graphPosition)
+    return graphPosition
+}
+export function graphToCameraPosition(x,y){
+    console.log('cameraToGraphPosition called',x,y)
+    const cameraPosition = s.camera.cameraPosition(x,y)
+    console.log('cameraToGraphPosition called. result is', cameraPosition)
+    return cameraPosition
+}
+export function getTreeUINode(nodeId){
+    return s.graph.nodes(nodeId)
 }
 function initKnawledgeMap(treeIdToJumpTo){
     var me = this;// bound/called
