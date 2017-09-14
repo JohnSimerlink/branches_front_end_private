@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 195);
+/******/ 	return __webpack_require__(__webpack_require__.s = 194);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(255)("./" + name);
+            __webpack_require__(253)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4638,99 +4638,6 @@ function isNativeBlobDefined() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Trees = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _tree = __webpack_require__(19);
-
-var _firebaseService = __webpack_require__(10);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var trees = {}; // cache
-if (typeof window !== 'undefined') {
-    window.trees = trees; //expose to window for console debugging
-}
-
-var Trees = exports.Trees = function () {
-    function Trees() {
-        _classCallCheck(this, Trees);
-    }
-
-    _createClass(Trees, null, [{
-        key: 'getAll',
-        value: function getAll(success) {}
-        //returns promise
-
-    }, {
-        key: 'get',
-        value: function get(treeId) {
-            if (!treeId) {
-                throw "Trees.get(treeId) error!. treeId empty";
-            }
-            return new Promise(function getTreePromise(resolve, reject) {
-                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-                if (trees[treeId]) {
-                    resolve(trees[treeId]);
-                } else {
-                    _firebaseService2.default.database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot) {
-                        var treeData = snapshot.val();
-                        var tree = new _tree.Tree(treeData);
-                        trees[tree.id] = tree; // add to cache
-                        resolve(tree);
-                    });
-                }
-            });
-        }
-    }, {
-        key: 'remove',
-        value: function remove(id) {
-            delete trees[id];
-            _firebaseService2.default.database().ref('trees/').child(id).remove(); //.once("value", function(snapshot){
-        }
-    }, {
-        key: 'adoptChild',
-        value: async function adoptChild(newParentId, childId) {
-            var task1 = Trees._handleChildAndOldParent(newParentId, childId),
-                task2 = Trees._handleNewParent(newParentId, childId)[(await task1, await task2)];
-        }
-    }, {
-        key: '_handleChildAndOldParent',
-        value: async function _handleChildAndOldParent(newParentId, childId) {
-            var child = await Trees.get(childId);
-            var oldParentPromise = Trees.get(child.parentId);
-            child.changeParent(newParentId);
-            var oldParent = await oldParentPromise;
-            oldParent.removeChild(child.id);
-        }
-    }, {
-        key: '_handleNewParent',
-        value: async function _handleNewParent(newParentId, childId) {
-            var newParent = await Trees.get(newParentId);
-            newParent.addChild(childId);
-        }
-    }]);
-
-    return Trees;
-}();
-
-window.Trees = Trees;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -4904,7 +4811,7 @@ var ContentItems = function () {
 exports.default = ContentItems;
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4913,103 +4820,91 @@ exports.default = ContentItems;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Trees = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _tree = __webpack_require__(19);
 
 var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _users = __webpack_require__(30);
-
-var _users2 = _interopRequireDefault(_users);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var User = function () {
-    function User() {
-        _classCallCheck(this, User);
+var trees = {}; // cache
+if (typeof window !== 'undefined') {
+    window.trees = trees; //expose to window for console debugging
+}
 
-        this.loggedIn = false;
-        this.branchesData = {};
-        var self = this;
-        _firebaseService2.default.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                PubSub.publish('login');
-                self.loggedIn = true;
-                self.fbData = user;
-                _users2.default.get(self.getId()).then(function (user) {
-
-                    self.branchesData = user || {};
-                    self.camera = self.branchesData.camera;
-
-                    self.branchesData.items = self.branchesData.items || {};
-                    // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
-                });
-            } else {
-                self.loggedIn = false;
-            }
-        });
+var Trees = exports.Trees = function () {
+    function Trees() {
+        _classCallCheck(this, Trees);
     }
 
-    _createClass(User, [{
-        key: 'getId',
-        value: function getId() {
-            return this.fbData.uid;
-        }
-    }, {
-        key: 'isAdmin',
-        value: function isAdmin() {
-            return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3';
-        }
-    }, {
-        key: 'setItemProperties',
-        value: function setItemProperties(itemId, obj) {
+    _createClass(Trees, null, [{
+        key: 'getAll',
+        value: function getAll(success) {}
+        //returns promise
 
-            this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
-            for (var prop in obj) {
-                this.branchesData.items[itemId][prop] = obj[prop];
+    }, {
+        key: 'get',
+        value: function get(treeId) {
+            if (!treeId) {
+                throw "Trees.get(treeId) error!. treeId empty";
             }
-            var updates = {
-                items: this.branchesData.items
-            };
-            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+            return new Promise(function getTreePromise(resolve, reject) {
+                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+                if (trees[treeId]) {
+                    resolve(trees[treeId]);
+                } else {
+                    _firebaseService2.default.database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot) {
+                        var treeData = snapshot.val();
+                        var tree = new _tree.Tree(treeData);
+                        trees[tree.id] = tree; // add to cache
+                        resolve(tree);
+                    });
+                }
+            });
         }
     }, {
-        key: 'setCamera',
-        value: function setCamera(_ref) {
-            var angle = _ref.angle,
-                ratio = _ref.ratio,
-                x = _ref.x,
-                y = _ref.y;
-
-            var me = this;
-            angle = angle || me.camera.angle;
-            ratio = ratio || me.camera.ratio;
-            x = x || me.camera.x;
-            y = y || me.camera.y;
-            var camera = { angle: angle, ratio: ratio, x: x, y: y };
-            var updates = {
-                camera: camera
-            };
-            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
-            me.camera = me.branchesData.camera = camera;
+        key: 'remove',
+        value: function remove(id) {
+            delete trees[id];
+            _firebaseService2.default.database().ref('trees/').child(id).remove(); //.once("value", function(snapshot){
+        }
+    }, {
+        key: 'adoptChild',
+        value: async function adoptChild(newParentId, childId) {
+            var task1 = Trees._handleChildAndOldParent(newParentId, childId),
+                task2 = Trees._handleNewParent(newParentId, childId)[(await task1, await task2)];
+        }
+    }, {
+        key: '_handleChildAndOldParent',
+        value: async function _handleChildAndOldParent(newParentId, childId) {
+            var child = await Trees.get(childId);
+            var oldParentPromise = Trees.get(child.parentId);
+            child.changeParent(newParentId);
+            var oldParent = await oldParentPromise;
+            oldParent.removeChild(child.id);
+        }
+    }, {
+        key: '_handleNewParent',
+        value: async function _handleNewParent(newParentId, childId) {
+            var newParent = await Trees.get(newParentId);
+            newParent.addChild(childId);
         }
     }]);
 
-    return User;
+    return Trees;
 }();
 
-//user singleton
-
-
-var user = new User();
-exports.default = user;
+window.Trees = Trees;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5248,6 +5143,111 @@ function internalError(message) {
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebaseService = __webpack_require__(10);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _users = __webpack_require__(30);
+
+var _users2 = _interopRequireDefault(_users);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+    function User() {
+        _classCallCheck(this, User);
+
+        this.loggedIn = false;
+        this.branchesData = {};
+        var self = this;
+        _firebaseService2.default.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                PubSub.publish('login');
+                self.loggedIn = true;
+                self.fbData = user;
+                _users2.default.get(self.getId()).then(function (user) {
+
+                    self.branchesData = user || {};
+                    self.camera = self.branchesData.camera;
+
+                    self.branchesData.items = self.branchesData.items || {};
+                    // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
+                });
+            } else {
+                self.loggedIn = false;
+            }
+        });
+    }
+
+    _createClass(User, [{
+        key: 'getId',
+        value: function getId() {
+            return this.fbData.uid;
+        }
+    }, {
+        key: 'isAdmin',
+        value: function isAdmin() {
+            return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3';
+        }
+    }, {
+        key: 'setItemProperties',
+        value: function setItemProperties(itemId, obj) {
+
+            this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
+            for (var prop in obj) {
+                this.branchesData.items[itemId][prop] = obj[prop];
+            }
+            var updates = {
+                items: this.branchesData.items
+            };
+            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+        }
+    }, {
+        key: 'setCamera',
+        value: function setCamera(_ref) {
+            var angle = _ref.angle,
+                ratio = _ref.ratio,
+                x = _ref.x,
+                y = _ref.y;
+
+            var me = this;
+            angle = angle || me.camera.angle;
+            ratio = ratio || me.camera.ratio;
+            x = x || me.camera.x;
+            y = y || me.camera.y;
+            var camera = { angle: angle, ratio: ratio, x: x, y: y };
+            var updates = {
+                camera: camera
+            };
+            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+            me.camera = me.branchesData.camera = camera;
+        }
+    }]);
+
+    return User;
+}();
+
+//user singleton
+
+
+var user = new User();
+exports.default = user;
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5427,7 +5427,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(264);
+var	fixUrls = __webpack_require__(262);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -5750,7 +5750,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _firebase = __webpack_require__(213);
+var _firebase = __webpack_require__(211);
 
 var firebase = _interopRequireWildcard(_firebase);
 
@@ -8068,9 +8068,9 @@ module.exports = merge;
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(201),
+  var crypt = __webpack_require__(199),
       utf8 = __webpack_require__(46).utf8,
-      isBuffer = __webpack_require__(254),
+      isBuffer = __webpack_require__(252),
       bin = __webpack_require__(46).bin,
 
   // The core
@@ -8254,23 +8254,23 @@ exports.graphToCameraPosition = graphToCameraPosition;
 exports.getCamera = getCamera;
 exports.getTreeUINode = getTreeUINode;
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _tree = __webpack_require__(19);
 
-var _globals = __webpack_require__(197);
+var _globals = __webpack_require__(196);
 
-var _dataKeys = __webpack_require__(200);
+var _dataKeys = __webpack_require__(198);
 
 var _dataKeys2 = _interopRequireDefault(_dataKeys);
 
 __webpack_require__(44);
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -8291,7 +8291,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var router = void 0;
 exports.default = {
     props: ['treeId'],
-    template: __webpack_require__(246),
+    template: __webpack_require__(244),
     created: function created() {
         this.init();
         router = this.$router;
@@ -8962,422 +8962,9 @@ function initKnawledgeMap(treeIdToJumpTo) {
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.getLastNBreadcrumbsStringFromList = getLastNBreadcrumbsStringFromList;
-
-var _user = __webpack_require__(4);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _review = __webpack_require__(191);
-
-var _proficiencyEnum = __webpack_require__(6);
-
-var _trees = __webpack_require__(2);
-
-var _forgettingCurve = __webpack_require__(198);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var content = {};
-if (typeof window !== 'undefined') {
-    window.content = content; //expose to window for easy debugging
-}
-
-var ContentItem = function () {
-    function ContentItem(args) {
-        _classCallCheck(this, ContentItem);
-
-        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
-        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || args && args.primaryParentTreeContentURI || null;
-        this.trees = args.trees || {};
-
-        this.userTimeMap = args.userTimeMap || {};
-        this.timer = _user2.default.loggedIn && this.userTimeMap && this.userTimeMap[_user2.default.getId()] || 0;
-        this.timerId = null;
-
-        this.userProficiencyMap = args.userProficiencyMap || {};
-        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
-
-        this.userInteractionsMap = args.userInteractionsMap || {};
-        this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
-
-        this.userReviewTimeMap = args.userReviewTimeMap || {};
-        this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
-
-        this.studiers = args.studiers || {};
-        this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
-
-        this.exercises = args.exercises || {};
-
-        this.uri = args.uri || null;
-
-        this.type = args.type;
-    }
-
-    _createClass(ContentItem, [{
-        key: 'init',
-        value: function init() {
-            this.calculateURIBasedOnParentTreeContentURI();
-            // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
-        }
-
-        //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
-
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            return {
-                initialParentTreeId: this.initialParentTreeId,
-                primaryParentTreeContentURI: this.primaryParentTreeContentURI,
-                userTimeMap: this.userTimeMap,
-                userProficiencyMap: this.userProficiencyMap,
-                userInteractionsMap: this.userInteractionsMap,
-                userReviewTimeMap: this.userReviewTimeMap,
-                studiers: this.studiers,
-                exercises: this.exercises,
-                uri: this.uri
-            };
-        }
-    }, {
-        key: 'getURIAddition',
-        value: function getURIAddition() {}
-    }, {
-        key: 'getURIAdditionNotEncoded',
-        value: function getURIAdditionNotEncoded() {}
-        //removes the prefix "content/
-
-    }, {
-        key: 'getURIWithoutRootElement',
-        value: function getURIWithoutRootElement() {
-            return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
-        }
-    }, {
-        key: 'getBreadCrumbsString',
-        value: function getBreadCrumbsString() {
-            var sections = this.getURIWithoutRootElement().split("/");
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            var sectionsResult = sections.reduce(function (accum, val) {
-                if (val == "null" || val == "content" || val == "Everything") {
-                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-                    return accum;
-                }
-                return accum + " > " + decodeURIComponent(val);
-            });
-            return sectionsResult;
-            // console.log('breadcrumb result is', sectionsResult)
-            //
-            // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-            //     return total + decodeURIComponent(section) + " > "
-            // },"")
-            // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-            // return breadcrumbs
-        }
-    }, {
-        key: 'getBreadcrumbsObjArray',
-        value: function getBreadcrumbsObjArray() {
-            var sections = this.getURIWithoutRootElement().split("/");
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            var breadcrumbsObjArray = sections.reduce(function (accum, val) {
-                if (val == "null" || val == "content" || val == "Everything") {
-                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-                    return accum;
-                }
-                accum.push({ text: decodeURIComponent(val) });
-                return accum;
-            }, []);
-            return breadcrumbsObjArray;
-        }
-    }, {
-        key: 'getLastNBreadcrumbsString',
-        value: function getLastNBreadcrumbsString(n) {
-            var sections = this.getURIWithoutRootElement().split("/");
-            var result = getLastNBreadcrumbsStringFromList(sections, n);
-            return result;
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            // let sectionsResult = sections.reduce((accum, val) => {
-            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-            //         return accum
-            //     }
-            //     return accum + " > " + decodeURIComponent(val)
-            // })
-        }
-    }, {
-        key: 'getBreadCrumbs',
-        value: function getBreadCrumbs() {}
-    }, {
-        key: 'isLeafType',
-        value: function isLeafType() {
-            return this.type === 'fact' || this.type === 'skill';
-        }
-        /**
-         * Used to update tree X and Y coordinates
-         * @param prop
-         * @param val
-         */
-
-    }, {
-        key: 'set',
-        value: function set(prop, val) {
-            if (this[prop] == val) {
-                return;
-            }
-
-            var updates = {};
-            updates[prop] = val;
-            // this.treeRef.update(updates)
-            firebase.database().ref('content/' + this.id).update(updates);
-            this[prop] = val;
-        }
-        /**
-         * Add a tree to the given content item
-         * @param treeId
-         */
-
-    }, {
-        key: 'addTree',
-        value: function addTree(treeId) {
-            this.trees[treeId] = true;
-            var trees = {};
-            trees[treeId] = true;
-            var updates = {
-                trees: trees
-            };
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'calculateURIBasedOnParentTreeContentURI',
-        value: function calculateURIBasedOnParentTreeContentURI() {
-            var uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition();
-            this.set('uri', uri);
-        }
-        //TODO : make timer for heading be the sum of the time of all the child facts
-
-    }, {
-        key: 'startTimer',
-        value: function startTimer() {
-            var me = this;
-
-            if (!this.timerId) {
-                //to prevent from two or more timers being created simultaneously on the content item
-                this.timerId = setInterval(function () {
-                    me.timer = me.timer || 0;
-                    me.timer++; // = fact.timer || 0
-                    me.calculateAggregationTimerForTreeChain(); //propagate the time increase all the way up
-                }, 1000);
-            }
-        }
-    }, {
-        key: 'saveTimer',
-        value: function saveTimer() {
-            this.userTimeMap[_user2.default.getId()] = this.timer;
-
-            var updates = {
-                userTimeMap: this.userTimeMap
-            };
-
-            clearInterval(this.timerId);
-            this.timerId = null;
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'calculateAggregationTimerForTreeChain',
-        value: function calculateAggregationTimerForTreeChain() {
-            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
-            var calculationPromises = treePromises.map(async function (treePromise) {
-                var tree = await treePromise;
-                return tree.calculateAggregationTimer();
-            });
-            return Promise.all(calculationPromises);
-        }
-    }, {
-        key: 'addToStudyQueue',
-        value: function addToStudyQueue() {
-            //don't display nextReviewTime if not in user's study queue
-            this.studiers[_user2.default.getId()] = true;
-
-            var updates = {
-                studiers: this.studiers
-            };
-            this.inStudyQueue = true;
-
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'addExercise',
-        value: function addExercise(exerciseId) {
-            this.exercises[exerciseId] = true;
-
-            var updates = {
-                exercises: this.exercises
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'removeExercise',
-        value: function removeExercise(exerciseId) {
-            delete this.exercises[exerciseId]; // remove from local cache
-            firebase.database().ref('content/' + this.id + '/exercises/').child(exerciseId).remove(); //delete from db
-        }
-    }, {
-        key: 'remove',
-        value: function remove() {
-            firebase.database().ref('content/').child(this.id).remove(); //delete from db
-            delete window.content[this.id];
-        }
-    }, {
-        key: 'recalculateProficiencyAggregationForTreeChain',
-        value: function recalculateProficiencyAggregationForTreeChain() {
-            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
-            var calculationPromises = treePromises.map(async function (treePromise) {
-                var tree = await treePromise;
-                return tree.recalculateProficiencyAggregation();
-            });
-            return Promise.all(calculationPromises);
-        }
-    }, {
-        key: 'saveProficiency',
-        value: function saveProficiency() {
-            !this.inStudyQueue && this.addToStudyQueue();
-
-            //content
-            this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
-
-            var updates = {
-                userProficiencyMap: this.userProficiencyMap
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            //interactions
-            var mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null;
-            var nowMilliseconds = Date.now();
-            var millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0;
-            var previousInteractionStrength = (0, _forgettingCurve.calculateStrength)(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
-
-            this.interactions.push({ timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction: millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength: previousInteractionStrength });
-            this.userInteractionsMap[_user2.default.getId()] = this.interactions;
-
-            var updates = {
-                userInteractionsMap: this.userInteractionsMap
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-            var millisecondsTilNextReview = (0, _review.calculateMillisecondsTilNextReview)(this.interactions);
-            this.nextReviewTime = Date.now() + millisecondsTilNextReview;
-
-            this.userReviewTimeMap[_user2.default.getId()] = this.nextReviewTime;
-            var updates = {
-                userReviewTimeMap: this.userReviewTimeMap
-            };
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            _user2.default.setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency: this.proficiency });
-        }
-    }, {
-        key: 'setProficiency',
-        value: function setProficiency(proficiency) {
-            //-proficiency stored as part of this content item
-            this.proficiency = proficiency;
-            this.saveProficiency();
-        }
-        //methods for html templates
-
-    }, {
-        key: 'isProficiencyUnknown',
-        value: function isProficiencyUnknown() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
-        }
-    }, {
-        key: 'isProficiencyOne',
-        value: function isProficiencyOne() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
-        }
-    }, {
-        key: 'isProficiencyTwo',
-        value: function isProficiencyTwo() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.TWO;
-        }
-    }, {
-        key: 'isProficiencyThree',
-        value: function isProficiencyThree() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.THREE;
-        }
-    }, {
-        key: 'isProficiencyFour',
-        value: function isProficiencyFour() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.FOUR;
-        }
-        //returns exerciseId of the best exercise for the user
-        //returns null if no exercise found
-
-    }, {
-        key: 'getBestExerciseId',
-        value: function getBestExerciseId() {
-            var exerciseKeys = Object.keys(this.exercises).filter(function (key) {
-                return key !== 'undefined';
-            }); // not sure how but some data keys are undefined
-            console.log('exercise keys in get best exercise id are', exerciseKeys);
-            if (exerciseKeys.length <= 0) {
-                return null;
-            }
-            var keyIndex = Math.floor(Math.random() * exerciseKeys.length);
-            var exercise = exerciseKeys[keyIndex];
-
-            return exercise;
-        }
-    }]);
-
-    return ContentItem;
-}();
-
-/**
- *
- * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
- * @returns {string}
- */
-
-
-exports.default = ContentItem;
-function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
-    if (breadcrumbList.length <= n) {
-        return breadcrumbList;
-    }
-
-    var breadcrumbListCopy = breadcrumbList.slice();
-    var lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length);
-    var result = convertBreadcrumbListToString(lastNBreadcrumbSections);
-
-    return result;
-}
-
-function convertBreadcrumbListToString(breadcrumbList) {
-    if (breadcrumbList.length <= 0) return [];
-
-    var lastItem = decodeURIComponent(breadcrumbList.splice(-1));
-
-    var firstItems = breadcrumbList.reduce(function (accum, val) {
-        return accum + decodeURIComponent(val) + " > ";
-    }, '');
-    var result = firstItems + lastItem;
-
-    return result;
-}
+throw new Error("Module build failed: SyntaxError: C:/Users/John/dev/branches_front_end/app/objects/contentItem.js: Identifier directly after number (240:125)\n\n  238 |         const nowMilliseconds = Date.now()\n  239 |         const millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0\n> 240 |         const previousInteractionStrength = calculateStrength(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0const currentInteractionStrength = calculateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0\n      |                                                                                                                              ^\n  241 | \n  242 |         this.interactions.push({timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength})\n  243 |         this.userInteractionsMap[user.getId()] = this.interactions\n");
 
 /***/ }),
 /* 16 */
@@ -9395,7 +8982,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -9475,7 +9062,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(210);
+var _firebase_app = __webpack_require__(208);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -9546,7 +9133,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -9558,9 +9145,9 @@ var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -19670,7 +19257,7 @@ var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -19678,7 +19265,7 @@ var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 var _lodash = __webpack_require__(12);
 
@@ -19853,7 +19440,7 @@ var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20115,7 +19702,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -20578,7 +20165,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -20775,7 +20362,7 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(220);
+var PromiseImpl = scope.Promise || __webpack_require__(218);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
@@ -20808,7 +20395,7 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -21046,7 +20633,7 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(227);
+var _json = __webpack_require__(225);
 
 var json = _interopRequireWildcard(_json);
 
@@ -21255,7 +20842,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -21686,14 +21273,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(237),
+    template: __webpack_require__(235),
     created: async function created() {
         var _this = this;
 
@@ -21736,7 +21323,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(239),
+    template: __webpack_require__(237),
     created: function created() {
         var me = this;
     },
@@ -21770,7 +21357,7 @@ var _exerciseQA = __webpack_require__(29);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -21778,7 +21365,7 @@ var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-__webpack_require__(262);
+__webpack_require__(260);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -21786,13 +21373,13 @@ var _invertObject = __webpack_require__(58);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     props: ['leafId'],
-    template: __webpack_require__(251),
+    template: __webpack_require__(249),
     created: function created() {
         var me = this;
         this.tree = {
@@ -21931,7 +21518,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    template: __webpack_require__(252),
+    template: __webpack_require__(250),
     props: ['leafId'],
     created: function created() {
         console.log('tree review container leafId is', this.leafId);
@@ -21954,7 +21541,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(196);
+var _env = __webpack_require__(195);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -22459,7 +22046,7 @@ var _errors2 = __webpack_require__(24);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(219);
+var _tokenManager = __webpack_require__(217);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -22839,7 +22426,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(226);
+var _fs = __webpack_require__(224);
 
 var fs = _interopRequireWildcard(_fs);
 
@@ -23093,7 +22680,7 @@ var array = _interopRequireWildcard(_array);
 
 var _blob = __webpack_require__(52);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -23105,7 +22692,7 @@ var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(230);
+var _requestinfo = __webpack_require__(228);
 
 var _type = __webpack_require__(1);
 
@@ -23571,7 +23158,7 @@ var args = _interopRequireWildcard(_args);
 
 var _blob = __webpack_require__(52);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -23601,7 +23188,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(235);
+var _task = __webpack_require__(233);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -34986,7 +34573,7 @@ var STATES = {
 var TIME_SHOWING = 16000; //00000
 var TIME_SUBTRACTING_BY_7 = 32000; //64000
 exports.default = {
-    template: __webpack_require__(238),
+    template: __webpack_require__(236),
     created: function created() {
         var _this = this;
 
@@ -35064,7 +34651,7 @@ function getRandomConsonant() {
 "use strict";
 
 
-__webpack_require__(260);
+__webpack_require__(258);
 
 var _vue = __webpack_require__(20);
 
@@ -35074,7 +34661,7 @@ var _branchesFooter = __webpack_require__(186);
 
 var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
-var _reviewSchedule = __webpack_require__(192);
+var _reviewSchedule = __webpack_require__(191);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
@@ -35106,7 +34693,7 @@ var _exerciseList = __webpack_require__(185);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(194);
+var _tree = __webpack_require__(193);
 
 var _tree2 = _interopRequireDefault(_tree);
 
@@ -35114,7 +34701,7 @@ var _newtreecomponent = __webpack_require__(189);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(193);
+var _toolbar = __webpack_require__(192);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
@@ -35158,7 +34745,7 @@ _vue2.default.component('itemHistory', _itemHistory2.default);
 "use strict";
 
 
-__webpack_require__(2);
+__webpack_require__(3);
 
 /***/ }),
 /* 178 */
@@ -38627,11 +38214,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(257);
+__webpack_require__(255);
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(240),
+    template: __webpack_require__(238),
     created: function created() {
         var me = this;
         console.log("creator just created!");
@@ -38668,7 +38255,7 @@ var _exerciseQA = __webpack_require__(29);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -38688,7 +38275,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(241),
+    template: __webpack_require__(239),
     data: function data() {
         return {
             items: {},
@@ -38871,7 +38458,7 @@ var _exercise2 = _interopRequireDefault(_exercise);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(242),
+    template: __webpack_require__(240),
     created: async function created() {
         this.exercises = await _exercise2.default.getAll();
     },
@@ -38897,7 +38484,7 @@ var _config = __webpack_require__(43);
 
 var _login2 = __webpack_require__(44);
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -38908,7 +38495,7 @@ var _users2 = _interopRequireDefault(_users);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(243),
+    template: __webpack_require__(241),
     created: function created() {
         var self = this;
         self.loggedIn = false;
@@ -38988,10 +38575,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(258);
+__webpack_require__(256);
 
 exports.default = {
-    template: __webpack_require__(244),
+    template: __webpack_require__(242),
     methods: {
         goBack: function goBack() {
             this.$router.go(-1);
@@ -39011,17 +38598,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 var _knawledgeMap = __webpack_require__(14);
 
 var _fact = __webpack_require__(21);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -39033,14 +38620,14 @@ var _skill = __webpack_require__(23);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-__webpack_require__(259);
+__webpack_require__(257);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import Chartist from 'chartist'
 
 exports.default = {
-    template: __webpack_require__(245), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(243), // '<div> {{movie}} this is the tree template</div>',
     props: ['itemId'],
     created: async function created() {
         console.log('item history component created');
@@ -39079,11 +38666,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _newTree = __webpack_require__(199);
+var _newTree = __webpack_require__(197);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39091,7 +38678,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(247),
+    template: __webpack_require__(245),
     props: ['parentid', 'initialparenttreecontenturi'],
     data: function data() {
         return {
@@ -39195,13 +38782,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(261);
+__webpack_require__(259);
 
 var _proficiencyEnum = __webpack_require__(6);
 
 exports.default = {
     props: ['value'],
-    template: __webpack_require__(248),
+    template: __webpack_require__(246),
     created: function created() {},
     data: function data() {
         return {};
@@ -39250,77 +38837,8 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.calculateMillisecondsTilNextReview = calculateMillisecondsTilNextReview;
-//TODO: take into account if a user reviews the card to early - e.g. a user shouldn't be able to click "All the way baby" 5 times
-function calculateMinutesTilNextReview(interactionsList) {
-    var minutesTilNextReview;
-    var numInteractions = interactionsList.length;
 
-    var mostRecentInteraction = interactionsList[numInteractions - 1];
-    switch (getProficiencyCategory(mostRecentInteraction.proficiency)) {
-        case USER_SUCKS:
-            minutesTilNextReview = 2;
-            break;
-        case USER_OK:
-            minutesTilNextReview = 10;
-            break;
-        case USERS_AIGHT:
-            minutesTilNextReview = 30;
-            break;
-        case DAYYYAAAMN:
-            minutesTilNextReview = 60 * 24; // 1 day
-            for (var i = numInteractions - 1 - 1; i > 0; i--) {
-                // for every DAYYYAAAMN in a row the user got, multiply the time til next review by 5
-                var interaction = interactionsList[i];
-                var proficiencyCategory = getProficiencyCategory(interaction.proficiency);
-                if (proficiencyCategory === DAYYYAAAMN) {
-                    minutesTilNextReview *= 5; //hot diggity
-                } else {
-                    break;
-                }
-            }
-    }
-    return minutesTilNextReview;
-}
-function calculateMillisecondsTilNextReview(interactionsList) {
-    return calculateMinutesTilNextReview(interactionsList) * 60 * 1000;
-}
-var USER_SUCKS = 1;
-var USER_OK = 2;
-var USERS_AIGHT = 3;
-var DAYYYAAAMN = 4;
-
-function getProficiencyCategory(proficiency) {
-    //0 to 32
-    if (proficiency < 33) {
-        return USER_SUCKS;
-    }
-    //33 to 65
-    else if (proficiency < 66) {
-            return USER_OK;
-        }
-        //66 to 94
-        else if (proficiency < 95) {
-                return USERS_AIGHT;
-            }
-            //95 to 100
-            else {
-                    return DAYYYAAAMN;
-                }
-}
-
-/***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -39331,7 +38849,7 @@ var _users2 = _interopRequireDefault(_users);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(247), // '<div> {{movie}} this is the tree template</div>',
     created: function created() {
         var self = this;
 
@@ -39364,7 +38882,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39376,7 +38894,7 @@ Object.defineProperty(exports, "__esModule", {
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(250),
+    template: __webpack_require__(248),
     created: function created() {},
     data: function data() {
         return {};
@@ -39393,7 +38911,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 194 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39405,17 +38923,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _methods;
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 var _knawledgeMap = __webpack_require__(14);
 
 var _fact = __webpack_require__(21);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _user = __webpack_require__(4);
+var _user = __webpack_require__(5);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -39427,14 +38945,14 @@ var _skill = __webpack_require__(23);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-__webpack_require__(263);
+__webpack_require__(261);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 exports.default = {
-    template: __webpack_require__(253), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(251), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created: async function created() {
         var me = this;
@@ -39587,7 +39105,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 195 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39719,7 +39237,7 @@ var vm = new _vue2.default({
 });
 
 /***/ }),
-/* 196 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39733,7 +39251,7 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 197 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39754,47 +39272,7 @@ var Globals = exports.Globals = {
 };
 
 /***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.calculateStrength = calculateStrength;
-exports.calculateRecall = calculateRecall;
-exports.calculateTime = calculateTime;
-var e = 2.7182828;
-//memory strength in decibels - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
-function calculateStrength(R, t) {
-    console.log('calculateStrength R and t are', R, t);
-    var proficiencyAsDecimal = R / 100;
-    console.log('calculateStrength proficiecnyAsDecimal', proficiencyAsDecimal);
-    console.log('');
-    var logProficiency = Math.log(proficiencyAsDecimal);
-    console.log('calculateStrength logProfiency', logProficiency);
-    var ebbinghaus = -1 * t / logProficiency;
-    console.log('calculateStrength ebbinghaus ', ebbinghaus);
-    var dbE = 10 * Math.log10(ebbinghaus);
-    console.log('calculateStrength dbE ', dbE);
-    return dbE > 0 ? dbE : 0;
-}
-
-//calculate percent change of recall (e.g. proficiency)
-//returns as a num in range [0,100]
-function calculateRecall(S, t) {
-    return Math.pow(e, -1 * t / Math.pow(10, S / 10));
-}
-
-//R input is in [0,1]
-function calculateTime(S, R) {
-    return -1 * Math.pow(10, S / 10) * Math.log(R);
-}
-
-/***/ }),
-/* 199 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39812,9 +39290,9 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _knawledgeMap = __webpack_require__(14);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39901,7 +39379,7 @@ async function newTree(nodeType, parentTreeId, primaryParentTreeContentURI, valu
 }
 
 /***/ }),
-/* 200 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39919,7 +39397,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 201 */
+/* 199 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -40021,7 +39499,7 @@ exports.default = {
 
 
 /***/ }),
-/* 202 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
@@ -40035,7 +39513,7 @@ exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n
 
 
 /***/ }),
-/* 203 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
@@ -40044,6 +39522,34 @@ exports = module.exports = __webpack_require__(7)();
 
 // module
 exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "html,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n.sigma-tooltip {\n  margin-top: -140px;\n  max-width: 440px;\n  max-height: 280px;\n  background-color: #f9f7ed;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
 
 // exports
 
@@ -40057,7 +39563,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
 
 // exports
 
@@ -40071,7 +39577,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "html,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n.sigma-tooltip {\n  max-width: 240px;\n  max-height: 280px;\n  background-color: #f9f7ed;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
+exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -40085,41 +39591,13 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 207 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 208 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
 exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 209 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40221,7 +39699,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 210 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40260,7 +39738,7 @@ var _errors = __webpack_require__(31);
 
 var _shared_promise = __webpack_require__(32);
 
-var _deep_copy = __webpack_require__(209);
+var _deep_copy = __webpack_require__(207);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40625,7 +40103,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 211 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
@@ -40904,7 +40382,7 @@ c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAu
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
-/* 212 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -41175,7 +40653,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 213 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41193,18 +40671,18 @@ var _app = __webpack_require__(17);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(211);
+__webpack_require__(209);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(212);
-__webpack_require__(221);
+__webpack_require__(210);
+__webpack_require__(219);
 var AsyncStorage;
 
-__webpack_require__(214);
+__webpack_require__(212);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -41212,7 +40690,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 214 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41242,11 +40720,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(216);
+var _windowController = __webpack_require__(214);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(215);
+var _swController = __webpack_require__(213);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -41273,7 +40751,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 215 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41651,7 +41129,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 216 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41696,7 +41174,7 @@ var _workerPageMessage = __webpack_require__(51);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(218);
+var _defaultSw = __webpack_require__(216);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -42052,7 +41530,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 217 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42095,7 +41573,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 218 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42132,7 +41610,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 219 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42169,7 +41647,7 @@ var _errors2 = __webpack_require__(24);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(217);
+var _arrayBufferToBase = __webpack_require__(215);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -42554,7 +42032,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 220 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -42791,10 +42269,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(263).setImmediate))
 
 /***/ }),
-/* 221 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42813,11 +42291,11 @@ var _string = __webpack_require__(36);
 
 var _taskenums = __webpack_require__(55);
 
-var _xhriopool = __webpack_require__(233);
+var _xhriopool = __webpack_require__(231);
 
 var _reference = __webpack_require__(57);
 
-var _service = __webpack_require__(234);
+var _service = __webpack_require__(232);
 
 var _app = __webpack_require__(17);
 
@@ -42864,7 +42342,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 222 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42922,7 +42400,7 @@ function async(f) {
 
 
 /***/ }),
-/* 223 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42943,11 +42421,11 @@ var _constants = __webpack_require__(25);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(5);
+var _error2 = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(225);
+var _failrequest = __webpack_require__(223);
 
 var _location = __webpack_require__(26);
 
@@ -42955,7 +42433,7 @@ var _promise_external = __webpack_require__(8);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(231);
+var _requestmap = __webpack_require__(229);
 
 var _type = __webpack_require__(1);
 
@@ -43104,7 +42582,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 224 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43236,7 +42714,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 225 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43295,7 +42773,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 226 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43376,7 +42854,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 227 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43432,7 +42910,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 228 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43492,7 +42970,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 229 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43536,11 +43014,11 @@ var _array = __webpack_require__(34);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(224);
+var _backoff = __webpack_require__(222);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -43765,7 +43243,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 230 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43812,7 +43290,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 231 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43907,7 +43385,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 232 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43939,7 +43417,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -44106,7 +43584,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 233 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44138,7 +43616,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(232);
+var _xhrio_network = __webpack_require__(230);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44163,7 +43641,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 234 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44199,7 +43677,7 @@ var _args = __webpack_require__(33);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(223);
+var _authwrapper = __webpack_require__(221);
 
 var _location = __webpack_require__(26);
 
@@ -44207,7 +43685,7 @@ var _promise_external = __webpack_require__(8);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(229);
+var _request = __webpack_require__(227);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -44354,7 +43832,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 235 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44393,9 +43871,9 @@ var _taskenums = __webpack_require__(55);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(228);
+var _observer = __webpack_require__(226);
 
-var _tasksnapshot = __webpack_require__(236);
+var _tasksnapshot = __webpack_require__(234);
 
 var _args = __webpack_require__(33);
 
@@ -44405,9 +43883,9 @@ var _array = __webpack_require__(34);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(222);
+var _async = __webpack_require__(220);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(4);
 
 var errors = _interopRequireWildcard(_error);
 
@@ -44997,7 +44475,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 236 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45049,109 +44527,109 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 237 */
+/* 235 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <button v-on:click=\"recalculateProficiencyAggregationForAll\">\r\n       Recalculate Aggregation\r\n    </button>\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 238 */
+/* 236 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul>\r\n    <div>state: {{state}}</div>\r\n   <li v-for=\"triplet in triplets\" v-if=\"stateIsShowing || stateIsAnswer\">{{triplet}}</li>\r\n   <h3 v-if=\"stateIsSubtractingBy7\">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>\r\n   <div><input type=\"text\" v-for=\"triplet in triplets\" v-if=\"stateIsQuizzing || stateIsAnswer\"></div>\r\n   <button v-if=\"stateIsQuizzing\" v-on:click=\"showAnswer\">Show Answer</button>\r\n</ul>";
 
 /***/ }),
-/* 239 */
+/* 237 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 240 */
+/* 238 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 241 */
+/* 239 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 242 */
+/* 240 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
-/* 243 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
-/* 244 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
-/* 245 */
+/* 243 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp | timeFromNow}} || {{interaction.timeSpent}} || {{interaction.millisecondsSinceLastInteraction}} || {{interaction.proficiency}} || {{interaction.previousInteractionStrength | round }} dbE\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
+module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp}} || {{interaction.proficiency}}\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
-/* 246 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
 
 /***/ }),
-/* 247 */
+/* 245 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
-/* 248 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
-/* 249 */
+/* 247 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
-/* 250 */
+/* 248 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
 
 /***/ }),
-/* 251 */
+/* 249 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 252 */
+/* 250 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
 
 /***/ }),
-/* 253 */
+/* 251 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncProficiency\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
 
 /***/ }),
-/* 254 */
+/* 252 */
 /***/ (function(module, exports) {
 
 /*!
@@ -45178,7 +44656,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 255 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -45427,10 +44905,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 255;
+webpackContext.id = 253;
 
 /***/ }),
-/* 256 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -45623,6 +45101,68 @@ webpackContext.id = 255;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), __webpack_require__(27)))
 
 /***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(200);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(9)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./exercise-creator.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./exercise-creator.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(201);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(9)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goBack.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goBack.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
 /* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -45643,8 +45183,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./exercise-creator.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./exercise-creator.less");
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./itemHistory.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./itemHistory.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -45674,8 +45214,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goBack.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./goBack.less");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./main.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./main.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -45705,8 +45245,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./itemHistory.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./itemHistory.less");
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./proficiency-selector.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./proficiency-selector.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -45736,8 +45276,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./main.less", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./main.less");
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./treeReview.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./treeReview.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -45767,68 +45307,6 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./proficiency-selector.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./proficiency-selector.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 262 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(207);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./treeReview.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./treeReview.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 263 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(208);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
 		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./tree.less", function() {
 			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./tree.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
@@ -45840,7 +45318,7 @@ if(false) {
 }
 
 /***/ }),
-/* 264 */
+/* 262 */
 /***/ (function(module, exports) {
 
 
@@ -45935,7 +45413,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 265 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -45988,7 +45466,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(256);
+__webpack_require__(254);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
