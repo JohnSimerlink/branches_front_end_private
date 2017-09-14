@@ -6,7 +6,7 @@ import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
 import {Trees} from './trees'
-import {calculateStrength} from "../forgettingCurve";
+import {calculateStrength, calculateCurrentStrength} from "../forgettingCurve";
 
 
 export default class ContentItem {
@@ -240,7 +240,9 @@ export default class ContentItem {
         const previousInteractionStrength = calculateStrength(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
         const currentInteractionStrength = calculateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0
 
-        this.interactions.push({timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength})
+        const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength}
+        //store user interactions under content
+        this.interactions.push(interaction)
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
@@ -248,6 +250,9 @@ export default class ContentItem {
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
+
+        //store contentItem interaction under users
+        user.addInteraction(this.id, interaction)
 
         //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
         const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
@@ -259,7 +264,6 @@ export default class ContentItem {
         }
         firebase.database().ref('content/' + this.id).update(updates)
 
-        user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency: this.proficiency});
     }
     setProficiency(proficiency) {
         //-proficiency stored as part of this content item

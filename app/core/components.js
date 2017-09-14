@@ -17,6 +17,7 @@ import Toolbar from '../components/toolbar/toolbar'
 import GoBack from '../components/goBack/goBack'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 import ItemHistory from '../components/itemHistory/itemHistory'
+import '../fixData'
 // Vue.component('branchesHeader', Header)
 Vue.component('branchesFooter', Footer)
 Vue.component('reviewSchedule', ReviewSchedule)

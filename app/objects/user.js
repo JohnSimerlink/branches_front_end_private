@@ -34,17 +34,28 @@ class User {
       return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'
   }
 
-  setItemProperties(itemId, obj){
-
-    this.branchesData.items[itemId] = this.branchesData.items[itemId] || {}
-    for (let prop in obj){
-        this.branchesData.items[itemId][prop] = obj[prop]
-    }
-    let updates = {
-      items: this.branchesData.items
-    }
-    firebase.database().ref('users/' + this.getId()).update(updates)
+  // setItemProperties(itemId, obj){
+  //
+  //   this.branchesData.items[itemId] = this.branchesData.items[itemId] || {}
+  //   for (let prop in obj){
+  //       this.branchesData.items[itemId][prop] = obj[prop]
+  //   }
+  //   let updates = {
+  //     items: this.branchesData.items
+  //   }
+  //   firebase.database().ref('users/' + this.getId()).update(updates)
+  // }
+  addInteraction(contentItemId,interaction){
+      const item = this.branchesData.items[contentItemId] || {}
+      item.interactions = item.interactions || []
+      item.interactions.push(interaction)
+      const updates = {
+          interactions: item.interactions,
+      }
+      this.branchesData.items[contentItemId]
+      firebase.database().ref('users/' + this.getId() + '/items/' + contentItemId +'/').update(updates)
   }
+
   setCamera({angle, ratio, x, y}){
       const me = this
       angle = angle || me.camera.angle
@@ -58,6 +69,25 @@ class User {
       firebase.database().ref('users/' + this.getId()).update(updates)
       me.camera = me.branchesData.camera = camera
   }
+
+    set(prop, val){
+        if (this[prop] == val) {
+            return;
+        }
+
+        var updates = {}
+        updates[prop] = val
+        // this.treeRef.update(updates)
+        firebase.database().ref('users/' +this.getId()).update(updates)
+        this[prop] = val
+    }
+    setInteractionsForItem(itemId, interactions){
+        console.log('setInteractionsForItem is ', itemId, interactions)
+        this.branchesData.items[itemId].interactions = interactions
+        var updates = {interactions}
+        firebase.database().ref('users/' +this.getId() + '/items/' + itemId + '/').update(updates)
+    }
+
 
 }
 
