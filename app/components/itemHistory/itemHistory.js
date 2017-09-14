@@ -10,7 +10,7 @@ import {Skill} from "../../objects/skill";
 import {PROFICIENCIES} from "../proficiencyEnum";
 import './itemHistory.less'
 import {goToFromMap} from "../knawledgeMap/knawledgeMap";
-import Chartist from 'chartist'
+// import Chartist from 'chartist'
 
 export default {
     template: require('./itemHistory.html'), // '<div> {{movie}} this is the tree template</div>',

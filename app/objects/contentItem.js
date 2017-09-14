@@ -6,6 +6,8 @@ import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
 import {Trees} from './trees'
+import {calculateStrength} from "../forgettingCurve";
+
 
 export default class ContentItem {
 
@@ -233,8 +235,11 @@ export default class ContentItem {
 
         //interactions
         const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null
-        const millisecondsSinceLastInteraction = mostRecentInteraction ? Date.now() - mostRecentInteraction.timestamp : 0
-        this.interactions.push({timestamp: Date.now(), timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency})
+        const nowMilliseconds = Date.now()
+        const millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+        const previousInteractionStrength = calculateStrength(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
+
+        this.interactions.push({timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength})
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
