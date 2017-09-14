@@ -24,3 +24,7 @@ export function calculateRecall(S, t){
 export function calculateTime(S, R){
     return -1 * Math.pow(10, S /10 ) * Math.log(R)
 }
+
+export function calculateCurrentStrength(currentProficiency, millisecondsSinceLastInteraction, previousInteractionStrength){
+
+}
