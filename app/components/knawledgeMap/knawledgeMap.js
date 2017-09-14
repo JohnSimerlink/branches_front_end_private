@@ -30,24 +30,7 @@ var s,
     g = {
         nodes: [],
         edges: []
-    },
-
-    positions = [
-        'top-right',
-        'top-left',
-        'bottom-left',
-        'bottom-right'
-    ],
-    icons = [
-        "\uF11b",
-        "\uF11c",
-        "\uF11d",
-        "\uF128",
-        "\uF129",
-        "\uF130",
-        "\uF131",
-        "\uF132"
-    ]
+    }
 
 var initialized = false;
 
@@ -249,7 +232,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             {
                 show: 'rightClickNode',
                 cssClass: 'sigma-tooltip',
-                position: 'bottom',
+                position: 'center',
                 template: '',
                 renderer: function(node, template) {
                     var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))

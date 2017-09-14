@@ -263,8 +263,8 @@ export default class ContentItem {
             userReviewTimeMap : this.userReviewTimeMap
         }
         firebase.database().ref('content/' + this.id).update(updates)
-
     }
+
     setProficiency(proficiency) {
         //-proficiency stored as part of this content item
         this.proficiency = proficiency
