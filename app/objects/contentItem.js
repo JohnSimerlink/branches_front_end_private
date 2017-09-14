@@ -237,7 +237,7 @@ export default class ContentItem {
         const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null
         const nowMilliseconds = Date.now()
         const millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0
-        const previousInteractionStrength = calculateStrength(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
+        const previousInteractionStrength = calculateStrength(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0const currentInteractionStrength = calculateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0
 
         this.interactions.push({timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength})
         this.userInteractionsMap[user.getId()] = this.interactions
