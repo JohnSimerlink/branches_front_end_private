@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 194);
+/******/ 	return __webpack_require__(__webpack_require__.s = 195);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(251)("./" + name);
+            __webpack_require__(255)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4644,7 +4644,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _tree = __webpack_require__(19);
 
-var _firebaseService = __webpack_require__(8);
+var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
@@ -4734,15 +4734,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _firebaseService = __webpack_require__(8);
+var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _fact = __webpack_require__(26);
+var _fact = __webpack_require__(21);
 
-var _skill = __webpack_require__(28);
+var _skill = __webpack_require__(23);
 
-var _heading = __webpack_require__(27);
+var _heading = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4908,6 +4908,111 @@ exports.default = ContentItems;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebaseService = __webpack_require__(10);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _users = __webpack_require__(30);
+
+var _users2 = _interopRequireDefault(_users);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+    function User() {
+        _classCallCheck(this, User);
+
+        this.loggedIn = false;
+        this.branchesData = {};
+        var self = this;
+        _firebaseService2.default.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                PubSub.publish('login');
+                self.loggedIn = true;
+                self.fbData = user;
+                _users2.default.get(self.getId()).then(function (user) {
+
+                    self.branchesData = user || {};
+                    self.camera = self.branchesData.camera;
+
+                    self.branchesData.items = self.branchesData.items || {};
+                    // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
+                });
+            } else {
+                self.loggedIn = false;
+            }
+        });
+    }
+
+    _createClass(User, [{
+        key: 'getId',
+        value: function getId() {
+            return this.fbData.uid;
+        }
+    }, {
+        key: 'isAdmin',
+        value: function isAdmin() {
+            return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3';
+        }
+    }, {
+        key: 'setItemProperties',
+        value: function setItemProperties(itemId, obj) {
+
+            this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
+            for (var prop in obj) {
+                this.branchesData.items[itemId][prop] = obj[prop];
+            }
+            var updates = {
+                items: this.branchesData.items
+            };
+            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+        }
+    }, {
+        key: 'setCamera',
+        value: function setCamera(_ref) {
+            var angle = _ref.angle,
+                ratio = _ref.ratio,
+                x = _ref.x,
+                y = _ref.y;
+
+            var me = this;
+            angle = angle || me.camera.angle;
+            ratio = ratio || me.camera.ratio;
+            x = x || me.camera.x;
+            y = y || me.camera.y;
+            var camera = { angle: angle, ratio: ratio, x: x, y: y };
+            var updates = {
+                camera: camera
+            };
+            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+            me.camera = me.branchesData.camera = camera;
+        }
+    }]);
+
+    return User;
+}();
+
+//user singleton
+
+
+var user = new User();
+exports.default = user;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
@@ -4961,7 +5066,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(25);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5143,111 +5248,6 @@ function internalError(message) {
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _firebaseService = __webpack_require__(8);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-var _users = __webpack_require__(29);
-
-var _users2 = _interopRequireDefault(_users);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var User = function () {
-    function User() {
-        _classCallCheck(this, User);
-
-        this.loggedIn = false;
-        this.branchesData = {};
-        var self = this;
-        _firebaseService2.default.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                PubSub.publish('login');
-                self.loggedIn = true;
-                self.fbData = user;
-                _users2.default.get(self.getId()).then(function (user) {
-
-                    self.branchesData = user || {};
-                    self.camera = self.branchesData.camera;
-
-                    self.branchesData.items = self.branchesData.items || {};
-                    // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
-                });
-            } else {
-                self.loggedIn = false;
-            }
-        });
-    }
-
-    _createClass(User, [{
-        key: 'getId',
-        value: function getId() {
-            return this.fbData.uid;
-        }
-    }, {
-        key: 'isAdmin',
-        value: function isAdmin() {
-            return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3';
-        }
-    }, {
-        key: 'setItemProperties',
-        value: function setItemProperties(itemId, obj) {
-
-            this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
-            for (var prop in obj) {
-                this.branchesData.items[itemId][prop] = obj[prop];
-            }
-            var updates = {
-                items: this.branchesData.items
-            };
-            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
-        }
-    }, {
-        key: 'setCamera',
-        value: function setCamera(_ref) {
-            var angle = _ref.angle,
-                ratio = _ref.ratio,
-                x = _ref.x,
-                y = _ref.y;
-
-            var me = this;
-            angle = angle || me.camera.angle;
-            ratio = ratio || me.camera.ratio;
-            x = x || me.camera.x;
-            y = y || me.camera.y;
-            var camera = { angle: angle, ratio: ratio, x: x, y: y };
-            var updates = {
-                camera: camera
-            };
-            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
-            me.camera = me.branchesData.camera = camera;
-        }
-    }]);
-
-    return User;
-}();
-
-//user singleton
-
-
-var user = new User();
-exports.default = user;
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5262,108 +5262,11 @@ var PROFICIENCIES = exports.PROFICIENCIES = {
     ONE: 1,
     TWO: 33,
     THREE: 67,
-    FOUR: 100
+    FOUR: 99 // DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
 };
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.make = make;
-exports.resolve = resolve;
-exports.reject = reject;
-
-var _shared_promise = __webpack_require__(31);
-
-function make(resolver) {
-  return new _shared_promise.local.Promise(resolver);
-}
-/**
- * @template T
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Implements the promise abstraction interface for external
- * (public SDK) packaging, which just passes through to the firebase-app impl.
- */
-/**
- * @template T
- * @param {function((function(T): void),
- *                  (function(!Error): void))} resolver
- */
-function resolve(value) {
-  return _shared_promise.local.Promise.resolve(value);
-}
-function reject(error) {
-  return _shared_promise.local.Promise.reject(error);
-}
-//# sourceMappingURL=promise_external.js.map
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _firebase = __webpack_require__(210);
-
-var firebase = _interopRequireWildcard(_firebase);
-
-var _config = __webpack_require__(43);
-
-var _firebaseDevConfig = __webpack_require__(181);
-
-var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
-
-var _firebaseProdConfig = __webpack_require__(182);
-
-var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var firebaseConfig = _config.Config.env == 'prod' ? _firebaseProdConfig2.default : _firebaseDevConfig2.default;
-
-firebase.initializeApp(firebaseConfig);
-
-if (typeof window !== 'undefined') {
-    window.firebase = firebase; // for debugging from the console
-}
-exports.default = firebase;
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -5419,7 +5322,463 @@ module.exports = function() {
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.make = make;
+exports.resolve = resolve;
+exports.reject = reject;
+
+var _shared_promise = __webpack_require__(32);
+
+function make(resolver) {
+  return new _shared_promise.local.Promise(resolver);
+}
+/**
+ * @template T
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Implements the promise abstraction interface for external
+ * (public SDK) packaging, which just passes through to the firebase-app impl.
+ */
+/**
+ * @template T
+ * @param {function((function(T): void),
+ *                  (function(!Error): void))} resolver
+ */
+function resolve(value) {
+  return _shared_promise.local.Promise.resolve(value);
+}
+function reject(error) {
+  return _shared_promise.local.Promise.reject(error);
+}
+//# sourceMappingURL=promise_external.js.map
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(264);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
 /* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _firebase = __webpack_require__(213);
+
+var firebase = _interopRequireWildcard(_firebase);
+
+var _config = __webpack_require__(43);
+
+var _firebaseDevConfig = __webpack_require__(181);
+
+var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
+
+var _firebaseProdConfig = __webpack_require__(182);
+
+var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var firebaseConfig = _config.Config.env == 'prod' ? _firebaseProdConfig2.default : _firebaseDevConfig2.default;
+
+firebase.initializeApp(firebaseConfig);
+
+if (typeof window !== 'undefined') {
+    window.firebase = firebase; // for debugging from the console
+}
+exports.default = firebase;
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5491,7 +5850,7 @@ function clone(obj) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -7702,16 +8061,16 @@ function stubFalse() {
 
 module.exports = merge;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(174)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), __webpack_require__(174)(module)))
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(199),
+  var crypt = __webpack_require__(201),
       utf8 = __webpack_require__(46).utf8,
-      isBuffer = __webpack_require__(250),
+      isBuffer = __webpack_require__(254),
       bin = __webpack_require__(46).bin,
 
   // The core
@@ -7871,925 +8230,7 @@ module.exports = merge;
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(259);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
 /* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.getLastNBreadcrumbsStringFromList = getLastNBreadcrumbsStringFromList;
-
-var _user = __webpack_require__(5);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _review = __webpack_require__(190);
-
-var _proficiencyEnum = __webpack_require__(6);
-
-var _trees = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var content = {};
-if (typeof window !== 'undefined') {
-    window.content = content; //expose to window for easy debugging
-}
-
-var ContentItem = function () {
-    function ContentItem(args) {
-        _classCallCheck(this, ContentItem);
-
-        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
-        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || args && args.primaryParentTreeContentURI || null;
-        this.trees = args.trees || {};
-
-        this.userTimeMap = args.userTimeMap || {};
-        this.timer = _user2.default.loggedIn && this.userTimeMap && this.userTimeMap[_user2.default.getId()] || 0;
-        this.timerId = null;
-
-        this.userProficiencyMap = args.userProficiencyMap || {};
-        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
-
-        this.userInteractionsMap = args.userInteractionsMap || {};
-        this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
-
-        this.userReviewTimeMap = args.userReviewTimeMap || {};
-        this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
-
-        this.studiers = args.studiers || {};
-        this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
-
-        this.exercises = args.exercises || {};
-
-        this.uri = args.uri || null;
-
-        this.type = args.type;
-    }
-
-    _createClass(ContentItem, [{
-        key: 'init',
-        value: function init() {
-            this.calculateURIBasedOnParentTreeContentURI();
-            // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
-        }
-
-        //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
-
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            return {
-                initialParentTreeId: this.initialParentTreeId,
-                primaryParentTreeContentURI: this.primaryParentTreeContentURI,
-                userTimeMap: this.userTimeMap,
-                userProficiencyMap: this.userProficiencyMap,
-                userInteractionsMap: this.userInteractionsMap,
-                userReviewTimeMap: this.userReviewTimeMap,
-                studiers: this.studiers,
-                exercises: this.exercises,
-                uri: this.uri
-            };
-        }
-    }, {
-        key: 'getURIAddition',
-        value: function getURIAddition() {}
-    }, {
-        key: 'getURIAdditionNotEncoded',
-        value: function getURIAdditionNotEncoded() {}
-        //removes the prefix "content/
-
-    }, {
-        key: 'getURIWithoutRootElement',
-        value: function getURIWithoutRootElement() {
-            return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
-        }
-    }, {
-        key: 'getBreadCrumbsString',
-        value: function getBreadCrumbsString() {
-            var sections = this.getURIWithoutRootElement().split("/");
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            var sectionsResult = sections.reduce(function (accum, val) {
-                if (val == "null" || val == "content" || val == "Everything") {
-                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-                    return accum;
-                }
-                return accum + " > " + decodeURIComponent(val);
-            });
-            return sectionsResult;
-            // console.log('breadcrumb result is', sectionsResult)
-            //
-            // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-            //     return total + decodeURIComponent(section) + " > "
-            // },"")
-            // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-            // return breadcrumbs
-        }
-    }, {
-        key: 'getBreadcrumbsObjArray',
-        value: function getBreadcrumbsObjArray() {
-            var sections = this.getURIWithoutRootElement().split("/");
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            var breadcrumbsObjArray = sections.reduce(function (accum, val) {
-                if (val == "null" || val == "content" || val == "Everything") {
-                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-                    return accum;
-                }
-                accum.push({ text: decodeURIComponent(val) });
-                return accum;
-            }, []);
-            return breadcrumbsObjArray;
-        }
-    }, {
-        key: 'getLastNBreadcrumbsString',
-        value: function getLastNBreadcrumbsString(n) {
-            var sections = this.getURIWithoutRootElement().split("/");
-            var result = getLastNBreadcrumbsStringFromList(sections, n);
-            return result;
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            // let sectionsResult = sections.reduce((accum, val) => {
-            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-            //         return accum
-            //     }
-            //     return accum + " > " + decodeURIComponent(val)
-            // })
-        }
-    }, {
-        key: 'getBreadCrumbs',
-        value: function getBreadCrumbs() {}
-    }, {
-        key: 'isLeafType',
-        value: function isLeafType() {
-            return this.type === 'fact' || this.type === 'skill';
-        }
-        /**
-         * Used to update tree X and Y coordinates
-         * @param prop
-         * @param val
-         */
-
-    }, {
-        key: 'set',
-        value: function set(prop, val) {
-            if (this[prop] == val) {
-                return;
-            }
-
-            var updates = {};
-            updates[prop] = val;
-            // this.treeRef.update(updates)
-            firebase.database().ref('content/' + this.id).update(updates);
-            this[prop] = val;
-        }
-        /**
-         * Add a tree to the given content item
-         * @param treeId
-         */
-
-    }, {
-        key: 'addTree',
-        value: function addTree(treeId) {
-            this.trees[treeId] = true;
-            var trees = {};
-            trees[treeId] = true;
-            var updates = {
-                trees: trees
-            };
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'calculateURIBasedOnParentTreeContentURI',
-        value: function calculateURIBasedOnParentTreeContentURI() {
-            var uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition();
-            this.set('uri', uri);
-        }
-        //TODO : make timer for heading be the sum of the time of all the child facts
-
-    }, {
-        key: 'startTimer',
-        value: function startTimer() {
-            var me = this;
-
-            if (!this.timerId) {
-                //to prevent from two or more timers being created simultaneously on the content item
-                this.timerId = setInterval(function () {
-                    me.timer = me.timer || 0;
-                    me.timer++; // = fact.timer || 0
-                    me.calculateAggregationTimerForTreeChain(); //propagate the time increase all the way up
-                }, 1000);
-            }
-        }
-    }, {
-        key: 'saveTimer',
-        value: function saveTimer() {
-            this.userTimeMap[_user2.default.getId()] = this.timer;
-
-            var updates = {
-                userTimeMap: this.userTimeMap
-            };
-
-            clearInterval(this.timerId);
-            this.timerId = null;
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'calculateAggregationTimerForTreeChain',
-        value: function calculateAggregationTimerForTreeChain() {
-            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
-            var calculationPromises = treePromises.map(async function (treePromise) {
-                var tree = await treePromise;
-                return tree.calculateAggregationTimer();
-            });
-            return Promise.all(calculationPromises);
-        }
-    }, {
-        key: 'addToStudyQueue',
-        value: function addToStudyQueue() {
-            //don't display nextReviewTime if not in user's study queue
-            this.studiers[_user2.default.getId()] = true;
-
-            var updates = {
-                studiers: this.studiers
-            };
-            this.inStudyQueue = true;
-
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'addExercise',
-        value: function addExercise(exerciseId) {
-            this.exercises[exerciseId] = true;
-
-            var updates = {
-                exercises: this.exercises
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'removeExercise',
-        value: function removeExercise(exerciseId) {
-            delete this.exercises[exerciseId]; // remove from local cache
-            firebase.database().ref('content/' + this.id + '/exercises/').child(exerciseId).remove(); //delete from db
-        }
-    }, {
-        key: 'remove',
-        value: function remove() {
-            firebase.database().ref('content/').child(this.id).remove(); //delete from db
-            delete window.content[this.id];
-        }
-    }, {
-        key: 'recalculateProficiencyAggregationForTreeChain',
-        value: function recalculateProficiencyAggregationForTreeChain() {
-            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
-            var calculationPromises = treePromises.map(async function (treePromise) {
-                var tree = await treePromise;
-                return tree.recalculateProficiencyAggregation();
-            });
-            return Promise.all(calculationPromises);
-        }
-    }, {
-        key: 'saveProficiency',
-        value: function saveProficiency() {
-            !this.inStudyQueue && this.addToStudyQueue();
-
-            //content
-            this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
-
-            var updates = {
-                userProficiencyMap: this.userProficiencyMap
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            //interactions
-            this.interactions.push({ timestamp: Date.now(), proficiency: this.proficiency });
-            this.userInteractionsMap[_user2.default.getId()] = this.interactions;
-
-            var updates = {
-                userInteractionsMap: this.userInteractionsMap
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-            var millisecondsTilNextReview = (0, _review.calculateMillisecondsTilNextReview)(this.interactions);
-            this.nextReviewTime = Date.now() + millisecondsTilNextReview;
-
-            this.userReviewTimeMap[_user2.default.getId()] = this.nextReviewTime;
-            var updates = {
-                userReviewTimeMap: this.userReviewTimeMap
-            };
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            _user2.default.setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency: this.proficiency });
-        }
-    }, {
-        key: 'setProficiency',
-        value: function setProficiency(proficiency) {
-            //-proficiency stored as part of this content item
-            this.proficiency = proficiency;
-            this.saveProficiency();
-        }
-        //methods for html templates
-
-    }, {
-        key: 'isProficiencyUnknown',
-        value: function isProficiencyUnknown() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
-        }
-    }, {
-        key: 'isProficiencyOne',
-        value: function isProficiencyOne() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
-        }
-    }, {
-        key: 'isProficiencyTwo',
-        value: function isProficiencyTwo() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.TWO;
-        }
-    }, {
-        key: 'isProficiencyThree',
-        value: function isProficiencyThree() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.THREE;
-        }
-    }, {
-        key: 'isProficiencyFour',
-        value: function isProficiencyFour() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.FOUR;
-        }
-        //returns exerciseId of the best exercise for the user
-        //returns null if no exercise found
-
-    }, {
-        key: 'getBestExerciseId',
-        value: function getBestExerciseId() {
-            var exerciseKeys = Object.keys(this.exercises).filter(function (key) {
-                return key !== 'undefined';
-            }); // not sure how but some data keys are undefined
-            console.log('exercise keys in get best exercise id are', exerciseKeys);
-            if (exerciseKeys.length <= 0) {
-                return null;
-            }
-            var keyIndex = Math.floor(Math.random() * exerciseKeys.length);
-            var exercise = exerciseKeys[keyIndex];
-
-            return exercise;
-        }
-    }]);
-
-    return ContentItem;
-}();
-
-/**
- *
- * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
- * @returns {string}
- */
-
-
-exports.default = ContentItem;
-function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
-    if (breadcrumbList.length <= n) {
-        return breadcrumbList;
-    }
-
-    var breadcrumbListCopy = breadcrumbList.slice();
-    var lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length);
-    var result = convertBreadcrumbListToString(lastNBreadcrumbSections);
-
-    return result;
-}
-
-function convertBreadcrumbListToString(breadcrumbList) {
-    if (breadcrumbList.length <= 0) return [];
-
-    var lastItem = decodeURIComponent(breadcrumbList.splice(-1));
-
-    var firstItems = breadcrumbList.reduce(function (accum, val) {
-        return accum + decodeURIComponent(val) + " > ";
-    }, '');
-    var result = firstItems + lastItem;
-
-    return result;
-}
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * abstract class - only subtypes should be instantiated
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-
-var _contentItems = __webpack_require__(3);
-
-var _contentItems2 = _interopRequireDefault(_contentItems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Exercise = function () {
-    function Exercise(_ref) {
-        var _ref$contentItemIds = _ref.contentItemIds,
-            contentItemIds = _ref$contentItemIds === undefined ? {} : _ref$contentItemIds;
-
-        _classCallCheck(this, Exercise);
-
-        this.contentItemIds = contentItemIds;
-    }
-
-    _createClass(Exercise, [{
-        key: "init",
-        value: function init() {}
-    }, {
-        key: "addContent",
-        value: function addContent(contentId) {
-            this.contentItemIds[contentId] = true;
-        }
-    }, {
-        key: "getDBRepresentation",
-        value: function getDBRepresentation() {
-            return {
-                contentItemIds: this.contentItemIds
-            };
-        }
-
-        /**
-         *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
-         * @param exercise - must be an object that is a subclass of Exercise
-         * @returns {*}
-         */
-
-    }, {
-        key: "remove",
-        value: function remove() {
-            var me = this;
-            //remove this exercise from any contentItems so it is unsearchable
-            Object.keys(this.contentItemIds).forEach(async function (contentItemId) {
-                var contentItem = _contentItems2.default.get(contentItemId);
-                contentItem.removeExercise(me.id);
-            });
-        }
-    }], [{
-        key: "create",
-        value: function create(exercise) {
-            var updates = {};
-            updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-            firebase.database().ref().update(updates);
-            return exercise;
-        }
-    }]);
-
-    return Exercise;
-}();
-
-exports.default = Exercise;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _firebase_app = __webpack_require__(207);
-
-// Export a single instance of firebase app
-var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
-                                                             * Copyright 2017 Google Inc.
-                                                             *
-                                                             * Licensed under the Apache License, Version 2.0 (the "License");
-                                                             * you may not use this file except in compliance with the License.
-                                                             * You may obtain a copy of the License at
-                                                             *
-                                                             *   http://www.apache.org/licenses/LICENSE-2.0
-                                                             *
-                                                             * Unless required by applicable law or agreed to in writing, software
-                                                             * distributed under the License is distributed on an "AS IS" BASIS,
-                                                             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                             * See the License for the specific language governing permissions and
-                                                             * limitations under the License.
-                                                             */
-// Import the createFirebaseNamespace function
-exports.default = firebase;
-module.exports = exports['default'];
-//# sourceMappingURL=app.js.map
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8821,19 +8262,19 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _tree = __webpack_require__(19);
 
-var _globals = __webpack_require__(196);
+var _globals = __webpack_require__(197);
 
-var _dataKeys = __webpack_require__(198);
+var _dataKeys = __webpack_require__(200);
 
 var _dataKeys2 = _interopRequireDefault(_dataKeys);
 
 __webpack_require__(44);
 
-var _user = __webpack_require__(5);
+var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _snack = __webpack_require__(37);
+var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -8850,7 +8291,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var router = void 0;
 exports.default = {
     props: ['treeId'],
-    template: __webpack_require__(242),
+    template: __webpack_require__(246),
     created: function created() {
         this.init();
         router = this.$router;
@@ -9520,6 +8961,572 @@ function initKnawledgeMap(treeIdToJumpTo) {
 }
 
 /***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.getLastNBreadcrumbsStringFromList = getLastNBreadcrumbsStringFromList;
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _review = __webpack_require__(191);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+var _trees = __webpack_require__(2);
+
+var _forgettingCurve = __webpack_require__(198);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var content = {};
+if (typeof window !== 'undefined') {
+    window.content = content; //expose to window for easy debugging
+}
+
+var ContentItem = function () {
+    function ContentItem(args) {
+        _classCallCheck(this, ContentItem);
+
+        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
+        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || args && args.primaryParentTreeContentURI || null;
+        this.trees = args.trees || {};
+
+        this.userTimeMap = args.userTimeMap || {};
+        this.timer = _user2.default.loggedIn && this.userTimeMap && this.userTimeMap[_user2.default.getId()] || 0;
+        this.timerId = null;
+
+        this.userProficiencyMap = args.userProficiencyMap || {};
+        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
+
+        this.userInteractionsMap = args.userInteractionsMap || {};
+        this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
+
+        this.userReviewTimeMap = args.userReviewTimeMap || {};
+        this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
+
+        this.studiers = args.studiers || {};
+        this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
+
+        this.exercises = args.exercises || {};
+
+        this.uri = args.uri || null;
+
+        this.type = args.type;
+    }
+
+    _createClass(ContentItem, [{
+        key: 'init',
+        value: function init() {
+            this.calculateURIBasedOnParentTreeContentURI();
+            // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        }
+
+        //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            return {
+                initialParentTreeId: this.initialParentTreeId,
+                primaryParentTreeContentURI: this.primaryParentTreeContentURI,
+                userTimeMap: this.userTimeMap,
+                userProficiencyMap: this.userProficiencyMap,
+                userInteractionsMap: this.userInteractionsMap,
+                userReviewTimeMap: this.userReviewTimeMap,
+                studiers: this.studiers,
+                exercises: this.exercises,
+                uri: this.uri
+            };
+        }
+    }, {
+        key: 'getURIAddition',
+        value: function getURIAddition() {}
+    }, {
+        key: 'getURIAdditionNotEncoded',
+        value: function getURIAdditionNotEncoded() {}
+        //removes the prefix "content/
+
+    }, {
+        key: 'getURIWithoutRootElement',
+        value: function getURIWithoutRootElement() {
+            return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
+        }
+    }, {
+        key: 'getBreadCrumbsString',
+        value: function getBreadCrumbsString() {
+            var sections = this.getURIWithoutRootElement().split("/");
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            var sectionsResult = sections.reduce(function (accum, val) {
+                if (val == "null" || val == "content" || val == "Everything") {
+                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                    return accum;
+                }
+                return accum + " > " + decodeURIComponent(val);
+            });
+            return sectionsResult;
+            // console.log('breadcrumb result is', sectionsResult)
+            //
+            // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
+            //     return total + decodeURIComponent(section) + " > "
+            // },"")
+            // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
+            // return breadcrumbs
+        }
+    }, {
+        key: 'getBreadcrumbsObjArray',
+        value: function getBreadcrumbsObjArray() {
+            var sections = this.getURIWithoutRootElement().split("/");
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            var breadcrumbsObjArray = sections.reduce(function (accum, val) {
+                if (val == "null" || val == "content" || val == "Everything") {
+                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                    return accum;
+                }
+                accum.push({ text: decodeURIComponent(val) });
+                return accum;
+            }, []);
+            return breadcrumbsObjArray;
+        }
+    }, {
+        key: 'getLastNBreadcrumbsString',
+        value: function getLastNBreadcrumbsString(n) {
+            var sections = this.getURIWithoutRootElement().split("/");
+            var result = getLastNBreadcrumbsStringFromList(sections, n);
+            return result;
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            // let sectionsResult = sections.reduce((accum, val) => {
+            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+            //         return accum
+            //     }
+            //     return accum + " > " + decodeURIComponent(val)
+            // })
+        }
+    }, {
+        key: 'getBreadCrumbs',
+        value: function getBreadCrumbs() {}
+    }, {
+        key: 'isLeafType',
+        value: function isLeafType() {
+            return this.type === 'fact' || this.type === 'skill';
+        }
+        /**
+         * Used to update tree X and Y coordinates
+         * @param prop
+         * @param val
+         */
+
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
+            }
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            firebase.database().ref('content/' + this.id).update(updates);
+            this[prop] = val;
+        }
+        /**
+         * Add a tree to the given content item
+         * @param treeId
+         */
+
+    }, {
+        key: 'addTree',
+        value: function addTree(treeId) {
+            this.trees[treeId] = true;
+            var trees = {};
+            trees[treeId] = true;
+            var updates = {
+                trees: trees
+            };
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'calculateURIBasedOnParentTreeContentURI',
+        value: function calculateURIBasedOnParentTreeContentURI() {
+            var uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition();
+            this.set('uri', uri);
+        }
+        //TODO : make timer for heading be the sum of the time of all the child facts
+
+    }, {
+        key: 'startTimer',
+        value: function startTimer() {
+            var me = this;
+
+            if (!this.timerId) {
+                //to prevent from two or more timers being created simultaneously on the content item
+                this.timerId = setInterval(function () {
+                    me.timer = me.timer || 0;
+                    me.timer++; // = fact.timer || 0
+                    me.calculateAggregationTimerForTreeChain(); //propagate the time increase all the way up
+                }, 1000);
+            }
+        }
+    }, {
+        key: 'saveTimer',
+        value: function saveTimer() {
+            this.userTimeMap[_user2.default.getId()] = this.timer;
+
+            var updates = {
+                userTimeMap: this.userTimeMap
+            };
+
+            clearInterval(this.timerId);
+            this.timerId = null;
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'calculateAggregationTimerForTreeChain',
+        value: function calculateAggregationTimerForTreeChain() {
+            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+            var calculationPromises = treePromises.map(async function (treePromise) {
+                var tree = await treePromise;
+                return tree.calculateAggregationTimer();
+            });
+            return Promise.all(calculationPromises);
+        }
+    }, {
+        key: 'addToStudyQueue',
+        value: function addToStudyQueue() {
+            //don't display nextReviewTime if not in user's study queue
+            this.studiers[_user2.default.getId()] = true;
+
+            var updates = {
+                studiers: this.studiers
+            };
+            this.inStudyQueue = true;
+
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'addExercise',
+        value: function addExercise(exerciseId) {
+            this.exercises[exerciseId] = true;
+
+            var updates = {
+                exercises: this.exercises
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'removeExercise',
+        value: function removeExercise(exerciseId) {
+            delete this.exercises[exerciseId]; // remove from local cache
+            firebase.database().ref('content/' + this.id + '/exercises/').child(exerciseId).remove(); //delete from db
+        }
+    }, {
+        key: 'remove',
+        value: function remove() {
+            firebase.database().ref('content/').child(this.id).remove(); //delete from db
+            delete window.content[this.id];
+        }
+    }, {
+        key: 'recalculateProficiencyAggregationForTreeChain',
+        value: function recalculateProficiencyAggregationForTreeChain() {
+            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+            var calculationPromises = treePromises.map(async function (treePromise) {
+                var tree = await treePromise;
+                return tree.recalculateProficiencyAggregation();
+            });
+            return Promise.all(calculationPromises);
+        }
+    }, {
+        key: 'saveProficiency',
+        value: function saveProficiency() {
+            !this.inStudyQueue && this.addToStudyQueue();
+
+            //content
+            this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
+
+            var updates = {
+                userProficiencyMap: this.userProficiencyMap
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            //interactions
+            var mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null;
+            var nowMilliseconds = Date.now();
+            var millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0;
+            var previousInteractionStrength = (0, _forgettingCurve.calculateStrength)(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
+
+            this.interactions.push({ timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction: millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength: previousInteractionStrength });
+            this.userInteractionsMap[_user2.default.getId()] = this.interactions;
+
+            var updates = {
+                userInteractionsMap: this.userInteractionsMap
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
+            var millisecondsTilNextReview = (0, _review.calculateMillisecondsTilNextReview)(this.interactions);
+            this.nextReviewTime = Date.now() + millisecondsTilNextReview;
+
+            this.userReviewTimeMap[_user2.default.getId()] = this.nextReviewTime;
+            var updates = {
+                userReviewTimeMap: this.userReviewTimeMap
+            };
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            _user2.default.setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency: this.proficiency });
+        }
+    }, {
+        key: 'setProficiency',
+        value: function setProficiency(proficiency) {
+            //-proficiency stored as part of this content item
+            this.proficiency = proficiency;
+            this.saveProficiency();
+        }
+        //methods for html templates
+
+    }, {
+        key: 'isProficiencyUnknown',
+        value: function isProficiencyUnknown() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+        }
+    }, {
+        key: 'isProficiencyOne',
+        value: function isProficiencyOne() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
+        }
+    }, {
+        key: 'isProficiencyTwo',
+        value: function isProficiencyTwo() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.TWO;
+        }
+    }, {
+        key: 'isProficiencyThree',
+        value: function isProficiencyThree() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.THREE;
+        }
+    }, {
+        key: 'isProficiencyFour',
+        value: function isProficiencyFour() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.FOUR;
+        }
+        //returns exerciseId of the best exercise for the user
+        //returns null if no exercise found
+
+    }, {
+        key: 'getBestExerciseId',
+        value: function getBestExerciseId() {
+            var exerciseKeys = Object.keys(this.exercises).filter(function (key) {
+                return key !== 'undefined';
+            }); // not sure how but some data keys are undefined
+            console.log('exercise keys in get best exercise id are', exerciseKeys);
+            if (exerciseKeys.length <= 0) {
+                return null;
+            }
+            var keyIndex = Math.floor(Math.random() * exerciseKeys.length);
+            var exercise = exerciseKeys[keyIndex];
+
+            return exercise;
+        }
+    }]);
+
+    return ContentItem;
+}();
+
+/**
+ *
+ * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
+ * @returns {string}
+ */
+
+
+exports.default = ContentItem;
+function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
+    if (breadcrumbList.length <= n) {
+        return breadcrumbList;
+    }
+
+    var breadcrumbListCopy = breadcrumbList.slice();
+    var lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length);
+    var result = convertBreadcrumbListToString(lastNBreadcrumbSections);
+
+    return result;
+}
+
+function convertBreadcrumbListToString(breadcrumbList) {
+    if (breadcrumbList.length <= 0) return [];
+
+    var lastItem = decodeURIComponent(breadcrumbList.splice(-1));
+
+    var firstItems = breadcrumbList.reduce(function (accum, val) {
+        return accum + decodeURIComponent(val) + " > ";
+    }, '');
+    var result = firstItems + lastItem;
+
+    return result;
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * abstract class - only subtypes should be instantiated
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _contentItems = __webpack_require__(3);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Exercise = function () {
+    function Exercise(_ref) {
+        var _ref$contentItemIds = _ref.contentItemIds,
+            contentItemIds = _ref$contentItemIds === undefined ? {} : _ref$contentItemIds;
+
+        _classCallCheck(this, Exercise);
+
+        this.contentItemIds = contentItemIds;
+    }
+
+    _createClass(Exercise, [{
+        key: "init",
+        value: function init() {}
+    }, {
+        key: "addContent",
+        value: function addContent(contentId) {
+            this.contentItemIds[contentId] = true;
+        }
+    }, {
+        key: "getDBRepresentation",
+        value: function getDBRepresentation() {
+            return {
+                contentItemIds: this.contentItemIds
+            };
+        }
+
+        /**
+         *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
+         * @param exercise - must be an object that is a subclass of Exercise
+         * @returns {*}
+         */
+
+    }, {
+        key: "remove",
+        value: function remove() {
+            var me = this;
+            //remove this exercise from any contentItems so it is unsearchable
+            Object.keys(this.contentItemIds).forEach(async function (contentItemId) {
+                var contentItem = _contentItems2.default.get(contentItemId);
+                contentItem.removeExercise(me.id);
+            });
+        }
+    }], [{
+        key: "create",
+        value: function create(exercise) {
+            var updates = {};
+            updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
+            firebase.database().ref().update(updates);
+            return exercise;
+        }
+    }]);
+
+    return Exercise;
+}();
+
+exports.default = Exercise;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _firebase_app = __webpack_require__(210);
+
+// Export a single instance of firebase app
+var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
+                                                             * Copyright 2017 Google Inc.
+                                                             *
+                                                             * Licensed under the Apache License, Version 2.0 (the "License");
+                                                             * you may not use this file except in compliance with the License.
+                                                             * You may obtain a copy of the License at
+                                                             *
+                                                             *   http://www.apache.org/licenses/LICENSE-2.0
+                                                             *
+                                                             * Unless required by applicable law or agreed to in writing, software
+                                                             * distributed under the License is distributed on an "AS IS" BASIS,
+                                                             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                             * See the License for the specific language governing permissions and
+                                                             * limitations under the License.
+                                                             */
+// Import the createFirebaseNamespace function
+exports.default = firebase;
+module.exports = exports['default'];
+//# sourceMappingURL=app.js.map
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9539,15 +9546,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _user = __webpack_require__(5);
+var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _md = __webpack_require__(12);
+var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _firebaseService = __webpack_require__(8);
+var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
@@ -9557,7 +9564,7 @@ var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _knawledgeMap = __webpack_require__(18);
+var _knawledgeMap = __webpack_require__(14);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -9646,11 +9653,13 @@ var Tree = exports.Tree = function () {
                 children: this.children
             };
             try {
-                console.log('firebase update for addChild about to be called');
                 await _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
             } catch (err) {
                 console.error(' error for addChild firebase call', err);
             }
+            this.updatePrimaryParentTreeContentURI();
+            this.recalculateProficiencyAggregation();
+            this.calculateAggregationTimer();
         }
     }, {
         key: 'removeAndDisconnectFromParent',
@@ -9695,6 +9704,8 @@ var Tree = exports.Tree = function () {
                 parentId: newParentId
             });
             this.updatePrimaryParentTreeContentURI();
+            this.recalculateProficiencyAggregation();
+            this.calculateAggregationTimer();
         }
         // async sync
 
@@ -19637,10 +19648,273 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(24), __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27), __webpack_require__(18)))
 
 /***/ }),
 /* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Fact = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(13);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _firebaseService = __webpack_require__(10);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _trees = __webpack_require__(2);
+
+var _lodash = __webpack_require__(12);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _contentItem = __webpack_require__(15);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// from './firebaseService'
+var Fact = exports.Fact = function (_ContentItem) {
+  _inherits(Fact, _ContentItem);
+
+  //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
+  function Fact(args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/) {
+    _classCallCheck(this, Fact);
+
+    var _this = _possibleConstructorReturn(this, (Fact.__proto__ || Object.getPrototypeOf(Fact)).call(this, args));
+    // if (initialParentTreeId){
+    //     super({initialParentTreeId})
+    // } else {
+    //     super()
+    // }
+
+
+    _this.type = 'fact';
+    _this.question = args.question && args.question.trim();
+    _this.answer = args.answer && args.answer.trim();
+    _this.id = args.id || (0, _md2.default)(JSON.stringify({ question: _this.question, answer: _this.answer }));
+
+    if (typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = _this; //TODO: john figure out what this does
+
+    _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'init', _this).call(_this);
+    return _this;
+  }
+
+  //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+
+  _createClass(Fact, [{
+    key: 'getURIAdditionNotEncoded',
+    value: function getURIAdditionNotEncoded() {
+      return this.question + ":" + this.answer;
+    }
+  }, {
+    key: 'getURIAddition',
+    value: function getURIAddition() {
+      return encodeURIComponent(this.getURIAdditionNotEncoded());
+    }
+  }, {
+    key: 'getDBRepresentation',
+    value: function getDBRepresentation() {
+      var baseRep = _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'getDBRepresentation', this).call(this);
+
+      return (0, _lodash2.default)(baseRep, {
+        id: this.id,
+        question: this.question,
+        answer: this.answer,
+        type: this.type
+      });
+    }
+  }]);
+
+  return Fact;
+}(_contentItem2.default);
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Heading = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(13);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(15);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(12);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Heading = exports.Heading = function (_ContentItem) {
+    _inherits(Heading, _ContentItem);
+
+    function Heading(args /*={title, initialParentTreeId} and more */) {
+        _classCallCheck(this, Heading);
+
+        var _this = _possibleConstructorReturn(this, (Heading.__proto__ || Object.getPrototypeOf(Heading)).call(this, args));
+
+        _this.type = 'heading';
+
+        _this.title = args.title && args.title.trim();
+        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
+        _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'init', _this).call(_this);
+        return _this;
+    }
+
+    _createClass(Heading, [{
+        key: 'getURIAddition',
+        value: function getURIAddition() {
+            return encodeURIComponent(this.title);
+        }
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'getDBRepresentation', this).call(this);
+
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                title: this.title,
+                type: this.type
+            });
+        }
+    }]);
+
+    return Heading;
+}(_contentItem2.default);
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Skill = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(13);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(15);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(12);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _trees = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Skill = exports.Skill = function (_ContentItem) {
+    _inherits(Skill, _ContentItem);
+
+    /**ParentTreeId is used in skill and heading constructor so as to avoid ambiguity when calculating the id of two different skills with the same title
+     * e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -ar Verbs > 1st Person Plural
+     * vs. e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -er Verbs > 1st Person Plural
+     * ^^ Both skills are different, but have the same title: "1st Person Plural"
+     * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
+    */
+    function Skill(args /* ={title, initialParentTreeId} */) {
+        _classCallCheck(this, Skill);
+
+        var _this = _possibleConstructorReturn(this, (Skill.__proto__ || Object.getPrototypeOf(Skill)).call(this, args));
+        // if (initialParentTreeId){
+        //     super({initialParentTreeId})
+        // } else {
+        //     super()
+        // }
+
+
+        _this.type = 'skill';
+
+        _this.title = args.title && args.title.trim();
+        // this.calculateLongURI
+        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
+        _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'init', _this).call(_this);
+        return _this;
+    }
+
+    _createClass(Skill, [{
+        key: 'getURIAddition',
+        value: function getURIAddition() {
+            return encodeURIComponent(this.title);
+        }
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'getDBRepresentation', this).call(this);
+
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                title: this.title,
+                type: this.type
+            });
+        }
+    }]);
+
+    return Skill;
+}(_contentItem2.default);
+
+/***/ }),
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19718,7 +19992,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19805,7 +20079,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19841,7 +20115,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -19938,7 +20212,7 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -20128,7 +20402,71 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 25 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.secondsToPretty = secondsToPretty;
+
+var _vue = __webpack_require__(20);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.filter('timeFromNow', function (utcTimestamp) {
+    return (0, _moment2.default)(utcTimestamp).fromNow();
+});
+_vue2.default.filter('dateTime', function (utcTimestamp) {
+    return (0, _moment2.default)(utcTimestamp);
+});
+_vue2.default.filter('round', Math.round);
+_vue2.default.filter('sortByNextReviewTime', function (arr) {
+    return arr.sort(function (a, b) {
+        return a.nextReviewTime > b.nextReviewTime;
+    });
+});
+_vue2.default.filter('truncate', Math.floor);
+function secondsToPretty() {
+    var seconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    var minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    var hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+    var days = Math.floor(hours / 24);
+    hours = hours % 24;
+    var value = void 0,
+        unit = void 0;
+    var result = '';
+    if (days) {
+        result += days + ' d ';
+    }
+    if (hours) {
+        result += hours + ' h ';
+    }
+    if (minutes) {
+        result += minutes + ' m ';
+    }
+    if (seconds) {
+        result += seconds + ' s ';
+    }
+    return result;
+}
+
+_vue2.default.filter('secondsToPretty', secondsToPretty);
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20142,19 +20480,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _md = __webpack_require__(12);
+var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(14);
+var _contentItem = __webpack_require__(15);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
-var _lodash = __webpack_require__(11);
+var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _exercise = __webpack_require__(15);
+var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
@@ -20228,286 +20566,23 @@ var ExerciseQA = function (_Exercise) {
 exports.default = ExerciseQA;
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-exports.Fact = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(12);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _user = __webpack_require__(5);
+var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _firebaseService = __webpack_require__(8);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-var _trees = __webpack_require__(2);
-
-var _lodash = __webpack_require__(11);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _contentItem = __webpack_require__(14);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// from './firebaseService'
-var Fact = exports.Fact = function (_ContentItem) {
-  _inherits(Fact, _ContentItem);
-
-  //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-  function Fact(args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/) {
-    _classCallCheck(this, Fact);
-
-    var _this = _possibleConstructorReturn(this, (Fact.__proto__ || Object.getPrototypeOf(Fact)).call(this, args));
-    // if (initialParentTreeId){
-    //     super({initialParentTreeId})
-    // } else {
-    //     super()
-    // }
-
-
-    _this.type = 'fact';
-    _this.question = args.question && args.question.trim();
-    _this.answer = args.answer && args.answer.trim();
-    _this.id = args.id || (0, _md2.default)(JSON.stringify({ question: _this.question, answer: _this.answer }));
-
-    if (typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = _this; //TODO: john figure out what this does
-
-    _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'init', _this).call(_this);
-    return _this;
-  }
-
-  //bc certain properties used in the local js object in memory, shouldn't be stored in the db
-
-  _createClass(Fact, [{
-    key: 'getURIAdditionNotEncoded',
-    value: function getURIAdditionNotEncoded() {
-      return this.question + ":" + this.answer;
-    }
-  }, {
-    key: 'getURIAddition',
-    value: function getURIAddition() {
-      return encodeURIComponent(this.getURIAdditionNotEncoded());
-    }
-  }, {
-    key: 'getDBRepresentation',
-    value: function getDBRepresentation() {
-      var baseRep = _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'getDBRepresentation', this).call(this);
-
-      return (0, _lodash2.default)(baseRep, {
-        id: this.id,
-        question: this.question,
-        answer: this.answer,
-        type: this.type
-      });
-    }
-  }]);
-
-  return Fact;
-}(_contentItem2.default);
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Heading = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(12);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _contentItem = __webpack_require__(14);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-var _lodash = __webpack_require__(11);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Heading = exports.Heading = function (_ContentItem) {
-    _inherits(Heading, _ContentItem);
-
-    function Heading(args /*={title, initialParentTreeId} and more */) {
-        _classCallCheck(this, Heading);
-
-        var _this = _possibleConstructorReturn(this, (Heading.__proto__ || Object.getPrototypeOf(Heading)).call(this, args));
-
-        _this.type = 'heading';
-
-        _this.title = args.title && args.title.trim();
-        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
-        _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'init', _this).call(_this);
-        return _this;
-    }
-
-    _createClass(Heading, [{
-        key: 'getURIAddition',
-        value: function getURIAddition() {
-            return encodeURIComponent(this.title);
-        }
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            var baseRep = _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'getDBRepresentation', this).call(this);
-
-            return (0, _lodash2.default)(baseRep, {
-                id: this.id,
-                title: this.title,
-                type: this.type
-            });
-        }
-    }]);
-
-    return Heading;
-}(_contentItem2.default);
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Skill = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(12);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _contentItem = __webpack_require__(14);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-var _lodash = __webpack_require__(11);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _trees = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Skill = exports.Skill = function (_ContentItem) {
-    _inherits(Skill, _ContentItem);
-
-    /**ParentTreeId is used in skill and heading constructor so as to avoid ambiguity when calculating the id of two different skills with the same title
-     * e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -ar Verbs > 1st Person Plural
-     * vs. e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -er Verbs > 1st Person Plural
-     * ^^ Both skills are different, but have the same title: "1st Person Plural"
-     * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
-    */
-    function Skill(args /* ={title, initialParentTreeId} */) {
-        _classCallCheck(this, Skill);
-
-        var _this = _possibleConstructorReturn(this, (Skill.__proto__ || Object.getPrototypeOf(Skill)).call(this, args));
-        // if (initialParentTreeId){
-        //     super({initialParentTreeId})
-        // } else {
-        //     super()
-        // }
-
-
-        _this.type = 'skill';
-
-        _this.title = args.title && args.title.trim();
-        // this.calculateLongURI
-        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
-        _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'init', _this).call(_this);
-        return _this;
-    }
-
-    _createClass(Skill, [{
-        key: 'getURIAddition',
-        value: function getURIAddition() {
-            return encodeURIComponent(this.title);
-        }
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            var baseRep = _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'getDBRepresentation', this).call(this);
-
-            return (0, _lodash2.default)(baseRep, {
-                id: this.id,
-                title: this.title,
-                type: this.type
-            });
-        }
-    }]);
-
-    return Skill;
-}(_contentItem2.default);
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _user = __webpack_require__(5);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _firebaseService = __webpack_require__(8);
+var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
@@ -20553,7 +20628,7 @@ var Users = function () {
 exports.default = Users;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20660,7 +20735,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20700,17 +20775,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(217);
+var PromiseImpl = scope.Promise || __webpack_require__(220);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20733,11 +20808,11 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(34);
+var _metadata = __webpack_require__(35);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -20874,7 +20949,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20948,7 +21023,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20971,11 +21046,11 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(224);
+var _json = __webpack_require__(227);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(26);
 
 var _path = __webpack_require__(53);
 
@@ -20985,7 +21060,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(36);
+var _url = __webpack_require__(37);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -21158,7 +21233,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21180,7 +21255,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -21368,7 +21443,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21386,11 +21461,11 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(25);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
@@ -21438,7 +21513,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -21601,7 +21676,7 @@ module.exports = css;
 });
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21618,7 +21693,7 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(234),
+    template: __webpack_require__(237),
     created: async function created() {
         var _this = this;
 
@@ -21650,7 +21725,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21661,7 +21736,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(236),
+    template: __webpack_require__(239),
     created: function created() {
         var me = this;
     },
@@ -21673,7 +21748,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21683,7 +21758,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(15);
+var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
@@ -21691,7 +21766,7 @@ var _exercises = __webpack_require__(45);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
-var _exerciseQA = __webpack_require__(25);
+var _exerciseQA = __webpack_require__(29);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -21699,11 +21774,11 @@ var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(37);
+var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-__webpack_require__(257);
+__webpack_require__(262);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -21717,7 +21792,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     props: ['leafId'],
-    template: __webpack_require__(247),
+    template: __webpack_require__(251),
     created: function created() {
         var me = this;
         this.tree = {
@@ -21846,28 +21921,6 @@ exports.default = {
 };
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    template: __webpack_require__(248),
-    props: ['leafId'],
-    created: function created() {
-        console.log('tree review container leafId is', this.leafId);
-    }
-    //in browser navigate to  http://localhost:8080/#/study/83cbe6ea3fa874449982b645f04d14a1 - for amar
-    //in browser navigate to  http://localhost:8080/#/study/ac8b5a3a8898a48e70bb3a5c6eebfca0 - for an item with no exercises
-    //http://localhost:8080/#/study/83cbe6ea3fa874449982b645f04d14a1
-
-};
-
-/***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21877,55 +21930,17 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.secondsToPretty = secondsToPretty;
-
-var _vue = __webpack_require__(20);
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _moment = __webpack_require__(0);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_vue2.default.filter('timeFromNow', function (utcTimestamp) {
-    return (0, _moment2.default)(utcTimestamp).fromNow();
-});
-_vue2.default.filter('sortByNextReviewTime', function (arr) {
-    return arr.sort(function (a, b) {
-        return a.nextReviewTime > b.nextReviewTime;
-    });
-});
-_vue2.default.filter('truncate', Math.floor);
-function secondsToPretty() {
-    var seconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-    var minutes = Math.floor(seconds / 60);
-    seconds = seconds % 60;
-    var hours = Math.floor(minutes / 60);
-    minutes = minutes % 60;
-    var days = Math.floor(hours / 24);
-    hours = hours % 24;
-    var value = void 0,
-        unit = void 0;
-    var result = '';
-    if (days) {
-        result += days + ' d ';
+exports.default = {
+    template: __webpack_require__(252),
+    props: ['leafId'],
+    created: function created() {
+        console.log('tree review container leafId is', this.leafId);
     }
-    if (hours) {
-        result += hours + ' h ';
-    }
-    if (minutes) {
-        result += minutes + ' m ';
-    }
-    if (seconds) {
-        result += seconds + ' s ';
-    }
-    return result;
-}
+    //in browser navigate to  http://localhost:8080/#/study/83cbe6ea3fa874449982b645f04d14a1 - for amar
+    //in browser navigate to  http://localhost:8080/#/study/ac8b5a3a8898a48e70bb3a5c6eebfca0 - for an item with no exercises
+    //http://localhost:8080/#/study/83cbe6ea3fa874449982b645f04d14a1
 
-_vue2.default.filter('secondsToPretty', secondsToPretty);
+};
 
 /***/ }),
 /* 43 */
@@ -21939,7 +21954,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(195);
+var _env = __webpack_require__(196);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -22005,23 +22020,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // import ExerciseQA from "./exerciseQA";
 
 
-var _md = __webpack_require__(12);
+var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(14);
+var _contentItem = __webpack_require__(15);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
-var _lodash = __webpack_require__(11);
+var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _exercise = __webpack_require__(15);
+var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(25);
+var _exerciseQA = __webpack_require__(29);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -22143,7 +22158,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(31);
+var _shared_promise = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22438,13 +22453,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(30);
+var _errors = __webpack_require__(31);
 
-var _errors2 = __webpack_require__(21);
+var _errors2 = __webpack_require__(24);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(216);
+var _tokenManager = __webpack_require__(219);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -22824,11 +22839,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(223);
+var _fs = __webpack_require__(226);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(35);
+var _string = __webpack_require__(36);
 
 var string = _interopRequireWildcard(_string);
 
@@ -23072,31 +23087,31 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(33);
+var _array = __webpack_require__(34);
 
 var array = _interopRequireWildcard(_array);
 
 var _blob = __webpack_require__(52);
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(34);
+var _metadata = __webpack_require__(35);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(227);
+var _requestinfo = __webpack_require__(230);
 
 var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(36);
+var _url = __webpack_require__(37);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -23550,23 +23565,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(32);
+var _args = __webpack_require__(33);
 
 var args = _interopRequireWildcard(_args);
 
 var _blob = __webpack_require__(52);
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(26);
 
-var _metadata = __webpack_require__(34);
+var _metadata = __webpack_require__(35);
 
 var metadata = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
@@ -23578,7 +23593,7 @@ var _requests = __webpack_require__(54);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(35);
+var _string = __webpack_require__(36);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -23586,7 +23601,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(232);
+var _task = __webpack_require__(235);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -34971,7 +34986,7 @@ var STATES = {
 var TIME_SHOWING = 16000; //00000
 var TIME_SUBTRACTING_BY_7 = 32000; //64000
 exports.default = {
-    template: __webpack_require__(235),
+    template: __webpack_require__(238),
     created: function created() {
         var _this = this;
 
@@ -35049,7 +35064,7 @@ function getRandomConsonant() {
 "use strict";
 
 
-__webpack_require__(255);
+__webpack_require__(260);
 
 var _vue = __webpack_require__(20);
 
@@ -35059,11 +35074,11 @@ var _branchesFooter = __webpack_require__(186);
 
 var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
-var _reviewSchedule = __webpack_require__(191);
+var _reviewSchedule = __webpack_require__(192);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
-var _contentList = __webpack_require__(38);
+var _contentList = __webpack_require__(39);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
@@ -35071,15 +35086,15 @@ var _exerciseCreator = __webpack_require__(183);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
-var _exerciseCreatorContainer = __webpack_require__(39);
+var _exerciseCreatorContainer = __webpack_require__(40);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _treeReview = __webpack_require__(40);
+var _treeReview = __webpack_require__(41);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _treeReviewContainer = __webpack_require__(41);
+var _treeReviewContainer = __webpack_require__(42);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
@@ -35091,15 +35106,15 @@ var _exerciseList = __webpack_require__(185);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(193);
+var _tree = __webpack_require__(194);
 
 var _tree2 = _interopRequireDefault(_tree);
 
-var _newtreecomponent = __webpack_require__(188);
+var _newtreecomponent = __webpack_require__(189);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(192);
+var _toolbar = __webpack_require__(193);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
@@ -35107,16 +35122,20 @@ var _goBack = __webpack_require__(187);
 
 var _goBack2 = _interopRequireDefault(_goBack);
 
-var _proficiencySelector = __webpack_require__(189);
+var _proficiencySelector = __webpack_require__(190);
 
 var _proficiencySelector2 = _interopRequireDefault(_proficiencySelector);
+
+var _itemHistory = __webpack_require__(188);
+
+var _itemHistory2 = _interopRequireDefault(_itemHistory);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Vue.component('branchesHeader', Header)
-
-// import Header from '../components/header/branchesHeader'
 _vue2.default.component('branchesFooter', _branchesFooter2.default);
+// import Header from '../components/header/branchesHeader'
+
 _vue2.default.component('reviewSchedule', _reviewSchedule2.default);
 _vue2.default.component('contentList', _contentList2.default);
 _vue2.default.component('exerciseCreator', _exerciseCreator2.default);
@@ -35130,6 +35149,7 @@ _vue2.default.component('newtree', _newtreecomponent2.default);
 _vue2.default.component('toolbar', _toolbar2.default);
 _vue2.default.component('goBack', _goBack2.default);
 _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
+_vue2.default.component('itemHistory', _itemHistory2.default);
 
 /***/ }),
 /* 177 */
@@ -37672,7 +37692,7 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["default"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27)))
 
 /***/ }),
 /* 180 */
@@ -38568,7 +38588,7 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27)))
 
 /***/ }),
 /* 181 */
@@ -38607,11 +38627,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(253);
+__webpack_require__(257);
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(237),
+    template: __webpack_require__(240),
     created: function created() {
         var me = this;
         console.log("creator just created!");
@@ -38640,11 +38660,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(15);
+var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(25);
+var _exerciseQA = __webpack_require__(29);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -38652,7 +38672,7 @@ var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(37);
+var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -38668,7 +38688,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(238),
+    template: __webpack_require__(241),
     data: function data() {
         return {
             items: {},
@@ -38844,14 +38864,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(15);
+var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(239),
+    template: __webpack_require__(242),
     created: async function created() {
         this.exercises = await _exercise2.default.getAll();
     },
@@ -38877,18 +38897,18 @@ var _config = __webpack_require__(43);
 
 var _login2 = __webpack_require__(44);
 
-var _user = __webpack_require__(5);
+var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(29);
+var _users = __webpack_require__(30);
 
 var _users2 = _interopRequireDefault(_users);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(240),
+    template: __webpack_require__(243),
     created: function created() {
         var self = this;
         self.loggedIn = false;
@@ -38968,10 +38988,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(254);
+__webpack_require__(258);
 
 exports.default = {
-    template: __webpack_require__(241),
+    template: __webpack_require__(244),
     methods: {
         goBack: function goBack() {
             this.$router.go(-1);
@@ -38991,7 +39011,75 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _newTree = __webpack_require__(197);
+var _trees = __webpack_require__(2);
+
+var _knawledgeMap = __webpack_require__(14);
+
+var _fact = __webpack_require__(21);
+
+var _contentItems = __webpack_require__(3);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _heading = __webpack_require__(22);
+
+var _filters = __webpack_require__(28);
+
+var _skill = __webpack_require__(23);
+
+var _proficiencyEnum = __webpack_require__(6);
+
+__webpack_require__(259);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import Chartist from 'chartist'
+
+exports.default = {
+    template: __webpack_require__(245), // '<div> {{movie}} this is the tree template</div>',
+    props: ['itemId'],
+    created: async function created() {
+        console.log('item history component created');
+        var me = this;
+        new Chartist.Line('.ct-chart', {
+            labels: [1, 2, 3, 4, 5, 6, 7, 8],
+            series: [[5, 9, 7, 8, 5, 3, 5, 4]]
+        }, {
+            low: 0,
+            showArea: true
+        });
+
+        this.content = await _contentItems2.default.get(this.itemId);
+        this.interactions = this.content.interactions;
+        console.log("interactions are ", this.interactions);
+    },
+    data: function data() {
+        return {
+            content: {}, // this.content
+            interactions: []
+        };
+    },
+
+    computed: {},
+    methods: {}
+};
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _newTree = __webpack_require__(199);
 
 var _trees = __webpack_require__(2);
 
@@ -39003,7 +39091,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(243),
+    template: __webpack_require__(247),
     props: ['parentid', 'initialparenttreecontenturi'],
     data: function data() {
         return {
@@ -39097,7 +39185,7 @@ async function establishURIForContentAndThenAllChildren(treeId) {
 }
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39107,13 +39195,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(256);
+__webpack_require__(261);
 
 var _proficiencyEnum = __webpack_require__(6);
 
 exports.default = {
     props: ['value'],
-    template: __webpack_require__(244),
+    template: __webpack_require__(248),
     created: function created() {},
     data: function data() {
         return {};
@@ -39153,7 +39241,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39222,7 +39310,7 @@ function getProficiencyCategory(proficiency) {
 }
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39232,18 +39320,18 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _user = __webpack_require__(5);
+var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(29);
+var _users = __webpack_require__(30);
 
 var _users2 = _interopRequireDefault(_users);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(245), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
     created: function created() {
         var self = this;
 
@@ -39276,7 +39364,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39288,7 +39376,7 @@ Object.defineProperty(exports, "__esModule", {
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(246),
+    template: __webpack_require__(250),
     created: function created() {},
     data: function data() {
         return {};
@@ -39305,7 +39393,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39319,34 +39407,34 @@ var _methods;
 
 var _trees = __webpack_require__(2);
 
-var _knawledgeMap = __webpack_require__(18);
+var _knawledgeMap = __webpack_require__(14);
 
-var _fact = __webpack_require__(26);
+var _fact = __webpack_require__(21);
 
 var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _user = __webpack_require__(5);
+var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _heading = __webpack_require__(27);
+var _heading = __webpack_require__(22);
 
-var _filters = __webpack_require__(42);
+var _filters = __webpack_require__(28);
 
-var _skill = __webpack_require__(28);
+var _skill = __webpack_require__(23);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-__webpack_require__(258);
+__webpack_require__(263);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 exports.default = {
-    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(253), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created: async function created() {
         var me = this;
@@ -39379,6 +39467,7 @@ exports.default = {
             tree: {}, //this.tree
             content: {}, // this.content
             editing: this.editing,
+            showHistory: false,
             addingChild: this.addingChild,
             draggingNode: window.draggingNode,
             user: _user2.default
@@ -39402,6 +39491,10 @@ exports.default = {
                 styles['color'] = 'white';
             } else {
                 styles['background-color'] = (0, _knawledgeMap.proficiencyToColor)(this.content.proficiency);
+                if (this.showHistory) {
+                    styles['background-color'] = 'black';
+                    styles['color'] = 'white';
+                }
             }
             return styles;
         },
@@ -39425,6 +39518,10 @@ exports.default = {
         },
         toggleAddChild: function toggleAddChild() {
             this.addingChild = !this.addingChild;
+        },
+        toggleHistory: function toggleHistory() {
+            if (this.typeisHeading) return;
+            this.showHistory = !this.showHistory;
         },
         toggleEditingAndAddChild: function toggleEditingAndAddChild() {
             this.addingChild = !this.addingChild;
@@ -39490,7 +39587,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39498,29 +39595,29 @@ exports.default = {
 
 __webpack_require__(176);
 
-__webpack_require__(42);
+__webpack_require__(28);
 
 __webpack_require__(177);
 
 __webpack_require__(178);
 
-var _treeReview = __webpack_require__(40);
+var _treeReview = __webpack_require__(41);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _contentList = __webpack_require__(38);
+var _contentList = __webpack_require__(39);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _treeReviewContainer = __webpack_require__(41);
+var _treeReviewContainer = __webpack_require__(42);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _exerciseCreatorContainer = __webpack_require__(39);
+var _exerciseCreatorContainer = __webpack_require__(40);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _knawledgeMap = __webpack_require__(18);
+var _knawledgeMap = __webpack_require__(14);
 
 var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
 
@@ -39622,7 +39719,7 @@ var vm = new _vue2.default({
 });
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39636,7 +39733,7 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39657,7 +39754,47 @@ var Globals = exports.Globals = {
 };
 
 /***/ }),
-/* 197 */
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.calculateStrength = calculateStrength;
+exports.calculateRecall = calculateRecall;
+exports.calculateTime = calculateTime;
+var e = 2.7182828;
+//memory strength in decibels - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
+function calculateStrength(R, t) {
+    console.log('calculateStrength R and t are', R, t);
+    var proficiencyAsDecimal = R / 100;
+    console.log('calculateStrength proficiecnyAsDecimal', proficiencyAsDecimal);
+    console.log('');
+    var logProficiency = Math.log(proficiencyAsDecimal);
+    console.log('calculateStrength logProfiency', logProficiency);
+    var ebbinghaus = -1 * t / logProficiency;
+    console.log('calculateStrength ebbinghaus ', ebbinghaus);
+    var dbE = 10 * Math.log10(ebbinghaus);
+    console.log('calculateStrength dbE ', dbE);
+    return dbE > 0 ? dbE : 0;
+}
+
+//calculate percent change of recall (e.g. proficiency)
+//returns as a num in range [0,100]
+function calculateRecall(S, t) {
+    return Math.pow(e, -1 * t / Math.pow(10, S / 10));
+}
+
+//R input is in [0,1]
+function calculateTime(S, R) {
+    return -1 * Math.pow(10, S / 10) * Math.log(R);
+}
+
+/***/ }),
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39669,11 +39806,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.newNodeYOffset = exports.newNodeXOffset = undefined;
 exports.newTree = newTree;
 
-var _lodash = __webpack_require__(11);
+var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _knawledgeMap = __webpack_require__(18);
+var _knawledgeMap = __webpack_require__(14);
 
 var _trees = __webpack_require__(2);
 
@@ -39681,11 +39818,11 @@ var _contentItems = __webpack_require__(3);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _fact = __webpack_require__(26);
+var _fact = __webpack_require__(21);
 
-var _heading = __webpack_require__(27);
+var _heading = __webpack_require__(22);
 
-var _skill = __webpack_require__(28);
+var _skill = __webpack_require__(23);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -39764,7 +39901,7 @@ async function newTree(nodeType, parentTreeId, primaryParentTreeContentURI, valu
 }
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39782,7 +39919,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -39884,10 +40021,10 @@ exports.default = {
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(7)();
 // imports
 
 
@@ -39898,10 +40035,10 @@ exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n
 
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(7)();
 // imports
 
 
@@ -39912,10 +40049,24 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 202 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
 // imports
 
 
@@ -39926,10 +40077,10 @@ exports.push([module.i, "html,\n.tree,\nbutton {\n  font-family: 'Fredoka One', 
 
 
 /***/ }),
-/* 203 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(7)();
 // imports
 
 
@@ -39940,10 +40091,10 @@ exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.
 
 
 /***/ }),
-/* 204 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(7)();
 // imports
 
 
@@ -39954,10 +40105,10 @@ exports.push([module.i, ".tree-review-container {\n  background-color: black;\n 
 
 
 /***/ }),
-/* 205 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(7)();
 // imports
 
 
@@ -39968,7 +40119,7 @@ exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.
 
 
 /***/ }),
-/* 206 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40070,7 +40221,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 207 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40105,11 +40256,11 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(47);
 
-var _errors = __webpack_require__(30);
+var _errors = __webpack_require__(31);
 
-var _shared_promise = __webpack_require__(31);
+var _shared_promise = __webpack_require__(32);
 
-var _deep_copy = __webpack_require__(206);
+var _deep_copy = __webpack_require__(209);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40474,14 +40625,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 208 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(16);
+var firebase = __webpack_require__(17);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -40750,10 +40901,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
-/* 209 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -40784,7 +40935,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(16);
+            var firebase = __webpack_require__(17);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -41024,7 +41175,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 210 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41038,22 +41189,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(16);
+var _app = __webpack_require__(17);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(208);
+__webpack_require__(211);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(209);
-__webpack_require__(218);
+__webpack_require__(212);
+__webpack_require__(221);
 var AsyncStorage;
 
-__webpack_require__(211);
+__webpack_require__(214);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -41061,7 +41212,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41091,15 +41242,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(213);
+var _windowController = __webpack_require__(216);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(212);
+var _swController = __webpack_require__(215);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(16);
+var _app = __webpack_require__(17);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -41122,7 +41273,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41159,7 +41310,7 @@ var _controllerInterface = __webpack_require__(48);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(21);
+var _errors = __webpack_require__(24);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -41500,7 +41651,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 213 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41537,7 +41688,7 @@ var _controllerInterface = __webpack_require__(48);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(21);
+var _errors = __webpack_require__(24);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -41545,7 +41696,7 @@ var _workerPageMessage = __webpack_require__(51);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(215);
+var _defaultSw = __webpack_require__(218);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -41901,7 +42052,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 214 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41944,7 +42095,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 215 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41981,7 +42132,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 216 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42012,13 +42163,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(30);
+var _errors = __webpack_require__(31);
 
-var _errors2 = __webpack_require__(21);
+var _errors2 = __webpack_require__(24);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(214);
+var _arrayBufferToBase = __webpack_require__(217);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -42403,7 +42554,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 217 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -42640,10 +42791,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(260).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265).setImmediate))
 
 /***/ }),
-/* 218 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42658,17 +42809,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(35);
+var _string = __webpack_require__(36);
 
 var _taskenums = __webpack_require__(55);
 
-var _xhriopool = __webpack_require__(230);
+var _xhriopool = __webpack_require__(233);
 
 var _reference = __webpack_require__(57);
 
-var _service = __webpack_require__(231);
+var _service = __webpack_require__(234);
 
-var _app = __webpack_require__(16);
+var _app = __webpack_require__(17);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -42713,7 +42864,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 219 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42728,7 +42879,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.async = async;
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -42771,7 +42922,7 @@ function async(f) {
 
 
 /***/ }),
-/* 220 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42788,23 +42939,23 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(25);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(4);
+var _error2 = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(222);
+var _failrequest = __webpack_require__(225);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(26);
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(228);
+var _requestmap = __webpack_require__(231);
 
 var _type = __webpack_require__(1);
 
@@ -42953,7 +43104,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43085,7 +43236,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43102,7 +43253,7 @@ exports.FailRequest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -43144,7 +43295,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43225,7 +43376,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43281,7 +43432,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43341,7 +43492,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43381,23 +43532,23 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(33);
+var _array = __webpack_require__(34);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(221);
+var _backoff = __webpack_require__(224);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -43405,7 +43556,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(36);
+var _url = __webpack_require__(37);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -43614,7 +43765,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43661,7 +43812,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43693,11 +43844,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(25);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -43756,7 +43907,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43788,15 +43939,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -43955,7 +44106,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43987,7 +44138,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(229);
+var _xhrio_network = __webpack_require__(232);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44012,7 +44163,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44044,19 +44195,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(32);
+var _args = __webpack_require__(33);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(220);
+var _authwrapper = __webpack_require__(223);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(26);
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(226);
+var _request = __webpack_require__(229);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -44203,7 +44354,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44242,25 +44393,25 @@ var _taskenums = __webpack_require__(55);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(225);
+var _observer = __webpack_require__(228);
 
-var _tasksnapshot = __webpack_require__(233);
+var _tasksnapshot = __webpack_require__(236);
 
-var _args = __webpack_require__(32);
+var _args = __webpack_require__(33);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(33);
+var _array = __webpack_require__(34);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(219);
+var _async = __webpack_require__(222);
 
-var _error = __webpack_require__(4);
+var _error = __webpack_require__(5);
 
 var errors = _interopRequireWildcard(_error);
 
-var _promise_external = __webpack_require__(7);
+var _promise_external = __webpack_require__(8);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -44846,7 +44997,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44898,103 +45049,109 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <button v-on:click=\"recalculateProficiencyAggregationForAll\">\r\n       Recalculate Aggregation\r\n    </button>\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 235 */
+/* 238 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul>\r\n    <div>state: {{state}}</div>\r\n   <li v-for=\"triplet in triplets\" v-if=\"stateIsShowing || stateIsAnswer\">{{triplet}}</li>\r\n   <h3 v-if=\"stateIsSubtractingBy7\">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>\r\n   <div><input type=\"text\" v-for=\"triplet in triplets\" v-if=\"stateIsQuizzing || stateIsAnswer\"></div>\r\n   <button v-if=\"stateIsQuizzing\" v-on:click=\"showAnswer\">Show Answer</button>\r\n</ul>";
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 237 */
+/* 240 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 238 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 239 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
-/* 240 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
-/* 241 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
-/* 242 */
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
-
-/***/ }),
-/* 243 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
-
-/***/ }),
-/* 244 */
-/***/ (function(module, exports) {
-
-module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click=\"setProficiencyToFour\"></span>\r\n</span>";
-
-/***/ }),
 /* 245 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
+module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp | timeFromNow}} || {{interaction.timeSpent}} || {{interaction.millisecondsSinceLastInteraction}} || {{interaction.proficiency}} || {{interaction.previousInteractionStrength | round }} dbE\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
 /* 246 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
 
 /***/ }),
 /* 247 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 248 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
 /* 249 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\">\r\n    <!--<div class=\"tree-debugging-info\">-->\r\n        <!--URI: {{content.uri}} -&#45;&#45;-->\r\n        <!--INITIALParentID: {{content.initialParentId}} -&#45;&#45;-->\r\n        <!--contentID: {{content.id}}-->\r\n        <!--TYPE: {{content.type}}-->\r\n    <!--</div>-->\r\n    <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n        <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n            <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n        </div>\r\n        <div class=\"tree-new-fact\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n            <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n            <div>\r\n                <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n        <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-skill\">{{content.title}}</div>\r\n            <button class=\"tree-skill-study ui button positive\" v-on:click=\"studySkill\">Study this skill</button>\r\n        </div>\r\n        <div class=\"tree-new-skill\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"skill-new-save ui button positive\" v-on:click=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncProficiency\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
 /* 250 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncProficiency\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+
+/***/ }),
+/* 254 */
 /***/ (function(module, exports) {
 
 /*!
@@ -45021,7 +45178,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 251 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -45270,10 +45427,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 251;
+webpackContext.id = 255;
 
 /***/ }),
-/* 252 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -45463,16 +45620,16 @@ webpackContext.id = 251;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), __webpack_require__(27)))
 
 /***/ }),
-/* 253 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(200);
+var content = __webpack_require__(202);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45480,7 +45637,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45497,13 +45654,13 @@ if(false) {
 }
 
 /***/ }),
-/* 254 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(201);
+var content = __webpack_require__(203);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45511,7 +45668,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45528,13 +45685,13 @@ if(false) {
 }
 
 /***/ }),
-/* 255 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(202);
+var content = __webpack_require__(204);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45542,7 +45699,38 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./itemHistory.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./itemHistory.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(205);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45559,13 +45747,13 @@ if(false) {
 }
 
 /***/ }),
-/* 256 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45573,7 +45761,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45590,13 +45778,13 @@ if(false) {
 }
 
 /***/ }),
-/* 257 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(207);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45604,7 +45792,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45621,13 +45809,13 @@ if(false) {
 }
 
 /***/ }),
-/* 258 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45635,7 +45823,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45652,7 +45840,7 @@ if(false) {
 }
 
 /***/ }),
-/* 259 */
+/* 264 */
 /***/ (function(module, exports) {
 
 
@@ -45747,7 +45935,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 260 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -45800,7 +45988,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(252);
+__webpack_require__(256);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
