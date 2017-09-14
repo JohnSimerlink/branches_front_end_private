@@ -79,7 +79,6 @@ export class Tree {
             children: this.children
         }
         try {
-            console.log('firebase update for addChild about to be called')
             await firebase.database().ref('trees/' +this.id).update(updates)
         } catch (err){
             console.error(' error for addChild firebase call', err)
