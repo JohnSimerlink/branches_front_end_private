@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 195);
+/******/ 	return __webpack_require__(__webpack_require__.s = 197);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(255)("./" + name);
+            __webpack_require__(259)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(174)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(176)(module)))
 
 /***/ }),
 /* 1 */
@@ -4638,99 +4638,6 @@ function isNativeBlobDefined() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Trees = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _tree = __webpack_require__(19);
-
-var _firebaseService = __webpack_require__(10);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var trees = {}; // cache
-if (typeof window !== 'undefined') {
-    window.trees = trees; //expose to window for console debugging
-}
-
-var Trees = exports.Trees = function () {
-    function Trees() {
-        _classCallCheck(this, Trees);
-    }
-
-    _createClass(Trees, null, [{
-        key: 'getAll',
-        value: function getAll(success) {}
-        //returns promise
-
-    }, {
-        key: 'get',
-        value: function get(treeId) {
-            if (!treeId) {
-                throw "Trees.get(treeId) error!. treeId empty";
-            }
-            return new Promise(function getTreePromise(resolve, reject) {
-                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-                if (trees[treeId]) {
-                    resolve(trees[treeId]);
-                } else {
-                    _firebaseService2.default.database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot) {
-                        var treeData = snapshot.val();
-                        var tree = new _tree.Tree(treeData);
-                        trees[tree.id] = tree; // add to cache
-                        resolve(tree);
-                    });
-                }
-            });
-        }
-    }, {
-        key: 'remove',
-        value: function remove(id) {
-            delete trees[id];
-            _firebaseService2.default.database().ref('trees/').child(id).remove(); //.once("value", function(snapshot){
-        }
-    }, {
-        key: 'adoptChild',
-        value: async function adoptChild(newParentId, childId) {
-            var task1 = Trees._handleChildAndOldParent(newParentId, childId),
-                task2 = Trees._handleNewParent(newParentId, childId)[(await task1, await task2)];
-        }
-    }, {
-        key: '_handleChildAndOldParent',
-        value: async function _handleChildAndOldParent(newParentId, childId) {
-            var child = await Trees.get(childId);
-            var oldParentPromise = Trees.get(child.parentId);
-            child.changeParent(newParentId);
-            var oldParent = await oldParentPromise;
-            oldParent.removeChild(child.id);
-        }
-    }, {
-        key: '_handleNewParent',
-        value: async function _handleNewParent(newParentId, childId) {
-            var newParent = await Trees.get(newParentId);
-            newParent.addChild(childId);
-        }
-    }]);
-
-    return Trees;
-}();
-
-window.Trees = Trees;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -4738,11 +4645,11 @@ var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _fact = __webpack_require__(21);
+var _fact = __webpack_require__(22);
 
-var _skill = __webpack_require__(23);
+var _skill = __webpack_require__(24);
 
-var _heading = __webpack_require__(22);
+var _heading = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4904,6 +4811,99 @@ var ContentItems = function () {
 exports.default = ContentItems;
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Trees = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _tree = __webpack_require__(20);
+
+var _firebaseService = __webpack_require__(10);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var trees = {}; // cache
+if (typeof window !== 'undefined') {
+    window.trees = trees; //expose to window for console debugging
+}
+
+var Trees = exports.Trees = function () {
+    function Trees() {
+        _classCallCheck(this, Trees);
+    }
+
+    _createClass(Trees, null, [{
+        key: 'getAll',
+        value: function getAll(success) {}
+        //returns promise
+
+    }, {
+        key: 'get',
+        value: function get(treeId) {
+            if (!treeId) {
+                throw "Trees.get(treeId) error!. treeId empty";
+            }
+            return new Promise(function getTreePromise(resolve, reject) {
+                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+                if (trees[treeId]) {
+                    resolve(trees[treeId]);
+                } else {
+                    _firebaseService2.default.database().ref('trees/' + treeId).once("value", function onFirebaseTreeGet(snapshot) {
+                        var treeData = snapshot.val();
+                        var tree = new _tree.Tree(treeData);
+                        trees[tree.id] = tree; // add to cache
+                        resolve(tree);
+                    });
+                }
+            });
+        }
+    }, {
+        key: 'remove',
+        value: function remove(id) {
+            delete trees[id];
+            _firebaseService2.default.database().ref('trees/').child(id).remove(); //.once("value", function(snapshot){
+        }
+    }, {
+        key: 'adoptChild',
+        value: async function adoptChild(newParentId, childId) {
+            var task1 = Trees._handleChildAndOldParent(newParentId, childId),
+                task2 = Trees._handleNewParent(newParentId, childId)[(await task1, await task2)];
+        }
+    }, {
+        key: '_handleChildAndOldParent',
+        value: async function _handleChildAndOldParent(newParentId, childId) {
+            var child = await Trees.get(childId);
+            var oldParentPromise = Trees.get(child.parentId);
+            child.changeParent(newParentId);
+            var oldParent = await oldParentPromise;
+            oldParent.removeChild(child.id);
+        }
+    }, {
+        key: '_handleNewParent',
+        value: async function _handleNewParent(newParentId, childId) {
+            var newParent = await Trees.get(newParentId);
+            newParent.addChild(childId);
+        }
+    }]);
+
+    return Trees;
+}();
+
+window.Trees = Trees;
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4920,7 +4920,7 @@ var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _users = __webpack_require__(30);
+var _users = __webpack_require__(31);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -4964,18 +4964,30 @@ var User = function () {
         value: function isAdmin() {
             return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3';
         }
-    }, {
-        key: 'setItemProperties',
-        value: function setItemProperties(itemId, obj) {
 
-            this.branchesData.items[itemId] = this.branchesData.items[itemId] || {};
-            for (var prop in obj) {
-                this.branchesData.items[itemId][prop] = obj[prop];
-            }
+        // setItemProperties(itemId, obj){
+        //
+        //   this.branchesData.items[itemId] = this.branchesData.items[itemId] || {}
+        //   for (let prop in obj){
+        //       this.branchesData.items[itemId][prop] = obj[prop]
+        //   }
+        //   let updates = {
+        //     items: this.branchesData.items
+        //   }
+        //   firebase.database().ref('users/' + this.getId()).update(updates)
+        // }
+
+    }, {
+        key: 'addInteraction',
+        value: function addInteraction(contentItemId, interaction) {
+            var item = this.branchesData.items[contentItemId] || {};
+            item.interactions = item.interactions || [];
+            item.interactions.push(interaction);
             var updates = {
-                items: this.branchesData.items
+                interactions: item.interactions
             };
-            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+            this.branchesData.items[contentItemId];
+            _firebaseService2.default.database().ref('users/' + this.getId() + '/items/' + contentItemId + '/').update(updates);
         }
     }, {
         key: 'setCamera',
@@ -4997,6 +5009,27 @@ var User = function () {
             _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
             me.camera = me.branchesData.camera = camera;
         }
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
+            }
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            _firebaseService2.default.database().ref('users/' + this.getId()).update(updates);
+            this[prop] = val;
+        }
+    }, {
+        key: 'setInteractionsForItem',
+        value: function setInteractionsForItem(itemId, interactions) {
+            console.log('setInteractionsForItem is ', itemId, interactions);
+            this.branchesData.items[itemId].interactions = interactions;
+            var updates = { interactions: interactions };
+            _firebaseService2.default.database().ref('users/' + this.getId() + '/items/' + itemId + '/').update(updates);
+        }
     }]);
 
     return User;
@@ -5010,6 +5043,24 @@ exports.default = user;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var PROFICIENCIES = exports.PROFICIENCIES = {
+    UNKNOWN: 0,
+    ONE: 1,
+    TWO: 33,
+    THREE: 67,
+    FOUR: 99 // DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
+};
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5066,7 +5117,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(25);
+var _constants = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5248,24 +5299,6 @@ function internalError(message) {
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var PROFICIENCIES = exports.PROFICIENCIES = {
-    UNKNOWN: 0,
-    ONE: 1,
-    TWO: 33,
-    THREE: 67,
-    FOUR: 99 // DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
-};
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
@@ -5325,65 +5358,6 @@ module.exports = function() {
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.make = make;
-exports.resolve = resolve;
-exports.reject = reject;
-
-var _shared_promise = __webpack_require__(32);
-
-function make(resolver) {
-  return new _shared_promise.local.Promise(resolver);
-}
-/**
- * @template T
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Implements the promise abstraction interface for external
- * (public SDK) packaging, which just passes through to the firebase-app impl.
- */
-/**
- * @template T
- * @param {function((function(T): void),
- *                  (function(!Error): void))} resolver
- */
-function resolve(value) {
-  return _shared_promise.local.Promise.resolve(value);
-}
-function reject(error) {
-  return _shared_promise.local.Promise.reject(error);
-}
-//# sourceMappingURL=promise_external.js.map
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -5427,7 +5401,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(264);
+var	fixUrls = __webpack_require__(269);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -5740,6 +5714,65 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.make = make;
+exports.resolve = resolve;
+exports.reject = reject;
+
+var _shared_promise = __webpack_require__(33);
+
+function make(resolver) {
+  return new _shared_promise.local.Promise(resolver);
+}
+/**
+ * @template T
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Implements the promise abstraction interface for external
+ * (public SDK) packaging, which just passes through to the firebase-app impl.
+ */
+/**
+ * @template T
+ * @param {function((function(T): void),
+ *                  (function(!Error): void))} resolver
+ */
+function resolve(value) {
+  return _shared_promise.local.Promise.resolve(value);
+}
+function reject(error) {
+  return _shared_promise.local.Promise.reject(error);
+}
+//# sourceMappingURL=promise_external.js.map
+
+
+/***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5750,17 +5783,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _firebase = __webpack_require__(213);
+var _firebase = __webpack_require__(217);
 
 var firebase = _interopRequireWildcard(_firebase);
 
-var _config = __webpack_require__(43);
+var _config = __webpack_require__(45);
 
-var _firebaseDevConfig = __webpack_require__(181);
+var _firebaseDevConfig = __webpack_require__(183);
 
 var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
 
-var _firebaseProdConfig = __webpack_require__(182);
+var _firebaseProdConfig = __webpack_require__(184);
 
 var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
 
@@ -8061,17 +8094,17 @@ function stubFalse() {
 
 module.exports = merge;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), __webpack_require__(174)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(176)(module)))
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(201),
-      utf8 = __webpack_require__(46).utf8,
-      isBuffer = __webpack_require__(254),
-      bin = __webpack_require__(46).bin,
+  var crypt = __webpack_require__(204),
+      utf8 = __webpack_require__(48).utf8,
+      isBuffer = __webpack_require__(258),
+      bin = __webpack_require__(48).bin,
 
   // The core
   md5 = function (message, options) {
@@ -8231,6 +8264,33 @@ module.exports = merge;
 
 /***/ }),
 /* 14 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8254,35 +8314,41 @@ exports.graphToCameraPosition = graphToCameraPosition;
 exports.getCamera = getCamera;
 exports.getTreeUINode = getTreeUINode;
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _tree = __webpack_require__(19);
+var _tree = __webpack_require__(20);
 
-var _globals = __webpack_require__(197);
+var _globals = __webpack_require__(199);
 
-var _dataKeys = __webpack_require__(200);
+var _dataKeys = __webpack_require__(203);
 
 var _dataKeys2 = _interopRequireDefault(_dataKeys);
 
-__webpack_require__(44);
+__webpack_require__(46);
 
 var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _snack = __webpack_require__(38);
+var _snack = __webpack_require__(39);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-var _vue = __webpack_require__(20);
+var _vue = __webpack_require__(16);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(5);
+
+var _store = __webpack_require__(44);
+
+var _store2 = _interopRequireDefault(_store);
+
+__webpack_require__(264);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8291,7 +8357,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var router = void 0;
 exports.default = {
     props: ['treeId'],
-    template: __webpack_require__(246),
+    template: __webpack_require__(250),
     created: function created() {
         this.init();
         router = this.$router;
@@ -8312,9 +8378,7 @@ var s,
     g = {
     nodes: [],
     edges: []
-},
-    positions = ['top-right', 'top-left', 'bottom-left', 'bottom-right'],
-    icons = ['\uF11B', '\uF11C', '\uF11D', '\uF128', '\uF129', '\uF130', '\uF131', '\uF132'];
+};
 
 var initialized = false;
 
@@ -8511,7 +8575,7 @@ function initKnawledgeMap(treeIdToJumpTo) {
         node: [{
             show: 'rightClickNode',
             cssClass: 'sigma-tooltip',
-            position: 'bottom',
+            position: 'center',
             template: '',
             renderer: function renderer(node, template) {
                 var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
@@ -8876,7 +8940,8 @@ function initKnawledgeMap(treeIdToJumpTo) {
         tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
         setTimeout(function () {
             var vm = new _vue2.default({
-                el: '#vue'
+                el: '#vue',
+                store: _store2.default
             });
         }, 0); //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
     }
@@ -8943,7 +9008,7 @@ function initKnawledgeMap(treeIdToJumpTo) {
         var cameraCoord = {
             x: node['read_cam0:x'],
             y: node['read_cam0:y'],
-            ratio: 0.1
+            ratio: 0.05
         };
         camera.goTo(cameraCoord);
         // sigma.misc.animation.camera(
@@ -8961,1000 +9026,7 @@ function initKnawledgeMap(treeIdToJumpTo) {
 }
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.getLastNBreadcrumbsStringFromList = getLastNBreadcrumbsStringFromList;
-
-var _user = __webpack_require__(4);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _review = __webpack_require__(191);
-
-var _proficiencyEnum = __webpack_require__(6);
-
-var _trees = __webpack_require__(2);
-
-var _forgettingCurve = __webpack_require__(198);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var content = {};
-if (typeof window !== 'undefined') {
-    window.content = content; //expose to window for easy debugging
-}
-
-var ContentItem = function () {
-    function ContentItem(args) {
-        _classCallCheck(this, ContentItem);
-
-        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
-        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || args && args.primaryParentTreeContentURI || null;
-        this.trees = args.trees || {};
-
-        this.userTimeMap = args.userTimeMap || {};
-        this.timer = _user2.default.loggedIn && this.userTimeMap && this.userTimeMap[_user2.default.getId()] || 0;
-        this.timerId = null;
-
-        this.userProficiencyMap = args.userProficiencyMap || {};
-        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
-
-        this.userInteractionsMap = args.userInteractionsMap || {};
-        this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
-
-        this.userReviewTimeMap = args.userReviewTimeMap || {};
-        this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
-
-        this.studiers = args.studiers || {};
-        this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
-
-        this.exercises = args.exercises || {};
-
-        this.uri = args.uri || null;
-
-        this.type = args.type;
-    }
-
-    _createClass(ContentItem, [{
-        key: 'init',
-        value: function init() {
-            this.calculateURIBasedOnParentTreeContentURI();
-            // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
-        }
-
-        //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
-
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            return {
-                initialParentTreeId: this.initialParentTreeId,
-                primaryParentTreeContentURI: this.primaryParentTreeContentURI,
-                userTimeMap: this.userTimeMap,
-                userProficiencyMap: this.userProficiencyMap,
-                userInteractionsMap: this.userInteractionsMap,
-                userReviewTimeMap: this.userReviewTimeMap,
-                studiers: this.studiers,
-                exercises: this.exercises,
-                uri: this.uri
-            };
-        }
-    }, {
-        key: 'getURIAddition',
-        value: function getURIAddition() {}
-    }, {
-        key: 'getURIAdditionNotEncoded',
-        value: function getURIAdditionNotEncoded() {}
-        //removes the prefix "content/
-
-    }, {
-        key: 'getURIWithoutRootElement',
-        value: function getURIWithoutRootElement() {
-            return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
-        }
-    }, {
-        key: 'getBreadCrumbsString',
-        value: function getBreadCrumbsString() {
-            var sections = this.getURIWithoutRootElement().split("/");
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            var sectionsResult = sections.reduce(function (accum, val) {
-                if (val == "null" || val == "content" || val == "Everything") {
-                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-                    return accum;
-                }
-                return accum + " > " + decodeURIComponent(val);
-            });
-            return sectionsResult;
-            // console.log('breadcrumb result is', sectionsResult)
-            //
-            // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-            //     return total + decodeURIComponent(section) + " > "
-            // },"")
-            // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-            // return breadcrumbs
-        }
-    }, {
-        key: 'getBreadcrumbsObjArray',
-        value: function getBreadcrumbsObjArray() {
-            var sections = this.getURIWithoutRootElement().split("/");
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            var breadcrumbsObjArray = sections.reduce(function (accum, val) {
-                if (val == "null" || val == "content" || val == "Everything") {
-                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-                    return accum;
-                }
-                accum.push({ text: decodeURIComponent(val) });
-                return accum;
-            }, []);
-            return breadcrumbsObjArray;
-        }
-    }, {
-        key: 'getLastNBreadcrumbsString',
-        value: function getLastNBreadcrumbsString(n) {
-            var sections = this.getURIWithoutRootElement().split("/");
-            var result = getLastNBreadcrumbsStringFromList(sections, n);
-            return result;
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            // let sectionsResult = sections.reduce((accum, val) => {
-            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-            //         return accum
-            //     }
-            //     return accum + " > " + decodeURIComponent(val)
-            // })
-        }
-    }, {
-        key: 'getBreadCrumbs',
-        value: function getBreadCrumbs() {}
-    }, {
-        key: 'isLeafType',
-        value: function isLeafType() {
-            return this.type === 'fact' || this.type === 'skill';
-        }
-        /**
-         * Used to update tree X and Y coordinates
-         * @param prop
-         * @param val
-         */
-
-    }, {
-        key: 'set',
-        value: function set(prop, val) {
-            if (this[prop] == val) {
-                return;
-            }
-
-            var updates = {};
-            updates[prop] = val;
-            // this.treeRef.update(updates)
-            firebase.database().ref('content/' + this.id).update(updates);
-            this[prop] = val;
-        }
-        /**
-         * Add a tree to the given content item
-         * @param treeId
-         */
-
-    }, {
-        key: 'addTree',
-        value: function addTree(treeId) {
-            this.trees[treeId] = true;
-            var trees = {};
-            trees[treeId] = true;
-            var updates = {
-                trees: trees
-            };
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'calculateURIBasedOnParentTreeContentURI',
-        value: function calculateURIBasedOnParentTreeContentURI() {
-            var uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition();
-            this.set('uri', uri);
-        }
-        //TODO : make timer for heading be the sum of the time of all the child facts
-
-    }, {
-        key: 'startTimer',
-        value: function startTimer() {
-            var me = this;
-
-            if (!this.timerId) {
-                //to prevent from two or more timers being created simultaneously on the content item
-                this.timerId = setInterval(function () {
-                    me.timer = me.timer || 0;
-                    me.timer++; // = fact.timer || 0
-                    me.calculateAggregationTimerForTreeChain(); //propagate the time increase all the way up
-                }, 1000);
-            }
-        }
-    }, {
-        key: 'saveTimer',
-        value: function saveTimer() {
-            this.userTimeMap[_user2.default.getId()] = this.timer;
-
-            var updates = {
-                userTimeMap: this.userTimeMap
-            };
-
-            clearInterval(this.timerId);
-            this.timerId = null;
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'calculateAggregationTimerForTreeChain',
-        value: function calculateAggregationTimerForTreeChain() {
-            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
-            var calculationPromises = treePromises.map(async function (treePromise) {
-                var tree = await treePromise;
-                return tree.calculateAggregationTimer();
-            });
-            return Promise.all(calculationPromises);
-        }
-    }, {
-        key: 'addToStudyQueue',
-        value: function addToStudyQueue() {
-            //don't display nextReviewTime if not in user's study queue
-            this.studiers[_user2.default.getId()] = true;
-
-            var updates = {
-                studiers: this.studiers
-            };
-            this.inStudyQueue = true;
-
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'addExercise',
-        value: function addExercise(exerciseId) {
-            this.exercises[exerciseId] = true;
-
-            var updates = {
-                exercises: this.exercises
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-        }
-    }, {
-        key: 'removeExercise',
-        value: function removeExercise(exerciseId) {
-            delete this.exercises[exerciseId]; // remove from local cache
-            firebase.database().ref('content/' + this.id + '/exercises/').child(exerciseId).remove(); //delete from db
-        }
-    }, {
-        key: 'remove',
-        value: function remove() {
-            firebase.database().ref('content/').child(this.id).remove(); //delete from db
-            delete window.content[this.id];
-        }
-    }, {
-        key: 'recalculateProficiencyAggregationForTreeChain',
-        value: function recalculateProficiencyAggregationForTreeChain() {
-            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
-            var calculationPromises = treePromises.map(async function (treePromise) {
-                var tree = await treePromise;
-                return tree.recalculateProficiencyAggregation();
-            });
-            return Promise.all(calculationPromises);
-        }
-    }, {
-        key: 'saveProficiency',
-        value: function saveProficiency() {
-            !this.inStudyQueue && this.addToStudyQueue();
-
-            //content
-            this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
-
-            var updates = {
-                userProficiencyMap: this.userProficiencyMap
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            //interactions
-            var mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null;
-            var nowMilliseconds = Date.now();
-            var millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0;
-            var previousInteractionStrength = (0, _forgettingCurve.calculateStrength)(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
-            var currentInteractionStrength = calculateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0;
-
-            this.interactions.push({ timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction: millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength: previousInteractionStrength });
-            this.userInteractionsMap[_user2.default.getId()] = this.interactions;
-
-            var updates = {
-                userInteractionsMap: this.userInteractionsMap
-            };
-
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-            var millisecondsTilNextReview = (0, _review.calculateMillisecondsTilNextReview)(this.interactions);
-            this.nextReviewTime = Date.now() + millisecondsTilNextReview;
-
-            this.userReviewTimeMap[_user2.default.getId()] = this.nextReviewTime;
-            var updates = {
-                userReviewTimeMap: this.userReviewTimeMap
-            };
-            firebase.database().ref('content/' + this.id).update(updates);
-
-            _user2.default.setItemProperties(this.id, { nextReviewTime: this.nextReviewTime, proficiency: this.proficiency });
-        }
-    }, {
-        key: 'setProficiency',
-        value: function setProficiency(proficiency) {
-            //-proficiency stored as part of this content item
-            this.proficiency = proficiency;
-            this.saveProficiency();
-        }
-        //methods for html templates
-
-    }, {
-        key: 'isProficiencyUnknown',
-        value: function isProficiencyUnknown() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
-        }
-    }, {
-        key: 'isProficiencyOne',
-        value: function isProficiencyOne() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
-        }
-    }, {
-        key: 'isProficiencyTwo',
-        value: function isProficiencyTwo() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.TWO;
-        }
-    }, {
-        key: 'isProficiencyThree',
-        value: function isProficiencyThree() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.THREE;
-        }
-    }, {
-        key: 'isProficiencyFour',
-        value: function isProficiencyFour() {
-            return this.proficiency == _proficiencyEnum.PROFICIENCIES.FOUR;
-        }
-        //returns exerciseId of the best exercise for the user
-        //returns null if no exercise found
-
-    }, {
-        key: 'getBestExerciseId',
-        value: function getBestExerciseId() {
-            var exerciseKeys = Object.keys(this.exercises).filter(function (key) {
-                return key !== 'undefined';
-            }); // not sure how but some data keys are undefined
-            console.log('exercise keys in get best exercise id are', exerciseKeys);
-            if (exerciseKeys.length <= 0) {
-                return null;
-            }
-            var keyIndex = Math.floor(Math.random() * exerciseKeys.length);
-            var exercise = exerciseKeys[keyIndex];
-
-            return exercise;
-        }
-    }]);
-
-    return ContentItem;
-}();
-
-/**
- *
- * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
- * @returns {string}
- */
-
-
-exports.default = ContentItem;
-function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
-    if (breadcrumbList.length <= n) {
-        return breadcrumbList;
-    }
-
-    var breadcrumbListCopy = breadcrumbList.slice();
-    var lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length);
-    var result = convertBreadcrumbListToString(lastNBreadcrumbSections);
-
-    return result;
-}
-
-function convertBreadcrumbListToString(breadcrumbList) {
-    if (breadcrumbList.length <= 0) return [];
-
-    var lastItem = decodeURIComponent(breadcrumbList.splice(-1));
-
-    var firstItems = breadcrumbList.reduce(function (accum, val) {
-        return accum + decodeURIComponent(val) + " > ";
-    }, '');
-    var result = firstItems + lastItem;
-
-    return result;
-}
-
-/***/ }),
 /* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * abstract class - only subtypes should be instantiated
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-
-var _contentItems = __webpack_require__(3);
-
-var _contentItems2 = _interopRequireDefault(_contentItems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Exercise = function () {
-    function Exercise(_ref) {
-        var _ref$contentItemIds = _ref.contentItemIds,
-            contentItemIds = _ref$contentItemIds === undefined ? {} : _ref$contentItemIds;
-
-        _classCallCheck(this, Exercise);
-
-        this.contentItemIds = contentItemIds;
-    }
-
-    _createClass(Exercise, [{
-        key: "init",
-        value: function init() {}
-    }, {
-        key: "addContent",
-        value: function addContent(contentId) {
-            this.contentItemIds[contentId] = true;
-        }
-    }, {
-        key: "getDBRepresentation",
-        value: function getDBRepresentation() {
-            return {
-                contentItemIds: this.contentItemIds
-            };
-        }
-
-        /**
-         *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
-         * @param exercise - must be an object that is a subclass of Exercise
-         * @returns {*}
-         */
-
-    }, {
-        key: "remove",
-        value: function remove() {
-            var me = this;
-            //remove this exercise from any contentItems so it is unsearchable
-            Object.keys(this.contentItemIds).forEach(async function (contentItemId) {
-                var contentItem = _contentItems2.default.get(contentItemId);
-                contentItem.removeExercise(me.id);
-            });
-        }
-    }], [{
-        key: "create",
-        value: function create(exercise) {
-            var updates = {};
-            updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
-            firebase.database().ref().update(updates);
-            return exercise;
-        }
-    }]);
-
-    return Exercise;
-}();
-
-exports.default = Exercise;
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _firebase_app = __webpack_require__(210);
-
-// Export a single instance of firebase app
-var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
-                                                             * Copyright 2017 Google Inc.
-                                                             *
-                                                             * Licensed under the Apache License, Version 2.0 (the "License");
-                                                             * you may not use this file except in compliance with the License.
-                                                             * You may obtain a copy of the License at
-                                                             *
-                                                             *   http://www.apache.org/licenses/LICENSE-2.0
-                                                             *
-                                                             * Unless required by applicable law or agreed to in writing, software
-                                                             * distributed under the License is distributed on an "AS IS" BASIS,
-                                                             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                             * See the License for the specific language governing permissions and
-                                                             * limitations under the License.
-                                                             */
-// Import the createFirebaseNamespace function
-exports.default = firebase;
-module.exports = exports['default'];
-//# sourceMappingURL=app.js.map
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Tree = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _user = __webpack_require__(4);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _md = __webpack_require__(13);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _firebaseService = __webpack_require__(10);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-var _trees = __webpack_require__(2);
-
-var _contentItems = __webpack_require__(3);
-
-var _contentItems2 = _interopRequireDefault(_contentItems);
-
-var _knawledgeMap = __webpack_require__(14);
-
-var _proficiencyEnum = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var treesRef = _firebaseService2.default.database().ref('trees');
-var trees = {};
-
-
-function loadObject(treeObj, self) {
-    Object.keys(treeObj).forEach(function (key) {
-        return self[key] = treeObj[key];
-    });
-}
-var blankProficiencyStats = {
-    UNKNOWN: 0,
-    ONE: 0,
-    TWO: 0,
-    THREE: 0,
-    FOUR: 0
-};
-var unknownProficiencyStats = {
-    UNKNOWN: 1,
-    ONE: 0,
-    TWO: 0,
-    THREE: 0,
-    FOUR: 0
-};
-
-var Tree = exports.Tree = function () {
-    function Tree(contentId, contentType, parentId, parentDegree, x, y) {
-        _classCallCheck(this, Tree);
-
-        var treeObj;
-        if (arguments[0] && _typeof(arguments[0]) === 'object') {
-            treeObj = arguments[0];
-            loadObject(treeObj, this);
-            this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[_user2.default.getId()] || unknownProficiencyStats;
-            this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[_user2.default.getId()] || 0;
-            return;
-        }
-
-        this.contentId = contentId;
-        this.contentType = contentType;
-        this.parentId = parentId;
-        this.children = {};
-
-        this.userProficiencyStatsMap = {};
-        this.userAggregationTimerMap = {};
-        this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[_user2.default.getId()] || unknownProficiencyStats;
-        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[_user2.default.getId()] || 0;
-
-        this.x = x;
-        this.y = y;
-
-        treeObj = { contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children };
-        this.id = (0, _md2.default)(JSON.stringify(treeObj));
-        if (_typeof(arguments[0]) === 'object') {
-            //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
-            return;
-        }
-        _firebaseService2.default.database().ref('trees/' + this.id).update({
-            id: this.id,
-            contentId: contentId,
-            contentType: contentType,
-            parentId: parentId,
-            x: x,
-            y: y
-        });
-    }
-    /**
-     * Add a child tree to this tree
-     * @param treeId
-     */
-
-
-    _createClass(Tree, [{
-        key: 'addChild',
-        value: async function addChild(treeId) {
-            // this.treeRef.child('/children').push(treeId)
-            this.children = this.children || {};
-            this.children[treeId] = true;
-            var updates = {
-                children: this.children
-            };
-            try {
-                await _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-            } catch (err) {
-                console.error(' error for addChild firebase call', err);
-            }
-            this.updatePrimaryParentTreeContentURI();
-            this.recalculateProficiencyAggregation();
-            this.calculateAggregationTimer();
-        }
-    }, {
-        key: 'removeAndDisconnectFromParent',
-        value: async function removeAndDisconnectFromParent() {
-            var me = this;
-            var parentTree = await _trees.Trees.get(this.parentId);
-            parentTree.removeChild(me.id);
-            this.remove();
-        }
-    }, {
-        key: 'remove',
-        value: function remove() {
-            var _this = this;
-
-            console.log(this.id, "remove called!");
-            var me = this;
-            _contentItems2.default.remove(this.contentId);
-            _trees.Trees.remove(this.id);
-            console.log(this.id, "remove about to be called for", JSON.stringify(this.children));
-            var removeChildPromises = this.children ? Object.keys(this.children).map(_trees.Trees.get).map(async function (childPromise) {
-                var child = await childPromise;
-                console.log(_this.id, "child just received is ", child, child.id);
-                child.remove();
-            }) : [];
-            return Promise.all(removeChildPromises);
-        }
-    }, {
-        key: 'removeChild',
-        value: function removeChild(childId) {
-            if (!this.children || !this.children[childId]) {
-                return;
-            }
-            delete this.children[childId];
-
-            _firebaseService2.default.database().ref('trees/' + this.id).update({ children: this.children });
-        }
-    }, {
-        key: 'changeParent',
-        value: function changeParent(newParentId) {
-            this.parentId = newParentId;
-            _firebaseService2.default.database().ref('trees/' + this.id).update({
-                parentId: newParentId
-            });
-            this.updatePrimaryParentTreeContentURI();
-            this.recalculateProficiencyAggregation();
-            this.calculateAggregationTimer();
-        }
-        // async sync
-
-    }, {
-        key: 'updatePrimaryParentTreeContentURI',
-        value: async function updatePrimaryParentTreeContentURI() {
-            var _ref = await Promise.all([_trees.Trees.get(this.parentId), _contentItems2.default.get(this.contentId)]),
-                _ref2 = _slicedToArray(_ref, 2),
-                parentTree = _ref2[0],
-                contentItem = _ref2[1];
-
-            var parentTreeContentItem = await _contentItems2.default.get(parentTree.contentId);
-            // return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
-            contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri);
-            contentItem.calculateURIBasedOnParentTreeContentURI();
-
-            //update for all the children as well
-            var childUpdatePromises = this.children ? Object.keys(this.children).map(async function (childId) {
-                var childTree = await _trees.Trees.get(childId);
-                return childTree.updatePrimaryParentTreeContentURI();
-            }) : [];
-            return Promise.all(childUpdatePromises);
-        }
-    }, {
-        key: 'changeFact',
-        value: function changeFact(newfactid) {
-            this.factId = newfactid;
-            _firebaseService2.default.database().ref('trees/' + this.id).update({
-                factId: newfactid
-            });
-        }
-    }, {
-        key: 'setProficiencyStats',
-        value: function setProficiencyStats(proficiencyStats) {
-            this.proficiencyStats = proficiencyStats;
-            this.userProficiencyStatsMap = this.userProficiencyStatsMap || {};
-            this.userProficiencyStatsMap[_user2.default.getId()] = this.proficiencyStats;
-
-            var updates = {
-                userProficiencyStatsMap: this.userProficiencyStatsMap
-            };
-            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-        }
-    }, {
-        key: 'setAggregationTimer',
-        value: function setAggregationTimer(timer) {
-            this.aggregationTimer = timer;
-            this.userAggregationTimerMap = this.userAggregationTimerMap || {};
-            this.userAggregationTimerMap[_user2.default.getId()] = this.aggregationTimer;
-            var updates = {
-                userAggregationTimerMap: this.userAggregationTimerMap
-            };
-            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-        }
-        /**
-         * Change the content of a given node ("Tree")
-         * Available content types currently header and fact
-         */
-
-    }, {
-        key: 'changeContent',
-        value: function changeContent(contentId, contentType) {
-            this.contentId = contentId;
-            this.contentType = contentType;
-            _firebaseService2.default.database().ref('trees/' + this.id).update({
-                contentId: contentId,
-                contentType: contentType
-            });
-        }
-
-        /**
-         * Used to update tree X and Y coordinates
-         * @param prop
-         * @param val
-         */
-
-    }, {
-        key: 'set',
-        value: function set(prop, val) {
-            if (this[prop] == val) {
-                return;
-            }
-
-            var updates = {};
-            updates[prop] = val;
-            // this.treeRef.update(updates)
-            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
-            this[prop] = val;
-        }
-    }, {
-        key: 'addToX',
-        value: function addToX() {
-            var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
-                recursion = _ref3.recursion,
-                deltaX = _ref3.deltaX;
-
-            var newX = this.x + deltaX;
-            this.set('x', newX);
-
-            (0, _knawledgeMap.syncGraphWithNode)(this.id);
-            if (!recursion) return;
-
-            this.children && Object.keys(this.children).forEach(async function (childId) {
-                var child = await _trees.Trees.get(childId);
-                child.addToX({ recursion: true, deltaX: deltaX });
-            });
-        }
-    }, {
-        key: 'addToY',
-        value: function addToY() {
-            var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
-                recursion = _ref4.recursion,
-                deltaY = _ref4.deltaY;
-
-            var newY = this.y + deltaY;
-            this.set('y', newY);
-
-            (0, _knawledgeMap.syncGraphWithNode)(this.id);
-            if (!recursion) return;
-
-            this.children && Object.keys(this.children).forEach(async function (childId) {
-                var child = await _trees.Trees.get(childId);
-                child.addToY({ recursion: true, deltaY: deltaY });
-            });
-        }
-    }, {
-        key: 'isLeaf',
-        value: async function isLeaf() {
-            var content = await _contentItems2.default.get(this.contentId);
-            return content.isLeafType();
-        }
-    }, {
-        key: 'calculateProficiencyAggregationForLeaf',
-        value: async function calculateProficiencyAggregationForLeaf() {
-            var proficiencyStats = _extends({}, blankProficiencyStats);
-            var contentItem = await _contentItems2.default.get(this.contentId);
-            proficiencyStats = addValToProficiencyStats(proficiencyStats, contentItem.proficiency);
-            return proficiencyStats;
-        }
-    }, {
-        key: 'calculateProficiencyAggregationForNotLeaf',
-        value: async function calculateProficiencyAggregationForNotLeaf() {
-            var proficiencyStats = _extends({}, blankProficiencyStats);
-            if (!this.children || !Object.keys(this.children).length) return proficiencyStats;
-            var children = await Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(async function (childPromise) {
-                return await childPromise;
-            }));
-
-            children.forEach(function (child) {
-                proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.proficiencyStats);
-            });
-            return proficiencyStats;
-        }
-    }, {
-        key: 'recalculateProficiencyAggregation',
-        value: async function recalculateProficiencyAggregation() {
-            var proficiencyStats = void 0;
-            var isLeaf = await this.isLeaf();
-            if (isLeaf) {
-                proficiencyStats = await this.calculateProficiencyAggregationForLeaf();
-            } else {
-                proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf();
-            }
-            this.setProficiencyStats(proficiencyStats);
-
-            if (!this.parentId) return;
-            var parent = await _trees.Trees.get(this.parentId);
-            return parent.recalculateProficiencyAggregation();
-        }
-    }, {
-        key: 'calculateAggregationTimerForLeaf',
-        value: async function calculateAggregationTimerForLeaf() {
-            var contentItem = await _contentItems2.default.get(this.contentId);
-            return contentItem.timer;
-        }
-    }, {
-        key: 'calculateAggregationTimerForNotLeaf',
-        value: async function calculateAggregationTimerForNotLeaf() {
-            var me = this;
-            var timer = 0;
-            if (!this.children || !Object.keys(this.children).length) return timer;
-            var children = await Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(async function (childPromise) {
-                return await childPromise;
-            }));
-
-            children.forEach(function (child) {
-                timer += +child.aggregationTimer;
-            });
-            return timer;
-        }
-    }, {
-        key: 'calculateAggregationTimer',
-        value: async function calculateAggregationTimer() {
-            var timer = void 0;
-            var isLeaf = await this.isLeaf();
-            if (isLeaf) {
-                timer = await this.calculateAggregationTimerForLeaf();
-            } else {
-                timer = await this.calculateAggregationTimerForNotLeaf();
-            }
-            this.setAggregationTimer(timer);
-
-            if (!this.parentId) return;
-            var parent = await _trees.Trees.get(this.parentId);
-            return parent.calculateAggregationTimer();
-        }
-    }]);
-
-    return Tree;
-}();
-//TODO: get typeScript so we can have a schema for treeObj
-//treeObj  example
-/*
- parentId: parentTreeId,
- factId: fact.id,
- x: parseInt(currentNewChildTree.x),
- y: parseInt(currentNewChildTree.y),
- children: {},
- label: fact.question + ' ' + fact.answer,
- size: 1,
- color: Globals.existingColor,
- type: 'tree'
- */
-//invoke like a constructor - new Tree(parentId, factId)
-
-function addObjToProficiencyStats(proficiencyStats, proficiencyObj) {
-    Object.keys(proficiencyObj).forEach(function (key) {
-        proficiencyStats[key] += proficiencyObj[key];
-    });
-    return proficiencyStats;
-}
-function addValToProficiencyStats(proficiencyStats, proficiency) {
-    if (proficiency <= _proficiencyEnum.PROFICIENCIES.UNKNOWN) {
-        proficiencyStats.UNKNOWN++;
-    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.ONE) {
-        proficiencyStats.ONE++;
-    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.TWO) {
-        proficiencyStats.TWO++;
-    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.THREE) {
-        proficiencyStats.THREE++;
-    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.FOUR) {
-        proficiencyStats.FOUR++;
-    }
-    return proficiencyStats;
-}
-
-/***/ }),
-/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19649,10 +18721,1889 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27), __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(28), __webpack_require__(14)))
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.getLastNBreadcrumbsStringFromList = getLastNBreadcrumbsStringFromList;
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _review = __webpack_require__(193);
+
+var _proficiencyEnum = __webpack_require__(5);
+
+var _trees = __webpack_require__(3);
+
+var _forgettingCurve = __webpack_require__(201);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var content = {};
+if (typeof window !== 'undefined') {
+    window.content = content; //expose to window for easy debugging
+}
+
+var ContentItem = function () {
+    function ContentItem(args) {
+        _classCallCheck(this, ContentItem);
+
+        this.initialParentTreeId = this.initialParentTreeId || args && args.initialParentTreeId || null;
+        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || args && args.primaryParentTreeContentURI || null;
+        this.trees = args.trees || {};
+
+        this.userTimeMap = args.userTimeMap || {};
+        this.timer = _user2.default.loggedIn && this.userTimeMap && this.userTimeMap[_user2.default.getId()] || 0;
+        this.timerId = null;
+
+        this.userProficiencyMap = args.userProficiencyMap || {};
+        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
+
+        this.userInteractionsMap = args.userInteractionsMap || {};
+        this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
+
+        // this.userStrengthMap = this.userStrengthMap[user.getId()]
+        // this.lastRecordedStrength = this.userStrengthMap[user.getId()]
+        // this.userStrengthMap[user.getId()] = this.lastRecordedStrength
+        // this.lastRecordedStrength = {strength: currentInteractionStrength, timestamp: currentInteractionStrength}
+        // this.lastRecordedStrength = this.interactions.length > 0 ? this.interactions[this.interactions.length -1].strength : 0
+
+        this.userReviewTimeMap = args.userReviewTimeMap || {};
+        this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
+
+        this.studiers = args.studiers || {};
+        this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
+
+        this.exercises = args.exercises || {};
+
+        this.uri = args.uri || null;
+
+        this.type = args.type;
+    }
+
+    _createClass(ContentItem, [{
+        key: 'init',
+        value: function init() {
+            this.calculateURIBasedOnParentTreeContentURI();
+            // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        }
+
+        //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
+
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            return {
+                initialParentTreeId: this.initialParentTreeId,
+                primaryParentTreeContentURI: this.primaryParentTreeContentURI,
+                userTimeMap: this.userTimeMap,
+                userProficiencyMap: this.userProficiencyMap,
+                userInteractionsMap: this.userInteractionsMap,
+                userReviewTimeMap: this.userReviewTimeMap,
+                studiers: this.studiers,
+                exercises: this.exercises,
+                uri: this.uri
+            };
+        }
+    }, {
+        key: 'getURIAddition',
+        value: function getURIAddition() {}
+    }, {
+        key: 'getURIAdditionNotEncoded',
+        value: function getURIAdditionNotEncoded() {}
+        //removes the prefix "content/
+
+    }, {
+        key: 'getURIWithoutRootElement',
+        value: function getURIWithoutRootElement() {
+            return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length);
+        }
+    }, {
+        key: 'getBreadCrumbsString',
+        value: function getBreadCrumbsString() {
+            var sections = this.getURIWithoutRootElement().split("/");
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            var sectionsResult = sections.reduce(function (accum, val) {
+                if (val == "null" || val == "content" || val == "Everything") {
+                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                    return accum;
+                }
+                return accum + " > " + decodeURIComponent(val);
+            });
+            return sectionsResult;
+            // console.log('breadcrumb result is', sectionsResult)
+            //
+            // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
+            //     return total + decodeURIComponent(section) + " > "
+            // },"")
+            // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
+            // return breadcrumbs
+        }
+    }, {
+        key: 'getBreadcrumbsObjArray',
+        value: function getBreadcrumbsObjArray() {
+            var sections = this.getURIWithoutRootElement().split("/");
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            var breadcrumbsObjArray = sections.reduce(function (accum, val) {
+                if (val == "null" || val == "content" || val == "Everything") {
+                    //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                    return accum;
+                }
+                accum.push({ text: decodeURIComponent(val) });
+                return accum;
+            }, []);
+            return breadcrumbsObjArray;
+        }
+    }, {
+        key: 'getLastNBreadcrumbsString',
+        value: function getLastNBreadcrumbsString(n) {
+            var sections = this.getURIWithoutRootElement().split("/");
+            var result = getLastNBreadcrumbsStringFromList(sections, n);
+            return result;
+            // console.log('breadcrumb sections for ', this,' are', sections)
+            // let sectionsResult = sections.reduce((accum, val) => {
+            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+            //         return accum
+            //     }
+            //     return accum + " > " + decodeURIComponent(val)
+            // })
+        }
+    }, {
+        key: 'getBreadCrumbs',
+        value: function getBreadCrumbs() {}
+    }, {
+        key: 'isLeafType',
+        value: function isLeafType() {
+            return this.type === 'fact' || this.type === 'skill';
+        }
+        /**
+         * Used to update tree X and Y coordinates
+         * @param prop
+         * @param val
+         */
+
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
+            }
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            firebase.database().ref('content/' + this.id).update(updates);
+            this[prop] = val;
+        }
+        /**
+         * Add a tree to the given content item
+         * @param treeId
+         */
+
+    }, {
+        key: 'addTree',
+        value: function addTree(treeId) {
+            this.trees[treeId] = true;
+            var trees = {};
+            trees[treeId] = true;
+            var updates = {
+                trees: trees
+            };
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'calculateURIBasedOnParentTreeContentURI',
+        value: function calculateURIBasedOnParentTreeContentURI() {
+            var uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition();
+            this.set('uri', uri);
+        }
+        //TODO : make timer for heading be the sum of the time of all the child facts
+
+    }, {
+        key: 'startTimer',
+        value: function startTimer() {
+            var me = this;
+
+            if (!this.timerId) {
+                //to prevent from two or more timers being created simultaneously on the content item
+                this.timerId = setInterval(function () {
+                    me.timer = me.timer || 0;
+                    me.timer++; // = fact.timer || 0
+                    me.calculateAggregationTimerForTreeChain(); //propagate the time increase all the way up
+                }, 1000);
+            }
+        }
+    }, {
+        key: 'saveTimer',
+        value: function saveTimer() {
+            this.userTimeMap[_user2.default.getId()] = this.timer;
+
+            var updates = {
+                userTimeMap: this.userTimeMap
+            };
+
+            clearInterval(this.timerId);
+            this.timerId = null;
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'calculateAggregationTimerForTreeChain',
+        value: function calculateAggregationTimerForTreeChain() {
+            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+            var calculationPromises = treePromises.map(async function (treePromise) {
+                var tree = await treePromise;
+                return tree.calculateAggregationTimer();
+            });
+            return Promise.all(calculationPromises);
+        }
+    }, {
+        key: 'addToStudyQueue',
+        value: function addToStudyQueue() {
+            //don't display nextReviewTime if not in user's study queue
+            this.studiers[_user2.default.getId()] = true;
+
+            var updates = {
+                studiers: this.studiers
+            };
+            this.inStudyQueue = true;
+
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'addExercise',
+        value: function addExercise(exerciseId) {
+            this.exercises[exerciseId] = true;
+
+            var updates = {
+                exercises: this.exercises
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'removeExercise',
+        value: function removeExercise(exerciseId) {
+            delete this.exercises[exerciseId]; // remove from local cache
+            firebase.database().ref('content/' + this.id + '/exercises/').child(exerciseId).remove(); //delete from db
+        }
+    }, {
+        key: 'remove',
+        value: function remove() {
+            firebase.database().ref('content/').child(this.id).remove(); //delete from db
+            delete window.content[this.id];
+        }
+    }, {
+        key: 'recalculateProficiencyAggregationForTreeChain',
+        value: function recalculateProficiencyAggregationForTreeChain() {
+            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+            var calculationPromises = treePromises.map(async function (treePromise) {
+                var tree = await treePromise;
+                return tree.recalculateProficiencyAggregation();
+            });
+            return Promise.all(calculationPromises);
+        }
+    }, {
+        key: 'saveProficiency',
+        value: function saveProficiency() {
+            !this.inStudyQueue && this.addToStudyQueue();
+
+            //content
+            this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
+
+            var updates = {
+                userProficiencyMap: this.userProficiencyMap
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            //interactions
+            var mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null;
+            var nowMilliseconds = Date.now();
+            var millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0;
+            var previousInteractionStrength = (0, _forgettingCurve.calculateStrength)(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
+            var currentInteractionStrength = (0, _forgettingCurve.calculateCurrentStrength)(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0;
+
+            var interaction = { timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction: millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength: previousInteractionStrength, currentInteractionStrength: currentInteractionStrength
+                //store user interactions under content
+            };this.interactions.push(interaction);
+            this.userInteractionsMap[_user2.default.getId()] = this.interactions;
+
+            var updates = {
+                userInteractionsMap: this.userInteractionsMap
+            };
+
+            firebase.database().ref('content/' + this.id).update(updates);
+
+            //store contentItem interaction under users
+            _user2.default.addInteraction(this.id, interaction);
+
+            //store contentItem strength and timestamp under userStrengthMap
+
+            this.lastRecordedStrength = { strength: currentInteractionStrength, timestamp: currentInteractionStrength
+                // this.userStrengthMap[user.getId()] = this.lastRecordedStrength
+                // var updates = {
+                //     userStrengthMap : this.userStrengthMap
+                // }
+                // firebase.database().ref('content/' + this.id).update(updates)
+                //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
+            };var millisecondsTilNextReview = (0, _review.calculateMillisecondsTilNextReview)(this.interactions);
+            this.nextReviewTime = Date.now() + millisecondsTilNextReview;
+
+            this.userReviewTimeMap[_user2.default.getId()] = this.nextReviewTime;
+            var updates = {
+                userReviewTimeMap: this.userReviewTimeMap
+            };
+            firebase.database().ref('content/' + this.id).update(updates);
+        }
+    }, {
+        key: 'setProficiency',
+        value: function setProficiency(proficiency) {
+            //-proficiency stored as part of this content item
+            this.proficiency = proficiency;
+            this.saveProficiency();
+        }
+        //methods for html templates
+
+    }, {
+        key: 'isProficiencyUnknown',
+        value: function isProficiencyUnknown() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+        }
+    }, {
+        key: 'isProficiencyOne',
+        value: function isProficiencyOne() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.ONE;
+        }
+    }, {
+        key: 'isProficiencyTwo',
+        value: function isProficiencyTwo() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.TWO;
+        }
+    }, {
+        key: 'isProficiencyThree',
+        value: function isProficiencyThree() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.THREE;
+        }
+    }, {
+        key: 'isProficiencyFour',
+        value: function isProficiencyFour() {
+            return this.proficiency == _proficiencyEnum.PROFICIENCIES.FOUR;
+        }
+        //returns exerciseId of the best exercise for the user
+        //returns null if no exercise found
+
+    }, {
+        key: 'getBestExerciseId',
+        value: function getBestExerciseId() {
+            var exerciseKeys = Object.keys(this.exercises).filter(function (key) {
+                return key !== 'undefined';
+            }); // not sure how but some data keys are undefined
+            console.log('exercise keys in get best exercise id are', exerciseKeys);
+            if (exerciseKeys.length <= 0) {
+                return null;
+            }
+            var keyIndex = Math.floor(Math.random() * exerciseKeys.length);
+            var exercise = exerciseKeys[keyIndex];
+
+            return exercise;
+        }
+    }]);
+
+    return ContentItem;
+}();
+
+/**
+ *
+ * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
+ * @returns {string}
+ */
+
+
+exports.default = ContentItem;
+function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
+    if (breadcrumbList.length <= n) {
+        return breadcrumbList;
+    }
+
+    var breadcrumbListCopy = breadcrumbList.slice();
+    var lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length);
+    var result = convertBreadcrumbListToString(lastNBreadcrumbSections);
+
+    return result;
+}
+
+function convertBreadcrumbListToString(breadcrumbList) {
+    if (breadcrumbList.length <= 0) return [];
+
+    var lastItem = decodeURIComponent(breadcrumbList.splice(-1));
+
+    var firstItems = breadcrumbList.reduce(function (accum, val) {
+        return accum + decodeURIComponent(val) + " > ";
+    }, '');
+    var result = firstItems + lastItem;
+
+    return result;
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * abstract class - only subtypes should be instantiated
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _contentItems = __webpack_require__(2);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Exercise = function () {
+    function Exercise(_ref) {
+        var _ref$contentItemIds = _ref.contentItemIds,
+            contentItemIds = _ref$contentItemIds === undefined ? {} : _ref$contentItemIds;
+
+        _classCallCheck(this, Exercise);
+
+        this.contentItemIds = contentItemIds;
+    }
+
+    _createClass(Exercise, [{
+        key: "init",
+        value: function init() {}
+    }, {
+        key: "addContent",
+        value: function addContent(contentId) {
+            this.contentItemIds[contentId] = true;
+        }
+    }, {
+        key: "getDBRepresentation",
+        value: function getDBRepresentation() {
+            return {
+                contentItemIds: this.contentItemIds
+            };
+        }
+
+        /**
+         *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
+         * @param exercise - must be an object that is a subclass of Exercise
+         * @returns {*}
+         */
+
+    }, {
+        key: "remove",
+        value: function remove() {
+            var me = this;
+            //remove this exercise from any contentItems so it is unsearchable
+            Object.keys(this.contentItemIds).forEach(async function (contentItemId) {
+                var contentItem = _contentItems2.default.get(contentItemId);
+                contentItem.removeExercise(me.id);
+            });
+        }
+    }], [{
+        key: "create",
+        value: function create(exercise) {
+            var updates = {};
+            updates['/exercises/' + exercise.id] = exercise.getDBRepresentation();
+            firebase.database().ref().update(updates);
+            return exercise;
+        }
+    }]);
+
+    return Exercise;
+}();
+
+exports.default = Exercise;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _firebase_app = __webpack_require__(214);
+
+// Export a single instance of firebase app
+var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
+                                                             * Copyright 2017 Google Inc.
+                                                             *
+                                                             * Licensed under the Apache License, Version 2.0 (the "License");
+                                                             * you may not use this file except in compliance with the License.
+                                                             * You may obtain a copy of the License at
+                                                             *
+                                                             *   http://www.apache.org/licenses/LICENSE-2.0
+                                                             *
+                                                             * Unless required by applicable law or agreed to in writing, software
+                                                             * distributed under the License is distributed on an "AS IS" BASIS,
+                                                             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                             * See the License for the specific language governing permissions and
+                                                             * limitations under the License.
+                                                             */
+// Import the createFirebaseNamespace function
+exports.default = firebase;
+module.exports = exports['default'];
+//# sourceMappingURL=app.js.map
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Tree = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _md = __webpack_require__(13);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _firebaseService = __webpack_require__(10);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _trees = __webpack_require__(3);
+
+var _contentItems = __webpack_require__(2);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _knawledgeMap = __webpack_require__(15);
+
+var _proficiencyEnum = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var treesRef = _firebaseService2.default.database().ref('trees');
+var trees = {};
+
+
+function loadObject(treeObj, self) {
+    Object.keys(treeObj).forEach(function (key) {
+        return self[key] = treeObj[key];
+    });
+}
+var blankProficiencyStats = {
+    UNKNOWN: 0,
+    ONE: 0,
+    TWO: 0,
+    THREE: 0,
+    FOUR: 0
+};
+var unknownProficiencyStats = {
+    UNKNOWN: 1,
+    ONE: 0,
+    TWO: 0,
+    THREE: 0,
+    FOUR: 0
+};
+
+var Tree = exports.Tree = function () {
+    function Tree(contentId, contentType, parentId, parentDegree, x, y) {
+        _classCallCheck(this, Tree);
+
+        var treeObj;
+        if (arguments[0] && _typeof(arguments[0]) === 'object') {
+            treeObj = arguments[0];
+            loadObject(treeObj, this);
+            this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[_user2.default.getId()] || unknownProficiencyStats;
+            this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[_user2.default.getId()] || 0;
+            return;
+        }
+
+        this.contentId = contentId;
+        this.contentType = contentType;
+        this.parentId = parentId;
+        this.children = {};
+
+        this.userProficiencyStatsMap = {};
+        this.userAggregationTimerMap = {};
+        this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[_user2.default.getId()] || unknownProficiencyStats;
+        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[_user2.default.getId()] || 0;
+
+        this.x = x;
+        this.y = y;
+
+        treeObj = { contentType: this.contentType, contentId: this.contentId, parentId: parentId, children: this.children };
+        this.id = (0, _md2.default)(JSON.stringify(treeObj));
+        if (_typeof(arguments[0]) === 'object') {
+            //TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
+            return;
+        }
+        _firebaseService2.default.database().ref('trees/' + this.id).update({
+            id: this.id,
+            contentId: contentId,
+            contentType: contentType,
+            parentId: parentId,
+            x: x,
+            y: y
+        });
+    }
+    /**
+     * Add a child tree to this tree
+     * @param treeId
+     */
+
+
+    _createClass(Tree, [{
+        key: 'addChild',
+        value: async function addChild(treeId) {
+            // this.treeRef.child('/children').push(treeId)
+            this.children = this.children || {};
+            this.children[treeId] = true;
+            var updates = {
+                children: this.children
+            };
+            try {
+                await _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+            } catch (err) {
+                console.error(' error for addChild firebase call', err);
+            }
+            this.updatePrimaryParentTreeContentURI();
+            this.recalculateProficiencyAggregation();
+            this.calculateAggregationTimer();
+        }
+    }, {
+        key: 'removeAndDisconnectFromParent',
+        value: async function removeAndDisconnectFromParent() {
+            var me = this;
+            var parentTree = await _trees.Trees.get(this.parentId);
+            parentTree.removeChild(me.id);
+            this.remove();
+        }
+    }, {
+        key: 'remove',
+        value: function remove() {
+            var _this = this;
+
+            console.log(this.id, "remove called!");
+            var me = this;
+            _contentItems2.default.remove(this.contentId);
+            _trees.Trees.remove(this.id);
+            console.log(this.id, "remove about to be called for", JSON.stringify(this.children));
+            var removeChildPromises = this.children ? Object.keys(this.children).map(_trees.Trees.get).map(async function (childPromise) {
+                var child = await childPromise;
+                console.log(_this.id, "child just received is ", child, child.id);
+                child.remove();
+            }) : [];
+            return Promise.all(removeChildPromises);
+        }
+    }, {
+        key: 'removeChild',
+        value: function removeChild(childId) {
+            if (!this.children || !this.children[childId]) {
+                return;
+            }
+            delete this.children[childId];
+
+            _firebaseService2.default.database().ref('trees/' + this.id).update({ children: this.children });
+        }
+    }, {
+        key: 'changeParent',
+        value: function changeParent(newParentId) {
+            this.parentId = newParentId;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                parentId: newParentId
+            });
+            this.updatePrimaryParentTreeContentURI();
+            this.recalculateProficiencyAggregation();
+            this.calculateAggregationTimer();
+        }
+        // async sync
+
+    }, {
+        key: 'updatePrimaryParentTreeContentURI',
+        value: async function updatePrimaryParentTreeContentURI() {
+            var _ref = await Promise.all([_trees.Trees.get(this.parentId), _contentItems2.default.get(this.contentId)]),
+                _ref2 = _slicedToArray(_ref, 2),
+                parentTree = _ref2[0],
+                contentItem = _ref2[1];
+
+            var parentTreeContentItem = await _contentItems2.default.get(parentTree.contentId);
+            // return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
+            contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri);
+            contentItem.calculateURIBasedOnParentTreeContentURI();
+
+            //update for all the children as well
+            var childUpdatePromises = this.children ? Object.keys(this.children).map(async function (childId) {
+                var childTree = await _trees.Trees.get(childId);
+                return childTree.updatePrimaryParentTreeContentURI();
+            }) : [];
+            return Promise.all(childUpdatePromises);
+        }
+    }, {
+        key: 'changeFact',
+        value: function changeFact(newfactid) {
+            this.factId = newfactid;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                factId: newfactid
+            });
+        }
+    }, {
+        key: 'setProficiencyStats',
+        value: function setProficiencyStats(proficiencyStats) {
+            this.proficiencyStats = proficiencyStats;
+            this.userProficiencyStatsMap = this.userProficiencyStatsMap || {};
+            this.userProficiencyStatsMap[_user2.default.getId()] = this.proficiencyStats;
+
+            var updates = {
+                userProficiencyStatsMap: this.userProficiencyStatsMap
+            };
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+        }
+    }, {
+        key: 'setAggregationTimer',
+        value: function setAggregationTimer(timer) {
+            this.aggregationTimer = timer;
+            this.userAggregationTimerMap = this.userAggregationTimerMap || {};
+            this.userAggregationTimerMap[_user2.default.getId()] = this.aggregationTimer;
+            var updates = {
+                userAggregationTimerMap: this.userAggregationTimerMap
+            };
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+        }
+        /**
+         * Change the content of a given node ("Tree")
+         * Available content types currently header and fact
+         */
+
+    }, {
+        key: 'changeContent',
+        value: function changeContent(contentId, contentType) {
+            this.contentId = contentId;
+            this.contentType = contentType;
+            _firebaseService2.default.database().ref('trees/' + this.id).update({
+                contentId: contentId,
+                contentType: contentType
+            });
+        }
+
+        /**
+         * Used to update tree X and Y coordinates
+         * @param prop
+         * @param val
+         */
+
+    }, {
+        key: 'set',
+        value: function set(prop, val) {
+            if (this[prop] == val) {
+                return;
+            }
+
+            var updates = {};
+            updates[prop] = val;
+            // this.treeRef.update(updates)
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+            this[prop] = val;
+        }
+    }, {
+        key: 'addToX',
+        value: function addToX() {
+            var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
+                recursion = _ref3.recursion,
+                deltaX = _ref3.deltaX;
+
+            var newX = this.x + deltaX;
+            this.set('x', newX);
+
+            (0, _knawledgeMap.syncGraphWithNode)(this.id);
+            if (!recursion) return;
+
+            this.children && Object.keys(this.children).forEach(async function (childId) {
+                var child = await _trees.Trees.get(childId);
+                child.addToX({ recursion: true, deltaX: deltaX });
+            });
+        }
+    }, {
+        key: 'addToY',
+        value: function addToY() {
+            var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
+                recursion = _ref4.recursion,
+                deltaY = _ref4.deltaY;
+
+            var newY = this.y + deltaY;
+            this.set('y', newY);
+
+            (0, _knawledgeMap.syncGraphWithNode)(this.id);
+            if (!recursion) return;
+
+            this.children && Object.keys(this.children).forEach(async function (childId) {
+                var child = await _trees.Trees.get(childId);
+                child.addToY({ recursion: true, deltaY: deltaY });
+            });
+        }
+    }, {
+        key: 'isLeaf',
+        value: async function isLeaf() {
+            var content = await _contentItems2.default.get(this.contentId);
+            return content.isLeafType();
+        }
+    }, {
+        key: 'calculateProficiencyAggregationForLeaf',
+        value: async function calculateProficiencyAggregationForLeaf() {
+            var proficiencyStats = _extends({}, blankProficiencyStats);
+            var contentItem = await _contentItems2.default.get(this.contentId);
+            proficiencyStats = addValToProficiencyStats(proficiencyStats, contentItem.proficiency);
+            return proficiencyStats;
+        }
+    }, {
+        key: 'calculateProficiencyAggregationForNotLeaf',
+        value: async function calculateProficiencyAggregationForNotLeaf() {
+            var proficiencyStats = _extends({}, blankProficiencyStats);
+            if (!this.children || !Object.keys(this.children).length) return proficiencyStats;
+            var children = await Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(async function (childPromise) {
+                return await childPromise;
+            }));
+
+            children.forEach(function (child) {
+                proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.proficiencyStats);
+            });
+            return proficiencyStats;
+        }
+    }, {
+        key: 'recalculateProficiencyAggregation',
+        value: async function recalculateProficiencyAggregation() {
+            var proficiencyStats = void 0;
+            var isLeaf = await this.isLeaf();
+            if (isLeaf) {
+                proficiencyStats = await this.calculateProficiencyAggregationForLeaf();
+            } else {
+                proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf();
+            }
+            this.setProficiencyStats(proficiencyStats);
+
+            if (!this.parentId) return;
+            var parent = await _trees.Trees.get(this.parentId);
+            return parent.recalculateProficiencyAggregation();
+        }
+    }, {
+        key: 'calculateAggregationTimerForLeaf',
+        value: async function calculateAggregationTimerForLeaf() {
+            var contentItem = await _contentItems2.default.get(this.contentId);
+            return contentItem.timer;
+        }
+    }, {
+        key: 'calculateAggregationTimerForNotLeaf',
+        value: async function calculateAggregationTimerForNotLeaf() {
+            var me = this;
+            var timer = 0;
+            if (!this.children || !Object.keys(this.children).length) return timer;
+            var children = await Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(async function (childPromise) {
+                return await childPromise;
+            }));
+
+            children.forEach(function (child) {
+                timer += +child.aggregationTimer;
+            });
+            return timer;
+        }
+    }, {
+        key: 'calculateAggregationTimer',
+        value: async function calculateAggregationTimer() {
+            var timer = void 0;
+            var isLeaf = await this.isLeaf();
+            if (isLeaf) {
+                timer = await this.calculateAggregationTimerForLeaf();
+            } else {
+                timer = await this.calculateAggregationTimerForNotLeaf();
+            }
+            this.setAggregationTimer(timer);
+
+            if (!this.parentId) return;
+            var parent = await _trees.Trees.get(this.parentId);
+            return parent.calculateAggregationTimer();
+        }
+    }]);
+
+    return Tree;
+}();
+//TODO: get typeScript so we can have a schema for treeObj
+//treeObj  example
+/*
+ parentId: parentTreeId,
+ factId: fact.id,
+ x: parseInt(currentNewChildTree.x),
+ y: parseInt(currentNewChildTree.y),
+ children: {},
+ label: fact.question + ' ' + fact.answer,
+ size: 1,
+ color: Globals.existingColor,
+ type: 'tree'
+ */
+//invoke like a constructor - new Tree(parentId, factId)
+
+function addObjToProficiencyStats(proficiencyStats, proficiencyObj) {
+    Object.keys(proficiencyObj).forEach(function (key) {
+        proficiencyStats[key] += proficiencyObj[key];
+    });
+    return proficiencyStats;
+}
+function addValToProficiencyStats(proficiencyStats, proficiency) {
+    if (proficiency <= _proficiencyEnum.PROFICIENCIES.UNKNOWN) {
+        proficiencyStats.UNKNOWN++;
+    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.ONE) {
+        proficiencyStats.ONE++;
+    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.TWO) {
+        proficiencyStats.TWO++;
+    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.THREE) {
+        proficiencyStats.THREE++;
+    } else if (proficiency <= _proficiencyEnum.PROFICIENCIES.FOUR) {
+        proficiencyStats.FOUR++;
+    }
+    return proficiencyStats;
+}
 
 /***/ }),
 /* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v2.4.0
+ * (c) 2017 Evan You
+ * @license MIT
+ */
+var applyMixin = function (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+};
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+/**
+ * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
+
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  this._children = Object.create(null);
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors$1 = { namespaced: {} };
+
+prototypeAccessors$1.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors$1 );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (process.env.NODE_ENV !== 'production') {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (process.env.NODE_ENV !== 'production') {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+function assertRawModule (path, rawModule) {
+  ['getters', 'actions', 'mutations'].forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        typeof value === 'function',
+        makeAssertionMessage(path, key, type, value)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value) {
+  var buf = key + " should be function but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "Store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  if (typeof state === 'function') {
+    state = state();
+  }
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  if (Vue.config.devtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors = { state: {} };
+
+prototypeAccessors.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors.state.set = function (v) {
+  if (process.env.NODE_ENV !== 'production') {
+    assert(false, "Use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var entry = this._actions[type];
+  if (!entry) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  var subs = this._subscribers;
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule) {
+  if (typeof path === 'string') { path = [path]; }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path));
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); };
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var namespacedType = namespace + key;
+    registerAction(store, namespacedType, action, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (process.env.NODE_ENV !== 'production' && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (process.env.NODE_ENV !== 'production' && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (process.env.NODE_ENV !== 'production') {
+      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+// auto install in dist mode
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
+}
+
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      if (namespace && !getModuleByNamespace(this.$store, 'mapMutations', namespace)) {
+        return
+      }
+      return this.$store.commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (process.env.NODE_ENV !== 'production' && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      if (namespace && !getModuleByNamespace(this.$store, 'mapActions', namespace)) {
+        return
+      }
+      return this.$store.dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (process.env.NODE_ENV !== 'production' && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '2.4.0',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(28)))
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19679,13 +20630,13 @@ var _firebaseService = __webpack_require__(10);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _contentItem = __webpack_require__(15);
+var _contentItem = __webpack_require__(17);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
@@ -19754,7 +20705,7 @@ var Fact = exports.Fact = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19773,7 +20724,7 @@ var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(15);
+var _contentItem = __webpack_require__(17);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
@@ -19827,7 +20778,7 @@ var Heading = exports.Heading = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19846,7 +20797,7 @@ var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(15);
+var _contentItem = __webpack_require__(17);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
@@ -19854,7 +20805,7 @@ var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19915,7 +20866,7 @@ var Skill = exports.Skill = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19993,7 +20944,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20080,7 +21031,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20116,7 +21067,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -20213,7 +21164,7 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -20403,7 +21354,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20414,7 +21365,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.secondsToPretty = secondsToPretty;
 
-var _vue = __webpack_require__(20);
+var _vue = __webpack_require__(16);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -20467,7 +21418,7 @@ function secondsToPretty() {
 _vue2.default.filter('secondsToPretty', secondsToPretty);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20485,7 +21436,7 @@ var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(15);
+var _contentItem = __webpack_require__(17);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
@@ -20493,7 +21444,7 @@ var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(18);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
@@ -20567,7 +21518,7 @@ var ExerciseQA = function (_Exercise) {
 exports.default = ExerciseQA;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20629,7 +21580,7 @@ var Users = function () {
 exports.default = Users;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20736,7 +21687,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20776,17 +21727,17 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(220);
+var PromiseImpl = scope.Promise || __webpack_require__(224);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
 };
 //# sourceMappingURL=shared_promise.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20809,11 +21760,11 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(35);
+var _metadata = __webpack_require__(36);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -20950,7 +21901,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21024,7 +21975,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21047,13 +21998,13 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(227);
+var _json = __webpack_require__(231);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(26);
+var _location = __webpack_require__(27);
 
-var _path = __webpack_require__(53);
+var _path = __webpack_require__(55);
 
 var path = _interopRequireWildcard(_path);
 
@@ -21061,7 +22012,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(37);
+var _url = __webpack_require__(38);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -21234,7 +22185,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21256,7 +22207,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -21444,7 +22395,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21462,7 +22413,7 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(25);
+var _constants = __webpack_require__(26);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -21514,7 +22465,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -21677,7 +22628,7 @@ module.exports = css;
 });
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21687,14 +22638,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(237),
+    template: __webpack_require__(241),
     created: async function created() {
         var _this = this;
 
@@ -21726,7 +22677,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21737,7 +22688,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(239),
+    template: __webpack_require__(243),
     created: function created() {
         var me = this;
     },
@@ -21749,7 +22700,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21759,41 +22710,41 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(18);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exercises = __webpack_require__(45);
+var _exercises = __webpack_require__(47);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
-var _exerciseQA = __webpack_require__(29);
+var _exerciseQA = __webpack_require__(30);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(38);
+var _snack = __webpack_require__(39);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-__webpack_require__(262);
+__webpack_require__(267);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(5);
 
-var _invertObject = __webpack_require__(58);
+var _invertObject = __webpack_require__(60);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     props: ['leafId'],
-    template: __webpack_require__(251),
+    template: __webpack_require__(255),
     created: function created() {
         var me = this;
         this.tree = {
@@ -21922,7 +22873,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21932,7 +22883,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    template: __webpack_require__(252),
+    template: __webpack_require__(256),
     props: ['leafId'],
     created: function created() {
         console.log('tree review container leafId is', this.leafId);
@@ -21944,7 +22895,89 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MODES = undefined;
+
+var _vuex = __webpack_require__(21);
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+var _vue = __webpack_require__(16);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.use(_vuex2.default);
+
+var MODES = exports.MODES = {
+    EXPLORING: 1,
+    REVIEWING: 2
+};
+
+var state = {
+    mode: MODES.REVIEWING,
+    modes: {
+        2: {
+            contentId: 12345
+        }
+    }
+};
+var getters = {
+    reviewing: function reviewing(state) {
+        return state.mode === MODES.REVIEWING;
+    },
+    currentReviewingItem: function currentReviewingItem(state) {
+        return state.modes[MODES.REVIEWING].contentId;
+    }
+};
+var mutations = {
+    changeMode: function changeMode(state, mode) {
+        state.mode = mode;
+    },
+    itemStudied: function itemStudied(state, contentId) {
+        var _console;
+
+        (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(arguments)));
+        if (getters.reviewing(state)) {
+            console.log('state being changed', state, contentId);
+            state.modes[MODES.REVIEWING].contentId = contentId;
+        } else {
+            console.log('state not in reviewing mode');
+        }
+
+        // if (this.reviewing()){
+        // }
+    }
+};
+
+var actions = {
+    itemStudied: function itemStudied(_ref) {
+        var commit = _ref.commit,
+            contentId = _ref.contentId;
+
+        console.log('item studied action called', contentId);
+        commit('itemStudied', contentId);
+    }
+};
+
+exports.default = new _vuex2.default.Store({
+    state: state,
+    mutations: mutations,
+    actions: actions,
+    getters: getters
+});
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21955,7 +22988,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(196);
+var _env = __webpack_require__(198);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -21969,7 +23002,7 @@ var Config = exports.Config = {
 };
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22007,7 +23040,7 @@ function login() {
 }
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22025,7 +23058,7 @@ var _md = __webpack_require__(13);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(15);
+var _contentItem = __webpack_require__(17);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
@@ -22033,11 +23066,11 @@ var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(18);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(29);
+var _exerciseQA = __webpack_require__(30);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -22099,7 +23132,7 @@ var Exercises = function () {
 exports.default = Exercises;
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -22138,7 +23171,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22159,7 +23192,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(32);
+var _shared_promise = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22423,7 +23456,7 @@ function noop() {
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22454,17 +23487,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(31);
+var _errors = __webpack_require__(32);
 
-var _errors2 = __webpack_require__(24);
+var _errors2 = __webpack_require__(25);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(219);
+var _tokenManager = __webpack_require__(223);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(50);
+var _notificationPermission = __webpack_require__(52);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -22663,7 +23696,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22706,7 +23739,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22744,7 +23777,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22803,7 +23836,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22840,11 +23873,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(226);
+var _fs = __webpack_require__(230);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(36);
+var _string = __webpack_require__(37);
 
 var string = _interopRequireWildcard(_string);
 
@@ -22969,7 +24002,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23059,7 +24092,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23088,17 +24121,17 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(34);
+var _array = __webpack_require__(35);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(52);
+var _blob = __webpack_require__(54);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(35);
+var _metadata = __webpack_require__(36);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -23106,13 +24139,13 @@ var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(230);
+var _requestinfo = __webpack_require__(234);
 
 var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(37);
+var _url = __webpack_require__(38);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -23413,7 +24446,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23490,7 +24523,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23531,7 +24564,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23566,19 +24599,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(33);
+var _args = __webpack_require__(34);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(52);
+var _blob = __webpack_require__(54);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(26);
+var _location = __webpack_require__(27);
 
-var _metadata = __webpack_require__(35);
+var _metadata = __webpack_require__(36);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -23586,15 +24619,15 @@ var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(53);
+var _path = __webpack_require__(55);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(54);
+var _requests = __webpack_require__(56);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(36);
+var _string = __webpack_require__(37);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -23602,7 +24635,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(235);
+var _task = __webpack_require__(239);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -23840,7 +24873,7 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports) {
 
 
@@ -23860,7 +24893,7 @@ module.exports = invert
 
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23938,7 +24971,7 @@ return af;
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24002,7 +25035,7 @@ return arDz;
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24066,7 +25099,7 @@ return arKw;
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24197,7 +25230,7 @@ return arLy;
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24262,7 +25295,7 @@ return arMa;
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24372,7 +25405,7 @@ return arSa;
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24436,7 +25469,7 @@ return arTn;
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24583,7 +25616,7 @@ return ar;
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24693,7 +25726,7 @@ return az;
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24832,7 +25865,7 @@ return be;
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24927,7 +25960,7 @@ return bg;
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25051,7 +26084,7 @@ return bn;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25175,7 +26208,7 @@ return bo;
 
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25288,7 +26321,7 @@ return br;
 
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25436,7 +26469,7 @@ return bs;
 
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25529,7 +26562,7 @@ return ca;
 
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25706,7 +26739,7 @@ return cs;
 
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25774,7 +26807,7 @@ return cv;
 
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25860,7 +26893,7 @@ return cy;
 
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25925,7 +26958,7 @@ return da;
 
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26009,7 +27042,7 @@ return deAt;
 
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26092,7 +27125,7 @@ return deCh;
 
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26175,7 +27208,7 @@ return de;
 
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26280,7 +27313,7 @@ return dv;
 
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26385,7 +27418,7 @@ return el;
 
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26457,7 +27490,7 @@ return enAu;
 
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26525,7 +27558,7 @@ return enCa;
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26597,7 +27630,7 @@ return enGb;
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26669,7 +27702,7 @@ return enIe;
 
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26741,7 +27774,7 @@ return enNz;
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26819,7 +27852,7 @@ return eo;
 
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26906,7 +27939,7 @@ return esDo;
 
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26994,7 +28027,7 @@ return es;
 
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27079,7 +28112,7 @@ return et;
 
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27150,7 +28183,7 @@ return eu;
 
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27262,7 +28295,7 @@ return fa;
 
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27374,7 +28407,7 @@ return fi;
 
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27439,7 +28472,7 @@ return fo;
 
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27518,7 +28551,7 @@ return frCa;
 
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27601,7 +28634,7 @@ return frCh;
 
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27689,7 +28722,7 @@ return fr;
 
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27769,7 +28802,7 @@ return fy;
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27850,7 +28883,7 @@ return gd;
 
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27932,7 +28965,7 @@ return gl;
 
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28059,7 +29092,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28163,7 +29196,7 @@ return he;
 
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28292,7 +29325,7 @@ return hi;
 
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28442,7 +29475,7 @@ return hr;
 
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28556,7 +29589,7 @@ return hu;
 
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28656,7 +29689,7 @@ return hyAm;
 
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28744,7 +29777,7 @@ return id;
 
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28876,7 +29909,7 @@ return is;
 
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28951,7 +29984,7 @@ return it;
 
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29036,7 +30069,7 @@ return ja;
 
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29124,7 +30157,7 @@ return jv;
 
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29218,7 +30251,7 @@ return ka;
 
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29310,7 +30343,7 @@ return kk;
 
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29373,7 +30406,7 @@ return km;
 
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29504,7 +30537,7 @@ return kn;
 
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29578,7 +30611,7 @@ return ko;
 
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29671,7 +30704,7 @@ return ky;
 
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29813,7 +30846,7 @@ return lb;
 
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29888,7 +30921,7 @@ return lo;
 
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30010,7 +31043,7 @@ return lt;
 
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30112,7 +31145,7 @@ return lv;
 
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30228,7 +31261,7 @@ return me;
 
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30297,7 +31330,7 @@ return mi;
 
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30392,7 +31425,7 @@ return mk;
 
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30478,7 +31511,7 @@ return ml;
 
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30642,7 +31675,7 @@ return mr;
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30730,7 +31763,7 @@ return msMy;
 
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30817,7 +31850,7 @@ return ms;
 
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30918,7 +31951,7 @@ return my;
 
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30986,7 +32019,7 @@ return nb;
 
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31114,7 +32147,7 @@ return ne;
 
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31207,7 +32240,7 @@ return nlBe;
 
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31300,7 +32333,7 @@ return nl;
 
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31365,7 +32398,7 @@ return nn;
 
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31494,7 +32527,7 @@ return paIn;
 
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31606,7 +32639,7 @@ return pl;
 
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31672,7 +32705,7 @@ return ptBr;
 
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31742,7 +32775,7 @@ return pt;
 
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31822,7 +32855,7 @@ return ro;
 
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32010,7 +33043,7 @@ return ru;
 
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32113,7 +33146,7 @@ return sd;
 
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32179,7 +33212,7 @@ return se;
 
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32255,7 +33288,7 @@ return si;
 
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32410,7 +33443,7 @@ return sk;
 
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32577,7 +33610,7 @@ return sl;
 
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32652,7 +33685,7 @@ return sq;
 
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32767,7 +33800,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32882,7 +33915,7 @@ return sr;
 
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32976,7 +34009,7 @@ return ss;
 
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33050,7 +34083,7 @@ return sv;
 
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33114,7 +34147,7 @@ return sw;
 
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33249,7 +34282,7 @@ return ta;
 
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33343,7 +34376,7 @@ return te;
 
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33416,7 +34449,7 @@ return tet;
 
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33488,7 +34521,7 @@ return th;
 
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33555,7 +34588,7 @@ return tlPh;
 
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33680,7 +34713,7 @@ return tlh;
 
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33775,7 +34808,7 @@ return tr;
 
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33871,7 +34904,7 @@ return tzl;
 
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33934,7 +34967,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33997,7 +35030,7 @@ return tzm;
 
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34153,7 +35186,7 @@ return uk;
 
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34257,7 +35290,7 @@ return ur;
 
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34320,7 +35353,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34383,7 +35416,7 @@ return uz;
 
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34467,7 +35500,7 @@ return vi;
 
 
 /***/ }),
-/* 169 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34540,7 +35573,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 170 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34605,7 +35638,7 @@ return yo;
 
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34721,7 +35754,7 @@ return zhCn;
 
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34831,7 +35864,7 @@ return zhHk;
 
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34940,7 +35973,7 @@ return zhTw;
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -34968,7 +36001,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34987,7 +36020,7 @@ var STATES = {
 var TIME_SHOWING = 16000; //00000
 var TIME_SUBTRACTING_BY_7 = 32000; //64000
 exports.default = {
-    template: __webpack_require__(238),
+    template: __webpack_require__(242),
     created: function created() {
         var _this = this;
 
@@ -35059,84 +36092,86 @@ function getRandomConsonant() {
 }
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(260);
+__webpack_require__(265);
 
-var _vue = __webpack_require__(20);
+var _vue = __webpack_require__(16);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _branchesFooter = __webpack_require__(186);
+var _branchesFooter = __webpack_require__(188);
 
 var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
-var _reviewSchedule = __webpack_require__(192);
+var _reviewSchedule = __webpack_require__(194);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
-var _contentList = __webpack_require__(39);
+var _contentList = __webpack_require__(40);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _exerciseCreator = __webpack_require__(183);
+var _exerciseCreator = __webpack_require__(185);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
-var _exerciseCreatorContainer = __webpack_require__(40);
+var _exerciseCreatorContainer = __webpack_require__(41);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _treeReview = __webpack_require__(41);
+var _treeReview = __webpack_require__(42);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _treeReviewContainer = __webpack_require__(42);
+var _treeReviewContainer = __webpack_require__(43);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _newExercise = __webpack_require__(184);
+var _newExercise = __webpack_require__(186);
 
 var _newExercise2 = _interopRequireDefault(_newExercise);
 
-var _exerciseList = __webpack_require__(185);
+var _exerciseList = __webpack_require__(187);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(194);
+var _tree = __webpack_require__(196);
 
 var _tree2 = _interopRequireDefault(_tree);
 
-var _newtreecomponent = __webpack_require__(189);
+var _newtreecomponent = __webpack_require__(191);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(193);
+var _toolbar = __webpack_require__(195);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
-var _goBack = __webpack_require__(187);
+var _goBack = __webpack_require__(189);
 
 var _goBack2 = _interopRequireDefault(_goBack);
 
-var _proficiencySelector = __webpack_require__(190);
+var _proficiencySelector = __webpack_require__(192);
 
 var _proficiencySelector2 = _interopRequireDefault(_proficiencySelector);
 
-var _itemHistory = __webpack_require__(188);
+var _itemHistory = __webpack_require__(190);
 
 var _itemHistory2 = _interopRequireDefault(_itemHistory);
+
+__webpack_require__(200);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Vue.component('branchesHeader', Header)
-_vue2.default.component('branchesFooter', _branchesFooter2.default);
-// import Header from '../components/header/branchesHeader'
 
+// import Header from '../components/header/branchesHeader'
+_vue2.default.component('branchesFooter', _branchesFooter2.default);
 _vue2.default.component('reviewSchedule', _reviewSchedule2.default);
 _vue2.default.component('contentList', _contentList2.default);
 _vue2.default.component('exerciseCreator', _exerciseCreator2.default);
@@ -35153,16 +36188,16 @@ _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 _vue2.default.component('itemHistory', _itemHistory2.default);
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(2);
+__webpack_require__(3);
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35182,7 +36217,2326 @@ function toggleVisibility(el) {
 }
 
 /***/ }),
-/* 179 */
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
+    localForage -- Offline Storage, Improved
+    Version 1.5.0
+    https://localforage.github.io/localForage
+    (c) 2013-2017 Mozilla, Apache License 2.0
+*/
+(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.localforage = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw (f.code="MODULE_NOT_FOUND", f)}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+(function (global){
+'use strict';
+var Mutation = global.MutationObserver || global.WebKitMutationObserver;
+
+var scheduleDrain;
+
+{
+  if (Mutation) {
+    var called = 0;
+    var observer = new Mutation(nextTick);
+    var element = global.document.createTextNode('');
+    observer.observe(element, {
+      characterData: true
+    });
+    scheduleDrain = function () {
+      element.data = (called = ++called % 2);
+    };
+  } else if (!global.setImmediate && typeof global.MessageChannel !== 'undefined') {
+    var channel = new global.MessageChannel();
+    channel.port1.onmessage = nextTick;
+    scheduleDrain = function () {
+      channel.port2.postMessage(0);
+    };
+  } else if ('document' in global && 'onreadystatechange' in global.document.createElement('script')) {
+    scheduleDrain = function () {
+
+      // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+      // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+      var scriptEl = global.document.createElement('script');
+      scriptEl.onreadystatechange = function () {
+        nextTick();
+
+        scriptEl.onreadystatechange = null;
+        scriptEl.parentNode.removeChild(scriptEl);
+        scriptEl = null;
+      };
+      global.document.documentElement.appendChild(scriptEl);
+    };
+  } else {
+    scheduleDrain = function () {
+      setTimeout(nextTick, 0);
+    };
+  }
+}
+
+var draining;
+var queue = [];
+//named nextTick for less confusing stack traces
+function nextTick() {
+  draining = true;
+  var i, oldQueue;
+  var len = queue.length;
+  while (len) {
+    oldQueue = queue;
+    queue = [];
+    i = -1;
+    while (++i < len) {
+      oldQueue[i]();
+    }
+    len = queue.length;
+  }
+  draining = false;
+}
+
+module.exports = immediate;
+function immediate(task) {
+  if (queue.push(task) === 1 && !draining) {
+    scheduleDrain();
+  }
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(_dereq_,module,exports){
+'use strict';
+var immediate = _dereq_(1);
+
+/* istanbul ignore next */
+function INTERNAL() {}
+
+var handlers = {};
+
+var REJECTED = ['REJECTED'];
+var FULFILLED = ['FULFILLED'];
+var PENDING = ['PENDING'];
+
+module.exports = exports = Promise;
+
+function Promise(resolver) {
+  if (typeof resolver !== 'function') {
+    throw new TypeError('resolver must be a function');
+  }
+  this.state = PENDING;
+  this.queue = [];
+  this.outcome = void 0;
+  if (resolver !== INTERNAL) {
+    safelyResolveThenable(this, resolver);
+  }
+}
+
+Promise.prototype["catch"] = function (onRejected) {
+  return this.then(null, onRejected);
+};
+Promise.prototype.then = function (onFulfilled, onRejected) {
+  if (typeof onFulfilled !== 'function' && this.state === FULFILLED ||
+    typeof onRejected !== 'function' && this.state === REJECTED) {
+    return this;
+  }
+  var promise = new this.constructor(INTERNAL);
+  if (this.state !== PENDING) {
+    var resolver = this.state === FULFILLED ? onFulfilled : onRejected;
+    unwrap(promise, resolver, this.outcome);
+  } else {
+    this.queue.push(new QueueItem(promise, onFulfilled, onRejected));
+  }
+
+  return promise;
+};
+function QueueItem(promise, onFulfilled, onRejected) {
+  this.promise = promise;
+  if (typeof onFulfilled === 'function') {
+    this.onFulfilled = onFulfilled;
+    this.callFulfilled = this.otherCallFulfilled;
+  }
+  if (typeof onRejected === 'function') {
+    this.onRejected = onRejected;
+    this.callRejected = this.otherCallRejected;
+  }
+}
+QueueItem.prototype.callFulfilled = function (value) {
+  handlers.resolve(this.promise, value);
+};
+QueueItem.prototype.otherCallFulfilled = function (value) {
+  unwrap(this.promise, this.onFulfilled, value);
+};
+QueueItem.prototype.callRejected = function (value) {
+  handlers.reject(this.promise, value);
+};
+QueueItem.prototype.otherCallRejected = function (value) {
+  unwrap(this.promise, this.onRejected, value);
+};
+
+function unwrap(promise, func, value) {
+  immediate(function () {
+    var returnValue;
+    try {
+      returnValue = func(value);
+    } catch (e) {
+      return handlers.reject(promise, e);
+    }
+    if (returnValue === promise) {
+      handlers.reject(promise, new TypeError('Cannot resolve promise with itself'));
+    } else {
+      handlers.resolve(promise, returnValue);
+    }
+  });
+}
+
+handlers.resolve = function (self, value) {
+  var result = tryCatch(getThen, value);
+  if (result.status === 'error') {
+    return handlers.reject(self, result.value);
+  }
+  var thenable = result.value;
+
+  if (thenable) {
+    safelyResolveThenable(self, thenable);
+  } else {
+    self.state = FULFILLED;
+    self.outcome = value;
+    var i = -1;
+    var len = self.queue.length;
+    while (++i < len) {
+      self.queue[i].callFulfilled(value);
+    }
+  }
+  return self;
+};
+handlers.reject = function (self, error) {
+  self.state = REJECTED;
+  self.outcome = error;
+  var i = -1;
+  var len = self.queue.length;
+  while (++i < len) {
+    self.queue[i].callRejected(error);
+  }
+  return self;
+};
+
+function getThen(obj) {
+  // Make sure we only access the accessor once as required by the spec
+  var then = obj && obj.then;
+  if (obj && typeof obj === 'object' && typeof then === 'function') {
+    return function appyThen() {
+      then.apply(obj, arguments);
+    };
+  }
+}
+
+function safelyResolveThenable(self, thenable) {
+  // Either fulfill, reject or reject with error
+  var called = false;
+  function onError(value) {
+    if (called) {
+      return;
+    }
+    called = true;
+    handlers.reject(self, value);
+  }
+
+  function onSuccess(value) {
+    if (called) {
+      return;
+    }
+    called = true;
+    handlers.resolve(self, value);
+  }
+
+  function tryToUnwrap() {
+    thenable(onSuccess, onError);
+  }
+
+  var result = tryCatch(tryToUnwrap);
+  if (result.status === 'error') {
+    onError(result.value);
+  }
+}
+
+function tryCatch(func, value) {
+  var out = {};
+  try {
+    out.value = func(value);
+    out.status = 'success';
+  } catch (e) {
+    out.status = 'error';
+    out.value = e;
+  }
+  return out;
+}
+
+exports.resolve = resolve;
+function resolve(value) {
+  if (value instanceof this) {
+    return value;
+  }
+  return handlers.resolve(new this(INTERNAL), value);
+}
+
+exports.reject = reject;
+function reject(reason) {
+  var promise = new this(INTERNAL);
+  return handlers.reject(promise, reason);
+}
+
+exports.all = all;
+function all(iterable) {
+  var self = this;
+  if (Object.prototype.toString.call(iterable) !== '[object Array]') {
+    return this.reject(new TypeError('must be an array'));
+  }
+
+  var len = iterable.length;
+  var called = false;
+  if (!len) {
+    return this.resolve([]);
+  }
+
+  var values = new Array(len);
+  var resolved = 0;
+  var i = -1;
+  var promise = new this(INTERNAL);
+
+  while (++i < len) {
+    allResolver(iterable[i], i);
+  }
+  return promise;
+  function allResolver(value, i) {
+    self.resolve(value).then(resolveFromAll, function (error) {
+      if (!called) {
+        called = true;
+        handlers.reject(promise, error);
+      }
+    });
+    function resolveFromAll(outValue) {
+      values[i] = outValue;
+      if (++resolved === len && !called) {
+        called = true;
+        handlers.resolve(promise, values);
+      }
+    }
+  }
+}
+
+exports.race = race;
+function race(iterable) {
+  var self = this;
+  if (Object.prototype.toString.call(iterable) !== '[object Array]') {
+    return this.reject(new TypeError('must be an array'));
+  }
+
+  var len = iterable.length;
+  var called = false;
+  if (!len) {
+    return this.resolve([]);
+  }
+
+  var i = -1;
+  var promise = new this(INTERNAL);
+
+  while (++i < len) {
+    resolver(iterable[i]);
+  }
+  return promise;
+  function resolver(value) {
+    self.resolve(value).then(function (response) {
+      if (!called) {
+        called = true;
+        handlers.resolve(promise, response);
+      }
+    }, function (error) {
+      if (!called) {
+        called = true;
+        handlers.reject(promise, error);
+      }
+    });
+  }
+}
+
+},{"1":1}],3:[function(_dereq_,module,exports){
+(function (global){
+'use strict';
+if (typeof global.Promise !== 'function') {
+  global.Promise = _dereq_(2);
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"2":2}],4:[function(_dereq_,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function getIDB() {
+    /* global indexedDB,webkitIndexedDB,mozIndexedDB,OIndexedDB,msIndexedDB */
+    try {
+        if (typeof indexedDB !== 'undefined') {
+            return indexedDB;
+        }
+        if (typeof webkitIndexedDB !== 'undefined') {
+            return webkitIndexedDB;
+        }
+        if (typeof mozIndexedDB !== 'undefined') {
+            return mozIndexedDB;
+        }
+        if (typeof OIndexedDB !== 'undefined') {
+            return OIndexedDB;
+        }
+        if (typeof msIndexedDB !== 'undefined') {
+            return msIndexedDB;
+        }
+    } catch (e) {}
+}
+
+var idb = getIDB();
+
+function isIndexedDBValid() {
+    try {
+        // Initialize IndexedDB; fall back to vendor-prefixed versions
+        // if needed.
+        if (!idb) {
+            return false;
+        }
+        // We mimic PouchDB here;
+        //
+        // We test for openDatabase because IE Mobile identifies itself
+        // as Safari. Oh the lulz...
+        var isSafari = typeof openDatabase !== 'undefined' && /(Safari|iPhone|iPad|iPod)/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) && !/BlackBerry/.test(navigator.platform);
+
+        var hasFetch = typeof fetch === 'function' && fetch.toString().indexOf('[native code') !== -1;
+
+        // Safari <10.1 does not meet our requirements for IDB support (#5572)
+        // since Safari 10.1 shipped with fetch, we can use that to detect it
+        return (!isSafari || hasFetch) && typeof indexedDB !== 'undefined' &&
+        // some outdated implementations of IDB that appear on Samsung
+        // and HTC Android devices <4.4 are missing IDBKeyRange
+        typeof IDBKeyRange !== 'undefined';
+    } catch (e) {
+        return false;
+    }
+}
+
+function isWebSQLValid() {
+    return typeof openDatabase === 'function';
+}
+
+function isLocalStorageValid() {
+    try {
+        return typeof localStorage !== 'undefined' && 'setItem' in localStorage && localStorage.setItem;
+    } catch (e) {
+        return false;
+    }
+}
+
+// Abstracts constructing a Blob object, so it also works in older
+// browsers that don't support the native Blob constructor. (i.e.
+// old QtWebKit versions, at least).
+// Abstracts constructing a Blob object, so it also works in older
+// browsers that don't support the native Blob constructor. (i.e.
+// old QtWebKit versions, at least).
+function createBlob(parts, properties) {
+    /* global BlobBuilder,MSBlobBuilder,MozBlobBuilder,WebKitBlobBuilder */
+    parts = parts || [];
+    properties = properties || {};
+    try {
+        return new Blob(parts, properties);
+    } catch (e) {
+        if (e.name !== 'TypeError') {
+            throw e;
+        }
+        var Builder = typeof BlobBuilder !== 'undefined' ? BlobBuilder : typeof MSBlobBuilder !== 'undefined' ? MSBlobBuilder : typeof MozBlobBuilder !== 'undefined' ? MozBlobBuilder : WebKitBlobBuilder;
+        var builder = new Builder();
+        for (var i = 0; i < parts.length; i += 1) {
+            builder.append(parts[i]);
+        }
+        return builder.getBlob(properties.type);
+    }
+}
+
+// This is CommonJS because lie is an external dependency, so Rollup
+// can just ignore it.
+if (typeof Promise === 'undefined') {
+    // In the "nopromises" build this will just throw if you don't have
+    // a global promise object, but it would throw anyway later.
+    _dereq_(3);
+}
+var Promise$1 = Promise;
+
+function executeCallback(promise, callback) {
+    if (callback) {
+        promise.then(function (result) {
+            callback(null, result);
+        }, function (error) {
+            callback(error);
+        });
+    }
+}
+
+function executeTwoCallbacks(promise, callback, errorCallback) {
+    if (typeof callback === 'function') {
+        promise.then(callback);
+    }
+
+    if (typeof errorCallback === 'function') {
+        promise["catch"](errorCallback);
+    }
+}
+
+// Some code originally from async_storage.js in
+// [Gaia](https://github.com/mozilla-b2g/gaia).
+
+var DETECT_BLOB_SUPPORT_STORE = 'local-forage-detect-blob-support';
+var supportsBlobs;
+var dbContexts;
+var toString = Object.prototype.toString;
+
+// Transform a binary string to an array buffer, because otherwise
+// weird stuff happens when you try to work with the binary string directly.
+// It is known.
+// From http://stackoverflow.com/questions/14967647/ (continues on next line)
+// encode-decode-image-with-base64-breaks-image (2013-04-21)
+function _binStringToArrayBuffer(bin) {
+    var length = bin.length;
+    var buf = new ArrayBuffer(length);
+    var arr = new Uint8Array(buf);
+    for (var i = 0; i < length; i++) {
+        arr[i] = bin.charCodeAt(i);
+    }
+    return buf;
+}
+
+//
+// Blobs are not supported in all versions of IndexedDB, notably
+// Chrome <37 and Android <5. In those versions, storing a blob will throw.
+//
+// Various other blob bugs exist in Chrome v37-42 (inclusive).
+// Detecting them is expensive and confusing to users, and Chrome 37-42
+// is at very low usage worldwide, so we do a hacky userAgent check instead.
+//
+// content-type bug: https://code.google.com/p/chromium/issues/detail?id=408120
+// 404 bug: https://code.google.com/p/chromium/issues/detail?id=447916
+// FileReader bug: https://code.google.com/p/chromium/issues/detail?id=447836
+//
+// Code borrowed from PouchDB. See:
+// https://github.com/pouchdb/pouchdb/blob/master/packages/node_modules/pouchdb-adapter-idb/src/blobSupport.js
+//
+function _checkBlobSupportWithoutCaching(idb) {
+    return new Promise$1(function (resolve) {
+        var txn = idb.transaction(DETECT_BLOB_SUPPORT_STORE, 'readwrite');
+        var blob = createBlob(['']);
+        txn.objectStore(DETECT_BLOB_SUPPORT_STORE).put(blob, 'key');
+
+        txn.onabort = function (e) {
+            // If the transaction aborts now its due to not being able to
+            // write to the database, likely due to the disk being full
+            e.preventDefault();
+            e.stopPropagation();
+            resolve(false);
+        };
+
+        txn.oncomplete = function () {
+            var matchedChrome = navigator.userAgent.match(/Chrome\/(\d+)/);
+            var matchedEdge = navigator.userAgent.match(/Edge\//);
+            // MS Edge pretends to be Chrome 42:
+            // https://msdn.microsoft.com/en-us/library/hh869301%28v=vs.85%29.aspx
+            resolve(matchedEdge || !matchedChrome || parseInt(matchedChrome[1], 10) >= 43);
+        };
+    })["catch"](function () {
+        return false; // error, so assume unsupported
+    });
+}
+
+function _checkBlobSupport(idb) {
+    if (typeof supportsBlobs === 'boolean') {
+        return Promise$1.resolve(supportsBlobs);
+    }
+    return _checkBlobSupportWithoutCaching(idb).then(function (value) {
+        supportsBlobs = value;
+        return supportsBlobs;
+    });
+}
+
+function _deferReadiness(dbInfo) {
+    var dbContext = dbContexts[dbInfo.name];
+
+    // Create a deferred object representing the current database operation.
+    var deferredOperation = {};
+
+    deferredOperation.promise = new Promise$1(function (resolve) {
+        deferredOperation.resolve = resolve;
+    });
+
+    // Enqueue the deferred operation.
+    dbContext.deferredOperations.push(deferredOperation);
+
+    // Chain its promise to the database readiness.
+    if (!dbContext.dbReady) {
+        dbContext.dbReady = deferredOperation.promise;
+    } else {
+        dbContext.dbReady = dbContext.dbReady.then(function () {
+            return deferredOperation.promise;
+        });
+    }
+}
+
+function _advanceReadiness(dbInfo) {
+    var dbContext = dbContexts[dbInfo.name];
+
+    // Dequeue a deferred operation.
+    var deferredOperation = dbContext.deferredOperations.pop();
+
+    // Resolve its promise (which is part of the database readiness
+    // chain of promises).
+    if (deferredOperation) {
+        deferredOperation.resolve();
+    }
+}
+
+function _getConnection(dbInfo, upgradeNeeded) {
+    return new Promise$1(function (resolve, reject) {
+
+        if (dbInfo.db) {
+            if (upgradeNeeded) {
+                _deferReadiness(dbInfo);
+                dbInfo.db.close();
+            } else {
+                return resolve(dbInfo.db);
+            }
+        }
+
+        var dbArgs = [dbInfo.name];
+
+        if (upgradeNeeded) {
+            dbArgs.push(dbInfo.version);
+        }
+
+        var openreq = idb.open.apply(idb, dbArgs);
+
+        if (upgradeNeeded) {
+            openreq.onupgradeneeded = function (e) {
+                var db = openreq.result;
+                try {
+                    db.createObjectStore(dbInfo.storeName);
+                    if (e.oldVersion <= 1) {
+                        // Added when support for blob shims was added
+                        db.createObjectStore(DETECT_BLOB_SUPPORT_STORE);
+                    }
+                } catch (ex) {
+                    if (ex.name === 'ConstraintError') {
+                        console.warn('The database "' + dbInfo.name + '"' + ' has been upgraded from version ' + e.oldVersion + ' to version ' + e.newVersion + ', but the storage "' + dbInfo.storeName + '" already exists.');
+                    } else {
+                        throw ex;
+                    }
+                }
+            };
+        }
+
+        openreq.onerror = function (e) {
+            e.preventDefault();
+            reject(openreq.error);
+        };
+
+        openreq.onsuccess = function () {
+            resolve(openreq.result);
+            _advanceReadiness(dbInfo);
+        };
+    });
+}
+
+function _getOriginalConnection(dbInfo) {
+    return _getConnection(dbInfo, false);
+}
+
+function _getUpgradedConnection(dbInfo) {
+    return _getConnection(dbInfo, true);
+}
+
+function _isUpgradeNeeded(dbInfo, defaultVersion) {
+    if (!dbInfo.db) {
+        return true;
+    }
+
+    var isNewStore = !dbInfo.db.objectStoreNames.contains(dbInfo.storeName);
+    var isDowngrade = dbInfo.version < dbInfo.db.version;
+    var isUpgrade = dbInfo.version > dbInfo.db.version;
+
+    if (isDowngrade) {
+        // If the version is not the default one
+        // then warn for impossible downgrade.
+        if (dbInfo.version !== defaultVersion) {
+            console.warn('The database "' + dbInfo.name + '"' + ' can\'t be downgraded from version ' + dbInfo.db.version + ' to version ' + dbInfo.version + '.');
+        }
+        // Align the versions to prevent errors.
+        dbInfo.version = dbInfo.db.version;
+    }
+
+    if (isUpgrade || isNewStore) {
+        // If the store is new then increment the version (if needed).
+        // This will trigger an "upgradeneeded" event which is required
+        // for creating a store.
+        if (isNewStore) {
+            var incVersion = dbInfo.db.version + 1;
+            if (incVersion > dbInfo.version) {
+                dbInfo.version = incVersion;
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+// encode a blob for indexeddb engines that don't support blobs
+function _encodeBlob(blob) {
+    return new Promise$1(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onerror = reject;
+        reader.onloadend = function (e) {
+            var base64 = btoa(e.target.result || '');
+            resolve({
+                __local_forage_encoded_blob: true,
+                data: base64,
+                type: blob.type
+            });
+        };
+        reader.readAsBinaryString(blob);
+    });
+}
+
+// decode an encoded blob
+function _decodeBlob(encodedBlob) {
+    var arrayBuff = _binStringToArrayBuffer(atob(encodedBlob.data));
+    return createBlob([arrayBuff], { type: encodedBlob.type });
+}
+
+// is this one of our fancy encoded blobs?
+function _isEncodedBlob(value) {
+    return value && value.__local_forage_encoded_blob;
+}
+
+// Specialize the default `ready()` function by making it dependent
+// on the current database operations. Thus, the driver will be actually
+// ready when it's been initialized (default) *and* there are no pending
+// operations on the database (initiated by some other instances).
+function _fullyReady(callback) {
+    var self = this;
+
+    var promise = self._initReady().then(function () {
+        var dbContext = dbContexts[self._dbInfo.name];
+
+        if (dbContext && dbContext.dbReady) {
+            return dbContext.dbReady;
+        }
+    });
+
+    executeTwoCallbacks(promise, callback, callback);
+    return promise;
+}
+
+// Open the IndexedDB database (automatically creates one if one didn't
+// previously exist), using any options set in the config.
+function _initStorage(options) {
+    var self = this;
+    var dbInfo = {
+        db: null
+    };
+
+    if (options) {
+        for (var i in options) {
+            dbInfo[i] = options[i];
+        }
+    }
+
+    // Initialize a singleton container for all running localForages.
+    if (!dbContexts) {
+        dbContexts = {};
+    }
+
+    // Get the current context of the database;
+    var dbContext = dbContexts[dbInfo.name];
+
+    // ...or create a new context.
+    if (!dbContext) {
+        dbContext = {
+            // Running localForages sharing a database.
+            forages: [],
+            // Shared database.
+            db: null,
+            // Database readiness (promise).
+            dbReady: null,
+            // Deferred operations on the database.
+            deferredOperations: []
+        };
+        // Register the new context in the global container.
+        dbContexts[dbInfo.name] = dbContext;
+    }
+
+    // Register itself as a running localForage in the current context.
+    dbContext.forages.push(self);
+
+    // Replace the default `ready()` function with the specialized one.
+    if (!self._initReady) {
+        self._initReady = self.ready;
+        self.ready = _fullyReady;
+    }
+
+    // Create an array of initialization states of the related localForages.
+    var initPromises = [];
+
+    function ignoreErrors() {
+        // Don't handle errors here,
+        // just makes sure related localForages aren't pending.
+        return Promise$1.resolve();
+    }
+
+    for (var j = 0; j < dbContext.forages.length; j++) {
+        var forage = dbContext.forages[j];
+        if (forage !== self) {
+            // Don't wait for itself...
+            initPromises.push(forage._initReady()["catch"](ignoreErrors));
+        }
+    }
+
+    // Take a snapshot of the related localForages.
+    var forages = dbContext.forages.slice(0);
+
+    // Initialize the connection process only when
+    // all the related localForages aren't pending.
+    return Promise$1.all(initPromises).then(function () {
+        dbInfo.db = dbContext.db;
+        // Get the connection or open a new one without upgrade.
+        return _getOriginalConnection(dbInfo);
+    }).then(function (db) {
+        dbInfo.db = db;
+        if (_isUpgradeNeeded(dbInfo, self._defaultConfig.version)) {
+            // Reopen the database for upgrading.
+            return _getUpgradedConnection(dbInfo);
+        }
+        return db;
+    }).then(function (db) {
+        dbInfo.db = dbContext.db = db;
+        self._dbInfo = dbInfo;
+        // Share the final connection amongst related localForages.
+        for (var k = 0; k < forages.length; k++) {
+            var forage = forages[k];
+            if (forage !== self) {
+                // Self is already up-to-date.
+                forage._dbInfo.db = dbInfo.db;
+                forage._dbInfo.version = dbInfo.version;
+            }
+        }
+    });
+}
+
+function getItem(key, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var store = dbInfo.db.transaction(dbInfo.storeName, 'readonly').objectStore(dbInfo.storeName);
+            var req = store.get(key);
+
+            req.onsuccess = function () {
+                var value = req.result;
+                if (value === undefined) {
+                    value = null;
+                }
+                if (_isEncodedBlob(value)) {
+                    value = _decodeBlob(value);
+                }
+                resolve(value);
+            };
+
+            req.onerror = function () {
+                reject(req.error);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Iterate over all items stored in database.
+function iterate(iterator, callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var store = dbInfo.db.transaction(dbInfo.storeName, 'readonly').objectStore(dbInfo.storeName);
+
+            var req = store.openCursor();
+            var iterationNumber = 1;
+
+            req.onsuccess = function () {
+                var cursor = req.result;
+
+                if (cursor) {
+                    var value = cursor.value;
+                    if (_isEncodedBlob(value)) {
+                        value = _decodeBlob(value);
+                    }
+                    var result = iterator(value, cursor.key, iterationNumber++);
+
+                    if (result !== void 0) {
+                        resolve(result);
+                    } else {
+                        cursor["continue"]();
+                    }
+                } else {
+                    resolve();
+                }
+            };
+
+            req.onerror = function () {
+                reject(req.error);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+
+    return promise;
+}
+
+function setItem(key, value, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = new Promise$1(function (resolve, reject) {
+        var dbInfo;
+        self.ready().then(function () {
+            dbInfo = self._dbInfo;
+            if (toString.call(value) === '[object Blob]') {
+                return _checkBlobSupport(dbInfo.db).then(function (blobSupport) {
+                    if (blobSupport) {
+                        return value;
+                    }
+                    return _encodeBlob(value);
+                });
+            }
+            return value;
+        }).then(function (value) {
+            var transaction = dbInfo.db.transaction(dbInfo.storeName, 'readwrite');
+            var store = transaction.objectStore(dbInfo.storeName);
+            var req = store.put(value, key);
+
+            // The reason we don't _save_ null is because IE 10 does
+            // not support saving the `null` type in IndexedDB. How
+            // ironic, given the bug below!
+            // See: https://github.com/mozilla/localForage/issues/161
+            if (value === null) {
+                value = undefined;
+            }
+
+            transaction.oncomplete = function () {
+                // Cast to undefined so the value passed to
+                // callback/promise is the same as what one would get out
+                // of `getItem()` later. This leads to some weirdness
+                // (setItem('foo', undefined) will return `null`), but
+                // it's not my fault localStorage is our baseline and that
+                // it's weird.
+                if (value === undefined) {
+                    value = null;
+                }
+
+                resolve(value);
+            };
+            transaction.onabort = transaction.onerror = function () {
+                var err = req.error ? req.error : req.transaction.error;
+                reject(err);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function removeItem(key, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var transaction = dbInfo.db.transaction(dbInfo.storeName, 'readwrite');
+            var store = transaction.objectStore(dbInfo.storeName);
+
+            // We use a Grunt task to make this safe for IE and some
+            // versions of Android (including those used by Cordova).
+            // Normally IE won't like `.delete()` and will insist on
+            // using `['delete']()`, but we have a build step that
+            // fixes this for us now.
+            var req = store["delete"](key);
+            transaction.oncomplete = function () {
+                resolve();
+            };
+
+            transaction.onerror = function () {
+                reject(req.error);
+            };
+
+            // The request will be also be aborted if we've exceeded our storage
+            // space.
+            transaction.onabort = function () {
+                var err = req.error ? req.error : req.transaction.error;
+                reject(err);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function clear(callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var transaction = dbInfo.db.transaction(dbInfo.storeName, 'readwrite');
+            var store = transaction.objectStore(dbInfo.storeName);
+            var req = store.clear();
+
+            transaction.oncomplete = function () {
+                resolve();
+            };
+
+            transaction.onabort = transaction.onerror = function () {
+                var err = req.error ? req.error : req.transaction.error;
+                reject(err);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function length(callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var store = dbInfo.db.transaction(dbInfo.storeName, 'readonly').objectStore(dbInfo.storeName);
+            var req = store.count();
+
+            req.onsuccess = function () {
+                resolve(req.result);
+            };
+
+            req.onerror = function () {
+                reject(req.error);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function key(n, callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        if (n < 0) {
+            resolve(null);
+
+            return;
+        }
+
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var store = dbInfo.db.transaction(dbInfo.storeName, 'readonly').objectStore(dbInfo.storeName);
+
+            var advanced = false;
+            var req = store.openCursor();
+            req.onsuccess = function () {
+                var cursor = req.result;
+                if (!cursor) {
+                    // this means there weren't enough keys
+                    resolve(null);
+
+                    return;
+                }
+
+                if (n === 0) {
+                    // We have the first key, return it if that's what they
+                    // wanted.
+                    resolve(cursor.key);
+                } else {
+                    if (!advanced) {
+                        // Otherwise, ask the cursor to skip ahead n
+                        // records.
+                        advanced = true;
+                        cursor.advance(n);
+                    } else {
+                        // When we get here, we've got the nth key.
+                        resolve(cursor.key);
+                    }
+                }
+            };
+
+            req.onerror = function () {
+                reject(req.error);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function keys(callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            var store = dbInfo.db.transaction(dbInfo.storeName, 'readonly').objectStore(dbInfo.storeName);
+
+            var req = store.openCursor();
+            var keys = [];
+
+            req.onsuccess = function () {
+                var cursor = req.result;
+
+                if (!cursor) {
+                    resolve(keys);
+                    return;
+                }
+
+                keys.push(cursor.key);
+                cursor["continue"]();
+            };
+
+            req.onerror = function () {
+                reject(req.error);
+            };
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+var asyncStorage = {
+    _driver: 'asyncStorage',
+    _initStorage: _initStorage,
+    iterate: iterate,
+    getItem: getItem,
+    setItem: setItem,
+    removeItem: removeItem,
+    clear: clear,
+    length: length,
+    key: key,
+    keys: keys
+};
+
+// Sadly, the best way to save binary data in WebSQL/localStorage is serializing
+// it to Base64, so this is how we store it to prevent very strange errors with less
+// verbose ways of binary <-> string data storage.
+var BASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+var BLOB_TYPE_PREFIX = '~~local_forage_type~';
+var BLOB_TYPE_PREFIX_REGEX = /^~~local_forage_type~([^~]+)~/;
+
+var SERIALIZED_MARKER = '__lfsc__:';
+var SERIALIZED_MARKER_LENGTH = SERIALIZED_MARKER.length;
+
+// OMG the serializations!
+var TYPE_ARRAYBUFFER = 'arbf';
+var TYPE_BLOB = 'blob';
+var TYPE_INT8ARRAY = 'si08';
+var TYPE_UINT8ARRAY = 'ui08';
+var TYPE_UINT8CLAMPEDARRAY = 'uic8';
+var TYPE_INT16ARRAY = 'si16';
+var TYPE_INT32ARRAY = 'si32';
+var TYPE_UINT16ARRAY = 'ur16';
+var TYPE_UINT32ARRAY = 'ui32';
+var TYPE_FLOAT32ARRAY = 'fl32';
+var TYPE_FLOAT64ARRAY = 'fl64';
+var TYPE_SERIALIZED_MARKER_LENGTH = SERIALIZED_MARKER_LENGTH + TYPE_ARRAYBUFFER.length;
+
+var toString$1 = Object.prototype.toString;
+
+function stringToBuffer(serializedString) {
+    // Fill the string into a ArrayBuffer.
+    var bufferLength = serializedString.length * 0.75;
+    var len = serializedString.length;
+    var i;
+    var p = 0;
+    var encoded1, encoded2, encoded3, encoded4;
+
+    if (serializedString[serializedString.length - 1] === '=') {
+        bufferLength--;
+        if (serializedString[serializedString.length - 2] === '=') {
+            bufferLength--;
+        }
+    }
+
+    var buffer = new ArrayBuffer(bufferLength);
+    var bytes = new Uint8Array(buffer);
+
+    for (i = 0; i < len; i += 4) {
+        encoded1 = BASE_CHARS.indexOf(serializedString[i]);
+        encoded2 = BASE_CHARS.indexOf(serializedString[i + 1]);
+        encoded3 = BASE_CHARS.indexOf(serializedString[i + 2]);
+        encoded4 = BASE_CHARS.indexOf(serializedString[i + 3]);
+
+        /*jslint bitwise: true */
+        bytes[p++] = encoded1 << 2 | encoded2 >> 4;
+        bytes[p++] = (encoded2 & 15) << 4 | encoded3 >> 2;
+        bytes[p++] = (encoded3 & 3) << 6 | encoded4 & 63;
+    }
+    return buffer;
+}
+
+// Converts a buffer to a string to store, serialized, in the backend
+// storage library.
+function bufferToString(buffer) {
+    // base64-arraybuffer
+    var bytes = new Uint8Array(buffer);
+    var base64String = '';
+    var i;
+
+    for (i = 0; i < bytes.length; i += 3) {
+        /*jslint bitwise: true */
+        base64String += BASE_CHARS[bytes[i] >> 2];
+        base64String += BASE_CHARS[(bytes[i] & 3) << 4 | bytes[i + 1] >> 4];
+        base64String += BASE_CHARS[(bytes[i + 1] & 15) << 2 | bytes[i + 2] >> 6];
+        base64String += BASE_CHARS[bytes[i + 2] & 63];
+    }
+
+    if (bytes.length % 3 === 2) {
+        base64String = base64String.substring(0, base64String.length - 1) + '=';
+    } else if (bytes.length % 3 === 1) {
+        base64String = base64String.substring(0, base64String.length - 2) + '==';
+    }
+
+    return base64String;
+}
+
+// Serialize a value, afterwards executing a callback (which usually
+// instructs the `setItem()` callback/promise to be executed). This is how
+// we store binary data with localStorage.
+function serialize(value, callback) {
+    var valueType = '';
+    if (value) {
+        valueType = toString$1.call(value);
+    }
+
+    // Cannot use `value instanceof ArrayBuffer` or such here, as these
+    // checks fail when running the tests using casper.js...
+    //
+    // TODO: See why those tests fail and use a better solution.
+    if (value && (valueType === '[object ArrayBuffer]' || value.buffer && toString$1.call(value.buffer) === '[object ArrayBuffer]')) {
+        // Convert binary arrays to a string and prefix the string with
+        // a special marker.
+        var buffer;
+        var marker = SERIALIZED_MARKER;
+
+        if (value instanceof ArrayBuffer) {
+            buffer = value;
+            marker += TYPE_ARRAYBUFFER;
+        } else {
+            buffer = value.buffer;
+
+            if (valueType === '[object Int8Array]') {
+                marker += TYPE_INT8ARRAY;
+            } else if (valueType === '[object Uint8Array]') {
+                marker += TYPE_UINT8ARRAY;
+            } else if (valueType === '[object Uint8ClampedArray]') {
+                marker += TYPE_UINT8CLAMPEDARRAY;
+            } else if (valueType === '[object Int16Array]') {
+                marker += TYPE_INT16ARRAY;
+            } else if (valueType === '[object Uint16Array]') {
+                marker += TYPE_UINT16ARRAY;
+            } else if (valueType === '[object Int32Array]') {
+                marker += TYPE_INT32ARRAY;
+            } else if (valueType === '[object Uint32Array]') {
+                marker += TYPE_UINT32ARRAY;
+            } else if (valueType === '[object Float32Array]') {
+                marker += TYPE_FLOAT32ARRAY;
+            } else if (valueType === '[object Float64Array]') {
+                marker += TYPE_FLOAT64ARRAY;
+            } else {
+                callback(new Error('Failed to get type for BinaryArray'));
+            }
+        }
+
+        callback(marker + bufferToString(buffer));
+    } else if (valueType === '[object Blob]') {
+        // Conver the blob to a binaryArray and then to a string.
+        var fileReader = new FileReader();
+
+        fileReader.onload = function () {
+            // Backwards-compatible prefix for the blob type.
+            var str = BLOB_TYPE_PREFIX + value.type + '~' + bufferToString(this.result);
+
+            callback(SERIALIZED_MARKER + TYPE_BLOB + str);
+        };
+
+        fileReader.readAsArrayBuffer(value);
+    } else {
+        try {
+            callback(JSON.stringify(value));
+        } catch (e) {
+            console.error("Couldn't convert value into a JSON string: ", value);
+
+            callback(null, e);
+        }
+    }
+}
+
+// Deserialize data we've inserted into a value column/field. We place
+// special markers into our strings to mark them as encoded; this isn't
+// as nice as a meta field, but it's the only sane thing we can do whilst
+// keeping localStorage support intact.
+//
+// Oftentimes this will just deserialize JSON content, but if we have a
+// special marker (SERIALIZED_MARKER, defined above), we will extract
+// some kind of arraybuffer/binary data/typed array out of the string.
+function deserialize(value) {
+    // If we haven't marked this string as being specially serialized (i.e.
+    // something other than serialized JSON), we can just return it and be
+    // done with it.
+    if (value.substring(0, SERIALIZED_MARKER_LENGTH) !== SERIALIZED_MARKER) {
+        return JSON.parse(value);
+    }
+
+    // The following code deals with deserializing some kind of Blob or
+    // TypedArray. First we separate out the type of data we're dealing
+    // with from the data itself.
+    var serializedString = value.substring(TYPE_SERIALIZED_MARKER_LENGTH);
+    var type = value.substring(SERIALIZED_MARKER_LENGTH, TYPE_SERIALIZED_MARKER_LENGTH);
+
+    var blobType;
+    // Backwards-compatible blob type serialization strategy.
+    // DBs created with older versions of localForage will simply not have the blob type.
+    if (type === TYPE_BLOB && BLOB_TYPE_PREFIX_REGEX.test(serializedString)) {
+        var matcher = serializedString.match(BLOB_TYPE_PREFIX_REGEX);
+        blobType = matcher[1];
+        serializedString = serializedString.substring(matcher[0].length);
+    }
+    var buffer = stringToBuffer(serializedString);
+
+    // Return the right type based on the code/type set during
+    // serialization.
+    switch (type) {
+        case TYPE_ARRAYBUFFER:
+            return buffer;
+        case TYPE_BLOB:
+            return createBlob([buffer], { type: blobType });
+        case TYPE_INT8ARRAY:
+            return new Int8Array(buffer);
+        case TYPE_UINT8ARRAY:
+            return new Uint8Array(buffer);
+        case TYPE_UINT8CLAMPEDARRAY:
+            return new Uint8ClampedArray(buffer);
+        case TYPE_INT16ARRAY:
+            return new Int16Array(buffer);
+        case TYPE_UINT16ARRAY:
+            return new Uint16Array(buffer);
+        case TYPE_INT32ARRAY:
+            return new Int32Array(buffer);
+        case TYPE_UINT32ARRAY:
+            return new Uint32Array(buffer);
+        case TYPE_FLOAT32ARRAY:
+            return new Float32Array(buffer);
+        case TYPE_FLOAT64ARRAY:
+            return new Float64Array(buffer);
+        default:
+            throw new Error('Unkown type: ' + type);
+    }
+}
+
+var localforageSerializer = {
+    serialize: serialize,
+    deserialize: deserialize,
+    stringToBuffer: stringToBuffer,
+    bufferToString: bufferToString
+};
+
+/*
+ * Includes code from:
+ *
+ * base64-arraybuffer
+ * https://github.com/niklasvh/base64-arraybuffer
+ *
+ * Copyright (c) 2012 Niklas von Hertzen
+ * Licensed under the MIT license.
+ */
+// Open the WebSQL database (automatically creates one if one didn't
+// previously exist), using any options set in the config.
+function _initStorage$1(options) {
+    var self = this;
+    var dbInfo = {
+        db: null
+    };
+
+    if (options) {
+        for (var i in options) {
+            dbInfo[i] = typeof options[i] !== 'string' ? options[i].toString() : options[i];
+        }
+    }
+
+    var dbInfoPromise = new Promise$1(function (resolve, reject) {
+        // Open the database; the openDatabase API will automatically
+        // create it for us if it doesn't exist.
+        try {
+            dbInfo.db = openDatabase(dbInfo.name, String(dbInfo.version), dbInfo.description, dbInfo.size);
+        } catch (e) {
+            return reject(e);
+        }
+
+        // Create our key/value table if it doesn't exist.
+        dbInfo.db.transaction(function (t) {
+            t.executeSql('CREATE TABLE IF NOT EXISTS ' + dbInfo.storeName + ' (id INTEGER PRIMARY KEY, key unique, value)', [], function () {
+                self._dbInfo = dbInfo;
+                resolve();
+            }, function (t, error) {
+                reject(error);
+            });
+        });
+    });
+
+    dbInfo.serializer = localforageSerializer;
+    return dbInfoPromise;
+}
+
+function getItem$1(key, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            dbInfo.db.transaction(function (t) {
+                t.executeSql('SELECT * FROM ' + dbInfo.storeName + ' WHERE key = ? LIMIT 1', [key], function (t, results) {
+                    var result = results.rows.length ? results.rows.item(0).value : null;
+
+                    // Check to see if this is serialized content we need to
+                    // unpack.
+                    if (result) {
+                        result = dbInfo.serializer.deserialize(result);
+                    }
+
+                    resolve(result);
+                }, function (t, error) {
+
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function iterate$1(iterator, callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+
+            dbInfo.db.transaction(function (t) {
+                t.executeSql('SELECT * FROM ' + dbInfo.storeName, [], function (t, results) {
+                    var rows = results.rows;
+                    var length = rows.length;
+
+                    for (var i = 0; i < length; i++) {
+                        var item = rows.item(i);
+                        var result = item.value;
+
+                        // Check to see if this is serialized content
+                        // we need to unpack.
+                        if (result) {
+                            result = dbInfo.serializer.deserialize(result);
+                        }
+
+                        result = iterator(result, item.key, i + 1);
+
+                        // void(0) prevents problems with redefinition
+                        // of `undefined`.
+                        if (result !== void 0) {
+                            resolve(result);
+                            return;
+                        }
+                    }
+
+                    resolve();
+                }, function (t, error) {
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function _setItem(key, value, callback, retriesLeft) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            // The localStorage API doesn't return undefined values in an
+            // "expected" way, so undefined is always cast to null in all
+            // drivers. See: https://github.com/mozilla/localForage/pull/42
+            if (value === undefined) {
+                value = null;
+            }
+
+            // Save the original value to pass to the callback.
+            var originalValue = value;
+
+            var dbInfo = self._dbInfo;
+            dbInfo.serializer.serialize(value, function (value, error) {
+                if (error) {
+                    reject(error);
+                } else {
+                    dbInfo.db.transaction(function (t) {
+                        t.executeSql('INSERT OR REPLACE INTO ' + dbInfo.storeName + ' (key, value) VALUES (?, ?)', [key, value], function () {
+                            resolve(originalValue);
+                        }, function (t, error) {
+                            reject(error);
+                        });
+                    }, function (sqlError) {
+                        // The transaction failed; check
+                        // to see if it's a quota error.
+                        if (sqlError.code === sqlError.QUOTA_ERR) {
+                            // We reject the callback outright for now, but
+                            // it's worth trying to re-run the transaction.
+                            // Even if the user accepts the prompt to use
+                            // more storage on Safari, this error will
+                            // be called.
+                            //
+                            // Try to re-run the transaction.
+                            if (retriesLeft > 0) {
+                                resolve(_setItem.apply(self, [key, originalValue, callback, retriesLeft - 1]));
+                                return;
+                            }
+                            reject(sqlError);
+                        }
+                    });
+                }
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function setItem$1(key, value, callback) {
+    return _setItem.apply(this, [key, value, callback, 1]);
+}
+
+function removeItem$1(key, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            dbInfo.db.transaction(function (t) {
+                t.executeSql('DELETE FROM ' + dbInfo.storeName + ' WHERE key = ?', [key], function () {
+                    resolve();
+                }, function (t, error) {
+
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Deletes every item in the table.
+// TODO: Find out if this resets the AUTO_INCREMENT number.
+function clear$1(callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            dbInfo.db.transaction(function (t) {
+                t.executeSql('DELETE FROM ' + dbInfo.storeName, [], function () {
+                    resolve();
+                }, function (t, error) {
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Does a simple `COUNT(key)` to get the number of items stored in
+// localForage.
+function length$1(callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            dbInfo.db.transaction(function (t) {
+                // Ahhh, SQL makes this one soooooo easy.
+                t.executeSql('SELECT COUNT(key) as c FROM ' + dbInfo.storeName, [], function (t, results) {
+                    var result = results.rows.item(0).c;
+
+                    resolve(result);
+                }, function (t, error) {
+
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Return the key located at key index X; essentially gets the key from a
+// `WHERE id = ?`. This is the most efficient way I can think to implement
+// this rarely-used (in my experience) part of the API, but it can seem
+// inconsistent, because we do `INSERT OR REPLACE INTO` on `setItem()`, so
+// the ID of each key will change every time it's updated. Perhaps a stored
+// procedure for the `setItem()` SQL would solve this problem?
+// TODO: Don't change ID on `setItem()`.
+function key$1(n, callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            dbInfo.db.transaction(function (t) {
+                t.executeSql('SELECT key FROM ' + dbInfo.storeName + ' WHERE id = ? LIMIT 1', [n + 1], function (t, results) {
+                    var result = results.rows.length ? results.rows.item(0).key : null;
+                    resolve(result);
+                }, function (t, error) {
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function keys$1(callback) {
+    var self = this;
+
+    var promise = new Promise$1(function (resolve, reject) {
+        self.ready().then(function () {
+            var dbInfo = self._dbInfo;
+            dbInfo.db.transaction(function (t) {
+                t.executeSql('SELECT key FROM ' + dbInfo.storeName, [], function (t, results) {
+                    var keys = [];
+
+                    for (var i = 0; i < results.rows.length; i++) {
+                        keys.push(results.rows.item(i).key);
+                    }
+
+                    resolve(keys);
+                }, function (t, error) {
+
+                    reject(error);
+                });
+            });
+        })["catch"](reject);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+var webSQLStorage = {
+    _driver: 'webSQLStorage',
+    _initStorage: _initStorage$1,
+    iterate: iterate$1,
+    getItem: getItem$1,
+    setItem: setItem$1,
+    removeItem: removeItem$1,
+    clear: clear$1,
+    length: length$1,
+    key: key$1,
+    keys: keys$1
+};
+
+// Config the localStorage backend, using options set in the config.
+function _initStorage$2(options) {
+    var self = this;
+    var dbInfo = {};
+    if (options) {
+        for (var i in options) {
+            dbInfo[i] = options[i];
+        }
+    }
+
+    dbInfo.keyPrefix = dbInfo.name + '/';
+
+    if (dbInfo.storeName !== self._defaultConfig.storeName) {
+        dbInfo.keyPrefix += dbInfo.storeName + '/';
+    }
+
+    self._dbInfo = dbInfo;
+    dbInfo.serializer = localforageSerializer;
+
+    return Promise$1.resolve();
+}
+
+// Remove all keys from the datastore, effectively destroying all data in
+// the app's key/value store!
+function clear$2(callback) {
+    var self = this;
+    var promise = self.ready().then(function () {
+        var keyPrefix = self._dbInfo.keyPrefix;
+
+        for (var i = localStorage.length - 1; i >= 0; i--) {
+            var key = localStorage.key(i);
+
+            if (key.indexOf(keyPrefix) === 0) {
+                localStorage.removeItem(key);
+            }
+        }
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Retrieve an item from the store. Unlike the original async_storage
+// library in Gaia, we don't modify return values at all. If a key's value
+// is `undefined`, we pass that value to the callback function.
+function getItem$2(key, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = self.ready().then(function () {
+        var dbInfo = self._dbInfo;
+        var result = localStorage.getItem(dbInfo.keyPrefix + key);
+
+        // If a result was found, parse it from the serialized
+        // string into a JS object. If result isn't truthy, the key
+        // is likely undefined and we'll pass it straight to the
+        // callback.
+        if (result) {
+            result = dbInfo.serializer.deserialize(result);
+        }
+
+        return result;
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Iterate over all items in the store.
+function iterate$2(iterator, callback) {
+    var self = this;
+
+    var promise = self.ready().then(function () {
+        var dbInfo = self._dbInfo;
+        var keyPrefix = dbInfo.keyPrefix;
+        var keyPrefixLength = keyPrefix.length;
+        var length = localStorage.length;
+
+        // We use a dedicated iterator instead of the `i` variable below
+        // so other keys we fetch in localStorage aren't counted in
+        // the `iterationNumber` argument passed to the `iterate()`
+        // callback.
+        //
+        // See: github.com/mozilla/localForage/pull/435#discussion_r38061530
+        var iterationNumber = 1;
+
+        for (var i = 0; i < length; i++) {
+            var key = localStorage.key(i);
+            if (key.indexOf(keyPrefix) !== 0) {
+                continue;
+            }
+            var value = localStorage.getItem(key);
+
+            // If a result was found, parse it from the serialized
+            // string into a JS object. If result isn't truthy, the
+            // key is likely undefined and we'll pass it straight
+            // to the iterator.
+            if (value) {
+                value = dbInfo.serializer.deserialize(value);
+            }
+
+            value = iterator(value, key.substring(keyPrefixLength), iterationNumber++);
+
+            if (value !== void 0) {
+                return value;
+            }
+        }
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Same as localStorage's key() method, except takes a callback.
+function key$2(n, callback) {
+    var self = this;
+    var promise = self.ready().then(function () {
+        var dbInfo = self._dbInfo;
+        var result;
+        try {
+            result = localStorage.key(n);
+        } catch (error) {
+            result = null;
+        }
+
+        // Remove the prefix from the key, if a key is found.
+        if (result) {
+            result = result.substring(dbInfo.keyPrefix.length);
+        }
+
+        return result;
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function keys$2(callback) {
+    var self = this;
+    var promise = self.ready().then(function () {
+        var dbInfo = self._dbInfo;
+        var length = localStorage.length;
+        var keys = [];
+
+        for (var i = 0; i < length; i++) {
+            if (localStorage.key(i).indexOf(dbInfo.keyPrefix) === 0) {
+                keys.push(localStorage.key(i).substring(dbInfo.keyPrefix.length));
+            }
+        }
+
+        return keys;
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Supply the number of keys in the datastore to the callback function.
+function length$2(callback) {
+    var self = this;
+    var promise = self.keys().then(function (keys) {
+        return keys.length;
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Remove an item from the store, nice and simple.
+function removeItem$2(key, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = self.ready().then(function () {
+        var dbInfo = self._dbInfo;
+        localStorage.removeItem(dbInfo.keyPrefix + key);
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+// Set a key's value and run an optional callback once the value is set.
+// Unlike Gaia's implementation, the callback function is passed the value,
+// in case you want to operate on that value only after you're sure it
+// saved, or something like that.
+function setItem$2(key, value, callback) {
+    var self = this;
+
+    // Cast the key to a string, as that's all we can set as a key.
+    if (typeof key !== 'string') {
+        console.warn(key + ' used as a key, but it is not a string.');
+        key = String(key);
+    }
+
+    var promise = self.ready().then(function () {
+        // Convert undefined values to null.
+        // https://github.com/mozilla/localForage/pull/42
+        if (value === undefined) {
+            value = null;
+        }
+
+        // Save the original value to pass to the callback.
+        var originalValue = value;
+
+        return new Promise$1(function (resolve, reject) {
+            var dbInfo = self._dbInfo;
+            dbInfo.serializer.serialize(value, function (value, error) {
+                if (error) {
+                    reject(error);
+                } else {
+                    try {
+                        localStorage.setItem(dbInfo.keyPrefix + key, value);
+                        resolve(originalValue);
+                    } catch (e) {
+                        // localStorage capacity exceeded.
+                        // TODO: Make this a specific error/event.
+                        if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                            reject(e);
+                        }
+                        reject(e);
+                    }
+                }
+            });
+        });
+    });
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+var localStorageWrapper = {
+    _driver: 'localStorageWrapper',
+    _initStorage: _initStorage$2,
+    // Default API, from Gaia/localStorage.
+    iterate: iterate$2,
+    getItem: getItem$2,
+    setItem: setItem$2,
+    removeItem: removeItem$2,
+    clear: clear$2,
+    length: length$2,
+    key: key$2,
+    keys: keys$2
+};
+
+// Custom drivers are stored here when `defineDriver()` is called.
+// They are shared across all instances of localForage.
+var CustomDrivers = {};
+
+var DriverType = {
+    INDEXEDDB: 'asyncStorage',
+    LOCALSTORAGE: 'localStorageWrapper',
+    WEBSQL: 'webSQLStorage'
+};
+
+var DefaultDriverOrder = [DriverType.INDEXEDDB, DriverType.WEBSQL, DriverType.LOCALSTORAGE];
+
+var LibraryMethods = ['clear', 'getItem', 'iterate', 'key', 'keys', 'length', 'removeItem', 'setItem'];
+
+var DefaultConfig = {
+    description: '',
+    driver: DefaultDriverOrder.slice(),
+    name: 'localforage',
+    // Default DB size is _JUST UNDER_ 5MB, as it's the highest size
+    // we can use without a prompt.
+    size: 4980736,
+    storeName: 'keyvaluepairs',
+    version: 1.0
+};
+
+var driverSupport = {};
+// Check to see if IndexedDB is available and if it is the latest
+// implementation; it's our preferred backend library. We use "_spec_test"
+// as the name of the database because it's not the one we'll operate on,
+// but it's useful to make sure its using the right spec.
+// See: https://github.com/mozilla/localForage/issues/128
+driverSupport[DriverType.INDEXEDDB] = isIndexedDBValid();
+
+driverSupport[DriverType.WEBSQL] = isWebSQLValid();
+
+driverSupport[DriverType.LOCALSTORAGE] = isLocalStorageValid();
+
+var isArray = Array.isArray || function (arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+};
+
+function callWhenReady(localForageInstance, libraryMethod) {
+    localForageInstance[libraryMethod] = function () {
+        var _args = arguments;
+        return localForageInstance.ready().then(function () {
+            return localForageInstance[libraryMethod].apply(localForageInstance, _args);
+        });
+    };
+}
+
+function extend() {
+    for (var i = 1; i < arguments.length; i++) {
+        var arg = arguments[i];
+
+        if (arg) {
+            for (var key in arg) {
+                if (arg.hasOwnProperty(key)) {
+                    if (isArray(arg[key])) {
+                        arguments[0][key] = arg[key].slice();
+                    } else {
+                        arguments[0][key] = arg[key];
+                    }
+                }
+            }
+        }
+    }
+
+    return arguments[0];
+}
+
+function isLibraryDriver(driverName) {
+    for (var driver in DriverType) {
+        if (DriverType.hasOwnProperty(driver) && DriverType[driver] === driverName) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+var LocalForage = function () {
+    function LocalForage(options) {
+        _classCallCheck(this, LocalForage);
+
+        this.INDEXEDDB = DriverType.INDEXEDDB;
+        this.LOCALSTORAGE = DriverType.LOCALSTORAGE;
+        this.WEBSQL = DriverType.WEBSQL;
+
+        this._defaultConfig = extend({}, DefaultConfig);
+        this._config = extend({}, this._defaultConfig, options);
+        this._driverSet = null;
+        this._initDriver = null;
+        this._ready = false;
+        this._dbInfo = null;
+
+        this._wrapLibraryMethodsWithReady();
+        this.setDriver(this._config.driver)["catch"](function () {});
+    }
+
+    // Set any config values for localForage; can be called anytime before
+    // the first API call (e.g. `getItem`, `setItem`).
+    // We loop through options so we don't overwrite existing config
+    // values.
+
+
+    LocalForage.prototype.config = function config(options) {
+        // If the options argument is an object, we use it to set values.
+        // Otherwise, we return either a specified config value or all
+        // config values.
+        if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+            // If localforage is ready and fully initialized, we can't set
+            // any new configuration values. Instead, we return an error.
+            if (this._ready) {
+                return new Error("Can't call config() after localforage " + 'has been used.');
+            }
+
+            for (var i in options) {
+                if (i === 'storeName') {
+                    options[i] = options[i].replace(/\W/g, '_');
+                }
+
+                if (i === 'version' && typeof options[i] !== 'number') {
+                    return new Error('Database version must be a number.');
+                }
+
+                this._config[i] = options[i];
+            }
+
+            // after all config options are set and
+            // the driver option is used, try setting it
+            if ('driver' in options && options.driver) {
+                return this.setDriver(this._config.driver);
+            }
+
+            return true;
+        } else if (typeof options === 'string') {
+            return this._config[options];
+        } else {
+            return this._config;
+        }
+    };
+
+    // Used to define a custom driver, shared across all instances of
+    // localForage.
+
+
+    LocalForage.prototype.defineDriver = function defineDriver(driverObject, callback, errorCallback) {
+        var promise = new Promise$1(function (resolve, reject) {
+            try {
+                var driverName = driverObject._driver;
+                var complianceError = new Error('Custom driver not compliant; see ' + 'https://mozilla.github.io/localForage/#definedriver');
+                var namingError = new Error('Custom driver name already in use: ' + driverObject._driver);
+
+                // A driver name should be defined and not overlap with the
+                // library-defined, default drivers.
+                if (!driverObject._driver) {
+                    reject(complianceError);
+                    return;
+                }
+                if (isLibraryDriver(driverObject._driver)) {
+                    reject(namingError);
+                    return;
+                }
+
+                var customDriverMethods = LibraryMethods.concat('_initStorage');
+                for (var i = 0; i < customDriverMethods.length; i++) {
+                    var customDriverMethod = customDriverMethods[i];
+                    if (!customDriverMethod || !driverObject[customDriverMethod] || typeof driverObject[customDriverMethod] !== 'function') {
+                        reject(complianceError);
+                        return;
+                    }
+                }
+
+                var supportPromise = Promise$1.resolve(true);
+                if ('_support' in driverObject) {
+                    if (driverObject._support && typeof driverObject._support === 'function') {
+                        supportPromise = driverObject._support();
+                    } else {
+                        supportPromise = Promise$1.resolve(!!driverObject._support);
+                    }
+                }
+
+                supportPromise.then(function (supportResult) {
+                    driverSupport[driverName] = supportResult;
+                    CustomDrivers[driverName] = driverObject;
+                    resolve();
+                }, reject);
+            } catch (e) {
+                reject(e);
+            }
+        });
+
+        executeTwoCallbacks(promise, callback, errorCallback);
+        return promise;
+    };
+
+    LocalForage.prototype.driver = function driver() {
+        return this._driver || null;
+    };
+
+    LocalForage.prototype.getDriver = function getDriver(driverName, callback, errorCallback) {
+        var self = this;
+        var getDriverPromise = Promise$1.resolve().then(function () {
+            if (isLibraryDriver(driverName)) {
+                switch (driverName) {
+                    case self.INDEXEDDB:
+                        return asyncStorage;
+                    case self.LOCALSTORAGE:
+                        return localStorageWrapper;
+                    case self.WEBSQL:
+                        return webSQLStorage;
+                }
+            } else if (CustomDrivers[driverName]) {
+                return CustomDrivers[driverName];
+            } else {
+                throw new Error('Driver not found.');
+            }
+        });
+        executeTwoCallbacks(getDriverPromise, callback, errorCallback);
+        return getDriverPromise;
+    };
+
+    LocalForage.prototype.getSerializer = function getSerializer(callback) {
+        var serializerPromise = Promise$1.resolve(localforageSerializer);
+        executeTwoCallbacks(serializerPromise, callback);
+        return serializerPromise;
+    };
+
+    LocalForage.prototype.ready = function ready(callback) {
+        var self = this;
+
+        var promise = self._driverSet.then(function () {
+            if (self._ready === null) {
+                self._ready = self._initDriver();
+            }
+
+            return self._ready;
+        });
+
+        executeTwoCallbacks(promise, callback, callback);
+        return promise;
+    };
+
+    LocalForage.prototype.setDriver = function setDriver(drivers, callback, errorCallback) {
+        var self = this;
+
+        if (!isArray(drivers)) {
+            drivers = [drivers];
+        }
+
+        var supportedDrivers = this._getSupportedDrivers(drivers);
+
+        function setDriverToConfig() {
+            self._config.driver = self.driver();
+        }
+
+        function extendSelfWithDriver(driver) {
+            self._extend(driver);
+            setDriverToConfig();
+
+            self._ready = self._initStorage(self._config);
+            return self._ready;
+        }
+
+        function initDriver(supportedDrivers) {
+            return function () {
+                var currentDriverIndex = 0;
+
+                function driverPromiseLoop() {
+                    while (currentDriverIndex < supportedDrivers.length) {
+                        var driverName = supportedDrivers[currentDriverIndex];
+                        currentDriverIndex++;
+
+                        self._dbInfo = null;
+                        self._ready = null;
+
+                        return self.getDriver(driverName).then(extendSelfWithDriver)["catch"](driverPromiseLoop);
+                    }
+
+                    setDriverToConfig();
+                    var error = new Error('No available storage method found.');
+                    self._driverSet = Promise$1.reject(error);
+                    return self._driverSet;
+                }
+
+                return driverPromiseLoop();
+            };
+        }
+
+        // There might be a driver initialization in progress
+        // so wait for it to finish in order to avoid a possible
+        // race condition to set _dbInfo
+        var oldDriverSetDone = this._driverSet !== null ? this._driverSet["catch"](function () {
+            return Promise$1.resolve();
+        }) : Promise$1.resolve();
+
+        this._driverSet = oldDriverSetDone.then(function () {
+            var driverName = supportedDrivers[0];
+            self._dbInfo = null;
+            self._ready = null;
+
+            return self.getDriver(driverName).then(function (driver) {
+                self._driver = driver._driver;
+                setDriverToConfig();
+                self._wrapLibraryMethodsWithReady();
+                self._initDriver = initDriver(supportedDrivers);
+            });
+        })["catch"](function () {
+            setDriverToConfig();
+            var error = new Error('No available storage method found.');
+            self._driverSet = Promise$1.reject(error);
+            return self._driverSet;
+        });
+
+        executeTwoCallbacks(this._driverSet, callback, errorCallback);
+        return this._driverSet;
+    };
+
+    LocalForage.prototype.supports = function supports(driverName) {
+        return !!driverSupport[driverName];
+    };
+
+    LocalForage.prototype._extend = function _extend(libraryMethodsAndProperties) {
+        extend(this, libraryMethodsAndProperties);
+    };
+
+    LocalForage.prototype._getSupportedDrivers = function _getSupportedDrivers(drivers) {
+        var supportedDrivers = [];
+        for (var i = 0, len = drivers.length; i < len; i++) {
+            var driverName = drivers[i];
+            if (this.supports(driverName)) {
+                supportedDrivers.push(driverName);
+            }
+        }
+        return supportedDrivers;
+    };
+
+    LocalForage.prototype._wrapLibraryMethodsWithReady = function _wrapLibraryMethodsWithReady() {
+        // Add a stub for each driver API method that delays the call to the
+        // corresponding driver method until localForage is ready. These stubs
+        // will be replaced by the driver methods as soon as the driver is
+        // loaded, so there is no performance impact.
+        for (var i = 0; i < LibraryMethods.length; i++) {
+            callWhenReady(this, LibraryMethods[i]);
+        }
+    };
+
+    LocalForage.prototype.createInstance = function createInstance(options) {
+        return new LocalForage(options);
+    };
+
+    return LocalForage;
+}();
+
+// The actual localForage object that we expose as a module or via a
+// global. It's extended by pulling in one of our other libraries.
+
+
+var localforage_js = new LocalForage();
+
+module.exports = localforage_js;
+
+},{"3":3}]},{},[4])(4)
+});
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+
+/***/ }),
+/* 182 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37693,906 +41047,10 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["default"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(28)))
 
 /***/ }),
-/* 180 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
-/**
- * vuex v2.4.0
- * (c) 2017 Evan You
- * @license MIT
- */
-var applyMixin = function (Vue) {
-  var version = Number(Vue.version.split('.')[0]);
-
-  if (version >= 2) {
-    Vue.mixin({ beforeCreate: vuexInit });
-  } else {
-    // override init and inject vuex init procedure
-    // for 1.x backwards compatibility.
-    var _init = Vue.prototype._init;
-    Vue.prototype._init = function (options) {
-      if ( options === void 0 ) options = {};
-
-      options.init = options.init
-        ? [vuexInit].concat(options.init)
-        : vuexInit;
-      _init.call(this, options);
-    };
-  }
-
-  /**
-   * Vuex init hook, injected into each instances init hooks list.
-   */
-
-  function vuexInit () {
-    var options = this.$options;
-    // store injection
-    if (options.store) {
-      this.$store = typeof options.store === 'function'
-        ? options.store()
-        : options.store;
-    } else if (options.parent && options.parent.$store) {
-      this.$store = options.parent.$store;
-    }
-  }
-};
-
-var devtoolHook =
-  typeof window !== 'undefined' &&
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
-
-function devtoolPlugin (store) {
-  if (!devtoolHook) { return }
-
-  store._devtoolHook = devtoolHook;
-
-  devtoolHook.emit('vuex:init', store);
-
-  devtoolHook.on('vuex:travel-to-state', function (targetState) {
-    store.replaceState(targetState);
-  });
-
-  store.subscribe(function (mutation, state) {
-    devtoolHook.emit('vuex:mutation', mutation, state);
-  });
-}
-
-/**
- * Get the first item that pass the test
- * by second argument function
- *
- * @param {Array} list
- * @param {Function} f
- * @return {*}
- */
-/**
- * Deep copy the given object considering circular structure.
- * This function caches all nested objects and its copies.
- * If it detects circular structure, use cached copy to avoid infinite loop.
- *
- * @param {*} obj
- * @param {Array<Object>} cache
- * @return {*}
- */
-
-
-/**
- * forEach for object
- */
-function forEachValue (obj, fn) {
-  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
-}
-
-function isObject (obj) {
-  return obj !== null && typeof obj === 'object'
-}
-
-function isPromise (val) {
-  return val && typeof val.then === 'function'
-}
-
-function assert (condition, msg) {
-  if (!condition) { throw new Error(("[vuex] " + msg)) }
-}
-
-var Module = function Module (rawModule, runtime) {
-  this.runtime = runtime;
-  this._children = Object.create(null);
-  this._rawModule = rawModule;
-  var rawState = rawModule.state;
-  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
-};
-
-var prototypeAccessors$1 = { namespaced: {} };
-
-prototypeAccessors$1.namespaced.get = function () {
-  return !!this._rawModule.namespaced
-};
-
-Module.prototype.addChild = function addChild (key, module) {
-  this._children[key] = module;
-};
-
-Module.prototype.removeChild = function removeChild (key) {
-  delete this._children[key];
-};
-
-Module.prototype.getChild = function getChild (key) {
-  return this._children[key]
-};
-
-Module.prototype.update = function update (rawModule) {
-  this._rawModule.namespaced = rawModule.namespaced;
-  if (rawModule.actions) {
-    this._rawModule.actions = rawModule.actions;
-  }
-  if (rawModule.mutations) {
-    this._rawModule.mutations = rawModule.mutations;
-  }
-  if (rawModule.getters) {
-    this._rawModule.getters = rawModule.getters;
-  }
-};
-
-Module.prototype.forEachChild = function forEachChild (fn) {
-  forEachValue(this._children, fn);
-};
-
-Module.prototype.forEachGetter = function forEachGetter (fn) {
-  if (this._rawModule.getters) {
-    forEachValue(this._rawModule.getters, fn);
-  }
-};
-
-Module.prototype.forEachAction = function forEachAction (fn) {
-  if (this._rawModule.actions) {
-    forEachValue(this._rawModule.actions, fn);
-  }
-};
-
-Module.prototype.forEachMutation = function forEachMutation (fn) {
-  if (this._rawModule.mutations) {
-    forEachValue(this._rawModule.mutations, fn);
-  }
-};
-
-Object.defineProperties( Module.prototype, prototypeAccessors$1 );
-
-var ModuleCollection = function ModuleCollection (rawRootModule) {
-  // register root module (Vuex.Store options)
-  this.register([], rawRootModule, false);
-};
-
-ModuleCollection.prototype.get = function get (path) {
-  return path.reduce(function (module, key) {
-    return module.getChild(key)
-  }, this.root)
-};
-
-ModuleCollection.prototype.getNamespace = function getNamespace (path) {
-  var module = this.root;
-  return path.reduce(function (namespace, key) {
-    module = module.getChild(key);
-    return namespace + (module.namespaced ? key + '/' : '')
-  }, '')
-};
-
-ModuleCollection.prototype.update = function update$1 (rawRootModule) {
-  update([], this.root, rawRootModule);
-};
-
-ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
-    var this$1 = this;
-    if ( runtime === void 0 ) runtime = true;
-
-  if (process.env.NODE_ENV !== 'production') {
-    assertRawModule(path, rawModule);
-  }
-
-  var newModule = new Module(rawModule, runtime);
-  if (path.length === 0) {
-    this.root = newModule;
-  } else {
-    var parent = this.get(path.slice(0, -1));
-    parent.addChild(path[path.length - 1], newModule);
-  }
-
-  // register nested modules
-  if (rawModule.modules) {
-    forEachValue(rawModule.modules, function (rawChildModule, key) {
-      this$1.register(path.concat(key), rawChildModule, runtime);
-    });
-  }
-};
-
-ModuleCollection.prototype.unregister = function unregister (path) {
-  var parent = this.get(path.slice(0, -1));
-  var key = path[path.length - 1];
-  if (!parent.getChild(key).runtime) { return }
-
-  parent.removeChild(key);
-};
-
-function update (path, targetModule, newModule) {
-  if (process.env.NODE_ENV !== 'production') {
-    assertRawModule(path, newModule);
-  }
-
-  // update target module
-  targetModule.update(newModule);
-
-  // update nested modules
-  if (newModule.modules) {
-    for (var key in newModule.modules) {
-      if (!targetModule.getChild(key)) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn(
-            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
-            'manual reload is needed'
-          );
-        }
-        return
-      }
-      update(
-        path.concat(key),
-        targetModule.getChild(key),
-        newModule.modules[key]
-      );
-    }
-  }
-}
-
-function assertRawModule (path, rawModule) {
-  ['getters', 'actions', 'mutations'].forEach(function (key) {
-    if (!rawModule[key]) { return }
-
-    forEachValue(rawModule[key], function (value, type) {
-      assert(
-        typeof value === 'function',
-        makeAssertionMessage(path, key, type, value)
-      );
-    });
-  });
-}
-
-function makeAssertionMessage (path, key, type, value) {
-  var buf = key + " should be function but \"" + key + "." + type + "\"";
-  if (path.length > 0) {
-    buf += " in module \"" + (path.join('.')) + "\"";
-  }
-  buf += " is " + (JSON.stringify(value)) + ".";
-
-  return buf
-}
-
-var Vue; // bind on install
-
-var Store = function Store (options) {
-  var this$1 = this;
-  if ( options === void 0 ) options = {};
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
-    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
-    assert(this instanceof Store, "Store must be called with the new operator.");
-  }
-
-  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
-  var strict = options.strict; if ( strict === void 0 ) strict = false;
-
-  var state = options.state; if ( state === void 0 ) state = {};
-  if (typeof state === 'function') {
-    state = state();
-  }
-
-  // store internal state
-  this._committing = false;
-  this._actions = Object.create(null);
-  this._mutations = Object.create(null);
-  this._wrappedGetters = Object.create(null);
-  this._modules = new ModuleCollection(options);
-  this._modulesNamespaceMap = Object.create(null);
-  this._subscribers = [];
-  this._watcherVM = new Vue();
-
-  // bind commit and dispatch to self
-  var store = this;
-  var ref = this;
-  var dispatch = ref.dispatch;
-  var commit = ref.commit;
-  this.dispatch = function boundDispatch (type, payload) {
-    return dispatch.call(store, type, payload)
-  };
-  this.commit = function boundCommit (type, payload, options) {
-    return commit.call(store, type, payload, options)
-  };
-
-  // strict mode
-  this.strict = strict;
-
-  // init root module.
-  // this also recursively registers all sub-modules
-  // and collects all module getters inside this._wrappedGetters
-  installModule(this, state, [], this._modules.root);
-
-  // initialize the store vm, which is responsible for the reactivity
-  // (also registers _wrappedGetters as computed properties)
-  resetStoreVM(this, state);
-
-  // apply plugins
-  plugins.forEach(function (plugin) { return plugin(this$1); });
-
-  if (Vue.config.devtools) {
-    devtoolPlugin(this);
-  }
-};
-
-var prototypeAccessors = { state: {} };
-
-prototypeAccessors.state.get = function () {
-  return this._vm._data.$$state
-};
-
-prototypeAccessors.state.set = function (v) {
-  if (process.env.NODE_ENV !== 'production') {
-    assert(false, "Use store.replaceState() to explicit replace store state.");
-  }
-};
-
-Store.prototype.commit = function commit (_type, _payload, _options) {
-    var this$1 = this;
-
-  // check object-style commit
-  var ref = unifyObjectStyle(_type, _payload, _options);
-    var type = ref.type;
-    var payload = ref.payload;
-    var options = ref.options;
-
-  var mutation = { type: type, payload: payload };
-  var entry = this._mutations[type];
-  if (!entry) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(("[vuex] unknown mutation type: " + type));
-    }
-    return
-  }
-  this._withCommit(function () {
-    entry.forEach(function commitIterator (handler) {
-      handler(payload);
-    });
-  });
-  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
-
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    options && options.silent
-  ) {
-    console.warn(
-      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
-      'Use the filter functionality in the vue-devtools'
-    );
-  }
-};
-
-Store.prototype.dispatch = function dispatch (_type, _payload) {
-  // check object-style dispatch
-  var ref = unifyObjectStyle(_type, _payload);
-    var type = ref.type;
-    var payload = ref.payload;
-
-  var entry = this._actions[type];
-  if (!entry) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(("[vuex] unknown action type: " + type));
-    }
-    return
-  }
-  return entry.length > 1
-    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
-    : entry[0](payload)
-};
-
-Store.prototype.subscribe = function subscribe (fn) {
-  var subs = this._subscribers;
-  if (subs.indexOf(fn) < 0) {
-    subs.push(fn);
-  }
-  return function () {
-    var i = subs.indexOf(fn);
-    if (i > -1) {
-      subs.splice(i, 1);
-    }
-  }
-};
-
-Store.prototype.watch = function watch (getter, cb, options) {
-    var this$1 = this;
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(typeof getter === 'function', "store.watch only accepts a function.");
-  }
-  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
-};
-
-Store.prototype.replaceState = function replaceState (state) {
-    var this$1 = this;
-
-  this._withCommit(function () {
-    this$1._vm._data.$$state = state;
-  });
-};
-
-Store.prototype.registerModule = function registerModule (path, rawModule) {
-  if (typeof path === 'string') { path = [path]; }
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(Array.isArray(path), "module path must be a string or an Array.");
-    assert(path.length > 0, 'cannot register the root module by using registerModule.');
-  }
-
-  this._modules.register(path, rawModule);
-  installModule(this, this.state, path, this._modules.get(path));
-  // reset store to update getters...
-  resetStoreVM(this, this.state);
-};
-
-Store.prototype.unregisterModule = function unregisterModule (path) {
-    var this$1 = this;
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(Array.isArray(path), "module path must be a string or an Array.");
-  }
-
-  this._modules.unregister(path);
-  this._withCommit(function () {
-    var parentState = getNestedState(this$1.state, path.slice(0, -1));
-    Vue.delete(parentState, path[path.length - 1]);
-  });
-  resetStore(this);
-};
-
-Store.prototype.hotUpdate = function hotUpdate (newOptions) {
-  this._modules.update(newOptions);
-  resetStore(this, true);
-};
-
-Store.prototype._withCommit = function _withCommit (fn) {
-  var committing = this._committing;
-  this._committing = true;
-  fn();
-  this._committing = committing;
-};
-
-Object.defineProperties( Store.prototype, prototypeAccessors );
-
-function resetStore (store, hot) {
-  store._actions = Object.create(null);
-  store._mutations = Object.create(null);
-  store._wrappedGetters = Object.create(null);
-  store._modulesNamespaceMap = Object.create(null);
-  var state = store.state;
-  // init all modules
-  installModule(store, state, [], store._modules.root, true);
-  // reset vm
-  resetStoreVM(store, state, hot);
-}
-
-function resetStoreVM (store, state, hot) {
-  var oldVm = store._vm;
-
-  // bind store public getters
-  store.getters = {};
-  var wrappedGetters = store._wrappedGetters;
-  var computed = {};
-  forEachValue(wrappedGetters, function (fn, key) {
-    // use computed to leverage its lazy-caching mechanism
-    computed[key] = function () { return fn(store); };
-    Object.defineProperty(store.getters, key, {
-      get: function () { return store._vm[key]; },
-      enumerable: true // for local getters
-    });
-  });
-
-  // use a Vue instance to store the state tree
-  // suppress warnings just in case the user has added
-  // some funky global mixins
-  var silent = Vue.config.silent;
-  Vue.config.silent = true;
-  store._vm = new Vue({
-    data: {
-      $$state: state
-    },
-    computed: computed
-  });
-  Vue.config.silent = silent;
-
-  // enable strict mode for new vm
-  if (store.strict) {
-    enableStrictMode(store);
-  }
-
-  if (oldVm) {
-    if (hot) {
-      // dispatch changes in all subscribed watchers
-      // to force getter re-evaluation for hot reloading.
-      store._withCommit(function () {
-        oldVm._data.$$state = null;
-      });
-    }
-    Vue.nextTick(function () { return oldVm.$destroy(); });
-  }
-}
-
-function installModule (store, rootState, path, module, hot) {
-  var isRoot = !path.length;
-  var namespace = store._modules.getNamespace(path);
-
-  // register in namespace map
-  if (module.namespaced) {
-    store._modulesNamespaceMap[namespace] = module;
-  }
-
-  // set state
-  if (!isRoot && !hot) {
-    var parentState = getNestedState(rootState, path.slice(0, -1));
-    var moduleName = path[path.length - 1];
-    store._withCommit(function () {
-      Vue.set(parentState, moduleName, module.state);
-    });
-  }
-
-  var local = module.context = makeLocalContext(store, namespace, path);
-
-  module.forEachMutation(function (mutation, key) {
-    var namespacedType = namespace + key;
-    registerMutation(store, namespacedType, mutation, local);
-  });
-
-  module.forEachAction(function (action, key) {
-    var namespacedType = namespace + key;
-    registerAction(store, namespacedType, action, local);
-  });
-
-  module.forEachGetter(function (getter, key) {
-    var namespacedType = namespace + key;
-    registerGetter(store, namespacedType, getter, local);
-  });
-
-  module.forEachChild(function (child, key) {
-    installModule(store, rootState, path.concat(key), child, hot);
-  });
-}
-
-/**
- * make localized dispatch, commit, getters and state
- * if there is no namespace, just use root ones
- */
-function makeLocalContext (store, namespace, path) {
-  var noNamespace = namespace === '';
-
-  var local = {
-    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if (process.env.NODE_ENV !== 'production' && !store._actions[type]) {
-          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
-          return
-        }
-      }
-
-      return store.dispatch(type, payload)
-    },
-
-    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if (process.env.NODE_ENV !== 'production' && !store._mutations[type]) {
-          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
-          return
-        }
-      }
-
-      store.commit(type, payload, options);
-    }
-  };
-
-  // getters and state object must be gotten lazily
-  // because they will be changed by vm update
-  Object.defineProperties(local, {
-    getters: {
-      get: noNamespace
-        ? function () { return store.getters; }
-        : function () { return makeLocalGetters(store, namespace); }
-    },
-    state: {
-      get: function () { return getNestedState(store.state, path); }
-    }
-  });
-
-  return local
-}
-
-function makeLocalGetters (store, namespace) {
-  var gettersProxy = {};
-
-  var splitPos = namespace.length;
-  Object.keys(store.getters).forEach(function (type) {
-    // skip if the target getter is not match this namespace
-    if (type.slice(0, splitPos) !== namespace) { return }
-
-    // extract local getter type
-    var localType = type.slice(splitPos);
-
-    // Add a port to the getters proxy.
-    // Define as getter property because
-    // we do not want to evaluate the getters in this time.
-    Object.defineProperty(gettersProxy, localType, {
-      get: function () { return store.getters[type]; },
-      enumerable: true
-    });
-  });
-
-  return gettersProxy
-}
-
-function registerMutation (store, type, handler, local) {
-  var entry = store._mutations[type] || (store._mutations[type] = []);
-  entry.push(function wrappedMutationHandler (payload) {
-    handler.call(store, local.state, payload);
-  });
-}
-
-function registerAction (store, type, handler, local) {
-  var entry = store._actions[type] || (store._actions[type] = []);
-  entry.push(function wrappedActionHandler (payload, cb) {
-    var res = handler.call(store, {
-      dispatch: local.dispatch,
-      commit: local.commit,
-      getters: local.getters,
-      state: local.state,
-      rootGetters: store.getters,
-      rootState: store.state
-    }, payload, cb);
-    if (!isPromise(res)) {
-      res = Promise.resolve(res);
-    }
-    if (store._devtoolHook) {
-      return res.catch(function (err) {
-        store._devtoolHook.emit('vuex:error', err);
-        throw err
-      })
-    } else {
-      return res
-    }
-  });
-}
-
-function registerGetter (store, type, rawGetter, local) {
-  if (store._wrappedGetters[type]) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(("[vuex] duplicate getter key: " + type));
-    }
-    return
-  }
-  store._wrappedGetters[type] = function wrappedGetter (store) {
-    return rawGetter(
-      local.state, // local state
-      local.getters, // local getters
-      store.state, // root state
-      store.getters // root getters
-    )
-  };
-}
-
-function enableStrictMode (store) {
-  store._vm.$watch(function () { return this._data.$$state }, function () {
-    if (process.env.NODE_ENV !== 'production') {
-      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
-    }
-  }, { deep: true, sync: true });
-}
-
-function getNestedState (state, path) {
-  return path.length
-    ? path.reduce(function (state, key) { return state[key]; }, state)
-    : state
-}
-
-function unifyObjectStyle (type, payload, options) {
-  if (isObject(type) && type.type) {
-    options = payload;
-    payload = type;
-    type = type.type;
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
-  }
-
-  return { type: type, payload: payload, options: options }
-}
-
-function install (_Vue) {
-  if (Vue) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(
-        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
-      );
-    }
-    return
-  }
-  Vue = _Vue;
-  applyMixin(Vue);
-}
-
-// auto install in dist mode
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
-}
-
-var mapState = normalizeNamespace(function (namespace, states) {
-  var res = {};
-  normalizeMap(states).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedState () {
-      var state = this.$store.state;
-      var getters = this.$store.getters;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
-        if (!module) {
-          return
-        }
-        state = module.context.state;
-        getters = module.context.getters;
-      }
-      return typeof val === 'function'
-        ? val.call(this, state, getters)
-        : state[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-var mapMutations = normalizeNamespace(function (namespace, mutations) {
-  var res = {};
-  normalizeMap(mutations).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    val = namespace + val;
-    res[key] = function mappedMutation () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      if (namespace && !getModuleByNamespace(this.$store, 'mapMutations', namespace)) {
-        return
-      }
-      return this.$store.commit.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-var mapGetters = normalizeNamespace(function (namespace, getters) {
-  var res = {};
-  normalizeMap(getters).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    val = namespace + val;
-    res[key] = function mappedGetter () {
-      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
-        return
-      }
-      if (process.env.NODE_ENV !== 'production' && !(val in this.$store.getters)) {
-        console.error(("[vuex] unknown getter: " + val));
-        return
-      }
-      return this.$store.getters[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-var mapActions = normalizeNamespace(function (namespace, actions) {
-  var res = {};
-  normalizeMap(actions).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    val = namespace + val;
-    res[key] = function mappedAction () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      if (namespace && !getModuleByNamespace(this.$store, 'mapActions', namespace)) {
-        return
-      }
-      return this.$store.dispatch.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-var createNamespacedHelpers = function (namespace) { return ({
-  mapState: mapState.bind(null, namespace),
-  mapGetters: mapGetters.bind(null, namespace),
-  mapMutations: mapMutations.bind(null, namespace),
-  mapActions: mapActions.bind(null, namespace)
-}); };
-
-function normalizeMap (map) {
-  return Array.isArray(map)
-    ? map.map(function (key) { return ({ key: key, val: key }); })
-    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
-}
-
-function normalizeNamespace (fn) {
-  return function (namespace, map) {
-    if (typeof namespace !== 'string') {
-      map = namespace;
-      namespace = '';
-    } else if (namespace.charAt(namespace.length - 1) !== '/') {
-      namespace += '/';
-    }
-    return fn(namespace, map)
-  }
-}
-
-function getModuleByNamespace (store, helper, namespace) {
-  var module = store._modulesNamespaceMap[namespace];
-  if (process.env.NODE_ENV !== 'production' && !module) {
-    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
-  }
-  return module
-}
-
-var index_esm = {
-  Store: Store,
-  install: install,
-  version: '2.4.0',
-  mapState: mapState,
-  mapMutations: mapMutations,
-  mapGetters: mapGetters,
-  mapActions: mapActions,
-  createNamespacedHelpers: createNamespacedHelpers
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (index_esm);
-
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27)))
-
-/***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38605,7 +41063,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38618,7 +41076,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38628,11 +41086,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(257);
+__webpack_require__(261);
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(240),
+    template: __webpack_require__(244),
     created: function created() {
         var me = this;
         console.log("creator just created!");
@@ -38651,7 +41109,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38661,27 +41119,27 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(18);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(29);
+var _exerciseQA = __webpack_require__(30);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(38);
+var _snack = __webpack_require__(39);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-var _invertObject = __webpack_require__(58);
+var _invertObject = __webpack_require__(60);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
-var _exercises = __webpack_require__(45);
+var _exercises = __webpack_require__(47);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
@@ -38689,7 +41147,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(241),
+    template: __webpack_require__(245),
     data: function data() {
         return {
             items: {},
@@ -38855,7 +41313,7 @@ function convertItemIdsObjectToList(obj) {
 }
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38865,14 +41323,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(18);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(242),
+    template: __webpack_require__(246),
     created: async function created() {
         this.exercises = await _exercise2.default.getAll();
     },
@@ -38884,7 +41342,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38894,22 +41352,26 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _config = __webpack_require__(43);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _login2 = __webpack_require__(44);
+var _config = __webpack_require__(45);
+
+var _login2 = __webpack_require__(46);
 
 var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(30);
+var _users = __webpack_require__(31);
 
 var _users2 = _interopRequireDefault(_users);
+
+var _vuex = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(243),
+    template: __webpack_require__(247),
     created: function created() {
         var self = this;
         self.loggedIn = false;
@@ -38942,7 +41404,7 @@ exports.default = {
         };
     },
 
-    computed: {
+    computed: _extends({}, (0, _vuex.mapGetters)(['currentReviewingItem']), {
         itemsMasteredPerMinute: function itemsMasteredPerMinute() {
             return this.numItemsMastered / (this.secondsSpentStudying * 60);
         },
@@ -38960,8 +41422,9 @@ exports.default = {
                 return sum;
             }, 0);
             return numMastered;
-        }
-    },
+        },
+        reviewId: function reviewId() {}
+    }),
 
     methods: {
         login: function login() {
@@ -38979,7 +41442,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38989,10 +41452,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(258);
+__webpack_require__(262);
 
 exports.default = {
-    template: __webpack_require__(244),
+    template: __webpack_require__(248),
     methods: {
         goBack: function goBack() {
             this.$router.go(-1);
@@ -39002,7 +41465,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39012,13 +41475,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _knawledgeMap = __webpack_require__(14);
+var _knawledgeMap = __webpack_require__(15);
 
-var _fact = __webpack_require__(21);
+var _fact = __webpack_require__(22);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39026,22 +41489,22 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _heading = __webpack_require__(22);
+var _heading = __webpack_require__(23);
 
-var _filters = __webpack_require__(28);
+var _filters = __webpack_require__(29);
 
-var _skill = __webpack_require__(23);
+var _skill = __webpack_require__(24);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(5);
 
-__webpack_require__(259);
+__webpack_require__(263);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import Chartist from 'chartist'
 
 exports.default = {
-    template: __webpack_require__(245), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
     props: ['itemId'],
     created: async function created() {
         console.log('item history component created');
@@ -39070,7 +41533,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39080,11 +41543,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _newTree = __webpack_require__(199);
+var _newTree = __webpack_require__(202);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39092,7 +41555,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(247),
+    template: __webpack_require__(251),
     props: ['parentid', 'initialparenttreecontenturi'],
     data: function data() {
         return {
@@ -39186,7 +41649,7 @@ async function establishURIForContentAndThenAllChildren(treeId) {
 }
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39196,13 +41659,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(261);
+__webpack_require__(266);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(5);
 
 exports.default = {
     props: ['value'],
-    template: __webpack_require__(248),
+    template: __webpack_require__(252),
     created: function created() {},
     data: function data() {
         return {};
@@ -39242,7 +41705,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39311,7 +41774,7 @@ function getProficiencyCategory(proficiency) {
 }
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39325,14 +41788,14 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(30);
+var _users = __webpack_require__(31);
 
 var _users2 = _interopRequireDefault(_users);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(253), // '<div> {{movie}} this is the tree template</div>',
     created: function created() {
         var self = this;
 
@@ -39365,7 +41828,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39377,7 +41840,7 @@ Object.defineProperty(exports, "__esModule", {
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(250),
+    template: __webpack_require__(254),
     created: function created() {},
     data: function data() {
         return {};
@@ -39394,7 +41857,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39404,15 +41867,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _methods;
+var _extends2;
 
-var _trees = __webpack_require__(2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _knawledgeMap = __webpack_require__(14);
+var _trees = __webpack_require__(3);
 
-var _fact = __webpack_require__(21);
+var _knawledgeMap = __webpack_require__(15);
 
-var _contentItems = __webpack_require__(3);
+var _fact = __webpack_require__(22);
+
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39420,22 +41885,24 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _heading = __webpack_require__(22);
+var _heading = __webpack_require__(23);
 
-var _filters = __webpack_require__(28);
+var _filters = __webpack_require__(29);
 
-var _skill = __webpack_require__(23);
+var _skill = __webpack_require__(24);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(5);
 
-__webpack_require__(263);
+__webpack_require__(268);
+
+var _vuex = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 exports.default = {
-    template: __webpack_require__(253), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(257), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created: async function created() {
         var me = this;
@@ -39506,7 +41973,8 @@ exports.default = {
             return this.tree && this.tree.children instanceof Object ? Object.keys(this.tree.children).length : 0;
         }
     },
-    methods: (_methods = {
+    methods: _extends({}, (0, _vuex.mapActions)(['itemStudied']), (_extends2 = {
+        // ...mapAction
         //user methods
         startTimer: function startTimer() {
             this.content.startTimer();
@@ -39529,9 +41997,13 @@ exports.default = {
             this.editing = this.addingChild;
         },
         studySkill: function studySkill() {
-            console.log('study skill called!', this, this.$router);
             (0, _knawledgeMap.goToFromMap)({ name: 'study', params: { leafId: this.id } });
             // this.$router.push()
+        },
+        proficiencyClicked: function proficiencyClicked() {
+            this.syncProficiency();
+            // this.itemStudied({contentId:this.content.id})
+            this.$store.commit('itemStudied', this.content.id);
         },
         syncProficiency: function syncProficiency() {
             this.content.saveProficiency(); //  this.content.proficiency is already set I think, but not saved in db
@@ -39539,28 +42011,24 @@ exports.default = {
             this.syncGraphWithNode();
         },
         syncTreeChainWithUI: async function syncTreeChainWithUI() {
-            console.log(this.tree.id, "syncTreeChainWithUI called");
             (0, _knawledgeMap.syncGraphWithNode)(this.tree.id);
             // this.syncGraphWithNode()
             var parentId = this.tree.parentId;
             var parent = void 0;
             var num = 1;
             while (parentId) {
-                console.log(this.tree.id, "parent going to be synced is", parentId, "[" + num + "]");
                 (0, _knawledgeMap.syncGraphWithNode)(parentId);
                 parent = await _trees.Trees.get(parentId);
-                console.log(this.tree.id, "parent received is", parent, "[" + num + "]");
                 parentId = parent.parentId;
-                console.log(this.tree.id, "new parentId is", parentId, "[" + num + "]");
                 num++;
             }
         },
         syncGraphWithNode: async function syncGraphWithNode() {
             await (0, _knawledgeMap.syncGraphWithNode)(this.tree.id);
         }
-    }, _defineProperty(_methods, 'toggleAddChild', function toggleAddChild() {
+    }, _defineProperty(_extends2, 'toggleAddChild', function toggleAddChild() {
         this.addingChild = !this.addingChild;
-    }), _defineProperty(_methods, 'changeContent', function changeContent() {
+    }), _defineProperty(_extends2, 'changeContent', function changeContent() {
         switch (this.tree.contentType) {
             case 'fact':
                 var fact = new _fact.Fact({ question: this.content.question, answer: this.content.answer });
@@ -39579,76 +42047,80 @@ exports.default = {
         this.tree.changeContent(this.content.id, this.tree.contentType);
 
         this.toggleEditing();
-    }), _defineProperty(_methods, 'remove', async function remove() {
+    }), _defineProperty(_extends2, 'remove', async function remove() {
         if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")) {
             (0, _knawledgeMap.removeTreeFromGraph)(this.id);
             return this.tree.remove();
         }
-    }), _methods)
+    }), _extends2))
 };
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(176);
-
-__webpack_require__(28);
-
-__webpack_require__(177);
-
 __webpack_require__(178);
 
-var _treeReview = __webpack_require__(41);
+__webpack_require__(29);
+
+__webpack_require__(179);
+
+__webpack_require__(180);
+
+var _localforage = __webpack_require__(181);
+
+var _localforage2 = _interopRequireDefault(_localforage);
+
+var _treeReview = __webpack_require__(42);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _contentList = __webpack_require__(39);
+var _contentList = __webpack_require__(40);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _treeReviewContainer = __webpack_require__(42);
+var _treeReviewContainer = __webpack_require__(43);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _exerciseCreatorContainer = __webpack_require__(40);
+var _exerciseCreatorContainer = __webpack_require__(41);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _knawledgeMap = __webpack_require__(14);
+var _knawledgeMap = __webpack_require__(15);
 
 var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
 
-var _ebbinghaus = __webpack_require__(175);
+var _ebbinghaus = __webpack_require__(177);
 
 var _ebbinghaus2 = _interopRequireDefault(_ebbinghaus);
 
-var _vue = __webpack_require__(20);
+var _vue = __webpack_require__(16);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(179);
+var _vueRouter = __webpack_require__(182);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _vuex = __webpack_require__(180);
+var _vuex = __webpack_require__(21);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
-var _tree = __webpack_require__(19);
+var _tree = __webpack_require__(20);
+
+var _store = __webpack_require__(44);
+
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vuex2.default);
 _vue2.default.use(_vueRouter2.default);
-var store = new _vuex2.default.Store({
-    state: {
-        count: 0
-    }
-});
+
 // 1. Define route components.
 // These can be imported from other files
 var Foo = { template: '<div>foo</div>' };
@@ -39715,12 +42187,12 @@ var vm = new _vue2.default({
             this.state = 'treeReview';
         }
     },
-    store: store,
+    store: _store2.default,
     router: router
 });
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39734,7 +42206,7 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39755,7 +42227,35 @@ var Globals = exports.Globals = {
 };
 
 /***/ }),
-/* 198 */
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _contentItems = __webpack_require__(2);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function fixInteractionData() {
+    Object.keys(_user2.default.branchesData.items).forEach(async function (contentId) {
+        console.log('the key we are trying to find the content for is', contentId);
+        var item = await _contentItems2.default.get(contentId);
+        console.log('the content we got is', item);
+        _user2.default.set('interactions', item.interactions);
+        _user2.default.setInteractionsForItem(contentId, item.interactions);
+    });
+}
+window.fixInteractionData = fixInteractionData;
+
+/***/ }),
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39768,19 +42268,16 @@ exports.calculateStrength = calculateStrength;
 exports.calculateRecall = calculateRecall;
 exports.calculateTime = calculateTime;
 exports.calculateCurrentStrength = calculateCurrentStrength;
+
+var _proficiencyEnum = __webpack_require__(5);
+
 var e = 2.7182828;
 //memory strength in decibels - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
 function calculateStrength(R, t) {
-    console.log('calculateStrength R and t are', R, t);
     var proficiencyAsDecimal = R / 100;
-    console.log('calculateStrength proficiecnyAsDecimal', proficiencyAsDecimal);
-    console.log('');
     var logProficiency = Math.log(proficiencyAsDecimal);
-    console.log('calculateStrength logProfiency', logProficiency);
     var ebbinghaus = -1 * t / logProficiency;
-    console.log('calculateStrength ebbinghaus ', ebbinghaus);
     var dbE = 10 * Math.log10(ebbinghaus);
-    console.log('calculateStrength dbE ', dbE);
     return dbE > 0 ? dbE : 0;
 }
 
@@ -39795,10 +42292,23 @@ function calculateTime(S, R) {
     return -1 * Math.pow(10, S / 10) * Math.log(R);
 }
 
-function calculateCurrentStrength(currentProficiency, millisecondsSinceLastInteraction, previousInteractionStrength) {}
+function calculateCurrentStrength(currentProficiency, millisecondsSinceLastInteraction, previousInteractionStrength) {
+    if (currentProficiency < 10) {
+        return 20; //return 20 decibels
+    }
+    if (currentProficiency <= _proficiencyEnum.PROFICIENCIES.TWO) {
+        return previousInteractionStrength;
+    }
+    if (currentProficiency <= _proficiencyEnum.PROFICIENCIES.THREE) {
+        return previousInteractionStrength + 5;
+    }
+    if (currentProficiency <= _proficiencyEnum.PROFICIENCIES.FOUR) {
+        return previousInteractionStrength + 8;
+    }
+}
 
 /***/ }),
-/* 199 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39814,23 +42324,23 @@ var _lodash = __webpack_require__(12);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _knawledgeMap = __webpack_require__(14);
+var _knawledgeMap = __webpack_require__(15);
 
-var _trees = __webpack_require__(2);
+var _trees = __webpack_require__(3);
 
-var _contentItems = __webpack_require__(3);
+var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _fact = __webpack_require__(21);
+var _fact = __webpack_require__(22);
 
-var _heading = __webpack_require__(22);
+var _heading = __webpack_require__(23);
 
-var _skill = __webpack_require__(23);
+var _skill = __webpack_require__(24);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(5);
 
-var _tree = __webpack_require__(19);
+var _tree = __webpack_require__(20);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39905,7 +42415,7 @@ async function newTree(nodeType, parentTreeId, primaryParentTreeContentURI, valu
 }
 
 /***/ }),
-/* 200 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39923,7 +42433,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 201 */
+/* 204 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -40025,7 +42535,7 @@ exports.default = {
 
 
 /***/ }),
-/* 202 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
@@ -40039,48 +42549,6 @@ exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n
 
 
 /***/ }),
-/* 203 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
-/* 205 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, "html,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n.sigma-tooltip {\n  margin-top: -140px;\n  max-width: 440px;\n  max-height: 280px;\n  background-color: #f9f7ed;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
 /* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -40089,7 +42557,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -40103,7 +42571,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -40117,13 +42585,69 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n", ""]);
+exports.push([module.i, "#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "/* line 4, ../sass/_offline-theme-base.sass */\n.offline-ui,\n.offline-ui *,\n.offline-ui:before,\n.offline-ui:after,\n.offline-ui *:before,\n.offline-ui *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n/* line 7, ../sass/_offline-theme-base.sass */\n.offline-ui {\n  display: none;\n  position: fixed;\n  background: white;\n  z-index: 2000;\n  margin: auto;\n  top: 0;\n  left: 0;\n  right: 0;\n}\n/* line 17, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-content:before {\n  display: inline;\n}\n/* line 20, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  display: none;\n}\n/* line 24, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry:before {\n  display: inline;\n}\n/* line 29, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-up.offline-ui-up-5s {\n  display: block;\n}\n/* line 32, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down {\n  display: block;\n}\n/* line 37, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-retry {\n  display: block;\n}\n/* line 42, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s.offline-ui-waiting .offline-ui-retry {\n  display: none;\n}\n@-webkit-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-moz-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-ms-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-o-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-webkit-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-moz-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-ms-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-o-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-webkit-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-moz-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-ms-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-o-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n/* line 16, ../sass/offline-theme-dark.sass */\n.offline-ui {\n  -webkit-border-radius: 0 0 4px 4px;\n  -moz-border-radius: 0 0 4px 4px;\n  -ms-border-radius: 0 0 4px 4px;\n  -o-border-radius: 0 0 4px 4px;\n  border-radius: 0 0 4px 4px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: 300;\n  padding: 1em;\n  width: 38em;\n  max-width: 100%;\n  background: black;\n  color: #cccccc;\n  overflow: hidden;\n}\n@media (max-width: 38em) {\n  /* line 16, ../sass/offline-theme-dark.sass */\n  .offline-ui {\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -ms-border-radius: 0;\n    -o-border-radius: 0;\n    border-radius: 0;\n  }\n}\n/* line 30, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content {\n  padding-left: 2em;\n}\n/* line 33, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:before {\n  line-height: 1.25em;\n}\n/* line 36, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:after {\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 1em;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n}\n/* line 48, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-retry {\n  position: absolute;\n  right: 3em;\n  top: 0;\n  bottom: 0;\n  background: rgba(255, 255, 255, 0.2);\n  text-decoration: none;\n  color: inherit;\n  line-height: 3.5em;\n  height: 3.5em;\n  margin: auto;\n  padding: 0 1em;\n}\n/* line 61, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up {\n  -webkit-animation: offline-dropout forwards 0.5s 2s;\n  -moz-animation: offline-dropout forwards 0.5s 2s;\n  -ms-animation: offline-dropout forwards 0.5s 2s;\n  -o-animation: offline-dropout forwards 0.5s 2s;\n  animation: offline-dropout forwards 0.5s 2s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 64, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up .offline-ui-content:after {\n  background: #80d580;\n}\n/* line 67, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down {\n  -webkit-animation: offline-dropin 0.5s;\n  -moz-animation: offline-dropin 0.5s;\n  -ms-animation: offline-dropin 0.5s;\n  -o-animation: offline-dropin 0.5s;\n  animation: offline-dropin 0.5s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 70, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 73, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting,\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 3em;\n}\n/* line 76, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting .offline-ui-content:after,\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 79, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting:after,\n.offline-ui.offline-ui-down.offline-ui-waiting:after {\n  -webkit-animation: offline-rotation 0.7s linear infinite;\n  -moz-animation: offline-rotation 0.7s linear infinite;\n  -ms-animation: offline-rotation 0.7s linear infinite;\n  -o-animation: offline-rotation 0.7s linear infinite;\n  animation: offline-rotation 0.7s linear infinite;\n  -webkit-backface-visibility: hidden;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  right: 1em;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n  border: 2px solid transparent;\n  border-top-color: rgba(255, 255, 255, 0.5);\n  border-left-color: rgba(255, 255, 255, 0.5);\n  opacity: 0.7;\n}\n/* line 96, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 11em;\n}\n/* line 99, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting.offline-ui-reconnect-failed-2s {\n  padding-right: 0;\n}\nhtml,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n.sigma-tooltip {\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.reviewMenu {\n  width: 120px;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9000;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40225,7 +42749,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 210 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40258,13 +42782,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(47);
+var _subscribe = __webpack_require__(49);
 
-var _errors = __webpack_require__(31);
+var _errors = __webpack_require__(32);
 
-var _shared_promise = __webpack_require__(32);
+var _shared_promise = __webpack_require__(33);
 
-var _deep_copy = __webpack_require__(209);
+var _deep_copy = __webpack_require__(213);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40629,14 +43153,14 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 211 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(17);
+var firebase = __webpack_require__(19);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -40905,10 +43429,10 @@ Y(yg.prototype,{verifyPhoneNumber:{name:"verifyPhoneNumber",a:[V("phoneNumber"),
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:N};Z(a,"EmailAuthProvider",tg,[]);Z(a,"FacebookAuthProvider",ig,[]);Z(a,"GithubAuthProvider",kg,[]);Z(a,"GoogleAuthProvider",mg,[]);Z(a,"TwitterAuthProvider",og,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",yg,[kk()]);Z(a,"RecaptchaVerifier",Kh,[X(V(),jk(),"recaptchaContainer"),W("recaptchaParameters",!0),lk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAuthTokenListener:q(a.Ke,a),removeAuthTokenListener:q(a.Cf,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 212 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -40939,7 +43463,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(17);
+            var firebase = __webpack_require__(19);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -41179,7 +43703,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 213 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41193,22 +43717,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(17);
+var _app = __webpack_require__(19);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(211);
+__webpack_require__(215);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(212);
-__webpack_require__(221);
+__webpack_require__(216);
+__webpack_require__(225);
 var AsyncStorage;
 
-__webpack_require__(214);
+__webpack_require__(218);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -41216,7 +43740,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 214 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41246,15 +43770,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(216);
+var _windowController = __webpack_require__(220);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(215);
+var _swController = __webpack_require__(219);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(17);
+var _app = __webpack_require__(19);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -41277,7 +43801,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 215 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41310,19 +43834,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(48);
+var _controllerInterface = __webpack_require__(50);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(24);
+var _errors = __webpack_require__(25);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(51);
+var _workerPageMessage = __webpack_require__(53);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(49);
+var _fcmDetails = __webpack_require__(51);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -41655,7 +44179,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 216 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41688,27 +44212,27 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(48);
+var _controllerInterface = __webpack_require__(50);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(24);
+var _errors = __webpack_require__(25);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(51);
+var _workerPageMessage = __webpack_require__(53);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(218);
+var _defaultSw = __webpack_require__(222);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(50);
+var _notificationPermission = __webpack_require__(52);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(47);
+var _subscribe = __webpack_require__(49);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42056,7 +44580,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 217 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42099,7 +44623,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 218 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42136,7 +44660,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 219 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42167,17 +44691,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(31);
+var _errors = __webpack_require__(32);
 
-var _errors2 = __webpack_require__(24);
+var _errors2 = __webpack_require__(25);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(217);
+var _arrayBufferToBase = __webpack_require__(221);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(49);
+var _fcmDetails = __webpack_require__(51);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -42558,7 +45082,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 220 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -42795,10 +45319,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(270).setImmediate))
 
 /***/ }),
-/* 221 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42813,17 +45337,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(36);
+var _string = __webpack_require__(37);
 
-var _taskenums = __webpack_require__(55);
+var _taskenums = __webpack_require__(57);
 
-var _xhriopool = __webpack_require__(233);
+var _xhriopool = __webpack_require__(237);
 
-var _reference = __webpack_require__(57);
+var _reference = __webpack_require__(59);
 
-var _service = __webpack_require__(234);
+var _service = __webpack_require__(238);
 
-var _app = __webpack_require__(17);
+var _app = __webpack_require__(19);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -42868,7 +45392,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 222 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42883,7 +45407,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.async = async;
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -42926,7 +45450,7 @@ function async(f) {
 
 
 /***/ }),
-/* 223 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42943,23 +45467,23 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(25);
+var _constants = __webpack_require__(26);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(5);
+var _error2 = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(225);
+var _failrequest = __webpack_require__(229);
 
-var _location = __webpack_require__(26);
+var _location = __webpack_require__(27);
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(231);
+var _requestmap = __webpack_require__(235);
 
 var _type = __webpack_require__(1);
 
@@ -43108,7 +45632,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 224 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43240,7 +45764,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 225 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43257,7 +45781,7 @@ exports.FailRequest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -43299,7 +45823,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 226 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43380,7 +45904,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 227 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43436,7 +45960,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 228 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43496,7 +46020,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 229 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43536,15 +46060,15 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(34);
+var _array = __webpack_require__(35);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(224);
+var _backoff = __webpack_require__(228);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -43552,7 +46076,7 @@ var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -43560,11 +46084,11 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(37);
+var _url = __webpack_require__(38);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(56);
+var _xhrio = __webpack_require__(58);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -43769,7 +46293,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 230 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43816,7 +46340,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 231 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43852,7 +46376,7 @@ var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(25);
+var _constants = __webpack_require__(26);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -43911,7 +46435,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 232 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43943,7 +46467,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -43951,7 +46475,7 @@ var _object = __webpack_require__(11);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -43959,7 +46483,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(56);
+var _xhrio = __webpack_require__(58);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -44110,7 +46634,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 233 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44142,7 +46666,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(232);
+var _xhrio_network = __webpack_require__(236);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44167,7 +46691,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 234 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44199,23 +46723,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(33);
+var _args = __webpack_require__(34);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(223);
+var _authwrapper = __webpack_require__(227);
 
-var _location = __webpack_require__(26);
+var _location = __webpack_require__(27);
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(229);
+var _request = __webpack_require__(233);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(57);
+var _reference = __webpack_require__(59);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -44358,7 +46882,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 235 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44393,33 +46917,33 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(55);
+var _taskenums = __webpack_require__(57);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(228);
+var _observer = __webpack_require__(232);
 
-var _tasksnapshot = __webpack_require__(236);
+var _tasksnapshot = __webpack_require__(240);
 
-var _args = __webpack_require__(33);
+var _args = __webpack_require__(34);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(34);
+var _array = __webpack_require__(35);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(222);
+var _async = __webpack_require__(226);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errors = _interopRequireWildcard(_error);
 
-var _promise_external = __webpack_require__(8);
+var _promise_external = __webpack_require__(9);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(54);
+var _requests = __webpack_require__(56);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -45001,7 +47525,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 236 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45053,109 +47577,109 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 237 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <button v-on:click=\"recalculateProficiencyAggregationForAll\">\r\n       Recalculate Aggregation\r\n    </button>\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 238 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul>\r\n    <div>state: {{state}}</div>\r\n   <li v-for=\"triplet in triplets\" v-if=\"stateIsShowing || stateIsAnswer\">{{triplet}}</li>\r\n   <h3 v-if=\"stateIsSubtractingBy7\">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>\r\n   <div><input type=\"text\" v-for=\"triplet in triplets\" v-if=\"stateIsQuizzing || stateIsAnswer\"></div>\r\n   <button v-if=\"stateIsQuizzing\" v-on:click=\"showAnswer\">Show Answer</button>\r\n</ul>";
 
 /***/ }),
-/* 239 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 240 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 241 */
+/* 245 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 242 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
-/* 243 */
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
-
-/***/ }),
-/* 244 */
-/***/ (function(module, exports) {
-
-module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
-
-/***/ }),
-/* 245 */
-/***/ (function(module, exports) {
-
-module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp}} || {{interaction.proficiency}}\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
-
-/***/ }),
-/* 246 */
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"graph-container\">\r\n</div>\r\n";
-
-/***/ }),
 /* 247 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n            {{currentReviewingItem}}\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 248 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
+module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
 /* 249 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
+module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp}} || {{interaction.proficiency}}\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
 /* 250 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+module.exports = "<div id=\"graph-container\">\r\n    <div class=\"reviewMenu\">\r\n        <button class=\"reviewMenu-startReview\">Review Menu <span class=\"reviewMenu-amount\">32</span></button>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 251 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 252 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
 /* 253 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"syncProficiency\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
 /* 254 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"proficiencyClicked\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+
+/***/ }),
+/* 258 */
 /***/ (function(module, exports) {
 
 /*!
@@ -45182,240 +47706,240 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 255 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 59,
-	"./af.js": 59,
-	"./ar": 66,
-	"./ar-dz": 60,
-	"./ar-dz.js": 60,
-	"./ar-kw": 61,
-	"./ar-kw.js": 61,
-	"./ar-ly": 62,
-	"./ar-ly.js": 62,
-	"./ar-ma": 63,
-	"./ar-ma.js": 63,
-	"./ar-sa": 64,
-	"./ar-sa.js": 64,
-	"./ar-tn": 65,
-	"./ar-tn.js": 65,
-	"./ar.js": 66,
-	"./az": 67,
-	"./az.js": 67,
-	"./be": 68,
-	"./be.js": 68,
-	"./bg": 69,
-	"./bg.js": 69,
-	"./bn": 70,
-	"./bn.js": 70,
-	"./bo": 71,
-	"./bo.js": 71,
-	"./br": 72,
-	"./br.js": 72,
-	"./bs": 73,
-	"./bs.js": 73,
-	"./ca": 74,
-	"./ca.js": 74,
-	"./cs": 75,
-	"./cs.js": 75,
-	"./cv": 76,
-	"./cv.js": 76,
-	"./cy": 77,
-	"./cy.js": 77,
-	"./da": 78,
-	"./da.js": 78,
-	"./de": 81,
-	"./de-at": 79,
-	"./de-at.js": 79,
-	"./de-ch": 80,
-	"./de-ch.js": 80,
-	"./de.js": 81,
-	"./dv": 82,
-	"./dv.js": 82,
-	"./el": 83,
-	"./el.js": 83,
-	"./en-au": 84,
-	"./en-au.js": 84,
-	"./en-ca": 85,
-	"./en-ca.js": 85,
-	"./en-gb": 86,
-	"./en-gb.js": 86,
-	"./en-ie": 87,
-	"./en-ie.js": 87,
-	"./en-nz": 88,
-	"./en-nz.js": 88,
-	"./eo": 89,
-	"./eo.js": 89,
-	"./es": 91,
-	"./es-do": 90,
-	"./es-do.js": 90,
-	"./es.js": 91,
-	"./et": 92,
-	"./et.js": 92,
-	"./eu": 93,
-	"./eu.js": 93,
-	"./fa": 94,
-	"./fa.js": 94,
-	"./fi": 95,
-	"./fi.js": 95,
-	"./fo": 96,
-	"./fo.js": 96,
-	"./fr": 99,
-	"./fr-ca": 97,
-	"./fr-ca.js": 97,
-	"./fr-ch": 98,
-	"./fr-ch.js": 98,
-	"./fr.js": 99,
-	"./fy": 100,
-	"./fy.js": 100,
-	"./gd": 101,
-	"./gd.js": 101,
-	"./gl": 102,
-	"./gl.js": 102,
-	"./gom-latn": 103,
-	"./gom-latn.js": 103,
-	"./he": 104,
-	"./he.js": 104,
-	"./hi": 105,
-	"./hi.js": 105,
-	"./hr": 106,
-	"./hr.js": 106,
-	"./hu": 107,
-	"./hu.js": 107,
-	"./hy-am": 108,
-	"./hy-am.js": 108,
-	"./id": 109,
-	"./id.js": 109,
-	"./is": 110,
-	"./is.js": 110,
-	"./it": 111,
-	"./it.js": 111,
-	"./ja": 112,
-	"./ja.js": 112,
-	"./jv": 113,
-	"./jv.js": 113,
-	"./ka": 114,
-	"./ka.js": 114,
-	"./kk": 115,
-	"./kk.js": 115,
-	"./km": 116,
-	"./km.js": 116,
-	"./kn": 117,
-	"./kn.js": 117,
-	"./ko": 118,
-	"./ko.js": 118,
-	"./ky": 119,
-	"./ky.js": 119,
-	"./lb": 120,
-	"./lb.js": 120,
-	"./lo": 121,
-	"./lo.js": 121,
-	"./lt": 122,
-	"./lt.js": 122,
-	"./lv": 123,
-	"./lv.js": 123,
-	"./me": 124,
-	"./me.js": 124,
-	"./mi": 125,
-	"./mi.js": 125,
-	"./mk": 126,
-	"./mk.js": 126,
-	"./ml": 127,
-	"./ml.js": 127,
-	"./mr": 128,
-	"./mr.js": 128,
-	"./ms": 130,
-	"./ms-my": 129,
-	"./ms-my.js": 129,
-	"./ms.js": 130,
-	"./my": 131,
-	"./my.js": 131,
-	"./nb": 132,
-	"./nb.js": 132,
-	"./ne": 133,
-	"./ne.js": 133,
-	"./nl": 135,
-	"./nl-be": 134,
-	"./nl-be.js": 134,
-	"./nl.js": 135,
-	"./nn": 136,
-	"./nn.js": 136,
-	"./pa-in": 137,
-	"./pa-in.js": 137,
-	"./pl": 138,
-	"./pl.js": 138,
-	"./pt": 140,
-	"./pt-br": 139,
-	"./pt-br.js": 139,
-	"./pt.js": 140,
-	"./ro": 141,
-	"./ro.js": 141,
-	"./ru": 142,
-	"./ru.js": 142,
-	"./sd": 143,
-	"./sd.js": 143,
-	"./se": 144,
-	"./se.js": 144,
-	"./si": 145,
-	"./si.js": 145,
-	"./sk": 146,
-	"./sk.js": 146,
-	"./sl": 147,
-	"./sl.js": 147,
-	"./sq": 148,
-	"./sq.js": 148,
-	"./sr": 150,
-	"./sr-cyrl": 149,
-	"./sr-cyrl.js": 149,
-	"./sr.js": 150,
-	"./ss": 151,
-	"./ss.js": 151,
-	"./sv": 152,
-	"./sv.js": 152,
-	"./sw": 153,
-	"./sw.js": 153,
-	"./ta": 154,
-	"./ta.js": 154,
-	"./te": 155,
-	"./te.js": 155,
-	"./tet": 156,
-	"./tet.js": 156,
-	"./th": 157,
-	"./th.js": 157,
-	"./tl-ph": 158,
-	"./tl-ph.js": 158,
-	"./tlh": 159,
-	"./tlh.js": 159,
-	"./tr": 160,
-	"./tr.js": 160,
-	"./tzl": 161,
-	"./tzl.js": 161,
-	"./tzm": 163,
-	"./tzm-latn": 162,
-	"./tzm-latn.js": 162,
-	"./tzm.js": 163,
-	"./uk": 164,
-	"./uk.js": 164,
-	"./ur": 165,
-	"./ur.js": 165,
-	"./uz": 167,
-	"./uz-latn": 166,
-	"./uz-latn.js": 166,
-	"./uz.js": 167,
-	"./vi": 168,
-	"./vi.js": 168,
-	"./x-pseudo": 169,
-	"./x-pseudo.js": 169,
-	"./yo": 170,
-	"./yo.js": 170,
-	"./zh-cn": 171,
-	"./zh-cn.js": 171,
-	"./zh-hk": 172,
-	"./zh-hk.js": 172,
-	"./zh-tw": 173,
-	"./zh-tw.js": 173
+	"./af": 61,
+	"./af.js": 61,
+	"./ar": 68,
+	"./ar-dz": 62,
+	"./ar-dz.js": 62,
+	"./ar-kw": 63,
+	"./ar-kw.js": 63,
+	"./ar-ly": 64,
+	"./ar-ly.js": 64,
+	"./ar-ma": 65,
+	"./ar-ma.js": 65,
+	"./ar-sa": 66,
+	"./ar-sa.js": 66,
+	"./ar-tn": 67,
+	"./ar-tn.js": 67,
+	"./ar.js": 68,
+	"./az": 69,
+	"./az.js": 69,
+	"./be": 70,
+	"./be.js": 70,
+	"./bg": 71,
+	"./bg.js": 71,
+	"./bn": 72,
+	"./bn.js": 72,
+	"./bo": 73,
+	"./bo.js": 73,
+	"./br": 74,
+	"./br.js": 74,
+	"./bs": 75,
+	"./bs.js": 75,
+	"./ca": 76,
+	"./ca.js": 76,
+	"./cs": 77,
+	"./cs.js": 77,
+	"./cv": 78,
+	"./cv.js": 78,
+	"./cy": 79,
+	"./cy.js": 79,
+	"./da": 80,
+	"./da.js": 80,
+	"./de": 83,
+	"./de-at": 81,
+	"./de-at.js": 81,
+	"./de-ch": 82,
+	"./de-ch.js": 82,
+	"./de.js": 83,
+	"./dv": 84,
+	"./dv.js": 84,
+	"./el": 85,
+	"./el.js": 85,
+	"./en-au": 86,
+	"./en-au.js": 86,
+	"./en-ca": 87,
+	"./en-ca.js": 87,
+	"./en-gb": 88,
+	"./en-gb.js": 88,
+	"./en-ie": 89,
+	"./en-ie.js": 89,
+	"./en-nz": 90,
+	"./en-nz.js": 90,
+	"./eo": 91,
+	"./eo.js": 91,
+	"./es": 93,
+	"./es-do": 92,
+	"./es-do.js": 92,
+	"./es.js": 93,
+	"./et": 94,
+	"./et.js": 94,
+	"./eu": 95,
+	"./eu.js": 95,
+	"./fa": 96,
+	"./fa.js": 96,
+	"./fi": 97,
+	"./fi.js": 97,
+	"./fo": 98,
+	"./fo.js": 98,
+	"./fr": 101,
+	"./fr-ca": 99,
+	"./fr-ca.js": 99,
+	"./fr-ch": 100,
+	"./fr-ch.js": 100,
+	"./fr.js": 101,
+	"./fy": 102,
+	"./fy.js": 102,
+	"./gd": 103,
+	"./gd.js": 103,
+	"./gl": 104,
+	"./gl.js": 104,
+	"./gom-latn": 105,
+	"./gom-latn.js": 105,
+	"./he": 106,
+	"./he.js": 106,
+	"./hi": 107,
+	"./hi.js": 107,
+	"./hr": 108,
+	"./hr.js": 108,
+	"./hu": 109,
+	"./hu.js": 109,
+	"./hy-am": 110,
+	"./hy-am.js": 110,
+	"./id": 111,
+	"./id.js": 111,
+	"./is": 112,
+	"./is.js": 112,
+	"./it": 113,
+	"./it.js": 113,
+	"./ja": 114,
+	"./ja.js": 114,
+	"./jv": 115,
+	"./jv.js": 115,
+	"./ka": 116,
+	"./ka.js": 116,
+	"./kk": 117,
+	"./kk.js": 117,
+	"./km": 118,
+	"./km.js": 118,
+	"./kn": 119,
+	"./kn.js": 119,
+	"./ko": 120,
+	"./ko.js": 120,
+	"./ky": 121,
+	"./ky.js": 121,
+	"./lb": 122,
+	"./lb.js": 122,
+	"./lo": 123,
+	"./lo.js": 123,
+	"./lt": 124,
+	"./lt.js": 124,
+	"./lv": 125,
+	"./lv.js": 125,
+	"./me": 126,
+	"./me.js": 126,
+	"./mi": 127,
+	"./mi.js": 127,
+	"./mk": 128,
+	"./mk.js": 128,
+	"./ml": 129,
+	"./ml.js": 129,
+	"./mr": 130,
+	"./mr.js": 130,
+	"./ms": 132,
+	"./ms-my": 131,
+	"./ms-my.js": 131,
+	"./ms.js": 132,
+	"./my": 133,
+	"./my.js": 133,
+	"./nb": 134,
+	"./nb.js": 134,
+	"./ne": 135,
+	"./ne.js": 135,
+	"./nl": 137,
+	"./nl-be": 136,
+	"./nl-be.js": 136,
+	"./nl.js": 137,
+	"./nn": 138,
+	"./nn.js": 138,
+	"./pa-in": 139,
+	"./pa-in.js": 139,
+	"./pl": 140,
+	"./pl.js": 140,
+	"./pt": 142,
+	"./pt-br": 141,
+	"./pt-br.js": 141,
+	"./pt.js": 142,
+	"./ro": 143,
+	"./ro.js": 143,
+	"./ru": 144,
+	"./ru.js": 144,
+	"./sd": 145,
+	"./sd.js": 145,
+	"./se": 146,
+	"./se.js": 146,
+	"./si": 147,
+	"./si.js": 147,
+	"./sk": 148,
+	"./sk.js": 148,
+	"./sl": 149,
+	"./sl.js": 149,
+	"./sq": 150,
+	"./sq.js": 150,
+	"./sr": 152,
+	"./sr-cyrl": 151,
+	"./sr-cyrl.js": 151,
+	"./sr.js": 152,
+	"./ss": 153,
+	"./ss.js": 153,
+	"./sv": 154,
+	"./sv.js": 154,
+	"./sw": 155,
+	"./sw.js": 155,
+	"./ta": 156,
+	"./ta.js": 156,
+	"./te": 157,
+	"./te.js": 157,
+	"./tet": 158,
+	"./tet.js": 158,
+	"./th": 159,
+	"./th.js": 159,
+	"./tl-ph": 160,
+	"./tl-ph.js": 160,
+	"./tlh": 161,
+	"./tlh.js": 161,
+	"./tr": 162,
+	"./tr.js": 162,
+	"./tzl": 163,
+	"./tzl.js": 163,
+	"./tzm": 165,
+	"./tzm-latn": 164,
+	"./tzm-latn.js": 164,
+	"./tzm.js": 165,
+	"./uk": 166,
+	"./uk.js": 166,
+	"./ur": 167,
+	"./ur.js": 167,
+	"./uz": 169,
+	"./uz-latn": 168,
+	"./uz-latn.js": 168,
+	"./uz.js": 169,
+	"./vi": 170,
+	"./vi.js": 170,
+	"./x-pseudo": 171,
+	"./x-pseudo.js": 171,
+	"./yo": 172,
+	"./yo.js": 172,
+	"./zh-cn": 173,
+	"./zh-cn.js": 173,
+	"./zh-hk": 174,
+	"./zh-hk.js": 174,
+	"./zh-tw": 175,
+	"./zh-tw.js": 175
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -45431,10 +47955,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 255;
+webpackContext.id = 259;
 
 /***/ }),
-/* 256 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -45624,16 +48148,16 @@ webpackContext.id = 255;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), __webpack_require__(27)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(28)))
 
 /***/ }),
-/* 257 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(202);
+var content = __webpack_require__(205);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45641,7 +48165,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45658,13 +48182,13 @@ if(false) {
 }
 
 /***/ }),
-/* 258 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45672,7 +48196,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45689,13 +48213,13 @@ if(false) {
 }
 
 /***/ }),
-/* 259 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(207);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45703,7 +48227,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45720,13 +48244,13 @@ if(false) {
 }
 
 /***/ }),
-/* 260 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45734,7 +48258,38 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./knawledgeMap.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./knawledgeMap.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(209);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45751,13 +48306,13 @@ if(false) {
 }
 
 /***/ }),
-/* 261 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(206);
+var content = __webpack_require__(210);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45765,7 +48320,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45782,13 +48337,13 @@ if(false) {
 }
 
 /***/ }),
-/* 262 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(207);
+var content = __webpack_require__(211);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45796,7 +48351,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45813,13 +48368,13 @@ if(false) {
 }
 
 /***/ }),
-/* 263 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(212);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45827,7 +48382,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -45844,7 +48399,7 @@ if(false) {
 }
 
 /***/ }),
-/* 264 */
+/* 269 */
 /***/ (function(module, exports) {
 
 
@@ -45939,7 +48494,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 265 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -45992,7 +48547,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(256);
+__webpack_require__(260);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
