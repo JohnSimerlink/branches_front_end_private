@@ -2,6 +2,7 @@ import {Config} from '../../core/config'
 import {login} from '../../core/login'
 import user from '../../objects/user'
 import Users from '../../objects/users'
+import {mapGetters} from 'vuex'
 
 export default {
     template: require('./branches-footer.html'),
@@ -38,6 +39,7 @@ export default {
         }
     },
     computed: {
+        ...mapGetters(['currentReviewingItem']),
         itemsMasteredPerMinute() {
             return this.numItemsMastered / (this.secondsSpentStudying * 60)
         },
@@ -54,7 +56,10 @@ export default {
 
             }, 0)
             return numMastered
-        }
+        },
+        reviewId() {
+
+        },
     },
 
     methods: {

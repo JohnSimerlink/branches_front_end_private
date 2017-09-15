@@ -2,6 +2,7 @@ import './components'
 import './filters'
 import './objects'
 import './utils'
+import LocalForage from 'localforage'
 import TreeReview from '../components/treeReview/treeReview'
 import ContentList from '../components/contentList/contentList'
 import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
@@ -14,11 +15,7 @@ import Vuex from 'vuex'
 import {Tree} from "../objects/tree";
 Vue.use(Vuex)
 Vue.use(VueRouter)
-const store = new Vuex.Store({
-   state: {
-       count: 0
-   }
-})
+import store from './store.js'
 // 1. Define route components.
 // These can be imported from other files
 const Foo = { template: '<div>foo</div>' }

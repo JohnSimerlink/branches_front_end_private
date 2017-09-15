@@ -128,13 +128,11 @@
         //^^TODO: do via CSS
         document.write('' +
             '<div class="page">' +
-            '<div id="branches-app" class="branches-app">' +
-            '<router-view style="height:' + bodyHeight + 'px;" v-if="routing"></router-view>' +
-            '<exercise-creator-container style="height:' + bodyHeight + 'px;" v-if="exerciseCreator"></exercise-creator-container>' +
-            '<tree-review-container style="height:' + bodyHeight + 'px;" v-if="treeReview"></tree-review-container>' +
-            '<!--<review-schedule></review-schedule>-->' +
-            '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
-            '</div>' +
+                '<div id="branches-app" class="branches-app">' +
+                    '<router-view style="height:' + bodyHeight + 'px;" v-if="routing"></router-view>' +
+                    '<!--<review-schedule></review-schedule>-->' +
+                    '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
+                '</div>' +
             '</div>' +
             '')
     })()
