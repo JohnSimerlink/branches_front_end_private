@@ -10,7 +10,7 @@ import {Skill} from "../../objects/skill";
 import {PROFICIENCIES} from "../proficiencyEnum";
 import './tree.less'
 import {goToFromMap} from "../knawledgeMap/knawledgeMap";
-
+import { mapActions } from 'vuex'
 
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
@@ -85,6 +85,8 @@ export default {
         },
     },
     methods: {
+        ...mapActions(['itemStudied']),
+        // ...mapAction
         //user methods
         startTimer() {
             this.content.startTimer()
@@ -107,9 +109,13 @@ export default {
             this.editing = this.addingChild
         },
         studySkill() {
-            console.log('study skill called!', this, this.$router)
             goToFromMap({name: 'study', params: {leafId: this.id}})
             // this.$router.push()
+        },
+        proficiencyClicked(){
+            this.syncProficiency()
+            // this.itemStudied({contentId:this.content.id})
+            this.$store.commit('itemStudied', this.content.id)
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
@@ -119,19 +125,15 @@ export default {
             this.syncGraphWithNode()
         },
         async syncTreeChainWithUI() {
-            console.log(this.tree.id, "syncTreeChainWithUI called")
             syncGraphWithNode(this.tree.id)
             // this.syncGraphWithNode()
             let parentId = this.tree.parentId;
             let parent
             let num = 1
             while (parentId){
-                console.log(this.tree.id, "parent going to be synced is", parentId, "[" + num + "]")
                 syncGraphWithNode(parentId)
                 parent = await Trees.get(parentId)
-                console.log(this.tree.id, "parent received is", parent, "[" + num + "]")
                 parentId = parent.parentId
-                console.log(this.tree.id, "new parentId is", parentId, "[" + num + "]")
                 num++
             }
         },

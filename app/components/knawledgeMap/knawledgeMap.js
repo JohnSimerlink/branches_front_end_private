@@ -8,6 +8,9 @@ import user from '../../objects/user'
 import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
 import {PROFICIENCIES} from "../proficiencyEnum";
+import store from '../../core/store'
+import './knawledgeMap.less'
+
 let router
 export default {
     props: ['treeId'],
@@ -599,7 +602,8 @@ function initKnawledgeMap(treeIdToJumpTo){
         setTimeout(function(){
             var vm = new Vue(
                 {
-                    el: '#vue'
+                    el: '#vue',
+                    store,
                 }
             )
         },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
@@ -666,7 +670,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         let cameraCoord = {
             x: node['read_cam0:x'],
             y: node['read_cam0:y'],
-            ratio: 0.1
+            ratio: 0.05
         };
         camera.goTo(cameraCoord);
         // sigma.misc.animation.camera(

@@ -175,11 +175,9 @@
     this.open = function(o, options, x, y, onComplete) {
       remove();
 
-      console.log('open called',arguments, options,options.position)
       // Create the DOM element:
       _tooltip = document.createElement('div');
       if (options.renderer) {
-          console.log("options renderer called")
         // Copy the object:
         var clone = Object.create(null),
             tooltipRenderer,
@@ -245,7 +243,6 @@
         // Insert the element in the DOM:
         renderer.container.appendChild(_tooltip);
 
-        console.log("after render timeout called")
         // Find offset:
         var bodyRect = document.body.getBoundingClientRect(),
             tooltipRect = _tooltip.getBoundingClientRect(),
@@ -253,8 +250,6 @@
             offsetBottom = bodyRect.bottom - tooltipRect.bottom,
             offsetLeft =  tooltipRect.left - bodyRect.left,
             offsetRight = bodyRect.right - tooltipRect.right;
-
-        console.log(bodyRect, tooltipRect, offsetTop, offsetBottom, offsetLeft, offsetRight, options.position)
 
         if (options.position === 'top') {
           // New position vertically aligned and on top of the mouse:
@@ -280,14 +275,11 @@
           _tooltip.style.left = x + 'px';
           _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
         } else if (options.position === 'center') {
-            console.log('center called')
           _tooltip.className = options.cssClass
             // _tooltip.style.left = x + 'px';
             // _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
           _tooltip.style.left = x - 160 + 'px';
           _tooltip.style.top = y - 80 + 'px';
-          console.log('center called', tooltipRect, tooltipRect.width /2, _tooltip.style.left,_tooltip.style.top)
-          console.log('center called', tooltipRect, tooltipRect.width /2, _tooltip.style.left,_tooltip.style.top)
         }
 
         // Adjust position to keep the tooltip inside body:

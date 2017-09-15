@@ -1,16 +1,12 @@
+import {PROFICIENCIES} from "./components/proficiencyEnum";
+
 const e = 2.7182828
 //memory strength in decibels - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
 export function calculateStrength(R,t){
-    console.log('calculateStrength R and t are', R, t)
     const proficiencyAsDecimal = R /100
-    console.log('calculateStrength proficiecnyAsDecimal', proficiencyAsDecimal)
-    console.log('')
     const logProficiency = Math.log(proficiencyAsDecimal)
-    console.log('calculateStrength logProfiency', logProficiency)
     const ebbinghaus = -1 * t / logProficiency
-    console.log('calculateStrength ebbinghaus ', ebbinghaus)
     const dbE = 10 * Math.log10(ebbinghaus)
-    console.log('calculateStrength dbE ', dbE)
     return dbE > 0 ? dbE: 0
 }
 
@@ -26,5 +22,17 @@ export function calculateTime(S, R){
 }
 
 export function calculateCurrentStrength(currentProficiency, millisecondsSinceLastInteraction, previousInteractionStrength){
+    if (currentProficiency < 10){
+        return 20; //return 20 decibels
+    }
+    if (currentProficiency <= PROFICIENCIES.TWO) {
+        return previousInteractionStrength
+    }
+    if (currentProficiency <= PROFICIENCIES.THREE) {
+        return previousInteractionStrength + 5
+    }
+    if (currentProficiency <= PROFICIENCIES.FOUR) {
+        return previousInteractionStrength + 8
+    }
 
 }
