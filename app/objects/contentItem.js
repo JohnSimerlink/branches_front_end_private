@@ -6,7 +6,7 @@ import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
 import {Trees} from './trees'
-import {calculateStrength, calculateCurrentStrength} from "../forgettingCurve";
+import {measurePreviousStrength, estimateCurrentStrength} from "../forgettingCurve";
 
 
 export default class ContentItem {
@@ -25,12 +25,10 @@ export default class ContentItem {
 
         this.userInteractionsMap = args.userInteractionsMap || {}
         this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
+        this.hasInteractions = this.interactions.length
 
-        // this.userStrengthMap = this.userStrengthMap[user.getId()]
-        // this.lastRecordedStrength = this.userStrengthMap[user.getId()]
-        // this.userStrengthMap[user.getId()] = this.lastRecordedStrength
-        // this.lastRecordedStrength = {strength: currentInteractionStrength, timestamp: currentInteractionStrength}
-        // this.lastRecordedStrength = this.interactions.length > 0 ? this.interactions[this.interactions.length -1].strength : 0
+        this.userStrengthMap = args.userStrengthMap || {}
+        this.lastRecordedStrength = this.userStrengthMap[user.getId()] || {value: 0,}
 
         this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
@@ -228,7 +226,9 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     saveProficiency(){
-        !this.inStudyQueue && this.addToStudyQueue()
+        !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
+        const timestamp = Date.now()
+
 
         //content
         this.userProficiencyMap[user.getId()] = this.proficiency
@@ -240,11 +240,11 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //interactions
-        const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : null
-        const nowMilliseconds = Date.now()
+        const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : {currentInteractionStrength: 0}
+        const nowMilliseconds = timestamp
         const millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0
-        const previousInteractionStrength = calculateStrength(this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
-        const currentInteractionStrength = calculateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0
+        const previousInteractionStrength = measurePreviousStrength(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
+        const currentInteractionStrength = estimateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0
 
         const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
         //store user interactions under content
@@ -261,13 +261,12 @@ export default class ContentItem {
         user.addInteraction(this.id, interaction)
 
         //store contentItem strength and timestamp under userStrengthMap
-
-        this.lastRecordedStrength = {strength: currentInteractionStrength, timestamp: currentInteractionStrength}
-        // this.userStrengthMap[user.getId()] = this.lastRecordedStrength
-        // var updates = {
-        //     userStrengthMap : this.userStrengthMap
-        // }
-        // firebase.database().ref('content/' + this.id).update(updates)
+        this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
+        this.userStrengthMap[user.getId()] = this.lastRecordedStrength
+        var updates = {
+            userStrengthMap : this.userStrengthMap
+        }
+        firebase.database().ref('content/' + this.id).update(updates)
         //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
         const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
         this.nextReviewTime = Date.now() + millisecondsTilNextReview
