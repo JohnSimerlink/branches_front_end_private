@@ -40,6 +40,9 @@ export default {
         PubSub.subscribe('canvas.stopDraggingNode', function() {
             window.draggingNode = false
         })
+        await this.tree.getLeaves()
+        this.tree.sortLeavesByStudiedAndStrength()
+        console.log('this.tree getLeaves just called')
 
     },
     data () {

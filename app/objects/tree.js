@@ -29,6 +29,8 @@ const unknownProficiencyStats = {
 export class Tree {
 
     constructor(contentId, contentType, parentId, parentDegree, x, y) {
+        this.leaves = []
+        this.sortedLeaves = []
         var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
@@ -298,6 +300,64 @@ export class Tree {
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)
         return parent.calculateAggregationTimer()
+    }
+    //returns a list of contentItems that are all on leaf nodes
+    async getLeaves(){
+        if (!this.leaves.length){
+            await this.recalculateLeaves()
+        }
+        return this.leaves
+    }
+    async recalculateLeaves(){
+        let leaves = []
+        const isLeaf = await this.isLeaf()
+        if (isLeaf){
+            console.log(this.id, "LEAF!")
+            try {
+                if (this.contentId){
+                    leaves = [await this.getContentItem()]
+                }
+            } catch(err){
+                leaves = []
+            }
+        } else {
+            console.log(this.id, "NOT LEAF!")
+            await Promise.all(
+                Object.keys(this.children).map(async childId => {
+                    try{
+                        const child = await Trees.get(childId)
+                        console.log('leaves before concat are', leaves)
+                        leaves.push(... await child.getLeaves())
+                        console.log('leaves after concat are', leaves)
+                    } catch (err){
+
+                    }
+                })
+            )
+        }
+        console.log('leaves being return are', leaves)
+        this.leaves = leaves
+
+    }
+    sortLeavesByStudiedAndStrength(){
+       this.sortedLeaves = this.leaves
+           .filter(leaf => leaf.hasInteractions)
+           .sort((a,b) => {
+                return a.lastRecordedStrength > b.lastRecordedStrength ? 1: a.lastRecordedStrength < b.lastRecordedStrength ? -1 : 0
+           })
+        console.log('this.sortedLeaves are', this.sortedLeaves)
+        const strengths = this.sortedLeaves.map(leaf => leaf.lastRecordedStrength.value)
+        console.log('leaf strengths are', strengths)
+    }
+    calculateOverdueLeaves(){
+
+    }
+    async getContentItem(){
+        if (!this.contentId){
+            return null
+        }
+        const contentItem = await ContentItems.get(this.contentId)
+        return contentItem
     }
 }
 //TODO: get typeScript so we can have a schema for treeObj
