@@ -5,9 +5,11 @@ const treesRef = firebase.database().ref('trees');
 const trees = {};
 import {Trees} from './trees.js'
 import ContentItems from './contentItems'
-import {syncGraphWithNode}  from '../components/knawledgeMap/knawledgeMap'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
 
+function syncGraphWithNode(treeId){
+    PubSub.publish('syncGraphWithNode', treeId)
+}
 function loadObject(treeObj, self){
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
