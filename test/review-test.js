@@ -1,3 +1,4 @@
+var cleanup = require('jsdom-global')()
 import {calculateMillisecondsTilNextReview} from '../app/components/reviewAlgorithm/review'
 import {expect} from 'chai'
 describe('Calculate Review from interaction history', function() {
@@ -19,3 +20,7 @@ describe('Calculate Review from interaction history for streaks of high proficie
         expect(calculateMillisecondsTilNextReview([{time: 'some time', proficiency: 98},{time: 'some time', proficiency: 32},{time: 'some time', proficiency: 97},{time: 'some time', proficiency: 98},{time: 'some time', proficiency: 98}])).to.equal(5 * 5 * 24 * 60 * 60 * 1000)
     })
 })
+
+
+
+cleanup()

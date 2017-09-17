@@ -120,6 +120,7 @@ function renderHeading(node,context,settings){
     var fourColor = proficiencyToColor(PROFICIENCIES.FOUR)
 
     var proficiencyStats = node.proficiencyStats
+    console.log(node.id, 'renderHeading: ', node.proficiencyStats, JSON.stringify(node.proficiencyStats) )
 
     if (! (proficiencyStats instanceof Object)){
 

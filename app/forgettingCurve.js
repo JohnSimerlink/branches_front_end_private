@@ -14,7 +14,7 @@ export function calculateStrength(R,t){
 //R = proficiency from 0 to 100
 //t equals time since previous interaction
 export function measurePreviousStrength(Se, R,t){
-    
+
     //if proficiency is greater than/equal to 99 or less than/equal to 1, we have a wide range of possibilities for measured strength values - see this google sheet - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=2051263794
     //therefore just use the previous estimated value, because we can't really measure the actual value
     if (R>= 99 || R <=1){

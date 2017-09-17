@@ -1,3 +1,4 @@
+var cleanup = require('jsdom-global')()
 import {expect} from 'chai'
 import {Trees} from '../app/objects/trees'
 import ContentItems from '../app/objects/contentItems'
@@ -54,3 +55,5 @@ describe('Breadcrumb', () => {
         })
     })
 })
+
+cleanup()

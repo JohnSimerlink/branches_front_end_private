@@ -1,5 +1,5 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor, syncGraphWithNode, removeTreeFromGraph,refreshGraph} from "../knawledgeMap/knawledgeMap"
+import {proficiencyToColor, removeTreeFromGraph, refreshGraph, syncGraphWithNode} from "../knawledgeMap/knawledgeMap"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
@@ -125,23 +125,26 @@ export default {
             this.content.recalculateProficiencyAggregationForTreeChain()
                 .then(this.syncTreeChainWithUI)
                 .then(refreshGraph)
-            this.syncGraphWithNode()
-        },
-        async syncTreeChainWithUI() {
-            syncGraphWithNode(this.tree.id)
             // this.syncGraphWithNode()
+        },
+        //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
+        async syncTreeChainWithUI() {
+            // PubSub.publish('syncGraphWithNode', this.tree.id)
+            this.syncGraphWithNode()
             let parentId = this.tree.parentId;
             let parent
             let num = 1
             while (parentId){
                 syncGraphWithNode(parentId)
+                // PubSub.publish('syncGraphWithNode', parentId)
                 parent = await Trees.get(parentId)
                 parentId = parent.parentId
                 num++
             }
         },
-        async syncGraphWithNode(){
-            await syncGraphWithNode(this.tree.id)
+        syncGraphWithNode(){
+            syncGraphWithNode(this.tree.id)
+            // PubSub.publish('syncGraphWithNode', this.tree.id)
         },
         toggleAddChild(){
             this.addingChild = !this.addingChild

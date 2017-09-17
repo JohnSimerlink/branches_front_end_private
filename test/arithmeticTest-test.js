@@ -1,3 +1,4 @@
+var cleanup = require('jsdom-global')()
 import {expect} from 'chai'
 
 describe('Arithmetic', () => {
@@ -7,3 +8,4 @@ describe('Arithmetic', () => {
         expect(1 + 1).to.equal(expectedResult);
     });
 });
+cleanup()
