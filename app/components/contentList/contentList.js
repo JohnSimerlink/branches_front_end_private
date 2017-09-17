@@ -28,3 +28,6 @@ export default {
         }
     }
 }
+
+console.log('i added something to contentList.js')
+console.log('i added something again to contentList.js')

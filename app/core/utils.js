@@ -6,3 +6,5 @@ export function toggleVisibility(el){
         style.display = 'block'
     }
 }
+
+console.log('i added something to utils.js')
