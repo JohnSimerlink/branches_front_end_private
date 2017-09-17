@@ -49,4 +49,6 @@ export class Trees {
         newParent.addChild(childId)
     }
 }
-window.Trees = Trees
+if (typeof window !== 'undefined'){
+    window.Trees = Trees
+}

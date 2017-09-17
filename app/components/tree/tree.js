@@ -1,5 +1,5 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor, removeTreeFromGraph, refreshGraph, syncGraphWithNode} from "../knawledgeMap/knawledgeMap"
+import {proficiencyToColor} from "../proficiencyEnum"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
@@ -7,15 +7,22 @@ import user from '../../objects/user'
 import {Heading} from "../../objects/heading";
 import {secondsToPretty} from "../../core/filters"
 import {Skill} from "../../objects/skill";
-import {PROFICIENCIES} from "../proficiencyEnum";
 import './tree.less'
-import {goToFromMap} from "../knawledgeMap/knawledgeMap";
 import { mapActions } from 'vuex'
 
+function refreshGraph() {
+    PubSub.publish('refreshGraph')
+}
+function removeTreeFromGraph(treeId){
+    PubSub.publish('removeTreeFromGraph', treeId)
+}
+function goToFromMap(path){
+    PubSub.publish('goToFromMap', path)
+}
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
-    async created () {
+    async created() {
         var me = this;
 
         this.editing = false
@@ -26,7 +33,7 @@ export default {
         this.startTimer()
 
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
-        PubSub.subscribe('canvas.closeTooltip',function (eventName, data) {
+        PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
             if (data.oldNode != me.id) return
 
             //get reference to content, because by the time
@@ -34,10 +41,10 @@ export default {
             content.saveTimer()
         })
         //todo replace with vuex
-        PubSub.subscribe('canvas.startDraggingNode', function() {
+        PubSub.subscribe('canvas.startDraggingNode', function () {
             window.draggingNode = true
         })
-        PubSub.subscribe('canvas.stopDraggingNode', function() {
+        PubSub.subscribe('canvas.stopDraggingNode', function () {
             window.draggingNode = false
         })
         await this.tree.getLeaves()
@@ -45,9 +52,9 @@ export default {
         console.log('this.tree getLeaves just called')
 
     },
-    data () {
+    data() {
         return {
-            tree:{}, //this.tree
+            tree: {}, //this.tree
             content: {},// this.content
             editing: this.editing,
             showHistory: false,
@@ -56,7 +63,7 @@ export default {
             user,
         }
     },
-    computed : {
+    computed: {
         typeIsHeading() {
             return this.tree.contentType == 'heading'
         },
@@ -66,21 +73,21 @@ export default {
         typeIsSkill() {
             return this.tree.contentType == 'skill'
         },
-        styleObject(){
+        styleObject() {
             const styles = {}
-            if(this.typeIsHeading){
+            if (this.typeIsHeading) {
                 styles['background-color'] = 'black'
                 styles['color'] = 'white'
             } else {
                 styles['background-color'] = proficiencyToColor(this.content.proficiency)
-                if (this.showHistory){
+                if (this.showHistory) {
                     styles['background-color'] = 'black'
                     styles['color'] = 'white'
                 }
             }
             return styles
         },
-        timerMouseOverMessage(){
+        timerMouseOverMessage() {
             return "You have spent " + secondsToPretty(this.content.timer) + "studying this item"
         },
         numChildren() {
@@ -103,7 +110,7 @@ export default {
         toggleAddChild() {
             this.addingChild = !this.addingChild
         },
-        toggleHistory(){
+        toggleHistory() {
             if (this.typeisHeading) return
             this.showHistory = !this.showHistory
         },
@@ -115,7 +122,7 @@ export default {
             goToFromMap({name: 'study', params: {leafId: this.id}})
             // this.$router.push()
         },
-        proficiencyClicked(){
+        proficiencyClicked() {
             this.syncProficiency()
             // this.itemStudied({contentId:this.content.id})
             this.$store.commit('itemStudied', this.content.id)
@@ -129,29 +136,28 @@ export default {
         },
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
         async syncTreeChainWithUI() {
-            // PubSub.publish('syncGraphWithNode', this.tree.id)
             this.syncGraphWithNode()
             let parentId = this.tree.parentId;
             let parent
             let num = 1
-            while (parentId){
-                syncGraphWithNode(parentId)
-                // PubSub.publish('syncGraphWithNode', parentId)
+            while (parentId) {
+                // syncGraphWithNode(parentId)
+                PubSub.publish('syncGraphWithNode', parentId)
                 parent = await Trees.get(parentId)
                 parentId = parent.parentId
                 num++
             }
         },
-        syncGraphWithNode(){
-            syncGraphWithNode(this.tree.id)
-            // PubSub.publish('syncGraphWithNode', this.tree.id)
+        syncGraphWithNode() {
+            // syncGraphWithNode(this.tree.id)
+            PubSub.publish('syncGraphWithNode', this.tree.id)
         },
-        toggleAddChild(){
+        toggleAddChild() {
             this.addingChild = !this.addingChild
         },
         //global methods
         changeContent() {
-            switch (this.tree.contentType){
+            switch (this.tree.contentType) {
                 case 'fact':
                     var fact = new Fact({question: this.content.question, answer: this.content.answer})
                     this.content = ContentItems.create(fact)
@@ -171,7 +177,7 @@ export default {
             this.toggleEditing()
         },
         async remove() {
-            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")){
+            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")) {
                 removeTreeFromGraph(this.id)
                 return this.tree.remove()
             }

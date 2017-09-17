@@ -1,13 +1,11 @@
 import {Trees} from '../../objects/trees.js'
 import ContentItems from '../../objects/contentItems'
 import {Tree} from '../../objects/tree.js'
-import {Globals} from '../../core/globals.js'
-import DataKeys from '../../../dataKeys'
 import '../../core/login.js'
 import user from '../../objects/user'
 import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
-import {PROFICIENCIES} from "../proficiencyEnum";
+import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
 import './knawledgeMap.less'
 
@@ -55,8 +53,10 @@ export async function removeTreeFromGraph(treeId){
         s.refresh()
         return `removed all children of ${treeId}`
     })
-
 }
+PubSub.subscribe('removeTreeFromGraph', (eventName, treeId) => {
+    removeTreeFromGraph(treeId)
+})
 
 function createTreeNodeFromTreeAndContent(tree, content, level){
     // var node = tree
@@ -111,40 +111,18 @@ function getLabelFromContent(content) {
     }
 }
 
-export function proficiencyToColor(proficiency){
-    if (proficiency > PROFICIENCIES.THREE) return Globals.colors.proficiency_4;
-    if (proficiency > PROFICIENCIES.TWO) return Globals.colors.proficiency_3;
-    if (proficiency > PROFICIENCIES.ONE) return Globals.colors.proficiency_2;
-    if (proficiency > PROFICIENCIES.UNKNOWN) return Globals.colors.proficiency_1;
-    return Globals.colors.proficiency_unknown;
-}
 
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
 
-PubSub.subscribe('syncGraphWithNode', async treeId => {
-    const tree = await Trees.get(treeId)
-    const content = await ContentItems.get(tree.contentId)
-
-    //update the node
-    var sigmaNode = s.graph.nodes(treeId)
-    sigmaNode.x = tree.x
-    sigmaNode.y = tree.y
-    var color = getTreeColor(content)
-    sigmaNode.color = color
-    sigmaNode.proficiencyStats = tree.proficiencyStats
-
-    //update the edge
-    var edgeId = createEdgeId(tree.parentId, treeId)
-    var sigmaEdge = s.graph.edges(edgeId)
-    sigmaEdge.color = color
-
-    s.refresh()
+PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
+    console.log("pubsub subscribe syncGraphWIthNode called with arguments of ", treeId)
+    syncGraphWithNode(treeId)
 })
 
 export async function syncGraphWithNode(treeId){
-    console.log(treeId, " syncGraphWithNode called")
+    console.log("syncGraphWIthNode called with arguments of ", treeId)
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
 
@@ -154,9 +132,7 @@ export async function syncGraphWithNode(treeId){
     sigmaNode.y = tree.y
     var color = getTreeColor(content)
     sigmaNode.color = color
-    console.log(treeId, " syncGraphWithNode called", JSON.stringify(sigmaNode.proficiencyStats), JSON.stringify(tree.proficiencyStats))
     sigmaNode.proficiencyStats = tree.proficiencyStats
-    console.log(treeId, " syncGraphWithNode called", JSON.stringify(sigmaNode.proficiencyStats), JSON.stringify(tree.proficiencyStats))
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -171,6 +147,7 @@ export async function syncGraphWithNode(treeId){
 export function refreshGraph(){
     s.refresh()
 }
+PubSub.subscribe('refreshGraph',refreshGraph)
 
 function connectTreeToParent(tree,content, g){
     if (tree.parentId) {
@@ -210,7 +187,6 @@ export function addTreeToGraph(parentTreeId, content) {
         color: getTreeColor(content),
         type: 'tree',
     }
-    console.log('label in addTreeToGraph is', newTree.label)
 
     s.graph.addNode(newTree);
     //3. add edge between new node and parent tree
@@ -231,6 +207,9 @@ export function addTreeToGraph(parentTreeId, content) {
 export function goToFromMap(path){
     router.push(path)
 }
+PubSub.subscribe('goToFromMap', (eventName, path) => {
+    goToFromMap(path)
+})
 export function cameraToGraphPosition(x,y){
     // console.log('cameraToGraphPosition called',x,y)
     const graphPosition = s.camera.graphPosition(x,y)
