@@ -28,7 +28,7 @@ class User {
 
   }
   getId(){
-    return this.fbData.uid
+    return this.fbData && this.fbData.uid || 0
   }
   isAdmin(){
       return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'
