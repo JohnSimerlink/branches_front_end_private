@@ -118,10 +118,12 @@ export function proficiencyToColor(proficiency){
     if (proficiency > PROFICIENCIES.UNKNOWN) return Globals.colors.proficiency_1;
     return Globals.colors.proficiency_unknown;
 }
+
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
-export async function syncGraphWithNode(treeId){
+
+PubSub.subscribe('syncGraphWithNode', async treeId => {
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
 
@@ -139,10 +141,37 @@ export async function syncGraphWithNode(treeId){
     sigmaEdge.color = color
 
     s.refresh()
+})
+
+export async function syncGraphWithNode(treeId){
+    console.log(treeId, " syncGraphWithNode called")
+    const tree = await Trees.get(treeId)
+    const content = await ContentItems.get(tree.contentId)
+
+    //update the node
+    var sigmaNode = s.graph.nodes(treeId)
+    sigmaNode.x = tree.x
+    sigmaNode.y = tree.y
+    var color = getTreeColor(content)
+    sigmaNode.color = color
+    console.log(treeId, " syncGraphWithNode called", JSON.stringify(sigmaNode.proficiencyStats), JSON.stringify(tree.proficiencyStats))
+    sigmaNode.proficiencyStats = tree.proficiencyStats
+    console.log(treeId, " syncGraphWithNode called", JSON.stringify(sigmaNode.proficiencyStats), JSON.stringify(tree.proficiencyStats))
+
+    //update the edge
+    var edgeId = createEdgeId(tree.parentId, treeId)
+    var sigmaEdge = s.graph.edges(edgeId)
+    if (sigmaEdge){
+        sigmaEdge.color = color
+    }
+
+    s.refresh()
 }
+
 export function refreshGraph(){
     s.refresh()
 }
+
 function connectTreeToParent(tree,content, g){
     if (tree.parentId) {
         const edge = {
