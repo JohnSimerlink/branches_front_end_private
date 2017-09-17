@@ -244,7 +244,7 @@ export default class ContentItem {
         const nowMilliseconds = timestamp
         const millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0
         const previousInteractionStrength = measurePreviousStrength(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
-        const currentInteractionStrength = estimateCurrentStrength(this.proficiency, millisecondsSinceLastInteraction / 1000, previousInteractionStrength) || 0
+        const currentInteractionStrength = estimateCurrentStrength(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
 
         const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
         //store user interactions under content

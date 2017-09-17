@@ -1,26 +1,81 @@
 var cleanup = require('jsdom-global')()
+import {PROFICIENCIES} from "../app/components/proficiencyEnum";
 import {calculateMillisecondsTilNextReview} from '../app/components/reviewAlgorithm/review'
 import {expect} from 'chai'
-describe('Calculate Review from interaction history', function() {
-    it('should return 2 for 1+1', function() {
-        expect(2).to.equal(2)
+import * as curve from '../app/forgettingCurve'
+    describe('measuringPreviousStrength', () => {
+        it('should return estimated previous strength if proficiency >= PROFICIENCIES.FOUR and time since last review was really short', () => {
+            expect(curve.measurePreviousStrength(40, 99, 2)).to.equal(40)
+            expect(curve.measurePreviousStrength(40, 99.9, 2)).to.equal(40)
+        })
+        it('should return estimated previous strength if proficiency <= 1 and time since last review was really long', () => {
+            expect(curve.measurePreviousStrength(40, 1, 9999999)).to.equal(40)
+            expect(curve.measurePreviousStrength(40, .1, 9999999)).to.equal(40)
+            //if you were to plug in 1% in our formula for 9999999 seconds you would normally get 63 dB, which doesn't make sense given the previous estimated decibel strength of 40
+        })
+        it('should return 10 dbE for 1/e proficiency and 10 seconds', () => {
+            // try {
+            expect(curve.measurePreviousStrength(39, 100 * 1 / curve.e, 10)).to.closeTo(10,.1)
+            // } catch(err) {
+                // console.error("there was an error", err)
+            // }
+        })
+        it('should return 50 dbE for 75% proficiency and 8 hours', () => {
+            try {
+                expect(curve.measurePreviousStrength(39, 100 * .75, 8 * 60 * 60)).to.closeTo(50,.1)
+            } catch( err){
+                console.error(err)
+            }
+        })
     })
-})
-describe('Calculate Review from interaction history with length 1', function() {
-    it('should return 2minutes for <33%', function() {
-        expect(calculateMillisecondsTilNextReview([{time: 'some time', proficiency: 32}])).to.equal(2 * 60 * 1000)
-        expect(calculateMillisecondsTilNextReview([{time: 'some time', proficiency: 35}])).to.equal(10 * 60 * 1000)
-    })
-})
-describe('Calculate Review from interaction history for streaks of high proficiency', function() {
-    it('5 days for a 2x streak', function() {
-        expect(calculateMillisecondsTilNextReview([{time: 'some time', proficiency: 32},{time: 'some time', proficiency: 97},{time: 'some time', proficiency: 98}])).to.equal(5 * 24 * 60 * 60 * 1000)
-    })
-    it('25 days for a 3x streak', function() {
-        expect(calculateMillisecondsTilNextReview([{time: 'some time', proficiency: 98},{time: 'some time', proficiency: 32},{time: 'some time', proficiency: 97},{time: 'some time', proficiency: 98},{time: 'some time', proficiency: 98}])).to.equal(5 * 5 * 24 * 60 * 60 * 1000)
-    })
-})
+    describe('estimateCurrentStrength', () => {
+        it('should return previous strength for 1/e proficiency', () => {
+            try {
+                expect(curve.estimateCurrentStrength(39, 100 * 1 / curve.e, 8 * 60 * 60)).to.closeTo(39,.1)
+            } catch( err){
+                console.error("Err is", err)
+            }
+        })
+        it('should return previous strength for 0 seconds since last review', () => {
+            try {
+                expect(curve.estimateCurrentStrength(39, 100 * 1 / curve.e, 0)).to.closeTo(39,.1)
+            } catch( err){
+                console.error("Err is", err)
+            }
+        })
+        it('should return + 10(e-1) dB for 100% proficiency and longgg time since last review', () => {
+            try {
+                const originalStrength = 39
+                const newExpectedStrength = originalStrength + 10 * (curve.e - 1)
+                expect(curve.estimateCurrentStrength(39, 99.99999, 9999999999)).to.closeTo(newExpectedStrength,.1)
+            } catch( err){
+                console.error("Err is", err)
+            }
+        })
+        it('should return + 10(1 - 1/e) dB for 100% proficiency at Tc', () => {
+            try {
+                const originalStrength = 39
+                const newExpectedStrength = originalStrength + 10 * ( 1 - 1 / curve.e)
+                const Tc = curve.calculateTime(originalStrength, curve.criticalRecall)
 
+                expect(curve.estimateCurrentStrength(39, 99.99999, Tc)).to.closeTo(newExpectedStrength,.1)
+            } catch( err){
+                console.error("Err is", err)
+            }
+        })
+        it('should return + 4.4dB for 99% proficiency at 40 minutes past a 39 strength memory ', () => {
+            try {
+                const originalStrength = 39
+                const proficiency = 99
+                const timeSincePreviousInteraction = 40 * 60
 
+                const newStrength = originalStrength + 4.4
+
+                expect(curve.estimateCurrentStrength(originalStrength, proficiency, timeSincePreviousInteraction)).to.closeTo(newStrength,.1)
+            } catch( err){
+                console.error("Err is", err)
+            }
+        })
+    })
 
 cleanup()

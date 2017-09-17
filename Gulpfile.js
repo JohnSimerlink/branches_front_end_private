@@ -16,10 +16,5 @@ gulp.task('test-watch', function () {
 });
 function test(){
     console.log('rerunning tests! . . .');
-    run("npm run test").exec() //, function(err, out, code){
-    //     if (err){
-    //         console.log("THERE WAS AN ERROR")
-    //         console.error('error of ', err)
-    //     }
-    // })
+    run("mocha --compilers js:babel-register --require babel-polyfill").exec() //, function(err, out, code){
 }
