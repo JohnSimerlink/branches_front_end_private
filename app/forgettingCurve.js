@@ -14,6 +14,9 @@ export function calculateStrength(R,t){
 //Se = previous estimated strength
 //R = proficiency from 0 to 100
 //t equals time since previous interaction
+export function calculateSecondsTilCriticalReviewTime(strength){
+    return calculateTime(strength, criticalRecall)
+}
 export function measurePreviousStrength(estimatedPreviousStrength, R,t){
 
     const proficiencyAsDecimal = R / 100

@@ -12,10 +12,10 @@ export default {
     },
     computed: {
         proficiencyIsUnknown(){ return this.value == PROFICIENCIES.UNKNOWN},
-        proficiencyIsOne(){ return this.value == PROFICIENCIES.ONE},
-        proficiencyIsTwo(){ return this.value == PROFICIENCIES.TWO},
-        proficiencyIsThree(){ return this.value == PROFICIENCIES.THREE},
-        proficiencyIsFour(){ return this.value == PROFICIENCIES.FOUR},
+        proficiencyIsOne(){ return this.value <= PROFICIENCIES.ONE},
+        proficiencyIsTwo(){ return this.value > PROFICIENCIES.ONE && this.value <= PROFICIENCIES.TWO},
+        proficiencyIsThree(){ return this.value > PROFICIENCIES.TWO && this.value <= PROFICIENCIES.THREE},
+        proficiencyIsFour(){ return this.value > PROFICIENCIES.THREE && this.value <= PROFICIENCIES.FOUR},
     },
     methods: {
         setProficiencyToOne(){

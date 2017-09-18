@@ -6,7 +6,10 @@ import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
 import {Trees} from './trees'
-import {measurePreviousStrength, estimateCurrentStrength} from "../forgettingCurve";
+import {
+    measurePreviousStrength, estimateCurrentStrength,
+    calculateSecondsTilCriticalReviewTime
+} from "../forgettingCurve";
 
 
 export default class ContentItem {
@@ -242,7 +245,7 @@ export default class ContentItem {
         //interactions
         const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : {currentInteractionStrength: 0}
         const nowMilliseconds = timestamp
-        const millisecondsSinceLastInteraction = mostRecentInteraction ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+        const millisecondsSinceLastInteraction = this.interactions.length ? nowMilliseconds - mostRecentInteraction.timestamp : 0
         const previousInteractionStrength = measurePreviousStrength(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
         const currentInteractionStrength = estimateCurrentStrength(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
 
@@ -268,8 +271,8 @@ export default class ContentItem {
         }
         firebase.database().ref('content/' + this.id).update(updates)
         //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
-        const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
-        this.nextReviewTime = Date.now() + millisecondsTilNextReview
+        const millisecondsTilNextReview = 1000 * calculateSecondsTilCriticalReviewTime(currentInteractionStrength)
+        this.nextReviewTime = timestamp + millisecondsTilNextReview
 
         this.userReviewTimeMap[user.getId()] = this.nextReviewTime
         var updates = {
