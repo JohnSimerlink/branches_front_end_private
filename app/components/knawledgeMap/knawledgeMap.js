@@ -7,6 +7,7 @@ import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
 import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
+import {Globals} from '../../core/globals'
 import './knawledgeMap.less'
 
 let router
@@ -72,7 +73,7 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
         level,
         content: content,
         label: getLabelFromContent(content),
-        size: 1,
+        size: getSizeFromContent(content),
         color: getTreeColor(content),
         type: 'tree',
     };
@@ -110,6 +111,10 @@ function getLabelFromContent(content) {
             return content.title
     }
 }
+function getSizeFromContent(content) {
+    return Globals.regularSize
+    // return content.overdue ? Globals.overdueSize : Globals.regularSize
+}
 
 
 function createEdgeId(nodeOneId, nodeTwoId){
@@ -137,6 +142,9 @@ export async function syncGraphWithNode(treeId){
     // console.log("syncGraphWIthNode old overdue is ", sigmaNode.overdue)
     sigmaNode.overdue = content.overdue
     // console.log("syncGraphWIthNode new overdue is ", sigmaNode.overdue)
+    console.log("sigmaNode size is", sigmaNode.size)
+    sigmaNode.size = getSizeFromContent(content)
+    console.log("sigmaNode size is NOW", sigmaNode.size)
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -187,7 +195,7 @@ export function addTreeToGraph(parentTreeId, content) {
         y: newChildTreeY,
         children: {},
         label: getLabelFromContent(content),
-        size: 1,
+        size: getSizeFromContent(content),
         color: getTreeColor(content),
         type: 'tree',
     }
