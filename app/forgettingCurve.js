@@ -24,7 +24,7 @@ export function measurePreviousStrength(estimatedPreviousStrength, R,t){
     const logProficiency = Math.log(proficiencyAsDecimal)
     const ebbinghaus = -1 * t / logProficiency
     let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
-    console.log(R +"," + t + " -> "  + measuredPreviousStrength + " dbE")
+    console.log(R + "," + t + " -> "  + measuredPreviousStrength + " dbE")
     measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength: 0
 
     //if proficiency is greater than/equal to 99 or less than/equal to 1, we have a wide range of possibilities for measured strength values - see this google sheet - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=2051263794

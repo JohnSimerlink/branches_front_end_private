@@ -275,6 +275,10 @@ export default class ContentItem {
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
+
+        Object.keys(this.trees).forEach(treeId => {
+           PubSub.publish('syncGraphWithNode', treeId)
+        })
     }
 
     hasInteractions() {
