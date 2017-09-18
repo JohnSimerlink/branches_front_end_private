@@ -81,11 +81,16 @@ class User {
         firebase.database().ref('users/' +this.getId()).update(updates)
         this[prop] = val
     }
+
     setInteractionsForItem(itemId, interactions){
         console.log('setInteractionsForItem is ', itemId, interactions)
         this.branchesData.items[itemId].interactions = interactions
         var updates = {interactions}
         firebase.database().ref('users/' +this.getId() + '/items/' + itemId + '/').update(updates)
+    }
+
+    clearInteractionsForItem(itemId){
+        this.setInteractionsForItem(itemId, [])
     }
 
 
