@@ -79,7 +79,7 @@
             <!--<div class="tree-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>-->
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-if="user.isAdmin()" v-on:click.stop="remove" ></i>
         </div>
-        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue && !typeIsHeading">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
+        <div class="tree-proficiency-timeTilReview" v-if="content.inStudyQueue && !typeIsHeading && content.hasInteractions()">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
     </div>
     <div v-show="addingChild" class="tree-add-child-button" v-on:click.stop="toggleAddChild">
         <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>

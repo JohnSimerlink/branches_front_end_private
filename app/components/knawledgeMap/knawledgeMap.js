@@ -117,12 +117,13 @@ function createEdgeId(nodeOneId, nodeTwoId){
 }
 
 PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
-    console.log("pubsub subscribe syncGraphWIthNode called with arguments of ", treeId)
     syncGraphWithNode(treeId)
 })
 
 export async function syncGraphWithNode(treeId){
-    console.log("syncGraphWIthNode called with arguments of ", treeId)
+    if (!s){
+        return
+    }
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
 
@@ -133,6 +134,9 @@ export async function syncGraphWithNode(treeId){
     var color = getTreeColor(content)
     sigmaNode.color = color
     sigmaNode.proficiencyStats = tree.proficiencyStats
+    // console.log("syncGraphWIthNode old overdue is ", sigmaNode.overdue)
+    sigmaNode.overdue = content.overdue
+    // console.log("syncGraphWIthNode new overdue is ", sigmaNode.overdue)
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
