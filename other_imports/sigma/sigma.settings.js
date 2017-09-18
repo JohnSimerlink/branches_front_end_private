@@ -232,8 +232,8 @@
     //          the zooming level. Basically:
     //           > onScreenR = Math.pow(zoom, nodesPowRatio) * R
     //           > onScreenT = Math.pow(zoom, edgesPowRatio) * T
-    nodesPowRatio: 0.5,
-    edgesPowRatio: 0.5,
+    nodesPowRatio: 1,
+    edgesPowRatio: 1,
 
 
 
