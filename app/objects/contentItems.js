@@ -4,6 +4,7 @@ import {Skill} from "./skill";
 import {Heading} from "./heading";
 
 const factsAndSkills = {}
+const headings = {}
 const content = {}
 if (typeof window !== 'undefined') {
     window.content = content
@@ -23,6 +24,7 @@ function createContentItemFromData(contentData, contentDatumKey){
             break;
         case 'heading':
             contentItem = new Heading(contentData)
+            headings[contentItem.id] = contentItem
             break;
         default:
             console.error(//bc there was some corrupted data
@@ -60,50 +62,26 @@ export default class ContentItems {
     }
     static getAll() {
         return new Promise((resolve, reject) => {
-            firebase.database().ref('content/').once("value", function(snapshot){
-                const contentData = snapshot.val()
-                Object.keys(contentData).filter(contentDatumKey => {
-                    const uri = contentData[contentDatumKey].uri
-                    if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false
-                    }
-                    return true
-                }).
-                forEach(contentDatumKey => {
-                    const contentDatum = contentData[contentDatumKey]
-                    if (!contentDatum) return // in case contentDatum is undefined which has happened before
-                    let contentItem = createContentItemFromData(contentDatum,contentDatumKey)
-                })
-                resolve(content) //the cache containing all
-            }, reject)
+            firebase.database().ref('content/')
+                .once("value", processSnapshot, reject)
+                .then(()=>{resolve(content)})
         })
     }
     static getAllExceptForHeadings() {
-        function processSnapshot(snapshot, resolve){
-            const contentData = snapshot.val()
-            Object.keys(contentData).filter(contentDatumKey => {
-                const uri = contentData[contentDatumKey].uri
-                if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                    return false
-                }
-                return true
-            }).
-            forEach(contentDatumKey => {
-                const contentDatum = contentData[contentDatumKey]
-                if (!contentDatum) return // in case contentDatum is undefined which has happened before
-                let contentItem = createContentItemFromData(contentDatum,contentDatumKey)
-            })
-            // resolve(content) //the cache containing all
-        }
         return new Promise(async (resolve, reject) => {
-            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function(snapshot){
-                processSnapshot(snapshot, resolve)
-            }, reject)
-            const factPromise = firebase.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function(snapshot){
-                processSnapshot(snapshot, resolve)
-            }, reject)
+            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('skill')
+                .once("value", processSnapshot, reject)
+            const factPromise = firebase.database().ref('content/').orderByChild('type').equalTo('fact')
+                .once("value", processSnapshot, reject)
             await Promise.all([skillPromise, factPromise])
             resolve(factsAndSkills)
+        })
+    }
+    static getHeadings() {
+        return new Promise(async (resolve, reject) => {
+            const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('heading')
+                .once("value", processSnapshot, reject)
+                .then(() => { resolve(headings)})
         })
     }
 
@@ -137,3 +115,25 @@ export default class ContentItems {
         )
     }
 }
+function removeBadContentKeys(contentDatumKey){
+    const uri = contentData[contentDatumKey].uri
+    if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+        return false
+    }
+    return true
+}
+function createContentObjectAndAddToCache(contentDatumKey, contentData){
+    const contentDatum = contentData[contentDatumKey]
+    if (!contentDatum) return // in case contentDatum is undefined which has happened before
+    createContentItemFromData(contentDatum,contentDatumKey)
+}
+
+function processSnapshot(snapshot){
+    const contentData = snapshot.val()
+    Object.keys(contentData)
+        .filter(removeBadContentKeys)
+        .forEach(contentDatumKey => {
+            createContentObjectAndAddToCache(contentDatumKey, contentData)
+        })
+}
+

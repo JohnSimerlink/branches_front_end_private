@@ -71,7 +71,8 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
     const node = {
         ...tree,
         level,
-        content: content,
+        content,
+        overdue: content.overdue,
         label: getLabelFromContent(content),
         size: getSizeFromContent(content),
         color: getTreeColor(content),
@@ -111,17 +112,18 @@ function getLabelFromContent(content) {
             return content.title
     }
 }
-function getSizeFromContent(content) {
-    return Globals.regularSize
-    // return content.overdue ? Globals.overdueSize : Globals.regularSize
-}
 
+function getSizeFromContent(content) {
+    // return Globals.regularSize
+    return content.overdue ? Globals.overdueSize : Globals.regularSize
+}
 
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
 
 PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
+    console.log('pubsub subscribe syncgraph with node called', treeId)
     syncGraphWithNode(treeId)
 })
 
@@ -129,6 +131,7 @@ export async function syncGraphWithNode(treeId){
     if (!s){
         return
     }
+    console.log('sync graph with node called', treeId)
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
 
@@ -139,12 +142,9 @@ export async function syncGraphWithNode(treeId){
     var color = getTreeColor(content)
     sigmaNode.color = color
     sigmaNode.proficiencyStats = tree.proficiencyStats
-    // console.log("syncGraphWIthNode old overdue is ", sigmaNode.overdue)
-    sigmaNode.overdue = content.overdue
-    // console.log("syncGraphWIthNode new overdue is ", sigmaNode.overdue)
-    console.log("sigmaNode size is", sigmaNode.size)
+    console.log('sigmanode size before is', sigmaNode.size)
     sigmaNode.size = getSizeFromContent(content)
-    console.log("sigmaNode size is NOW", sigmaNode.size)
+    console.log('sigmanode size after is', sigmaNode.size)
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -167,7 +167,7 @@ function connectTreeToParent(tree,content, g){
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 5,
+            size: 2,
             color: getTreeColor(content),
             type: EDGE_TYPES.HIERARCHICAL,
         };
@@ -206,7 +206,7 @@ export function addTreeToGraph(parentTreeId, content) {
         id: createEdgeId(parentTreeId, newTree.id),
         source: parentTreeId,
         target: newTree.id,
-        size: 5,
+        size: 2,
         color: getTreeColor(content),
         type: EDGE_TYPES.HIERARCHICAL,
     }
@@ -589,7 +589,7 @@ function initKnawledgeMap(treeIdToJumpTo){
                     id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
                     source: node.id,
                     target: parentlessNode.id,
-                    size: 5,
+                    size: 2,
                     color: parentlessNode.color,
                     type: EDGE_TYPES.SUGGESTED_CONNECTION
                 }

@@ -127,16 +127,21 @@ export default class ContentItem {
     }
 
     setOverdueTimeout(){
+        // console.log("set overdue timeout called")
         let millisecondsTilOverdue = this.nextReviewTime - Date.now()
         millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
         this.overdue = false
 
-        this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this),millisecondsTilOverdue)
+        if (this.hasInteractions()){
+            this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this),millisecondsTilOverdue)
+        }
     }
 
     markOverdue(){
         this.overdue = true
+        console.log("mark overdue called")
         Object.keys(this.trees).forEach(childId => {
+            console.log("syncgraph with node about to be publi")
             PubSub.publish('syncGraphWithNode', childId)
         })
         this.clearOverdueTimeout()
@@ -348,6 +353,7 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //set timeout to mark the item overdue when it becomes overdue
+        console.log('set overdue timeout about to be called')
         this.setOverdueTimeout()
     }
 
