@@ -7,6 +7,6 @@ export const Globals = {
         proficiency_1: 'red',
         proficiency_unknown: 'gray',
     },
-    overdueSize: 2,
-    regularSize: 1,
+    overdueSize: 14,
+    regularSize: 10,
 }
