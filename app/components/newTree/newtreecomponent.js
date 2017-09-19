@@ -74,14 +74,17 @@ async function establishURIs(){
    contentItem.set('initialParentTreeId', null)
    contentItem.set('primaryParentTreeContentURI', null)
 
-   tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
+   tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren)
 }
 window.establishURIs = establishURIs
 
 
 async function establishURIForContentAndThenAllChildren(treeId){
-    console.log('establish URI called for', treeId)
+   console.log('establish URI called for', treeId)
    const tree = await Trees.get(treeId)
+    if (!tree.parentId){
+       return
+    }
    const parentTree = await Trees.get(tree.parentId)
    const contentItem = await ContentItems.get(tree.contentId)
    const parentContentItem = await ContentItems.get(parentTree.contentId)
@@ -93,5 +96,5 @@ async function establishURIForContentAndThenAllChildren(treeId){
    contentItem.set('uri', uri)
    contentItem.set('initialParentTreeId', parentTree.id)
    contentItem.set('primaryParentTreeContentURI', parentContentItem.uri)
-   tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren)
+   tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren)
 }

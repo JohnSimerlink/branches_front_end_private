@@ -10,12 +10,15 @@ function fixInteractionData(){
        user.setInteractionsForItem(contentId, item.interactions)
    })
 }
-async function clearInteractionsForHeadings(){
+export async function clearInteractionsForHeadings(){
     const headings = await ContentItems.getHeadings()
-    // Users.getAll().then(users => {
-    //     Object.keys(users).forEach(user => {
-    //
-    //     })
-    // })
+    console.log("the headings whose interactions are going to be cleared are", headings, Object.keys(headings).length)
+    return await Promise.all(
+        Object.keys(headings).map(async headingKey => {
+            user.clearInteractionsForItem(headingKey)
+            const contentItem = await ContentItems.get(headingKey)
+            contentItem.clearInteractions()
+        })
+    )
 }
 window.fixInteractionData = fixInteractionData

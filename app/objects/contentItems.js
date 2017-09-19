@@ -8,6 +8,8 @@ const headings = {}
 const content = {}
 if (typeof window !== 'undefined') {
     window.content = content
+    window.headings = headings
+    window.factsAndSkills = factsAndSkills
 }
 
 function createContentItemFromData(contentData, contentDatumKey){
@@ -23,8 +25,10 @@ function createContentItemFromData(contentData, contentDatumKey){
             factsAndSkills[contentItem.id] = contentItem
             break;
         case 'heading':
+            console.log("case was heading", contentData, contentDatumKey)
             contentItem = new Heading(contentData)
             headings[contentItem.id] = contentItem
+            // console.log("headings are now", JSON.stringify(headings))
             break;
         default:
             console.error(//bc there was some corrupted data
@@ -81,7 +85,10 @@ export default class ContentItems {
         return new Promise(async (resolve, reject) => {
             const skillPromise = firebase.database().ref('content/').orderByChild('type').equalTo('heading')
                 .once("value", processSnapshot, reject)
-                .then(() => { resolve(headings)})
+                .then(() => {
+                    console.log("the keys being returned in getHeadings is ", JSON.stringify(Object.keys(headings)))
+                    resolve(headings)
+            })
         })
     }
 
@@ -115,7 +122,10 @@ export default class ContentItems {
         )
     }
 }
-function removeBadContentKeys(contentDatumKey){
+if (typeof window !== 'undefined'){
+    window.ContentItems = ContentItems
+}
+function removeBadContentKeys(contentData, contentDatumKey){
     const uri = contentData[contentDatumKey].uri
     if (!uri || uri.indexOf("null") == 0 ) { //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
         return false
@@ -130,10 +140,18 @@ function createContentObjectAndAddToCache(contentDatumKey, contentData){
 
 function processSnapshot(snapshot){
     const contentData = snapshot.val()
-    Object.keys(contentData)
-        .filter(removeBadContentKeys)
-        .forEach(contentDatumKey => {
-            createContentObjectAndAddToCache(contentDatumKey, contentData)
+    console.log("the number of keys in headings contentData is", Object.keys(contentData).length)
+    const filteredKeys = Object.keys(contentData)
+        .map(key => {
+            return key
         })
+        .filter(contentDatumKey => {
+            return removeBadContentKeys(contentData, contentDatumKey)
+        })
+    console.log("the number of filtered KEys in get headings processSnapshot is", filteredKeys.length)
+
+    filteredKeys.forEach(contentDatumKey => {
+        createContentObjectAndAddToCache(contentDatumKey, contentData)
+    })
 }
 
