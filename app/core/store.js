@@ -4,11 +4,11 @@ Vue.use(Vuex)
 
 export const MODES = {
     EXPLORING: 1,
-    REVIEWING: 2,
+    STUDYING: 2,
 }
 
 const state = {
-    mode: MODES.REVIEWING,
+    mode: MODES.STUDYING,
     modes: {
         2: {
             contentId: 12345,
@@ -16,8 +16,8 @@ const state = {
     },
 }
 const getters = {
-    reviewing: state => state.mode === MODES.REVIEWING,
-    currentReviewingItem: state => state.modes[MODES.REVIEWING].contentId,
+    reviewing: state => state.mode === MODES.STUDYING,
+    currentReviewingItem: state => state.modes[MODES.STUDYING].contentId,
 }
 const mutations = {
     changeMode(state, mode){
@@ -27,7 +27,7 @@ const mutations = {
         console.log('itemStudied called', state, contentId, ...arguments)
         if (getters.reviewing(state)){
             console.log('state being changed', state, contentId,)
-            state.modes[MODES.REVIEWING].contentId = contentId
+            state.modes[MODES.STUDYING].contentId = contentId
         } else {
             console.log('state not in reviewing mode')
         }

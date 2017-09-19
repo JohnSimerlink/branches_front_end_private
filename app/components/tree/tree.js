@@ -113,6 +113,10 @@ export default {
             goToFromMap({name: 'study', params: {leafId: this.id}})
             // this.$router.push()
         },
+        studyHeading() {
+            goToFromMap({name: 'study', params: {leafId: this.id}})
+            // this.$router.push()
+        },
         proficiencyClicked() {
             this.syncProficiency()
             // this.itemStudied({contentId:this.content.id})
@@ -123,7 +127,7 @@ export default {
             this.content.recalculateProficiencyAggregationForTreeChain()
                 .then(this.syncTreeChainWithUI)
                 .then(refreshGraph)
-            // this.syncGraphWithNode()
+            this.content.recalculateNumOverdueAggregationForTreeChain()
         },
         clearInteractions(){
             this.content.clearInteractions()

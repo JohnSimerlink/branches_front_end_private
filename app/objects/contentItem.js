@@ -131,8 +131,10 @@ export default class ContentItem {
 
     markOverdue(){
         this.overdue = true
-        Object.keys(this.trees).forEach(treeId => {
+        Object.keys(this.trees).forEach(async treeId => {
             PubSub.publish('syncGraphWithNode', treeId)
+            const tree = await Trees.get(treeId)
+            tree.calculateNumOverdueAggregation()
         })
         this.clearOverdueTimeout()
     }
@@ -243,6 +245,15 @@ export default class ContentItem {
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
             return tree.recalculateProficiencyAggregation()
+        })
+        return Promise.all(calculationPromises)
+    }
+    recalculateNumOverdueAggregationForTreeChain(){
+        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
+            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        const calculationPromises = treePromises.map(async treePromise => {
+            const tree = await treePromise
+            return tree.calculateNumOverdueAggregation()
         })
         return Promise.all(calculationPromises)
     }

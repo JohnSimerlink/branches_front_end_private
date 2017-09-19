@@ -39,6 +39,7 @@ export class Tree {
             loadObject(treeObj, this)
             this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
             this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
+            this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
             return
         }
 
@@ -49,8 +50,10 @@ export class Tree {
 
         this.userProficiencyStatsMap = {}
         this.userAggregationTimerMap = {}
+        this.userNumOverdueMap = {}
         this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
         this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
+        this.userNumOverdueMap = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
 
         this.x = x
         this.y = y
@@ -98,6 +101,7 @@ export class Tree {
         this.updatePrimaryParentTreeContentURI()
         this.recalculateProficiencyAggregation()
         this.calculateAggregationTimer()
+        this.calculateNumOverdueAggregation()
     }
 
     async removeAndDisconnectFromParent(){
@@ -181,6 +185,16 @@ export class Tree {
         this.userAggregationTimerMap[user.getId()] = this.aggregationTimer
         const updates = {
             userAggregationTimerMap: this.userAggregationTimerMap
+        }
+        firebase.database().ref('trees/' + this.id).update(updates)
+    }
+    setNumOverdue(numOverdue){
+        console.log(this.id, "numOverdue is ", numOverdue)
+        this.numOverdue = numOverdue
+        this.userNumOverdueMap = this.userNumOverdueMap || {}
+        this.userNumOverdueMap[user.getId()] = this.numOverdue
+        const updates = {
+            userNumOverdueMap: this.userNumOverdueMap
         }
         firebase.database().ref('trees/' + this.id).update(updates)
     }
@@ -322,14 +336,16 @@ export class Tree {
         let numOverdue = 0
         if (!this.children || !Object.keys(this.children).length) return numOverdue
         const children = await Promise.all(
-            this.children.getChildKeys()
+            this.getChildKeys()
                 .map(Trees.get)
                 .map(async childPromise => await childPromise)
         )
 
         children.forEach(child => {
-            numOverdue += +child.numOverdue
+            console.log(child.id, "numOverdue is", child.numOverdue)
+            numOverdue += +child.numOverdue || 0
         })
+        console.log("numOverdue in aggergationnonleaf is", numOverdue)
         return numOverdue
         //TODO start storing numOverdue in db - the way we do with the other aggregations
     }
@@ -404,6 +420,9 @@ export class Tree {
         }
         const contentItem = await ContentItems.get(this.contentId)
         return contentItem
+    }
+    getNextItemToStudy(){
+
     }
 }
 //TODO: get typeScript so we can have a schema for treeObj
