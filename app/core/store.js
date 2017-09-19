@@ -1,5 +1,6 @@
 import Vuex from "vuex"
 import Vue from "vue"
+import {Trees} from '../objects/trees'
 Vue.use(Vuex)
 
 export const MODES = {
@@ -9,34 +10,50 @@ export const MODES = {
 
 const state = {
     mode: MODES.STUDYING,
+    currentStudyingContentItem:'8904d53adfef7376627f4227ada47cd8',
+    currentStudyingCategoryTreeId: '1',
     modes: {
         2: {
             contentId: 12345,
         }
     },
 }
+//
+// function setCurrentStudyingContentId(state, contentId){
+//     state.currentStudyingContentItem = contentId
+//
+// }
 const getters = {
-    reviewing: state => state.mode === MODES.STUDYING,
-    currentReviewingItem: state => state.modes[MODES.STUDYING].contentId,
+    studying: state => state.mode === MODES.STUDYING,
+    currentStudyingCategoryTreeId: state => state.currentStudyingCategoryTreeId,
 }
 const mutations = {
     changeMode(state, mode){
         state.mode = mode
     },
+    async setCurrentStudyingTree(state, treeId){
+        state.currentStudyingCategoryTreeId = treeId
+        const tree = await Trees.get(treeId)
+        if (tree.areItemsToStudy()){
+            const itemToStudy = tree.getNextItemToStudy()
+            console.log('next itemId to Study is', itemToStudy)
+            state.currentStudyingContentItem = itemToStudy
+        }
+    },
     itemStudied(state, contentId){
         console.log('itemStudied called', state, contentId, ...arguments)
-        if (getters.reviewing(state)){
-            console.log('state being changed', state, contentId,)
-            state.modes[MODES.STUDYING].contentId = contentId
-        } else {
-            console.log('state not in reviewing mode')
-        }
-
-        // if (this.reviewing()){
+        // if (getters.studying(state)){
+        //     console.log('state being changed', state, contentId,)
+        //     state.modes[MODES.STUDYING].contentId = contentId
+        // } else {
+        //     console.log('state not in reviewing mode')
         // }
+        const item = ContentItems.get(contentId)
+        item.getTreeIds().forEach(tree => {
+            tree.sortLeavesByStudiedAndStrength()
+        })
     }
 }
-
 
 const actions = {
     itemStudied: ({commit, contentId}) => {

@@ -416,6 +416,30 @@ export default class ContentItem {
 
         return exercise
     }
+    getTreeIds(){
+        if (!this.trees){
+            return []
+        }
+        return Object.keys(this.trees).filter(treeId => {
+            return treeId //removes any "undefined"'s
+        })
+    }
+    getTreeId(){
+        const treeIds = this.getTreeIds()
+        if (treeIds.length){
+            return treeIds[0]
+        } else {
+            return null
+        }
+
+    }
+    async getTree(){
+        const treeId = this.getTreeId()
+        const tree = await this.getTreeId()
+        return tree
+    }
+
+
 }
 
 /**

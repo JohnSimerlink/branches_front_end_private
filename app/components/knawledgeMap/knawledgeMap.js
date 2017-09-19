@@ -11,6 +11,34 @@ import {Globals} from '../../core/globals'
 import './knawledgeMap.less'
 
 let router
+
+var toolTipsConfig = {
+    node: [
+        {
+            show: 'rightClickNode',
+            cssClass: 'sigma-tooltip',
+            position: 'center',
+            template: '',
+            renderer: function(node, template) {
+                var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
+                switch(node.type){
+                    case 'tree':
+                        template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                        break;
+                    case 'newChildTree':
+                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                        break;
+                }
+                var result = Mustache.render(template, node)
+
+                return result
+            }
+        }],
+    // stage: {
+    //     template:require('./rightClickMenu.html')
+    // }
+};
+
 export default {
     props: ['treeId'],
     template: require('./knawledgeMap.html'),
@@ -18,8 +46,21 @@ export default {
         this.init()
         router = this.$router
     },
+    computed: {
+        currentStudyingContentItem(){
+            console.log("current studying contentId is", this.$store.state.currentStudyingContentItem)
+           return this.$store.state.currentStudyingContentItem
+        }
+    },
     watch: {
         '$route': 'init',
+        currentStudyingContentItem(newContentItem, oldContentItem){
+            console.log('new content id to jump to is ', newContentItem, oldContentItem)
+            const treeId = newContentItem.getTreeId()
+            jumpToAndOpenTreeId(treeId)
+           // const item = ContentItems.get()
+        }
+
     },
     methods: {
         init(){
@@ -33,6 +74,7 @@ var s,
         nodes: [],
         edges: []
     }
+
 
 var initialized = false;
 
@@ -244,6 +286,42 @@ export function getCamera(){
 export function getTreeUINode(nodeId){
     return s.graph.nodes(nodeId)
 }
+
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    let node = s.graph.nodes(treeid)
+    focusNode(s.cameras[0], node);
+
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+}
+
+function focusNode(camera, node) {
+    if (!node) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    let cameraCoord = {
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
+        ratio: 0.05
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
+}
 function initKnawledgeMap(treeIdToJumpTo){
     var me = this;// bound/called
 
@@ -254,32 +332,6 @@ function initKnawledgeMap(treeIdToJumpTo){
     }
 
 
-    var toolTipsConfig = {
-        node: [
-            {
-                show: 'rightClickNode',
-                cssClass: 'sigma-tooltip',
-                position: 'center',
-                template: '',
-                renderer: function(node, template) {
-                    var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
-                    switch(node.type){
-                        case 'tree':
-                            template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                            break;
-                        case 'newChildTree':
-                            template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                            break;
-                    }
-                    var result = Mustache.render(template, node)
-
-                    return result
-                }
-            }],
-        // stage: {
-        //     template:require('./rightClickMenu.html')
-        // }
-    };
 
     if (typeof PubSub !== 'undefined') {
         PubSub.subscribe('login', async () => {
@@ -399,10 +451,8 @@ function initKnawledgeMap(treeIdToJumpTo){
             canvas.style.cursor = 'grab'
         })
         PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
-            console.log('startDraggingNode', eventName, node)
         })
         PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
-            console.log('stopDraggingNode', eventName, node)
             updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
         })
         PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
@@ -675,42 +725,6 @@ function initKnawledgeMap(treeIdToJumpTo){
         console.log('camera going to', user.camera)
         var myRenderer = s.renderers[0];
 
-    }
-
-    /**
-     * Go to a given tree ID on the graph, centering the viewport on the tree
-     */
-    function jumpToAndOpenTreeId(treeid) {
-        //let tree = sigma.nodes[treeid];
-        let node = s.graph.nodes(treeid)
-        focusNode(s.cameras[0], node);
-
-        tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-    }
-
-    function focusNode(camera, node) {
-        if (!node) {
-            console.error("Tried to go to node");
-            console.error(node);
-            return;
-        }
-        let cameraCoord = {
-            x: node['read_cam0:x'],
-            y: node['read_cam0:y'],
-            ratio: 0.05
-        };
-        camera.goTo(cameraCoord);
-        // sigma.misc.animation.camera(
-        //     camera,
-        //     {
-        //         x: node['read_cammain:x'],
-        //         y: node['read_cammain:y'],
-        //         ratio: 0.075
-        //     },
-        //     {
-        //         duration: 150
-        //     }
-        // );
     }
 
 
