@@ -40,13 +40,6 @@ export default {
             const content = me.content
             content.saveTimer()
         })
-        //todo replace with vuex
-        PubSub.subscribe('canvas.startDraggingNode', function () {
-            window.draggingNode = true
-        })
-        PubSub.subscribe('canvas.stopDraggingNode', function () {
-            window.draggingNode = false
-        })
         await this.tree.getLeaves()
         this.tree.sortLeavesByStudiedAndStrength()
 
@@ -58,7 +51,6 @@ export default {
             editing: this.editing,
             showHistory: false,
             addingChild: this.addingChild,
-            draggingNode: window.draggingNode,
             user,
         }
     },
