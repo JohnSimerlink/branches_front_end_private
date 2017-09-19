@@ -311,6 +311,43 @@ export class Tree {
         const parent = await Trees.get(this.parentId)
         return parent.calculateAggregationTimer()
     }
+
+
+    async calculateNumOverdueAggregationLeaf(){
+        let contentItem = await ContentItems.get(this.contentId)
+        return contentItem.overdue ? 1 : 0
+    }
+    async calculateNumOverdueAggregationNotLeaf(){
+        const me = this
+        let numOverdue = 0
+        if (!this.children || !Object.keys(this.children).length) return numOverdue
+        const children = await Promise.all(
+            this.children.getChildKeys()
+                .map(Trees.get)
+                .map(async childPromise => await childPromise)
+        )
+
+        children.forEach(child => {
+            numOverdue += +child.numOverdue
+        })
+        return numOverdue
+        //TODO start storing numOverdue in db - the way we do with the other aggregations
+    }
+    async calculateNumOverdueAggregation(){
+        let numOverdue;
+        const isLeaf = await this.isLeaf()
+        if (isLeaf){
+            numOverdue = await this.calculateNumOverdueAggregationLeaf()
+        } else {
+            numOverdue = await this.calculateNumOverdueAggregationNotLeaf()
+        }
+        this.setNumOverdue(numOverdue)
+
+        if (!this.parentId) return
+        const parent = await Trees.get(this.parentId)
+        return parent.calculateNumOverdueAggregation()
+
+    }
     //returns a list of contentItems that are all on leaf nodes
     async getLeaves(){
         if (!this.leaves.length){
