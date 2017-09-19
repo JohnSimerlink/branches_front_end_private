@@ -20038,26 +20038,21 @@ var Tree = exports.Tree = function () {
 
             return calculateAggregationTimer;
         }()
-        //returns a list of contentItems that are all on leaf nodes
-
     }, {
-        key: 'getLeaves',
+        key: 'calculateNumOverdueAggregationLeaf',
         value: function () {
             var _ref21 = _asyncToGenerator(regeneratorRuntime.mark(function _callee17() {
+                var contentItem;
                 return regeneratorRuntime.wrap(function _callee17$(_context17) {
                     while (1) {
                         switch (_context17.prev = _context17.next) {
                             case 0:
-                                if (this.leaves.length) {
-                                    _context17.next = 3;
-                                    break;
-                                }
+                                _context17.next = 2;
+                                return _contentItems2.default.get(this.contentId);
 
-                                _context17.next = 3;
-                                return this.recalculateLeaves();
-
-                            case 3:
-                                return _context17.abrupt('return', this.leaves);
+                            case 2:
+                                contentItem = _context17.sent;
+                                return _context17.abrupt('return', contentItem.overdue ? 1 : 0);
 
                             case 4:
                             case 'end':
@@ -20067,8 +20062,182 @@ var Tree = exports.Tree = function () {
                 }, _callee17, this);
             }));
 
-            function getLeaves() {
+            function calculateNumOverdueAggregationLeaf() {
                 return _ref21.apply(this, arguments);
+            }
+
+            return calculateNumOverdueAggregationLeaf;
+        }()
+    }, {
+        key: 'calculateNumOverdueAggregationNotLeaf',
+        value: function () {
+            var _ref22 = _asyncToGenerator(regeneratorRuntime.mark(function _callee19() {
+                var _this7 = this;
+
+                var me, numOverdue, children;
+                return regeneratorRuntime.wrap(function _callee19$(_context19) {
+                    while (1) {
+                        switch (_context19.prev = _context19.next) {
+                            case 0:
+                                me = this;
+                                numOverdue = 0;
+
+                                if (!(!this.children || !Object.keys(this.children).length)) {
+                                    _context19.next = 4;
+                                    break;
+                                }
+
+                                return _context19.abrupt('return', numOverdue);
+
+                            case 4:
+                                _context19.next = 6;
+                                return Promise.all(this.children.getChildKeys().map(_trees.Trees.get).map(function () {
+                                    var _ref23 = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(childPromise) {
+                                        return regeneratorRuntime.wrap(function _callee18$(_context18) {
+                                            while (1) {
+                                                switch (_context18.prev = _context18.next) {
+                                                    case 0:
+                                                        _context18.next = 2;
+                                                        return childPromise;
+
+                                                    case 2:
+                                                        return _context18.abrupt('return', _context18.sent);
+
+                                                    case 3:
+                                                    case 'end':
+                                                        return _context18.stop();
+                                                }
+                                            }
+                                        }, _callee18, _this7);
+                                    }));
+
+                                    return function (_x10) {
+                                        return _ref23.apply(this, arguments);
+                                    };
+                                }()));
+
+                            case 6:
+                                children = _context19.sent;
+
+
+                                children.forEach(function (child) {
+                                    numOverdue += +child.numOverdue;
+                                });
+                                return _context19.abrupt('return', numOverdue);
+
+                            case 9:
+                            case 'end':
+                                return _context19.stop();
+                        }
+                    }
+                }, _callee19, this);
+            }));
+
+            function calculateNumOverdueAggregationNotLeaf() {
+                return _ref22.apply(this, arguments);
+            }
+
+            return calculateNumOverdueAggregationNotLeaf;
+        }()
+    }, {
+        key: 'calculateNumOverdueAggregation',
+        value: function () {
+            var _ref24 = _asyncToGenerator(regeneratorRuntime.mark(function _callee20() {
+                var numOverdue, isLeaf, parent;
+                return regeneratorRuntime.wrap(function _callee20$(_context20) {
+                    while (1) {
+                        switch (_context20.prev = _context20.next) {
+                            case 0:
+                                numOverdue = void 0;
+                                _context20.next = 3;
+                                return this.isLeaf();
+
+                            case 3:
+                                isLeaf = _context20.sent;
+
+                                if (!isLeaf) {
+                                    _context20.next = 10;
+                                    break;
+                                }
+
+                                _context20.next = 7;
+                                return this.calculateNumOverdueAggregationLeaf();
+
+                            case 7:
+                                numOverdue = _context20.sent;
+                                _context20.next = 13;
+                                break;
+
+                            case 10:
+                                _context20.next = 12;
+                                return this.calculateNumOverdueAggregationNotLeaf();
+
+                            case 12:
+                                numOverdue = _context20.sent;
+
+                            case 13:
+                                this.setNumOverdue(numOverdue);
+
+                                if (this.parentId) {
+                                    _context20.next = 16;
+                                    break;
+                                }
+
+                                return _context20.abrupt('return');
+
+                            case 16:
+                                _context20.next = 18;
+                                return _trees.Trees.get(this.parentId);
+
+                            case 18:
+                                parent = _context20.sent;
+                                return _context20.abrupt('return', parent.calculateNumOverdueAggregation());
+
+                            case 20:
+                            case 'end':
+                                return _context20.stop();
+                        }
+                    }
+                }, _callee20, this);
+            }));
+
+            function calculateNumOverdueAggregation() {
+                return _ref24.apply(this, arguments);
+            }
+
+            return calculateNumOverdueAggregation;
+        }()
+        //returns a list of contentItems that are all on leaf nodes
+
+    }, {
+        key: 'getLeaves',
+        value: function () {
+            var _ref25 = _asyncToGenerator(regeneratorRuntime.mark(function _callee21() {
+                return regeneratorRuntime.wrap(function _callee21$(_context21) {
+                    while (1) {
+                        switch (_context21.prev = _context21.next) {
+                            case 0:
+                                if (this.leaves.length) {
+                                    _context21.next = 3;
+                                    break;
+                                }
+
+                                _context21.next = 3;
+                                return this.recalculateLeaves();
+
+                            case 3:
+                                return _context21.abrupt('return', this.leaves);
+
+                            case 4:
+                            case 'end':
+                                return _context21.stop();
+                        }
+                    }
+                }, _callee21, this);
+            }));
+
+            function getLeaves() {
+                return _ref25.apply(this, arguments);
             }
 
             return getLeaves;
@@ -20076,99 +20245,99 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'recalculateLeaves',
         value: function () {
-            var _ref22 = _asyncToGenerator(regeneratorRuntime.mark(function _callee19() {
-                var _this7 = this;
+            var _ref26 = _asyncToGenerator(regeneratorRuntime.mark(function _callee23() {
+                var _this8 = this;
 
                 var leaves, isLeaf;
-                return regeneratorRuntime.wrap(function _callee19$(_context19) {
+                return regeneratorRuntime.wrap(function _callee23$(_context23) {
                     while (1) {
-                        switch (_context19.prev = _context19.next) {
+                        switch (_context23.prev = _context23.next) {
                             case 0:
                                 leaves = [];
-                                _context19.next = 3;
+                                _context23.next = 3;
                                 return this.isLeaf();
 
                             case 3:
-                                isLeaf = _context19.sent;
+                                isLeaf = _context23.sent;
 
                                 if (!isLeaf) {
-                                    _context19.next = 18;
+                                    _context23.next = 18;
                                     break;
                                 }
 
-                                _context19.prev = 5;
+                                _context23.prev = 5;
 
                                 if (!this.contentId) {
-                                    _context19.next = 11;
+                                    _context23.next = 11;
                                     break;
                                 }
 
-                                _context19.next = 9;
+                                _context23.next = 9;
                                 return this.getContentItem();
 
                             case 9:
-                                _context19.t0 = _context19.sent;
-                                leaves = [_context19.t0];
+                                _context23.t0 = _context23.sent;
+                                leaves = [_context23.t0];
 
                             case 11:
-                                _context19.next = 16;
+                                _context23.next = 16;
                                 break;
 
                             case 13:
-                                _context19.prev = 13;
-                                _context19.t1 = _context19['catch'](5);
+                                _context23.prev = 13;
+                                _context23.t1 = _context23['catch'](5);
 
                                 leaves = [];
 
                             case 16:
-                                _context19.next = 20;
+                                _context23.next = 20;
                                 break;
 
                             case 18:
-                                _context19.next = 20;
+                                _context23.next = 20;
                                 return Promise.all(Object.keys(this.children).map(function () {
-                                    var _ref23 = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(childId) {
+                                    var _ref27 = _asyncToGenerator(regeneratorRuntime.mark(function _callee22(childId) {
                                         var _leaves, child;
 
-                                        return regeneratorRuntime.wrap(function _callee18$(_context18) {
+                                        return regeneratorRuntime.wrap(function _callee22$(_context22) {
                                             while (1) {
-                                                switch (_context18.prev = _context18.next) {
+                                                switch (_context22.prev = _context22.next) {
                                                     case 0:
-                                                        _context18.prev = 0;
-                                                        _context18.next = 3;
+                                                        _context22.prev = 0;
+                                                        _context22.next = 3;
                                                         return _trees.Trees.get(childId);
 
                                                     case 3:
-                                                        child = _context18.sent;
-                                                        _context18.t0 = (_leaves = leaves).push;
-                                                        _context18.t1 = _leaves;
-                                                        _context18.t2 = _toConsumableArray;
-                                                        _context18.next = 9;
+                                                        child = _context22.sent;
+                                                        _context22.t0 = (_leaves = leaves).push;
+                                                        _context22.t1 = _leaves;
+                                                        _context22.t2 = _toConsumableArray;
+                                                        _context22.next = 9;
                                                         return child.getLeaves();
 
                                                     case 9:
-                                                        _context18.t3 = _context18.sent;
-                                                        _context18.t4 = (0, _context18.t2)(_context18.t3);
+                                                        _context22.t3 = _context22.sent;
+                                                        _context22.t4 = (0, _context22.t2)(_context22.t3);
 
-                                                        _context18.t0.apply.call(_context18.t0, _context18.t1, _context18.t4);
+                                                        _context22.t0.apply.call(_context22.t0, _context22.t1, _context22.t4);
 
-                                                        _context18.next = 16;
+                                                        _context22.next = 16;
                                                         break;
 
                                                     case 14:
-                                                        _context18.prev = 14;
-                                                        _context18.t5 = _context18['catch'](0);
+                                                        _context22.prev = 14;
+                                                        _context22.t5 = _context22['catch'](0);
 
                                                     case 16:
                                                     case 'end':
-                                                        return _context18.stop();
+                                                        return _context22.stop();
                                                 }
                                             }
-                                        }, _callee18, _this7, [[0, 14]]);
+                                        }, _callee22, _this8, [[0, 14]]);
                                     }));
 
-                                    return function (_x10) {
-                                        return _ref23.apply(this, arguments);
+                                    return function (_x11) {
+                                        return _ref27.apply(this, arguments);
                                     };
                                 }()));
 
@@ -20178,14 +20347,14 @@ var Tree = exports.Tree = function () {
 
                             case 21:
                             case 'end':
-                                return _context19.stop();
+                                return _context23.stop();
                         }
                     }
-                }, _callee19, this, [[5, 13]]);
+                }, _callee23, this, [[5, 13]]);
             }));
 
             function recalculateLeaves() {
-                return _ref22.apply(this, arguments);
+                return _ref26.apply(this, arguments);
             }
 
             return recalculateLeaves;
@@ -20210,37 +20379,37 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'getContentItem',
         value: function () {
-            var _ref24 = _asyncToGenerator(regeneratorRuntime.mark(function _callee20() {
+            var _ref28 = _asyncToGenerator(regeneratorRuntime.mark(function _callee24() {
                 var contentItem;
-                return regeneratorRuntime.wrap(function _callee20$(_context20) {
+                return regeneratorRuntime.wrap(function _callee24$(_context24) {
                     while (1) {
-                        switch (_context20.prev = _context20.next) {
+                        switch (_context24.prev = _context24.next) {
                             case 0:
                                 if (this.contentId) {
-                                    _context20.next = 2;
+                                    _context24.next = 2;
                                     break;
                                 }
 
-                                return _context20.abrupt('return', null);
+                                return _context24.abrupt('return', null);
 
                             case 2:
-                                _context20.next = 4;
+                                _context24.next = 4;
                                 return _contentItems2.default.get(this.contentId);
 
                             case 4:
-                                contentItem = _context20.sent;
-                                return _context20.abrupt('return', contentItem);
+                                contentItem = _context24.sent;
+                                return _context24.abrupt('return', contentItem);
 
                             case 6:
                             case 'end':
-                                return _context20.stop();
+                                return _context24.stop();
                         }
                     }
-                }, _callee20, this);
+                }, _callee24, this);
             }));
 
             function getContentItem() {
-                return _ref24.apply(this, arguments);
+                return _ref28.apply(this, arguments);
             }
 
             return getContentItem;
@@ -24307,7 +24476,7 @@ _vue2.default.filter('timeFromNow', function (utcTimestamp) {
     return (0, _moment2.default)(utcTimestamp).fromNow();
 });
 _vue2.default.filter('dateTime', function (utcTimestamp) {
-    return (0, _moment2.default)(utcTimestamp);
+    return (0, _moment2.default)(utcTimestamp).format('MM/DD/YY, h:mm:ss a');
 });
 _vue2.default.filter('round', Math.round);
 _vue2.default.filter('sortByNextReviewTime', function (arr) {
@@ -45367,7 +45536,7 @@ module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\
 /* 247 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <button v-on:click.stop=\"clearInteractions\">\r\n           Clear Interactions\r\n        </button>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp}} || {{interaction.proficiency}}% || {{interaction.timeSpent}} s || {{interaction.millisecondsSinceLastInteraction}} ms || {{interaction.previousInteractionStrength}} dB -> {{interaction.currentInteractionStrength}} dB\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
+module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <button v-on:click.stop=\"clearInteractions\">\r\n           Clear Interactions\r\n        </button>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp | dateTime}}, {{interaction.proficiency}}%<span v-if=\"interaction.previousInteractionStrength && interaction.currentInteractionStrength\">, {{interaction.previousInteractionStrength | round}} dB -> {{interaction.currentInteractionStrength | round}} dB </span>\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
 /* 248 */
