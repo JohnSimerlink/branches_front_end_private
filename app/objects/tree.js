@@ -71,6 +71,14 @@ export class Tree {
             }
         )
     }
+    getChildKeys(){
+        if (!this.children){
+           return []
+        }
+        return Object.keys(this.children).filter(childKey => {
+            return childKey
+        })
+    }
     /**
      * Add a child tree to this tree
      * @param treeId

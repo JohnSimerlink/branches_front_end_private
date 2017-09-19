@@ -7,4 +7,4 @@ export function toggleVisibility(el){
     }
 }
 
-console.log('i added something to utils.js')
+// console.log('i added something to utils.js')

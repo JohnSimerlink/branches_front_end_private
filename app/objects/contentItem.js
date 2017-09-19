@@ -110,13 +110,6 @@ export default class ContentItem {
         let sections = this.getURIWithoutRootElement().split("/")
         let result = getLastNBreadcrumbsStringFromList(sections, n)
         return result
-        // console.log('breadcrumb sections for ', this,' are', sections)
-        // let sectionsResult = sections.reduce((accum, val) => {
-        //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-        //         return accum
-        //     }
-        //     return accum + " > " + decodeURIComponent(val)
-        // })
     }
     getBreadCrumbs(){
 
@@ -127,7 +120,6 @@ export default class ContentItem {
     }
 
     setOverdueTimeout(){
-        // console.log("set overdue timeout called")
         let millisecondsTilOverdue = this.nextReviewTime - Date.now()
         millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
         this.overdue = false
@@ -139,9 +131,9 @@ export default class ContentItem {
 
     markOverdue(){
         this.overdue = true
-        console.log("mark overdue called")
+        // console.log("mark overdue called")
         Object.keys(this.trees).forEach(childId => {
-            console.log("syncgraph with node about to be publi")
+            // console.log("syncgraph with node about to be published")
             PubSub.publish('syncGraphWithNode', childId)
         })
         this.clearOverdueTimeout()
@@ -257,30 +249,54 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     clearInteractions(){
+        console.log(this.id, "clearing Interactions")
+        delete this.studiers[user.getId()]
+
         this.proficiency = PROFICIENCIES.UNKNOWN
-        this.userProficiencyMap[user.getId()] = this.proficiency
+        delete this.userProficiencyMap[user.getId()]
 
         this.interactions = []
-        this.userInteractionsMap[user.getId()] = this.interactions
+        delete this.userInteractionsMap[user.getId()]
 
         this.lastRecordedStrength = INITIAL_LAST_RECORDED_STRENGTH
-        this.userStrengthMap[user.getId()] = this.lastRecordedStrength
+        delete this.userStrengthMap[user.getId()]
 
         this.nextReviewTime = 0
-        this.userReviewTimeMap[user.getId()] = this.nextReviewTime
+        delete this.userReviewTimeMap[user.getId()]
 
         this.timer = 0
+        delete this.userTimeMap[user.getId()]
 
         const updates = {
+            studiers: this.studiers,
             userProficiencyMap : this.userProficiencyMap,
             userInteractionsMap : this.userInteractionsMap,
             userStrengthMap : this.userStrengthMap,
             userReviewTimeMap : this.userReviewTimeMap,
-            timer: this.timer,
+            userTimeMap: this.userTimeMap,
         }
 
-        firebase.database().ref('content/' + this.id).update(updates)
+        console.log('clear interactions called')
+        // firebase.database().ref('content/' + this.id + '/studiers/' + user.getId()).remove(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userProficiencyMap/' + user.getId()).remove(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userInteractionsMap/' + user.getId()).remove(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })//.update(updates) //.update(updates)
+        // firebase.database().ref('content/' + this.id + '/userStrengthMap/' + user.getId()).remove().then(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userReviewTimeMap/' + user.getId()).remove().then(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userTimeMap/' + user.getId()).remove().then(() =>{
+        //     console.log("one remove update finished", ...arguments)
+        // }) //.update(updates) //.update(updates)
 
+        firebase.database().ref('content/' + this.id).update(updates)
         Object.keys(this.trees).forEach(treeId => {
            PubSub.publish('syncGraphWithNode', treeId)
         })
