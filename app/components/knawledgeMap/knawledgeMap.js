@@ -123,14 +123,19 @@ function createEdgeId(nodeOneId, nodeTwoId){
 }
 
 PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
-    // console.log('pubsub subscribe syncgraph with node called', treeId)
     syncGraphWithNode(treeId)
 })
 
-export async function syncGraphWithNode(treeId){
+export function syncGraphWithNode(treeId){
     if (!s){
-        return
+        PubSub.subscribe('sigma.initialized', (eventName, data) => {
+            _syncGraphWithNode(treeId)
+        })
+    } else {
+        _syncGraphWithNode(treeId)
     }
+}
+async function _syncGraphWithNode(treeId){
     // console.log('sync graph with node called', treeId)
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
@@ -142,9 +147,7 @@ export async function syncGraphWithNode(treeId){
     var color = getTreeColor(content)
     sigmaNode.color = color
     sigmaNode.proficiencyStats = tree.proficiencyStats
-    // console.log('sigmanode size before is', sigmaNode.size)
     sigmaNode.size = getSizeFromContent(content)
-    // console.log('sigmanode size after is', sigmaNode.size)
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -154,6 +157,7 @@ export async function syncGraphWithNode(treeId){
     }
 
     s.refresh()
+
 }
 
 export function refreshGraph(){
@@ -493,6 +497,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
+        PubSub.publish('sigma.initialized')
     }
     async function click_SUGGESTED_CONNECTION(edge){
         const childBeingAdoptedId = edge.target

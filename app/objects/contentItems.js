@@ -25,7 +25,6 @@ function createContentItemFromData(contentData, contentDatumKey){
             factsAndSkills[contentItem.id] = contentItem
             break;
         case 'heading':
-            console.log("case was heading", contentData, contentDatumKey)
             contentItem = new Heading(contentData)
             headings[contentItem.id] = contentItem
             // console.log("headings are now", JSON.stringify(headings))
