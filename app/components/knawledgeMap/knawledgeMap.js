@@ -399,6 +399,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             canvas.style.cursor = 'grab'
         })
         PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
+            console.log('startDraggingNode', eventName, node)
         })
         PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
             console.log('stopDraggingNode', eventName, node)
@@ -413,6 +414,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             switch(node.content.type){
                 case 'fact':
+                    console.log("node mouse up on fact")
                     openTooltip(node)
                     break;
                 case 'heading':

@@ -1,4 +1,4 @@
-<div class="tree" v-bind:style="styleObject" v-show="!draggingNode" v-on:click="toggleHistory">
+<div class="tree" v-bind:style="styleObject" v-on:click="toggleHistory">
     <div class="tree-history" v-if="!typeIsHeading && showHistory">
         THIS IS THE TREE History
         <item-history :item-id="content.id"></item-history>

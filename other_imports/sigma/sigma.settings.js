@@ -191,9 +191,6 @@
     // {number} The maximum time of dragging to trigger intertia.
     dragTimeout: 200,
 
-
-
-
     /**
      * GLOBAL SETTINGS:
      * ****************
@@ -221,9 +218,6 @@
     //           rendering.
     skipErrors: false,
 
-
-
-
     /**
      * CAMERA SETTINGS:
      * ****************
@@ -234,9 +228,6 @@
     //           > onScreenT = Math.pow(zoom, edgesPowRatio) * T
     nodesPowRatio: 1,
     edgesPowRatio: 1,
-
-
-
 
     /**
      * ANIMATIONS SETTINGS:
