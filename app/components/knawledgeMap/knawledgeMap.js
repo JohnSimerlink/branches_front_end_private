@@ -7,6 +7,7 @@ import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
 import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
+import {Globals} from '../../core/globals'
 import './knawledgeMap.less'
 
 let router
@@ -70,9 +71,10 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
     const node = {
         ...tree,
         level,
-        content: content,
+        content,
+        overdue: content.overdue,
         label: getLabelFromContent(content),
-        size: 1,
+        size: getSizeFromContent(content),
         color: getTreeColor(content),
         type: 'tree',
     };
@@ -111,18 +113,30 @@ function getLabelFromContent(content) {
     }
 }
 
+function getSizeFromContent(content) {
+    // return Globals.regularSize
+    return content.overdue ? Globals.overdueSize : Globals.regularSize
+}
 
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
 
 PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
-    console.log("pubsub subscribe syncGraphWIthNode called with arguments of ", treeId)
     syncGraphWithNode(treeId)
 })
 
-export async function syncGraphWithNode(treeId){
-    console.log("syncGraphWIthNode called with arguments of ", treeId)
+export function syncGraphWithNode(treeId){
+    if (!s){
+        PubSub.subscribe('sigma.initialized', (eventName, data) => {
+            _syncGraphWithNode(treeId)
+        })
+    } else {
+        _syncGraphWithNode(treeId)
+    }
+}
+async function _syncGraphWithNode(treeId){
+    // console.log('sync graph with node called', treeId)
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
 
@@ -133,6 +147,7 @@ export async function syncGraphWithNode(treeId){
     var color = getTreeColor(content)
     sigmaNode.color = color
     sigmaNode.proficiencyStats = tree.proficiencyStats
+    sigmaNode.size = getSizeFromContent(content)
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
@@ -142,6 +157,7 @@ export async function syncGraphWithNode(treeId){
     }
 
     s.refresh()
+
 }
 
 export function refreshGraph(){
@@ -155,7 +171,7 @@ function connectTreeToParent(tree,content, g){
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 5,
+            size: 2,
             color: getTreeColor(content),
             type: EDGE_TYPES.HIERARCHICAL,
         };
@@ -183,7 +199,7 @@ export function addTreeToGraph(parentTreeId, content) {
         y: newChildTreeY,
         children: {},
         label: getLabelFromContent(content),
-        size: 1,
+        size: getSizeFromContent(content),
         color: getTreeColor(content),
         type: 'tree',
     }
@@ -194,7 +210,7 @@ export function addTreeToGraph(parentTreeId, content) {
         id: createEdgeId(parentTreeId, newTree.id),
         source: parentTreeId,
         target: newTree.id,
-        size: 5,
+        size: 2,
         color: getTreeColor(content),
         type: EDGE_TYPES.HIERARCHICAL,
     }
@@ -481,6 +497,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
+        PubSub.publish('sigma.initialized')
     }
     async function click_SUGGESTED_CONNECTION(edge){
         const childBeingAdoptedId = edge.target
@@ -577,7 +594,7 @@ function initKnawledgeMap(treeIdToJumpTo){
                     id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
                     source: node.id,
                     target: parentlessNode.id,
-                    size: 5,
+                    size: 2,
                     color: parentlessNode.color,
                     type: EDGE_TYPES.SUGGESTED_CONNECTION
                 }

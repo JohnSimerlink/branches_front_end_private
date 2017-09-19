@@ -139,10 +139,10 @@
     //          equals, then the minimal display size will be 0. And if they
     //          are both equal to 0, then there is no mapping, and the radius
     //          of the nodes will be their size.
-    minEdgeSize: 0.5,
-    maxEdgeSize: 1,
-    minNodeSize: 1,
-    maxNodeSize: 8,
+    minEdgeSize: 0,//0.5
+    maxEdgeSize: 0, //1
+    minNodeSize: 0, //1
+    maxNodeSize: 0, //8
 
 
 
@@ -232,8 +232,8 @@
     //          the zooming level. Basically:
     //           > onScreenR = Math.pow(zoom, nodesPowRatio) * R
     //           > onScreenT = Math.pow(zoom, edgesPowRatio) * T
-    nodesPowRatio: 0.5,
-    edgesPowRatio: 0.5,
+    nodesPowRatio: 1,
+    edgesPowRatio: 1,
 
 
 

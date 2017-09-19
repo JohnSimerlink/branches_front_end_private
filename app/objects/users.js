@@ -18,10 +18,21 @@ export default class Users {
             } else {
                 firebase.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot){
                     let userData = snapshot.val();
-                    users[userId] = userData // add to cache
+                    processUserData(userId, userData)
                     resolve(userData)
                 })
             }
         })
     }
+    static getAll(){
+        // firebase.database().ref('users/').once("value", function onFirebaseUserGet(snapshot){
+        //     let userData = snapshot.val();
+        //     users[userId] = userData // add to cache
+        //     resolve(userData)
+        // })
+
+    }
+}
+function processUserData(userId, userData){
+    users[userId] = userData // add to cache
 }

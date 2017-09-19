@@ -71,6 +71,14 @@ export class Tree {
             }
         )
     }
+    getChildKeys(){
+        if (!this.children){
+           return []
+        }
+        return Object.keys(this.children).filter(childKey => {
+            return childKey
+        })
+    }
     /**
      * Add a child tree to this tree
      * @param treeId
@@ -314,7 +322,6 @@ export class Tree {
         let leaves = []
         const isLeaf = await this.isLeaf()
         if (isLeaf){
-            console.log(this.id, "LEAF!")
             try {
                 if (this.contentId){
                     leaves = [await this.getContentItem()]
@@ -323,21 +330,21 @@ export class Tree {
                 leaves = []
             }
         } else {
-            console.log(this.id, "NOT LEAF!")
+            // console.log(this.id, "NOT LEAF!")
             await Promise.all(
                 Object.keys(this.children).map(async childId => {
                     try{
                         const child = await Trees.get(childId)
-                        console.log('leaves before concat are', leaves)
+                        // console.log('leaves before concat are', leaves)
                         leaves.push(... await child.getLeaves())
-                        console.log('leaves after concat are', leaves)
+                        // console.log('leaves after concat are', leaves)
                     } catch (err){
 
                     }
                 })
             )
         }
-        console.log('leaves being return are', leaves)
+        // console.log('leaves being return are', leaves)
         this.leaves = leaves
 
     }
@@ -347,9 +354,9 @@ export class Tree {
            .sort((a,b) => {
                 return a.lastRecordedStrength > b.lastRecordedStrength ? 1: a.lastRecordedStrength < b.lastRecordedStrength ? -1 : 0
            })
-        console.log('this.sortedLeaves are', this.sortedLeaves)
+        // console.log('this.sortedLeaves are', this.sortedLeaves)
         const strengths = this.sortedLeaves.map(leaf => leaf.lastRecordedStrength.value)
-        console.log('leaf strengths are', strengths)
+        // console.log('leaf strengths are', strengths)
     }
     calculateOverdueLeaves(){
 

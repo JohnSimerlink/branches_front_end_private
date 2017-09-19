@@ -49,7 +49,6 @@ export default {
         })
         await this.tree.getLeaves()
         this.tree.sortLeavesByStudiedAndStrength()
-        console.log('this.tree getLeaves just called')
 
     },
     data() {
@@ -133,6 +132,9 @@ export default {
                 .then(this.syncTreeChainWithUI)
                 .then(refreshGraph)
             // this.syncGraphWithNode()
+        },
+        clearInteractions(){
+            this.content.clearInteractions()
         },
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
         async syncTreeChainWithUI() {

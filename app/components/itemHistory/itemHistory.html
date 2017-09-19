@@ -2,8 +2,11 @@
     <!--<div class="ct-chart ct-perfect-fourth"></div>-->
     <h3>List of Interactions</h3>
     <ul>
+        <button v-on:click.stop="clearInteractions">
+           Clear Interactions
+        </button>
         <li v-for="interaction in interactions">
-            {{interaction.timestamp}} || {{interaction.proficiency}}% || {{interaction.timeSpent}} || {{interaction.millisecondsSinceLastInteraction}} || {{interaction.previousInteractionStrength}} dB -> {{interaction.currentInteractionStrength}} dB
+            {{interaction.timestamp}} || {{interaction.proficiency}}% || {{interaction.timeSpent}} s || {{interaction.millisecondsSinceLastInteraction}} ms || {{interaction.previousInteractionStrength}} dB -> {{interaction.currentInteractionStrength}} dB
         </li>
     </ul>
 </div>

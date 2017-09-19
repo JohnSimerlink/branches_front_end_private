@@ -1,36 +1,33 @@
 import firebase from './firebaseService.js'
-
+import {clearInteractionsForHeadings} from "../fixData";
 import Users from './users'
 class User {
 
-  constructor(){
-    this.loggedIn=false;
-    this.branchesData = {}
-    const self = this;
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-          PubSub.publish('login')
-          self.loggedIn = true;
-          self.fbData = user;
-          Users.get(self.getId()).then(user => {
-
-            self.branchesData = user || {}
-            self.camera = self.branchesData.camera
-
-            self.branchesData.items = self.branchesData.items || {}
-            // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
-
-          })
-      } else {
-          self.loggedIn = false;
-      }
-    });
-
+  constructor() {
+      this.loggedIn = false;
+      this.branchesData = {}
+      const me = this;
+      firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+              PubSub.publish('login')
+              me.loggedIn = true;
+              me.fbData = user;
+              Users.get(me.getId()).then(user => {
+                  me.branchesData = user || {}
+                  me.branchesData.patches = me.branchesData.patches || {}
+                  me.branchesData.items = me.branchesData.items || {}
+                  me.camera = me.branchesData.camera
+                  me.applyDataPatches()
+              })
+          } else {
+              me.loggedIn = false
+          }
+      })
   }
-  getId(){
-    return this.fbData && this.fbData.uid || 0
+  getId() {
+      return this.fbData && this.fbData.uid || 0
   }
-  isAdmin(){
+  isAdmin() {
       return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'
   }
 
@@ -81,11 +78,33 @@ class User {
         firebase.database().ref('users/' +this.getId()).update(updates)
         this[prop] = val
     }
+
     setInteractionsForItem(itemId, interactions){
         console.log('setInteractionsForItem is ', itemId, interactions)
+        if (!this.branchesData.items[itemId]) return
+
         this.branchesData.items[itemId].interactions = interactions
         var updates = {interactions}
         firebase.database().ref('users/' +this.getId() + '/items/' + itemId + '/').update(updates)
+    }
+
+    clearInteractionsForItem(itemId){
+        this.setInteractionsForItem(itemId, [])
+    }
+
+    async applyDataPatches(){
+        if (!this.branchesData.patches.headingInteractions){
+            console.log("PATCHES: applying clearInteractionsForHeadingsPatch!")
+            await clearInteractionsForHeadings()
+            this.branchesData.patches.headingInteractions = true
+            var updates = {
+                patches: this.branchesData.patches
+            }
+            firebase.database().ref('users/' + this.getId() + '/').update(updates)
+        } else {
+            console.log('PATCHES: no patches to apply')
+        }
+
     }
 
 
