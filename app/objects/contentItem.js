@@ -131,10 +131,8 @@ export default class ContentItem {
 
     markOverdue(){
         this.overdue = true
-        // console.log("mark overdue called")
-        Object.keys(this.trees).forEach(childId => {
-            // console.log("syncgraph with node about to be published")
-            PubSub.publish('syncGraphWithNode', childId)
+        Object.keys(this.trees).forEach(treeId => {
+            PubSub.publish('syncGraphWithNode', treeId)
         })
         this.clearOverdueTimeout()
     }
