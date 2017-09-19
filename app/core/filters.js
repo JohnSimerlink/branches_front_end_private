@@ -5,7 +5,7 @@ Vue.filter('timeFromNow', utcTimestamp => {
     return moment(utcTimestamp).fromNow()
 })
 Vue.filter('dateTime', utcTimestamp => {
-    return moment(utcTimestamp)
+    return moment(utcTimestamp).format('MM/DD/YY, h:mm:ss a')
 })
 Vue.filter('round', Math.round)
 Vue.filter('sortByNextReviewTime', arr => {

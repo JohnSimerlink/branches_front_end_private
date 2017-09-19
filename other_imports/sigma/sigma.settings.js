@@ -204,7 +204,7 @@
     autoResize: true,
     // {boolean} Determines whether the "rescale" middleware has to be called
     //           automatically for each camera on refresh.
-    autoRescale: true,
+    autoRescale: false,
     // {boolean} If set to false, the camera method "goTo" will basically do
     //           nothing.
     enableCamera: true,
