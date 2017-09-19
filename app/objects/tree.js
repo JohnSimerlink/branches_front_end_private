@@ -6,6 +6,7 @@ const trees = {};
 import {Trees} from './trees.js'
 import ContentItems from './contentItems'
 import {PROFICIENCIES} from "../components/proficiencyEnum";
+import store from "../core/store"
 
 function syncGraphWithNode(treeId){
     PubSub.publish('syncGraphWithNode', treeId)
@@ -189,7 +190,6 @@ export class Tree {
         firebase.database().ref('trees/' + this.id).update(updates)
     }
     setNumOverdue(numOverdue){
-        console.log(this.id, "numOverdue is ", numOverdue)
         this.numOverdue = numOverdue
         this.userNumOverdueMap = this.userNumOverdueMap || {}
         this.userNumOverdueMap[user.getId()] = this.numOverdue
@@ -342,10 +342,8 @@ export class Tree {
         )
 
         children.forEach(child => {
-            console.log(child.id, "numOverdue is", child.numOverdue)
             numOverdue += +child.numOverdue || 0
         })
-        console.log("numOverdue in aggergationnonleaf is", numOverdue)
         return numOverdue
         //TODO start storing numOverdue in db - the way we do with the other aggregations
     }
@@ -401,15 +399,19 @@ export class Tree {
         this.leaves = leaves
 
     }
-    sortLeavesByStudiedAndStrength(){
-       this.sortedLeaves = this.leaves
+    async sortLeavesByStudiedAndStrength(){
+        const studiedLeaves = this.leaves
            .filter(leaf => leaf.hasInteractions)
            .sort((a,b) => {
-                return a.lastRecordedStrength > b.lastRecordedStrength ? 1: a.lastRecordedStrength < b.lastRecordedStrength ? -1 : 0
+                //lowest decibels first
+                return a.lastRecordedStrength.value < b.lastRecordedStrength.value ? 1: a.lastRecordedStrength.value > b.lastRecordedStrength.value ? -1 : 0
            })
-        // console.log('this.sortedLeaves are', this.sortedLeaves)
-        const strengths = this.sortedLeaves.map(leaf => leaf.lastRecordedStrength.value)
-        // console.log('leaf strengths are', strengths)
+        const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)
+        this.sortedLeaves = [...studiedLeaves, ...notStudiedLeaves]
+        if (this.parentId){
+            const parent = await Trees.get(this.parentId)
+            parent.sortLeavesByStudiedAndStrength()
+        }
     }
     calculateOverdueLeaves(){
 
@@ -421,7 +423,11 @@ export class Tree {
         const contentItem = await ContentItems.get(this.contentId)
         return contentItem
     }
+    areItemsToStudy(){
+        return this.sortedLeaves.length
+    }
     getNextItemToStudy(){
+        return this.sortedLeaves[0]
 
     }
 }

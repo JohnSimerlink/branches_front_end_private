@@ -114,7 +114,9 @@ export default {
             // this.$router.push()
         },
         studyHeading() {
-            goToFromMap({name: 'study', params: {leafId: this.id}})
+            console.log('study HEADING called!')
+            this.$store.commit('setCurrentStudyingTree', this.id)
+            // goToFromMap({name: 'study', params: {leafId: this.id}})
             // this.$router.push()
         },
         proficiencyClicked() {

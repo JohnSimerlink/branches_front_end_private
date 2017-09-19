@@ -39,13 +39,14 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['currentReviewingItem']),
+        ...mapGetters(['currentStudyingCategoryTreeId']),
         itemsMasteredPerMinute() {
             return this.numItemsMastered / (this.secondsSpentStudying * 60)
         },
         numItemsStudied() {
             return Object.keys(this.items).length
         },
+        //not a useful metric imo
         numItemsMastered() {
             var itemsKeys = Object.keys(this.items)
             var numMastered = itemsKeys.reduce((sum, key) => {
@@ -60,6 +61,15 @@ export default {
         reviewId() {
 
         },
+
+
+    },
+    watch: {
+        currentStudyingCategoryTreeId(newId, oldId){
+            console.log('now studying ', newId)
+            // const Tree = Trees.get(newId)
+
+        }
     },
 
     methods: {
