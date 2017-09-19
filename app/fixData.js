@@ -21,4 +21,6 @@ export async function clearInteractionsForHeadings(){
         })
     )
 }
-window.fixInteractionData = fixInteractionData
+if (typeof window !== 'undefined'){
+    window.fixInteractionData = fixInteractionData
+}
