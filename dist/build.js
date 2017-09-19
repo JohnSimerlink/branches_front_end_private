@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(176)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(178)(module)))
 
 /***/ }),
 /* 1 */
@@ -4658,9 +4658,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var factsAndSkills = {};
+var headings = {};
 var content = {};
 if (typeof window !== 'undefined') {
     window.content = content;
+    window.headings = headings;
+    window.factsAndSkills = factsAndSkills;
 }
 
 function createContentItemFromData(contentData, contentDatumKey) {
@@ -4677,6 +4680,8 @@ function createContentItemFromData(contentData, contentDatumKey) {
             break;
         case 'heading':
             contentItem = new _heading.Heading(contentData);
+            headings[contentItem.id] = contentItem;
+            // console.log("headings are now", JSON.stringify(headings))
             break;
         default:
             console.error( //bc there was some corrupted data
@@ -4722,22 +4727,9 @@ var ContentItems = function () {
         key: "getAll",
         value: function getAll() {
             return new Promise(function (resolve, reject) {
-                _firebaseService2.default.database().ref('content/').once("value", function (snapshot) {
-                    var contentData = snapshot.val();
-                    Object.keys(contentData).filter(function (contentDatumKey) {
-                        var uri = contentData[contentDatumKey].uri;
-                        if (!uri || uri.indexOf("null") == 0) {
-                            //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                            return false;
-                        }
-                        return true;
-                    }).forEach(function (contentDatumKey) {
-                        var contentDatum = contentData[contentDatumKey];
-                        if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                        var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                    });
-                    resolve(content); //the cache containing all
-                }, reject);
+                _firebaseService2.default.database().ref('content/').once("value", processSnapshot, reject).then(function () {
+                    resolve(content);
+                });
             });
         }
     }, {
@@ -4745,22 +4737,6 @@ var ContentItems = function () {
         value: function getAllExceptForHeadings() {
             var _this = this;
 
-            function processSnapshot(snapshot, resolve) {
-                var contentData = snapshot.val();
-                Object.keys(contentData).filter(function (contentDatumKey) {
-                    var uri = contentData[contentDatumKey].uri;
-                    if (!uri || uri.indexOf("null") == 0) {
-                        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
-                        return false;
-                    }
-                    return true;
-                }).forEach(function (contentDatumKey) {
-                    var contentDatum = contentData[contentDatumKey];
-                    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
-                    var contentItem = createContentItemFromData(contentDatum, contentDatumKey);
-                });
-                // resolve(content) //the cache containing all
-            }
             return new Promise(function () {
                 var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(resolve, reject) {
                     var skillPromise, factPromise;
@@ -4768,12 +4744,8 @@ var ContentItems = function () {
                         while (1) {
                             switch (_context.prev = _context.next) {
                                 case 0:
-                                    skillPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('skill').once("value", function (snapshot) {
-                                        processSnapshot(snapshot, resolve);
-                                    }, reject);
-                                    factPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('fact').once("value", function (snapshot) {
-                                        processSnapshot(snapshot, resolve);
-                                    }, reject);
+                                    skillPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('skill').once("value", processSnapshot, reject);
+                                    factPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('fact').once("value", processSnapshot, reject);
                                     _context.next = 4;
                                     return Promise.all([skillPromise, factPromise]);
 
@@ -4790,6 +4762,36 @@ var ContentItems = function () {
 
                 return function (_x, _x2) {
                     return _ref.apply(this, arguments);
+                };
+            }());
+        }
+    }, {
+        key: "getHeadings",
+        value: function getHeadings() {
+            var _this2 = this;
+
+            return new Promise(function () {
+                var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(resolve, reject) {
+                    var skillPromise;
+                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                        while (1) {
+                            switch (_context2.prev = _context2.next) {
+                                case 0:
+                                    skillPromise = _firebaseService2.default.database().ref('content/').orderByChild('type').equalTo('heading').once("value", processSnapshot, reject).then(function () {
+                                        console.log("the keys being returned in getHeadings is ", JSON.stringify(Object.keys(headings)));
+                                        resolve(headings);
+                                    });
+
+                                case 1:
+                                case "end":
+                                    return _context2.stop();
+                            }
+                        }
+                    }, _callee2, _this2);
+                }));
+
+                return function (_x3, _x4) {
+                    return _ref2.apply(this, arguments);
                 };
             }());
         }
@@ -4820,54 +4822,54 @@ var ContentItems = function () {
     }, {
         key: "recalculateProficiencyAggregationForEntireGraph",
         value: function () {
-            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
-                var _this2 = this;
+            var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+                var _this3 = this;
 
                 var content, contentItemKeys;
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context4.prev = _context4.next) {
                             case 0:
-                                _context3.next = 2;
+                                _context4.next = 2;
                                 return ContentItems.getAll();
 
                             case 2:
-                                content = _context3.sent;
+                                content = _context4.sent;
                                 contentItemKeys = Object.keys(content);
-                                return _context3.abrupt("return", Promise.all(contentItemKeys.map(function () {
-                                    var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(key) {
+                                return _context4.abrupt("return", Promise.all(contentItemKeys.map(function () {
+                                    var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(key) {
                                         var contentItem;
-                                        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                                        return regeneratorRuntime.wrap(function _callee3$(_context3) {
                                             while (1) {
-                                                switch (_context2.prev = _context2.next) {
+                                                switch (_context3.prev = _context3.next) {
                                                     case 0:
                                                         contentItem = content[key];
-                                                        _context2.next = 3;
+                                                        _context3.next = 3;
                                                         return contentItem.recalculateProficiencyAggregationForTreeChain();
 
                                                     case 3:
                                                     case "end":
-                                                        return _context2.stop();
+                                                        return _context3.stop();
                                                 }
                                             }
-                                        }, _callee2, _this2);
+                                        }, _callee3, _this3);
                                     }));
 
-                                    return function (_x3) {
-                                        return _ref3.apply(this, arguments);
+                                    return function (_x5) {
+                                        return _ref4.apply(this, arguments);
                                     };
                                 }())));
 
                             case 5:
                             case "end":
-                                return _context3.stop();
+                                return _context4.stop();
                         }
                     }
-                }, _callee3, this);
+                }, _callee4, this);
             }));
 
             function recalculateProficiencyAggregationForEntireGraph() {
-                return _ref2.apply(this, arguments);
+                return _ref3.apply(this, arguments);
             }
 
             return recalculateProficiencyAggregationForEntireGraph;
@@ -4878,6 +4880,38 @@ var ContentItems = function () {
 }();
 
 exports.default = ContentItems;
+
+if (typeof window !== 'undefined') {
+    window.ContentItems = ContentItems;
+}
+function removeBadContentKeys(contentData, contentDatumKey) {
+    var uri = contentData[contentDatumKey].uri;
+    if (!uri || uri.indexOf("null") == 0) {
+        //old/corrupted data that I couldn't figure out how to quickly delete from the db, so we are just filtering it
+        return false;
+    }
+    return true;
+}
+function createContentObjectAndAddToCache(contentDatumKey, contentData) {
+    var contentDatum = contentData[contentDatumKey];
+    if (!contentDatum) return; // in case contentDatum is undefined which has happened before
+    createContentItemFromData(contentDatum, contentDatumKey);
+}
+
+function processSnapshot(snapshot) {
+    var contentData = snapshot.val();
+    console.log("the number of keys in headings contentData is", Object.keys(contentData).length);
+    var filteredKeys = Object.keys(contentData).map(function (key) {
+        return key;
+    }).filter(function (contentDatumKey) {
+        return removeBadContentKeys(contentData, contentDatumKey);
+    });
+    console.log("the number of filtered KEys in get headings processSnapshot is", filteredKeys.length);
+
+    filteredKeys.forEach(function (contentDatumKey) {
+        createContentObjectAndAddToCache(contentDatumKey, contentData);
+    });
+}
 
 /***/ }),
 /* 3 */
@@ -5077,11 +5111,15 @@ var _firebaseService = __webpack_require__(11);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
+var _fixData = __webpack_require__(48);
+
 var _users = __webpack_require__(29);
 
 var _users2 = _interopRequireDefault(_users);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5091,22 +5129,21 @@ var User = function () {
 
         this.loggedIn = false;
         this.branchesData = {};
-        var self = this;
+        var me = this;
         _firebaseService2.default.auth().onAuthStateChanged(function (user) {
             if (user) {
                 PubSub.publish('login');
-                self.loggedIn = true;
-                self.fbData = user;
-                _users2.default.get(self.getId()).then(function (user) {
-
-                    self.branchesData = user || {};
-                    self.camera = self.branchesData.camera;
-
-                    self.branchesData.items = self.branchesData.items || {};
-                    // self.branchesData.itemReviewTimeMap = self.branchesData.itemReviewTimeMap || {}
+                me.loggedIn = true;
+                me.fbData = user;
+                _users2.default.get(me.getId()).then(function (user) {
+                    me.branchesData = user || {};
+                    me.branchesData.patches = me.branchesData.patches || {};
+                    me.branchesData.items = me.branchesData.items || {};
+                    me.camera = me.branchesData.camera;
+                    me.applyDataPatches();
                 });
             } else {
-                self.loggedIn = false;
+                me.loggedIn = false;
             }
         });
     }
@@ -5183,10 +5220,62 @@ var User = function () {
         key: 'setInteractionsForItem',
         value: function setInteractionsForItem(itemId, interactions) {
             console.log('setInteractionsForItem is ', itemId, interactions);
+            if (!this.branchesData.items[itemId]) return;
+
             this.branchesData.items[itemId].interactions = interactions;
             var updates = { interactions: interactions };
             _firebaseService2.default.database().ref('users/' + this.getId() + '/items/' + itemId + '/').update(updates);
         }
+    }, {
+        key: 'clearInteractionsForItem',
+        value: function clearInteractionsForItem(itemId) {
+            this.setInteractionsForItem(itemId, []);
+        }
+    }, {
+        key: 'applyDataPatches',
+        value: function () {
+            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+                var updates;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (this.branchesData.patches.headingInteractions) {
+                                    _context.next = 9;
+                                    break;
+                                }
+
+                                console.log("PATCHES: applying clearInteractionsForHeadingsPatch!");
+                                _context.next = 4;
+                                return (0, _fixData.clearInteractionsForHeadings)();
+
+                            case 4:
+                                this.branchesData.patches.headingInteractions = true;
+                                updates = {
+                                    patches: this.branchesData.patches
+                                };
+
+                                _firebaseService2.default.database().ref('users/' + this.getId() + '/').update(updates);
+                                _context.next = 10;
+                                break;
+
+                            case 9:
+                                console.log('PATCHES: no patches to apply');
+
+                            case 10:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function applyDataPatches() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return applyDataPatches;
+        }()
     }]);
 
     return User;
@@ -5450,7 +5539,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PROFICIENCIES = undefined;
 exports.proficiencyToColor = proficiencyToColor;
 
-var _globals = __webpack_require__(196);
+var _globals = __webpack_require__(45);
 
 var PROFICIENCIES = exports.PROFICIENCIES = {
     UNKNOWN: 0,
@@ -5986,11 +6075,11 @@ var firebase = _interopRequireWildcard(_firebase);
 
 var _config = __webpack_require__(43);
 
-var _firebaseDevConfig = __webpack_require__(179);
+var _firebaseDevConfig = __webpack_require__(181);
 
 var _firebaseDevConfig2 = _interopRequireDefault(_firebaseDevConfig);
 
-var _firebaseProdConfig = __webpack_require__(180);
+var _firebaseProdConfig = __webpack_require__(182);
 
 var _firebaseProdConfig2 = _interopRequireDefault(_firebaseProdConfig);
 
@@ -8291,7 +8380,7 @@ function stubFalse() {
 
 module.exports = merge;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(176)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(178)(module)))
 
 /***/ }),
 /* 14 */
@@ -8299,9 +8388,9 @@ module.exports = merge;
 
 (function(){
   var crypt = __webpack_require__(202),
-      utf8 = __webpack_require__(48).utf8,
+      utf8 = __webpack_require__(50).utf8,
       isBuffer = __webpack_require__(256),
-      bin = __webpack_require__(48).bin,
+      bin = __webpack_require__(50).bin,
 
   // The core
   md5 = function (message, options) {
@@ -8478,7 +8567,7 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _review = __webpack_require__(190);
+var _review = __webpack_require__(192);
 
 var _proficiencyEnum = __webpack_require__(6);
 
@@ -8497,6 +8586,9 @@ if (typeof window !== 'undefined') {
     window.content = content; //expose to window for easy debugging
 }
 
+
+var INITIAL_LAST_RECORDED_STRENGTH = { value: 0 };
+
 var ContentItem = function () {
     function ContentItem(args) {
         _classCallCheck(this, ContentItem);
@@ -8510,17 +8602,17 @@ var ContentItem = function () {
         this.timerId = null;
 
         this.userProficiencyMap = args.userProficiencyMap || {};
-        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || 0;
+        this.proficiency = _user2.default.loggedIn && this.userProficiencyMap[_user2.default.getId()] || _proficiencyEnum.PROFICIENCIES.UNKNOWN;
 
         this.userInteractionsMap = args.userInteractionsMap || {};
         this.interactions = _user2.default.loggedIn && this.userInteractionsMap[_user2.default.getId()] || [];
-        this.hasInteractions = this.interactions.length;
 
         this.userStrengthMap = args.userStrengthMap || {};
-        this.lastRecordedStrength = this.userStrengthMap[_user2.default.getId()] || { value: 0 };
+        this.lastRecordedStrength = this.userStrengthMap[_user2.default.getId()] || INITIAL_LAST_RECORDED_STRENGTH;
 
         this.userReviewTimeMap = args.userReviewTimeMap || {};
         this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
+        this.setOverdueTimeout();
 
         this.studiers = args.studiers || {};
         this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
@@ -8611,13 +8703,6 @@ var ContentItem = function () {
             var sections = this.getURIWithoutRootElement().split("/");
             var result = getLastNBreadcrumbsStringFromList(sections, n);
             return result;
-            // console.log('breadcrumb sections for ', this,' are', sections)
-            // let sectionsResult = sections.reduce((accum, val) => {
-            //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-            //         return accum
-            //     }
-            //     return accum + " > " + decodeURIComponent(val)
-            // })
         }
     }, {
         key: 'getBreadCrumbs',
@@ -8626,6 +8711,31 @@ var ContentItem = function () {
         key: 'isLeafType',
         value: function isLeafType() {
             return this.type === 'fact' || this.type === 'skill';
+        }
+    }, {
+        key: 'setOverdueTimeout',
+        value: function setOverdueTimeout() {
+            var millisecondsTilOverdue = this.nextReviewTime - Date.now();
+            millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue : 0;
+            this.overdue = false;
+
+            if (this.hasInteractions()) {
+                this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this), millisecondsTilOverdue);
+            }
+        }
+    }, {
+        key: 'markOverdue',
+        value: function markOverdue() {
+            this.overdue = true;
+            Object.keys(this.trees).forEach(function (treeId) {
+                PubSub.publish('syncGraphWithNode', treeId);
+            });
+            this.clearOverdueTimeout();
+        }
+    }, {
+        key: 'clearOverdueTimeout',
+        value: function clearOverdueTimeout() {
+            clearTimeout(this.markOverdueTimeout);
         }
         /**
          * Used to update tree X and Y coordinates
@@ -8670,6 +8780,11 @@ var ContentItem = function () {
         }
         //TODO : make timer for heading be the sum of the time of all the child facts
 
+    }, {
+        key: 'resetTimer',
+        value: function resetTimer() {
+            this.timer = 0;
+        }
     }, {
         key: 'startTimer',
         value: function startTimer() {
@@ -8802,10 +8917,71 @@ var ContentItem = function () {
             return Promise.all(calculationPromises);
         }
     }, {
+        key: 'clearInteractions',
+        value: function clearInteractions() {
+            console.log(this.id, "clearing Interactions");
+            delete this.studiers[_user2.default.getId()];
+
+            this.proficiency = _proficiencyEnum.PROFICIENCIES.UNKNOWN;
+            delete this.userProficiencyMap[_user2.default.getId()];
+
+            this.interactions = [];
+            delete this.userInteractionsMap[_user2.default.getId()];
+
+            this.lastRecordedStrength = INITIAL_LAST_RECORDED_STRENGTH;
+            delete this.userStrengthMap[_user2.default.getId()];
+
+            this.nextReviewTime = 0;
+            delete this.userReviewTimeMap[_user2.default.getId()];
+
+            this.timer = 0;
+            delete this.userTimeMap[_user2.default.getId()];
+
+            var updates = {
+                studiers: this.studiers,
+                userProficiencyMap: this.userProficiencyMap,
+                userInteractionsMap: this.userInteractionsMap,
+                userStrengthMap: this.userStrengthMap,
+                userReviewTimeMap: this.userReviewTimeMap,
+                userTimeMap: this.userTimeMap
+            };
+
+            console.log('clear interactions called');
+            // firebase.database().ref('content/' + this.id + '/studiers/' + user.getId()).remove(function(err){
+            //     console.log('did an error happen on remove', err)
+            // })
+            // firebase.database().ref('content/' + this.id + '/userProficiencyMap/' + user.getId()).remove(function(err){
+            //     console.log('did an error happen on remove', err)
+            // })
+            // firebase.database().ref('content/' + this.id + '/userInteractionsMap/' + user.getId()).remove(function(err){
+            //     console.log('did an error happen on remove', err)
+            // })//.update(updates) //.update(updates)
+            // firebase.database().ref('content/' + this.id + '/userStrengthMap/' + user.getId()).remove().then(function(err){
+            //     console.log('did an error happen on remove', err)
+            // })
+            // firebase.database().ref('content/' + this.id + '/userReviewTimeMap/' + user.getId()).remove().then(function(err){
+            //     console.log('did an error happen on remove', err)
+            // })
+            // firebase.database().ref('content/' + this.id + '/userTimeMap/' + user.getId()).remove().then(() =>{
+            //     console.log("one remove update finished", ...arguments)
+            // }) //.update(updates) //.update(updates)
+
+            firebase.database().ref('content/' + this.id).update(updates);
+            Object.keys(this.trees).forEach(function (treeId) {
+                PubSub.publish('syncGraphWithNode', treeId);
+            });
+        }
+    }, {
+        key: 'hasInteractions',
+        value: function hasInteractions() {
+            return this.interactions.length;
+        }
+    }, {
         key: 'saveProficiency',
         value: function saveProficiency() {
             !this.inStudyQueue && this.addToStudyQueue(); // << i don't even think that is used anymore
             var timestamp = Date.now();
+            this.clearOverdueTimeout();
 
             //content
             this.userProficiencyMap[_user2.default.getId()] = this.proficiency;
@@ -8817,15 +8993,24 @@ var ContentItem = function () {
             firebase.database().ref('content/' + this.id).update(updates);
 
             //interactions
-            var mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : { currentInteractionStrength: 0 };
+
+            var mostRecentInteraction = this.hasInteractions() ? this.interactions[this.interactions.length - 1] : { currentInteractionStrength: 0, timestamp: nowMilliseconds };
             var nowMilliseconds = timestamp;
-            var millisecondsSinceLastInteraction = this.interactions.length ? nowMilliseconds - mostRecentInteraction.timestamp : 0;
+            var millisecondsSinceLastInteraction = this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0;
+
+            // if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE we can assume they have learned it before. We will simply assume that they last saw it/learned it an hour ago. (e.g. like in a lecture 1 hour ago).
+            if (this.proficiency > _proficiencyEnum.PROFICIENCIES.ONE && !this.hasInteractions()) {
+                millisecondsSinceLastInteraction = 60 * 60 * 1000;
+                console.log('proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction);
+            } else {
+                console.log('NOT proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction);
+            }
             var previousInteractionStrength = (0, _forgettingCurve.measurePreviousStrength)(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
             var currentInteractionStrength = (0, _forgettingCurve.estimateCurrentStrength)(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
 
-            var interaction = { timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction: millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength: previousInteractionStrength, currentInteractionStrength: currentInteractionStrength
-                //store user interactions under content
-            };this.interactions.push(interaction);
+            var interaction = { timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction: millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength: previousInteractionStrength, currentInteractionStrength: currentInteractionStrength };
+            this.interactions.push(interaction);
+            //store user interactions under content
             this.userInteractionsMap[_user2.default.getId()] = this.interactions;
 
             var updates = {
@@ -8852,7 +9037,12 @@ var ContentItem = function () {
             var updates = {
                 userReviewTimeMap: this.userReviewTimeMap
             };
+
             firebase.database().ref('content/' + this.id).update(updates);
+
+            //set timeout to mark the item overdue when it becomes overdue
+            console.log('set overdue timeout about to be called');
+            this.setOverdueTimeout();
         }
     }, {
         key: 'setProficiency',
@@ -19093,13 +19283,23 @@ var Tree = exports.Tree = function () {
             y: y
         });
     }
-    /**
-     * Add a child tree to this tree
-     * @param treeId
-     */
-
 
     _createClass(Tree, [{
+        key: 'getChildKeys',
+        value: function getChildKeys() {
+            if (!this.children) {
+                return [];
+            }
+            return Object.keys(this.children).filter(function (childKey) {
+                return childKey;
+            });
+        }
+        /**
+         * Add a child tree to this tree
+         * @param treeId
+         */
+
+    }, {
         key: 'addChild',
         value: function () {
             var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(treeId) {
@@ -19892,42 +20092,40 @@ var Tree = exports.Tree = function () {
                                 isLeaf = _context19.sent;
 
                                 if (!isLeaf) {
-                                    _context19.next = 19;
+                                    _context19.next = 18;
                                     break;
                                 }
 
-                                console.log(this.id, "LEAF!");
-                                _context19.prev = 6;
+                                _context19.prev = 5;
 
                                 if (!this.contentId) {
-                                    _context19.next = 12;
+                                    _context19.next = 11;
                                     break;
                                 }
 
-                                _context19.next = 10;
+                                _context19.next = 9;
                                 return this.getContentItem();
 
-                            case 10:
+                            case 9:
                                 _context19.t0 = _context19.sent;
                                 leaves = [_context19.t0];
 
-                            case 12:
-                                _context19.next = 17;
+                            case 11:
+                                _context19.next = 16;
                                 break;
 
-                            case 14:
-                                _context19.prev = 14;
-                                _context19.t1 = _context19['catch'](6);
+                            case 13:
+                                _context19.prev = 13;
+                                _context19.t1 = _context19['catch'](5);
 
                                 leaves = [];
 
-                            case 17:
-                                _context19.next = 22;
+                            case 16:
+                                _context19.next = 20;
                                 break;
 
-                            case 19:
-                                console.log(this.id, "NOT LEAF!");
-                                _context19.next = 22;
+                            case 18:
+                                _context19.next = 20;
                                 return Promise.all(Object.keys(this.children).map(function () {
                                     var _ref23 = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(childId) {
                                         var _leaves, child;
@@ -19942,34 +20140,31 @@ var Tree = exports.Tree = function () {
 
                                                     case 3:
                                                         child = _context18.sent;
-
-                                                        console.log('leaves before concat are', leaves);
                                                         _context18.t0 = (_leaves = leaves).push;
                                                         _context18.t1 = _leaves;
                                                         _context18.t2 = _toConsumableArray;
-                                                        _context18.next = 10;
+                                                        _context18.next = 9;
                                                         return child.getLeaves();
 
-                                                    case 10:
+                                                    case 9:
                                                         _context18.t3 = _context18.sent;
                                                         _context18.t4 = (0, _context18.t2)(_context18.t3);
 
                                                         _context18.t0.apply.call(_context18.t0, _context18.t1, _context18.t4);
 
-                                                        console.log('leaves after concat are', leaves);
-                                                        _context18.next = 18;
+                                                        _context18.next = 16;
                                                         break;
 
-                                                    case 16:
-                                                        _context18.prev = 16;
+                                                    case 14:
+                                                        _context18.prev = 14;
                                                         _context18.t5 = _context18['catch'](0);
 
-                                                    case 18:
+                                                    case 16:
                                                     case 'end':
                                                         return _context18.stop();
                                                 }
                                             }
-                                        }, _callee18, _this7, [[0, 16]]);
+                                        }, _callee18, _this7, [[0, 14]]);
                                     }));
 
                                     return function (_x10) {
@@ -19977,16 +20172,16 @@ var Tree = exports.Tree = function () {
                                     };
                                 }()));
 
-                            case 22:
-                                console.log('leaves being return are', leaves);
+                            case 20:
+                                // console.log('leaves being return are', leaves)
                                 this.leaves = leaves;
 
-                            case 24:
+                            case 21:
                             case 'end':
                                 return _context19.stop();
                         }
                     }
-                }, _callee19, this, [[6, 14]]);
+                }, _callee19, this, [[5, 13]]);
             }));
 
             function recalculateLeaves() {
@@ -20003,11 +20198,11 @@ var Tree = exports.Tree = function () {
             }).sort(function (a, b) {
                 return a.lastRecordedStrength > b.lastRecordedStrength ? 1 : a.lastRecordedStrength < b.lastRecordedStrength ? -1 : 0;
             });
-            console.log('this.sortedLeaves are', this.sortedLeaves);
+            // console.log('this.sortedLeaves are', this.sortedLeaves)
             var strengths = this.sortedLeaves.map(function (leaf) {
                 return leaf.lastRecordedStrength.value;
             });
-            console.log('leaf strengths are', strengths);
+            // console.log('leaf strengths are', strengths)
         }
     }, {
         key: 'calculateOverdueLeaves',
@@ -21696,11 +21891,21 @@ var Users = function () {
                 } else {
                     _firebaseService2.default.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot) {
                         var userData = snapshot.val();
-                        users[userId] = userData; // add to cache
+                        processUserData(userId, userData);
                         resolve(userData);
                     });
                 }
             });
+        }
+    }, {
+        key: 'getAll',
+        value: function getAll() {
+            // firebase.database().ref('users/').once("value", function onFirebaseUserGet(snapshot){
+            //     let userData = snapshot.val();
+            //     users[userId] = userData // add to cache
+            //     resolve(userData)
+            // })
+
         }
     }]);
 
@@ -21708,6 +21913,10 @@ var Users = function () {
 }();
 
 exports.default = Users;
+
+function processUserData(userId, userData) {
+    users[userId] = userData; // add to cache
+}
 
 /***/ }),
 /* 30 */
@@ -22134,7 +22343,7 @@ var json = _interopRequireWildcard(_json);
 
 var _location = __webpack_require__(23);
 
-var _path = __webpack_require__(55);
+var _path = __webpack_require__(57);
 
 var path = _interopRequireWildcard(_path);
 
@@ -22794,7 +23003,6 @@ exports.default = {
 
                             Object.keys(_this.items).forEach(function (key) {
                                 var item = _this.items[key];
-                                console.log("item Id" + item.id + " ---- primaryParentTreeContentURI: " + item.primaryParentTreeContentURI + "---- item is", item);
                             });
 
                         case 4:
@@ -22825,10 +23033,6 @@ exports.default = {
         }
     }
 };
-
-
-console.log('i added something to contentList.js');
-console.log('i added something again to contentList.js');
 
 /***/ }),
 /* 39 */
@@ -22863,7 +23067,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.syncGraphWithNode = exports.removeTreeFromGraph = undefined;
+exports.removeTreeFromGraph = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -22899,23 +23103,22 @@ var removeTreeFromGraph = exports.removeTreeFromGraph = function () {
     };
 }();
 
-var syncGraphWithNode = exports.syncGraphWithNode = function () {
+var _syncGraphWithNode = function () {
     var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(treeId) {
         var tree, content, sigmaNode, color, edgeId, sigmaEdge;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
                 switch (_context2.prev = _context2.next) {
                     case 0:
-                        console.log("syncGraphWIthNode called with arguments of ", treeId);
-                        _context2.next = 3;
+                        _context2.next = 2;
                         return _trees.Trees.get(treeId);
 
-                    case 3:
+                    case 2:
                         tree = _context2.sent;
-                        _context2.next = 6;
+                        _context2.next = 5;
                         return _contentItems2.default.get(tree.contentId);
 
-                    case 6:
+                    case 5:
                         content = _context2.sent;
 
 
@@ -22928,6 +23131,7 @@ var syncGraphWithNode = exports.syncGraphWithNode = function () {
 
                         sigmaNode.color = color;
                         sigmaNode.proficiencyStats = tree.proficiencyStats;
+                        sigmaNode.size = getSizeFromContent(content);
 
                         //update the edge
                         edgeId = createEdgeId(tree.parentId, treeId);
@@ -22947,12 +23151,13 @@ var syncGraphWithNode = exports.syncGraphWithNode = function () {
         }, _callee2, this);
     }));
 
-    return function syncGraphWithNode(_x2) {
+    return function _syncGraphWithNode(_x2) {
         return _ref2.apply(this, arguments);
     };
 }();
 
 exports.addTreeNodeToGraph = addTreeNodeToGraph;
+exports.syncGraphWithNode = syncGraphWithNode;
 exports.refreshGraph = refreshGraph;
 exports.addTreeToGraph = addTreeToGraph;
 exports.goToFromMap = goToFromMap;
@@ -22969,7 +23174,7 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _tree = __webpack_require__(20);
 
-__webpack_require__(45);
+__webpack_require__(46);
 
 var _user = __webpack_require__(4);
 
@@ -22985,9 +23190,11 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-var _store = __webpack_require__(46);
+var _store = __webpack_require__(47);
 
 var _store2 = _interopRequireDefault(_store);
+
+var _globals = __webpack_require__(45);
 
 __webpack_require__(263);
 
@@ -23052,8 +23259,9 @@ function createTreeNodeFromTreeAndContent(tree, content, level) {
     var node = _extends({}, tree, {
         level: level,
         content: content,
+        overdue: content.overdue,
         label: getLabelFromContent(content),
-        size: 1,
+        size: getSizeFromContent(content),
         color: getTreeColor(content),
         type: 'tree'
     });
@@ -23092,15 +23300,28 @@ function getLabelFromContent(content) {
     }
 }
 
+function getSizeFromContent(content) {
+    // return Globals.regularSize
+    return content.overdue ? _globals.Globals.overdueSize : _globals.Globals.regularSize;
+}
+
 function createEdgeId(nodeOneId, nodeTwoId) {
     return nodeOneId + "__" + nodeTwoId;
 }
 
 PubSub.subscribe('syncGraphWithNode', function (eventName, treeId) {
-    console.log("pubsub subscribe syncGraphWIthNode called with arguments of ", treeId);
     syncGraphWithNode(treeId);
 });
 
+function syncGraphWithNode(treeId) {
+    if (!s) {
+        PubSub.subscribe('sigma.initialized', function (eventName, data) {
+            _syncGraphWithNode(treeId);
+        });
+    } else {
+        _syncGraphWithNode(treeId);
+    }
+}
 function refreshGraph() {
     s.refresh();
 }
@@ -23112,7 +23333,7 @@ function connectTreeToParent(tree, content, g) {
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
             target: tree.id,
-            size: 5,
+            size: 2,
             color: getTreeColor(content),
             type: EDGE_TYPES.HIERARCHICAL
         };
@@ -23140,7 +23361,7 @@ function addTreeToGraph(parentTreeId, content) {
         y: newChildTreeY,
         children: {},
         label: getLabelFromContent(content),
-        size: 1,
+        size: getSizeFromContent(content),
         color: getTreeColor(content),
         type: 'tree'
     };
@@ -23151,7 +23372,7 @@ function addTreeToGraph(parentTreeId, content) {
         id: createEdgeId(parentTreeId, newTree.id),
         source: parentTreeId,
         target: newTree.id,
-        size: 5,
+        size: 2,
         color: getTreeColor(content),
         type: EDGE_TYPES.HIERARCHICAL
     };
@@ -23576,6 +23797,7 @@ function initKnawledgeMap(treeIdToJumpTo) {
             }
             s.refresh();
         });
+        PubSub.publish('sigma.initialized');
     }
 
 
@@ -23668,7 +23890,7 @@ function initKnawledgeMap(treeIdToJumpTo) {
                 id: 'SUGGESTED_CONNECTION_' + node.id + "__" + parentlessNode.id,
                 source: node.id,
                 target: parentlessNode.id,
-                size: 5,
+                size: 2,
                 color: parentlessNode.color,
                 type: EDGE_TYPES.SUGGESTED_CONNECTION
             };
@@ -23777,7 +23999,7 @@ var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exercises = __webpack_require__(47);
+var _exercises = __webpack_require__(49);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
@@ -23797,7 +24019,7 @@ __webpack_require__(266);
 
 var _proficiencyEnum = __webpack_require__(6);
 
-var _invertObject = __webpack_require__(60);
+var _invertObject = __webpack_require__(62);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
@@ -24046,7 +24268,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(195);
+var _env = __webpack_require__(197);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -24133,6 +24355,29 @@ _vue2.default.filter('secondsToPretty', secondsToPretty);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+var Globals = exports.Globals = {
+    currentTreeSelected: null,
+    colors: {
+        proficiency_4: 'lawngreen',
+        proficiency_3: 'yellow',
+        proficiency_2: 'orange',
+        proficiency_1: 'red',
+        proficiency_unknown: 'gray'
+    },
+    overdueSize: 14,
+    regularSize: 10
+};
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.login = login;
 function login() {
     var mobile = false;
@@ -24162,7 +24407,7 @@ function login() {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24244,7 +24489,130 @@ exports.default = new _vuex2.default.Store({
 });
 
 /***/ }),
-/* 47 */
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.clearInteractionsForHeadings = undefined;
+
+var clearInteractionsForHeadings = exports.clearInteractionsForHeadings = function () {
+    var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+        var _this2 = this;
+
+        var headings;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+            while (1) {
+                switch (_context3.prev = _context3.next) {
+                    case 0:
+                        _context3.next = 2;
+                        return _contentItems2.default.getHeadings();
+
+                    case 2:
+                        headings = _context3.sent;
+
+                        console.log("the headings whose interactions are going to be cleared are", headings, Object.keys(headings).length);
+                        _context3.next = 6;
+                        return Promise.all(Object.keys(headings).map(function () {
+                            var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(headingKey) {
+                                var contentItem;
+                                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                                    while (1) {
+                                        switch (_context2.prev = _context2.next) {
+                                            case 0:
+                                                _user2.default.clearInteractionsForItem(headingKey);
+                                                _context2.next = 3;
+                                                return _contentItems2.default.get(headingKey);
+
+                                            case 3:
+                                                contentItem = _context2.sent;
+
+                                                contentItem.clearInteractions();
+
+                                            case 5:
+                                            case 'end':
+                                                return _context2.stop();
+                                        }
+                                    }
+                                }, _callee2, _this2);
+                            }));
+
+                            return function (_x2) {
+                                return _ref3.apply(this, arguments);
+                            };
+                        }()));
+
+                    case 6:
+                        return _context3.abrupt('return', _context3.sent);
+
+                    case 7:
+                    case 'end':
+                        return _context3.stop();
+                }
+            }
+        }, _callee3, this);
+    }));
+
+    return function clearInteractionsForHeadings() {
+        return _ref2.apply(this, arguments);
+    };
+}();
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _contentItems = __webpack_require__(2);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function fixInteractionData() {
+    var _this = this;
+
+    Object.keys(_user2.default.branchesData.items).forEach(function () {
+        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(contentId) {
+            var item;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            console.log('the key we are trying to find the content for is', contentId);
+                            _context.next = 3;
+                            return _contentItems2.default.get(contentId);
+
+                        case 3:
+                            item = _context.sent;
+
+                            console.log('the content we got is', item);
+                            _user2.default.set('interactions', item.interactions);
+                            _user2.default.setInteractionsForItem(contentId, item.interactions);
+
+                        case 7:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this);
+        }));
+
+        return function (_x) {
+            return _ref.apply(this, arguments);
+        };
+    }());
+}
+
+window.fixInteractionData = fixInteractionData;
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24336,7 +24704,7 @@ var Exercises = function () {
 exports.default = Exercises;
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -24375,7 +24743,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24660,7 +25028,7 @@ function noop() {
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24701,7 +25069,7 @@ var _tokenManager = __webpack_require__(221);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(52);
+var _notificationPermission = __webpack_require__(54);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -24900,7 +25268,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24943,7 +25311,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24981,7 +25349,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25040,7 +25408,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25206,7 +25574,7 @@ var FbsBlob = exports.FbsBlob = function () {
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25296,7 +25664,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25329,7 +25697,7 @@ var _array = __webpack_require__(33);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(54);
+var _blob = __webpack_require__(56);
 
 var _error = __webpack_require__(5);
 
@@ -25650,7 +26018,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25727,7 +26095,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25768,7 +26136,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25807,7 +26175,7 @@ var _args = __webpack_require__(32);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(54);
+var _blob = __webpack_require__(56);
 
 var _error = __webpack_require__(5);
 
@@ -25823,11 +26191,11 @@ var _object = __webpack_require__(12);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(55);
+var _path = __webpack_require__(57);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(56);
+var _requests = __webpack_require__(58);
 
 var requests = _interopRequireWildcard(_requests);
 
@@ -26077,7 +26445,7 @@ var Reference = exports.Reference = function () {
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports) {
 
 
@@ -26097,7 +26465,7 @@ module.exports = invert
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26175,7 +26543,7 @@ return af;
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26239,7 +26607,7 @@ return arDz;
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26303,7 +26671,7 @@ return arKw;
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26434,7 +26802,7 @@ return arLy;
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26499,7 +26867,7 @@ return arMa;
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26609,7 +26977,7 @@ return arSa;
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26673,7 +27041,7 @@ return arTn;
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26820,7 +27188,7 @@ return ar;
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26930,7 +27298,7 @@ return az;
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27069,7 +27437,7 @@ return be;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27164,7 +27532,7 @@ return bg;
 
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27288,7 +27656,7 @@ return bn;
 
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27412,7 +27780,7 @@ return bo;
 
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27525,7 +27893,7 @@ return br;
 
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27673,7 +28041,7 @@ return bs;
 
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27766,7 +28134,7 @@ return ca;
 
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27943,7 +28311,7 @@ return cs;
 
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28011,7 +28379,7 @@ return cv;
 
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28097,7 +28465,7 @@ return cy;
 
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28162,7 +28530,7 @@ return da;
 
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28246,7 +28614,7 @@ return deAt;
 
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28329,7 +28697,7 @@ return deCh;
 
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28412,7 +28780,7 @@ return de;
 
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28517,7 +28885,7 @@ return dv;
 
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28622,7 +28990,7 @@ return el;
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28694,7 +29062,7 @@ return enAu;
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28762,7 +29130,7 @@ return enCa;
 
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28834,7 +29202,7 @@ return enGb;
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28906,7 +29274,7 @@ return enIe;
 
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28978,7 +29346,7 @@ return enNz;
 
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29056,7 +29424,7 @@ return eo;
 
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29143,7 +29511,7 @@ return esDo;
 
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29231,7 +29599,7 @@ return es;
 
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29316,7 +29684,7 @@ return et;
 
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29387,7 +29755,7 @@ return eu;
 
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29499,7 +29867,7 @@ return fa;
 
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29611,7 +29979,7 @@ return fi;
 
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29676,7 +30044,7 @@ return fo;
 
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29755,7 +30123,7 @@ return frCa;
 
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29838,7 +30206,7 @@ return frCh;
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29926,7 +30294,7 @@ return fr;
 
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30006,7 +30374,7 @@ return fy;
 
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30087,7 +30455,7 @@ return gd;
 
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30169,7 +30537,7 @@ return gl;
 
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30296,7 +30664,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30400,7 +30768,7 @@ return he;
 
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30529,7 +30897,7 @@ return hi;
 
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30679,7 +31047,7 @@ return hr;
 
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30793,7 +31161,7 @@ return hu;
 
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30893,7 +31261,7 @@ return hyAm;
 
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30981,7 +31349,7 @@ return id;
 
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31113,7 +31481,7 @@ return is;
 
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31188,7 +31556,7 @@ return it;
 
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31273,7 +31641,7 @@ return ja;
 
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31361,7 +31729,7 @@ return jv;
 
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31455,7 +31823,7 @@ return ka;
 
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31547,7 +31915,7 @@ return kk;
 
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31610,7 +31978,7 @@ return km;
 
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31741,7 +32109,7 @@ return kn;
 
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31815,7 +32183,7 @@ return ko;
 
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31908,7 +32276,7 @@ return ky;
 
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32050,7 +32418,7 @@ return lb;
 
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32125,7 +32493,7 @@ return lo;
 
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32247,7 +32615,7 @@ return lt;
 
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32349,7 +32717,7 @@ return lv;
 
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32465,7 +32833,7 @@ return me;
 
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32534,7 +32902,7 @@ return mi;
 
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32629,7 +32997,7 @@ return mk;
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32715,7 +33083,7 @@ return ml;
 
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32879,7 +33247,7 @@ return mr;
 
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32967,7 +33335,7 @@ return msMy;
 
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33054,7 +33422,7 @@ return ms;
 
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33155,7 +33523,7 @@ return my;
 
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33223,7 +33591,7 @@ return nb;
 
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33351,7 +33719,7 @@ return ne;
 
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33444,7 +33812,7 @@ return nlBe;
 
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33537,7 +33905,7 @@ return nl;
 
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33602,7 +33970,7 @@ return nn;
 
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33731,7 +34099,7 @@ return paIn;
 
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33843,7 +34211,7 @@ return pl;
 
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33909,7 +34277,7 @@ return ptBr;
 
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33979,7 +34347,7 @@ return pt;
 
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34059,7 +34427,7 @@ return ro;
 
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34247,7 +34615,7 @@ return ru;
 
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34350,7 +34718,7 @@ return sd;
 
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34416,7 +34784,7 @@ return se;
 
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34492,7 +34860,7 @@ return si;
 
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34647,7 +35015,7 @@ return sk;
 
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34814,7 +35182,7 @@ return sl;
 
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34889,7 +35257,7 @@ return sq;
 
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35004,7 +35372,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35119,7 +35487,7 @@ return sr;
 
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35213,7 +35581,7 @@ return ss;
 
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35287,7 +35655,7 @@ return sv;
 
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35351,7 +35719,7 @@ return sw;
 
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35486,7 +35854,7 @@ return ta;
 
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35580,7 +35948,7 @@ return te;
 
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35653,7 +36021,7 @@ return tet;
 
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35725,7 +36093,7 @@ return th;
 
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35792,7 +36160,7 @@ return tlPh;
 
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35917,7 +36285,7 @@ return tlh;
 
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36012,7 +36380,7 @@ return tr;
 
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36108,7 +36476,7 @@ return tzl;
 
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36171,7 +36539,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36234,7 +36602,7 @@ return tzm;
 
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36390,7 +36758,7 @@ return uk;
 
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36494,7 +36862,7 @@ return ur;
 
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36557,7 +36925,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 169 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36620,7 +36988,7 @@ return uz;
 
 
 /***/ }),
-/* 170 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36704,7 +37072,7 @@ return vi;
 
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36777,7 +37145,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36842,7 +37210,7 @@ return yo;
 
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36958,7 +37326,7 @@ return zhCn;
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37068,7 +37436,7 @@ return zhHk;
 
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37177,7 +37545,7 @@ return zhTw;
 
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -37205,19 +37573,19 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(194);
+__webpack_require__(196);
 
 __webpack_require__(44);
 
-__webpack_require__(197);
-
 __webpack_require__(198);
+
+__webpack_require__(199);
 
 var _localforage = __webpack_require__(257);
 
@@ -37243,7 +37611,7 @@ var _knawledgeMap = __webpack_require__(40);
 
 var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
 
-var _ebbinghaus = __webpack_require__(181);
+var _ebbinghaus = __webpack_require__(183);
 
 var _ebbinghaus2 = _interopRequireDefault(_ebbinghaus);
 
@@ -37261,7 +37629,7 @@ var _vuex2 = _interopRequireDefault(_vuex);
 
 var _tree = __webpack_require__(20);
 
-var _store = __webpack_require__(46);
+var _store = __webpack_require__(47);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -37341,7 +37709,7 @@ var vm = new _vue2.default({
 });
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {/**
@@ -38005,7 +38373,7 @@ var vm = new _vue2.default({
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(18)))
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38018,7 +38386,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -38031,7 +38399,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38122,7 +38490,7 @@ function getRandomConsonant() {
 }
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38155,7 +38523,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38181,11 +38549,11 @@ var _snack = __webpack_require__(37);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-var _invertObject = __webpack_require__(60);
+var _invertObject = __webpack_require__(62);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
-var _exercises = __webpack_require__(47);
+var _exercises = __webpack_require__(49);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
@@ -38462,7 +38830,7 @@ function convertItemIdsObjectToList(obj) {
 }
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38512,7 +38880,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38526,7 +38894,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _config = __webpack_require__(43);
 
-var _login2 = __webpack_require__(45);
+var _login2 = __webpack_require__(46);
 
 var _user = __webpack_require__(4);
 
@@ -38612,7 +38980,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38635,7 +39003,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38648,6 +39016,10 @@ Object.defineProperty(exports, "__esModule", {
 var _contentItems = __webpack_require__(2);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
 
 __webpack_require__(262);
 
@@ -38667,27 +39039,27 @@ exports.default = {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            console.log('item history component created');
+                            // console.log('item history component created')
                             me = _this;
+                            // new Chartist.Line('.ct-chart', {
+                            //   labels: [1, 2, 3, 4, 5, 6, 7, 8],
+                            //   series: [
+                            //     [5, 9, 7, 8, 5, 3, 5, 4]
+                            //   ]
+                            // }, {
+                            //   low: 0,
+                            //   showArea: true
+                            // });
 
-                            new Chartist.Line('.ct-chart', {
-                                labels: [1, 2, 3, 4, 5, 6, 7, 8],
-                                series: [[5, 9, 7, 8, 5, 3, 5, 4]]
-                            }, {
-                                low: 0,
-                                showArea: true
-                            });
-
-                            _context.next = 5;
+                            _context.next = 3;
                             return _contentItems2.default.get(_this.itemId);
 
-                        case 5:
+                        case 3:
                             _this.content = _context.sent;
 
-                            _this.interactions = _this.content.interactions;
-                            console.log("interactions are ", _this.interactions);
+                            _this.loadItemHistory();
 
-                        case 8:
+                        case 5:
                         case 'end':
                             return _context.stop();
                     }
@@ -38703,11 +39075,22 @@ exports.default = {
     },
 
     computed: {},
-    methods: {}
+    methods: {
+        clearInteractions: function clearInteractions() {
+            this.content.clearInteractions();
+            _user2.default.clearInteractionsForItem(this.content.id);
+            console.log('clearing Interactions!');
+            this.loadItemHistory();
+        },
+        loadItemHistory: function loadItemHistory() {
+            this.interactions = this.content.interactions;
+            // console.log("interactions are ", this.interactions)
+        }
+    }
 };
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38745,7 +39128,7 @@ var establishURIs = function () {
                         contentItem.set('initialParentTreeId', null);
                         contentItem.set('primaryParentTreeContentURI', null);
 
-                        tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren);
+                        tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren);
 
                     case 13:
                     case "end":
@@ -38773,20 +39156,29 @@ var establishURIForContentAndThenAllChildren = function () {
 
                     case 3:
                         tree = _context2.sent;
-                        _context2.next = 6;
-                        return _trees.Trees.get(tree.parentId);
+
+                        if (tree.parentId) {
+                            _context2.next = 6;
+                            break;
+                        }
+
+                        return _context2.abrupt("return");
 
                     case 6:
+                        _context2.next = 8;
+                        return _trees.Trees.get(tree.parentId);
+
+                    case 8:
                         parentTree = _context2.sent;
-                        _context2.next = 9;
+                        _context2.next = 11;
                         return _contentItems2.default.get(tree.contentId);
 
-                    case 9:
+                    case 11:
                         contentItem = _context2.sent;
-                        _context2.next = 12;
+                        _context2.next = 14;
                         return _contentItems2.default.get(parentTree.contentId);
 
-                    case 12:
+                    case 14:
                         parentContentItem = _context2.sent;
 
                         console.log(treeId + ": contentItem is ", contentItem);
@@ -38798,9 +39190,9 @@ var establishURIForContentAndThenAllChildren = function () {
                         contentItem.set('uri', uri);
                         contentItem.set('initialParentTreeId', parentTree.id);
                         contentItem.set('primaryParentTreeContentURI', parentContentItem.uri);
-                        tree.children && Object.keys(tree.children).forEach(establishURIForContentAndThenAllChildren);
+                        tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren);
 
-                    case 22:
+                    case 24:
                     case "end":
                         return _context2.stop();
                 }
@@ -38889,7 +39281,7 @@ exports.default = {
 window.establishURIs = establishURIs;
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38945,7 +39337,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39014,7 +39406,7 @@ function getProficiencyCategory(proficiency) {
 }
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39068,7 +39460,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39097,7 +39489,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39201,9 +39593,8 @@ exports.default = {
 
                         case 16:
                             _this.tree.sortLeavesByStudiedAndStrength();
-                            console.log('this.tree getLeaves just called');
 
-                        case 18:
+                        case 17:
                         case 'end':
                             return _context.stop();
                     }
@@ -39290,6 +39681,9 @@ exports.default = {
             this.content.saveProficiency(); //  this.content.proficiency is already set I think, but not saved in db
             this.content.recalculateProficiencyAggregationForTreeChain().then(this.syncTreeChainWithUI).then(refreshGraph);
             // this.syncGraphWithNode()
+        },
+        clearInteractions: function clearInteractions() {
+            this.content.clearInteractions();
         },
 
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
@@ -39386,7 +39780,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39398,11 +39792,11 @@ var _vue = __webpack_require__(19);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _branchesFooter = __webpack_require__(185);
+var _branchesFooter = __webpack_require__(187);
 
 var _branchesFooter2 = _interopRequireDefault(_branchesFooter);
 
-var _reviewSchedule = __webpack_require__(191);
+var _reviewSchedule = __webpack_require__(193);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
@@ -39410,7 +39804,7 @@ var _contentList = __webpack_require__(38);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _exerciseCreator = __webpack_require__(182);
+var _exerciseCreator = __webpack_require__(184);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
@@ -39426,39 +39820,39 @@ var _treeReviewContainer = __webpack_require__(42);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _newExercise = __webpack_require__(183);
+var _newExercise = __webpack_require__(185);
 
 var _newExercise2 = _interopRequireDefault(_newExercise);
 
-var _exerciseList = __webpack_require__(184);
+var _exerciseList = __webpack_require__(186);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(193);
+var _tree = __webpack_require__(195);
 
 var _tree2 = _interopRequireDefault(_tree);
 
-var _newtreecomponent = __webpack_require__(188);
+var _newtreecomponent = __webpack_require__(190);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(192);
+var _toolbar = __webpack_require__(194);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
-var _goBack = __webpack_require__(186);
+var _goBack = __webpack_require__(188);
 
 var _goBack2 = _interopRequireDefault(_goBack);
 
-var _proficiencySelector = __webpack_require__(189);
+var _proficiencySelector = __webpack_require__(191);
 
 var _proficiencySelector2 = _interopRequireDefault(_proficiencySelector);
 
-var _itemHistory = __webpack_require__(187);
+var _itemHistory = __webpack_require__(189);
 
 var _itemHistory2 = _interopRequireDefault(_itemHistory);
 
-__webpack_require__(199);
+__webpack_require__(48);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39482,7 +39876,7 @@ _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 _vue2.default.component('itemHistory', _itemHistory2.default);
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39496,28 +39890,7 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 196 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var Globals = exports.Globals = {
-    currentTreeSelected: null,
-    colors: {
-        proficiency_4: 'lawngreen',
-        proficiency_3: 'yellow',
-        proficiency_2: 'orange',
-        proficiency_1: 'red',
-        proficiency_unknown: 'gray'
-    }
-};
-
-/***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39526,7 +39899,7 @@ var Globals = exports.Globals = {
 __webpack_require__(3);
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39545,62 +39918,7 @@ function toggleVisibility(el) {
     }
 }
 
-console.log('i added something to utils.js');
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _user = __webpack_require__(4);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _contentItems = __webpack_require__(2);
-
-var _contentItems2 = _interopRequireDefault(_contentItems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function fixInteractionData() {
-    var _this = this;
-
-    Object.keys(_user2.default.branchesData.items).forEach(function () {
-        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(contentId) {
-            var item;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            console.log('the key we are trying to find the content for is', contentId);
-                            _context.next = 3;
-                            return _contentItems2.default.get(contentId);
-
-                        case 3:
-                            item = _context.sent;
-
-                            console.log('the content we got is', item);
-                            _user2.default.set('interactions', item.interactions);
-                            _user2.default.setInteractionsForItem(contentId, item.interactions);
-
-                        case 7:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, _this);
-        }));
-
-        return function (_x) {
-            return _ref.apply(this, arguments);
-        };
-    }());
-}
-window.fixInteractionData = fixInteractionData;
+// console.log('i added something to utils.js')
 
 /***/ }),
 /* 200 */
@@ -39639,6 +39957,7 @@ function calculateStrength(R, t) {
 function calculateSecondsTilCriticalReviewTime(strength) {
     return calculateTime(strength, criticalRecall);
 }
+// function measureInitialPreviousInteractionStrength
 function measurePreviousStrength(estimatedPreviousStrength, R, t) {
 
     var proficiencyAsDecimal = R / 100;
@@ -39651,14 +39970,26 @@ function measurePreviousStrength(estimatedPreviousStrength, R, t) {
     //if proficiency is greater than/equal to 99 or less than/equal to 1, we have a wide range of possibilities for measured strength values - see this google sheet - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=2051263794
     //therefore just use the previous estimated value, because we can't really measure the actual value
     //if proficiency is less than 1, and its been a really long time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much higher than it possible could have been, since we are only recording the value as 1% and not the actual .01% or whatever it actually is
-    if (R <= _proficiencyEnum.PROFICIENCIES.ONE && measuredPreviousStrength > estimatedPreviousStrength) {
+    if (doubleLessThanOrEqualTo(R, _proficiencyEnum.PROFICIENCIES.ONE) /* for double comparison */ && measuredPreviousStrength > estimatedPreviousStrength) {
         measuredPreviousStrength = estimatedPreviousStrength;
+    } else {
+        console.log('R is not <= to PROFICIENCIES.ONE', R, _proficiencyEnum.PROFICIENCIES.ONE, measuredPreviousStrength, estimatedPreviousStrength);
     }
+
     //if proficiency is greater than 99, and its been a really short time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much lower than it possible could have been, since we are only recording the value as 99% and not the actually 99.99% or whatever it actually is
-    if (R >= _proficiencyEnum.PROFICIENCIES.FOUR && measuredPreviousStrength < estimatedPreviousStrength) {
+    if (doubleGreaterThanOrEqualTo(R, _proficiencyEnum.PROFICIENCIES.FOUR) /* for double comparison */ && measuredPreviousStrength < estimatedPreviousStrength) {
         measuredPreviousStrength = estimatedPreviousStrength;
+    } else {
+        console.log('R is not < PROFICIENCIES.FOUR', R, _proficiencyEnum.PROFICIENCIES.FOUR);
     }
     return measuredPreviousStrength;
+}
+
+function doubleLessThanOrEqualTo(doubleOne, doubleTwo) {
+    return doubleOne <= doubleTwo + .01;
+}
+function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo) {
+    return doubleOne >= doubleTwo - .01;
 }
 
 //calculate percent change of recall (e.g. proficiency)
@@ -40190,7 +40521,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(49);
+var _subscribe = __webpack_require__(51);
 
 var _errors = __webpack_require__(30);
 
@@ -41242,7 +41573,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controllerInterface = __webpack_require__(50);
+var _controllerInterface = __webpack_require__(52);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
@@ -41250,11 +41581,11 @@ var _errors = __webpack_require__(21);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(53);
+var _workerPageMessage = __webpack_require__(55);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(51);
+var _fcmDetails = __webpack_require__(53);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -41620,7 +41951,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _controllerInterface = __webpack_require__(50);
+var _controllerInterface = __webpack_require__(52);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
@@ -41628,7 +41959,7 @@ var _errors = __webpack_require__(21);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(53);
+var _workerPageMessage = __webpack_require__(55);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
@@ -41636,11 +41967,11 @@ var _defaultSw = __webpack_require__(220);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(52);
+var _notificationPermission = __webpack_require__(54);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(49);
+var _subscribe = __webpack_require__(51);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42109,7 +42440,7 @@ var _arrayBufferToBase = __webpack_require__(219);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(51);
+var _fcmDetails = __webpack_require__(53);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -42747,11 +43078,11 @@ exports.registerStorage = registerStorage;
 
 var _string = __webpack_require__(35);
 
-var _taskenums = __webpack_require__(57);
+var _taskenums = __webpack_require__(59);
 
 var _xhriopool = __webpack_require__(235);
 
-var _reference = __webpack_require__(59);
+var _reference = __webpack_require__(61);
 
 var _service = __webpack_require__(236);
 
@@ -43496,7 +43827,7 @@ var _url = __webpack_require__(36);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(58);
+var _xhrio = __webpack_require__(60);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -43891,7 +44222,7 @@ var _type = __webpack_require__(1);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(58);
+var _xhrio = __webpack_require__(60);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -44147,7 +44478,7 @@ var _request = __webpack_require__(231);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(59);
+var _reference = __webpack_require__(61);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -44325,7 +44656,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _taskenums = __webpack_require__(57);
+var _taskenums = __webpack_require__(59);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
@@ -44351,7 +44682,7 @@ var _promise_external = __webpack_require__(9);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(56);
+var _requests = __webpack_require__(58);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
@@ -45036,7 +45367,7 @@ module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\
 /* 247 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp}} || {{interaction.proficiency}}% || {{interaction.timeSpent}} || {{interaction.millisecondsSinceLastInteraction}} || {{interaction.previousInteractionStrength}} dB -> {{interaction.currentInteractionStrength}} dB\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
+module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <button v-on:click.stop=\"clearInteractions\">\r\n           Clear Interactions\r\n        </button>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp}} || {{interaction.proficiency}}% || {{interaction.timeSpent}} s || {{interaction.millisecondsSinceLastInteraction}} ms || {{interaction.previousInteractionStrength}} dB -> {{interaction.currentInteractionStrength}} dB\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
 /* 248 */
@@ -45084,7 +45415,7 @@ module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leaf
 /* 255 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"proficiencyClicked\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-show=\"!draggingNode\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"proficiencyClicked\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading && content.hasInteractions()\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
 
 /***/ }),
 /* 256 */
@@ -47437,236 +47768,236 @@ module.exports = localforage_js;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 61,
-	"./af.js": 61,
-	"./ar": 68,
-	"./ar-dz": 62,
-	"./ar-dz.js": 62,
-	"./ar-kw": 63,
-	"./ar-kw.js": 63,
-	"./ar-ly": 64,
-	"./ar-ly.js": 64,
-	"./ar-ma": 65,
-	"./ar-ma.js": 65,
-	"./ar-sa": 66,
-	"./ar-sa.js": 66,
-	"./ar-tn": 67,
-	"./ar-tn.js": 67,
-	"./ar.js": 68,
-	"./az": 69,
-	"./az.js": 69,
-	"./be": 70,
-	"./be.js": 70,
-	"./bg": 71,
-	"./bg.js": 71,
-	"./bn": 72,
-	"./bn.js": 72,
-	"./bo": 73,
-	"./bo.js": 73,
-	"./br": 74,
-	"./br.js": 74,
-	"./bs": 75,
-	"./bs.js": 75,
-	"./ca": 76,
-	"./ca.js": 76,
-	"./cs": 77,
-	"./cs.js": 77,
-	"./cv": 78,
-	"./cv.js": 78,
-	"./cy": 79,
-	"./cy.js": 79,
-	"./da": 80,
-	"./da.js": 80,
-	"./de": 83,
-	"./de-at": 81,
-	"./de-at.js": 81,
-	"./de-ch": 82,
-	"./de-ch.js": 82,
-	"./de.js": 83,
-	"./dv": 84,
-	"./dv.js": 84,
-	"./el": 85,
-	"./el.js": 85,
-	"./en-au": 86,
-	"./en-au.js": 86,
-	"./en-ca": 87,
-	"./en-ca.js": 87,
-	"./en-gb": 88,
-	"./en-gb.js": 88,
-	"./en-ie": 89,
-	"./en-ie.js": 89,
-	"./en-nz": 90,
-	"./en-nz.js": 90,
-	"./eo": 91,
-	"./eo.js": 91,
-	"./es": 93,
-	"./es-do": 92,
-	"./es-do.js": 92,
-	"./es.js": 93,
-	"./et": 94,
-	"./et.js": 94,
-	"./eu": 95,
-	"./eu.js": 95,
-	"./fa": 96,
-	"./fa.js": 96,
-	"./fi": 97,
-	"./fi.js": 97,
-	"./fo": 98,
-	"./fo.js": 98,
-	"./fr": 101,
-	"./fr-ca": 99,
-	"./fr-ca.js": 99,
-	"./fr-ch": 100,
-	"./fr-ch.js": 100,
-	"./fr.js": 101,
-	"./fy": 102,
-	"./fy.js": 102,
-	"./gd": 103,
-	"./gd.js": 103,
-	"./gl": 104,
-	"./gl.js": 104,
-	"./gom-latn": 105,
-	"./gom-latn.js": 105,
-	"./he": 106,
-	"./he.js": 106,
-	"./hi": 107,
-	"./hi.js": 107,
-	"./hr": 108,
-	"./hr.js": 108,
-	"./hu": 109,
-	"./hu.js": 109,
-	"./hy-am": 110,
-	"./hy-am.js": 110,
-	"./id": 111,
-	"./id.js": 111,
-	"./is": 112,
-	"./is.js": 112,
-	"./it": 113,
-	"./it.js": 113,
-	"./ja": 114,
-	"./ja.js": 114,
-	"./jv": 115,
-	"./jv.js": 115,
-	"./ka": 116,
-	"./ka.js": 116,
-	"./kk": 117,
-	"./kk.js": 117,
-	"./km": 118,
-	"./km.js": 118,
-	"./kn": 119,
-	"./kn.js": 119,
-	"./ko": 120,
-	"./ko.js": 120,
-	"./ky": 121,
-	"./ky.js": 121,
-	"./lb": 122,
-	"./lb.js": 122,
-	"./lo": 123,
-	"./lo.js": 123,
-	"./lt": 124,
-	"./lt.js": 124,
-	"./lv": 125,
-	"./lv.js": 125,
-	"./me": 126,
-	"./me.js": 126,
-	"./mi": 127,
-	"./mi.js": 127,
-	"./mk": 128,
-	"./mk.js": 128,
-	"./ml": 129,
-	"./ml.js": 129,
-	"./mr": 130,
-	"./mr.js": 130,
-	"./ms": 132,
-	"./ms-my": 131,
-	"./ms-my.js": 131,
-	"./ms.js": 132,
-	"./my": 133,
-	"./my.js": 133,
-	"./nb": 134,
-	"./nb.js": 134,
-	"./ne": 135,
-	"./ne.js": 135,
-	"./nl": 137,
-	"./nl-be": 136,
-	"./nl-be.js": 136,
-	"./nl.js": 137,
-	"./nn": 138,
-	"./nn.js": 138,
-	"./pa-in": 139,
-	"./pa-in.js": 139,
-	"./pl": 140,
-	"./pl.js": 140,
-	"./pt": 142,
-	"./pt-br": 141,
-	"./pt-br.js": 141,
-	"./pt.js": 142,
-	"./ro": 143,
-	"./ro.js": 143,
-	"./ru": 144,
-	"./ru.js": 144,
-	"./sd": 145,
-	"./sd.js": 145,
-	"./se": 146,
-	"./se.js": 146,
-	"./si": 147,
-	"./si.js": 147,
-	"./sk": 148,
-	"./sk.js": 148,
-	"./sl": 149,
-	"./sl.js": 149,
-	"./sq": 150,
-	"./sq.js": 150,
-	"./sr": 152,
-	"./sr-cyrl": 151,
-	"./sr-cyrl.js": 151,
-	"./sr.js": 152,
-	"./ss": 153,
-	"./ss.js": 153,
-	"./sv": 154,
-	"./sv.js": 154,
-	"./sw": 155,
-	"./sw.js": 155,
-	"./ta": 156,
-	"./ta.js": 156,
-	"./te": 157,
-	"./te.js": 157,
-	"./tet": 158,
-	"./tet.js": 158,
-	"./th": 159,
-	"./th.js": 159,
-	"./tl-ph": 160,
-	"./tl-ph.js": 160,
-	"./tlh": 161,
-	"./tlh.js": 161,
-	"./tr": 162,
-	"./tr.js": 162,
-	"./tzl": 163,
-	"./tzl.js": 163,
-	"./tzm": 165,
-	"./tzm-latn": 164,
-	"./tzm-latn.js": 164,
-	"./tzm.js": 165,
-	"./uk": 166,
-	"./uk.js": 166,
-	"./ur": 167,
-	"./ur.js": 167,
-	"./uz": 169,
-	"./uz-latn": 168,
-	"./uz-latn.js": 168,
-	"./uz.js": 169,
-	"./vi": 170,
-	"./vi.js": 170,
-	"./x-pseudo": 171,
-	"./x-pseudo.js": 171,
-	"./yo": 172,
-	"./yo.js": 172,
-	"./zh-cn": 173,
-	"./zh-cn.js": 173,
-	"./zh-hk": 174,
-	"./zh-hk.js": 174,
-	"./zh-tw": 175,
-	"./zh-tw.js": 175
+	"./af": 63,
+	"./af.js": 63,
+	"./ar": 70,
+	"./ar-dz": 64,
+	"./ar-dz.js": 64,
+	"./ar-kw": 65,
+	"./ar-kw.js": 65,
+	"./ar-ly": 66,
+	"./ar-ly.js": 66,
+	"./ar-ma": 67,
+	"./ar-ma.js": 67,
+	"./ar-sa": 68,
+	"./ar-sa.js": 68,
+	"./ar-tn": 69,
+	"./ar-tn.js": 69,
+	"./ar.js": 70,
+	"./az": 71,
+	"./az.js": 71,
+	"./be": 72,
+	"./be.js": 72,
+	"./bg": 73,
+	"./bg.js": 73,
+	"./bn": 74,
+	"./bn.js": 74,
+	"./bo": 75,
+	"./bo.js": 75,
+	"./br": 76,
+	"./br.js": 76,
+	"./bs": 77,
+	"./bs.js": 77,
+	"./ca": 78,
+	"./ca.js": 78,
+	"./cs": 79,
+	"./cs.js": 79,
+	"./cv": 80,
+	"./cv.js": 80,
+	"./cy": 81,
+	"./cy.js": 81,
+	"./da": 82,
+	"./da.js": 82,
+	"./de": 85,
+	"./de-at": 83,
+	"./de-at.js": 83,
+	"./de-ch": 84,
+	"./de-ch.js": 84,
+	"./de.js": 85,
+	"./dv": 86,
+	"./dv.js": 86,
+	"./el": 87,
+	"./el.js": 87,
+	"./en-au": 88,
+	"./en-au.js": 88,
+	"./en-ca": 89,
+	"./en-ca.js": 89,
+	"./en-gb": 90,
+	"./en-gb.js": 90,
+	"./en-ie": 91,
+	"./en-ie.js": 91,
+	"./en-nz": 92,
+	"./en-nz.js": 92,
+	"./eo": 93,
+	"./eo.js": 93,
+	"./es": 95,
+	"./es-do": 94,
+	"./es-do.js": 94,
+	"./es.js": 95,
+	"./et": 96,
+	"./et.js": 96,
+	"./eu": 97,
+	"./eu.js": 97,
+	"./fa": 98,
+	"./fa.js": 98,
+	"./fi": 99,
+	"./fi.js": 99,
+	"./fo": 100,
+	"./fo.js": 100,
+	"./fr": 103,
+	"./fr-ca": 101,
+	"./fr-ca.js": 101,
+	"./fr-ch": 102,
+	"./fr-ch.js": 102,
+	"./fr.js": 103,
+	"./fy": 104,
+	"./fy.js": 104,
+	"./gd": 105,
+	"./gd.js": 105,
+	"./gl": 106,
+	"./gl.js": 106,
+	"./gom-latn": 107,
+	"./gom-latn.js": 107,
+	"./he": 108,
+	"./he.js": 108,
+	"./hi": 109,
+	"./hi.js": 109,
+	"./hr": 110,
+	"./hr.js": 110,
+	"./hu": 111,
+	"./hu.js": 111,
+	"./hy-am": 112,
+	"./hy-am.js": 112,
+	"./id": 113,
+	"./id.js": 113,
+	"./is": 114,
+	"./is.js": 114,
+	"./it": 115,
+	"./it.js": 115,
+	"./ja": 116,
+	"./ja.js": 116,
+	"./jv": 117,
+	"./jv.js": 117,
+	"./ka": 118,
+	"./ka.js": 118,
+	"./kk": 119,
+	"./kk.js": 119,
+	"./km": 120,
+	"./km.js": 120,
+	"./kn": 121,
+	"./kn.js": 121,
+	"./ko": 122,
+	"./ko.js": 122,
+	"./ky": 123,
+	"./ky.js": 123,
+	"./lb": 124,
+	"./lb.js": 124,
+	"./lo": 125,
+	"./lo.js": 125,
+	"./lt": 126,
+	"./lt.js": 126,
+	"./lv": 127,
+	"./lv.js": 127,
+	"./me": 128,
+	"./me.js": 128,
+	"./mi": 129,
+	"./mi.js": 129,
+	"./mk": 130,
+	"./mk.js": 130,
+	"./ml": 131,
+	"./ml.js": 131,
+	"./mr": 132,
+	"./mr.js": 132,
+	"./ms": 134,
+	"./ms-my": 133,
+	"./ms-my.js": 133,
+	"./ms.js": 134,
+	"./my": 135,
+	"./my.js": 135,
+	"./nb": 136,
+	"./nb.js": 136,
+	"./ne": 137,
+	"./ne.js": 137,
+	"./nl": 139,
+	"./nl-be": 138,
+	"./nl-be.js": 138,
+	"./nl.js": 139,
+	"./nn": 140,
+	"./nn.js": 140,
+	"./pa-in": 141,
+	"./pa-in.js": 141,
+	"./pl": 142,
+	"./pl.js": 142,
+	"./pt": 144,
+	"./pt-br": 143,
+	"./pt-br.js": 143,
+	"./pt.js": 144,
+	"./ro": 145,
+	"./ro.js": 145,
+	"./ru": 146,
+	"./ru.js": 146,
+	"./sd": 147,
+	"./sd.js": 147,
+	"./se": 148,
+	"./se.js": 148,
+	"./si": 149,
+	"./si.js": 149,
+	"./sk": 150,
+	"./sk.js": 150,
+	"./sl": 151,
+	"./sl.js": 151,
+	"./sq": 152,
+	"./sq.js": 152,
+	"./sr": 154,
+	"./sr-cyrl": 153,
+	"./sr-cyrl.js": 153,
+	"./sr.js": 154,
+	"./ss": 155,
+	"./ss.js": 155,
+	"./sv": 156,
+	"./sv.js": 156,
+	"./sw": 157,
+	"./sw.js": 157,
+	"./ta": 158,
+	"./ta.js": 158,
+	"./te": 159,
+	"./te.js": 159,
+	"./tet": 160,
+	"./tet.js": 160,
+	"./th": 161,
+	"./th.js": 161,
+	"./tl-ph": 162,
+	"./tl-ph.js": 162,
+	"./tlh": 163,
+	"./tlh.js": 163,
+	"./tr": 164,
+	"./tr.js": 164,
+	"./tzl": 165,
+	"./tzl.js": 165,
+	"./tzm": 167,
+	"./tzm-latn": 166,
+	"./tzm-latn.js": 166,
+	"./tzm.js": 167,
+	"./uk": 168,
+	"./uk.js": 168,
+	"./ur": 169,
+	"./ur.js": 169,
+	"./uz": 171,
+	"./uz-latn": 170,
+	"./uz-latn.js": 170,
+	"./uz.js": 171,
+	"./vi": 172,
+	"./vi.js": 172,
+	"./x-pseudo": 173,
+	"./x-pseudo.js": 173,
+	"./yo": 174,
+	"./yo.js": 174,
+	"./zh-cn": 175,
+	"./zh-cn.js": 175,
+	"./zh-hk": 176,
+	"./zh-hk.js": 176,
+	"./zh-tw": 177,
+	"./zh-tw.js": 177
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -50797,8 +51128,8 @@ if (inBrowser && window.Vue) {
 /* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(178);
-module.exports = __webpack_require__(177);
+__webpack_require__(180);
+module.exports = __webpack_require__(179);
 
 
 /***/ })
