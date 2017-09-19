@@ -11,6 +11,7 @@ import {
     calculateSecondsTilCriticalReviewTime
 } from "../forgettingCurve";
 
+const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
 export default class ContentItem {
 
@@ -24,17 +25,17 @@ export default class ContentItem {
         this.timerId = null;
 
         this.userProficiencyMap = args.userProficiencyMap || {}
-        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || 0
+        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || PROFICIENCIES.UNKNOWN
 
         this.userInteractionsMap = args.userInteractionsMap || {}
         this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
-        this.hasInteractions = this.interactions.length
 
         this.userStrengthMap = args.userStrengthMap || {}
-        this.lastRecordedStrength = this.userStrengthMap[user.getId()] || {value: 0,}
+        this.lastRecordedStrength = this.userStrengthMap[user.getId()] || INITIAL_LAST_RECORDED_STRENGTH
 
         this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
+        this.setOverdueTimeout()
 
         this.studiers = args.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
@@ -109,13 +110,6 @@ export default class ContentItem {
         let sections = this.getURIWithoutRootElement().split("/")
         let result = getLastNBreadcrumbsStringFromList(sections, n)
         return result
-        // console.log('breadcrumb sections for ', this,' are', sections)
-        // let sectionsResult = sections.reduce((accum, val) => {
-        //     if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
-        //         return accum
-        //     }
-        //     return accum + " > " + decodeURIComponent(val)
-        // })
     }
     getBreadCrumbs(){
 
@@ -123,6 +117,27 @@ export default class ContentItem {
 
     isLeafType(){
         return this.type === 'fact' || this.type === 'skill'
+    }
+
+    setOverdueTimeout(){
+        let millisecondsTilOverdue = this.nextReviewTime - Date.now()
+        millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
+        this.overdue = false
+
+        if (this.hasInteractions()){
+            this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this),millisecondsTilOverdue)
+        }
+    }
+
+    markOverdue(){
+        this.overdue = true
+        Object.keys(this.trees).forEach(treeId => {
+            PubSub.publish('syncGraphWithNode', treeId)
+        })
+        this.clearOverdueTimeout()
+    }
+    clearOverdueTimeout(){
+        clearTimeout(this.markOverdueTimeout)
     }
     /**
      * Used to update tree X and Y coordinates
@@ -158,6 +173,9 @@ export default class ContentItem {
         this.set('uri', uri)
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
+    resetTimer(){
+        this.timer = 0
+    }
     startTimer() {
         var me = this
 
@@ -228,10 +246,68 @@ export default class ContentItem {
         })
         return Promise.all(calculationPromises)
     }
+    clearInteractions(){
+        console.log(this.id, "clearing Interactions")
+        delete this.studiers[user.getId()]
+
+        this.proficiency = PROFICIENCIES.UNKNOWN
+        delete this.userProficiencyMap[user.getId()]
+
+        this.interactions = []
+        delete this.userInteractionsMap[user.getId()]
+
+        this.lastRecordedStrength = INITIAL_LAST_RECORDED_STRENGTH
+        delete this.userStrengthMap[user.getId()]
+
+        this.nextReviewTime = 0
+        delete this.userReviewTimeMap[user.getId()]
+
+        this.timer = 0
+        delete this.userTimeMap[user.getId()]
+
+        const updates = {
+            studiers: this.studiers,
+            userProficiencyMap : this.userProficiencyMap,
+            userInteractionsMap : this.userInteractionsMap,
+            userStrengthMap : this.userStrengthMap,
+            userReviewTimeMap : this.userReviewTimeMap,
+            userTimeMap: this.userTimeMap,
+        }
+
+        console.log('clear interactions called')
+        // firebase.database().ref('content/' + this.id + '/studiers/' + user.getId()).remove(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userProficiencyMap/' + user.getId()).remove(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userInteractionsMap/' + user.getId()).remove(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })//.update(updates) //.update(updates)
+        // firebase.database().ref('content/' + this.id + '/userStrengthMap/' + user.getId()).remove().then(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userReviewTimeMap/' + user.getId()).remove().then(function(err){
+        //     console.log('did an error happen on remove', err)
+        // })
+        // firebase.database().ref('content/' + this.id + '/userTimeMap/' + user.getId()).remove().then(() =>{
+        //     console.log("one remove update finished", ...arguments)
+        // }) //.update(updates) //.update(updates)
+
+        firebase.database().ref('content/' + this.id).update(updates)
+        Object.keys(this.trees).forEach(treeId => {
+           PubSub.publish('syncGraphWithNode', treeId)
+        })
+    }
+
+    hasInteractions() {
+        return this.interactions.length
+    }
+
     saveProficiency(){
         !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
         const timestamp = Date.now()
-
+        this.clearOverdueTimeout()
 
         //content
         this.userProficiencyMap[user.getId()] = this.proficiency
@@ -243,15 +319,24 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //interactions
-        const mostRecentInteraction = this.interactions.length ? this.interactions[this.interactions.length - 1] : {currentInteractionStrength: 0}
+
+        const mostRecentInteraction = this.hasInteractions() ? this.interactions[this.interactions.length - 1] : {currentInteractionStrength: 0, timestamp: nowMilliseconds}
         const nowMilliseconds = timestamp
-        const millisecondsSinceLastInteraction = this.interactions.length ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+        let millisecondsSinceLastInteraction = this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+
+        // if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE we can assume they have learned it before. We will simply assume that they last saw it/learned it an hour ago. (e.g. like in a lecture 1 hour ago).
+        if (this.proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
+            millisecondsSinceLastInteraction = 60 * 60 * 1000
+            console.log('proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction)
+        } else {
+            console.log('NOT proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction)
+        }
         const previousInteractionStrength = measurePreviousStrength(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
         const currentInteractionStrength = estimateCurrentStrength(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
 
         const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
-        //store user interactions under content
         this.interactions.push(interaction)
+        //store user interactions under content
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
@@ -278,7 +363,12 @@ export default class ContentItem {
         var updates = {
             userReviewTimeMap : this.userReviewTimeMap
         }
+
         firebase.database().ref('content/' + this.id).update(updates)
+
+        //set timeout to mark the item overdue when it becomes overdue
+        console.log('set overdue timeout about to be called')
+        this.setOverdueTimeout()
     }
 
     setProficiency(proficiency) {

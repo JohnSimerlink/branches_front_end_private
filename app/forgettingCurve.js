@@ -17,26 +17,39 @@ export function calculateStrength(R,t){
 export function calculateSecondsTilCriticalReviewTime(strength){
     return calculateTime(strength, criticalRecall)
 }
+// function measureInitialPreviousInteractionStrength
 export function measurePreviousStrength(estimatedPreviousStrength, R,t){
 
     const proficiencyAsDecimal = R / 100
     const logProficiency = Math.log(proficiencyAsDecimal)
     const ebbinghaus = -1 * t / logProficiency
     let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
-    console.log(R +"," + t + " -> "  + measuredPreviousStrength + " dbE")
+    console.log(R + "," + t + " -> "  + measuredPreviousStrength + " dbE")
     measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength: 0
 
     //if proficiency is greater than/equal to 99 or less than/equal to 1, we have a wide range of possibilities for measured strength values - see this google sheet - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=2051263794
     //therefore just use the previous estimated value, because we can't really measure the actual value
     //if proficiency is less than 1, and its been a really long time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much higher than it possible could have been, since we are only recording the value as 1% and not the actual .01% or whatever it actually is
-    if (R <=PROFICIENCIES.ONE && measuredPreviousStrength > estimatedPreviousStrength ){
+    if (doubleLessThanOrEqualTo(R, PROFICIENCIES.ONE)/* for double comparison */ && measuredPreviousStrength > estimatedPreviousStrength ){
         measuredPreviousStrength = estimatedPreviousStrength
+    } else {
+        console.log('R is not <= to PROFICIENCIES.ONE', R, PROFICIENCIES.ONE, measuredPreviousStrength, estimatedPreviousStrength)
     }
+
     //if proficiency is greater than 99, and its been a really short time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much lower than it possible could have been, since we are only recording the value as 99% and not the actually 99.99% or whatever it actually is
-    if (R >=PROFICIENCIES.FOUR && measuredPreviousStrength < estimatedPreviousStrength ){
+    if (doubleGreaterThanOrEqualTo(R,PROFICIENCIES.FOUR) /* for double comparison */ && measuredPreviousStrength < estimatedPreviousStrength ){
         measuredPreviousStrength = estimatedPreviousStrength
+    } else {
+        console.log('R is not < PROFICIENCIES.FOUR', R, PROFICIENCIES.FOUR)
     }
     return measuredPreviousStrength
+}
+
+function doubleLessThanOrEqualTo(doubleOne, doubleTwo){
+    return doubleOne <= (doubleTwo + .01)
+}
+function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo){
+    return doubleOne >= (doubleTwo - .01)
 }
 
 //calculate percent change of recall (e.g. proficiency)
