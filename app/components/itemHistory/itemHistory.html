@@ -6,7 +6,7 @@
            Clear Interactions
         </button>
         <li v-for="interaction in interactions">
-            {{interaction.timestamp}} || {{interaction.proficiency}}% || {{interaction.timeSpent}} s || {{interaction.millisecondsSinceLastInteraction}} ms || {{interaction.previousInteractionStrength}} dB -> {{interaction.currentInteractionStrength}} dB
+            {{interaction.timestamp | dateTime}}, {{interaction.proficiency}}%<span v-if="interaction.previousInteractionStrength && interaction.currentInteractionStrength">, {{interaction.previousInteractionStrength | round}} dB -> {{interaction.currentInteractionStrength | round}} dB </span>
         </li>
     </ul>
 </div>
