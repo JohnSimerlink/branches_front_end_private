@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 271);
+/******/ 	return __webpack_require__(__webpack_require__.s = 276);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(258)("./" + name);
+            __webpack_require__(261)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4541,98 +4541,6 @@ return hooks;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.isDef = isDef;
-exports.isJustDef = isJustDef;
-exports.isFunction = isFunction;
-exports.isObject = isObject;
-exports.isNonNullObject = isNonNullObject;
-exports.isNonArrayObject = isNonArrayObject;
-exports.isString = isString;
-exports.isNumber = isNumber;
-exports.isNativeBlob = isNativeBlob;
-exports.isNativeBlobDefined = isNativeBlobDefined;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @return False if the object is undefined or null, true otherwise.
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/function isDef(p) {
-    return p != null;
-}
-function isJustDef(p) {
-    return p !== void 0;
-}
-function isFunction(p) {
-    return typeof p === 'function';
-}
-function isObject(p) {
-    return (typeof p === 'undefined' ? 'undefined' : _typeof(p)) === 'object';
-}
-function isNonNullObject(p) {
-    return isObject(p) && p !== null;
-}
-function isNonArrayObject(p) {
-    return isObject(p) && !Array.isArray(p);
-}
-function isString(p) {
-    return typeof p === 'string' || p instanceof String;
-}
-function isNumber(p) {
-    return typeof p === 'number' || p instanceof Number;
-}
-function isNativeBlob(p) {
-    return isNativeBlobDefined() && p instanceof Blob;
-}
-function isNativeBlobDefined() {
-    return typeof Blob !== 'undefined';
-}
-//# sourceMappingURL=type.js.map
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -4645,11 +4553,11 @@ var _firebaseService = __webpack_require__(11);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _fact = __webpack_require__(26);
+var _fact = __webpack_require__(27);
 
-var _skill = __webpack_require__(28);
+var _skill = __webpack_require__(29);
 
-var _heading = __webpack_require__(27);
+var _heading = __webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4914,7 +4822,7 @@ function processSnapshot(snapshot) {
 }
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5095,6 +5003,98 @@ if (typeof window !== 'undefined') {
 }
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.isDef = isDef;
+exports.isJustDef = isJustDef;
+exports.isFunction = isFunction;
+exports.isObject = isObject;
+exports.isNonNullObject = isNonNullObject;
+exports.isNonArrayObject = isNonArrayObject;
+exports.isString = isString;
+exports.isNumber = isNumber;
+exports.isNativeBlob = isNativeBlob;
+exports.isNativeBlobDefined = isNativeBlobDefined;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @return False if the object is undefined or null, true otherwise.
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/function isDef(p) {
+    return p != null;
+}
+function isJustDef(p) {
+    return p !== void 0;
+}
+function isFunction(p) {
+    return typeof p === 'function';
+}
+function isObject(p) {
+    return (typeof p === 'undefined' ? 'undefined' : _typeof(p)) === 'object';
+}
+function isNonNullObject(p) {
+    return isObject(p) && p !== null;
+}
+function isNonArrayObject(p) {
+    return isObject(p) && !Array.isArray(p);
+}
+function isString(p) {
+    return typeof p === 'string' || p instanceof String;
+}
+function isNumber(p) {
+    return typeof p === 'number' || p instanceof Number;
+}
+function isNativeBlob(p) {
+    return isNativeBlobDefined() && p instanceof Blob;
+}
+function isNativeBlobDefined() {
+    return typeof Blob !== 'undefined';
+}
+//# sourceMappingURL=type.js.map
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5113,7 +5113,7 @@ var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
 var _fixData = __webpack_require__(48);
 
-var _users = __webpack_require__(29);
+var _users = __webpack_require__(30);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -5123,32 +5123,96 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var userLoggedIn = false;
+
 var User = function () {
     function User() {
+        var _this = this;
+
         _classCallCheck(this, User);
 
         this.loggedIn = false;
         this.branchesData = {};
+        this.dataLoaded = false;
         var me = this;
-        _firebaseService2.default.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                PubSub.publish('login');
-                me.loggedIn = true;
-                me.fbData = user;
-                _users2.default.get(me.getId()).then(function (user) {
-                    me.branchesData = user || {};
-                    me.branchesData.patches = me.branchesData.patches || {};
-                    me.branchesData.items = me.branchesData.items || {};
-                    me.camera = me.branchesData.camera;
-                    me.applyDataPatches();
-                });
-            } else {
-                me.loggedIn = false;
-            }
-        });
+        _firebaseService2.default.auth().onAuthStateChanged(function () {
+            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(user) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (!user) {
+                                    _context.next = 9;
+                                    break;
+                                }
+
+                                me.loggedIn = true;
+                                userLoggedIn = true;
+                                me.fbData = user;
+                                _context.next = 6;
+                                return me.loadBranchesData();
+
+                            case 6:
+                                PubSub.publish('login');
+                                _context.next = 10;
+                                break;
+
+                            case 9:
+                                me.loggedIn = false;
+
+                            case 10:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, _this);
+            }));
+
+            return function (_x) {
+                return _ref.apply(this, arguments);
+            };
+        }());
     }
 
     _createClass(User, [{
+        key: 'loadBranchesData',
+        value: function () {
+            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+                var me, user;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                me = this;
+                                _context2.next = 3;
+                                return _users2.default.get(this.getId());
+
+                            case 3:
+                                user = _context2.sent;
+
+                                me.branchesData = user || {};
+                                me.branchesData.patches = me.branchesData.patches || {};
+                                me.branchesData.items = me.branchesData.items || {};
+                                console.log('real branches data is', me.branchesData);
+                                me.camera = me.branchesData.camera;
+                                me.applyDataPatches();
+                                me.dataLoaded = true;
+
+                            case 11:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function loadBranchesData() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return loadBranchesData;
+        }()
+    }, {
         key: 'getId',
         value: function getId() {
             return this.fbData && this.fbData.uid || 0;
@@ -5158,6 +5222,33 @@ var User = function () {
         value: function isAdmin() {
             return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3';
         }
+        //should only be called after login event
+
+    }, {
+        key: 'getStudySettings',
+        value: function () {
+            var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                console.log("study settings going to be returned are", this.branchesData.studySettings);
+                                return _context3.abrupt('return', this.branchesData.studySettings);
+
+                            case 2:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function getStudySettings() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return getStudySettings;
+        }()
 
         // setItemProperties(itemId, obj){
         //
@@ -5185,11 +5276,11 @@ var User = function () {
         }
     }, {
         key: 'setCamera',
-        value: function setCamera(_ref) {
-            var angle = _ref.angle,
-                ratio = _ref.ratio,
-                x = _ref.x,
-                y = _ref.y;
+        value: function setCamera(_ref4) {
+            var angle = _ref4.angle,
+                ratio = _ref4.ratio,
+                x = _ref4.x,
+                y = _ref4.y;
 
             var me = this;
             angle = angle || me.camera.angle;
@@ -5234,19 +5325,19 @@ var User = function () {
     }, {
         key: 'applyDataPatches',
         value: function () {
-            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
                 var updates;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
                     while (1) {
-                        switch (_context.prev = _context.next) {
+                        switch (_context4.prev = _context4.next) {
                             case 0:
                                 if (this.branchesData.patches.headingInteractions) {
-                                    _context.next = 9;
+                                    _context4.next = 9;
                                     break;
                                 }
 
                                 console.log("PATCHES: applying clearInteractionsForHeadingsPatch!");
-                                _context.next = 4;
+                                _context4.next = 4;
                                 return (0, _fixData.clearInteractionsForHeadings)();
 
                             case 4:
@@ -5256,7 +5347,7 @@ var User = function () {
                                 };
 
                                 _firebaseService2.default.database().ref('users/' + this.getId() + '/').update(updates);
-                                _context.next = 10;
+                                _context4.next = 10;
                                 break;
 
                             case 9:
@@ -5264,17 +5355,45 @@ var User = function () {
 
                             case 10:
                             case 'end':
-                                return _context.stop();
+                                return _context4.stop();
                         }
                     }
-                }, _callee, this);
+                }, _callee4, this);
             }));
 
             function applyDataPatches() {
-                return _ref2.apply(this, arguments);
+                return _ref5.apply(this, arguments);
             }
 
             return applyDataPatches;
+        }()
+    }, {
+        key: 'applyUpdates',
+        value: function () {
+            var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(updates) {
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                _context5.next = 2;
+                                return _firebaseService2.default.database().ref('users/' + this.getId() + '/').update(updates);
+
+                            case 2:
+                                return _context5.abrupt('return', _context5.sent);
+
+                            case 3:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function applyUpdates(_x2) {
+                return _ref6.apply(this, arguments);
+            }
+
+            return applyUpdates;
         }()
     }]);
 
@@ -5289,6 +5408,62 @@ exports.default = user;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5527,94 +5702,7 @@ function internalError(message) {
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.PROFICIENCIES = undefined;
-exports.proficiencyToColor = proficiencyToColor;
-
-var _globals = __webpack_require__(45);
-
-var PROFICIENCIES = exports.PROFICIENCIES = {
-    UNKNOWN: 0,
-    ONE: 12.5,
-    TWO: 37.5,
-    THREE: 62.5,
-    FOUR: 87.5 // DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
-};
-
-function proficiencyToColor(proficiency) {
-    if (proficiency > PROFICIENCIES.THREE) return _globals.Globals.colors.proficiency_4;
-    if (proficiency > PROFICIENCIES.TWO) return _globals.Globals.colors.proficiency_3;
-    if (proficiency > PROFICIENCIES.ONE) return _globals.Globals.colors.proficiency_2;
-    if (proficiency > PROFICIENCIES.UNKNOWN) return _globals.Globals.colors.proficiency_1;
-    return _globals.Globals.colors.proficiency_unknown;
-}
-
-/***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -5660,7 +5748,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(268);
+var	fixUrls = __webpack_require__(272);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -5973,6 +6061,37 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PROFICIENCIES = undefined;
+exports.proficiencyToColor = proficiencyToColor;
+
+var _globals = __webpack_require__(46);
+
+var PROFICIENCIES = exports.PROFICIENCIES = {
+    UNKNOWN: 0,
+    ONE: 12.5,
+    TWO: 37.5,
+    THREE: 62.5,
+    FOUR: 87.5 // DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
+};
+
+function proficiencyToColor(proficiency) {
+    if (proficiency > PROFICIENCIES.THREE) return _globals.Globals.colors.proficiency_4;
+    if (proficiency > PROFICIENCIES.TWO) return _globals.Globals.colors.proficiency_3;
+    if (proficiency > PROFICIENCIES.ONE) return _globals.Globals.colors.proficiency_2;
+    if (proficiency > PROFICIENCIES.UNKNOWN) return _globals.Globals.colors.proficiency_1;
+    return _globals.Globals.colors.proficiency_unknown;
+}
+
+/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5990,7 +6109,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(31);
+var _shared_promise = __webpack_require__(32);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -6069,11 +6188,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _firebase = __webpack_require__(215);
+var _firebase = __webpack_require__(217);
 
 var firebase = _interopRequireWildcard(_firebase);
 
-var _config = __webpack_require__(43);
+var _config = __webpack_require__(44);
 
 var _firebaseDevConfig = __webpack_require__(181);
 
@@ -8387,9 +8506,9 @@ module.exports = merge;
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(202),
+  var crypt = __webpack_require__(203),
       utf8 = __webpack_require__(50).utf8,
-      isBuffer = __webpack_require__(256),
+      isBuffer = __webpack_require__(259),
       bin = __webpack_require__(50).bin,
 
   // The core
@@ -8569,11 +8688,11 @@ var _user2 = _interopRequireDefault(_user);
 
 var _review = __webpack_require__(192);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
-var _forgettingCurve = __webpack_require__(200);
+var _forgettingCurve = __webpack_require__(201);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8726,10 +8845,37 @@ var ContentItem = function () {
     }, {
         key: 'markOverdue',
         value: function markOverdue() {
+            var _this = this;
+
             this.overdue = true;
-            Object.keys(this.trees).forEach(function (treeId) {
-                PubSub.publish('syncGraphWithNode', treeId);
-            });
+            Object.keys(this.trees).forEach(function () {
+                var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(treeId) {
+                    var tree;
+                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                        while (1) {
+                            switch (_context.prev = _context.next) {
+                                case 0:
+                                    PubSub.publish('syncGraphWithNode', treeId);
+                                    _context.next = 3;
+                                    return _trees.Trees.get(treeId);
+
+                                case 3:
+                                    tree = _context.sent;
+
+                                    tree.calculateNumOverdueAggregation();
+
+                                case 5:
+                                case 'end':
+                                    return _context.stop();
+                            }
+                        }
+                    }, _callee, _this);
+                }));
+
+                return function (_x) {
+                    return _ref.apply(this, arguments);
+                };
+            }());
             this.clearOverdueTimeout();
         }
     }, {
@@ -8815,33 +8961,34 @@ var ContentItem = function () {
     }, {
         key: 'calculateAggregationTimerForTreeChain',
         value: function calculateAggregationTimerForTreeChain() {
-            var _this = this;
+            var _this2 = this;
 
+            console.log(this.id, 'calculateAggregationTimerForTreeChain');
             var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
             var calculationPromises = treePromises.map(function () {
-                var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(treePromise) {
+                var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(treePromise) {
                     var tree;
-                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
                         while (1) {
-                            switch (_context.prev = _context.next) {
+                            switch (_context2.prev = _context2.next) {
                                 case 0:
-                                    _context.next = 2;
+                                    _context2.next = 2;
                                     return treePromise;
 
                                 case 2:
-                                    tree = _context.sent;
-                                    return _context.abrupt('return', tree.calculateAggregationTimer());
+                                    tree = _context2.sent;
+                                    return _context2.abrupt('return', tree.calculateAggregationTimer());
 
                                 case 4:
                                 case 'end':
-                                    return _context.stop();
+                                    return _context2.stop();
                             }
                         }
-                    }, _callee, _this);
+                    }, _callee2, _this2);
                 }));
 
-                return function (_x) {
-                    return _ref.apply(this, arguments);
+                return function (_x2) {
+                    return _ref2.apply(this, arguments);
                 };
             }());
             return Promise.all(calculationPromises);
@@ -8885,33 +9032,69 @@ var ContentItem = function () {
     }, {
         key: 'recalculateProficiencyAggregationForTreeChain',
         value: function recalculateProficiencyAggregationForTreeChain() {
-            var _this2 = this;
+            var _this3 = this;
 
+            console.log(this.id, 'calculateProficiencyAggregationForTreeChain');
             var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
             var calculationPromises = treePromises.map(function () {
-                var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(treePromise) {
+                var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(treePromise) {
                     var tree;
-                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    return regeneratorRuntime.wrap(function _callee3$(_context3) {
                         while (1) {
-                            switch (_context2.prev = _context2.next) {
+                            switch (_context3.prev = _context3.next) {
                                 case 0:
-                                    _context2.next = 2;
+                                    _context3.next = 2;
                                     return treePromise;
 
                                 case 2:
-                                    tree = _context2.sent;
-                                    return _context2.abrupt('return', tree.recalculateProficiencyAggregation());
+                                    tree = _context3.sent;
+                                    return _context3.abrupt('return', tree.recalculateProficiencyAggregation());
 
                                 case 4:
                                 case 'end':
-                                    return _context2.stop();
+                                    return _context3.stop();
                             }
                         }
-                    }, _callee2, _this2);
+                    }, _callee3, _this3);
                 }));
 
-                return function (_x2) {
-                    return _ref2.apply(this, arguments);
+                return function (_x3) {
+                    return _ref3.apply(this, arguments);
+                };
+            }());
+            return Promise.all(calculationPromises);
+        }
+    }, {
+        key: 'recalculateNumOverdueAggregationForTreeChain',
+        value: function recalculateNumOverdueAggregationForTreeChain() {
+            var _this4 = this;
+
+            console.log(this.id, 'calculateNumOverdueAggregationForTreeChain');
+            var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+            var calculationPromises = treePromises.map(function () {
+                var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(treePromise) {
+                    var tree;
+                    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                        while (1) {
+                            switch (_context4.prev = _context4.next) {
+                                case 0:
+                                    _context4.next = 2;
+                                    return treePromise;
+
+                                case 2:
+                                    tree = _context4.sent;
+                                    return _context4.abrupt('return', tree.calculateNumOverdueAggregation());
+
+                                case 4:
+                                case 'end':
+                                    return _context4.stop();
+                            }
+                        }
+                    }, _callee4, _this4);
+                }));
+
+                return function (_x4) {
+                    return _ref4.apply(this, arguments);
                 };
             }());
             return Promise.all(calculationPromises);
@@ -8947,29 +9130,13 @@ var ContentItem = function () {
             };
 
             console.log('clear interactions called');
-            // firebase.database().ref('content/' + this.id + '/studiers/' + user.getId()).remove(function(err){
-            //     console.log('did an error happen on remove', err)
-            // })
-            // firebase.database().ref('content/' + this.id + '/userProficiencyMap/' + user.getId()).remove(function(err){
-            //     console.log('did an error happen on remove', err)
-            // })
-            // firebase.database().ref('content/' + this.id + '/userInteractionsMap/' + user.getId()).remove(function(err){
-            //     console.log('did an error happen on remove', err)
-            // })//.update(updates) //.update(updates)
-            // firebase.database().ref('content/' + this.id + '/userStrengthMap/' + user.getId()).remove().then(function(err){
-            //     console.log('did an error happen on remove', err)
-            // })
-            // firebase.database().ref('content/' + this.id + '/userReviewTimeMap/' + user.getId()).remove().then(function(err){
-            //     console.log('did an error happen on remove', err)
-            // })
-            // firebase.database().ref('content/' + this.id + '/userTimeMap/' + user.getId()).remove().then(() =>{
-            //     console.log("one remove update finished", ...arguments)
-            // }) //.update(updates) //.update(updates)
-
             firebase.database().ref('content/' + this.id).update(updates);
             Object.keys(this.trees).forEach(function (treeId) {
                 PubSub.publish('syncGraphWithNode', treeId);
             });
+            this.calculateAggregationTimerForTreeChain();
+            this.recalculateProficiencyAggregationForTreeChain();
+            this.recalculateNumOverdueAggregationForTreeChain();
         }
     }, {
         key: 'hasInteractions',
@@ -9096,6 +9263,57 @@ var ContentItem = function () {
 
             return exercise;
         }
+    }, {
+        key: 'getTreeIds',
+        value: function getTreeIds() {
+            if (!this.trees) {
+                return [];
+            }
+            return Object.keys(this.trees).filter(function (treeId) {
+                return treeId; //removes any "undefined"'s
+            });
+        }
+    }, {
+        key: 'getTreeId',
+        value: function getTreeId() {
+            var treeIds = this.getTreeIds();
+            if (treeIds.length) {
+                return treeIds[0];
+            } else {
+                return null;
+            }
+        }
+    }, {
+        key: 'getTree',
+        value: function () {
+            var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
+                var treeId, tree;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                treeId = this.getTreeId();
+                                _context5.next = 3;
+                                return this.getTreeId();
+
+                            case 3:
+                                tree = _context5.sent;
+                                return _context5.abrupt('return', tree);
+
+                            case 5:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function getTree() {
+                return _ref5.apply(this, arguments);
+            }
+
+            return getTree;
+        }()
     }]);
 
     return ContentItem;
@@ -9150,7 +9368,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -9253,7 +9471,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(212);
+var _firebase_app = __webpack_require__(214);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -19197,13 +19415,17 @@ var _firebaseService = __webpack_require__(11);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
+
+var _store = __webpack_require__(25);
+
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19252,6 +19474,7 @@ var Tree = exports.Tree = function () {
             loadObject(treeObj, this);
             this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[_user2.default.getId()] || unknownProficiencyStats;
             this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[_user2.default.getId()] || 0;
+            this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[_user2.default.getId()] || 0;
             return;
         }
 
@@ -19262,8 +19485,10 @@ var Tree = exports.Tree = function () {
 
         this.userProficiencyStatsMap = {};
         this.userAggregationTimerMap = {};
+        this.userNumOverdueMap = {};
         this.proficiencyStats = this.userProficiencyStatsMap && this.userProficiencyStatsMap[_user2.default.getId()] || unknownProficiencyStats;
         this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[_user2.default.getId()] || 0;
+        this.userNumOverdueMap = this.userNumOverdueMap && this.userNumOverdueMap[_user2.default.getId()] || 0;
 
         this.x = x;
         this.y = y;
@@ -19332,8 +19557,9 @@ var Tree = exports.Tree = function () {
                                 this.updatePrimaryParentTreeContentURI();
                                 this.recalculateProficiencyAggregation();
                                 this.calculateAggregationTimer();
+                                this.calculateNumOverdueAggregation();
 
-                            case 14:
+                            case 15:
                             case 'end':
                                 return _context.stop();
                         }
@@ -19525,6 +19751,83 @@ var Tree = exports.Tree = function () {
             });
         }
     }, {
+        key: 'clearChildrenInteractions',
+        value: function () {
+            var _ref8 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7() {
+                var _this3 = this;
+
+                var contentItem;
+                return regeneratorRuntime.wrap(function _callee7$(_context7) {
+                    while (1) {
+                        switch (_context7.prev = _context7.next) {
+                            case 0:
+                                console.log(this.id, "clearChildrenInteractions called");
+                                // const isLeaf = await this.isLeaf()
+                                _context7.next = 3;
+                                return this.isLeaf();
+
+                            case 3:
+                                if (!_context7.sent) {
+                                    _context7.next = 11;
+                                    break;
+                                }
+
+                                console.log(this.id, "clearChildrenInteractions THIS IS LEAF");
+                                _context7.next = 7;
+                                return _contentItems2.default.get(this.contentId);
+
+                            case 7:
+                                contentItem = _context7.sent;
+
+                                contentItem.clearInteractions();
+                                _context7.next = 12;
+                                break;
+
+                            case 11:
+                                this.getChildKeys().map(_trees.Trees.get).map(function () {
+                                    var _ref9 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(treePromise) {
+                                        var tree;
+                                        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+                                            while (1) {
+                                                switch (_context6.prev = _context6.next) {
+                                                    case 0:
+                                                        _context6.next = 2;
+                                                        return treePromise;
+
+                                                    case 2:
+                                                        tree = _context6.sent;
+
+                                                        console.log('about to clear Interactions for ', tree.id);
+                                                        tree.clearChildrenInteractions();
+
+                                                    case 5:
+                                                    case 'end':
+                                                        return _context6.stop();
+                                                }
+                                            }
+                                        }, _callee6, _this3);
+                                    }));
+
+                                    return function (_x4) {
+                                        return _ref9.apply(this, arguments);
+                                    };
+                                }());
+
+                            case 12:
+                            case 'end':
+                                return _context7.stop();
+                        }
+                    }
+                }, _callee7, this);
+            }));
+
+            function clearChildrenInteractions() {
+                return _ref8.apply(this, arguments);
+            }
+
+            return clearChildrenInteractions;
+        }()
+    }, {
         key: 'setProficiencyStats',
         value: function setProficiencyStats(proficiencyStats) {
             this.proficiencyStats = proficiencyStats;
@@ -19544,6 +19847,17 @@ var Tree = exports.Tree = function () {
             this.userAggregationTimerMap[_user2.default.getId()] = this.aggregationTimer;
             var updates = {
                 userAggregationTimerMap: this.userAggregationTimerMap
+            };
+            _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
+        }
+    }, {
+        key: 'setNumOverdue',
+        value: function setNumOverdue(numOverdue) {
+            this.numOverdue = numOverdue;
+            this.userNumOverdueMap = this.userNumOverdueMap || {};
+            this.userNumOverdueMap[_user2.default.getId()] = this.numOverdue;
+            var updates = {
+                userNumOverdueMap: this.userNumOverdueMap
             };
             _firebaseService2.default.database().ref('trees/' + this.id).update(updates);
         }
@@ -19585,11 +19899,11 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'addToX',
         value: function addToX() {
-            var _this3 = this;
+            var _this4 = this;
 
-            var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
-                recursion = _ref8.recursion,
-                deltaX = _ref8.deltaX;
+            var _ref10 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaX: 0 },
+                recursion = _ref10.recursion,
+                deltaX = _ref10.deltaX;
 
             var newX = this.x + deltaX;
             this.set('x', newX);
@@ -19598,41 +19912,41 @@ var Tree = exports.Tree = function () {
             if (!recursion) return;
 
             this.children && Object.keys(this.children).forEach(function () {
-                var _ref9 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(childId) {
+                var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(childId) {
                     var child;
-                    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+                    return regeneratorRuntime.wrap(function _callee8$(_context8) {
                         while (1) {
-                            switch (_context6.prev = _context6.next) {
+                            switch (_context8.prev = _context8.next) {
                                 case 0:
-                                    _context6.next = 2;
+                                    _context8.next = 2;
                                     return _trees.Trees.get(childId);
 
                                 case 2:
-                                    child = _context6.sent;
+                                    child = _context8.sent;
 
                                     child.addToX({ recursion: true, deltaX: deltaX });
 
                                 case 4:
                                 case 'end':
-                                    return _context6.stop();
+                                    return _context8.stop();
                             }
                         }
-                    }, _callee6, _this3);
+                    }, _callee8, _this4);
                 }));
 
-                return function (_x5) {
-                    return _ref9.apply(this, arguments);
+                return function (_x6) {
+                    return _ref11.apply(this, arguments);
                 };
             }());
         }
     }, {
         key: 'addToY',
         value: function addToY() {
-            var _this4 = this;
+            var _this5 = this;
 
-            var _ref10 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
-                recursion = _ref10.recursion,
-                deltaY = _ref10.deltaY;
+            var _ref12 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { recursion: false, deltaY: 0 },
+                recursion = _ref12.recursion,
+                deltaY = _ref12.deltaY;
 
             var newY = this.y + deltaY;
             this.set('y', newY);
@@ -19641,59 +19955,59 @@ var Tree = exports.Tree = function () {
             if (!recursion) return;
 
             this.children && Object.keys(this.children).forEach(function () {
-                var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(childId) {
+                var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(childId) {
                     var child;
-                    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+                    return regeneratorRuntime.wrap(function _callee9$(_context9) {
                         while (1) {
-                            switch (_context7.prev = _context7.next) {
+                            switch (_context9.prev = _context9.next) {
                                 case 0:
-                                    _context7.next = 2;
+                                    _context9.next = 2;
                                     return _trees.Trees.get(childId);
 
                                 case 2:
-                                    child = _context7.sent;
+                                    child = _context9.sent;
 
                                     child.addToY({ recursion: true, deltaY: deltaY });
 
                                 case 4:
                                 case 'end':
-                                    return _context7.stop();
+                                    return _context9.stop();
                             }
                         }
-                    }, _callee7, _this4);
+                    }, _callee9, _this5);
                 }));
 
-                return function (_x7) {
-                    return _ref11.apply(this, arguments);
+                return function (_x8) {
+                    return _ref13.apply(this, arguments);
                 };
             }());
         }
     }, {
         key: 'isLeaf',
         value: function () {
-            var _ref12 = _asyncToGenerator(regeneratorRuntime.mark(function _callee8() {
+            var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee10() {
                 var content;
-                return regeneratorRuntime.wrap(function _callee8$(_context8) {
+                return regeneratorRuntime.wrap(function _callee10$(_context10) {
                     while (1) {
-                        switch (_context8.prev = _context8.next) {
+                        switch (_context10.prev = _context10.next) {
                             case 0:
-                                _context8.next = 2;
+                                _context10.next = 2;
                                 return _contentItems2.default.get(this.contentId);
 
                             case 2:
-                                content = _context8.sent;
-                                return _context8.abrupt('return', content.isLeafType());
+                                content = _context10.sent;
+                                return _context10.abrupt('return', content.isLeafType());
 
                             case 4:
                             case 'end':
-                                return _context8.stop();
+                                return _context10.stop();
                         }
                     }
-                }, _callee8, this);
+                }, _callee10, this);
             }));
 
             function isLeaf() {
-                return _ref12.apply(this, arguments);
+                return _ref14.apply(this, arguments);
             }
 
             return isLeaf;
@@ -19701,93 +20015,23 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'calculateProficiencyAggregationForLeaf',
         value: function () {
-            var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee9() {
+            var _ref15 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11() {
                 var proficiencyStats, contentItem;
-                return regeneratorRuntime.wrap(function _callee9$(_context9) {
-                    while (1) {
-                        switch (_context9.prev = _context9.next) {
-                            case 0:
-                                proficiencyStats = _extends({}, blankProficiencyStats);
-                                _context9.next = 3;
-                                return _contentItems2.default.get(this.contentId);
-
-                            case 3:
-                                contentItem = _context9.sent;
-
-                                proficiencyStats = addValToProficiencyStats(proficiencyStats, contentItem.proficiency);
-                                return _context9.abrupt('return', proficiencyStats);
-
-                            case 6:
-                            case 'end':
-                                return _context9.stop();
-                        }
-                    }
-                }, _callee9, this);
-            }));
-
-            function calculateProficiencyAggregationForLeaf() {
-                return _ref13.apply(this, arguments);
-            }
-
-            return calculateProficiencyAggregationForLeaf;
-        }()
-    }, {
-        key: 'calculateProficiencyAggregationForNotLeaf',
-        value: function () {
-            var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11() {
-                var _this5 = this;
-
-                var proficiencyStats, children;
                 return regeneratorRuntime.wrap(function _callee11$(_context11) {
                     while (1) {
                         switch (_context11.prev = _context11.next) {
                             case 0:
                                 proficiencyStats = _extends({}, blankProficiencyStats);
-
-                                if (!(!this.children || !Object.keys(this.children).length)) {
-                                    _context11.next = 3;
-                                    break;
-                                }
-
-                                return _context11.abrupt('return', proficiencyStats);
+                                _context11.next = 3;
+                                return _contentItems2.default.get(this.contentId);
 
                             case 3:
-                                _context11.next = 5;
-                                return Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(function () {
-                                    var _ref15 = _asyncToGenerator(regeneratorRuntime.mark(function _callee10(childPromise) {
-                                        return regeneratorRuntime.wrap(function _callee10$(_context10) {
-                                            while (1) {
-                                                switch (_context10.prev = _context10.next) {
-                                                    case 0:
-                                                        _context10.next = 2;
-                                                        return childPromise;
+                                contentItem = _context11.sent;
 
-                                                    case 2:
-                                                        return _context10.abrupt('return', _context10.sent);
-
-                                                    case 3:
-                                                    case 'end':
-                                                        return _context10.stop();
-                                                }
-                                            }
-                                        }, _callee10, _this5);
-                                    }));
-
-                                    return function (_x8) {
-                                        return _ref15.apply(this, arguments);
-                                    };
-                                }()));
-
-                            case 5:
-                                children = _context11.sent;
-
-
-                                children.forEach(function (child) {
-                                    proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.proficiencyStats);
-                                });
+                                proficiencyStats = addValToProficiencyStats(proficiencyStats, contentItem.proficiency);
                                 return _context11.abrupt('return', proficiencyStats);
 
-                            case 8:
+                            case 6:
                             case 'end':
                                 return _context11.stop();
                         }
@@ -19795,97 +20039,69 @@ var Tree = exports.Tree = function () {
                 }, _callee11, this);
             }));
 
-            function calculateProficiencyAggregationForNotLeaf() {
-                return _ref14.apply(this, arguments);
+            function calculateProficiencyAggregationForLeaf() {
+                return _ref15.apply(this, arguments);
             }
 
-            return calculateProficiencyAggregationForNotLeaf;
+            return calculateProficiencyAggregationForLeaf;
         }()
     }, {
-        key: 'recalculateProficiencyAggregation',
+        key: 'calculateProficiencyAggregationForNotLeaf',
         value: function () {
-            var _ref16 = _asyncToGenerator(regeneratorRuntime.mark(function _callee12() {
-                var proficiencyStats, isLeaf, parent;
-                return regeneratorRuntime.wrap(function _callee12$(_context12) {
-                    while (1) {
-                        switch (_context12.prev = _context12.next) {
-                            case 0:
-                                proficiencyStats = void 0;
-                                _context12.next = 3;
-                                return this.isLeaf();
+            var _ref16 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13() {
+                var _this6 = this;
 
-                            case 3:
-                                isLeaf = _context12.sent;
-
-                                if (!isLeaf) {
-                                    _context12.next = 10;
-                                    break;
-                                }
-
-                                _context12.next = 7;
-                                return this.calculateProficiencyAggregationForLeaf();
-
-                            case 7:
-                                proficiencyStats = _context12.sent;
-                                _context12.next = 13;
-                                break;
-
-                            case 10:
-                                _context12.next = 12;
-                                return this.calculateProficiencyAggregationForNotLeaf();
-
-                            case 12:
-                                proficiencyStats = _context12.sent;
-
-                            case 13:
-                                this.setProficiencyStats(proficiencyStats);
-
-                                if (this.parentId) {
-                                    _context12.next = 16;
-                                    break;
-                                }
-
-                                return _context12.abrupt('return');
-
-                            case 16:
-                                _context12.next = 18;
-                                return _trees.Trees.get(this.parentId);
-
-                            case 18:
-                                parent = _context12.sent;
-                                return _context12.abrupt('return', parent.recalculateProficiencyAggregation());
-
-                            case 20:
-                            case 'end':
-                                return _context12.stop();
-                        }
-                    }
-                }, _callee12, this);
-            }));
-
-            function recalculateProficiencyAggregation() {
-                return _ref16.apply(this, arguments);
-            }
-
-            return recalculateProficiencyAggregation;
-        }()
-    }, {
-        key: 'calculateAggregationTimerForLeaf',
-        value: function () {
-            var _ref17 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13() {
-                var contentItem;
+                var proficiencyStats, children;
                 return regeneratorRuntime.wrap(function _callee13$(_context13) {
                     while (1) {
                         switch (_context13.prev = _context13.next) {
                             case 0:
-                                _context13.next = 2;
-                                return _contentItems2.default.get(this.contentId);
+                                proficiencyStats = _extends({}, blankProficiencyStats);
 
-                            case 2:
-                                contentItem = _context13.sent;
-                                return _context13.abrupt('return', contentItem.timer);
+                                if (!(!this.children || !Object.keys(this.children).length)) {
+                                    _context13.next = 3;
+                                    break;
+                                }
 
-                            case 4:
+                                return _context13.abrupt('return', proficiencyStats);
+
+                            case 3:
+                                _context13.next = 5;
+                                return Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(function () {
+                                    var _ref17 = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(childPromise) {
+                                        return regeneratorRuntime.wrap(function _callee12$(_context12) {
+                                            while (1) {
+                                                switch (_context12.prev = _context12.next) {
+                                                    case 0:
+                                                        _context12.next = 2;
+                                                        return childPromise;
+
+                                                    case 2:
+                                                        return _context12.abrupt('return', _context12.sent);
+
+                                                    case 3:
+                                                    case 'end':
+                                                        return _context12.stop();
+                                                }
+                                            }
+                                        }, _callee12, _this6);
+                                    }));
+
+                                    return function (_x9) {
+                                        return _ref17.apply(this, arguments);
+                                    };
+                                }()));
+
+                            case 5:
+                                children = _context13.sent;
+
+
+                                children.forEach(function (child) {
+                                    proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.proficiencyStats);
+                                });
+                                return _context13.abrupt('return', proficiencyStats);
+
+                            case 8:
                             case 'end':
                                 return _context13.stop();
                         }
@@ -19893,70 +20109,101 @@ var Tree = exports.Tree = function () {
                 }, _callee13, this);
             }));
 
-            function calculateAggregationTimerForLeaf() {
-                return _ref17.apply(this, arguments);
+            function calculateProficiencyAggregationForNotLeaf() {
+                return _ref16.apply(this, arguments);
             }
 
-            return calculateAggregationTimerForLeaf;
+            return calculateProficiencyAggregationForNotLeaf;
         }()
     }, {
-        key: 'calculateAggregationTimerForNotLeaf',
+        key: 'recalculateProficiencyAggregation',
         value: function () {
-            var _ref18 = _asyncToGenerator(regeneratorRuntime.mark(function _callee15() {
-                var _this6 = this;
+            var _ref18 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14() {
+                var proficiencyStats, isLeaf, parent;
+                return regeneratorRuntime.wrap(function _callee14$(_context14) {
+                    while (1) {
+                        switch (_context14.prev = _context14.next) {
+                            case 0:
+                                console.log(this.id, "recalculateProficiencyAggregation called");
+                                proficiencyStats = void 0;
+                                _context14.next = 4;
+                                return this.isLeaf();
 
-                var me, timer, children;
+                            case 4:
+                                isLeaf = _context14.sent;
+
+                                if (!isLeaf) {
+                                    _context14.next = 11;
+                                    break;
+                                }
+
+                                _context14.next = 8;
+                                return this.calculateProficiencyAggregationForLeaf();
+
+                            case 8:
+                                proficiencyStats = _context14.sent;
+                                _context14.next = 14;
+                                break;
+
+                            case 11:
+                                _context14.next = 13;
+                                return this.calculateProficiencyAggregationForNotLeaf();
+
+                            case 13:
+                                proficiencyStats = _context14.sent;
+
+                            case 14:
+                                console.log(this.id, "recalculateProficiencyAggregation proficiecnyStates is", proficiencyStats);
+                                this.setProficiencyStats(proficiencyStats);
+
+                                PubSub.publish('syncGraphWithNode', this.id);
+
+                                if (this.parentId) {
+                                    _context14.next = 19;
+                                    break;
+                                }
+
+                                return _context14.abrupt('return');
+
+                            case 19:
+                                _context14.next = 21;
+                                return _trees.Trees.get(this.parentId);
+
+                            case 21:
+                                parent = _context14.sent;
+                                return _context14.abrupt('return', parent.recalculateProficiencyAggregation());
+
+                            case 23:
+                            case 'end':
+                                return _context14.stop();
+                        }
+                    }
+                }, _callee14, this);
+            }));
+
+            function recalculateProficiencyAggregation() {
+                return _ref18.apply(this, arguments);
+            }
+
+            return recalculateProficiencyAggregation;
+        }()
+    }, {
+        key: 'calculateAggregationTimerForLeaf',
+        value: function () {
+            var _ref19 = _asyncToGenerator(regeneratorRuntime.mark(function _callee15() {
+                var contentItem;
                 return regeneratorRuntime.wrap(function _callee15$(_context15) {
                     while (1) {
                         switch (_context15.prev = _context15.next) {
                             case 0:
-                                me = this;
-                                timer = 0;
+                                _context15.next = 2;
+                                return _contentItems2.default.get(this.contentId);
 
-                                if (!(!this.children || !Object.keys(this.children).length)) {
-                                    _context15.next = 4;
-                                    break;
-                                }
-
-                                return _context15.abrupt('return', timer);
+                            case 2:
+                                contentItem = _context15.sent;
+                                return _context15.abrupt('return', contentItem.timer);
 
                             case 4:
-                                _context15.next = 6;
-                                return Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(function () {
-                                    var _ref19 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(childPromise) {
-                                        return regeneratorRuntime.wrap(function _callee14$(_context14) {
-                                            while (1) {
-                                                switch (_context14.prev = _context14.next) {
-                                                    case 0:
-                                                        _context14.next = 2;
-                                                        return childPromise;
-
-                                                    case 2:
-                                                        return _context14.abrupt('return', _context14.sent);
-
-                                                    case 3:
-                                                    case 'end':
-                                                        return _context14.stop();
-                                                }
-                                            }
-                                        }, _callee14, _this6);
-                                    }));
-
-                                    return function (_x9) {
-                                        return _ref19.apply(this, arguments);
-                                    };
-                                }()));
-
-                            case 6:
-                                children = _context15.sent;
-
-
-                                children.forEach(function (child) {
-                                    timer += +child.aggregationTimer;
-                                });
-                                return _context15.abrupt('return', timer);
-
-                            case 9:
                             case 'end':
                                 return _context15.stop();
                         }
@@ -19964,97 +20211,70 @@ var Tree = exports.Tree = function () {
                 }, _callee15, this);
             }));
 
-            function calculateAggregationTimerForNotLeaf() {
-                return _ref18.apply(this, arguments);
+            function calculateAggregationTimerForLeaf() {
+                return _ref19.apply(this, arguments);
             }
 
-            return calculateAggregationTimerForNotLeaf;
+            return calculateAggregationTimerForLeaf;
         }()
     }, {
-        key: 'calculateAggregationTimer',
+        key: 'calculateAggregationTimerForNotLeaf',
         value: function () {
-            var _ref20 = _asyncToGenerator(regeneratorRuntime.mark(function _callee16() {
-                var timer, isLeaf, parent;
-                return regeneratorRuntime.wrap(function _callee16$(_context16) {
-                    while (1) {
-                        switch (_context16.prev = _context16.next) {
-                            case 0:
-                                timer = void 0;
-                                _context16.next = 3;
-                                return this.isLeaf();
+            var _ref20 = _asyncToGenerator(regeneratorRuntime.mark(function _callee17() {
+                var _this7 = this;
 
-                            case 3:
-                                isLeaf = _context16.sent;
-
-                                if (!isLeaf) {
-                                    _context16.next = 10;
-                                    break;
-                                }
-
-                                _context16.next = 7;
-                                return this.calculateAggregationTimerForLeaf();
-
-                            case 7:
-                                timer = _context16.sent;
-                                _context16.next = 13;
-                                break;
-
-                            case 10:
-                                _context16.next = 12;
-                                return this.calculateAggregationTimerForNotLeaf();
-
-                            case 12:
-                                timer = _context16.sent;
-
-                            case 13:
-                                this.setAggregationTimer(timer);
-
-                                if (this.parentId) {
-                                    _context16.next = 16;
-                                    break;
-                                }
-
-                                return _context16.abrupt('return');
-
-                            case 16:
-                                _context16.next = 18;
-                                return _trees.Trees.get(this.parentId);
-
-                            case 18:
-                                parent = _context16.sent;
-                                return _context16.abrupt('return', parent.calculateAggregationTimer());
-
-                            case 20:
-                            case 'end':
-                                return _context16.stop();
-                        }
-                    }
-                }, _callee16, this);
-            }));
-
-            function calculateAggregationTimer() {
-                return _ref20.apply(this, arguments);
-            }
-
-            return calculateAggregationTimer;
-        }()
-    }, {
-        key: 'calculateNumOverdueAggregationLeaf',
-        value: function () {
-            var _ref21 = _asyncToGenerator(regeneratorRuntime.mark(function _callee17() {
-                var contentItem;
+                var me, timer, children;
                 return regeneratorRuntime.wrap(function _callee17$(_context17) {
                     while (1) {
                         switch (_context17.prev = _context17.next) {
                             case 0:
-                                _context17.next = 2;
-                                return _contentItems2.default.get(this.contentId);
+                                me = this;
+                                timer = 0;
 
-                            case 2:
-                                contentItem = _context17.sent;
-                                return _context17.abrupt('return', contentItem.overdue ? 1 : 0);
+                                if (!(!this.children || !Object.keys(this.children).length)) {
+                                    _context17.next = 4;
+                                    break;
+                                }
+
+                                return _context17.abrupt('return', timer);
 
                             case 4:
+                                _context17.next = 6;
+                                return Promise.all(Object.keys(this.children).map(_trees.Trees.get).map(function () {
+                                    var _ref21 = _asyncToGenerator(regeneratorRuntime.mark(function _callee16(childPromise) {
+                                        return regeneratorRuntime.wrap(function _callee16$(_context16) {
+                                            while (1) {
+                                                switch (_context16.prev = _context16.next) {
+                                                    case 0:
+                                                        _context16.next = 2;
+                                                        return childPromise;
+
+                                                    case 2:
+                                                        return _context16.abrupt('return', _context16.sent);
+
+                                                    case 3:
+                                                    case 'end':
+                                                        return _context16.stop();
+                                                }
+                                            }
+                                        }, _callee16, _this7);
+                                    }));
+
+                                    return function (_x10) {
+                                        return _ref21.apply(this, arguments);
+                                    };
+                                }()));
+
+                            case 6:
+                                children = _context17.sent;
+
+
+                                children.forEach(function (child) {
+                                    timer += +child.aggregationTimer;
+                                });
+                                return _context17.abrupt('return', timer);
+
+                            case 9:
                             case 'end':
                                 return _context17.stop();
                         }
@@ -20062,70 +20282,97 @@ var Tree = exports.Tree = function () {
                 }, _callee17, this);
             }));
 
-            function calculateNumOverdueAggregationLeaf() {
-                return _ref21.apply(this, arguments);
+            function calculateAggregationTimerForNotLeaf() {
+                return _ref20.apply(this, arguments);
             }
 
-            return calculateNumOverdueAggregationLeaf;
+            return calculateAggregationTimerForNotLeaf;
         }()
     }, {
-        key: 'calculateNumOverdueAggregationNotLeaf',
+        key: 'calculateAggregationTimer',
         value: function () {
-            var _ref22 = _asyncToGenerator(regeneratorRuntime.mark(function _callee19() {
-                var _this7 = this;
+            var _ref22 = _asyncToGenerator(regeneratorRuntime.mark(function _callee18() {
+                var timer, isLeaf, parent;
+                return regeneratorRuntime.wrap(function _callee18$(_context18) {
+                    while (1) {
+                        switch (_context18.prev = _context18.next) {
+                            case 0:
+                                timer = void 0;
+                                _context18.next = 3;
+                                return this.isLeaf();
 
-                var me, numOverdue, children;
+                            case 3:
+                                isLeaf = _context18.sent;
+
+                                if (!isLeaf) {
+                                    _context18.next = 10;
+                                    break;
+                                }
+
+                                _context18.next = 7;
+                                return this.calculateAggregationTimerForLeaf();
+
+                            case 7:
+                                timer = _context18.sent;
+                                _context18.next = 13;
+                                break;
+
+                            case 10:
+                                _context18.next = 12;
+                                return this.calculateAggregationTimerForNotLeaf();
+
+                            case 12:
+                                timer = _context18.sent;
+
+                            case 13:
+                                this.setAggregationTimer(timer);
+
+                                if (this.parentId) {
+                                    _context18.next = 16;
+                                    break;
+                                }
+
+                                return _context18.abrupt('return');
+
+                            case 16:
+                                _context18.next = 18;
+                                return _trees.Trees.get(this.parentId);
+
+                            case 18:
+                                parent = _context18.sent;
+                                return _context18.abrupt('return', parent.calculateAggregationTimer());
+
+                            case 20:
+                            case 'end':
+                                return _context18.stop();
+                        }
+                    }
+                }, _callee18, this);
+            }));
+
+            function calculateAggregationTimer() {
+                return _ref22.apply(this, arguments);
+            }
+
+            return calculateAggregationTimer;
+        }()
+    }, {
+        key: 'calculateNumOverdueAggregationLeaf',
+        value: function () {
+            var _ref23 = _asyncToGenerator(regeneratorRuntime.mark(function _callee19() {
+                var contentItem;
                 return regeneratorRuntime.wrap(function _callee19$(_context19) {
                     while (1) {
                         switch (_context19.prev = _context19.next) {
                             case 0:
-                                me = this;
-                                numOverdue = 0;
+                                _context19.next = 2;
+                                return _contentItems2.default.get(this.contentId);
 
-                                if (!(!this.children || !Object.keys(this.children).length)) {
-                                    _context19.next = 4;
-                                    break;
-                                }
-
-                                return _context19.abrupt('return', numOverdue);
+                            case 2:
+                                contentItem = _context19.sent;
+                                return _context19.abrupt('return', contentItem.overdue ? 1 : 0);
 
                             case 4:
-                                _context19.next = 6;
-                                return Promise.all(this.children.getChildKeys().map(_trees.Trees.get).map(function () {
-                                    var _ref23 = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(childPromise) {
-                                        return regeneratorRuntime.wrap(function _callee18$(_context18) {
-                                            while (1) {
-                                                switch (_context18.prev = _context18.next) {
-                                                    case 0:
-                                                        _context18.next = 2;
-                                                        return childPromise;
-
-                                                    case 2:
-                                                        return _context18.abrupt('return', _context18.sent);
-
-                                                    case 3:
-                                                    case 'end':
-                                                        return _context18.stop();
-                                                }
-                                            }
-                                        }, _callee18, _this7);
-                                    }));
-
-                                    return function (_x10) {
-                                        return _ref23.apply(this, arguments);
-                                    };
-                                }()));
-
-                            case 6:
-                                children = _context19.sent;
-
-
-                                children.forEach(function (child) {
-                                    numOverdue += +child.numOverdue;
-                                });
-                                return _context19.abrupt('return', numOverdue);
-
-                            case 9:
                             case 'end':
                                 return _context19.stop();
                         }
@@ -20133,8 +20380,79 @@ var Tree = exports.Tree = function () {
                 }, _callee19, this);
             }));
 
+            function calculateNumOverdueAggregationLeaf() {
+                return _ref23.apply(this, arguments);
+            }
+
+            return calculateNumOverdueAggregationLeaf;
+        }()
+    }, {
+        key: 'calculateNumOverdueAggregationNotLeaf',
+        value: function () {
+            var _ref24 = _asyncToGenerator(regeneratorRuntime.mark(function _callee21() {
+                var _this8 = this;
+
+                var me, numOverdue, children;
+                return regeneratorRuntime.wrap(function _callee21$(_context21) {
+                    while (1) {
+                        switch (_context21.prev = _context21.next) {
+                            case 0:
+                                me = this;
+                                numOverdue = 0;
+
+                                if (!(!this.children || !Object.keys(this.children).length)) {
+                                    _context21.next = 4;
+                                    break;
+                                }
+
+                                return _context21.abrupt('return', numOverdue);
+
+                            case 4:
+                                _context21.next = 6;
+                                return Promise.all(this.getChildKeys().map(_trees.Trees.get).map(function () {
+                                    var _ref25 = _asyncToGenerator(regeneratorRuntime.mark(function _callee20(childPromise) {
+                                        return regeneratorRuntime.wrap(function _callee20$(_context20) {
+                                            while (1) {
+                                                switch (_context20.prev = _context20.next) {
+                                                    case 0:
+                                                        _context20.next = 2;
+                                                        return childPromise;
+
+                                                    case 2:
+                                                        return _context20.abrupt('return', _context20.sent);
+
+                                                    case 3:
+                                                    case 'end':
+                                                        return _context20.stop();
+                                                }
+                                            }
+                                        }, _callee20, _this8);
+                                    }));
+
+                                    return function (_x11) {
+                                        return _ref25.apply(this, arguments);
+                                    };
+                                }()));
+
+                            case 6:
+                                children = _context21.sent;
+
+
+                                children.forEach(function (child) {
+                                    numOverdue += +child.numOverdue || 0;
+                                });
+                                return _context21.abrupt('return', numOverdue);
+
+                            case 9:
+                            case 'end':
+                                return _context21.stop();
+                        }
+                    }
+                }, _callee21, this);
+            }));
+
             function calculateNumOverdueAggregationNotLeaf() {
-                return _ref22.apply(this, arguments);
+                return _ref24.apply(this, arguments);
             }
 
             return calculateNumOverdueAggregationNotLeaf;
@@ -20142,67 +20460,67 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'calculateNumOverdueAggregation',
         value: function () {
-            var _ref24 = _asyncToGenerator(regeneratorRuntime.mark(function _callee20() {
+            var _ref26 = _asyncToGenerator(regeneratorRuntime.mark(function _callee22() {
                 var numOverdue, isLeaf, parent;
-                return regeneratorRuntime.wrap(function _callee20$(_context20) {
+                return regeneratorRuntime.wrap(function _callee22$(_context22) {
                     while (1) {
-                        switch (_context20.prev = _context20.next) {
+                        switch (_context22.prev = _context22.next) {
                             case 0:
                                 numOverdue = void 0;
-                                _context20.next = 3;
+                                _context22.next = 3;
                                 return this.isLeaf();
 
                             case 3:
-                                isLeaf = _context20.sent;
+                                isLeaf = _context22.sent;
 
                                 if (!isLeaf) {
-                                    _context20.next = 10;
+                                    _context22.next = 10;
                                     break;
                                 }
 
-                                _context20.next = 7;
+                                _context22.next = 7;
                                 return this.calculateNumOverdueAggregationLeaf();
 
                             case 7:
-                                numOverdue = _context20.sent;
-                                _context20.next = 13;
+                                numOverdue = _context22.sent;
+                                _context22.next = 13;
                                 break;
 
                             case 10:
-                                _context20.next = 12;
+                                _context22.next = 12;
                                 return this.calculateNumOverdueAggregationNotLeaf();
 
                             case 12:
-                                numOverdue = _context20.sent;
+                                numOverdue = _context22.sent;
 
                             case 13:
                                 this.setNumOverdue(numOverdue);
 
                                 if (this.parentId) {
-                                    _context20.next = 16;
+                                    _context22.next = 16;
                                     break;
                                 }
 
-                                return _context20.abrupt('return');
+                                return _context22.abrupt('return');
 
                             case 16:
-                                _context20.next = 18;
+                                _context22.next = 18;
                                 return _trees.Trees.get(this.parentId);
 
                             case 18:
-                                parent = _context20.sent;
-                                return _context20.abrupt('return', parent.calculateNumOverdueAggregation());
+                                parent = _context22.sent;
+                                return _context22.abrupt('return', parent.calculateNumOverdueAggregation());
 
                             case 20:
                             case 'end':
-                                return _context20.stop();
+                                return _context22.stop();
                         }
                     }
-                }, _callee20, this);
+                }, _callee22, this);
             }));
 
             function calculateNumOverdueAggregation() {
-                return _ref24.apply(this, arguments);
+                return _ref26.apply(this, arguments);
             }
 
             return calculateNumOverdueAggregation;
@@ -20212,32 +20530,32 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'getLeaves',
         value: function () {
-            var _ref25 = _asyncToGenerator(regeneratorRuntime.mark(function _callee21() {
-                return regeneratorRuntime.wrap(function _callee21$(_context21) {
+            var _ref27 = _asyncToGenerator(regeneratorRuntime.mark(function _callee23() {
+                return regeneratorRuntime.wrap(function _callee23$(_context23) {
                     while (1) {
-                        switch (_context21.prev = _context21.next) {
+                        switch (_context23.prev = _context23.next) {
                             case 0:
                                 if (this.leaves.length) {
-                                    _context21.next = 3;
+                                    _context23.next = 3;
                                     break;
                                 }
 
-                                _context21.next = 3;
+                                _context23.next = 3;
                                 return this.recalculateLeaves();
 
                             case 3:
-                                return _context21.abrupt('return', this.leaves);
+                                return _context23.abrupt('return', this.leaves);
 
                             case 4:
                             case 'end':
-                                return _context21.stop();
+                                return _context23.stop();
                         }
                     }
-                }, _callee21, this);
+                }, _callee23, this);
             }));
 
             function getLeaves() {
-                return _ref25.apply(this, arguments);
+                return _ref27.apply(this, arguments);
             }
 
             return getLeaves;
@@ -20245,99 +20563,99 @@ var Tree = exports.Tree = function () {
     }, {
         key: 'recalculateLeaves',
         value: function () {
-            var _ref26 = _asyncToGenerator(regeneratorRuntime.mark(function _callee23() {
-                var _this8 = this;
+            var _ref28 = _asyncToGenerator(regeneratorRuntime.mark(function _callee25() {
+                var _this9 = this;
 
                 var leaves, isLeaf;
-                return regeneratorRuntime.wrap(function _callee23$(_context23) {
+                return regeneratorRuntime.wrap(function _callee25$(_context25) {
                     while (1) {
-                        switch (_context23.prev = _context23.next) {
+                        switch (_context25.prev = _context25.next) {
                             case 0:
                                 leaves = [];
-                                _context23.next = 3;
+                                _context25.next = 3;
                                 return this.isLeaf();
 
                             case 3:
-                                isLeaf = _context23.sent;
+                                isLeaf = _context25.sent;
 
                                 if (!isLeaf) {
-                                    _context23.next = 18;
+                                    _context25.next = 18;
                                     break;
                                 }
 
-                                _context23.prev = 5;
+                                _context25.prev = 5;
 
                                 if (!this.contentId) {
-                                    _context23.next = 11;
+                                    _context25.next = 11;
                                     break;
                                 }
 
-                                _context23.next = 9;
+                                _context25.next = 9;
                                 return this.getContentItem();
 
                             case 9:
-                                _context23.t0 = _context23.sent;
-                                leaves = [_context23.t0];
+                                _context25.t0 = _context25.sent;
+                                leaves = [_context25.t0];
 
                             case 11:
-                                _context23.next = 16;
+                                _context25.next = 16;
                                 break;
 
                             case 13:
-                                _context23.prev = 13;
-                                _context23.t1 = _context23['catch'](5);
+                                _context25.prev = 13;
+                                _context25.t1 = _context25['catch'](5);
 
                                 leaves = [];
 
                             case 16:
-                                _context23.next = 20;
+                                _context25.next = 20;
                                 break;
 
                             case 18:
-                                _context23.next = 20;
+                                _context25.next = 20;
                                 return Promise.all(Object.keys(this.children).map(function () {
-                                    var _ref27 = _asyncToGenerator(regeneratorRuntime.mark(function _callee22(childId) {
+                                    var _ref29 = _asyncToGenerator(regeneratorRuntime.mark(function _callee24(childId) {
                                         var _leaves, child;
 
-                                        return regeneratorRuntime.wrap(function _callee22$(_context22) {
+                                        return regeneratorRuntime.wrap(function _callee24$(_context24) {
                                             while (1) {
-                                                switch (_context22.prev = _context22.next) {
+                                                switch (_context24.prev = _context24.next) {
                                                     case 0:
-                                                        _context22.prev = 0;
-                                                        _context22.next = 3;
+                                                        _context24.prev = 0;
+                                                        _context24.next = 3;
                                                         return _trees.Trees.get(childId);
 
                                                     case 3:
-                                                        child = _context22.sent;
-                                                        _context22.t0 = (_leaves = leaves).push;
-                                                        _context22.t1 = _leaves;
-                                                        _context22.t2 = _toConsumableArray;
-                                                        _context22.next = 9;
+                                                        child = _context24.sent;
+                                                        _context24.t0 = (_leaves = leaves).push;
+                                                        _context24.t1 = _leaves;
+                                                        _context24.t2 = _toConsumableArray;
+                                                        _context24.next = 9;
                                                         return child.getLeaves();
 
                                                     case 9:
-                                                        _context22.t3 = _context22.sent;
-                                                        _context22.t4 = (0, _context22.t2)(_context22.t3);
+                                                        _context24.t3 = _context24.sent;
+                                                        _context24.t4 = (0, _context24.t2)(_context24.t3);
 
-                                                        _context22.t0.apply.call(_context22.t0, _context22.t1, _context22.t4);
+                                                        _context24.t0.apply.call(_context24.t0, _context24.t1, _context24.t4);
 
-                                                        _context22.next = 16;
+                                                        _context24.next = 16;
                                                         break;
 
                                                     case 14:
-                                                        _context22.prev = 14;
-                                                        _context22.t5 = _context22['catch'](0);
+                                                        _context24.prev = 14;
+                                                        _context24.t5 = _context24['catch'](0);
 
                                                     case 16:
                                                     case 'end':
-                                                        return _context22.stop();
+                                                        return _context24.stop();
                                                 }
                                             }
-                                        }, _callee22, _this8, [[0, 14]]);
+                                        }, _callee24, _this9, [[0, 14]]);
                                     }));
 
-                                    return function (_x11) {
-                                        return _ref27.apply(this, arguments);
+                                    return function (_x12) {
+                                        return _ref29.apply(this, arguments);
                                     };
                                 }()));
 
@@ -20347,73 +20665,122 @@ var Tree = exports.Tree = function () {
 
                             case 21:
                             case 'end':
-                                return _context23.stop();
+                                return _context25.stop();
                         }
                     }
-                }, _callee23, this, [[5, 13]]);
+                }, _callee25, this, [[5, 13]]);
             }));
 
             function recalculateLeaves() {
-                return _ref26.apply(this, arguments);
+                return _ref28.apply(this, arguments);
             }
 
             return recalculateLeaves;
         }()
     }, {
         key: 'sortLeavesByStudiedAndStrength',
-        value: function sortLeavesByStudiedAndStrength() {
-            this.sortedLeaves = this.leaves.filter(function (leaf) {
-                return leaf.hasInteractions;
-            }).sort(function (a, b) {
-                return a.lastRecordedStrength > b.lastRecordedStrength ? 1 : a.lastRecordedStrength < b.lastRecordedStrength ? -1 : 0;
-            });
-            // console.log('this.sortedLeaves are', this.sortedLeaves)
-            var strengths = this.sortedLeaves.map(function (leaf) {
-                return leaf.lastRecordedStrength.value;
-            });
-            // console.log('leaf strengths are', strengths)
-        }
+        value: function () {
+            var _ref30 = _asyncToGenerator(regeneratorRuntime.mark(function _callee26() {
+                var studiedLeaves, notStudiedLeaves, parent;
+                return regeneratorRuntime.wrap(function _callee26$(_context26) {
+                    while (1) {
+                        switch (_context26.prev = _context26.next) {
+                            case 0:
+                                studiedLeaves = this.leaves.filter(function (leaf) {
+                                    return leaf.hasInteractions;
+                                }).sort(function (a, b) {
+                                    //lowest decibels first
+                                    return a.lastRecordedStrength.value > b.lastRecordedStrength.value ? 1 : a.lastRecordedStrength.value < b.lastRecordedStrength.value ? -1 : 0;
+                                });
+
+                                studiedLeaves.forEach(function (leaf) {
+                                    console.log('leaf is ', leaf, leaf.lastRecordedStrength.value);
+                                });
+
+                                notStudiedLeaves = this.leaves.filter(function (leaf) {
+                                    return !leaf.hasInteractions;
+                                });
+
+                                this.sortedLeaves = [].concat(_toConsumableArray(studiedLeaves), _toConsumableArray(notStudiedLeaves));
+
+                                if (!this.parentId) {
+                                    _context26.next = 9;
+                                    break;
+                                }
+
+                                _context26.next = 7;
+                                return _trees.Trees.get(this.parentId);
+
+                            case 7:
+                                parent = _context26.sent;
+
+                                parent.sortLeavesByStudiedAndStrength();
+
+                            case 9:
+                            case 'end':
+                                return _context26.stop();
+                        }
+                    }
+                }, _callee26, this);
+            }));
+
+            function sortLeavesByStudiedAndStrength() {
+                return _ref30.apply(this, arguments);
+            }
+
+            return sortLeavesByStudiedAndStrength;
+        }()
     }, {
         key: 'calculateOverdueLeaves',
         value: function calculateOverdueLeaves() {}
     }, {
         key: 'getContentItem',
         value: function () {
-            var _ref28 = _asyncToGenerator(regeneratorRuntime.mark(function _callee24() {
+            var _ref31 = _asyncToGenerator(regeneratorRuntime.mark(function _callee27() {
                 var contentItem;
-                return regeneratorRuntime.wrap(function _callee24$(_context24) {
+                return regeneratorRuntime.wrap(function _callee27$(_context27) {
                     while (1) {
-                        switch (_context24.prev = _context24.next) {
+                        switch (_context27.prev = _context27.next) {
                             case 0:
                                 if (this.contentId) {
-                                    _context24.next = 2;
+                                    _context27.next = 2;
                                     break;
                                 }
 
-                                return _context24.abrupt('return', null);
+                                return _context27.abrupt('return', null);
 
                             case 2:
-                                _context24.next = 4;
+                                _context27.next = 4;
                                 return _contentItems2.default.get(this.contentId);
 
                             case 4:
-                                contentItem = _context24.sent;
-                                return _context24.abrupt('return', contentItem);
+                                contentItem = _context27.sent;
+                                return _context27.abrupt('return', contentItem);
 
                             case 6:
                             case 'end':
-                                return _context24.stop();
+                                return _context27.stop();
                         }
                     }
-                }, _callee24, this);
+                }, _callee27, this);
             }));
 
             function getContentItem() {
-                return _ref28.apply(this, arguments);
+                return _ref31.apply(this, arguments);
             }
 
             return getContentItem;
         }()
+    }, {
+        key: 'areItemsToStudy',
+        value: function areItemsToStudy() {
+            return this.sortedLeaves.length;
+        }
+    }, {
+        key: 'getNextItemToStudy',
+        value: function getNextItemToStudy() {
+            return this.sortedLeaves[0];
+        }
     }]);
 
     return Tree;
@@ -20656,7 +21023,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -21658,6 +22025,137 @@ var index_esm = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.MODES = undefined;
+
+var _vuex = __webpack_require__(24);
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+var _vue = __webpack_require__(19);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _trees = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+_vue2.default.use(_vuex2.default);
+
+var MODES = exports.MODES = {
+    EXPLORING: 1,
+    STUDYING: 2
+};
+
+var state = {
+    mode: MODES.STUDYING,
+    currentStudyingContentItem: '8904d53adfef7376627f4227ada47cd8',
+    currentStudyingCategoryTreeId: '1',
+    modes: {
+        2: {
+            contentId: 12345
+        }
+    },
+    settingsMenuOpen: false
+    //
+    // function setCurrentStudyingContentId(state, contentId){
+    //     state.currentStudyingContentItem = contentId
+    //
+    // }
+};var getters = {
+    studying: function studying(state) {
+        return state.mode === MODES.STUDYING;
+    },
+    currentStudyingCategoryTreeId: function currentStudyingCategoryTreeId(state) {
+        return state.currentStudyingCategoryTreeId;
+    }
+};
+var mutations = {
+    changeMode: function changeMode(state, mode) {
+        state.mode = mode;
+    },
+    setCurrentStudyingTree: function setCurrentStudyingTree(state, treeId) {
+        var _this = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            var tree, itemToStudy;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            state.currentStudyingCategoryTreeId = treeId;
+                            _context.next = 3;
+                            return _trees.Trees.get(treeId);
+
+                        case 3:
+                            tree = _context.sent;
+
+                            if (tree.areItemsToStudy()) {
+                                itemToStudy = tree.getNextItemToStudy();
+
+                                console.log('next itemId to Study is', itemToStudy);
+                                state.currentStudyingContentItem = itemToStudy;
+                            }
+
+                        case 5:
+                        case "end":
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this);
+        }))();
+    },
+    itemStudied: function itemStudied(state, contentId) {
+        var _console;
+
+        (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(arguments)));
+        // if (getters.studying(state)){
+        //     console.log('state being changed', state, contentId,)
+        //     state.modes[MODES.STUDYING].contentId = contentId
+        // } else {
+        //     console.log('state not in reviewing mode')
+        // }
+        var item = ContentItems.get(contentId);
+        item.getTreeIds().forEach(function (tree) {
+            tree.sortLeavesByStudiedAndStrength();
+        });
+    },
+    toggleSettingsMenu: function toggleSettingsMenu(state) {
+        state.settingsMenuOpen = !state.settingsMenuOpen;
+    },
+    closeSettingsMenu: function closeSettingsMenu(state) {
+        state.settingsMenuOpen = false;
+    }
+};
+
+var actions = {
+    itemStudied: function itemStudied(_ref) {
+        var commit = _ref.commit,
+            contentId = _ref.contentId;
+
+        console.log('item studied action called', contentId);
+        commit('itemStudied', contentId);
+    }
+};
+
+exports.default = new _vuex2.default.Store({
+    state: state,
+    mutations: mutations,
+    actions: actions,
+    getters: getters
+});
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -21749,7 +22247,7 @@ var ExerciseQA = function (_Exercise) {
 exports.default = ExerciseQA;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21776,7 +22274,7 @@ var _firebaseService = __webpack_require__(11);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
 var _lodash = __webpack_require__(13);
 
@@ -21851,7 +22349,7 @@ var Fact = exports.Fact = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21924,7 +22422,7 @@ var Heading = exports.Heading = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21951,7 +22449,7 @@ var _lodash = __webpack_require__(13);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22012,7 +22510,7 @@ var Skill = exports.Skill = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22088,7 +22586,7 @@ function processUserData(userId, userData) {
 }
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22195,7 +22693,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22235,7 +22733,7 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(222);
+var PromiseImpl = scope.Promise || __webpack_require__(224);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
@@ -22245,7 +22743,7 @@ var local = exports.local = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22268,15 +22766,15 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(34);
+var _metadata = __webpack_require__(35);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -22409,7 +22907,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22483,7 +22981,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22506,7 +23004,7 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(229);
+var _json = __webpack_require__(231);
 
 var json = _interopRequireWildcard(_json);
 
@@ -22516,11 +23014,11 @@ var _path = __webpack_require__(57);
 
 var path = _interopRequireWildcard(_path);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(36);
+var _url = __webpack_require__(37);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -22693,7 +23191,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22715,7 +23213,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -22903,7 +23401,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22973,7 +23471,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -23136,7 +23634,7 @@ module.exports = css;
 });
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23146,7 +23644,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -23155,7 +23653,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-    template: __webpack_require__(239),
+    template: __webpack_require__(241),
     created: function created() {
         var _this = this;
 
@@ -23204,7 +23702,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23215,7 +23713,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(241),
+    template: __webpack_require__(243),
     created: function created() {
         var me = this;
     },
@@ -23227,7 +23725,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23335,21 +23833,21 @@ exports.graphToCameraPosition = graphToCameraPosition;
 exports.getCamera = getCamera;
 exports.getTreeUINode = getTreeUINode;
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _tree = __webpack_require__(20);
 
-__webpack_require__(46);
+__webpack_require__(47);
 
 var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _snack = __webpack_require__(37);
+var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -23357,15 +23855,15 @@ var _vue = __webpack_require__(19);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
-var _store = __webpack_require__(47);
+var _store = __webpack_require__(25);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _globals = __webpack_require__(45);
+var _globals = __webpack_require__(46);
 
-__webpack_require__(263);
+__webpack_require__(266);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23374,16 +23872,55 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var router = void 0;
+
+var toolTipsConfig = {
+    node: [{
+        show: 'rightClickNode',
+        cssClass: 'sigma-tooltip',
+        position: 'center',
+        template: '',
+        renderer: function renderer(node, template) {
+            var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
+            switch (node.type) {
+                case 'tree':
+                    template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                    break;
+                case 'newChildTree':
+                    template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                    break;
+            }
+            var result = Mustache.render(template, node);
+
+            return result;
+        }
+    }]
+    // stage: {
+    //     template:require('./rightClickMenu.html')
+    // }
+};
+
 exports.default = {
     props: ['treeId'],
-    template: __webpack_require__(248),
+    template: __webpack_require__(250),
     created: function created() {
         this.init();
         router = this.$router;
     },
 
+    computed: {
+        currentStudyingContentItem: function currentStudyingContentItem() {
+            console.log("current studying contentId is", this.$store.state.currentStudyingContentItem);
+            return this.$store.state.currentStudyingContentItem;
+        }
+    },
     watch: {
-        '$route': 'init'
+        '$route': 'init',
+        currentStudyingContentItem: function currentStudyingContentItem(newContentItem, oldContentItem) {
+            console.log('new content id to jump to is ', newContentItem, oldContentItem);
+            var treeId = newContentItem.getTreeId();
+            jumpToAndOpenTreeId(treeId);
+            // const item = ContentItems.get()
+        }
     },
     methods: {
         init: function init() {
@@ -23575,6 +24112,42 @@ function getCamera() {
 function getTreeUINode(nodeId) {
     return s.graph.nodes(nodeId);
 }
+
+/**
+ * Go to a given tree ID on the graph, centering the viewport on the tree
+ */
+function jumpToAndOpenTreeId(treeid) {
+    //let tree = sigma.nodes[treeid];
+    var node = s.graph.nodes(treeid);
+    focusNode(s.cameras[0], node);
+
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+}
+
+function focusNode(camera, node) {
+    if (!node) {
+        console.error("Tried to go to node");
+        console.error(node);
+        return;
+    }
+    var cameraCoord = {
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
+        ratio: 0.20
+    };
+    camera.goTo(cameraCoord);
+    // sigma.misc.animation.camera(
+    //     camera,
+    //     {
+    //         x: node['read_cammain:x'],
+    //         y: node['read_cammain:y'],
+    //         ratio: 0.075
+    //     },
+    //     {
+    //         duration: 150
+    //     }
+    // );
+}
 function initKnawledgeMap(treeIdToJumpTo) {
     var _this = this;
 
@@ -23746,32 +24319,6 @@ function initKnawledgeMap(treeIdToJumpTo) {
         sigma.settings.font = 'Fredoka One';
     }
 
-    var toolTipsConfig = {
-        node: [{
-            show: 'rightClickNode',
-            cssClass: 'sigma-tooltip',
-            position: 'center',
-            template: '',
-            renderer: function renderer(node, template) {
-                var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node));
-                switch (node.type) {
-                    case 'tree':
-                        template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
-                        break;
-                    case 'newChildTree':
-                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                        break;
-                }
-                var result = Mustache.render(template, node);
-
-                return result;
-            }
-        }]
-        // stage: {
-        //     template:require('./rightClickMenu.html')
-        // }
-    };
-
     if (typeof PubSub !== 'undefined') {
         PubSub.subscribe('login', _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
             return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -23868,11 +24415,8 @@ function initKnawledgeMap(treeIdToJumpTo) {
             var canvas = document.querySelector('#graph-container');
             canvas.style.cursor = 'grab';
         });
-        PubSub.subscribe('canvas.startDraggingNode', function (eventName, node) {
-            console.log('startDraggingNode', eventName, node);
-        });
+        PubSub.subscribe('canvas.startDraggingNode', function (eventName, node) {});
         PubSub.subscribe('canvas.stopDraggingNode', function (eventName, node) {
-            console.log('stopDraggingNode', eventName, node);
             updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
         });
         PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
@@ -23923,6 +24467,8 @@ function initKnawledgeMap(treeIdToJumpTo) {
             window.awaitingEdgeConnection = false;
             window.awaitingDisconnectConfirmationNodeId = null;
             window.awaitingEdgeConnectionNodeId = null;
+
+            _store2.default.commit('closeSettingsMenu');
         });
         PubSub.subscribe('canvas.overNode', function (eventName, data) {
             var canvas = document.querySelector('#graph-container');
@@ -24118,46 +24664,10 @@ function initKnawledgeMap(treeIdToJumpTo) {
         console.log('camera going to', _user2.default.camera);
         var myRenderer = s.renderers[0];
     }
-
-    /**
-     * Go to a given tree ID on the graph, centering the viewport on the tree
-     */
-    function jumpToAndOpenTreeId(treeid) {
-        //let tree = sigma.nodes[treeid];
-        var node = s.graph.nodes(treeid);
-        focusNode(s.cameras[0], node);
-
-        tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-    }
-
-    function focusNode(camera, node) {
-        if (!node) {
-            console.error("Tried to go to node");
-            console.error(node);
-            return;
-        }
-        var cameraCoord = {
-            x: node['read_cam0:x'],
-            y: node['read_cam0:y'],
-            ratio: 0.05
-        };
-        camera.goTo(cameraCoord);
-        // sigma.misc.animation.camera(
-        //     camera,
-        //     {
-        //         x: node['read_cammain:x'],
-        //         y: node['read_cammain:y'],
-        //         ratio: 0.075
-        //     },
-        //     {
-        //         duration: 150
-        //     }
-        // );
-    }
 }
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24175,27 +24685,27 @@ var _exercises = __webpack_require__(49);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
-var _exerciseQA = __webpack_require__(25);
+var _exerciseQA = __webpack_require__(26);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(37);
+var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-__webpack_require__(266);
+__webpack_require__(270);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
 var _invertObject = __webpack_require__(62);
 
 var _invertObject2 = _interopRequireDefault(_invertObject);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24203,7 +24713,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = {
     props: ['leafId'],
-    template: __webpack_require__(253),
+    template: __webpack_require__(256),
     created: function created() {
         var me = this;
         this.tree = {
@@ -24407,7 +24917,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24417,7 +24927,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    template: __webpack_require__(254),
+    template: __webpack_require__(257),
     props: ['leafId'],
     created: function created() {
         console.log('tree review container leafId is', this.leafId);
@@ -24429,7 +24939,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24440,7 +24950,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Config = undefined;
 
-var _env = __webpack_require__(197);
+var _env = __webpack_require__(198);
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -24454,7 +24964,7 @@ var Config = exports.Config = {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24518,7 +25028,7 @@ function secondsToPretty() {
 _vue2.default.filter('secondsToPretty', secondsToPretty);
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24541,7 +25051,7 @@ var Globals = exports.Globals = {
 };
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24577,88 +25087,6 @@ function login() {
         });
     }
 }
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MODES = undefined;
-
-var _vuex = __webpack_require__(24);
-
-var _vuex2 = _interopRequireDefault(_vuex);
-
-var _vue = __webpack_require__(19);
-
-var _vue2 = _interopRequireDefault(_vue);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_vue2.default.use(_vuex2.default);
-
-var MODES = exports.MODES = {
-    EXPLORING: 1,
-    REVIEWING: 2
-};
-
-var state = {
-    mode: MODES.REVIEWING,
-    modes: {
-        2: {
-            contentId: 12345
-        }
-    }
-};
-var getters = {
-    reviewing: function reviewing(state) {
-        return state.mode === MODES.REVIEWING;
-    },
-    currentReviewingItem: function currentReviewingItem(state) {
-        return state.modes[MODES.REVIEWING].contentId;
-    }
-};
-var mutations = {
-    changeMode: function changeMode(state, mode) {
-        state.mode = mode;
-    },
-    itemStudied: function itemStudied(state, contentId) {
-        var _console;
-
-        (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(arguments)));
-        if (getters.reviewing(state)) {
-            console.log('state being changed', state, contentId);
-            state.modes[MODES.REVIEWING].contentId = contentId;
-        } else {
-            console.log('state not in reviewing mode');
-        }
-
-        // if (this.reviewing()){
-        // }
-    }
-};
-
-var actions = {
-    itemStudied: function itemStudied(_ref) {
-        var commit = _ref.commit,
-            contentId = _ref.contentId;
-
-        console.log('item studied action called', contentId);
-        commit('itemStudied', contentId);
-    }
-};
-
-exports.default = new _vuex2.default.Store({
-    state: state,
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-});
 
 /***/ }),
 /* 48 */
@@ -24738,7 +25166,7 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -24781,7 +25209,9 @@ function fixInteractionData() {
     }());
 }
 
-window.fixInteractionData = fixInteractionData;
+if (typeof window !== 'undefined') {
+    window.fixInteractionData = fixInteractionData;
+}
 
 /***/ }),
 /* 49 */
@@ -24814,7 +25244,7 @@ var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(25);
+var _exerciseQA = __webpack_require__(26);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -24936,7 +25366,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(31);
+var _shared_promise = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25231,13 +25661,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(30);
+var _errors = __webpack_require__(31);
 
 var _errors2 = __webpack_require__(21);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(221);
+var _tokenManager = __webpack_require__(223);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -25617,15 +26047,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(228);
+var _fs = __webpack_require__(230);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(35);
+var _string = __webpack_require__(36);
 
 var string = _interopRequireWildcard(_string);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -25865,17 +26295,17 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(33);
+var _array = __webpack_require__(34);
 
 var array = _interopRequireWildcard(_array);
 
 var _blob = __webpack_require__(56);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(34);
+var _metadata = __webpack_require__(35);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -25883,13 +26313,13 @@ var _object = __webpack_require__(12);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(232);
+var _requestinfo = __webpack_require__(234);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(36);
+var _url = __webpack_require__(37);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -26343,19 +26773,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(32);
+var _args = __webpack_require__(33);
 
 var args = _interopRequireWildcard(_args);
 
 var _blob = __webpack_require__(56);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
 var _location = __webpack_require__(23);
 
-var _metadata = __webpack_require__(34);
+var _metadata = __webpack_require__(35);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -26371,15 +26801,15 @@ var _requests = __webpack_require__(58);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(35);
+var _string = __webpack_require__(36);
 
 var fbsString = _interopRequireWildcard(_string);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(237);
+var _task = __webpack_require__(239);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -37751,35 +38181,35 @@ module.exports = function(module) {
 "use strict";
 
 
-__webpack_require__(196);
+__webpack_require__(197);
 
-__webpack_require__(44);
-
-__webpack_require__(198);
+__webpack_require__(45);
 
 __webpack_require__(199);
 
-var _localforage = __webpack_require__(257);
+__webpack_require__(200);
+
+var _localforage = __webpack_require__(260);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _treeReview = __webpack_require__(41);
+var _treeReview = __webpack_require__(42);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _contentList = __webpack_require__(38);
+var _contentList = __webpack_require__(39);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
-var _treeReviewContainer = __webpack_require__(42);
+var _treeReviewContainer = __webpack_require__(43);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _exerciseCreatorContainer = __webpack_require__(39);
+var _exerciseCreatorContainer = __webpack_require__(40);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _knawledgeMap = __webpack_require__(40);
+var _knawledgeMap = __webpack_require__(41);
 
 var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
 
@@ -37791,7 +38221,7 @@ var _vue = __webpack_require__(19);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(270);
+var _vueRouter = __webpack_require__(275);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
@@ -37799,9 +38229,13 @@ var _vuex = __webpack_require__(24);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
+var _vueAsyncComputed = __webpack_require__(274);
+
+var _vueAsyncComputed2 = _interopRequireDefault(_vueAsyncComputed);
+
 var _tree = __webpack_require__(20);
 
-var _store = __webpack_require__(47);
+var _store = __webpack_require__(25);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -37809,6 +38243,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vuex2.default);
 _vue2.default.use(_vueRouter2.default);
+_vue2.default.use(_vueAsyncComputed2.default);
 
 // 1. Define route components.
 // These can be imported from other files
@@ -38590,7 +39025,7 @@ var STATES = {
 var TIME_SHOWING = 16000; //00000
 var TIME_SUBTRACTING_BY_7 = 32000; //64000
 exports.default = {
-    template: __webpack_require__(240),
+    template: __webpack_require__(242),
     created: function created() {
         var _this = this;
 
@@ -38672,11 +39107,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(260);
+__webpack_require__(263);
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(242),
+    template: __webpack_require__(244),
     created: function created() {
         var me = this;
         console.log("creator just created!");
@@ -38709,15 +39144,15 @@ var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(25);
+var _exerciseQA = __webpack_require__(26);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(37);
+var _snack = __webpack_require__(38);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -38735,7 +39170,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(243),
+    template: __webpack_require__(245),
     data: function data() {
         return {
             items: {},
@@ -39021,7 +39456,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-    template: __webpack_require__(244),
+    template: __webpack_require__(246),
     created: function created() {
         var _this = this;
 
@@ -39064,15 +39499,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _config = __webpack_require__(43);
+var _config = __webpack_require__(44);
 
-var _login2 = __webpack_require__(46);
+var _login2 = __webpack_require__(47);
 
 var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(29);
+var _users = __webpack_require__(30);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -39081,7 +39516,7 @@ var _vuex = __webpack_require__(24);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(245),
+    template: __webpack_require__(247),
     created: function created() {
         var self = this;
         self.loggedIn = false;
@@ -39114,13 +39549,15 @@ exports.default = {
         };
     },
 
-    computed: _extends({}, (0, _vuex.mapGetters)(['currentReviewingItem']), {
+    computed: _extends({}, (0, _vuex.mapGetters)(['currentStudyingCategoryTreeId']), {
         itemsMasteredPerMinute: function itemsMasteredPerMinute() {
             return this.numItemsMastered / (this.secondsSpentStudying * 60);
         },
         numItemsStudied: function numItemsStudied() {
             return Object.keys(this.items).length;
         },
+
+        //not a useful metric imo
         numItemsMastered: function numItemsMastered() {
             var _this = this;
 
@@ -39135,7 +39572,12 @@ exports.default = {
         },
         reviewId: function reviewId() {}
     }),
-
+    watch: {
+        currentStudyingCategoryTreeId: function currentStudyingCategoryTreeId(newId, oldId) {
+            console.log('now studying ', newId);
+            // const Tree = Trees.get(newId)
+        }
+    },
     methods: {
         login: function login() {
             this.loggedIn = true;
@@ -39147,6 +39589,9 @@ exports.default = {
         },
         goToReviewTree: function goToReviewTree() {
             PubSub.publish('goToState.reviewTree');
+        },
+        toggleSettingsMenu: function toggleSettingsMenu() {
+            this.$store.commit('toggleSettingsMenu');
         }
     }
 };
@@ -39162,10 +39607,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(261);
+__webpack_require__(264);
 
 exports.default = {
-    template: __webpack_require__(246),
+    template: __webpack_require__(248),
     methods: {
         goBack: function goBack() {
             this.$router.go(-1);
@@ -39185,7 +39630,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39193,14 +39638,14 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-__webpack_require__(262);
+__webpack_require__(265);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-    template: __webpack_require__(247), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
     props: ['itemId'],
     created: function created() {
         var _this = this;
@@ -39377,11 +39822,11 @@ var establishURIForContentAndThenAllChildren = function () {
     };
 }();
 
-var _newTree = __webpack_require__(201);
+var _newTree = __webpack_require__(202);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39391,7 +39836,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(249),
+    template: __webpack_require__(251),
     props: ['parentid', 'initialparenttreecontenturi'],
     data: function data() {
         return {
@@ -39463,13 +39908,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(265);
+__webpack_require__(268);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
 exports.default = {
     props: ['value'],
-    template: __webpack_require__(250),
+    template: __webpack_require__(252),
     created: function created() {},
     data: function data() {
         return {};
@@ -39592,14 +40037,14 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(29);
+var _users = __webpack_require__(30);
 
 var _users2 = _interopRequireDefault(_users);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(251), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(253), // '<div> {{movie}} this is the tree template</div>',
     created: function created() {
         var self = this;
 
@@ -39642,9 +40087,249 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+__webpack_require__(269);
+
+var _trees = __webpack_require__(2);
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _contentItems = __webpack_require__(1);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var defaultStudySettings = {
+    itemTypes: {
+        old: true,
+        _new: true
+    }, //TODO get from DB,
+    oldTypes: {
+        overdue: true,
+        notOverdue: true
+    }
+};
+exports.default = {
+    template: __webpack_require__(254), // '<div> {{movie}} this is the tree template</div>',
+    props: [],
+    created: function created() {
+        var _this = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            PubSub.subscribe('login', _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+                                return regeneratorRuntime.wrap(function _callee$(_context) {
+                                    while (1) {
+                                        switch (_context.prev = _context.next) {
+                                            case 0:
+                                                console.log("INITIAL studySettings is", _this.studySettings);
+                                                _context.next = 3;
+                                                return _user2.default.getStudySettings();
+
+                                            case 3:
+                                                _context.t0 = _context.sent;
+
+                                                if (_context.t0) {
+                                                    _context.next = 6;
+                                                    break;
+                                                }
+
+                                                _context.t0 = defaultStudySettings;
+
+                                            case 6:
+                                                _this.studySettings = _context.t0;
+
+                                                console.log("user study settings loaded from DB are", _this.studySettings);
+
+                                            case 8:
+                                            case 'end':
+                                                return _context.stop();
+                                        }
+                                    }
+                                }, _callee, _this);
+                            })));
+
+                        case 1:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, _this);
+        }))();
+    },
+    data: function data() {
+        return {
+            studySettings: defaultStudySettings
+        };
+    },
+
+    methods: {
+        saveStudySettings: function saveStudySettings() {
+            var _this2 = this;
+
+            return _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                _context3.next = 2;
+                                return _user2.default.applyUpdates({ studySettings: _this2.studySettings });
+
+                            case 2:
+                                return _context3.abrupt('return', _context3.sent);
+
+                            case 3:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, _this2);
+            }))();
+        },
+        selectNew: function selectNew() {
+            this.studySettings.itemTypes._new = true;
+            this.studySettings.itemTypes.old = false;
+            console.log("select _new called");
+            this.saveStudySettings();
+        },
+        selectOld: function selectOld() {
+            this.studySettings.itemTypes._new = false;
+            this.studySettings.itemTypes.old = true;
+            console.log("select old called");
+            this.saveStudySettings();
+        },
+        selectBothNewAndOld: function selectBothNewAndOld() {
+            this.studySettings.itemTypes._new = true;
+            this.studySettings.itemTypes.old = true;
+            console.log("select both _new and old called");
+            this.saveStudySettings();
+        },
+        selectOverdue: function selectOverdue() {
+            this.studySettings.oldTypes.overdue = true;
+            this.studySettings.oldTypes.notOverdue = false;
+            console.log("select overdue called");
+            this.saveStudySettings();
+        },
+        selectNotOverdue: function selectNotOverdue() {
+            this.studySettings.oldTypes.overdue = false;
+            this.studySettings.oldTypes.notOverdue = true;
+            console.log("select not overdue called");
+            this.saveStudySettings();
+        },
+        selectBothOverdueAndNotOverdue: function selectBothOverdueAndNotOverdue() {
+            this.studySettings.oldTypes.overdue = true;
+            this.studySettings.oldTypes.notOverdue = true;
+            console.log("select both overdue and not overdue called");
+            this.saveStudySettings();
+        }
+    },
+    computed: {
+        newSelected: function newSelected() {
+            return this.studySettings.itemTypes._new && !this.studySettings.itemTypes.old;
+        },
+        oldSelected: function oldSelected() {
+            return !this.studySettings.itemTypes._new && this.studySettings.itemTypes.old;
+        },
+        bothSelected: function bothSelected() {
+            return this.studySettings.itemTypes._new && this.studySettings.itemTypes.old;
+        },
+        oldTrue: function oldTrue() {
+            return this.studySettings.itemTypes.old;
+        },
+        settingsMenuOpen: function settingsMenuOpen() {
+            return this.$store.state.settingsMenuOpen;
+        },
+        overdueSelected: function overdueSelected() {
+            return this.studySettings.oldTypes.overdue && !this.studySettings.oldTypes.notOverdue; //!this.itemTypes.old
+        },
+        notOverdueSelected: function notOverdueSelected() {
+            return !this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue; //!this.itemTypes.old
+        },
+        bothOverdueAndNotOverdueSelected: function bothOverdueAndNotOverdueSelected() {
+            return this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue; //!this.itemTypes.old
+        },
+        treeId: function treeId() {
+            return this.$store.state.currentStudyingCategoryTreeId;
+        }
+    },
+    asyncComputed: {
+        numOverdue: function numOverdue() {
+            var _this3 = this;
+
+            return _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+                var tree;
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                _context4.next = 2;
+                                return _trees.Trees.get(_this3.treeId);
+
+                            case 2:
+                                tree = _context4.sent;
+                                return _context4.abrupt('return', tree.numOverdue);
+
+                            case 4:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, _this3);
+            }))();
+        },
+        title: function title() {
+            var _this4 = this;
+
+            return _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
+                var tree, item;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                _context5.next = 2;
+                                return _trees.Trees.get(_this4.treeId);
+
+                            case 2:
+                                tree = _context5.sent;
+                                _context5.next = 5;
+                                return _contentItems2.default.get(tree.contentId);
+
+                            case 5:
+                                item = _context5.sent;
+                                return _context5.abrupt('return', item.title);
+
+                            case 7:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, _this4);
+            }))();
+        }
+    }
+};
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(252),
+    template: __webpack_require__(255),
     created: function created() {},
     data: function data() {
         return {};
@@ -39661,7 +40346,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39675,13 +40360,13 @@ var _extends2;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
-var _fact = __webpack_require__(26);
+var _fact = __webpack_require__(27);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
@@ -39689,13 +40374,13 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _heading = __webpack_require__(27);
+var _heading = __webpack_require__(28);
 
-var _filters = __webpack_require__(44);
+var _filters = __webpack_require__(45);
 
-var _skill = __webpack_require__(28);
+var _skill = __webpack_require__(29);
 
-__webpack_require__(267);
+__webpack_require__(271);
 
 var _vuex = __webpack_require__(24);
 
@@ -39715,7 +40400,7 @@ function goToFromMap(path) {
     PubSub.publish('goToFromMap', path);
 }
 exports.default = {
-    template: __webpack_require__(255), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(258), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created: function created() {
         var _this = this;
@@ -39836,6 +40521,15 @@ exports.default = {
             goToFromMap({ name: 'study', params: { leafId: this.id } });
             // this.$router.push()
         },
+        studyHeading: function studyHeading() {
+            console.log('study HEADING called!');
+            this.$store.commit('setCurrentStudyingTree', this.id);
+            // goToFromMap({name: 'study', params: {leafId: this.id}})
+            // this.$router.push()
+        },
+        clearHeading: function clearHeading() {
+            this.tree.clearChildrenInteractions();
+        },
         proficiencyClicked: function proficiencyClicked() {
             this.syncProficiency();
             // this.itemStudied({contentId:this.content.id})
@@ -39844,7 +40538,7 @@ exports.default = {
         syncProficiency: function syncProficiency() {
             this.content.saveProficiency(); //  this.content.proficiency is already set I think, but not saved in db
             this.content.recalculateProficiencyAggregationForTreeChain().then(this.syncTreeChainWithUI).then(refreshGraph);
-            // this.syncGraphWithNode()
+            this.content.recalculateNumOverdueAggregationForTreeChain();
         },
         clearInteractions: function clearInteractions() {
             this.content.clearInteractions();
@@ -39944,13 +40638,13 @@ exports.default = {
 };
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(264);
+__webpack_require__(267);
 
 var _vue = __webpack_require__(19);
 
@@ -39964,7 +40658,7 @@ var _reviewSchedule = __webpack_require__(193);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
-var _contentList = __webpack_require__(38);
+var _contentList = __webpack_require__(39);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
@@ -39972,15 +40666,15 @@ var _exerciseCreator = __webpack_require__(184);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
-var _exerciseCreatorContainer = __webpack_require__(39);
+var _exerciseCreatorContainer = __webpack_require__(40);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _treeReview = __webpack_require__(41);
+var _treeReview = __webpack_require__(42);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _treeReviewContainer = __webpack_require__(42);
+var _treeReviewContainer = __webpack_require__(43);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
@@ -39992,7 +40686,7 @@ var _exerciseList = __webpack_require__(186);
 
 var _exerciseList2 = _interopRequireDefault(_exerciseList);
 
-var _tree = __webpack_require__(195);
+var _tree = __webpack_require__(196);
 
 var _tree2 = _interopRequireDefault(_tree);
 
@@ -40000,7 +40694,7 @@ var _newtreecomponent = __webpack_require__(190);
 
 var _newtreecomponent2 = _interopRequireDefault(_newtreecomponent);
 
-var _toolbar = __webpack_require__(194);
+var _toolbar = __webpack_require__(195);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
@@ -40016,14 +40710,18 @@ var _itemHistory = __webpack_require__(189);
 
 var _itemHistory2 = _interopRequireDefault(_itemHistory);
 
+var _studyMenu = __webpack_require__(194);
+
+var _studyMenu2 = _interopRequireDefault(_studyMenu);
+
 __webpack_require__(48);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Vue.component('branchesHeader', Header)
-
-// import Header from '../components/header/branchesHeader'
 _vue2.default.component('branchesFooter', _branchesFooter2.default);
+// import Header from '../components/header/branchesHeader'
+
 _vue2.default.component('reviewSchedule', _reviewSchedule2.default);
 _vue2.default.component('contentList', _contentList2.default);
 _vue2.default.component('exerciseCreator', _exerciseCreator2.default);
@@ -40038,9 +40736,10 @@ _vue2.default.component('toolbar', _toolbar2.default);
 _vue2.default.component('goBack', _goBack2.default);
 _vue2.default.component('proficiencySelector', _proficiencySelector2.default);
 _vue2.default.component('itemHistory', _itemHistory2.default);
+_vue2.default.component('studyMenu', _studyMenu2.default);
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40054,16 +40753,16 @@ var ENV = 'dev';
 exports.default = ENV;
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(3);
+__webpack_require__(2);
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40085,7 +40784,7 @@ function toggleVisibility(el) {
 // console.log('i added something to utils.js')
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40102,7 +40801,7 @@ exports.calculateRecall = calculateRecall;
 exports.calculateTime = calculateTime;
 exports.estimateCurrentStrength = estimateCurrentStrength;
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
 var e = exports.e = 2.7182828;
 var criticalRecall = exports.criticalRecall = 1 - 1 / e;
@@ -40203,7 +40902,7 @@ function estimateCurrentStrength(previousInteractionStrengthDecibels, currentPro
 }
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40310,21 +41009,21 @@ var _lodash = __webpack_require__(13);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _knawledgeMap = __webpack_require__(40);
+var _knawledgeMap = __webpack_require__(41);
 
-var _trees = __webpack_require__(3);
+var _trees = __webpack_require__(2);
 
-var _contentItems = __webpack_require__(2);
+var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _fact = __webpack_require__(26);
+var _fact = __webpack_require__(27);
 
-var _heading = __webpack_require__(27);
+var _heading = __webpack_require__(28);
 
-var _skill = __webpack_require__(28);
+var _skill = __webpack_require__(29);
 
-var _proficiencyEnum = __webpack_require__(6);
+var _proficiencyEnum = __webpack_require__(8);
 
 var _tree = __webpack_require__(20);
 
@@ -40336,7 +41035,7 @@ var newNodeXOffset = exports.newNodeXOffset = -25;
 var newNodeYOffset = exports.newNodeYOffset = -25;
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -40438,10 +41137,10 @@ var newNodeYOffset = exports.newNodeYOffset = -25;
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
@@ -40452,24 +41151,10 @@ exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n
 
 
 /***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
@@ -40483,7 +41168,21 @@ exports.push([module.i, "", ""]);
 /* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
@@ -40494,24 +41193,24 @@ exports.push([module.i, "#graph-container {\n  height: 600px;\n  background-colo
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
 // module
-exports.push([module.i, "/* line 4, ../sass/_offline-theme-base.sass */\n.offline-ui,\n.offline-ui *,\n.offline-ui:before,\n.offline-ui:after,\n.offline-ui *:before,\n.offline-ui *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n/* line 7, ../sass/_offline-theme-base.sass */\n.offline-ui {\n  display: none;\n  position: fixed;\n  background: white;\n  z-index: 2000;\n  margin: auto;\n  top: 0;\n  left: 0;\n  right: 0;\n}\n/* line 17, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-content:before {\n  display: inline;\n}\n/* line 20, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  display: none;\n}\n/* line 24, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry:before {\n  display: inline;\n}\n/* line 29, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-up.offline-ui-up-5s {\n  display: block;\n}\n/* line 32, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down {\n  display: block;\n}\n/* line 37, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-retry {\n  display: block;\n}\n/* line 42, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s.offline-ui-waiting .offline-ui-retry {\n  display: none;\n}\n@-webkit-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-moz-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-ms-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-o-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-webkit-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-moz-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-ms-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-o-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-webkit-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-moz-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-ms-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-o-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n/* line 16, ../sass/offline-theme-dark.sass */\n.offline-ui {\n  -webkit-border-radius: 0 0 4px 4px;\n  -moz-border-radius: 0 0 4px 4px;\n  -ms-border-radius: 0 0 4px 4px;\n  -o-border-radius: 0 0 4px 4px;\n  border-radius: 0 0 4px 4px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: 300;\n  padding: 1em;\n  width: 38em;\n  max-width: 100%;\n  background: black;\n  color: #cccccc;\n  overflow: hidden;\n}\n@media (max-width: 38em) {\n  /* line 16, ../sass/offline-theme-dark.sass */\n  .offline-ui {\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -ms-border-radius: 0;\n    -o-border-radius: 0;\n    border-radius: 0;\n  }\n}\n/* line 30, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content {\n  padding-left: 2em;\n}\n/* line 33, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:before {\n  line-height: 1.25em;\n}\n/* line 36, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:after {\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 1em;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n}\n/* line 48, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-retry {\n  position: absolute;\n  right: 3em;\n  top: 0;\n  bottom: 0;\n  background: rgba(255, 255, 255, 0.2);\n  text-decoration: none;\n  color: inherit;\n  line-height: 3.5em;\n  height: 3.5em;\n  margin: auto;\n  padding: 0 1em;\n}\n/* line 61, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up {\n  -webkit-animation: offline-dropout forwards 0.5s 2s;\n  -moz-animation: offline-dropout forwards 0.5s 2s;\n  -ms-animation: offline-dropout forwards 0.5s 2s;\n  -o-animation: offline-dropout forwards 0.5s 2s;\n  animation: offline-dropout forwards 0.5s 2s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 64, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up .offline-ui-content:after {\n  background: #80d580;\n}\n/* line 67, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down {\n  -webkit-animation: offline-dropin 0.5s;\n  -moz-animation: offline-dropin 0.5s;\n  -ms-animation: offline-dropin 0.5s;\n  -o-animation: offline-dropin 0.5s;\n  animation: offline-dropin 0.5s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 70, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 73, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting,\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 3em;\n}\n/* line 76, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting .offline-ui-content:after,\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 79, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting:after,\n.offline-ui.offline-ui-down.offline-ui-waiting:after {\n  -webkit-animation: offline-rotation 0.7s linear infinite;\n  -moz-animation: offline-rotation 0.7s linear infinite;\n  -ms-animation: offline-rotation 0.7s linear infinite;\n  -o-animation: offline-rotation 0.7s linear infinite;\n  animation: offline-rotation 0.7s linear infinite;\n  -webkit-backface-visibility: hidden;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  right: 1em;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n  border: 2px solid transparent;\n  border-top-color: rgba(255, 255, 255, 0.5);\n  border-left-color: rgba(255, 255, 255, 0.5);\n  opacity: 0.7;\n}\n/* line 96, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 11em;\n}\n/* line 99, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting.offline-ui-reconnect-failed-2s {\n  padding-right: 0;\n}\nhtml,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n.sigma-tooltip {\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
+exports.push([module.i, "/* line 4, ../sass/_offline-theme-base.sass */\n.offline-ui,\n.offline-ui *,\n.offline-ui:before,\n.offline-ui:after,\n.offline-ui *:before,\n.offline-ui *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n/* line 7, ../sass/_offline-theme-base.sass */\n.offline-ui {\n  display: none;\n  position: fixed;\n  background: white;\n  z-index: 2000;\n  margin: auto;\n  top: 0;\n  left: 0;\n  right: 0;\n}\n/* line 17, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-content:before {\n  display: inline;\n}\n/* line 20, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  display: none;\n}\n/* line 24, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry:before {\n  display: inline;\n}\n/* line 29, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-up.offline-ui-up-5s {\n  display: block;\n}\n/* line 32, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down {\n  display: block;\n}\n/* line 37, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-retry {\n  display: block;\n}\n/* line 42, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s.offline-ui-waiting .offline-ui-retry {\n  display: none;\n}\n@-webkit-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-moz-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-ms-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-o-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-webkit-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-moz-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-ms-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-o-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-webkit-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-moz-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-ms-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-o-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n/* line 16, ../sass/offline-theme-dark.sass */\n.offline-ui {\n  -webkit-border-radius: 0 0 4px 4px;\n  -moz-border-radius: 0 0 4px 4px;\n  -ms-border-radius: 0 0 4px 4px;\n  -o-border-radius: 0 0 4px 4px;\n  border-radius: 0 0 4px 4px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: 300;\n  padding: 1em;\n  width: 38em;\n  max-width: 100%;\n  background: black;\n  color: #cccccc;\n  overflow: hidden;\n}\n@media (max-width: 38em) {\n  /* line 16, ../sass/offline-theme-dark.sass */\n  .offline-ui {\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -ms-border-radius: 0;\n    -o-border-radius: 0;\n    border-radius: 0;\n  }\n}\n/* line 30, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content {\n  padding-left: 2em;\n}\n/* line 33, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:before {\n  line-height: 1.25em;\n}\n/* line 36, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:after {\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 1em;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n}\n/* line 48, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-retry {\n  position: absolute;\n  right: 3em;\n  top: 0;\n  bottom: 0;\n  background: rgba(255, 255, 255, 0.2);\n  text-decoration: none;\n  color: inherit;\n  line-height: 3.5em;\n  height: 3.5em;\n  margin: auto;\n  padding: 0 1em;\n}\n/* line 61, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up {\n  -webkit-animation: offline-dropout forwards 0.5s 2s;\n  -moz-animation: offline-dropout forwards 0.5s 2s;\n  -ms-animation: offline-dropout forwards 0.5s 2s;\n  -o-animation: offline-dropout forwards 0.5s 2s;\n  animation: offline-dropout forwards 0.5s 2s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 64, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up .offline-ui-content:after {\n  background: #80d580;\n}\n/* line 67, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down {\n  -webkit-animation: offline-dropin 0.5s;\n  -moz-animation: offline-dropin 0.5s;\n  -ms-animation: offline-dropin 0.5s;\n  -o-animation: offline-dropin 0.5s;\n  animation: offline-dropin 0.5s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 70, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 73, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting,\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 3em;\n}\n/* line 76, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting .offline-ui-content:after,\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 79, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting:after,\n.offline-ui.offline-ui-down.offline-ui-waiting:after {\n  -webkit-animation: offline-rotation 0.7s linear infinite;\n  -moz-animation: offline-rotation 0.7s linear infinite;\n  -ms-animation: offline-rotation 0.7s linear infinite;\n  -o-animation: offline-rotation 0.7s linear infinite;\n  animation: offline-rotation 0.7s linear infinite;\n  -webkit-backface-visibility: hidden;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  right: 1em;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n  border: 2px solid transparent;\n  border-top-color: rgba(255, 255, 255, 0.5);\n  border-left-color: rgba(255, 255, 255, 0.5);\n  opacity: 0.7;\n}\n/* line 96, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 11em;\n}\n/* line 99, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting.offline-ui-reconnect-failed-2s {\n  padding-right: 0;\n}\nhtml,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n.sigma-tooltip {\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  z-index: 9000;\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
@@ -40522,24 +41221,38 @@ exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
 // module
-exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.reviewMenu {\n  width: 120px;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9000;\n}\n", ""]);
+exports.push([module.i, ".studyMenu {\n  width: 120px;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9000;\n}\n.studyMenu-settings {\n  background-color: white;\n  width: 100%;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9001;\n}\n.studyMenu-settings-title {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n.button-selected {\n  font-size: 25px;\n}\n.studyMenu-settings-itemTypes {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n.studyMenu-settings-oldTypes {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)();
+exports = module.exports = __webpack_require__(5)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
 // imports
 
 
@@ -40550,7 +41263,7 @@ exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.
 
 
 /***/ }),
-/* 211 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40652,7 +41365,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 212 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40687,11 +41400,11 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(51);
 
-var _errors = __webpack_require__(30);
+var _errors = __webpack_require__(31);
 
-var _shared_promise = __webpack_require__(31);
+var _shared_promise = __webpack_require__(32);
 
-var _deep_copy = __webpack_require__(211);
+var _deep_copy = __webpack_require__(213);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41056,7 +41769,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 213 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
@@ -41335,7 +42048,7 @@ c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAu
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 214 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -41606,7 +42319,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 215 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41624,18 +42337,18 @@ var _app = __webpack_require__(17);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(213);
+__webpack_require__(215);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(214);
-__webpack_require__(223);
+__webpack_require__(216);
+__webpack_require__(225);
 var AsyncStorage;
 
-__webpack_require__(216);
+__webpack_require__(218);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -41643,7 +42356,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 216 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41673,11 +42386,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(218);
+var _windowController = __webpack_require__(220);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(217);
+var _swController = __webpack_require__(219);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -41704,7 +42417,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 217 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42082,7 +42795,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42127,7 +42840,7 @@ var _workerPageMessage = __webpack_require__(55);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(220);
+var _defaultSw = __webpack_require__(222);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -42483,7 +43196,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 219 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42526,7 +43239,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 220 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42563,7 +43276,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 221 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42594,13 +43307,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(30);
+var _errors = __webpack_require__(31);
 
 var _errors2 = __webpack_require__(21);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(219);
+var _arrayBufferToBase = __webpack_require__(221);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -42985,7 +43698,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 222 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -43222,10 +43935,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(269).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(273).setImmediate))
 
 /***/ }),
-/* 223 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43240,15 +43953,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(35);
+var _string = __webpack_require__(36);
 
 var _taskenums = __webpack_require__(59);
 
-var _xhriopool = __webpack_require__(235);
+var _xhriopool = __webpack_require__(237);
 
 var _reference = __webpack_require__(61);
 
-var _service = __webpack_require__(236);
+var _service = __webpack_require__(238);
 
 var _app = __webpack_require__(17);
 
@@ -43295,7 +44008,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 224 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43353,7 +44066,7 @@ function async(f) {
 
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43374,11 +44087,11 @@ var _constants = __webpack_require__(22);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(5);
+var _error2 = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(227);
+var _failrequest = __webpack_require__(229);
 
 var _location = __webpack_require__(23);
 
@@ -43386,9 +44099,9 @@ var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(233);
+var _requestmap = __webpack_require__(235);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -43535,7 +44248,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43667,7 +44380,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43726,7 +44439,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43742,7 +44455,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.getBlob = getBlob;
 exports.sliceBlob = sliceBlob;
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -43807,7 +44520,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43822,7 +44535,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.jsonObjectOrNull = jsonObjectOrNull;
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -43863,7 +44576,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43878,7 +44591,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Observer = undefined;
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -43923,7 +44636,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43963,15 +44676,15 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(33);
+var _array = __webpack_require__(34);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(226);
+var _backoff = __webpack_require__(228);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -43983,11 +44696,11 @@ var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(36);
+var _url = __webpack_require__(37);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -44196,7 +44909,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44243,7 +44956,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44338,7 +45051,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44370,7 +45083,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -44382,7 +45095,7 @@ var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
@@ -44537,7 +45250,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44569,7 +45282,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(234);
+var _xhrio_network = __webpack_require__(236);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44594,7 +45307,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44626,11 +45339,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(32);
+var _args = __webpack_require__(33);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(225);
+var _authwrapper = __webpack_require__(227);
 
 var _location = __webpack_require__(23);
 
@@ -44638,7 +45351,7 @@ var _promise_external = __webpack_require__(9);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(231);
+var _request = __webpack_require__(233);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -44785,7 +45498,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44824,21 +45537,21 @@ var _taskenums = __webpack_require__(59);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(230);
+var _observer = __webpack_require__(232);
 
-var _tasksnapshot = __webpack_require__(238);
+var _tasksnapshot = __webpack_require__(240);
 
-var _args = __webpack_require__(32);
+var _args = __webpack_require__(33);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(33);
+var _array = __webpack_require__(34);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(224);
+var _async = __webpack_require__(226);
 
-var _error = __webpack_require__(5);
+var _error = __webpack_require__(6);
 
 var errors = _interopRequireWildcard(_error);
 
@@ -44850,7 +45563,7 @@ var _requests = __webpack_require__(58);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
-var _type = __webpack_require__(1);
+var _type = __webpack_require__(3);
 
 var typeUtils = _interopRequireWildcard(_type);
 
@@ -45428,7 +46141,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45480,109 +46193,115 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <button v-on:click=\"recalculateProficiencyAggregationForAll\">\r\n       Recalculate Aggregation\r\n    </button>\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul>\r\n    <div>state: {{state}}</div>\r\n   <li v-for=\"triplet in triplets\" v-if=\"stateIsShowing || stateIsAnswer\">{{triplet}}</li>\r\n   <h3 v-if=\"stateIsSubtractingBy7\">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>\r\n   <div><input type=\"text\" v-for=\"triplet in triplets\" v-if=\"stateIsQuizzing || stateIsAnswer\"></div>\r\n   <button v-if=\"stateIsQuizzing\" v-on:click=\"showAnswer\">Show Answer</button>\r\n</ul>";
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
-/* 245 */
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n            {{currentReviewingItem}}\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
-
-/***/ }),
-/* 246 */
-/***/ (function(module, exports) {
-
-module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
-
-/***/ }),
 /* 247 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <button v-on:click.stop=\"clearInteractions\">\r\n           Clear Interactions\r\n        </button>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp | dateTime}}, {{interaction.proficiency}}%<span v-if=\"interaction.previousInteractionStrength && interaction.currentInteractionStrength\">, {{interaction.previousInteractionStrength | round}} dB -> {{interaction.currentInteractionStrength | round}} dB </span>\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
+module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-on:click='toggleSettingsMenu' v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
 /* 248 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"graph-container\">\r\n    <div class=\"reviewMenu\">\r\n        <button class=\"reviewMenu-startReview\">Review Menu <span class=\"reviewMenu-amount\">32</span></button>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
 /* 249 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <button v-on:click.stop=\"clearInteractions\">\r\n           Clear Interactions\r\n        </button>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp | dateTime}}, {{interaction.proficiency}}%<span v-if=\"interaction.previousInteractionStrength && interaction.currentInteractionStrength\">, {{interaction.previousInteractionStrength | round}} dB -> {{interaction.currentInteractionStrength | round}} dB </span>\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
 /* 250 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
+module.exports = "<div id=\"graph-container\">\r\n    <study-menu class=\"reviewMenu\"></study-menu>\r\n</div>\r\n";
 
 /***/ }),
 /* 251 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
+module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 252 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
+module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
 /* 253 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
 /* 254 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+module.exports = "<div>\r\n    <div class=\"studyMenu-settings\" v-if=\"settingsMenuOpen\">\r\n        <h6 class=\"studyMenu-settings-title\">Show Which Items?</h6>\r\n        <div class=\"studyMenu-settings-itemTypes\">\r\n            <div>\r\n                <button v-bind:class=\"{ 'button-selected': newSelected }\" v-on:click=\"selectNew\">New</button>\r\n                <button v-bind:class=\"{ 'button-selected': oldSelected }\" v-on:click=\"selectOld\">Old</button>\r\n                <button v-bind:class=\"{ 'button-selected': bothSelected }\" v-on:click=\"selectBothNewAndOld\" >Both</button>\r\n            </div>\r\n        </div>\r\n        <div v-if=\"oldTrue\">\r\n            <h6 class=\"studyMenu-settings-title\">Show Which Old Items?</h6>\r\n            <div class=\"studyMenu-settings-oldTypes\">\r\n                <div>\r\n                    <button v-bind:class=\"{ 'button-selected': overdueSelected}\" v-on:click=\"selectOverdue\">Overdue</button>\r\n                    <button v-bind:class=\"{ 'button-selected': notOverdueSelected}\" v-on:click=\"selectNotOverdue\">Not Overdue</button>\r\n                    <button v-bind:class=\"{ 'button-selected': bothOverdueAndNotOverdueSelected}\" v-on:click=\"selectBothOverdueAndNotOverdue\">Both</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <button class=\"studyMenu\">{{title}} [{{numOverdue}}]</button>\r\n</div>\r\n";
 
 /***/ }),
 /* 255 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"proficiencyClicked\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading && content.hasInteractions()\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
 
 /***/ }),
 /* 256 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n            <div class=\"tree-heading-numOverdue\">\r\n                {{tree.numOverdue}} overdue items\r\n            </div>\r\n            <div class=\"tree-heading-study\">\r\n                <button class=\"tree-heading-study ui button positive\" v-on:click.stop=\"studyHeading\">Study this Category</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n            <button class=\"tree-heading-study ui button negative\" v-on:click.stop=\"clearHeading\">Remove All Your Data from this Category</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"proficiencyClicked\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading && content.hasInteractions()\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
+
+/***/ }),
+/* 259 */
 /***/ (function(module, exports) {
 
 /*!
@@ -45609,7 +46328,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 257 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
@@ -47928,7 +48647,7 @@ module.exports = localforage_js;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 258 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -48177,10 +48896,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 258;
+webpackContext.id = 261;
 
 /***/ }),
-/* 259 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -48373,13 +49092,13 @@ webpackContext.id = 258;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(18)))
 
 /***/ }),
-/* 260 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(204);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48387,7 +49106,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48404,13 +49123,13 @@ if(false) {
 }
 
 /***/ }),
-/* 261 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(205);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48418,7 +49137,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48435,13 +49154,13 @@ if(false) {
 }
 
 /***/ }),
-/* 262 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48449,7 +49168,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48466,13 +49185,13 @@ if(false) {
 }
 
 /***/ }),
-/* 263 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(206);
+var content = __webpack_require__(207);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48480,7 +49199,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48497,13 +49216,13 @@ if(false) {
 }
 
 /***/ }),
-/* 264 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(207);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48511,7 +49230,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48528,13 +49247,13 @@ if(false) {
 }
 
 /***/ }),
-/* 265 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(209);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48542,7 +49261,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48559,13 +49278,13 @@ if(false) {
 }
 
 /***/ }),
-/* 266 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(209);
+var content = __webpack_require__(210);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48573,7 +49292,38 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./studyMenu.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./studyMenu.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(211);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48590,13 +49340,13 @@ if(false) {
 }
 
 /***/ }),
-/* 267 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(210);
+var content = __webpack_require__(212);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48604,7 +49354,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48621,7 +49371,7 @@ if(false) {
 }
 
 /***/ }),
-/* 268 */
+/* 272 */
 /***/ (function(module, exports) {
 
 
@@ -48716,7 +49466,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 269 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -48769,13 +49519,148 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(259);
+__webpack_require__(262);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 270 */
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(module, exports);
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod, mod.exports);
+    global.AsyncComputed = mod.exports;
+  }
+})(this, function (module, exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var prefix = '_async_computed$';
+
+  var AsyncComputed = {
+    install: function install(Vue, pluginOptions) {
+      pluginOptions = pluginOptions || {};
+
+      Vue.config.optionMergeStrategies.asyncComputed = Vue.config.optionMergeStrategies.computed;
+
+      Vue.mixin({
+        beforeCreate: function beforeCreate() {
+          var optionData = this.$options.data;
+
+          if (!this.$options.computed) this.$options.computed = {};
+
+          for (var key in this.$options.asyncComputed || {}) {
+            this.$options.computed[prefix + key] = getterFor(this.$options.asyncComputed[key]);
+          }
+
+          this.$options.data = function vueAsyncComputedInjectedDataFn() {
+            var data = (typeof optionData === 'function' ? optionData.call(this) : optionData) || {};
+            for (var _key in this.$options.asyncComputed || {}) {
+              data[_key] = null;
+            }
+            return data;
+          };
+        },
+        created: function created() {
+          var _this = this;
+
+          for (var key in this.$options.asyncComputed || {}) {
+            this[key] = defaultFor.call(this, this.$options.asyncComputed[key], pluginOptions);
+          }
+
+          var _loop = function _loop(_key2) {
+            var promiseId = 0;
+            _this.$watch(prefix + _key2, function (newPromise) {
+              var thisPromise = ++promiseId;
+
+              if (!newPromise || !newPromise.then) {
+                newPromise = Promise.resolve(newPromise);
+              }
+
+              newPromise.then(function (value) {
+                if (thisPromise !== promiseId) return;
+                _this[_key2] = value;
+              }).catch(function (err) {
+                if (thisPromise !== promiseId) return;
+
+                if (pluginOptions.errorHandler === false) return;
+
+                var handler = pluginOptions.errorHandler === undefined ? console.error.bind(console, 'Error evaluating async computed property:') : pluginOptions.errorHandler;
+
+                if (pluginOptions.useRawError) {
+                  handler(err);
+                } else {
+                  handler(err.stack);
+                }
+              });
+            }, { immediate: true });
+          };
+
+          for (var _key2 in this.$options.asyncComputed || {}) {
+            _loop(_key2);
+          }
+        }
+      });
+    }
+  };
+
+  function getterFor(fn) {
+    if (typeof fn === 'function') return fn;
+
+    var getter = fn.get;
+
+    if (fn.hasOwnProperty('watch')) {
+      getter = function getter() {
+        fn.watch.call(this);
+        return fn.get.call(this);
+      };
+    }
+    return getter;
+  }
+
+  function defaultFor(fn, pluginOptions) {
+    var defaultValue = null;
+
+    if ('default' in fn) {
+      defaultValue = fn.default;
+    } else if ('default' in pluginOptions) {
+      defaultValue = pluginOptions.default;
+    }
+
+    if (typeof defaultValue === 'function') {
+      return defaultValue.call(this);
+    } else {
+      return defaultValue;
+    }
+  }
+
+  exports.default = AsyncComputed;
+
+
+  /* istanbul ignore if */
+  if (typeof window !== 'undefined' && window.Vue) {
+    // Auto install in dist mode
+    window.Vue.use(AsyncComputed);
+  }
+  module.exports = exports['default'];
+});
+
+/***/ }),
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51289,7 +52174,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18)))
 
 /***/ }),
-/* 271 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(180);
