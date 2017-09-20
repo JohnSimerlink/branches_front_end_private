@@ -61,17 +61,13 @@ export default {
         reviewId() {
 
         },
-
-
     },
     watch: {
         currentStudyingCategoryTreeId(newId, oldId){
             console.log('now studying ', newId)
             // const Tree = Trees.get(newId)
-
         }
     },
-
     methods: {
         login () {
             this.loggedIn=true
@@ -84,5 +80,8 @@ export default {
         goToReviewTree () {
             PubSub.publish('goToState.reviewTree')
         },
+        toggleSettingsMenu(){
+            this.$store.commit('toggleSettingsMenu')
+        }
     }
 }

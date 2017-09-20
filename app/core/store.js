@@ -17,6 +17,7 @@ const state = {
             contentId: 12345,
         }
     },
+    settingsMenuOpen: false,
 }
 //
 // function setCurrentStudyingContentId(state, contentId){
@@ -52,6 +53,12 @@ const mutations = {
         item.getTreeIds().forEach(tree => {
             tree.sortLeavesByStudiedAndStrength()
         })
+    },
+    toggleSettingsMenu(state){
+        state.settingsMenuOpen = !state.settingsMenuOpen
+    },
+    closeSettingsMenu(state){
+        state.settingsMenuOpen = false
     }
 }
 
