@@ -39,20 +39,23 @@ const mutations = {
             const itemToStudy = tree.getNextItemToStudy()
             console.log('next itemId to Study is', itemToStudy)
             state.currentStudyingContentItem = itemToStudy
+        } else {
+            var snack = new Snack({
+                domParent: document.querySelector('.new-exercise')
+            });
+            // show a snack for 4s
+            snack.show("No items to study for this tree!", 4000)
         }
     },
-    itemStudied(state, contentId){
+    async itemStudied(state, contentId){
+        if (!getters.studying(state)){
+            return
+        }
         console.log('itemStudied called', state, contentId, ...arguments)
-        // if (getters.studying(state)){
-        //     console.log('state being changed', state, contentId,)
-        //     state.modes[MODES.STUDYING].contentId = contentId
-        // } else {
-        //     console.log('state not in reviewing mode')
-        // }
-        const item = ContentItems.get(contentId)
-        item.getTreeIds().forEach(tree => {
-            tree.sortLeavesByStudiedAndStrength()
-        })
+        const tree = await Trees.get(state.currentStudyingCategoryTreeId)
+        const itemToStudy  = tree.getNextItemToStudy()
+        console.log('next itemId to Study is', itemToStudy)
+        state.currentStudyingContentItem = itemToStudy
     },
     toggleSettingsMenu(state){
         state.settingsMenuOpen = !state.settingsMenuOpen

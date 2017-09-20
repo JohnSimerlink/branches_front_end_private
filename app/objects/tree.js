@@ -427,12 +427,14 @@ export class Tree {
                 //lowest decibels first
                 return a.lastRecordedStrength.value > b.lastRecordedStrength.value ? 1: a.lastRecordedStrength.value < b.lastRecordedStrength.value ? -1 : 0
            })
+        const overdueLeaves = studiedLeaves.filter(leaf => leaf.overdue)
+        const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.overdue)
         studiedLeaves.forEach(leaf => {
             console.log('leaf is ', leaf, leaf.lastRecordedStrength.value)
         })
 
         const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)
-        this.sortedLeaves = [...studiedLeaves, ...notStudiedLeaves]
+        this.sortedLeaves = [...overdueLeaves, ...notStudiedLeaves, ...notOverdueLeaves]
         if (this.parentId){
             const parent = await Trees.get(this.parentId)
             parent.sortLeavesByStudiedAndStrength()
