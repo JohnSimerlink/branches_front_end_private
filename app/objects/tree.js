@@ -296,7 +296,6 @@ export class Tree {
         return proficiencyStats
     }
     async recalculateProficiencyAggregation(){
-        console.log(this.id, "recalculateProficiencyAggregation called")
         let proficiencyStats;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -304,7 +303,6 @@ export class Tree {
         } else {
             proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf()
         }
-        console.log(this.id, "recalculateProficiencyAggregation proficiecnyStates is", proficiencyStats)
         this.setProficiencyStats(proficiencyStats)
 
         PubSub.publish('syncGraphWithNode', this.id)
@@ -430,7 +428,7 @@ export class Tree {
         const overdueLeaves = studiedLeaves.filter(leaf => leaf.overdue)
         const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.overdue)
         studiedLeaves.forEach(leaf => {
-            console.log('leaf is ', leaf, leaf.lastRecordedStrength.value)
+            console.log('leaf is ', leaf, leaf.lastRecordedStrength.value, leaf.id, leaf.question, leaf.answer)
         })
 
         const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)

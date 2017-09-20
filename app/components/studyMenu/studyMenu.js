@@ -17,9 +17,7 @@ export default {
     props: [],
     async created() {
         PubSub.subscribe('login', async () => {
-            console.log("INITIAL studySettings is", this.studySettings)
             this.studySettings = await user.getStudySettings() || defaultStudySettings
-            console.log("user study settings loaded from DB are", this.studySettings)
         })
     },
     data(){
@@ -34,37 +32,31 @@ export default {
         selectNew(){
             this.studySettings.itemTypes._new = true
             this.studySettings.itemTypes.old = false
-            console.log("select _new called")
             this.saveStudySettings()
         },
         selectOld(){
             this.studySettings.itemTypes._new = false
             this.studySettings.itemTypes.old = true
-            console.log("select old called")
             this.saveStudySettings()
         },
         selectBothNewAndOld(){
             this.studySettings.itemTypes._new = true
             this.studySettings.itemTypes.old = true
-            console.log("select both _new and old called")
             this.saveStudySettings()
         },
         selectOverdue(){
             this.studySettings.oldTypes.overdue = true
             this.studySettings.oldTypes.notOverdue = false
-            console.log("select overdue called")
             this.saveStudySettings()
         },
         selectNotOverdue(){
             this.studySettings.oldTypes.overdue = false
             this.studySettings.oldTypes.notOverdue = true
-            console.log("select not overdue called")
             this.saveStudySettings()
         },
         selectBothOverdueAndNotOverdue(){
             this.studySettings.oldTypes.overdue = true
             this.studySettings.oldTypes.notOverdue = true
-            console.log("select both overdue and not overdue called")
             this.saveStudySettings()
         },
     },

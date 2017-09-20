@@ -39,6 +39,7 @@ const mutations = {
             const itemToStudy = tree.getNextItemToStudy()
             console.log('next itemId to Study is', itemToStudy)
             state.currentStudyingContentItem = itemToStudy
+            PubSub.publish('canvas.closeTooltip', treeId)
         } else {
             var snack = new Snack({
                 domParent: document.querySelector('.new-exercise')
@@ -48,14 +49,17 @@ const mutations = {
         }
     },
     async itemStudied(state, contentId){
+        console.log('itemStudied called', state, contentId, ...arguments)
         if (!getters.studying(state)){
             return
         }
-        console.log('itemStudied called', state, contentId, ...arguments)
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
-        const itemToStudy  = tree.getNextItemToStudy()
-        console.log('next itemId to Study is', itemToStudy)
-        state.currentStudyingContentItem = itemToStudy
+        PubSub.publish('canvas.closeTooltip', tree.id)
+        if (tree.areItemsToStudy()){
+            const itemToStudy  = tree.getNextItemToStudy()
+            console.log('next itemId to Study is', itemToStudy)
+            state.currentStudyingContentItem = itemToStudy
+        }
     },
     toggleSettingsMenu(state){
         state.settingsMenuOpen = !state.settingsMenuOpen
