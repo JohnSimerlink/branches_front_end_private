@@ -203,6 +203,7 @@ export default class ContentItem {
     }
 
     calculateAggregationTimerForTreeChain(){
+        console.log(this.id, 'calculateAggregationTimerForTreeChain')
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
@@ -240,6 +241,7 @@ export default class ContentItem {
         delete window.content[this.id]
     }
     recalculateProficiencyAggregationForTreeChain(){
+        console.log(this.id, 'calculateProficiencyAggregationForTreeChain')
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
@@ -249,6 +251,7 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     recalculateNumOverdueAggregationForTreeChain(){
+        console.log(this.id, 'calculateNumOverdueAggregationForTreeChain')
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
@@ -286,29 +289,13 @@ export default class ContentItem {
         }
 
         console.log('clear interactions called')
-        // firebase.database().ref('content/' + this.id + '/studiers/' + user.getId()).remove(function(err){
-        //     console.log('did an error happen on remove', err)
-        // })
-        // firebase.database().ref('content/' + this.id + '/userProficiencyMap/' + user.getId()).remove(function(err){
-        //     console.log('did an error happen on remove', err)
-        // })
-        // firebase.database().ref('content/' + this.id + '/userInteractionsMap/' + user.getId()).remove(function(err){
-        //     console.log('did an error happen on remove', err)
-        // })//.update(updates) //.update(updates)
-        // firebase.database().ref('content/' + this.id + '/userStrengthMap/' + user.getId()).remove().then(function(err){
-        //     console.log('did an error happen on remove', err)
-        // })
-        // firebase.database().ref('content/' + this.id + '/userReviewTimeMap/' + user.getId()).remove().then(function(err){
-        //     console.log('did an error happen on remove', err)
-        // })
-        // firebase.database().ref('content/' + this.id + '/userTimeMap/' + user.getId()).remove().then(() =>{
-        //     console.log("one remove update finished", ...arguments)
-        // }) //.update(updates) //.update(updates)
-
         firebase.database().ref('content/' + this.id).update(updates)
         Object.keys(this.trees).forEach(treeId => {
            PubSub.publish('syncGraphWithNode', treeId)
         })
+        this.calculateAggregationTimerForTreeChain()
+        this.recalculateProficiencyAggregationForTreeChain()
+        this.recalculateNumOverdueAggregationForTreeChain()
     }
 
     hasInteractions() {

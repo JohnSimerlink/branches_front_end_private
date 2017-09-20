@@ -119,6 +119,9 @@ export default {
             // goToFromMap({name: 'study', params: {leafId: this.id}})
             // this.$router.push()
         },
+        clearHeading() {
+            this.tree.clearChildrenInteractions()
+        },
         proficiencyClicked() {
             this.syncProficiency()
             // this.itemStudied({contentId:this.content.id})
