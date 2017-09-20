@@ -27,7 +27,6 @@ class User {
       me.branchesData = user || {}
       me.branchesData.patches = me.branchesData.patches || {}
       me.branchesData.items = me.branchesData.items || {}
-      console.log('real branches data is', me.branchesData)
       me.camera = me.branchesData.camera
       me.applyDataPatches()
       me.dataLoaded = true
@@ -40,7 +39,6 @@ class User {
   }
   //should only be called after login event
   async getStudySettings(){
-      console.log("study settings going to be returned are", this.branchesData.studySettings)
       return this.branchesData.studySettings
   }
 
@@ -93,7 +91,6 @@ class User {
     }
 
     setInteractionsForItem(itemId, interactions){
-        console.log('setInteractionsForItem is ', itemId, interactions)
         if (!this.branchesData.items[itemId]) return
 
         this.branchesData.items[itemId].interactions = interactions
@@ -107,7 +104,6 @@ class User {
 
     async applyDataPatches(){
         if (!this.branchesData.patches.headingInteractions){
-            console.log("PATCHES: applying clearInteractionsForHeadingsPatch!")
             await clearInteractionsForHeadings()
             this.branchesData.patches.headingInteractions = true
             var updates = {
@@ -115,7 +111,6 @@ class User {
             }
             firebase.database().ref('users/' + this.getId() + '/').update(updates)
         } else {
-            console.log('PATCHES: no patches to apply')
         }
 
     }

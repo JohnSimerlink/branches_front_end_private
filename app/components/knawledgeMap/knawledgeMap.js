@@ -57,7 +57,7 @@ export default {
         currentStudyingContentItem(newContentItem, oldContentItem){
             console.log('new content id to jump to is ', newContentItem, oldContentItem)
             const treeId = newContentItem.getTreeId()
-            jumpToAndOpenTreeId(treeId)
+            jumpToTreeId(treeId)
             // const item = ContentItems.get()
         }
 
@@ -287,14 +287,18 @@ export function getTreeUINode(nodeId){
     return s.graph.nodes(nodeId)
 }
 
+function jumpToTreeId(treeId){
+    console.log("jumping to tree id", treeId)
+    let node = s.graph.nodes(treeId)
+    focusNode(s.cameras[0], node);
+}
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
  */
-function jumpToAndOpenTreeId(treeid) {
+function jumpToAndOpenTreeId(treeId) {
     //let tree = sigma.nodes[treeid];
-    let node = s.graph.nodes(treeid)
-    focusNode(s.cameras[0], node);
-
+    jumpToTreeId(treeId)
+    let node = s.graph.nodes(treeId)
     tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
 }
 
@@ -551,6 +555,9 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
+        PubSub.subscribe('canvas.closeTooltip', (eventName, treeId) => {
+            window.closeTooltip(treeId)
+        })
         PubSub.publish('sigma.initialized')
     }
     async function click_SUGGESTED_CONNECTION(edge){
@@ -677,6 +684,8 @@ function initKnawledgeMap(treeIdToJumpTo){
         console.log(e, e.data.node)
     }
     function openTooltip(node){
+        console.log('openTooltip called for', node)
+
         tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
         setTimeout(function(){
             var vm = new Vue(
@@ -688,6 +697,12 @@ function initKnawledgeMap(treeIdToJumpTo){
         },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
 
     }
+    function closeTooltip(nodeId){
+        const node = s.graph.nodes(nodeId)
+        console.log("close tooltip called", node)
+        tooltips.close(node);
+    }
+    window.closeTooltip = closeTooltip
     function hoverOverNode(e){
         // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
         // var node = e.data.node
