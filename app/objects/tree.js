@@ -169,6 +169,24 @@ export class Tree {
            factId: newfactid
         })
     }
+    async clearChildrenInteractions(){
+        console.log(this.id, "clearChildrenInteractions called")
+        // const isLeaf = await this.isLeaf()
+        if(await this.isLeaf()){
+            console.log(this.id, "clearChildrenInteractions THIS IS LEAF")
+            const contentItem = await ContentItems.get(this.contentId)
+            contentItem.clearInteractions()
+        } else {
+            this.getChildKeys()
+                .map(Trees.get)
+                .map(async treePromise => {
+                    const tree = await treePromise
+                    console.log('about to clear Interactions for ', tree.id)
+                    tree.clearChildrenInteractions()
+                })
+        }
+
+    }
     setProficiencyStats(proficiencyStats){
         this.proficiencyStats = proficiencyStats
         this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
@@ -278,6 +296,7 @@ export class Tree {
         return proficiencyStats
     }
     async recalculateProficiencyAggregation(){
+        console.log(this.id, "recalculateProficiencyAggregation called")
         let proficiencyStats;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -285,8 +304,10 @@ export class Tree {
         } else {
             proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf()
         }
+        console.log(this.id, "recalculateProficiencyAggregation proficiecnyStates is", proficiencyStats)
         this.setProficiencyStats(proficiencyStats)
 
+        PubSub.publish('syncGraphWithNode', this.id)
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)
         return parent.recalculateProficiencyAggregation()
@@ -404,8 +425,12 @@ export class Tree {
            .filter(leaf => leaf.hasInteractions)
            .sort((a,b) => {
                 //lowest decibels first
-                return a.lastRecordedStrength.value < b.lastRecordedStrength.value ? 1: a.lastRecordedStrength.value > b.lastRecordedStrength.value ? -1 : 0
+                return a.lastRecordedStrength.value > b.lastRecordedStrength.value ? 1: a.lastRecordedStrength.value < b.lastRecordedStrength.value ? -1 : 0
            })
+        studiedLeaves.forEach(leaf => {
+            console.log('leaf is ', leaf, leaf.lastRecordedStrength.value)
+        })
+
         const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)
         this.sortedLeaves = [...studiedLeaves, ...notStudiedLeaves]
         if (this.parentId){
