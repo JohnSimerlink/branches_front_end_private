@@ -555,7 +555,8 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
-        PubSub.subscribe('canvas.closeTooltip', (eventName, treeId) => {
+        PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
+            const treeId = data.oldNode || data
             window.closeTooltip(treeId)
         })
         PubSub.publish('sigma.initialized')

@@ -39,7 +39,7 @@ const mutations = {
             const itemToStudy = tree.getNextItemToStudy()
             console.log('next itemId to Study is', itemToStudy)
             state.currentStudyingContentItem = itemToStudy
-            PubSub.publish('canvas.closeTooltip', treeId)
+            PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
         } else {
             var snack = new Snack({
                 domParent: document.querySelector('.new-exercise')
