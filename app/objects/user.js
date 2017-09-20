@@ -1,34 +1,47 @@
 import firebase from './firebaseService.js'
 import {clearInteractionsForHeadings} from "../fixData";
 import Users from './users'
+let userLoggedIn = false
 class User {
 
   constructor() {
       this.loggedIn = false;
       this.branchesData = {}
+      this.dataLoaded = false
       const me = this;
-      firebase.auth().onAuthStateChanged(function (user) {
+      firebase.auth().onAuthStateChanged(async (user) => {
           if (user) {
-              PubSub.publish('login')
               me.loggedIn = true;
+              userLoggedIn = true
               me.fbData = user;
-              Users.get(me.getId()).then(user => {
-                  me.branchesData = user || {}
-                  me.branchesData.patches = me.branchesData.patches || {}
-                  me.branchesData.items = me.branchesData.items || {}
-                  me.camera = me.branchesData.camera
-                  me.applyDataPatches()
-              })
+              await me.loadBranchesData()
+              PubSub.publish('login')
           } else {
               me.loggedIn = false
           }
       })
+  }
+  async loadBranchesData(){
+      const me = this
+      const user = await Users.get(this.getId())
+      me.branchesData = user || {}
+      me.branchesData.patches = me.branchesData.patches || {}
+      me.branchesData.items = me.branchesData.items || {}
+      console.log('real branches data is', me.branchesData)
+      me.camera = me.branchesData.camera
+      me.applyDataPatches()
+      me.dataLoaded = true
   }
   getId() {
       return this.fbData && this.fbData.uid || 0
   }
   isAdmin() {
       return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'
+  }
+  //should only be called after login event
+  async getStudySettings(){
+      console.log("study settings going to be returned are", this.branchesData.studySettings)
+      return this.branchesData.studySettings
   }
 
   // setItemProperties(itemId, obj){
@@ -105,6 +118,9 @@ class User {
             console.log('PATCHES: no patches to apply')
         }
 
+    }
+    async applyUpdates(updates){
+        return await firebase.database().ref('users/' + this.getId() + '/').update(updates)
     }
 
 

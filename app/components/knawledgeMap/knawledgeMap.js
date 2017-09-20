@@ -307,7 +307,7 @@ function focusNode(camera, node) {
     let cameraCoord = {
         x: node['read_cam0:x'],
         y: node['read_cam0:y'],
-        ratio: 0.05
+        ratio: 0.20
     };
     camera.goTo(cameraCoord);
     // sigma.misc.animation.camera(
@@ -503,6 +503,8 @@ function initKnawledgeMap(treeIdToJumpTo){
             window.awaitingEdgeConnection = false
             window.awaitingDisconnectConfirmationNodeId = null
             window.awaitingEdgeConnectionNodeId = null
+
+            store.commit('closeSettingsMenu')
         })
         PubSub.subscribe('canvas.overNode', function(eventName, data){
             var canvas = document.querySelector('#graph-container')
