@@ -48,8 +48,8 @@ export default {
     },
     computed: {
         currentStudyingContentItem(){
-            console.log("current studying contentId is", this.$store.state.currentStudyingContentItem)
-           return this.$store.state.currentStudyingContentItem
+            console.log("current studying contentItem is", this.$store.state.currentStudyingContentItem)
+            return this.$store.state.currentStudyingContentItem
         }
     },
     watch: {
@@ -58,7 +58,7 @@ export default {
             console.log('new content id to jump to is ', newContentItem, oldContentItem)
             const treeId = newContentItem.getTreeId()
             jumpToAndOpenTreeId(treeId)
-           // const item = ContentItems.get()
+            // const item = ContentItems.get()
         }
 
     },

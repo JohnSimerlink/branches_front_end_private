@@ -10,6 +10,7 @@ import {
     measurePreviousStrength, estimateCurrentStrength,
     calculateSecondsTilCriticalReviewTime
 } from "../forgettingCurve";
+import store from '../core/store'
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -296,13 +297,22 @@ export default class ContentItem {
         this.calculateAggregationTimerForTreeChain()
         this.recalculateProficiencyAggregationForTreeChain()
         this.recalculateNumOverdueAggregationForTreeChain()
+        this.resortTrees()
     }
-
+    async resortTrees(){
+        await Promise.all(
+            this.getTreePromises().map(async treePromise => {
+                const tree = await treePromise
+                await tree.sortLeavesByStudiedAndStrength()
+            })
+        )
+        console.log('resortTrees finishing!')
+    }
     hasInteractions() {
         return this.interactions.length
     }
 
-    saveProficiency(){
+    async saveProficiency(){
         !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
         const timestamp = Date.now()
         this.clearOverdueTimeout()
@@ -367,6 +377,10 @@ export default class ContentItem {
         //set timeout to mark the item overdue when it becomes overdue
         console.log('set overdue timeout about to be called')
         this.setOverdueTimeout()
+
+        await this.resortTrees()
+        store.commit('itemStudied', this.id)
+
     }
 
     setProficiency(proficiency) {
@@ -424,6 +438,9 @@ export default class ContentItem {
         const treeId = this.getTreeId()
         const tree = await this.getTreeId()
         return tree
+    }
+    getTreePromises(){
+        return this.getTreeIds().map(Trees.get)
     }
 
 
