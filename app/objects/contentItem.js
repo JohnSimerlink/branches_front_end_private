@@ -192,7 +192,6 @@ export default class ContentItem {
 
     }
     saveTimer(){
-        console.log('contentitem save timer called')
         this.userTimeMap[user.getId()] = this.timer
 
         var updates = {

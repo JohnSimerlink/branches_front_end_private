@@ -1,6 +1,7 @@
 import Vuex from "vuex"
 import Vue from "vue"
 import {Trees} from '../objects/trees'
+import Snack from '../../node_modules/snack.js/dist/snack'
 Vue.use(Vuex)
 
 export const MODES = {
