@@ -486,12 +486,16 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
         })
         PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
+            console.log("canvas.differentNodeClicked subscribe", eventName, data)
             PubSub.publish('canvas.closeTooltip', data)
+            const nodeToOpen = s.graph.nodes(data.newNode)
+            openTooltip(nodeToOpen)
         })
         PubSub.subscribe('canvas.cameraChange', function(eventName, data){
             console.log('camera change',eventName, data)
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
+            console.log('stageClicked!')
             PubSub.publish('canvas.closeTooltip')
             if(window.edgeIdBeingChanged){
                 s.graph.edges(window.edgeIdBeingChanged).state = 'normal'
@@ -556,6 +560,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             s.refresh()
         })
         PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
+            console.log("knawledgeMap.js 559: canvas.closeTooltip ", eventName, data)
             if (!data) return
             const treeId = data.oldNode || data
             window.closeTooltip(treeId)
@@ -686,7 +691,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         console.log(e, e.data.node)
     }
     function openTooltip(node){
-        console.log('openTooltip called for', node)
+        console.log('openTooltip called for', node.id, node)
 
         tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
         setTimeout(function(){
@@ -701,7 +706,7 @@ function initKnawledgeMap(treeIdToJumpTo){
     }
     function closeTooltip(nodeId){
         const node = s.graph.nodes(nodeId)
-        console.log("close tooltip called", node)
+        console.log("close tooltip called", node.label, node)
         tooltips.close(node);
     }
     window.closeTooltip = closeTooltip
