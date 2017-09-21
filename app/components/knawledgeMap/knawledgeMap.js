@@ -299,7 +299,7 @@ function jumpToAndOpenTreeId(treeId) {
     //let tree = sigma.nodes[treeid];
     jumpToTreeId(treeId)
     let node = s.graph.nodes(treeId)
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    openTooltip(node)
 }
 
 function focusNode(camera, node) {
