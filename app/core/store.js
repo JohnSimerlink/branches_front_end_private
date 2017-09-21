@@ -70,8 +70,12 @@ const mutations = {
         state.settingsMenuOpen = false
     },
     clickNode(state, nodeId){
+        console.log("store.js clickNode called",state.openNodeId, nodeId)
         state.openNodeId = nodeId
     },
+    clickStage(state){
+        state.openNodeId = null
+    }
 }
 
 const actions = {

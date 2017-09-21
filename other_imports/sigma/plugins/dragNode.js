@@ -183,12 +183,12 @@
         };
 
         function nodeMouseUp(event) {
-            console.log("dragNode.js nodeMouseUp called", _node)
+            // console.log("dragNode.js nodeMouseUp called", _node)
             if(_wasJustBeingDragged){
                 console.log("dragNode.js _wasJustBeingDragged", _node)
                 PubSub.publish('canvas.stopDraggingNode', _node)
             } else {
-                console.log("dragNode.js nodeMouseUp", _node)
+                // console.log("dragNode.js nodeMouseUp", _node)
                 PubSub.publish('canvas.nodeMouseUp', _node)
             }
             _isMouseDown = false;
