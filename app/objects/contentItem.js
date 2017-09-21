@@ -204,7 +204,6 @@ export default class ContentItem {
     }
 
     calculateAggregationTimerForTreeChain(){
-        console.log("contentId", this.id, "treeId", this.getTreeId(), this.title, this.question, this.answer, 'calculateAggregationTimerForTreeChain')
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
