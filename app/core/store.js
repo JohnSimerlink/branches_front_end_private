@@ -55,6 +55,7 @@ const mutations = {
         if (!getters.studying(state)){
             return
         }
+        this.commit('closeNode')
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
         PubSub.publish('canvas.closeTooltip', tree.id)
         if (tree.areItemsToStudy()){
@@ -72,6 +73,9 @@ const mutations = {
     clickNode(state, nodeId){
         console.log("store.js clickNode called",state.openNodeId, nodeId)
         state.openNodeId = nodeId
+    },
+    closeNode(state){
+        state.openNodeId = null
     },
     clickStage(state){
         state.openNodeId = null

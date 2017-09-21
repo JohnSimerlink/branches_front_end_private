@@ -241,7 +241,6 @@ export default class ContentItem {
         delete window.content[this.id]
     }
     recalculateProficiencyAggregationForTreeChain(){
-        console.log(this.id, 'calculateProficiencyAggregationForTreeChain')
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
@@ -251,7 +250,6 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     recalculateNumOverdueAggregationForTreeChain(){
-        console.log(this.id, 'calculateNumOverdueAggregationForTreeChain')
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
@@ -261,7 +259,6 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     clearInteractions(){
-        console.log(this.id, "clearing Interactions")
         delete this.studiers[user.getId()]
 
         this.proficiency = PROFICIENCIES.UNKNOWN
@@ -288,7 +285,6 @@ export default class ContentItem {
             userTimeMap: this.userTimeMap,
         }
 
-        console.log('clear interactions called')
         firebase.database().ref('content/' + this.id).update(updates)
         Object.keys(this.trees).forEach(treeId => {
            PubSub.publish('syncGraphWithNode', treeId)
@@ -305,7 +301,6 @@ export default class ContentItem {
                 await tree.sortLeavesByStudiedAndStrength()
             })
         )
-        console.log('resortTrees finishing!')
     }
     hasInteractions() {
         return this.interactions.length
@@ -334,9 +329,6 @@ export default class ContentItem {
         // if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE we can assume they have learned it before. We will simply assume that they last saw it/learned it an hour ago. (e.g. like in a lecture 1 hour ago).
         if (this.proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
             millisecondsSinceLastInteraction = 60 * 60 * 1000
-            console.log('proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction)
-        } else {
-            console.log('NOT proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction)
         }
         const previousInteractionStrength = measurePreviousStrength(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
         const currentInteractionStrength = estimateCurrentStrength(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
@@ -374,7 +366,6 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //set timeout to mark the item overdue when it becomes overdue
-        console.log('set overdue timeout about to be called')
         this.setOverdueTimeout()
 
         await this.resortTrees()
