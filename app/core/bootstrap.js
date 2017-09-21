@@ -60,7 +60,6 @@ var vm = new Vue({
         PubSub.subscribe('goToState.home', (eventName, data) => {
             this.goBack()
         })
-        console.log('THIS APP is', this)
         // router.go('/83cbe6ea3fa874449982b645f04d14a1')
     },
     data() {

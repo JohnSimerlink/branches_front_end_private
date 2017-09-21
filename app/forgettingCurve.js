@@ -24,7 +24,6 @@ export function measurePreviousStrength(estimatedPreviousStrength, R,t){
     const logProficiency = Math.log(proficiencyAsDecimal)
     const ebbinghaus = -1 * t / logProficiency
     let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
-    console.log(R + "," + t + " -> "  + measuredPreviousStrength + " dbE")
     measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength: 0
 
     //if proficiency is greater than/equal to 99 or less than/equal to 1, we have a wide range of possibilities for measured strength values - see this google sheet - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=2051263794
@@ -33,14 +32,12 @@ export function measurePreviousStrength(estimatedPreviousStrength, R,t){
     if (doubleLessThanOrEqualTo(R, PROFICIENCIES.ONE)/* for double comparison */ && measuredPreviousStrength > estimatedPreviousStrength ){
         measuredPreviousStrength = estimatedPreviousStrength
     } else {
-        console.log('R is not <= to PROFICIENCIES.ONE', R, PROFICIENCIES.ONE, measuredPreviousStrength, estimatedPreviousStrength)
     }
 
     //if proficiency is greater than 99, and its been a really short time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much lower than it possible could have been, since we are only recording the value as 99% and not the actually 99.99% or whatever it actually is
     if (doubleGreaterThanOrEqualTo(R,PROFICIENCIES.FOUR) /* for double comparison */ && measuredPreviousStrength < estimatedPreviousStrength ){
         measuredPreviousStrength = estimatedPreviousStrength
     } else {
-        console.log('R is not < PROFICIENCIES.FOUR', R, PROFICIENCIES.FOUR)
     }
     return measuredPreviousStrength
 }
@@ -68,18 +65,13 @@ export function calculateTime(S, R){
 
 // current proficiency in [0, 100]
 export function estimateCurrentStrength(previousInteractionStrengthDecibels, currentProficiency, secondsSinceLastInteraction){
-    console.log('estimateCurrentStrength:',...arguments)
     let newInteractionStrengthDecibels
     const t = secondsSinceLastInteraction
     if (currentProficiency <= PROFICIENCIES.ONE){
-        console.log('current proficiency is less than one', currentProficiency)
         const t1percent = calculateTime(previousInteractionStrengthDecibels, currentProficiency / 100)
-        console.log("t and t1percent are", t, t1percent)
         if (t >= t1percent){
-            console.log('time is greater than time 1percent', currentProficiency)
             newInteractionStrengthDecibels= previousInteractionStrengthDecibels * t1percent / t
         } else {
-            console.log('time is not greater than time 1percent', currentProficiency)
             newInteractionStrengthDecibels = previousInteractionStrengthDecibels
         }
     } else {
@@ -88,10 +80,8 @@ export function estimateCurrentStrength(previousInteractionStrengthDecibels, cur
         const Bp = (e * currentProficiency - 1) / (e - 1)
         const Bc = 10 * (e - 1)
         const deltaStrength = Bt * Bp * Bc
-        console.log(Bt, Bp, Bc, "-> ", deltaStrength)
         newInteractionStrengthDecibels = previousInteractionStrengthDecibels + deltaStrength
     }
-    console.log(previousInteractionStrengthDecibels + "dBE", currentProficiency, secondsSinceLastInteraction + "s", "->", newInteractionStrengthDecibels + "dbE")
     newInteractionStrengthDecibels = newInteractionStrengthDecibels < 10 ? 10: newInteractionStrengthDecibels
     return newInteractionStrengthDecibels
 }

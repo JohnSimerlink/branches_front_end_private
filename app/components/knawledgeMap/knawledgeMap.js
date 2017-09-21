@@ -48,6 +48,7 @@ export default {
     },
     computed: {
         currentStudyingContentItem(){
+            return this.$store.state.currentStudyingContentItem
             console.log("current studying contentItem is", this.$store.state.currentStudyingContentItem)
         },
         openNodeId(){
@@ -64,12 +65,16 @@ export default {
         },
         openNodeId(newNodeId, oldNodeId){
             console.log('knawledgeMap openNodeId knawledgeMap.js! newNodeId, oldNodeId', newNodeId, oldNodeId)
-            if (!newNodeId) return
+            if (!newNodeId && oldNodeId){
+                closeTooltip(oldNodeId) // necessary for when currentStudyingContentItem is set after clicking study on a tree
+                return
+            }
             if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
                 return
             }
             openTooltipFromId(newNodeId)
-        }
+        },
+
     },
     methods: {
         init(){
@@ -537,7 +542,6 @@ function initKnawledgeMap(treeIdToJumpTo){
             console.log('camera change',eventName, data)
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
-            console.log('stageClicked!')
             store.commit('clickStage')
             PubSub.publish('canvas.closeTooltip')
             if(window.edgeIdBeingChanged){
@@ -603,7 +607,6 @@ function initKnawledgeMap(treeIdToJumpTo){
             s.refresh()
         })
         PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
-            console.log("knawledgeMap.js 559: canvas.closeTooltip ", eventName, data)
             if (!data) return
             const treeId = data.oldNode || data
             window.closeTooltip(treeId)
@@ -769,7 +772,6 @@ function initKnawledgeMap(treeIdToJumpTo){
         window.jump = jumpToAndOpenTreeId;
         // jumpToAndOpenTreeId(treeIdToJumpTo || DataKeys.TREE_IDS.EVERYDAY_WORDS)
         s.camera.goTo(user.camera)
-        console.log('camera going to', user.camera)
         var myRenderer = s.renderers[0];
 
     }

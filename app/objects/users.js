@@ -14,7 +14,6 @@ export default class Users {
             //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
             if (users[userId]){
                 resolve(users[userId])
-                console.log('user found in cache')
             } else {
                 firebase.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot){
                     let userData = snapshot.val();
