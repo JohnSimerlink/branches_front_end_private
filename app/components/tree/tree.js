@@ -126,8 +126,6 @@ export default {
         },
         proficiencyClicked() {
             this.syncProficiency()
-            // this.itemStudied({contentId:this.content.id})
-            this.$store.commit('itemStudied', this.content.id)
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db

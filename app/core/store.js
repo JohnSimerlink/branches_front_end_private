@@ -29,6 +29,7 @@ const state = {
 const getters = {
     studying: state => state.mode === MODES.STUDYING,
     currentStudyingCategoryTreeId: state => state.currentStudyingCategoryTreeId,
+    settingsMenuOpen: state => state.settingsMenuOpen,
 }
 const mutations = {
     changeMode(state, mode){
@@ -79,6 +80,9 @@ const mutations = {
     },
     clickStage(state){
         state.openNodeId = null
+        if (getters.settingsMenuOpen(state)) {
+            this.commit('closeSettingsMenu')
+        }
     }
 }
 
