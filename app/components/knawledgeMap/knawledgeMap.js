@@ -49,8 +49,10 @@ export default {
     computed: {
         currentStudyingContentItem(){
             console.log("current studying contentItem is", this.$store.state.currentStudyingContentItem)
-            return this.$store.state.currentStudyingContentItem
-        }
+        },
+        openNodeId(){
+            return this.$store.state.openNodeId
+        },
     },
     watch: {
         '$route': 'init',
@@ -59,8 +61,11 @@ export default {
             const treeId = newContentItem.getTreeId()
             jumpToTreeId(treeId)
             // const item = ContentItems.get()
+        },
+        openNodeId(newNodeId, oldNodeId){
+            openTooltipFromId(newNodeId)
+            console.log('knawledgeMap openNodeId knawledgeMap.js! newNodeId, oldNodeId', newNodeId, oldNodeId)
         }
-
     },
     methods: {
         init(){
@@ -326,6 +331,34 @@ function focusNode(camera, node) {
     //     }
     // );
 }
+
+function openTooltipFromId(nodeId){
+    const node = s.graph.nodes(nodeId)
+    openTooltip(node)
+}
+window.openTooltipFromId = openTooltipFromId
+function openTooltip(node){
+    console.log('openTooltip called for', node.id, node)
+
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function(){
+        var vm = new Vue(
+            {
+                el: '#vue',
+                store,
+            }
+        )
+    },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+
+}
+window.openTooltip = openTooltip
+function closeTooltip(nodeId){
+    const node = s.graph.nodes(nodeId)
+    console.log("close tooltip called", node.label, node)
+    tooltips.close(node);
+}
+window.closeTooltip = closeTooltip
+
 function initKnawledgeMap(treeIdToJumpTo){
     var me = this;// bound/called
 
@@ -442,6 +475,11 @@ function initKnawledgeMap(treeIdToJumpTo){
         initSigmaPlugins()
         s.bind('coordinatesUpdated', function(){
         })
+        s.bind('clickNode', function(event) {
+            const nodeId = event && event.data && event.data.node && event.data.node.id
+            store.commit('clickNode', nodeId)
+            console.log("node clicked s.bind",nodeId)
+        })
         PubSub.subscribe('canvas.coordinatesUpdated', function(eventName, coordinates){
             user.setCamera(coordinates)
         })
@@ -460,36 +498,36 @@ function initKnawledgeMap(treeIdToJumpTo){
             updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
         })
         PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
-            var node = data
-            console.log('nodeMouseUp',eventName, data)
-            // console.log('nodeMouseUp', eventName, data)
-            if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
-                return
-            }
-            switch(node.content.type){
-                case 'fact':
-                    console.log("node mouse up on fact")
-                    openTooltip(node)
-                    break;
-                case 'heading':
-                    openTooltip(node)
-                    break;
-                case 'skill':
-                    console.log('node mouse up on skill!!!',node)
-                    openTooltip(node)
-                    break;
-                default:
-                    // console.log()
-                    // me.$router.push({name: 'study', params: {leafId: node.id}})
-                    // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
-                    break;
-            }
+            // var node = data
+            // console.log('nodeMouseUp',eventName, data)
+            // // console.log('nodeMouseUp', eventName, data)
+            // if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
+            //     return
+            // }
+            // switch(node.content.type){
+            //     case 'fact':
+            //         console.log("node mouse up on fact")
+            //         openTooltip(node)
+            //         break;
+            //     case 'heading':
+            //         openTooltip(node)
+            //         break;
+            //     case 'skill':
+            //         console.log('node mouse up on skill!!!',node)
+            //         openTooltip(node)
+            //         break;
+            //     default:
+            //         // console.log()
+            //         // me.$router.push({name: 'study', params: {leafId: node.id}})
+            //         // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
+            //         break;
+            // }
         })
         PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
-            console.log("canvas.differentNodeClicked subscribe", eventName, data)
-            PubSub.publish('canvas.closeTooltip', data)
-            const nodeToOpen = s.graph.nodes(data.newNode)
-            openTooltip(nodeToOpen)
+            // console.log("canvas.differentNodeClicked subscribe", eventName, data)
+            // PubSub.publish('canvas.closeTooltip', data)
+            // const nodeToOpen = s.graph.nodes(data.newNode)
+            // openTooltip(nodeToOpen)
         })
         PubSub.subscribe('canvas.cameraChange', function(eventName, data){
             console.log('camera change',eventName, data)
@@ -690,26 +728,6 @@ function initKnawledgeMap(treeIdToJumpTo){
     function printNodeInfo(e){
         console.log(e, e.data.node)
     }
-    function openTooltip(node){
-        console.log('openTooltip called for', node.id, node)
-
-        tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-        setTimeout(function(){
-            var vm = new Vue(
-                {
-                    el: '#vue',
-                    store,
-                }
-            )
-        },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
-
-    }
-    function closeTooltip(nodeId){
-        const node = s.graph.nodes(nodeId)
-        console.log("close tooltip called", node.label, node)
-        tooltips.close(node);
-    }
-    window.closeTooltip = closeTooltip
     function hoverOverNode(e){
         // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
         // var node = e.data.node
