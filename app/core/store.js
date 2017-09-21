@@ -19,6 +19,7 @@ const state = {
         }
     },
     settingsMenuOpen: false,
+    openNodeId: null
 }
 //
 // function setCurrentStudyingContentId(state, contentId){
@@ -67,7 +68,10 @@ const mutations = {
     },
     closeSettingsMenu(state){
         state.settingsMenuOpen = false
-    }
+    },
+    clickNode(state, nodeId){
+        state.openNodeId = nodeId
+    },
 }
 
 const actions = {
