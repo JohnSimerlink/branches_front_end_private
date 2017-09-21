@@ -558,8 +558,6 @@ function initKnawledgeMap(treeIdToJumpTo){
             window.awaitingEdgeConnection = false
             window.awaitingDisconnectConfirmationNodeId = null
             window.awaitingEdgeConnectionNodeId = null
-
-            store.commit('closeSettingsMenu')
         })
         PubSub.subscribe('canvas.overNode', function(eventName, data){
             var canvas = document.querySelector('#graph-container')
@@ -606,11 +604,11 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
-        PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
-            if (!data) return
-            const treeId = data.oldNode || data
-            window.closeTooltip(treeId)
-        })
+        // PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
+        //     if (!data) return
+        //     const treeId = data.oldNode || data
+        //     window.closeTooltip(treeId)
+        // })
         PubSub.publish('sigma.initialized')
     }
     async function click_SUGGESTED_CONNECTION(edge){
