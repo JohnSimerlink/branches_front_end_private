@@ -63,8 +63,12 @@ export default {
             // const item = ContentItems.get()
         },
         openNodeId(newNodeId, oldNodeId){
-            openTooltipFromId(newNodeId)
             console.log('knawledgeMap openNodeId knawledgeMap.js! newNodeId, oldNodeId', newNodeId, oldNodeId)
+            if (!newNodeId) return
+            if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
+                return
+            }
+            openTooltipFromId(newNodeId)
         }
     },
     methods: {
@@ -477,8 +481,8 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         s.bind('clickNode', function(event) {
             const nodeId = event && event.data && event.data.node && event.data.node.id
-            store.commit('clickNode', nodeId)
             console.log("node clicked s.bind",nodeId)
+            store.commit('clickNode', nodeId)
         })
         PubSub.subscribe('canvas.coordinatesUpdated', function(eventName, coordinates){
             user.setCamera(coordinates)
@@ -534,6 +538,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
             console.log('stageClicked!')
+            store.commit('clickStage')
             PubSub.publish('canvas.closeTooltip')
             if(window.edgeIdBeingChanged){
                 s.graph.edges(window.edgeIdBeingChanged).state = 'normal'
