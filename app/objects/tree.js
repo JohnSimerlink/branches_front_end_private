@@ -428,11 +428,12 @@ export class Tree {
         const overdueLeaves = studiedLeaves.filter(leaf => leaf.overdue)
         const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.overdue)
         studiedLeaves.forEach(leaf => {
-            console.log('leaf is ', leaf, leaf.lastRecordedStrength.value, leaf.id, leaf.question, leaf.answer)
+            // console.log('leaf is ', leaf, leaf.lastRecordedStrength.value, leaf.id, leaf.question, leaf.answer)
         })
 
         const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)
         this.sortedLeaves = [...overdueLeaves, ...notStudiedLeaves, ...notOverdueLeaves]
+        this.sortedLeaves = removeDuplicatesById(this.sortedLeaves)
         if (this.parentId){
             const parent = await Trees.get(this.parentId)
             parent.sortLeavesByStudiedAndStrength()
@@ -494,4 +495,14 @@ function addValToProficiencyStats(proficiencyStats, proficiency){
         proficiencyStats.FOUR++
     }
     return proficiencyStats
+}
+function removeDuplicatesById(list){
+    const newList = []
+    const usedIds = []
+    list.forEach(item => {
+        if (usedIds.indexOf(item.id) > -1) return
+        newList.push(item)
+        usedIds.push(item.id)
+    })
+    return newList
 }

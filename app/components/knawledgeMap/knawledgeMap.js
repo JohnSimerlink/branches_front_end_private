@@ -492,7 +492,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             console.log('camera change',eventName, data)
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
-            PubSub.publish('canvas.closeTooltip', data)
+            PubSub.publish('canvas.closeTooltip')
             if(window.edgeIdBeingChanged){
                 s.graph.edges(window.edgeIdBeingChanged).state = 'normal'
             }
@@ -556,6 +556,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             s.refresh()
         })
         PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
+            if (!data) return
             const treeId = data.oldNode || data
             window.closeTooltip(treeId)
         })

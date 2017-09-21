@@ -34,12 +34,12 @@ export default {
 
         //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
         PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
-            console.log('canvas.closeTooltip called inside of tree/tree.js', eventName, data, data.oldNode, me.id)
-            if (data.oldNode != me.id) return
+            //TODO: currently the below code will get run for any tree node tooltip that has ever been opened while the user has logged in in this session. It would be best if it was only run for the most ercent tooltip the user had open
+
+            // if (data.oldNode != me.id) return
 
             //get reference to content, because by the time this method is called the this reference will be gone
             const content = me.content
-            console.log('me content whose timer is about to be saved is ', content)
             content.saveTimer()
         })
         await this.tree.getLeaves()
