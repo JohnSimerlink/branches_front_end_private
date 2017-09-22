@@ -4553,11 +4553,11 @@ var _firebaseService = __webpack_require__(11);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _fact = __webpack_require__(28);
+var _fact = __webpack_require__(29);
 
-var _skill = __webpack_require__(30);
+var _skill = __webpack_require__(31);
 
-var _heading = __webpack_require__(29);
+var _heading = __webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5113,7 +5113,7 @@ var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
 var _fixData = __webpack_require__(48);
 
-var _users = __webpack_require__(31);
+var _users = __webpack_require__(32);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -6102,7 +6102,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(33);
+var _shared_promise = __webpack_require__(34);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -8670,6 +8670,203 @@ module.exports = merge;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.MODES = undefined;
+
+var _vuex = __webpack_require__(26);
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+var _vue = __webpack_require__(20);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _trees = __webpack_require__(2);
+
+var _snack = __webpack_require__(25);
+
+var _snack2 = _interopRequireDefault(_snack);
+
+var _knawledgeMap = __webpack_require__(27);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+_vue2.default.use(_vuex2.default);
+
+var MODES = exports.MODES = {
+    EXPLORING: 1,
+    STUDYING: 2
+};
+
+var state = {
+    mode: MODES.STUDYING,
+    currentStudyingContentItem: '8904d53adfef7376627f4227ada47cd8',
+    currentStudyingCategoryTreeId: '1',
+    modes: {
+        2: {
+            contentId: 12345
+        }
+    },
+    settingsMenuOpen: false,
+    openNodeId: null,
+    nodeIdToSync: null
+    //
+    // function setCurrentStudyingContentId(state, contentId){
+    //     state.currentStudyingContentItem = contentId
+    //
+    // }
+};var getters = {
+    studying: function studying(state) {
+        return state.mode === MODES.STUDYING;
+    },
+    currentStudyingCategoryTreeId: function currentStudyingCategoryTreeId(state) {
+        return state.currentStudyingCategoryTreeId;
+    },
+    settingsMenuOpen: function settingsMenuOpen(state) {
+        return state.settingsMenuOpen;
+    }
+};
+var mutations = {
+    changeMode: function changeMode(state, mode) {
+        state.mode = mode;
+    },
+    setCurrentStudyingTree: function setCurrentStudyingTree(state, treeId) {
+        var _this = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            var tree, itemToStudy, snack;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            state.currentStudyingCategoryTreeId = treeId;
+                            _context.next = 3;
+                            return _trees.Trees.get(treeId);
+
+                        case 3:
+                            tree = _context.sent;
+
+                            if (tree.areItemsToStudy()) {
+                                itemToStudy = tree.getNextItemToStudy();
+
+                                console.log('next itemId to Study is', itemToStudy);
+                                state.currentStudyingContentItem = itemToStudy;
+                                PubSub.publish('canvas.closeTooltip', { oldNode: treeId });
+                            } else {
+                                snack = new _snack2.default({
+                                    domParent: document.querySelector('.new-exercise')
+                                });
+                                // show a snack for 4s
+
+                                snack.show("No items to study for this tree!", 4000);
+                            }
+
+                        case 5:
+                        case "end":
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this);
+        }))();
+    },
+    itemStudied: function itemStudied(state, contentId) {
+        var _arguments = arguments,
+            _this2 = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+            var _console;
+
+            var tree, itemToStudy;
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(_arguments)));
+
+                            if (getters.studying(state)) {
+                                _context2.next = 3;
+                                break;
+                            }
+
+                            return _context2.abrupt("return");
+
+                        case 3:
+                            _this2.commit('closeNode');
+                            _context2.next = 6;
+                            return _trees.Trees.get(state.currentStudyingCategoryTreeId);
+
+                        case 6:
+                            tree = _context2.sent;
+
+                            PubSub.publish('canvas.closeTooltip', tree.id);
+                            if (tree.areItemsToStudy()) {
+                                itemToStudy = tree.getNextItemToStudy();
+
+                                console.log('next itemId to Study is', itemToStudy);
+                                state.currentStudyingContentItem = itemToStudy;
+                            }
+
+                        case 9:
+                        case "end":
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, _this2);
+        }))();
+    },
+    toggleSettingsMenu: function toggleSettingsMenu(state) {
+        state.settingsMenuOpen = !state.settingsMenuOpen;
+    },
+    closeSettingsMenu: function closeSettingsMenu(state) {
+        state.settingsMenuOpen = false;
+    },
+    clickNode: function clickNode(state, nodeId) {
+        console.log("store.js clickNode called", state.openNodeId, nodeId);
+        state.openNodeId = nodeId;
+    },
+    closeNode: function closeNode(state) {
+        state.openNodeId = null;
+    },
+    clickStage: function clickStage(state) {
+        state.openNodeId = null;
+        if (getters.settingsMenuOpen(state)) {
+            this.commit('closeSettingsMenu');
+        }
+    },
+    syncGraphWithNode: function syncGraphWithNode(state, nodeId) {
+        state.nodeIdToSync = nodeId;
+        console.log('syncGraphWithNode', +Date.now());
+    }
+};
+
+var actions = {
+    itemStudied: function itemStudied(_ref) {
+        var commit = _ref.commit,
+            contentId = _ref.contentId;
+
+        console.log('item studied action called', contentId);
+        commit('itemStudied', contentId);
+    }
+};
+
+exports.default = new _vuex2.default.Store({
+    state: state,
+    mutations: mutations,
+    actions: actions,
+    getters: getters
+});
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8687,7 +8884,7 @@ var _trees = __webpack_require__(2);
 
 var _forgettingCurve = __webpack_require__(201);
 
-var _store = __webpack_require__(20);
+var _store = __webpack_require__(15);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -8728,7 +8925,14 @@ var ContentItem = function () {
 
         this.userReviewTimeMap = args.userReviewTimeMap || {};
         this.nextReviewTime = _user2.default.loggedIn && this.userReviewTimeMap[_user2.default.getId()] || 0;
-        this.setOverdueTimeout();
+        this.overdue = args.overdue || false;
+        if (!this.overdue && this.hasInteractions()) {
+            if (this.determineIfOverdueNow()) {
+                this.set('overdue', true);
+            } else {
+                this.setOverdueTimeout();
+            }
+        }
 
         this.studiers = args.studiers || {};
         this.inStudyQueue = _user2.default.loggedIn && this.studiers[_user2.default.getId()];
@@ -8829,11 +9033,17 @@ var ContentItem = function () {
             return this.type === 'fact' || this.type === 'skill';
         }
     }, {
+        key: 'determineIfOverdueNow',
+        value: function determineIfOverdueNow() {
+            var millisecondsTilOverdue = this.nextReviewTime - Date.now();
+            return millisecondsTilOverdue < 0;
+            // millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
+        }
+    }, {
         key: 'setOverdueTimeout',
         value: function setOverdueTimeout() {
             var millisecondsTilOverdue = this.nextReviewTime - Date.now();
             millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue : 0;
-            this.overdue = false;
 
             if (this.hasInteractions()) {
                 this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this), millisecondsTilOverdue);
@@ -8844,7 +9054,9 @@ var ContentItem = function () {
         value: function markOverdue() {
             var _this = this;
 
+            this.set('overdue', true);
             this.overdue = true;
+            var me = this;
             Object.keys(this.trees).forEach(function () {
                 var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(treeId) {
                     var tree;
@@ -8852,7 +9064,8 @@ var ContentItem = function () {
                         while (1) {
                             switch (_context.prev = _context.next) {
                                 case 0:
-                                    PubSub.publish('syncGraphWithNode', treeId);
+                                    _store2.default.commit('syncGraphWithNode', treeId);
+                                    // PubSub.publish('syncGraphWithNode', treeId)
                                     _context.next = 3;
                                     return _trees.Trees.get(treeId);
 
@@ -8889,7 +9102,7 @@ var ContentItem = function () {
     }, {
         key: 'set',
         value: function set(prop, val) {
-            if (this[prop] == val) {
+            if (this[prop] === val) {
                 return;
             }
 
@@ -9096,6 +9309,7 @@ var ContentItem = function () {
     }, {
         key: 'clearInteractions',
         value: function clearInteractions() {
+            var me = this;
             delete this.studiers[_user2.default.getId()];
 
             this.proficiency = _proficiencyEnum.PROFICIENCIES.UNKNOWN;
@@ -9124,7 +9338,8 @@ var ContentItem = function () {
 
             firebase.database().ref('content/' + this.id).update(updates);
             Object.keys(this.trees).forEach(function (treeId) {
-                PubSub.publish('syncGraphWithNode', treeId);
+                _store2.default.commit('syncGraphWithNode', treeId);
+                // PubSub.publish('syncGraphWithNode', treeId)
             });
             this.calculateAggregationTimerForTreeChain();
             this.recalculateProficiencyAggregationForTreeChain();
@@ -9279,6 +9494,7 @@ var ContentItem = function () {
             firebase.database().ref('content/' + this.id).update(updates);
 
             //set timeout to mark the item overdue when it becomes overdue
+            this.set('overdue', false);
             this.setOverdueTimeout();
 
             this.resortTrees();
@@ -9431,7 +9647,7 @@ function convertBreadcrumbListToString(breadcrumbList) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9535,7 +9751,7 @@ var Exercise = function () {
 exports.default = Exercise;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9574,7 +9790,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -9764,7 +9980,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19459,197 +19675,7 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18), __webpack_require__(10)))
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MODES = undefined;
-
-var _vuex = __webpack_require__(26);
-
-var _vuex2 = _interopRequireDefault(_vuex);
-
-var _vue = __webpack_require__(19);
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _trees = __webpack_require__(2);
-
-var _snack = __webpack_require__(25);
-
-var _snack2 = _interopRequireDefault(_snack);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-_vue2.default.use(_vuex2.default);
-
-var MODES = exports.MODES = {
-    EXPLORING: 1,
-    STUDYING: 2
-};
-
-var state = {
-    mode: MODES.STUDYING,
-    currentStudyingContentItem: '8904d53adfef7376627f4227ada47cd8',
-    currentStudyingCategoryTreeId: '1',
-    modes: {
-        2: {
-            contentId: 12345
-        }
-    },
-    settingsMenuOpen: false,
-    openNodeId: null
-    //
-    // function setCurrentStudyingContentId(state, contentId){
-    //     state.currentStudyingContentItem = contentId
-    //
-    // }
-};var getters = {
-    studying: function studying(state) {
-        return state.mode === MODES.STUDYING;
-    },
-    currentStudyingCategoryTreeId: function currentStudyingCategoryTreeId(state) {
-        return state.currentStudyingCategoryTreeId;
-    },
-    settingsMenuOpen: function settingsMenuOpen(state) {
-        return state.settingsMenuOpen;
-    }
-};
-var mutations = {
-    changeMode: function changeMode(state, mode) {
-        state.mode = mode;
-    },
-    setCurrentStudyingTree: function setCurrentStudyingTree(state, treeId) {
-        var _this = this;
-
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-            var tree, itemToStudy, snack;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            state.currentStudyingCategoryTreeId = treeId;
-                            _context.next = 3;
-                            return _trees.Trees.get(treeId);
-
-                        case 3:
-                            tree = _context.sent;
-
-                            if (tree.areItemsToStudy()) {
-                                itemToStudy = tree.getNextItemToStudy();
-
-                                console.log('next itemId to Study is', itemToStudy);
-                                state.currentStudyingContentItem = itemToStudy;
-                                PubSub.publish('canvas.closeTooltip', { oldNode: treeId });
-                            } else {
-                                snack = new _snack2.default({
-                                    domParent: document.querySelector('.new-exercise')
-                                });
-                                // show a snack for 4s
-
-                                snack.show("No items to study for this tree!", 4000);
-                            }
-
-                        case 5:
-                        case "end":
-                            return _context.stop();
-                    }
-                }
-            }, _callee, _this);
-        }))();
-    },
-    itemStudied: function itemStudied(state, contentId) {
-        var _arguments = arguments,
-            _this2 = this;
-
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
-            var _console;
-
-            var tree, itemToStudy;
-            return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                while (1) {
-                    switch (_context2.prev = _context2.next) {
-                        case 0:
-                            (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(_arguments)));
-
-                            if (getters.studying(state)) {
-                                _context2.next = 3;
-                                break;
-                            }
-
-                            return _context2.abrupt("return");
-
-                        case 3:
-                            _this2.commit('closeNode');
-                            _context2.next = 6;
-                            return _trees.Trees.get(state.currentStudyingCategoryTreeId);
-
-                        case 6:
-                            tree = _context2.sent;
-
-                            PubSub.publish('canvas.closeTooltip', tree.id);
-                            if (tree.areItemsToStudy()) {
-                                itemToStudy = tree.getNextItemToStudy();
-
-                                console.log('next itemId to Study is', itemToStudy);
-                                state.currentStudyingContentItem = itemToStudy;
-                            }
-
-                        case 9:
-                        case "end":
-                            return _context2.stop();
-                    }
-                }
-            }, _callee2, _this2);
-        }))();
-    },
-    toggleSettingsMenu: function toggleSettingsMenu(state) {
-        state.settingsMenuOpen = !state.settingsMenuOpen;
-    },
-    closeSettingsMenu: function closeSettingsMenu(state) {
-        state.settingsMenuOpen = false;
-    },
-    clickNode: function clickNode(state, nodeId) {
-        console.log("store.js clickNode called", state.openNodeId, nodeId);
-        state.openNodeId = nodeId;
-    },
-    closeNode: function closeNode(state) {
-        state.openNodeId = null;
-    },
-    clickStage: function clickStage(state) {
-        state.openNodeId = null;
-        if (getters.settingsMenuOpen(state)) {
-            this.commit('closeSettingsMenu');
-        }
-    }
-};
-
-var actions = {
-    itemStudied: function itemStudied(_ref) {
-        var commit = _ref.commit,
-            contentId = _ref.contentId;
-
-        console.log('item studied action called', contentId);
-        commit('itemStudied', contentId);
-    }
-};
-
-exports.default = new _vuex2.default.Store({
-    state: state,
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19), __webpack_require__(10)))
 
 /***/ }),
 /* 21 */
@@ -19691,7 +19717,7 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _store = __webpack_require__(20);
+var _store = __webpack_require__(15);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -19708,7 +19734,8 @@ var trees = {};
 
 
 function syncGraphWithNode(treeId) {
-    PubSub.publish('syncGraphWithNode', treeId);
+    _store2.default.commit('syncGraphWithNode', treeId);
+    // PubSub.publish('syncGraphWithNode', treeId)
 }
 function loadObject(treeObj, self) {
     Object.keys(treeObj).forEach(function (key) {
@@ -20421,8 +20448,9 @@ var Tree = exports.Tree = function () {
 
                             case 13:
                                 this.setProficiencyStats(proficiencyStats);
+                                _store2.default.commit('syncGraphWithNode', this.id);
 
-                                PubSub.publish('syncGraphWithNode', this.id);
+                                // PubSub.publish('syncGraphWithNode', this.id)
 
                                 if (this.parentId) {
                                     _context14.next = 17;
@@ -22460,1424 +22488,10 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19)))
 
 /***/ }),
 /* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(14);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _contentItem = __webpack_require__(15);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-var _lodash = __webpack_require__(13);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _exercise = __webpack_require__(16);
-
-var _exercise2 = _interopRequireDefault(_exercise);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ExerciseQA = function (_Exercise) {
-    _inherits(ExerciseQA, _Exercise);
-
-    function ExerciseQA(_ref) {
-        var contentItemIds = _ref.contentItemIds,
-            question = _ref.question,
-            answer = _ref.answer;
-
-        _classCallCheck(this, ExerciseQA);
-
-        var _this = _possibleConstructorReturn(this, (ExerciseQA.__proto__ || Object.getPrototypeOf(ExerciseQA)).call(this, { contentItemIds: contentItemIds }));
-
-        _this.type = 'QA';
-
-        //question and answer can both be user generated HTML that can include image links to imgur - or I guess firebase stored images too
-        _this.question = question;
-        _this.answer = answer;
-        _this.id = (0, _md2.default)(JSON.stringify({ question: question, answer: answer }));
-        _get(ExerciseQA.prototype.__proto__ || Object.getPrototypeOf(ExerciseQA.prototype), 'init', _this).call(_this);
-        return _this;
-    }
-
-    _createClass(ExerciseQA, [{
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            var baseRep = _get(ExerciseQA.prototype.__proto__ || Object.getPrototypeOf(ExerciseQA.prototype), 'getDBRepresentation', this).call(this);
-
-            return (0, _lodash2.default)(baseRep, {
-                id: this.id,
-                question: this.question,
-                answer: this.answer,
-                type: this.type
-            });
-        }
-    }, {
-        key: 'editQuestion',
-        value: function editQuestion() {
-            //create new exercise
-
-            //remove old exercise from any locations it was in - except user interactions
-            //as a property under certain contentItems
-
-            //add modified exercise to any locations it belongs in
-        }
-    }], [{
-        key: 'create',
-        value: function create(_ref2) {
-            var contentItemIds = _ref2.contentItemIds,
-                question = _ref2.question,
-                answer = _ref2.answer;
-
-            var exerciseQA = new ExerciseQA({ contentItemIds: contentItemIds, question: question, answer: answer });
-            return _get(ExerciseQA.__proto__ || Object.getPrototypeOf(ExerciseQA), 'create', this).call(this, exerciseQA);
-        }
-    }]);
-
-    return ExerciseQA;
-}(_exercise2.default);
-
-exports.default = ExerciseQA;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Fact = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(14);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _user = __webpack_require__(4);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _firebaseService = __webpack_require__(11);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-var _trees = __webpack_require__(2);
-
-var _lodash = __webpack_require__(13);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _contentItem = __webpack_require__(15);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// from './firebaseService'
-var Fact = exports.Fact = function (_ContentItem) {
-  _inherits(Fact, _ContentItem);
-
-  //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-  function Fact(args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/) {
-    _classCallCheck(this, Fact);
-
-    var _this = _possibleConstructorReturn(this, (Fact.__proto__ || Object.getPrototypeOf(Fact)).call(this, args));
-    // if (initialParentTreeId){
-    //     super({initialParentTreeId})
-    // } else {
-    //     super()
-    // }
-
-
-    _this.type = 'fact';
-    _this.question = args.question && args.question.trim();
-    _this.answer = args.answer && args.answer.trim();
-    _this.id = args.id || (0, _md2.default)(JSON.stringify({ question: _this.question, answer: _this.answer }));
-
-    if (typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = _this; //TODO: john figure out what this does
-
-    _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'init', _this).call(_this);
-    return _this;
-  }
-
-  //bc certain properties used in the local js object in memory, shouldn't be stored in the db
-
-  _createClass(Fact, [{
-    key: 'getURIAdditionNotEncoded',
-    value: function getURIAdditionNotEncoded() {
-      return this.question + ":" + this.answer;
-    }
-  }, {
-    key: 'getURIAddition',
-    value: function getURIAddition() {
-      return encodeURIComponent(this.getURIAdditionNotEncoded());
-    }
-  }, {
-    key: 'getDBRepresentation',
-    value: function getDBRepresentation() {
-      var baseRep = _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'getDBRepresentation', this).call(this);
-
-      return (0, _lodash2.default)(baseRep, {
-        id: this.id,
-        question: this.question,
-        answer: this.answer,
-        type: this.type
-      });
-    }
-  }]);
-
-  return Fact;
-}(_contentItem2.default);
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Heading = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(14);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _contentItem = __webpack_require__(15);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-var _lodash = __webpack_require__(13);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Heading = exports.Heading = function (_ContentItem) {
-    _inherits(Heading, _ContentItem);
-
-    function Heading(args /*={title, initialParentTreeId} and more */) {
-        _classCallCheck(this, Heading);
-
-        var _this = _possibleConstructorReturn(this, (Heading.__proto__ || Object.getPrototypeOf(Heading)).call(this, args));
-
-        _this.type = 'heading';
-
-        _this.title = args.title && args.title.trim();
-        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
-        _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'init', _this).call(_this);
-        return _this;
-    }
-
-    _createClass(Heading, [{
-        key: 'getURIAddition',
-        value: function getURIAddition() {
-            return encodeURIComponent(this.title);
-        }
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            var baseRep = _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'getDBRepresentation', this).call(this);
-
-            return (0, _lodash2.default)(baseRep, {
-                id: this.id,
-                title: this.title,
-                type: this.type
-            });
-        }
-    }]);
-
-    return Heading;
-}(_contentItem2.default);
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Skill = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _md = __webpack_require__(14);
-
-var _md2 = _interopRequireDefault(_md);
-
-var _contentItem = __webpack_require__(15);
-
-var _contentItem2 = _interopRequireDefault(_contentItem);
-
-var _lodash = __webpack_require__(13);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _trees = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Skill = exports.Skill = function (_ContentItem) {
-    _inherits(Skill, _ContentItem);
-
-    /**ParentTreeId is used in skill and heading constructor so as to avoid ambiguity when calculating the id of two different skills with the same title
-     * e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -ar Verbs > 1st Person Plural
-     * vs. e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -er Verbs > 1st Person Plural
-     * ^^ Both skills are different, but have the same title: "1st Person Plural"
-     * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
-    */
-    function Skill(args /* ={title, initialParentTreeId} */) {
-        _classCallCheck(this, Skill);
-
-        var _this = _possibleConstructorReturn(this, (Skill.__proto__ || Object.getPrototypeOf(Skill)).call(this, args));
-        // if (initialParentTreeId){
-        //     super({initialParentTreeId})
-        // } else {
-        //     super()
-        // }
-
-
-        _this.type = 'skill';
-
-        _this.title = args.title && args.title.trim();
-        // this.calculateLongURI
-        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
-        _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'init', _this).call(_this);
-        return _this;
-    }
-
-    _createClass(Skill, [{
-        key: 'getURIAddition',
-        value: function getURIAddition() {
-            return encodeURIComponent(this.title);
-        }
-    }, {
-        key: 'getDBRepresentation',
-        value: function getDBRepresentation() {
-            var baseRep = _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'getDBRepresentation', this).call(this);
-
-            return (0, _lodash2.default)(baseRep, {
-                id: this.id,
-                title: this.title,
-                type: this.type
-            });
-        }
-    }]);
-
-    return Skill;
-}(_contentItem2.default);
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _user = __webpack_require__(4);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _firebaseService = __webpack_require__(11);
-
-var _firebaseService2 = _interopRequireDefault(_firebaseService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var users = {}; // cache
-
-var Users = function () {
-    function Users() {
-        _classCallCheck(this, Users);
-    }
-
-    _createClass(Users, null, [{
-        key: 'get',
-
-        //returns promise
-        value: function get(userId) {
-            if (!userId) {
-                throw "Users.get(userId) error!. userId empty";
-            }
-            return new Promise(function getUserPromise(resolve, reject) {
-
-                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
-                if (users[userId]) {
-                    resolve(users[userId]);
-                } else {
-                    _firebaseService2.default.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot) {
-                        var userData = snapshot.val();
-                        processUserData(userId, userData);
-                        resolve(userData);
-                    });
-                }
-            });
-        }
-    }, {
-        key: 'getAll',
-        value: function getAll() {
-            // firebase.database().ref('users/').once("value", function onFirebaseUserGet(snapshot){
-            //     let userData = snapshot.val();
-            //     users[userId] = userData // add to cache
-            //     resolve(userData)
-            // })
-
-        }
-    }]);
-
-    return Users;
-}();
-
-exports.default = Users;
-
-function processUserData(userId, userData) {
-    users[userId] = userData; // add to cache
-}
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.patchCapture = patchCapture;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ERROR_NAME = 'FirebaseError';
-var captureStackTrace = Error.captureStackTrace;
-// Export for faking in tests
-function patchCapture(captureFake) {
-    var result = captureStackTrace;
-    captureStackTrace = captureFake;
-    return result;
-}
-
-var FirebaseError = exports.FirebaseError = function FirebaseError(code, message) {
-    _classCallCheck(this, FirebaseError);
-
-    this.code = code;
-    this.message = message;
-
-    // We want the stack value, if implemented by Error
-    if (captureStackTrace) {
-        // Patches this.stack, omitted calls above ErrorFactory#create
-        captureStackTrace(this, ErrorFactory.prototype.create);
-    } else {
-        var err = Error.apply(this, arguments);
-        this.name = ERROR_NAME;
-        // Make non-enumerable getter for the property.
-        Object.defineProperty(this, 'stack', {
-            get: function get() {
-                return err.stack;
-            }
-        });
-    }
-};
-// Back-door inheritance
-
-
-FirebaseError.prototype = Object.create(Error.prototype);
-FirebaseError.prototype.constructor = FirebaseError;
-FirebaseError.prototype.name = ERROR_NAME;
-
-var ErrorFactory = exports.ErrorFactory = function () {
-    function ErrorFactory(service, serviceName, errors) {
-        _classCallCheck(this, ErrorFactory);
-
-        this.service = service;
-        this.serviceName = serviceName;
-        this.errors = errors;
-        // Matches {$name}, by default.
-        this.pattern = /\{\$([^}]+)}/g;
-        // empty
-    }
-
-    _createClass(ErrorFactory, [{
-        key: 'create',
-        value: function create(code, data) {
-            if (data === undefined) {
-                data = {};
-            }
-            var template = this.errors[code];
-            var fullCode = this.service + '/' + code;
-            var message = void 0;
-            if (template === undefined) {
-                message = "Error";
-            } else {
-                message = template.replace(this.pattern, function (match, key) {
-                    var value = data[key];
-                    return value !== undefined ? value.toString() : '<' + key + '?>';
-                });
-            }
-            // Service: Error message (service/code).
-            message = this.serviceName + ': ' + message + ' (' + fullCode + ').';
-            var err = new FirebaseError(fullCode, message);
-            // Populate the Error object with message parts for programmatic
-            // accesses (e.g., e.file).
-            for (var prop in data) {
-                if (!data.hasOwnProperty(prop) || prop.slice(-1) === '_') {
-                    continue;
-                }
-                err[prop] = data[prop];
-            }
-            return err;
-        }
-    }]);
-
-    return ErrorFactory;
-}();
-//# sourceMappingURL=errors.js.map
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var scope = void 0;
-if (typeof global !== 'undefined') {
-    scope = global;
-} else if (typeof self !== 'undefined') {
-    scope = self;
-} else {
-    try {
-        scope = Function('return this')();
-    } catch (e) {
-        throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-}
-var PromiseImpl = scope.Promise || __webpack_require__(226);
-var local = exports.local = {
-    Promise: PromiseImpl,
-    GoogPromise: PromiseImpl
-};
-//# sourceMappingURL=shared_promise.js.map
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ArgSpec = undefined;
-exports.validate = validate;
-exports.and_ = and_;
-exports.stringSpec = stringSpec;
-exports.uploadDataSpec = uploadDataSpec;
-exports.metadataSpec = metadataSpec;
-exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
-exports.looseObjectSpec = looseObjectSpec;
-exports.nullFunctionSpec = nullFunctionSpec;
-
-var _error = __webpack_require__(6);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-var _metadata = __webpack_require__(36);
-
-var MetadataUtils = _interopRequireWildcard(_metadata);
-
-var _type = __webpack_require__(3);
-
-var type = _interopRequireWildcard(_type);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-/**
- * @param name Name of the function.
- * @param specs Argument specs.
- * @param passed The actual arguments passed to the function.
- * @throws {fbs.Error} If the arguments are invalid.
- */
-function validate(name, specs, passed) {
-    var minArgs = specs.length;
-    var maxArgs = specs.length;
-    for (var i = 0; i < specs.length; i++) {
-        if (specs[i].optional) {
-            minArgs = i;
-            break;
-        }
-    }
-    var validLength = minArgs <= passed.length && passed.length <= maxArgs;
-    if (!validLength) {
-        throw errorsExports.invalidArgumentCount(minArgs, maxArgs, name, passed.length);
-    }
-    for (var _i = 0; _i < passed.length; _i++) {
-        try {
-            specs[_i].validator(passed[_i]);
-        } catch (e) {
-            if (e instanceof Error) {
-                throw errorsExports.invalidArgument(_i, name, e.message);
-            } else {
-                throw errorsExports.invalidArgument(_i, name, e);
-            }
-        }
-    }
-}
-/**
- * @struct
- */
-
-var ArgSpec = exports.ArgSpec = function ArgSpec(validator, opt_optional) {
-    _classCallCheck(this, ArgSpec);
-
-    var self = this;
-    this.validator = function (p) {
-        if (self.optional && !type.isJustDef(p)) {
-            return;
-        }
-        validator(p);
-    };
-    this.optional = !!opt_optional;
-};
-
-function and_(v1, v2) {
-    return function (p) {
-        v1(p);
-        v2(p);
-    };
-}
-function stringSpec(opt_validator, opt_optional) {
-    function stringValidator(p) {
-        if (!type.isString(p)) {
-            throw 'Expected string.';
-        }
-    }
-    var validator = void 0;
-    if (opt_validator) {
-        validator = and_(stringValidator, opt_validator);
-    } else {
-        validator = stringValidator;
-    }
-    return new ArgSpec(validator, opt_optional);
-}
-function uploadDataSpec() {
-    return new ArgSpec(function (p) {
-        var valid = p instanceof Uint8Array || p instanceof ArrayBuffer || type.isNativeBlobDefined() && p instanceof Blob;
-        if (!valid) {
-            throw 'Expected Blob or File.';
-        }
-    });
-}
-function metadataSpec(opt_optional) {
-    return new ArgSpec(MetadataUtils.metadataValidator, opt_optional);
-}
-function nonNegativeNumberSpec() {
-    return new ArgSpec(function (p) {
-        var valid = type.isNumber(p) && p >= 0;
-        if (!valid) {
-            throw 'Expected a number 0 or greater.';
-        }
-    });
-}
-function looseObjectSpec(opt_validator, opt_optional) {
-    return new ArgSpec(function (p) {
-        var isLooseObject = p === null || type.isDef(p) && p instanceof Object;
-        if (!isLooseObject) {
-            throw 'Expected an Object.';
-        }
-        if (opt_validator !== undefined && opt_validator !== null) {
-            opt_validator(p);
-        }
-    }, opt_optional);
-}
-function nullFunctionSpec(opt_optional) {
-    return new ArgSpec(function (p) {
-        var valid = p === null || type.isFunction(p);
-        if (!valid) {
-            throw 'Expected a Function.';
-        }
-    }, opt_optional);
-}
-//# sourceMappingURL=args.js.map
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.contains = contains;
-exports.clone = clone;
-exports.remove = remove;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * Returns true if the object is contained in the array (compared with ===).
- * @template T
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/function contains(array, elem) {
-    return array.indexOf(elem) !== -1;
-}
-/**
- * Returns a shallow copy of the array or array-like object (e.g. arguments).
- * @template T
- */
-function clone(arraylike) {
-    return Array.prototype.slice.call(arraylike);
-}
-/**
- * Removes the given element from the given array, if it is contained.
- * Directly modifies the passed-in array.
- * @template T
- */
-function remove(array, elem) {
-    var i = array.indexOf(elem);
-    if (i !== -1) {
-        array.splice(i, 1);
-    }
-}
-//# sourceMappingURL=array.js.map
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Mapping = undefined;
-exports.noXform_ = noXform_;
-exports.xformPath = xformPath;
-exports.getMappings = getMappings;
-exports.addRef = addRef;
-exports.fromResource = fromResource;
-exports.fromResourceString = fromResourceString;
-exports.toResourceString = toResourceString;
-exports.metadataValidator = metadataValidator;
-
-var _json = __webpack_require__(233);
-
-var json = _interopRequireWildcard(_json);
-
-var _location = __webpack_require__(24);
-
-var _path = __webpack_require__(57);
-
-var path = _interopRequireWildcard(_path);
-
-var _type = __webpack_require__(3);
-
-var type = _interopRequireWildcard(_type);
-
-var _url = __webpack_require__(38);
-
-var UrlUtils = _interopRequireWildcard(_url);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-function noXform_(metadata, value) {
-    return value;
-}
-/**
- * @struct
- */
-
-var Mapping = exports.Mapping = function Mapping(server, opt_local, opt_writable, opt_xform) {
-    _classCallCheck(this, Mapping);
-
-    this.server = server;
-    this.local = opt_local || server;
-    this.writable = !!opt_writable;
-    this.xform = opt_xform || noXform_;
-};
-
-var mappings_ = null;
-function xformPath(fullPath) {
-    var valid = type.isString(fullPath);
-    if (!valid || fullPath.length < 2) {
-        return fullPath;
-    } else {
-        fullPath = fullPath;
-        return path.lastComponent(fullPath);
-    }
-}
-function getMappings() {
-    if (mappings_) {
-        return mappings_;
-    }
-    var mappings = [];
-    mappings.push(new Mapping('bucket'));
-    mappings.push(new Mapping('generation'));
-    mappings.push(new Mapping('metageneration'));
-    mappings.push(new Mapping('name', 'fullPath', true));
-
-    var nameMapping = new Mapping('name');
-    nameMapping.xform = function (metadata, fullPath) {
-        return xformPath(fullPath);
-    };
-    mappings.push(nameMapping);
-    /**
-     * Coerces the second param to a number, if it is defined.
-     */
-
-    var sizeMapping = new Mapping('size');
-    sizeMapping.xform = function (metadata, size) {
-        if (type.isDef(size)) {
-            return +size;
-        } else {
-            return size;
-        }
-    };
-    mappings.push(sizeMapping);
-    mappings.push(new Mapping('timeCreated'));
-    mappings.push(new Mapping('updated'));
-    mappings.push(new Mapping('md5Hash', null, true));
-    mappings.push(new Mapping('cacheControl', null, true));
-    mappings.push(new Mapping('contentDisposition', null, true));
-    mappings.push(new Mapping('contentEncoding', null, true));
-    mappings.push(new Mapping('contentLanguage', null, true));
-    mappings.push(new Mapping('contentType', null, true));
-    mappings.push(new Mapping('metadata', 'customMetadata', true));
-    /**
-     * Transforms a comma-separated string of tokens into a list of download
-     * URLs.
-     */
-
-    mappings.push(new Mapping('downloadTokens', 'downloadURLs', false, function (metadata, tokens) {
-        var valid = type.isString(tokens) && tokens.length > 0;
-        if (!valid) {
-            // This can happen if objects are uploaded through GCS and retrieved
-            // through list, so we don't want to throw an Error.
-            return [];
-        }
-        var encode = encodeURIComponent;
-        var tokensList = tokens.split(',');
-        var urls = tokensList.map(function (token) {
-            var bucket = metadata['bucket'];
-            var path = metadata['fullPath'];
-            var urlPart = '/b/' + encode(bucket) + '/o/' + encode(path);
-            var base = UrlUtils.makeDownloadUrl(urlPart);
-            var queryString = UrlUtils.makeQueryString({ 'alt': 'media', 'token': token });
-            return base + queryString;
-        });
-        return urls;
-    }));
-    mappings_ = mappings;
-    return mappings_;
-}
-function addRef(metadata, authWrapper) {
-    Object.defineProperty(metadata, 'ref', { get: function () {
-            var bucket = metadata['bucket'];
-            var path = metadata['fullPath'];
-            var loc = new _location.Location(bucket, path);
-            return authWrapper.makeStorageReference(loc);
-        } });
-}
-function fromResource(authWrapper, resource, mappings) {
-    var metadata = {};
-    metadata['type'] = 'file';
-    var len = mappings.length;
-    for (var i = 0; i < len; i++) {
-        var mapping = mappings[i];
-        metadata[mapping.local] = mapping.xform(metadata, resource[mapping.server]);
-    }
-    addRef(metadata, authWrapper);
-    return metadata;
-}
-function fromResourceString(authWrapper, resourceString, mappings) {
-    var obj = json.jsonObjectOrNull(resourceString);
-    if (obj === null) {
-        return null;
-    }
-
-    return fromResource(authWrapper, obj, mappings);
-}
-function toResourceString(metadata, mappings) {
-    var resource = {};
-    var len = mappings.length;
-    for (var i = 0; i < len; i++) {
-        var mapping = mappings[i];
-        if (mapping.writable) {
-            resource[mapping.server] = metadata[mapping.local];
-        }
-    }
-    return JSON.stringify(resource);
-}
-function metadataValidator(p) {
-    var validType = p && type.isObject(p);
-    if (!validType) {
-        throw 'Expected Metadata object.';
-    }
-    for (var key in p) {
-        var val = p[key];
-        if (key === 'customMetadata') {
-            if (!type.isObject(val)) {
-                throw 'Expected object for \'customMetadata\' mapping.';
-            }
-        } else {
-            if (type.isNonNullObject(val)) {
-                throw 'Mapping for \'' + key + '\' cannot be an object.';
-            }
-        }
-    }
-}
-//# sourceMappingURL=metadata.js.map
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.StringData = exports.StringFormat = undefined;
-exports.formatValidator = formatValidator;
-exports.dataFromString = dataFromString;
-exports.utf8Bytes_ = utf8Bytes_;
-exports.percentEncodedBytes_ = percentEncodedBytes_;
-exports.base64Bytes_ = base64Bytes_;
-exports.dataURLBytes_ = dataURLBytes_;
-exports.dataURLContentType_ = dataURLContentType_;
-
-var _error = __webpack_require__(6);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
-                                                                                                                                                          * Copyright 2017 Google Inc.
-                                                                                                                                                          *
-                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                          * you may not use this file except in compliance with the License.
-                                                                                                                                                          * You may obtain a copy of the License at
-                                                                                                                                                          *
-                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                          *
-                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                          * See the License for the specific language governing permissions and
-                                                                                                                                                          * limitations under the License.
-                                                                                                                                                          */
-
-
-var StringFormat = exports.StringFormat = {
-    RAW: 'raw',
-    BASE64: 'base64',
-    BASE64URL: 'base64url',
-    DATA_URL: 'data_url'
-};
-function formatValidator(stringFormat) {
-    switch (stringFormat) {
-        case StringFormat.RAW:
-        case StringFormat.BASE64:
-        case StringFormat.BASE64URL:
-        case StringFormat.DATA_URL:
-            return;
-        default:
-            throw 'Expected one of the event types: [' + StringFormat.RAW + ', ' + StringFormat.BASE64 + ', ' + StringFormat.BASE64URL + ', ' + StringFormat.DATA_URL + '].';
-    }
-}
-/**
- * @struct
- */
-
-var StringData = exports.StringData = function StringData(data, opt_contentType) {
-    _classCallCheck(this, StringData);
-
-    this.data = data;
-    this.contentType = opt_contentType || null;
-};
-
-function dataFromString(format, string) {
-    switch (format) {
-        case StringFormat.RAW:
-            return new StringData(utf8Bytes_(string));
-        case StringFormat.BASE64:
-        case StringFormat.BASE64URL:
-            return new StringData(base64Bytes_(format, string));
-        case StringFormat.DATA_URL:
-            return new StringData(dataURLBytes_(string), dataURLContentType_(string));
-    }
-    // assert(false);
-    throw errorsExports.unknown();
-}
-function utf8Bytes_(string) {
-    var b = [];
-    for (var i = 0; i < string.length; i++) {
-        var c = string.charCodeAt(i);
-        if (c <= 127) {
-            b.push(c);
-        } else {
-            if (c <= 2047) {
-                b.push(192 | c >> 6, 128 | c & 63);
-            } else {
-                if ((c & 64512) == 55296) {
-                    // The start of a surrogate pair.
-                    var valid = i < string.length - 1 && (string.charCodeAt(i + 1) & 64512) == 56320;
-                    if (!valid) {
-                        // The second surrogate wasn't there.
-                        b.push(239, 191, 189);
-                    } else {
-                        var hi = c;
-                        var lo = string.charCodeAt(++i);
-                        c = 65536 | (hi & 1023) << 10 | lo & 1023;
-                        b.push(240 | c >> 18, 128 | c >> 12 & 63, 128 | c >> 6 & 63, 128 | c & 63);
-                    }
-                } else {
-                    if ((c & 64512) == 56320) {
-                        // Invalid low surrogate.
-                        b.push(239, 191, 189);
-                    } else {
-                        b.push(224 | c >> 12, 128 | c >> 6 & 63, 128 | c & 63);
-                    }
-                }
-            }
-        }
-    }
-    return new Uint8Array(b);
-}
-function percentEncodedBytes_(string) {
-    var decoded = void 0;
-    try {
-        decoded = decodeURIComponent(string);
-    } catch (e) {
-        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Malformed data URL.');
-    }
-    return utf8Bytes_(decoded);
-}
-function base64Bytes_(format, string) {
-    switch (format) {
-        case StringFormat.BASE64:
-            {
-                var hasMinus = string.indexOf('-') !== -1;
-                var hasUnder = string.indexOf('_') !== -1;
-                if (hasMinus || hasUnder) {
-                    var invalidChar = hasMinus ? '-' : '_';
-                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + invalidChar + '\' found: is it base64url encoded?');
-                }
-                break;
-            }
-        case StringFormat.BASE64URL:
-            {
-                var hasPlus = string.indexOf('+') !== -1;
-                var hasSlash = string.indexOf('/') !== -1;
-                if (hasPlus || hasSlash) {
-                    var _invalidChar = hasPlus ? '+' : '/';
-                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + _invalidChar + '\' found: is it base64 encoded?');
-                }
-                string = string.replace(/-/g, '+').replace(/_/g, '/');
-                break;
-            }
-    }
-    var bytes = void 0;
-    try {
-        bytes = atob(string);
-    } catch (e) {
-        throw errorsExports.invalidFormat(format, 'Invalid character found');
-    }
-    var array = new Uint8Array(bytes.length);
-    for (var i = 0; i < bytes.length; i++) {
-        array[i] = bytes.charCodeAt(i);
-    }
-    return array;
-}
-/**
- * @struct
- */
-
-var DataURLParts = function DataURLParts(dataURL) {
-    _classCallCheck(this, DataURLParts);
-
-    this.base64 = false;
-    this.contentType = null;
-    var matches = dataURL.match(/^data:([^,]+)?,/);
-    if (matches === null) {
-        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Must be formatted \'data:[<mediatype>][;base64],<data>');
-    }
-    var middle = matches[1] || null;
-    if (middle != null) {
-        this.base64 = endsWith(middle, ';base64');
-        this.contentType = this.base64 ? middle.substring(0, middle.length - ';base64'.length) : middle;
-    }
-    this.rest = dataURL.substring(dataURL.indexOf(',') + 1);
-};
-
-function dataURLBytes_(string) {
-    var parts = new DataURLParts(string);
-    if (parts.base64) {
-        return base64Bytes_(StringFormat.BASE64, parts.rest);
-    } else {
-        return percentEncodedBytes_(parts.rest);
-    }
-}
-function dataURLContentType_(string) {
-    var parts = new DataURLParts(string);
-    return parts.contentType;
-}
-function endsWith(s, end) {
-    var longEnough = s.length >= end.length;
-    if (!longEnough) {
-        return false;
-    }
-    return s.substring(s.length - end.length) === end;
-}
-//# sourceMappingURL=string.js.map
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.1.2
-Build: rev-4a4cc92
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.makeNormalUrl = makeNormalUrl;
-exports.makeDownloadUrl = makeDownloadUrl;
-exports.makeUploadUrl = makeUploadUrl;
-exports.makeQueryString = makeQueryString;
-
-var _constants = __webpack_require__(23);
-
-var constants = _interopRequireWildcard(_constants);
-
-var _object = __webpack_require__(12);
-
-var object = _interopRequireWildcard(_object);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Functions to create and manipulate URLs for the server API.
- */
-function makeNormalUrl(urlPart) {
-    return constants.domainBase + constants.apiBaseUrl + urlPart;
-}
-function makeDownloadUrl(urlPart) {
-    return constants.downloadBase + constants.apiBaseUrl + urlPart;
-}
-function makeUploadUrl(urlPart) {
-    return constants.domainBase + constants.apiUploadBaseUrl + urlPart;
-}
-function makeQueryString(params) {
-    var encode = encodeURIComponent;
-    var queryPart = '?';
-    object.forEach(params, function (key, val) {
-        var nextPart = encode(key) + '=' + encode(val);
-        queryPart = queryPart + nextPart + '&';
-    });
-    // Chop off the extra '&' or '?' on the end
-    queryPart = queryPart.slice(0, -1);
-    return queryPart;
-}
-//# sourceMappingURL=url.js.map
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _contentItems = __webpack_require__(1);
-
-var _contentItems2 = _interopRequireDefault(_contentItems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = {
-    template: __webpack_require__(243),
-    created: function created() {
-        var _this = this;
-
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            _context.next = 2;
-                            return _contentItems2.default.getAllExceptForHeadings();
-
-                        case 2:
-                            _this.items = _context.sent;
-
-                            Object.keys(_this.items).forEach(function (key) {
-                                var item = _this.items[key];
-                            });
-
-                        case 4:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, _this);
-        }))();
-    },
-    data: function data() {
-        return {
-            items: {}
-        };
-    },
-
-    computed: {
-        numItems: function numItems() {
-            return this.items && Object.keys(this.items).length;
-        }
-    },
-    methods: {
-        remove: function remove(item) {
-            _contentItems2.default.remove(item.id);
-        },
-        recalculateProficiencyAggregationForAll: function recalculateProficiencyAggregationForAll() {
-            _contentItems2.default.recalculateProficiencyAggregationForEntireGraph();
-        }
-    }
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(245),
-    created: function created() {
-        var me = this;
-    },
-    data: function data() {
-        return {};
-    },
-
-    computed: {}
-};
-
-/***/ }),
-/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24003,13 +22617,13 @@ var _snack = __webpack_require__(25);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-var _vue = __webpack_require__(19);
+var _vue = __webpack_require__(20);
 
 var _vue2 = _interopRequireDefault(_vue);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _store = __webpack_require__(20);
+var _store = __webpack_require__(15);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -24066,6 +22680,9 @@ exports.default = {
         },
         openNodeId: function openNodeId() {
             return this.$store.state.openNodeId;
+        },
+        nodeIdToSync: function nodeIdToSync() {
+            return this.$store.state.nodeIdToSync;
         }
     },
     watch: {
@@ -24086,6 +22703,9 @@ exports.default = {
                 return;
             }
             openTooltipFromId(newNodeId);
+        },
+        nodeIdToSync: function nodeIdToSync(newNodeId, oldNodeId) {
+            newNodeId && syncGraphWithNode(newNodeId);
         }
     },
     methods: {
@@ -24180,10 +22800,10 @@ function getSizeFromContent(content) {
 function createEdgeId(nodeOneId, nodeTwoId) {
     return nodeOneId + "__" + nodeTwoId;
 }
-
-PubSub.subscribe('syncGraphWithNode', function (eventName, treeId) {
-    syncGraphWithNode(treeId);
-});
+//
+// PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
+//     syncGraphWithNode(treeId)
+// })
 
 function syncGraphWithNode(treeId) {
     if (!s) {
@@ -24507,8 +23127,8 @@ function initKnawledgeMap(treeIdToJumpTo) {
         };
     }();
 
+    console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now());
     var me = this; // bound/called
-
 
     if (typeof sigma !== 'undefined') {
         sigma.settings.font = 'Fredoka One';
@@ -24520,18 +23140,21 @@ function initKnawledgeMap(treeIdToJumpTo) {
                 while (1) {
                     switch (_context3.prev = _context3.next) {
                         case 0:
-                            _context3.next = 2;
+                            console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now());
+                            _context3.next = 3;
                             return loadTreeAndSubTrees(1, 1);
 
-                        case 2:
+                        case 3:
+                            console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now());
                             try {
                                 initSigma();
+                                console.log("5: knawledgeMap.js initSigma finished" + Date.now());
                             } catch (err) {
                                 console.error('initSigma Error', err);
                                 alert('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992');
                             }
 
-                        case 3:
+                        case 5:
                         case 'end':
                             return _context3.stop();
                     }
@@ -24864,6 +23487,1420 @@ function initKnawledgeMap(treeIdToJumpTo) {
 }
 
 /***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(14);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(16);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(13);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _exercise = __webpack_require__(17);
+
+var _exercise2 = _interopRequireDefault(_exercise);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExerciseQA = function (_Exercise) {
+    _inherits(ExerciseQA, _Exercise);
+
+    function ExerciseQA(_ref) {
+        var contentItemIds = _ref.contentItemIds,
+            question = _ref.question,
+            answer = _ref.answer;
+
+        _classCallCheck(this, ExerciseQA);
+
+        var _this = _possibleConstructorReturn(this, (ExerciseQA.__proto__ || Object.getPrototypeOf(ExerciseQA)).call(this, { contentItemIds: contentItemIds }));
+
+        _this.type = 'QA';
+
+        //question and answer can both be user generated HTML that can include image links to imgur - or I guess firebase stored images too
+        _this.question = question;
+        _this.answer = answer;
+        _this.id = (0, _md2.default)(JSON.stringify({ question: question, answer: answer }));
+        _get(ExerciseQA.prototype.__proto__ || Object.getPrototypeOf(ExerciseQA.prototype), 'init', _this).call(_this);
+        return _this;
+    }
+
+    _createClass(ExerciseQA, [{
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(ExerciseQA.prototype.__proto__ || Object.getPrototypeOf(ExerciseQA.prototype), 'getDBRepresentation', this).call(this);
+
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                question: this.question,
+                answer: this.answer,
+                type: this.type
+            });
+        }
+    }, {
+        key: 'editQuestion',
+        value: function editQuestion() {
+            //create new exercise
+
+            //remove old exercise from any locations it was in - except user interactions
+            //as a property under certain contentItems
+
+            //add modified exercise to any locations it belongs in
+        }
+    }], [{
+        key: 'create',
+        value: function create(_ref2) {
+            var contentItemIds = _ref2.contentItemIds,
+                question = _ref2.question,
+                answer = _ref2.answer;
+
+            var exerciseQA = new ExerciseQA({ contentItemIds: contentItemIds, question: question, answer: answer });
+            return _get(ExerciseQA.__proto__ || Object.getPrototypeOf(ExerciseQA), 'create', this).call(this, exerciseQA);
+        }
+    }]);
+
+    return ExerciseQA;
+}(_exercise2.default);
+
+exports.default = ExerciseQA;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Fact = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(14);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _firebaseService = __webpack_require__(11);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+var _trees = __webpack_require__(2);
+
+var _lodash = __webpack_require__(13);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _contentItem = __webpack_require__(16);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// from './firebaseService'
+var Fact = exports.Fact = function (_ContentItem) {
+  _inherits(Fact, _ContentItem);
+
+  //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
+  function Fact(args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/) {
+    _classCallCheck(this, Fact);
+
+    var _this = _possibleConstructorReturn(this, (Fact.__proto__ || Object.getPrototypeOf(Fact)).call(this, args));
+    // if (initialParentTreeId){
+    //     super({initialParentTreeId})
+    // } else {
+    //     super()
+    // }
+
+
+    _this.type = 'fact';
+    _this.question = args.question && args.question.trim();
+    _this.answer = args.answer && args.answer.trim();
+    _this.id = args.id || (0, _md2.default)(JSON.stringify({ question: _this.question, answer: _this.answer }));
+
+    if (typeof window !== 'undefined' && window.facts && !window.facts[id]) window.facts[id] = _this; //TODO: john figure out what this does
+
+    _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'init', _this).call(_this);
+    return _this;
+  }
+
+  //bc certain properties used in the local js object in memory, shouldn't be stored in the db
+
+  _createClass(Fact, [{
+    key: 'getURIAdditionNotEncoded',
+    value: function getURIAdditionNotEncoded() {
+      return this.question + ":" + this.answer;
+    }
+  }, {
+    key: 'getURIAddition',
+    value: function getURIAddition() {
+      return encodeURIComponent(this.getURIAdditionNotEncoded());
+    }
+  }, {
+    key: 'getDBRepresentation',
+    value: function getDBRepresentation() {
+      var baseRep = _get(Fact.prototype.__proto__ || Object.getPrototypeOf(Fact.prototype), 'getDBRepresentation', this).call(this);
+
+      return (0, _lodash2.default)(baseRep, {
+        id: this.id,
+        question: this.question,
+        answer: this.answer,
+        type: this.type
+      });
+    }
+  }]);
+
+  return Fact;
+}(_contentItem2.default);
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Heading = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(14);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(16);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(13);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Heading = exports.Heading = function (_ContentItem) {
+    _inherits(Heading, _ContentItem);
+
+    function Heading(args /*={title, initialParentTreeId} and more */) {
+        _classCallCheck(this, Heading);
+
+        var _this = _possibleConstructorReturn(this, (Heading.__proto__ || Object.getPrototypeOf(Heading)).call(this, args));
+
+        _this.type = 'heading';
+
+        _this.title = args.title && args.title.trim();
+        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
+        _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'init', _this).call(_this);
+        return _this;
+    }
+
+    _createClass(Heading, [{
+        key: 'getURIAddition',
+        value: function getURIAddition() {
+            return encodeURIComponent(this.title);
+        }
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(Heading.prototype.__proto__ || Object.getPrototypeOf(Heading.prototype), 'getDBRepresentation', this).call(this);
+
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                title: this.title,
+                type: this.type
+            });
+        }
+    }]);
+
+    return Heading;
+}(_contentItem2.default);
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Skill = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _md = __webpack_require__(14);
+
+var _md2 = _interopRequireDefault(_md);
+
+var _contentItem = __webpack_require__(16);
+
+var _contentItem2 = _interopRequireDefault(_contentItem);
+
+var _lodash = __webpack_require__(13);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _trees = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Skill = exports.Skill = function (_ContentItem) {
+    _inherits(Skill, _ContentItem);
+
+    /**ParentTreeId is used in skill and heading constructor so as to avoid ambiguity when calculating the id of two different skills with the same title
+     * e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -ar Verbs > 1st Person Plural
+     * vs. e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -er Verbs > 1st Person Plural
+     * ^^ Both skills are different, but have the same title: "1st Person Plural"
+     * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
+    */
+    function Skill(args /* ={title, initialParentTreeId} */) {
+        _classCallCheck(this, Skill);
+
+        var _this = _possibleConstructorReturn(this, (Skill.__proto__ || Object.getPrototypeOf(Skill)).call(this, args));
+        // if (initialParentTreeId){
+        //     super({initialParentTreeId})
+        // } else {
+        //     super()
+        // }
+
+
+        _this.type = 'skill';
+
+        _this.title = args.title && args.title.trim();
+        // this.calculateLongURI
+        _this.id = args.id || (0, _md2.default)(JSON.stringify({ title: _this.title, initialParentTreeId: args.initialParentTreeId }));
+        _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'init', _this).call(_this);
+        return _this;
+    }
+
+    _createClass(Skill, [{
+        key: 'getURIAddition',
+        value: function getURIAddition() {
+            return encodeURIComponent(this.title);
+        }
+    }, {
+        key: 'getDBRepresentation',
+        value: function getDBRepresentation() {
+            var baseRep = _get(Skill.prototype.__proto__ || Object.getPrototypeOf(Skill.prototype), 'getDBRepresentation', this).call(this);
+
+            return (0, _lodash2.default)(baseRep, {
+                id: this.id,
+                title: this.title,
+                type: this.type
+            });
+        }
+    }]);
+
+    return Skill;
+}(_contentItem2.default);
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _user = __webpack_require__(4);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _firebaseService = __webpack_require__(11);
+
+var _firebaseService2 = _interopRequireDefault(_firebaseService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var users = {}; // cache
+
+var Users = function () {
+    function Users() {
+        _classCallCheck(this, Users);
+    }
+
+    _createClass(Users, null, [{
+        key: 'get',
+
+        //returns promise
+        value: function get(userId) {
+            if (!userId) {
+                throw "Users.get(userId) error!. userId empty";
+            }
+            return new Promise(function getUserPromise(resolve, reject) {
+
+                //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
+                if (users[userId]) {
+                    resolve(users[userId]);
+                } else {
+                    _firebaseService2.default.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot) {
+                        var userData = snapshot.val();
+                        processUserData(userId, userData);
+                        resolve(userData);
+                    });
+                }
+            });
+        }
+    }, {
+        key: 'getAll',
+        value: function getAll() {
+            // firebase.database().ref('users/').once("value", function onFirebaseUserGet(snapshot){
+            //     let userData = snapshot.val();
+            //     users[userId] = userData // add to cache
+            //     resolve(userData)
+            // })
+
+        }
+    }]);
+
+    return Users;
+}();
+
+exports.default = Users;
+
+function processUserData(userId, userData) {
+    users[userId] = userData; // add to cache
+}
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.patchCapture = patchCapture;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ERROR_NAME = 'FirebaseError';
+var captureStackTrace = Error.captureStackTrace;
+// Export for faking in tests
+function patchCapture(captureFake) {
+    var result = captureStackTrace;
+    captureStackTrace = captureFake;
+    return result;
+}
+
+var FirebaseError = exports.FirebaseError = function FirebaseError(code, message) {
+    _classCallCheck(this, FirebaseError);
+
+    this.code = code;
+    this.message = message;
+
+    // We want the stack value, if implemented by Error
+    if (captureStackTrace) {
+        // Patches this.stack, omitted calls above ErrorFactory#create
+        captureStackTrace(this, ErrorFactory.prototype.create);
+    } else {
+        var err = Error.apply(this, arguments);
+        this.name = ERROR_NAME;
+        // Make non-enumerable getter for the property.
+        Object.defineProperty(this, 'stack', {
+            get: function get() {
+                return err.stack;
+            }
+        });
+    }
+};
+// Back-door inheritance
+
+
+FirebaseError.prototype = Object.create(Error.prototype);
+FirebaseError.prototype.constructor = FirebaseError;
+FirebaseError.prototype.name = ERROR_NAME;
+
+var ErrorFactory = exports.ErrorFactory = function () {
+    function ErrorFactory(service, serviceName, errors) {
+        _classCallCheck(this, ErrorFactory);
+
+        this.service = service;
+        this.serviceName = serviceName;
+        this.errors = errors;
+        // Matches {$name}, by default.
+        this.pattern = /\{\$([^}]+)}/g;
+        // empty
+    }
+
+    _createClass(ErrorFactory, [{
+        key: 'create',
+        value: function create(code, data) {
+            if (data === undefined) {
+                data = {};
+            }
+            var template = this.errors[code];
+            var fullCode = this.service + '/' + code;
+            var message = void 0;
+            if (template === undefined) {
+                message = "Error";
+            } else {
+                message = template.replace(this.pattern, function (match, key) {
+                    var value = data[key];
+                    return value !== undefined ? value.toString() : '<' + key + '?>';
+                });
+            }
+            // Service: Error message (service/code).
+            message = this.serviceName + ': ' + message + ' (' + fullCode + ').';
+            var err = new FirebaseError(fullCode, message);
+            // Populate the Error object with message parts for programmatic
+            // accesses (e.g., e.file).
+            for (var prop in data) {
+                if (!data.hasOwnProperty(prop) || prop.slice(-1) === '_') {
+                    continue;
+                }
+                err[prop] = data[prop];
+            }
+            return err;
+        }
+    }]);
+
+    return ErrorFactory;
+}();
+//# sourceMappingURL=errors.js.map
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var scope = void 0;
+if (typeof global !== 'undefined') {
+    scope = global;
+} else if (typeof self !== 'undefined') {
+    scope = self;
+} else {
+    try {
+        scope = Function('return this')();
+    } catch (e) {
+        throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+}
+var PromiseImpl = scope.Promise || __webpack_require__(226);
+var local = exports.local = {
+    Promise: PromiseImpl,
+    GoogPromise: PromiseImpl
+};
+//# sourceMappingURL=shared_promise.js.map
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ArgSpec = undefined;
+exports.validate = validate;
+exports.and_ = and_;
+exports.stringSpec = stringSpec;
+exports.uploadDataSpec = uploadDataSpec;
+exports.metadataSpec = metadataSpec;
+exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
+exports.looseObjectSpec = looseObjectSpec;
+exports.nullFunctionSpec = nullFunctionSpec;
+
+var _error = __webpack_require__(6);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+var _metadata = __webpack_require__(37);
+
+var MetadataUtils = _interopRequireWildcard(_metadata);
+
+var _type = __webpack_require__(3);
+
+var type = _interopRequireWildcard(_type);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+/**
+ * @param name Name of the function.
+ * @param specs Argument specs.
+ * @param passed The actual arguments passed to the function.
+ * @throws {fbs.Error} If the arguments are invalid.
+ */
+function validate(name, specs, passed) {
+    var minArgs = specs.length;
+    var maxArgs = specs.length;
+    for (var i = 0; i < specs.length; i++) {
+        if (specs[i].optional) {
+            minArgs = i;
+            break;
+        }
+    }
+    var validLength = minArgs <= passed.length && passed.length <= maxArgs;
+    if (!validLength) {
+        throw errorsExports.invalidArgumentCount(minArgs, maxArgs, name, passed.length);
+    }
+    for (var _i = 0; _i < passed.length; _i++) {
+        try {
+            specs[_i].validator(passed[_i]);
+        } catch (e) {
+            if (e instanceof Error) {
+                throw errorsExports.invalidArgument(_i, name, e.message);
+            } else {
+                throw errorsExports.invalidArgument(_i, name, e);
+            }
+        }
+    }
+}
+/**
+ * @struct
+ */
+
+var ArgSpec = exports.ArgSpec = function ArgSpec(validator, opt_optional) {
+    _classCallCheck(this, ArgSpec);
+
+    var self = this;
+    this.validator = function (p) {
+        if (self.optional && !type.isJustDef(p)) {
+            return;
+        }
+        validator(p);
+    };
+    this.optional = !!opt_optional;
+};
+
+function and_(v1, v2) {
+    return function (p) {
+        v1(p);
+        v2(p);
+    };
+}
+function stringSpec(opt_validator, opt_optional) {
+    function stringValidator(p) {
+        if (!type.isString(p)) {
+            throw 'Expected string.';
+        }
+    }
+    var validator = void 0;
+    if (opt_validator) {
+        validator = and_(stringValidator, opt_validator);
+    } else {
+        validator = stringValidator;
+    }
+    return new ArgSpec(validator, opt_optional);
+}
+function uploadDataSpec() {
+    return new ArgSpec(function (p) {
+        var valid = p instanceof Uint8Array || p instanceof ArrayBuffer || type.isNativeBlobDefined() && p instanceof Blob;
+        if (!valid) {
+            throw 'Expected Blob or File.';
+        }
+    });
+}
+function metadataSpec(opt_optional) {
+    return new ArgSpec(MetadataUtils.metadataValidator, opt_optional);
+}
+function nonNegativeNumberSpec() {
+    return new ArgSpec(function (p) {
+        var valid = type.isNumber(p) && p >= 0;
+        if (!valid) {
+            throw 'Expected a number 0 or greater.';
+        }
+    });
+}
+function looseObjectSpec(opt_validator, opt_optional) {
+    return new ArgSpec(function (p) {
+        var isLooseObject = p === null || type.isDef(p) && p instanceof Object;
+        if (!isLooseObject) {
+            throw 'Expected an Object.';
+        }
+        if (opt_validator !== undefined && opt_validator !== null) {
+            opt_validator(p);
+        }
+    }, opt_optional);
+}
+function nullFunctionSpec(opt_optional) {
+    return new ArgSpec(function (p) {
+        var valid = p === null || type.isFunction(p);
+        if (!valid) {
+            throw 'Expected a Function.';
+        }
+    }, opt_optional);
+}
+//# sourceMappingURL=args.js.map
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.contains = contains;
+exports.clone = clone;
+exports.remove = remove;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * Returns true if the object is contained in the array (compared with ===).
+ * @template T
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/function contains(array, elem) {
+    return array.indexOf(elem) !== -1;
+}
+/**
+ * Returns a shallow copy of the array or array-like object (e.g. arguments).
+ * @template T
+ */
+function clone(arraylike) {
+    return Array.prototype.slice.call(arraylike);
+}
+/**
+ * Removes the given element from the given array, if it is contained.
+ * Directly modifies the passed-in array.
+ * @template T
+ */
+function remove(array, elem) {
+    var i = array.indexOf(elem);
+    if (i !== -1) {
+        array.splice(i, 1);
+    }
+}
+//# sourceMappingURL=array.js.map
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Mapping = undefined;
+exports.noXform_ = noXform_;
+exports.xformPath = xformPath;
+exports.getMappings = getMappings;
+exports.addRef = addRef;
+exports.fromResource = fromResource;
+exports.fromResourceString = fromResourceString;
+exports.toResourceString = toResourceString;
+exports.metadataValidator = metadataValidator;
+
+var _json = __webpack_require__(233);
+
+var json = _interopRequireWildcard(_json);
+
+var _location = __webpack_require__(24);
+
+var _path = __webpack_require__(57);
+
+var path = _interopRequireWildcard(_path);
+
+var _type = __webpack_require__(3);
+
+var type = _interopRequireWildcard(_type);
+
+var _url = __webpack_require__(39);
+
+var UrlUtils = _interopRequireWildcard(_url);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+function noXform_(metadata, value) {
+    return value;
+}
+/**
+ * @struct
+ */
+
+var Mapping = exports.Mapping = function Mapping(server, opt_local, opt_writable, opt_xform) {
+    _classCallCheck(this, Mapping);
+
+    this.server = server;
+    this.local = opt_local || server;
+    this.writable = !!opt_writable;
+    this.xform = opt_xform || noXform_;
+};
+
+var mappings_ = null;
+function xformPath(fullPath) {
+    var valid = type.isString(fullPath);
+    if (!valid || fullPath.length < 2) {
+        return fullPath;
+    } else {
+        fullPath = fullPath;
+        return path.lastComponent(fullPath);
+    }
+}
+function getMappings() {
+    if (mappings_) {
+        return mappings_;
+    }
+    var mappings = [];
+    mappings.push(new Mapping('bucket'));
+    mappings.push(new Mapping('generation'));
+    mappings.push(new Mapping('metageneration'));
+    mappings.push(new Mapping('name', 'fullPath', true));
+
+    var nameMapping = new Mapping('name');
+    nameMapping.xform = function (metadata, fullPath) {
+        return xformPath(fullPath);
+    };
+    mappings.push(nameMapping);
+    /**
+     * Coerces the second param to a number, if it is defined.
+     */
+
+    var sizeMapping = new Mapping('size');
+    sizeMapping.xform = function (metadata, size) {
+        if (type.isDef(size)) {
+            return +size;
+        } else {
+            return size;
+        }
+    };
+    mappings.push(sizeMapping);
+    mappings.push(new Mapping('timeCreated'));
+    mappings.push(new Mapping('updated'));
+    mappings.push(new Mapping('md5Hash', null, true));
+    mappings.push(new Mapping('cacheControl', null, true));
+    mappings.push(new Mapping('contentDisposition', null, true));
+    mappings.push(new Mapping('contentEncoding', null, true));
+    mappings.push(new Mapping('contentLanguage', null, true));
+    mappings.push(new Mapping('contentType', null, true));
+    mappings.push(new Mapping('metadata', 'customMetadata', true));
+    /**
+     * Transforms a comma-separated string of tokens into a list of download
+     * URLs.
+     */
+
+    mappings.push(new Mapping('downloadTokens', 'downloadURLs', false, function (metadata, tokens) {
+        var valid = type.isString(tokens) && tokens.length > 0;
+        if (!valid) {
+            // This can happen if objects are uploaded through GCS and retrieved
+            // through list, so we don't want to throw an Error.
+            return [];
+        }
+        var encode = encodeURIComponent;
+        var tokensList = tokens.split(',');
+        var urls = tokensList.map(function (token) {
+            var bucket = metadata['bucket'];
+            var path = metadata['fullPath'];
+            var urlPart = '/b/' + encode(bucket) + '/o/' + encode(path);
+            var base = UrlUtils.makeDownloadUrl(urlPart);
+            var queryString = UrlUtils.makeQueryString({ 'alt': 'media', 'token': token });
+            return base + queryString;
+        });
+        return urls;
+    }));
+    mappings_ = mappings;
+    return mappings_;
+}
+function addRef(metadata, authWrapper) {
+    Object.defineProperty(metadata, 'ref', { get: function () {
+            var bucket = metadata['bucket'];
+            var path = metadata['fullPath'];
+            var loc = new _location.Location(bucket, path);
+            return authWrapper.makeStorageReference(loc);
+        } });
+}
+function fromResource(authWrapper, resource, mappings) {
+    var metadata = {};
+    metadata['type'] = 'file';
+    var len = mappings.length;
+    for (var i = 0; i < len; i++) {
+        var mapping = mappings[i];
+        metadata[mapping.local] = mapping.xform(metadata, resource[mapping.server]);
+    }
+    addRef(metadata, authWrapper);
+    return metadata;
+}
+function fromResourceString(authWrapper, resourceString, mappings) {
+    var obj = json.jsonObjectOrNull(resourceString);
+    if (obj === null) {
+        return null;
+    }
+
+    return fromResource(authWrapper, obj, mappings);
+}
+function toResourceString(metadata, mappings) {
+    var resource = {};
+    var len = mappings.length;
+    for (var i = 0; i < len; i++) {
+        var mapping = mappings[i];
+        if (mapping.writable) {
+            resource[mapping.server] = metadata[mapping.local];
+        }
+    }
+    return JSON.stringify(resource);
+}
+function metadataValidator(p) {
+    var validType = p && type.isObject(p);
+    if (!validType) {
+        throw 'Expected Metadata object.';
+    }
+    for (var key in p) {
+        var val = p[key];
+        if (key === 'customMetadata') {
+            if (!type.isObject(val)) {
+                throw 'Expected object for \'customMetadata\' mapping.';
+            }
+        } else {
+            if (type.isNonNullObject(val)) {
+                throw 'Mapping for \'' + key + '\' cannot be an object.';
+            }
+        }
+    }
+}
+//# sourceMappingURL=metadata.js.map
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.StringData = exports.StringFormat = undefined;
+exports.formatValidator = formatValidator;
+exports.dataFromString = dataFromString;
+exports.utf8Bytes_ = utf8Bytes_;
+exports.percentEncodedBytes_ = percentEncodedBytes_;
+exports.base64Bytes_ = base64Bytes_;
+exports.dataURLBytes_ = dataURLBytes_;
+exports.dataURLContentType_ = dataURLContentType_;
+
+var _error = __webpack_require__(6);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                          * Copyright 2017 Google Inc.
+                                                                                                                                                          *
+                                                                                                                                                          * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                          * you may not use this file except in compliance with the License.
+                                                                                                                                                          * You may obtain a copy of the License at
+                                                                                                                                                          *
+                                                                                                                                                          *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                          *
+                                                                                                                                                          * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                          * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                          * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                          * See the License for the specific language governing permissions and
+                                                                                                                                                          * limitations under the License.
+                                                                                                                                                          */
+
+
+var StringFormat = exports.StringFormat = {
+    RAW: 'raw',
+    BASE64: 'base64',
+    BASE64URL: 'base64url',
+    DATA_URL: 'data_url'
+};
+function formatValidator(stringFormat) {
+    switch (stringFormat) {
+        case StringFormat.RAW:
+        case StringFormat.BASE64:
+        case StringFormat.BASE64URL:
+        case StringFormat.DATA_URL:
+            return;
+        default:
+            throw 'Expected one of the event types: [' + StringFormat.RAW + ', ' + StringFormat.BASE64 + ', ' + StringFormat.BASE64URL + ', ' + StringFormat.DATA_URL + '].';
+    }
+}
+/**
+ * @struct
+ */
+
+var StringData = exports.StringData = function StringData(data, opt_contentType) {
+    _classCallCheck(this, StringData);
+
+    this.data = data;
+    this.contentType = opt_contentType || null;
+};
+
+function dataFromString(format, string) {
+    switch (format) {
+        case StringFormat.RAW:
+            return new StringData(utf8Bytes_(string));
+        case StringFormat.BASE64:
+        case StringFormat.BASE64URL:
+            return new StringData(base64Bytes_(format, string));
+        case StringFormat.DATA_URL:
+            return new StringData(dataURLBytes_(string), dataURLContentType_(string));
+    }
+    // assert(false);
+    throw errorsExports.unknown();
+}
+function utf8Bytes_(string) {
+    var b = [];
+    for (var i = 0; i < string.length; i++) {
+        var c = string.charCodeAt(i);
+        if (c <= 127) {
+            b.push(c);
+        } else {
+            if (c <= 2047) {
+                b.push(192 | c >> 6, 128 | c & 63);
+            } else {
+                if ((c & 64512) == 55296) {
+                    // The start of a surrogate pair.
+                    var valid = i < string.length - 1 && (string.charCodeAt(i + 1) & 64512) == 56320;
+                    if (!valid) {
+                        // The second surrogate wasn't there.
+                        b.push(239, 191, 189);
+                    } else {
+                        var hi = c;
+                        var lo = string.charCodeAt(++i);
+                        c = 65536 | (hi & 1023) << 10 | lo & 1023;
+                        b.push(240 | c >> 18, 128 | c >> 12 & 63, 128 | c >> 6 & 63, 128 | c & 63);
+                    }
+                } else {
+                    if ((c & 64512) == 56320) {
+                        // Invalid low surrogate.
+                        b.push(239, 191, 189);
+                    } else {
+                        b.push(224 | c >> 12, 128 | c >> 6 & 63, 128 | c & 63);
+                    }
+                }
+            }
+        }
+    }
+    return new Uint8Array(b);
+}
+function percentEncodedBytes_(string) {
+    var decoded = void 0;
+    try {
+        decoded = decodeURIComponent(string);
+    } catch (e) {
+        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Malformed data URL.');
+    }
+    return utf8Bytes_(decoded);
+}
+function base64Bytes_(format, string) {
+    switch (format) {
+        case StringFormat.BASE64:
+            {
+                var hasMinus = string.indexOf('-') !== -1;
+                var hasUnder = string.indexOf('_') !== -1;
+                if (hasMinus || hasUnder) {
+                    var invalidChar = hasMinus ? '-' : '_';
+                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + invalidChar + '\' found: is it base64url encoded?');
+                }
+                break;
+            }
+        case StringFormat.BASE64URL:
+            {
+                var hasPlus = string.indexOf('+') !== -1;
+                var hasSlash = string.indexOf('/') !== -1;
+                if (hasPlus || hasSlash) {
+                    var _invalidChar = hasPlus ? '+' : '/';
+                    throw errorsExports.invalidFormat(format, 'Invalid character \'' + _invalidChar + '\' found: is it base64 encoded?');
+                }
+                string = string.replace(/-/g, '+').replace(/_/g, '/');
+                break;
+            }
+    }
+    var bytes = void 0;
+    try {
+        bytes = atob(string);
+    } catch (e) {
+        throw errorsExports.invalidFormat(format, 'Invalid character found');
+    }
+    var array = new Uint8Array(bytes.length);
+    for (var i = 0; i < bytes.length; i++) {
+        array[i] = bytes.charCodeAt(i);
+    }
+    return array;
+}
+/**
+ * @struct
+ */
+
+var DataURLParts = function DataURLParts(dataURL) {
+    _classCallCheck(this, DataURLParts);
+
+    this.base64 = false;
+    this.contentType = null;
+    var matches = dataURL.match(/^data:([^,]+)?,/);
+    if (matches === null) {
+        throw errorsExports.invalidFormat(StringFormat.DATA_URL, 'Must be formatted \'data:[<mediatype>][;base64],<data>');
+    }
+    var middle = matches[1] || null;
+    if (middle != null) {
+        this.base64 = endsWith(middle, ';base64');
+        this.contentType = this.base64 ? middle.substring(0, middle.length - ';base64'.length) : middle;
+    }
+    this.rest = dataURL.substring(dataURL.indexOf(',') + 1);
+};
+
+function dataURLBytes_(string) {
+    var parts = new DataURLParts(string);
+    if (parts.base64) {
+        return base64Bytes_(StringFormat.BASE64, parts.rest);
+    } else {
+        return percentEncodedBytes_(parts.rest);
+    }
+}
+function dataURLContentType_(string) {
+    var parts = new DataURLParts(string);
+    return parts.contentType;
+}
+function endsWith(s, end) {
+    var longEnough = s.length >= end.length;
+    if (!longEnough) {
+        return false;
+    }
+    return s.substring(s.length - end.length) === end;
+}
+//# sourceMappingURL=string.js.map
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.1.2
+Build: rev-4a4cc92
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.makeNormalUrl = makeNormalUrl;
+exports.makeDownloadUrl = makeDownloadUrl;
+exports.makeUploadUrl = makeUploadUrl;
+exports.makeQueryString = makeQueryString;
+
+var _constants = __webpack_require__(23);
+
+var constants = _interopRequireWildcard(_constants);
+
+var _object = __webpack_require__(12);
+
+var object = _interopRequireWildcard(_object);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Functions to create and manipulate URLs for the server API.
+ */
+function makeNormalUrl(urlPart) {
+    return constants.domainBase + constants.apiBaseUrl + urlPart;
+}
+function makeDownloadUrl(urlPart) {
+    return constants.downloadBase + constants.apiBaseUrl + urlPart;
+}
+function makeUploadUrl(urlPart) {
+    return constants.domainBase + constants.apiUploadBaseUrl + urlPart;
+}
+function makeQueryString(params) {
+    var encode = encodeURIComponent;
+    var queryPart = '?';
+    object.forEach(params, function (key, val) {
+        var nextPart = encode(key) + '=' + encode(val);
+        queryPart = queryPart + nextPart + '&';
+    });
+    // Chop off the extra '&' or '?' on the end
+    queryPart = queryPart.slice(0, -1);
+    return queryPart;
+}
+//# sourceMappingURL=url.js.map
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _contentItems = __webpack_require__(1);
+
+var _contentItems2 = _interopRequireDefault(_contentItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = {
+    template: __webpack_require__(243),
+    created: function created() {
+        var _this = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.next = 2;
+                            return _contentItems2.default.getAllExceptForHeadings();
+
+                        case 2:
+                            _this.items = _context.sent;
+
+                            Object.keys(_this.items).forEach(function (key) {
+                                var item = _this.items[key];
+                            });
+
+                        case 4:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this);
+        }))();
+    },
+    data: function data() {
+        return {
+            items: {}
+        };
+    },
+
+    computed: {
+        numItems: function numItems() {
+            return this.items && Object.keys(this.items).length;
+        }
+    },
+    methods: {
+        remove: function remove(item) {
+            _contentItems2.default.remove(item.id);
+        },
+        recalculateProficiencyAggregationForAll: function recalculateProficiencyAggregationForAll() {
+            _contentItems2.default.recalculateProficiencyAggregationForEntireGraph();
+        }
+    }
+};
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: ['contentItemId', 'exerciseToReplaceId'],
+    template: __webpack_require__(245),
+    created: function created() {
+        var me = this;
+    },
+    data: function data() {
+        return {};
+    },
+
+    computed: {}
+};
+
+/***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24874,7 +24911,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(17);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
@@ -24882,7 +24919,7 @@ var _exercises = __webpack_require__(49);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
-var _exerciseQA = __webpack_require__(27);
+var _exerciseQA = __webpack_require__(28);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -25173,7 +25210,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.timeFromNow = timeFromNow;
 exports.secondsToPretty = secondsToPretty;
 
-var _vue = __webpack_require__(19);
+var _vue = __webpack_require__(20);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -25431,7 +25468,7 @@ var _md = __webpack_require__(14);
 
 var _md2 = _interopRequireDefault(_md);
 
-var _contentItem = __webpack_require__(15);
+var _contentItem = __webpack_require__(16);
 
 var _contentItem2 = _interopRequireDefault(_contentItem);
 
@@ -25439,11 +25476,11 @@ var _lodash = __webpack_require__(13);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(17);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(27);
+var _exerciseQA = __webpack_require__(28);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -25565,7 +25602,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(33);
+var _shared_promise = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25860,7 +25897,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(32);
+var _errors = __webpack_require__(33);
 
 var _errors2 = __webpack_require__(22);
 
@@ -26250,7 +26287,7 @@ var _fs = __webpack_require__(232);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(37);
+var _string = __webpack_require__(38);
 
 var string = _interopRequireWildcard(_string);
 
@@ -26494,7 +26531,7 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(35);
+var _array = __webpack_require__(36);
 
 var array = _interopRequireWildcard(_array);
 
@@ -26504,7 +26541,7 @@ var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(36);
+var _metadata = __webpack_require__(37);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -26518,7 +26555,7 @@ var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(38);
+var _url = __webpack_require__(39);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -26972,7 +27009,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(34);
+var _args = __webpack_require__(35);
 
 var args = _interopRequireWildcard(_args);
 
@@ -26984,7 +27021,7 @@ var errorsExports = _interopRequireWildcard(_error);
 
 var _location = __webpack_require__(24);
 
-var _metadata = __webpack_require__(36);
+var _metadata = __webpack_require__(37);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -27000,7 +27037,7 @@ var _requests = __webpack_require__(58);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(37);
+var _string = __webpack_require__(38);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -38396,7 +38433,7 @@ var _treeReview = __webpack_require__(42);
 
 var _treeReview2 = _interopRequireDefault(_treeReview);
 
-var _contentList = __webpack_require__(39);
+var _contentList = __webpack_require__(40);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
@@ -38404,11 +38441,11 @@ var _treeReviewContainer = __webpack_require__(43);
 
 var _treeReviewContainer2 = _interopRequireDefault(_treeReviewContainer);
 
-var _exerciseCreatorContainer = __webpack_require__(40);
+var _exerciseCreatorContainer = __webpack_require__(41);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
-var _knawledgeMap = __webpack_require__(41);
+var _knawledgeMap = __webpack_require__(27);
 
 var _knawledgeMap2 = _interopRequireDefault(_knawledgeMap);
 
@@ -38416,7 +38453,7 @@ var _ebbinghaus = __webpack_require__(183);
 
 var _ebbinghaus2 = _interopRequireDefault(_ebbinghaus);
 
-var _vue = __webpack_require__(19);
+var _vue = __webpack_require__(20);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -38434,11 +38471,13 @@ var _vueAsyncComputed2 = _interopRequireDefault(_vueAsyncComputed);
 
 var _tree = __webpack_require__(21);
 
-var _store = __webpack_require__(20);
+var _store = __webpack_require__(15);
 
 var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log("1: bootstrap.js", Date.now());
 
 _vue2.default.use(_vuex2.default);
 _vue2.default.use(_vueRouter2.default);
@@ -39175,7 +39214,7 @@ var vm = new _vue2.default({
   typeof self === "object" ? self : this
 );
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(19)))
 
 /***/ }),
 /* 181 */
@@ -39338,11 +39377,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(17);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(27);
+var _exerciseQA = __webpack_require__(28);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -39645,7 +39684,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _exercise = __webpack_require__(16);
+var _exercise = __webpack_require__(17);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
@@ -39705,7 +39744,7 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(31);
+var _users = __webpack_require__(32);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -40235,7 +40274,7 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(31);
+var _users = __webpack_require__(32);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -40553,7 +40592,7 @@ var _trees = __webpack_require__(2);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _fact = __webpack_require__(28);
+var _fact = __webpack_require__(29);
 
 var _contentItems = __webpack_require__(1);
 
@@ -40563,11 +40602,11 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _heading = __webpack_require__(29);
+var _heading = __webpack_require__(30);
 
 var _filters = __webpack_require__(45);
 
-var _skill = __webpack_require__(30);
+var _skill = __webpack_require__(31);
 
 __webpack_require__(274);
 
@@ -40576,6 +40615,10 @@ var _vuex = __webpack_require__(26);
 var _message = __webpack_require__(202);
 
 var _message2 = _interopRequireDefault(_message);
+
+var _store = __webpack_require__(15);
+
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40774,7 +40817,8 @@ exports.default = {
                                 }
 
                                 // syncGraphWithNode(parentId)
-                                PubSub.publish('syncGraphWithNode', parentId);
+                                _store2.default.commit('syncGraphWithNode', parentId);
+                                // PubSub.publish('syncGraphWithNode', parentId)
                                 _context2.next = 8;
                                 return _trees.Trees.get(parentId);
 
@@ -40796,7 +40840,8 @@ exports.default = {
         },
         syncGraphWithNode: function syncGraphWithNode() {
             // syncGraphWithNode(this.tree.id)
-            PubSub.publish('syncGraphWithNode', this.tree.id);
+            _store2.default.commit('syncGraphWithNode', this.tree.id);
+            // PubSub.publish('syncGraphWithNode', this.tree.id)
         }
     }, _defineProperty(_extends2, 'toggleAddChild', function toggleAddChild() {
         this.addingChild = !this.addingChild;
@@ -40854,7 +40899,7 @@ exports.default = {
 
 __webpack_require__(270);
 
-var _vue = __webpack_require__(19);
+var _vue = __webpack_require__(20);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -40866,7 +40911,7 @@ var _reviewSchedule = __webpack_require__(193);
 
 var _reviewSchedule2 = _interopRequireDefault(_reviewSchedule);
 
-var _contentList = __webpack_require__(39);
+var _contentList = __webpack_require__(40);
 
 var _contentList2 = _interopRequireDefault(_contentList);
 
@@ -40874,7 +40919,7 @@ var _exerciseCreator = __webpack_require__(184);
 
 var _exerciseCreator2 = _interopRequireDefault(_exerciseCreator);
 
-var _exerciseCreatorContainer = __webpack_require__(40);
+var _exerciseCreatorContainer = __webpack_require__(41);
 
 var _exerciseCreatorContainer2 = _interopRequireDefault(_exerciseCreatorContainer);
 
@@ -41246,7 +41291,7 @@ var _lodash = __webpack_require__(13);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _knawledgeMap = __webpack_require__(41);
+var _knawledgeMap = __webpack_require__(27);
 
 var _trees = __webpack_require__(2);
 
@@ -41254,11 +41299,11 @@ var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _fact = __webpack_require__(28);
+var _fact = __webpack_require__(29);
 
-var _heading = __webpack_require__(29);
+var _heading = __webpack_require__(30);
 
-var _skill = __webpack_require__(30);
+var _skill = __webpack_require__(31);
 
 var _proficiencyEnum = __webpack_require__(8);
 
@@ -41651,9 +41696,9 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(51);
 
-var _errors = __webpack_require__(32);
+var _errors = __webpack_require__(33);
 
-var _shared_promise = __webpack_require__(33);
+var _shared_promise = __webpack_require__(34);
 
 var _deep_copy = __webpack_require__(215);
 
@@ -42027,7 +42072,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 Build: rev-4a4cc92
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(17);
+var firebase = __webpack_require__(18);
 (function(){(function(){var h,aa=aa||{},k=this,m=function(a){return"string"==typeof a},ba=function(a){return"boolean"==typeof a},ca=function(a){return"number"==typeof a},da=function(){},ea=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";
 if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},fa=function(a){return null===a},ga=function(a){return"array"==ea(a)},ha=function(a){var b=ea(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==ea(a)},ia=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==
 b},ja=function(a,b,c){return a.call.apply(a.bind,arguments)},ka=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return q.apply(null,arguments)},la=function(a,b){var c=
@@ -42330,7 +42375,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 (function() {
-            var firebase = __webpack_require__(17);
+            var firebase = __webpack_require__(18);
             var g,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.Vb=function(){return a.Ye?a.Ye:a.Ye=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -42584,7 +42629,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _app = __webpack_require__(17);
+var _app = __webpack_require__(18);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -42645,7 +42690,7 @@ var _swController = __webpack_require__(221);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(17);
+var _app = __webpack_require__(18);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -43558,7 +43603,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(32);
+var _errors = __webpack_require__(33);
 
 var _errors2 = __webpack_require__(22);
 
@@ -44204,7 +44249,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(37);
+var _string = __webpack_require__(38);
 
 var _taskenums = __webpack_require__(59);
 
@@ -44214,7 +44259,7 @@ var _reference = __webpack_require__(61);
 
 var _service = __webpack_require__(240);
 
-var _app = __webpack_require__(17);
+var _app = __webpack_require__(18);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -44927,7 +44972,7 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(35);
+var _array = __webpack_require__(36);
 
 var array = _interopRequireWildcard(_array);
 
@@ -44951,7 +44996,7 @@ var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(38);
+var _url = __webpack_require__(39);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -45590,7 +45635,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(34);
+var _args = __webpack_require__(35);
 
 var args = _interopRequireWildcard(_args);
 
@@ -45792,11 +45837,11 @@ var _observer = __webpack_require__(234);
 
 var _tasksnapshot = __webpack_require__(242);
 
-var _args = __webpack_require__(34);
+var _args = __webpack_require__(35);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(35);
+var _array = __webpack_require__(36);
 
 var fbsArray = _interopRequireWildcard(_array);
 
@@ -49340,7 +49385,7 @@ webpackContext.id = 263;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(19)))
 
 /***/ }),
 /* 265 */
@@ -52521,7 +52566,7 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["default"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19)))
 
 /***/ }),
 /* 279 */
