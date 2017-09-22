@@ -306,7 +306,29 @@ export default class ContentItem {
         return this.interactions.length
     }
 
-    async saveProficiency(){
+    getMostRecentInteraction(){
+       if (!this.interactions.length){
+           return null
+       } else {
+           return this.interactions[this.interactions.length - 1]
+       }
+    }
+    getTwoInteractionsAgo(){
+        if (!this.interactions.length >=2){
+            return null
+        } else {
+            return this.interactions[this.interactions.length - 2]
+        }
+    }
+    getRecentDecibelIncrease(){
+        const mostRecentInteraction = this.getMostRecentInteraction()
+        const twoInteractionsAgo = this.getTwoInteractionsAgo()
+
+        var newDecibels =  mostRecentInteraction && mostRecentInteraction.currentInteractionStrength || 0
+        var oldDecibels = twoInteractionsAgo && twoInteractionsAgo.currentInteractionStrength || 0
+        return newDecibels - oldDecibels
+    }
+    saveProficiency(){
         !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
         const timestamp = Date.now()
         this.clearOverdueTimeout()
@@ -368,7 +390,7 @@ export default class ContentItem {
         //set timeout to mark the item overdue when it becomes overdue
         this.setOverdueTimeout()
 
-        await this.resortTrees()
+        this.resortTrees()
         store.commit('itemStudied', this.id)
 
     }
