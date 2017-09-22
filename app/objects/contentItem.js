@@ -36,7 +36,14 @@ export default class ContentItem {
 
         this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
-        this.setOverdueTimeout()
+        this.overdue = args.overdue || false
+        if (!this.overdue && this.hasInteractions()){
+            if(this.determineIfOverdueNow()){
+                this.set('overdue', true)
+            } else {
+                this.setOverdueTimeout()
+            }
+        }
 
         this.studiers = args.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
@@ -120,10 +127,15 @@ export default class ContentItem {
         return this.type === 'fact' || this.type === 'skill'
     }
 
+    determineIfOverdueNow(){
+        let millisecondsTilOverdue = this.nextReviewTime - Date.now()
+        return millisecondsTilOverdue < 0
+        // millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
+    }
+
     setOverdueTimeout(){
         let millisecondsTilOverdue = this.nextReviewTime - Date.now()
         millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
-        this.overdue = false
 
         if (this.hasInteractions()){
             this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this),millisecondsTilOverdue)
@@ -131,6 +143,7 @@ export default class ContentItem {
     }
 
     markOverdue(){
+        this.set('overdue', true)
         this.overdue = true
         const me = this
         Object.keys(this.trees).forEach(async treeId => {
@@ -141,6 +154,7 @@ export default class ContentItem {
         })
         this.clearOverdueTimeout()
     }
+
     clearOverdueTimeout(){
         clearTimeout(this.markOverdueTimeout)
     }
@@ -150,7 +164,7 @@ export default class ContentItem {
      * @param val
      */
     set(prop, val){
-        if (this[prop] == val) {
+        if (this[prop] === val) {
             return;
         }
 
@@ -392,6 +406,7 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
 
         //set timeout to mark the item overdue when it becomes overdue
+        this.set('overdue', false)
         this.setOverdueTimeout()
 
         this.resortTrees()

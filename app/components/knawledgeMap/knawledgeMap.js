@@ -182,10 +182,10 @@ function getSizeFromContent(content) {
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
-
-PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
-    syncGraphWithNode(treeId)
-})
+//
+// PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
+//     syncGraphWithNode(treeId)
+// })
 
 export function syncGraphWithNode(treeId){
     if (!s){
@@ -374,21 +374,21 @@ function closeTooltip(nodeId){
 window.closeTooltip = closeTooltip
 
 function initKnawledgeMap(treeIdToJumpTo){
+    console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now())
     var me = this;// bound/called
-
-
 
     if (typeof sigma !== 'undefined') {
         sigma.settings.font = 'Fredoka One'
     }
 
-
-
     if (typeof PubSub !== 'undefined') {
         PubSub.subscribe('login', async () => {
+            console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now())
             await loadTreeAndSubTrees(1, 1)
+            console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now())
             try {
                 initSigma()
+                console.log("5: knawledgeMap.js initSigma finished" + Date.now())
             } catch (err) {
                 console.error('initSigma Error', err)
                 alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
