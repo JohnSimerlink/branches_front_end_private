@@ -140,7 +140,9 @@ export default {
             const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
             const msg = sign + Math.round(decibelIncrease) + text + whenToReview
             console.log(msg)
-            message(msg)
+            // const color = getColor
+            const color = proficiencyToColor(this.content.proficiency)
+            message(msg, color)
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
