@@ -9,7 +9,8 @@ import {PROFICIENCIES} from "../components/proficiencyEnum";
 import store from "../core/store"
 
 function syncGraphWithNode(treeId){
-    PubSub.publish('syncGraphWithNode', treeId)
+    store.commit('syncGraphWithNode', treeId)
+    // PubSub.publish('syncGraphWithNode', treeId)
 }
 function loadObject(treeObj, self){
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
@@ -304,8 +305,9 @@ export class Tree {
             proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf()
         }
         this.setProficiencyStats(proficiencyStats)
+        store.commit('syncGraphWithNode', this.id)
 
-        PubSub.publish('syncGraphWithNode', this.id)
+        // PubSub.publish('syncGraphWithNode', this.id)
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)
         return parent.recalculateProficiencyAggregation()
