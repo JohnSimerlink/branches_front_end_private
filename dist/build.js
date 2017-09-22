@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 276);
+/******/ 	return __webpack_require__(__webpack_require__.s = 279);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(261)("./" + name);
+            __webpack_require__(263)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4553,11 +4553,11 @@ var _firebaseService = __webpack_require__(11);
 
 var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
-var _fact = __webpack_require__(27);
+var _fact = __webpack_require__(28);
 
-var _skill = __webpack_require__(29);
+var _skill = __webpack_require__(30);
 
-var _heading = __webpack_require__(28);
+var _heading = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4835,7 +4835,7 @@ exports.Trees = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _tree = __webpack_require__(20);
+var _tree = __webpack_require__(21);
 
 var _firebaseService = __webpack_require__(11);
 
@@ -5113,7 +5113,7 @@ var _firebaseService2 = _interopRequireDefault(_firebaseService);
 
 var _fixData = __webpack_require__(48);
 
-var _users = __webpack_require__(30);
+var _users = __webpack_require__(31);
 
 var _users2 = _interopRequireDefault(_users);
 
@@ -5193,12 +5193,11 @@ var User = function () {
                                 me.branchesData = user || {};
                                 me.branchesData.patches = me.branchesData.patches || {};
                                 me.branchesData.items = me.branchesData.items || {};
-                                console.log('real branches data is', me.branchesData);
                                 me.camera = me.branchesData.camera;
                                 me.applyDataPatches();
                                 me.dataLoaded = true;
 
-                            case 11:
+                            case 10:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -5232,10 +5231,9 @@ var User = function () {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
-                                console.log("study settings going to be returned are", this.branchesData.studySettings);
                                 return _context3.abrupt('return', this.branchesData.studySettings);
 
-                            case 2:
+                            case 1:
                             case 'end':
                                 return _context3.stop();
                         }
@@ -5310,7 +5308,6 @@ var User = function () {
     }, {
         key: 'setInteractionsForItem',
         value: function setInteractionsForItem(itemId, interactions) {
-            console.log('setInteractionsForItem is ', itemId, interactions);
             if (!this.branchesData.items[itemId]) return;
 
             this.branchesData.items[itemId].interactions = interactions;
@@ -5332,28 +5329,24 @@ var User = function () {
                         switch (_context4.prev = _context4.next) {
                             case 0:
                                 if (this.branchesData.patches.headingInteractions) {
-                                    _context4.next = 9;
+                                    _context4.next = 8;
                                     break;
                                 }
 
-                                console.log("PATCHES: applying clearInteractionsForHeadingsPatch!");
-                                _context4.next = 4;
+                                _context4.next = 3;
                                 return (0, _fixData.clearInteractionsForHeadings)();
 
-                            case 4:
+                            case 3:
                                 this.branchesData.patches.headingInteractions = true;
                                 updates = {
                                     patches: this.branchesData.patches
                                 };
 
                                 _firebaseService2.default.database().ref('users/' + this.getId() + '/').update(updates);
-                                _context4.next = 10;
+                                _context4.next = 8;
                                 break;
 
-                            case 9:
-                                console.log('PATCHES: no patches to apply');
-
-                            case 10:
+                            case 8:
                             case 'end':
                                 return _context4.stop();
                         }
@@ -5520,7 +5513,7 @@ exports.invalidRootOperation = invalidRootOperation;
 exports.invalidFormat = invalidFormat;
 exports.internalError = internalError;
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5748,7 +5741,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(272);
+var	fixUrls = __webpack_require__(275);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -6109,7 +6102,7 @@ exports.make = make;
 exports.resolve = resolve;
 exports.reject = reject;
 
-var _shared_promise = __webpack_require__(32);
+var _shared_promise = __webpack_require__(33);
 
 function make(resolver) {
   return new _shared_promise.local.Promise(resolver);
@@ -6188,7 +6181,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _firebase = __webpack_require__(217);
+var _firebase = __webpack_require__(219);
 
 var firebase = _interopRequireWildcard(_firebase);
 
@@ -8506,9 +8499,9 @@ module.exports = merge;
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(203),
+  var crypt = __webpack_require__(204),
       utf8 = __webpack_require__(50).utf8,
-      isBuffer = __webpack_require__(259),
+      isBuffer = __webpack_require__(261),
       bin = __webpack_require__(50).bin,
 
   // The core
@@ -8693,6 +8686,10 @@ var _proficiencyEnum = __webpack_require__(8);
 var _trees = __webpack_require__(2);
 
 var _forgettingCurve = __webpack_require__(201);
+
+var _store = __webpack_require__(20);
+
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8963,7 +8960,6 @@ var ContentItem = function () {
         value: function calculateAggregationTimerForTreeChain() {
             var _this2 = this;
 
-            console.log(this.id, 'calculateAggregationTimerForTreeChain');
             var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
             var calculationPromises = treePromises.map(function () {
                 var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(treePromise) {
@@ -9034,7 +9030,6 @@ var ContentItem = function () {
         value: function recalculateProficiencyAggregationForTreeChain() {
             var _this3 = this;
 
-            console.log(this.id, 'calculateProficiencyAggregationForTreeChain');
             var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
             var calculationPromises = treePromises.map(function () {
                 var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(treePromise) {
@@ -9069,7 +9064,6 @@ var ContentItem = function () {
         value: function recalculateNumOverdueAggregationForTreeChain() {
             var _this4 = this;
 
-            console.log(this.id, 'calculateNumOverdueAggregationForTreeChain');
             var treePromises = this.trees ? Object.keys(this.trees).map(_trees.Trees.get) : []; // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
             var calculationPromises = treePromises.map(function () {
                 var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(treePromise) {
@@ -9102,7 +9096,6 @@ var ContentItem = function () {
     }, {
         key: 'clearInteractions',
         value: function clearInteractions() {
-            console.log(this.id, "clearing Interactions");
             delete this.studiers[_user2.default.getId()];
 
             this.proficiency = _proficiencyEnum.PROFICIENCIES.UNKNOWN;
@@ -9129,7 +9122,6 @@ var ContentItem = function () {
                 userTimeMap: this.userTimeMap
             };
 
-            console.log('clear interactions called');
             firebase.database().ref('content/' + this.id).update(updates);
             Object.keys(this.trees).forEach(function (treeId) {
                 PubSub.publish('syncGraphWithNode', treeId);
@@ -9137,11 +9129,93 @@ var ContentItem = function () {
             this.calculateAggregationTimerForTreeChain();
             this.recalculateProficiencyAggregationForTreeChain();
             this.recalculateNumOverdueAggregationForTreeChain();
+            this.resortTrees();
         }
+    }, {
+        key: 'resortTrees',
+        value: function () {
+            var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6() {
+                var _this5 = this;
+
+                return regeneratorRuntime.wrap(function _callee6$(_context6) {
+                    while (1) {
+                        switch (_context6.prev = _context6.next) {
+                            case 0:
+                                _context6.next = 2;
+                                return Promise.all(this.getTreePromises().map(function () {
+                                    var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(treePromise) {
+                                        var tree;
+                                        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                                            while (1) {
+                                                switch (_context5.prev = _context5.next) {
+                                                    case 0:
+                                                        _context5.next = 2;
+                                                        return treePromise;
+
+                                                    case 2:
+                                                        tree = _context5.sent;
+                                                        _context5.next = 5;
+                                                        return tree.sortLeavesByStudiedAndStrength();
+
+                                                    case 5:
+                                                    case 'end':
+                                                        return _context5.stop();
+                                                }
+                                            }
+                                        }, _callee5, _this5);
+                                    }));
+
+                                    return function (_x5) {
+                                        return _ref6.apply(this, arguments);
+                                    };
+                                }()));
+
+                            case 2:
+                            case 'end':
+                                return _context6.stop();
+                        }
+                    }
+                }, _callee6, this);
+            }));
+
+            function resortTrees() {
+                return _ref5.apply(this, arguments);
+            }
+
+            return resortTrees;
+        }()
     }, {
         key: 'hasInteractions',
         value: function hasInteractions() {
             return this.interactions.length;
+        }
+    }, {
+        key: 'getMostRecentInteraction',
+        value: function getMostRecentInteraction() {
+            if (!this.interactions.length) {
+                return null;
+            } else {
+                return this.interactions[this.interactions.length - 1];
+            }
+        }
+    }, {
+        key: 'getTwoInteractionsAgo',
+        value: function getTwoInteractionsAgo() {
+            if (!this.interactions.length >= 2) {
+                return null;
+            } else {
+                return this.interactions[this.interactions.length - 2];
+            }
+        }
+    }, {
+        key: 'getRecentDecibelIncrease',
+        value: function getRecentDecibelIncrease() {
+            var mostRecentInteraction = this.getMostRecentInteraction();
+            var twoInteractionsAgo = this.getTwoInteractionsAgo();
+
+            var newDecibels = mostRecentInteraction && mostRecentInteraction.currentInteractionStrength || 0;
+            var oldDecibels = twoInteractionsAgo && twoInteractionsAgo.currentInteractionStrength || 0;
+            return newDecibels - oldDecibels;
         }
     }, {
         key: 'saveProficiency',
@@ -9168,9 +9242,6 @@ var ContentItem = function () {
             // if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE we can assume they have learned it before. We will simply assume that they last saw it/learned it an hour ago. (e.g. like in a lecture 1 hour ago).
             if (this.proficiency > _proficiencyEnum.PROFICIENCIES.ONE && !this.hasInteractions()) {
                 millisecondsSinceLastInteraction = 60 * 60 * 1000;
-                console.log('proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction);
-            } else {
-                console.log('NOT proficiency was greater than one and this has interactions', millisecondsSinceLastInteraction);
             }
             var previousInteractionStrength = (0, _forgettingCurve.measurePreviousStrength)(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
             var currentInteractionStrength = (0, _forgettingCurve.estimateCurrentStrength)(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0;
@@ -9208,8 +9279,10 @@ var ContentItem = function () {
             firebase.database().ref('content/' + this.id).update(updates);
 
             //set timeout to mark the item overdue when it becomes overdue
-            console.log('set overdue timeout about to be called');
             this.setOverdueTimeout();
+
+            this.resortTrees();
+            _store2.default.commit('itemStudied', this.id);
         }
     }, {
         key: 'setProficiency',
@@ -9286,34 +9359,39 @@ var ContentItem = function () {
     }, {
         key: 'getTree',
         value: function () {
-            var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
+            var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7() {
                 var treeId, tree;
-                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                return regeneratorRuntime.wrap(function _callee7$(_context7) {
                     while (1) {
-                        switch (_context5.prev = _context5.next) {
+                        switch (_context7.prev = _context7.next) {
                             case 0:
                                 treeId = this.getTreeId();
-                                _context5.next = 3;
+                                _context7.next = 3;
                                 return this.getTreeId();
 
                             case 3:
-                                tree = _context5.sent;
-                                return _context5.abrupt('return', tree);
+                                tree = _context7.sent;
+                                return _context7.abrupt('return', tree);
 
                             case 5:
                             case 'end':
-                                return _context5.stop();
+                                return _context7.stop();
                         }
                     }
-                }, _callee5, this);
+                }, _callee7, this);
             }));
 
             function getTree() {
-                return _ref5.apply(this, arguments);
+                return _ref7.apply(this, arguments);
             }
 
             return getTree;
         }()
+    }, {
+        key: 'getTreePromises',
+        value: function getTreePromises() {
+            return this.getTreeIds().map(_trees.Trees.get);
+        }
     }]);
 
     return ContentItem;
@@ -9471,7 +9549,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firebase_app = __webpack_require__(214);
+var _firebase_app = __webpack_require__(216);
 
 // Export a single instance of firebase app
 var firebase = (0, _firebase_app.createFirebaseNamespace)(); /**
@@ -19393,6 +19471,196 @@ Vue$3.compile = compileToFunctions;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.MODES = undefined;
+
+var _vuex = __webpack_require__(26);
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+var _vue = __webpack_require__(19);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _trees = __webpack_require__(2);
+
+var _snack = __webpack_require__(25);
+
+var _snack2 = _interopRequireDefault(_snack);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+_vue2.default.use(_vuex2.default);
+
+var MODES = exports.MODES = {
+    EXPLORING: 1,
+    STUDYING: 2
+};
+
+var state = {
+    mode: MODES.STUDYING,
+    currentStudyingContentItem: '8904d53adfef7376627f4227ada47cd8',
+    currentStudyingCategoryTreeId: '1',
+    modes: {
+        2: {
+            contentId: 12345
+        }
+    },
+    settingsMenuOpen: false,
+    openNodeId: null
+    //
+    // function setCurrentStudyingContentId(state, contentId){
+    //     state.currentStudyingContentItem = contentId
+    //
+    // }
+};var getters = {
+    studying: function studying(state) {
+        return state.mode === MODES.STUDYING;
+    },
+    currentStudyingCategoryTreeId: function currentStudyingCategoryTreeId(state) {
+        return state.currentStudyingCategoryTreeId;
+    },
+    settingsMenuOpen: function settingsMenuOpen(state) {
+        return state.settingsMenuOpen;
+    }
+};
+var mutations = {
+    changeMode: function changeMode(state, mode) {
+        state.mode = mode;
+    },
+    setCurrentStudyingTree: function setCurrentStudyingTree(state, treeId) {
+        var _this = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            var tree, itemToStudy, snack;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            state.currentStudyingCategoryTreeId = treeId;
+                            _context.next = 3;
+                            return _trees.Trees.get(treeId);
+
+                        case 3:
+                            tree = _context.sent;
+
+                            if (tree.areItemsToStudy()) {
+                                itemToStudy = tree.getNextItemToStudy();
+
+                                console.log('next itemId to Study is', itemToStudy);
+                                state.currentStudyingContentItem = itemToStudy;
+                                PubSub.publish('canvas.closeTooltip', { oldNode: treeId });
+                            } else {
+                                snack = new _snack2.default({
+                                    domParent: document.querySelector('.new-exercise')
+                                });
+                                // show a snack for 4s
+
+                                snack.show("No items to study for this tree!", 4000);
+                            }
+
+                        case 5:
+                        case "end":
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this);
+        }))();
+    },
+    itemStudied: function itemStudied(state, contentId) {
+        var _arguments = arguments,
+            _this2 = this;
+
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+            var _console;
+
+            var tree, itemToStudy;
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(_arguments)));
+
+                            if (getters.studying(state)) {
+                                _context2.next = 3;
+                                break;
+                            }
+
+                            return _context2.abrupt("return");
+
+                        case 3:
+                            _this2.commit('closeNode');
+                            _context2.next = 6;
+                            return _trees.Trees.get(state.currentStudyingCategoryTreeId);
+
+                        case 6:
+                            tree = _context2.sent;
+
+                            PubSub.publish('canvas.closeTooltip', tree.id);
+                            if (tree.areItemsToStudy()) {
+                                itemToStudy = tree.getNextItemToStudy();
+
+                                console.log('next itemId to Study is', itemToStudy);
+                                state.currentStudyingContentItem = itemToStudy;
+                            }
+
+                        case 9:
+                        case "end":
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, _this2);
+        }))();
+    },
+    toggleSettingsMenu: function toggleSettingsMenu(state) {
+        state.settingsMenuOpen = !state.settingsMenuOpen;
+    },
+    closeSettingsMenu: function closeSettingsMenu(state) {
+        state.settingsMenuOpen = false;
+    },
+    clickNode: function clickNode(state, nodeId) {
+        console.log("store.js clickNode called", state.openNodeId, nodeId);
+        state.openNodeId = nodeId;
+    },
+    closeNode: function closeNode(state) {
+        state.openNodeId = null;
+    },
+    clickStage: function clickStage(state) {
+        state.openNodeId = null;
+        if (getters.settingsMenuOpen(state)) {
+            this.commit('closeSettingsMenu');
+        }
+    }
+};
+
+var actions = {
+    itemStudied: function itemStudied(_ref) {
+        var commit = _ref.commit,
+            contentId = _ref.contentId;
+
+        console.log('item studied action called', contentId);
+        commit('itemStudied', contentId);
+    }
+};
+
+exports.default = new _vuex2.default.Store({
+    state: state,
+    mutations: mutations,
+    actions: actions,
+    getters: getters
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.Tree = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -19423,7 +19691,7 @@ var _contentItems2 = _interopRequireDefault(_contentItems);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _store = __webpack_require__(25);
+var _store = __webpack_require__(20);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -20124,56 +20392,54 @@ var Tree = exports.Tree = function () {
                     while (1) {
                         switch (_context14.prev = _context14.next) {
                             case 0:
-                                console.log(this.id, "recalculateProficiencyAggregation called");
                                 proficiencyStats = void 0;
-                                _context14.next = 4;
+                                _context14.next = 3;
                                 return this.isLeaf();
 
-                            case 4:
+                            case 3:
                                 isLeaf = _context14.sent;
 
                                 if (!isLeaf) {
-                                    _context14.next = 11;
+                                    _context14.next = 10;
                                     break;
                                 }
 
-                                _context14.next = 8;
+                                _context14.next = 7;
                                 return this.calculateProficiencyAggregationForLeaf();
 
-                            case 8:
+                            case 7:
                                 proficiencyStats = _context14.sent;
-                                _context14.next = 14;
+                                _context14.next = 13;
                                 break;
 
-                            case 11:
-                                _context14.next = 13;
+                            case 10:
+                                _context14.next = 12;
                                 return this.calculateProficiencyAggregationForNotLeaf();
 
-                            case 13:
+                            case 12:
                                 proficiencyStats = _context14.sent;
 
-                            case 14:
-                                console.log(this.id, "recalculateProficiencyAggregation proficiecnyStates is", proficiencyStats);
+                            case 13:
                                 this.setProficiencyStats(proficiencyStats);
 
                                 PubSub.publish('syncGraphWithNode', this.id);
 
                                 if (this.parentId) {
-                                    _context14.next = 19;
+                                    _context14.next = 17;
                                     break;
                                 }
 
                                 return _context14.abrupt('return');
 
-                            case 19:
-                                _context14.next = 21;
+                            case 17:
+                                _context14.next = 19;
                                 return _trees.Trees.get(this.parentId);
 
-                            case 21:
+                            case 19:
                                 parent = _context14.sent;
                                 return _context14.abrupt('return', parent.recalculateProficiencyAggregation());
 
-                            case 23:
+                            case 21:
                             case 'end':
                                 return _context14.stop();
                         }
@@ -20681,7 +20947,7 @@ var Tree = exports.Tree = function () {
         key: 'sortLeavesByStudiedAndStrength',
         value: function () {
             var _ref30 = _asyncToGenerator(regeneratorRuntime.mark(function _callee26() {
-                var studiedLeaves, notStudiedLeaves, parent;
+                var studiedLeaves, overdueLeaves, notOverdueLeaves, notStudiedLeaves, parent;
                 return regeneratorRuntime.wrap(function _callee26$(_context26) {
                     while (1) {
                         switch (_context26.prev = _context26.next) {
@@ -20692,31 +20958,38 @@ var Tree = exports.Tree = function () {
                                     //lowest decibels first
                                     return a.lastRecordedStrength.value > b.lastRecordedStrength.value ? 1 : a.lastRecordedStrength.value < b.lastRecordedStrength.value ? -1 : 0;
                                 });
+                                overdueLeaves = studiedLeaves.filter(function (leaf) {
+                                    return leaf.overdue;
+                                });
+                                notOverdueLeaves = studiedLeaves.filter(function (leaf) {
+                                    return !leaf.overdue;
+                                });
 
                                 studiedLeaves.forEach(function (leaf) {
-                                    console.log('leaf is ', leaf, leaf.lastRecordedStrength.value);
+                                    // console.log('leaf is ', leaf, leaf.lastRecordedStrength.value, leaf.id, leaf.question, leaf.answer)
                                 });
 
                                 notStudiedLeaves = this.leaves.filter(function (leaf) {
                                     return !leaf.hasInteractions;
                                 });
 
-                                this.sortedLeaves = [].concat(_toConsumableArray(studiedLeaves), _toConsumableArray(notStudiedLeaves));
+                                this.sortedLeaves = [].concat(_toConsumableArray(overdueLeaves), _toConsumableArray(notStudiedLeaves), _toConsumableArray(notOverdueLeaves));
+                                this.sortedLeaves = removeDuplicatesById(this.sortedLeaves);
 
                                 if (!this.parentId) {
-                                    _context26.next = 9;
+                                    _context26.next = 12;
                                     break;
                                 }
 
-                                _context26.next = 7;
+                                _context26.next = 10;
                                 return _trees.Trees.get(this.parentId);
 
-                            case 7:
+                            case 10:
                                 parent = _context26.sent;
 
                                 parent.sortLeavesByStudiedAndStrength();
 
-                            case 9:
+                            case 12:
                             case 'end':
                                 return _context26.stop();
                         }
@@ -20820,9 +21093,19 @@ function addValToProficiencyStats(proficiencyStats, proficiency) {
     }
     return proficiencyStats;
 }
+function removeDuplicatesById(list) {
+    var newList = [];
+    var usedIds = [];
+    list.forEach(function (item) {
+        if (usedIds.indexOf(item.id) > -1) return;
+        newList.push(item);
+        usedIds.push(item.id);
+    });
+    return newList;
+}
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20900,7 +21183,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20987,7 +21270,7 @@ var minSafeInteger = exports.minSafeInteger = -9007199254740991;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21120,7 +21403,171 @@ var Location = exports.Location = function () {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict'
+
+function injectStyleTag (document, fileName, cb) {
+  var style = document.getElementById(fileName)
+
+  if (style) {
+    cb(style)
+  } else {
+    var head = document.getElementsByTagName('head')[0]
+
+    style = document.createElement('style')
+    if (fileName != null) style.id = fileName
+    cb(style)
+    head.appendChild(style)
+  }
+
+  return style
+}
+
+module.exports = function (css, customDocument, fileName) {
+  var doc = customDocument || document
+  /* istanbul ignore if: not supported by Electron */
+  if (doc.createStyleSheet) {
+    var sheet = doc.createStyleSheet()
+    sheet.cssText = css
+    return sheet.ownerNode
+  } else {
+    return injectStyleTag(doc, fileName, function (style) {
+      /* istanbul ignore if: not supported by Electron */
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css
+      } else {
+        style.innerHTML = css
+      }
+    })
+  }
+}
+
+module.exports.byUrl = function (url) {
+  /* istanbul ignore if: not supported by Electron */
+  if (document.createStyleSheet) {
+    return document.createStyleSheet(url).ownerNode
+  } else {
+    var head = document.getElementsByTagName('head')[0]
+    var link = document.createElement('link')
+
+    link.rel = 'stylesheet'
+    link.href = url
+
+    head.appendChild(link)
+    return link
+  }
+}
+
+},{}],2:[function(require,module,exports){
+require('../styles/snack.min.css');
+
+/**
+ * Returns true content it is a DOM element
+ * @param {*} content
+ * @returns {boolean}
+ */
+var isElement = function (content) {
+    return !!(
+        typeof HTMLElement === 'object' ? content instanceof HTMLElement : content &&
+        typeof content === 'object' && content !== null &&
+        content.nodeType === 1 && typeof content.nodeName === 'string'
+    );
+};
+
+/**
+ * @class
+ * @constructor
+ *
+ * @property {object} options
+ * @property {Element} [options.domParent=document.body]
+ */
+function Snack(options) {
+
+    options = options || {};
+
+    this.domParent = options.domParent || document.body;
+
+    this.container = document.createElement('div');
+    this.element = document.createElement('div');
+
+    this.container.classList.add('snack-container');
+    this.element.classList.add('snack');
+
+    this.container.appendChild(this.element);
+    this.domParent.appendChild(this.container);
+
+}
+// constructor
+Snack.prototype.constructor = Snack;
+module.exports = Snack;
+
+Object.defineProperties(Snack, {
+    visible: {
+        get: function () {
+            return !!this._isVisible;
+        },
+        set: function (val) {
+            this[val ? 'show' : 'hide']();
+        }
+    }
+});
+
+/**
+ * Toggles show/hide
+ */
+Snack.prototype.toggle = function () {
+    this.visible = !this.visible;
+};
+
+/**
+ * Show the snack
+ *
+ * @param {string} content
+ * @param {number} [timeout]
+ */
+Snack.prototype.show = function (content, timeout) {
+    if (isElement(content)) {
+        this.element.innerHTML = '';
+        this.element.appendChild(content);
+    } else {
+        this.element.innerHTML = content;
+    }
+    this.element.classList.add('snack-opened');
+    this._isVisible = true;
+    if (timeout) {
+        setTimeout(this.hide.bind(this), timeout);
+    }
+};
+/**
+ * Hide the snack
+ */
+Snack.prototype.hide = function () {
+    this.element.classList.remove('snack-opened');
+    this._isVisible = false;
+};
+/**
+ * destroy
+ */
+Snack.prototype.destroy = function () {
+    this.domParent.removeChild(this.container);
+};
+
+
+},{"../styles/snack.min.css":3}],3:[function(require,module,exports){
+var inject = require('./../node_modules/cssify');
+var css = ".snack-container{position:fixed;left:20px;bottom:0;z-index:99999}.snack{overflow:hidden;clear:both;min-width:288px;max-width:568px;cursor:pointer;opacity:0;background-color:#323232;color:#fff;font-size:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);height:0;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:translateY(200%);transform:translateY(200%)}.snack.snack-opened{height:auto;opacity:1;padding:14px 15px;margin-bottom:20px;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:none;transform:none}@media (max-width:767px){.snack-container{left:0!important;right:0;width:100%}.snack-container .snack{min-width:100%}.snack-container .snack.snack-opened{border-radius:0;margin-bottom:0}}\n";
+inject(css, undefined, '_19gnn7m');
+module.exports = css;
+
+},{"./../node_modules/cssify":1}]},{},[2])(2)
+});
+
+
+/***/ }),
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22016,138 +22463,7 @@ var index_esm = {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18)))
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MODES = undefined;
-
-var _vuex = __webpack_require__(24);
-
-var _vuex2 = _interopRequireDefault(_vuex);
-
-var _vue = __webpack_require__(19);
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _trees = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-_vue2.default.use(_vuex2.default);
-
-var MODES = exports.MODES = {
-    EXPLORING: 1,
-    STUDYING: 2
-};
-
-var state = {
-    mode: MODES.STUDYING,
-    currentStudyingContentItem: '8904d53adfef7376627f4227ada47cd8',
-    currentStudyingCategoryTreeId: '1',
-    modes: {
-        2: {
-            contentId: 12345
-        }
-    },
-    settingsMenuOpen: false
-    //
-    // function setCurrentStudyingContentId(state, contentId){
-    //     state.currentStudyingContentItem = contentId
-    //
-    // }
-};var getters = {
-    studying: function studying(state) {
-        return state.mode === MODES.STUDYING;
-    },
-    currentStudyingCategoryTreeId: function currentStudyingCategoryTreeId(state) {
-        return state.currentStudyingCategoryTreeId;
-    }
-};
-var mutations = {
-    changeMode: function changeMode(state, mode) {
-        state.mode = mode;
-    },
-    setCurrentStudyingTree: function setCurrentStudyingTree(state, treeId) {
-        var _this = this;
-
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-            var tree, itemToStudy;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            state.currentStudyingCategoryTreeId = treeId;
-                            _context.next = 3;
-                            return _trees.Trees.get(treeId);
-
-                        case 3:
-                            tree = _context.sent;
-
-                            if (tree.areItemsToStudy()) {
-                                itemToStudy = tree.getNextItemToStudy();
-
-                                console.log('next itemId to Study is', itemToStudy);
-                                state.currentStudyingContentItem = itemToStudy;
-                            }
-
-                        case 5:
-                        case "end":
-                            return _context.stop();
-                    }
-                }
-            }, _callee, _this);
-        }))();
-    },
-    itemStudied: function itemStudied(state, contentId) {
-        var _console;
-
-        (_console = console).log.apply(_console, ['itemStudied called', state, contentId].concat(Array.prototype.slice.call(arguments)));
-        // if (getters.studying(state)){
-        //     console.log('state being changed', state, contentId,)
-        //     state.modes[MODES.STUDYING].contentId = contentId
-        // } else {
-        //     console.log('state not in reviewing mode')
-        // }
-        var item = ContentItems.get(contentId);
-        item.getTreeIds().forEach(function (tree) {
-            tree.sortLeavesByStudiedAndStrength();
-        });
-    },
-    toggleSettingsMenu: function toggleSettingsMenu(state) {
-        state.settingsMenuOpen = !state.settingsMenuOpen;
-    },
-    closeSettingsMenu: function closeSettingsMenu(state) {
-        state.settingsMenuOpen = false;
-    }
-};
-
-var actions = {
-    itemStudied: function itemStudied(_ref) {
-        var commit = _ref.commit,
-            contentId = _ref.contentId;
-
-        console.log('item studied action called', contentId);
-        commit('itemStudied', contentId);
-    }
-};
-
-exports.default = new _vuex2.default.Store({
-    state: state,
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-});
-
-/***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22247,7 +22563,7 @@ var ExerciseQA = function (_Exercise) {
 exports.default = ExerciseQA;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22349,7 +22665,7 @@ var Fact = exports.Fact = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22422,7 +22738,7 @@ var Heading = exports.Heading = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22510,7 +22826,7 @@ var Skill = exports.Skill = function (_ContentItem) {
 }(_contentItem2.default);
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22554,7 +22870,6 @@ var Users = function () {
                 //trees serves as local cash for trees downloaded from db //TODO: this cache should become obselete when we switch to Couchdb+pouchdb
                 if (users[userId]) {
                     resolve(users[userId]);
-                    console.log('user found in cache');
                 } else {
                     _firebaseService2.default.database().ref('users/' + userId).once("value", function onFirebaseUserGet(snapshot) {
                         var userData = snapshot.val();
@@ -22586,7 +22901,7 @@ function processUserData(userId, userData) {
 }
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22693,7 +23008,7 @@ var ErrorFactory = exports.ErrorFactory = function () {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22733,7 +23048,7 @@ if (typeof global !== 'undefined') {
         throw new Error('polyfill failed because global object is unavailable in this environment');
     }
 }
-var PromiseImpl = scope.Promise || __webpack_require__(224);
+var PromiseImpl = scope.Promise || __webpack_require__(226);
 var local = exports.local = {
     Promise: PromiseImpl,
     GoogPromise: PromiseImpl
@@ -22743,7 +23058,7 @@ var local = exports.local = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22770,7 +23085,7 @@ var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(35);
+var _metadata = __webpack_require__(36);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -22907,7 +23222,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22981,7 +23296,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23004,11 +23319,11 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(231);
+var _json = __webpack_require__(233);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(24);
 
 var _path = __webpack_require__(57);
 
@@ -23018,7 +23333,7 @@ var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(37);
+var _url = __webpack_require__(38);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -23191,7 +23506,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23401,7 +23716,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23419,7 +23734,7 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(23);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -23471,169 +23786,6 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Snack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict'
-
-function injectStyleTag (document, fileName, cb) {
-  var style = document.getElementById(fileName)
-
-  if (style) {
-    cb(style)
-  } else {
-    var head = document.getElementsByTagName('head')[0]
-
-    style = document.createElement('style')
-    if (fileName != null) style.id = fileName
-    cb(style)
-    head.appendChild(style)
-  }
-
-  return style
-}
-
-module.exports = function (css, customDocument, fileName) {
-  var doc = customDocument || document
-  /* istanbul ignore if: not supported by Electron */
-  if (doc.createStyleSheet) {
-    var sheet = doc.createStyleSheet()
-    sheet.cssText = css
-    return sheet.ownerNode
-  } else {
-    return injectStyleTag(doc, fileName, function (style) {
-      /* istanbul ignore if: not supported by Electron */
-      if (style.styleSheet) {
-        style.styleSheet.cssText = css
-      } else {
-        style.innerHTML = css
-      }
-    })
-  }
-}
-
-module.exports.byUrl = function (url) {
-  /* istanbul ignore if: not supported by Electron */
-  if (document.createStyleSheet) {
-    return document.createStyleSheet(url).ownerNode
-  } else {
-    var head = document.getElementsByTagName('head')[0]
-    var link = document.createElement('link')
-
-    link.rel = 'stylesheet'
-    link.href = url
-
-    head.appendChild(link)
-    return link
-  }
-}
-
-},{}],2:[function(require,module,exports){
-require('../styles/snack.min.css');
-
-/**
- * Returns true content it is a DOM element
- * @param {*} content
- * @returns {boolean}
- */
-var isElement = function (content) {
-    return !!(
-        typeof HTMLElement === 'object' ? content instanceof HTMLElement : content &&
-        typeof content === 'object' && content !== null &&
-        content.nodeType === 1 && typeof content.nodeName === 'string'
-    );
-};
-
-/**
- * @class
- * @constructor
- *
- * @property {object} options
- * @property {Element} [options.domParent=document.body]
- */
-function Snack(options) {
-
-    options = options || {};
-
-    this.domParent = options.domParent || document.body;
-
-    this.container = document.createElement('div');
-    this.element = document.createElement('div');
-
-    this.container.classList.add('snack-container');
-    this.element.classList.add('snack');
-
-    this.container.appendChild(this.element);
-    this.domParent.appendChild(this.container);
-
-}
-// constructor
-Snack.prototype.constructor = Snack;
-module.exports = Snack;
-
-Object.defineProperties(Snack, {
-    visible: {
-        get: function () {
-            return !!this._isVisible;
-        },
-        set: function (val) {
-            this[val ? 'show' : 'hide']();
-        }
-    }
-});
-
-/**
- * Toggles show/hide
- */
-Snack.prototype.toggle = function () {
-    this.visible = !this.visible;
-};
-
-/**
- * Show the snack
- *
- * @param {string} content
- * @param {number} [timeout]
- */
-Snack.prototype.show = function (content, timeout) {
-    if (isElement(content)) {
-        this.element.innerHTML = '';
-        this.element.appendChild(content);
-    } else {
-        this.element.innerHTML = content;
-    }
-    this.element.classList.add('snack-opened');
-    this._isVisible = true;
-    if (timeout) {
-        setTimeout(this.hide.bind(this), timeout);
-    }
-};
-/**
- * Hide the snack
- */
-Snack.prototype.hide = function () {
-    this.element.classList.remove('snack-opened');
-    this._isVisible = false;
-};
-/**
- * destroy
- */
-Snack.prototype.destroy = function () {
-    this.domParent.removeChild(this.container);
-};
-
-
-},{"../styles/snack.min.css":3}],3:[function(require,module,exports){
-var inject = require('./../node_modules/cssify');
-var css = ".snack-container{position:fixed;left:20px;bottom:0;z-index:99999}.snack{overflow:hidden;clear:both;min-width:288px;max-width:568px;cursor:pointer;opacity:0;background-color:#323232;color:#fff;font-size:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);height:0;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:translateY(200%);transform:translateY(200%)}.snack.snack-opened{height:auto;opacity:1;padding:14px 15px;margin-bottom:20px;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:none;transform:none}@media (max-width:767px){.snack-container{left:0!important;right:0;width:100%}.snack-container .snack{min-width:100%}.snack-container .snack.snack-opened{border-radius:0;margin-bottom:0}}\n";
-inject(css, undefined, '_19gnn7m');
-module.exports = css;
-
-},{"./../node_modules/cssify":1}]},{},[2])(2)
-});
-
-/***/ }),
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23653,7 +23805,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-    template: __webpack_require__(241),
+    template: __webpack_require__(243),
     created: function created() {
         var _this = this;
 
@@ -23713,7 +23865,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(243),
+    template: __webpack_require__(245),
     created: function created() {
         var me = this;
     },
@@ -23839,7 +23991,7 @@ var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _tree = __webpack_require__(20);
+var _tree = __webpack_require__(21);
 
 __webpack_require__(47);
 
@@ -23847,7 +23999,7 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _snack = __webpack_require__(38);
+var _snack = __webpack_require__(25);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -23857,13 +24009,13 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _store = __webpack_require__(25);
+var _store = __webpack_require__(20);
 
 var _store2 = _interopRequireDefault(_store);
 
 var _globals = __webpack_require__(46);
 
-__webpack_require__(266);
+__webpack_require__(269);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23901,7 +24053,7 @@ var toolTipsConfig = {
 
 exports.default = {
     props: ['treeId'],
-    template: __webpack_require__(250),
+    template: __webpack_require__(252),
     created: function created() {
         this.init();
         router = this.$router;
@@ -23909,8 +24061,11 @@ exports.default = {
 
     computed: {
         currentStudyingContentItem: function currentStudyingContentItem() {
-            console.log("current studying contentId is", this.$store.state.currentStudyingContentItem);
             return this.$store.state.currentStudyingContentItem;
+            console.log("current studying contentItem is", this.$store.state.currentStudyingContentItem);
+        },
+        openNodeId: function openNodeId() {
+            return this.$store.state.openNodeId;
         }
     },
     watch: {
@@ -23918,8 +24073,19 @@ exports.default = {
         currentStudyingContentItem: function currentStudyingContentItem(newContentItem, oldContentItem) {
             console.log('new content id to jump to is ', newContentItem, oldContentItem);
             var treeId = newContentItem.getTreeId();
-            jumpToAndOpenTreeId(treeId);
+            jumpToTreeId(treeId);
             // const item = ContentItems.get()
+        },
+        openNodeId: function openNodeId(newNodeId, oldNodeId) {
+            console.log('knawledgeMap openNodeId knawledgeMap.js! newNodeId, oldNodeId', newNodeId, oldNodeId);
+            if (!newNodeId && oldNodeId) {
+                closeTooltip(oldNodeId); // necessary for when currentStudyingContentItem is set after clicking study on a tree
+                return;
+            }
+            if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection) {
+                return;
+            }
+            openTooltipFromId(newNodeId);
         }
     },
     methods: {
@@ -24113,15 +24279,19 @@ function getTreeUINode(nodeId) {
     return s.graph.nodes(nodeId);
 }
 
+function jumpToTreeId(treeId) {
+    console.log("jumping to tree id", treeId);
+    var node = s.graph.nodes(treeId);
+    focusNode(s.cameras[0], node);
+}
 /**
  * Go to a given tree ID on the graph, centering the viewport on the tree
  */
-function jumpToAndOpenTreeId(treeid) {
+function jumpToAndOpenTreeId(treeId) {
     //let tree = sigma.nodes[treeid];
-    var node = s.graph.nodes(treeid);
-    focusNode(s.cameras[0], node);
-
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    jumpToTreeId(treeId);
+    var node = s.graph.nodes(treeId);
+    openTooltip(node);
 }
 
 function focusNode(camera, node) {
@@ -24148,6 +24318,31 @@ function focusNode(camera, node) {
     //     }
     // );
 }
+
+function openTooltipFromId(nodeId) {
+    var node = s.graph.nodes(nodeId);
+    openTooltip(node);
+}
+window.openTooltipFromId = openTooltipFromId;
+function openTooltip(node) {
+    console.log('openTooltip called for', node.id, node);
+
+    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    setTimeout(function () {
+        var vm = new _vue2.default({
+            el: '#vue',
+            store: _store2.default
+        });
+    }, 0); //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
+}
+window.openTooltip = openTooltip;
+function closeTooltip(nodeId) {
+    var node = s.graph.nodes(nodeId);
+    console.log("close tooltip called", node.label, node);
+    tooltips.close(node);
+}
+window.closeTooltip = closeTooltip;
+
 function initKnawledgeMap(treeIdToJumpTo) {
     var _this = this;
 
@@ -24403,6 +24598,11 @@ function initKnawledgeMap(treeIdToJumpTo) {
         initialized = true;
         initSigmaPlugins();
         s.bind('coordinatesUpdated', function () {});
+        s.bind('clickNode', function (event) {
+            var nodeId = event && event.data && event.data.node && event.data.node.id;
+            console.log("node clicked s.bind", nodeId);
+            _store2.default.commit('clickNode', nodeId);
+        });
         PubSub.subscribe('canvas.coordinatesUpdated', function (eventName, coordinates) {
             _user2.default.setCamera(coordinates);
         });
@@ -24420,39 +24620,43 @@ function initKnawledgeMap(treeIdToJumpTo) {
             updateTreePosition({ newX: node.x, newY: node.y, treeId: node.id });
         });
         PubSub.subscribe('canvas.nodeMouseUp', function (eventName, data) {
-            var node = data;
-            console.log('nodeMouseUp', eventName, data);
-            // console.log('nodeMouseUp', eventName, data)
-            if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection) {
-                return;
-            }
-            switch (node.content.type) {
-                case 'fact':
-                    console.log("node mouse up on fact");
-                    openTooltip(node);
-                    break;
-                case 'heading':
-                    openTooltip(node);
-                    break;
-                case 'skill':
-                    console.log('node mouse up on skill!!!', node);
-                    openTooltip(node);
-                    break;
-                default:
-                    // console.log()
-                    // me.$router.push({name: 'study', params: {leafId: node.id}})
-                    // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
-                    break;
-            }
+            // var node = data
+            // console.log('nodeMouseUp',eventName, data)
+            // // console.log('nodeMouseUp', eventName, data)
+            // if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
+            //     return
+            // }
+            // switch(node.content.type){
+            //     case 'fact':
+            //         console.log("node mouse up on fact")
+            //         openTooltip(node)
+            //         break;
+            //     case 'heading':
+            //         openTooltip(node)
+            //         break;
+            //     case 'skill':
+            //         console.log('node mouse up on skill!!!',node)
+            //         openTooltip(node)
+            //         break;
+            //     default:
+            //         // console.log()
+            //         // me.$router.push({name: 'study', params: {leafId: node.id}})
+            //         // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
+            //         break;
+            // }
         });
         PubSub.subscribe('canvas.differentNodeClicked', function (eventName, data) {
-            PubSub.publish('canvas.closeTooltip', data);
+            // console.log("canvas.differentNodeClicked subscribe", eventName, data)
+            // PubSub.publish('canvas.closeTooltip', data)
+            // const nodeToOpen = s.graph.nodes(data.newNode)
+            // openTooltip(nodeToOpen)
         });
         PubSub.subscribe('canvas.cameraChange', function (eventName, data) {
             console.log('camera change', eventName, data);
         });
         PubSub.subscribe('canvas.stageClicked', function (eventName, data) {
-            PubSub.publish('canvas.closeTooltip', data);
+            _store2.default.commit('clickStage');
+            PubSub.publish('canvas.closeTooltip');
             if (window.edgeIdBeingChanged) {
                 s.graph.edges(window.edgeIdBeingChanged).state = 'normal';
             }
@@ -24467,8 +24671,6 @@ function initKnawledgeMap(treeIdToJumpTo) {
             window.awaitingEdgeConnection = false;
             window.awaitingDisconnectConfirmationNodeId = null;
             window.awaitingEdgeConnectionNodeId = null;
-
-            _store2.default.commit('closeSettingsMenu');
         });
         PubSub.subscribe('canvas.overNode', function (eventName, data) {
             var canvas = document.querySelector('#graph-container');
@@ -24515,6 +24717,11 @@ function initKnawledgeMap(treeIdToJumpTo) {
             }
             s.refresh();
         });
+        // PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
+        //     if (!data) return
+        //     const treeId = data.oldNode || data
+        //     window.closeTooltip(treeId)
+        // })
         PubSub.publish('sigma.initialized');
     }
 
@@ -24638,15 +24845,6 @@ function initKnawledgeMap(treeIdToJumpTo) {
     function printNodeInfo(e) {
         console.log(e, e.data.node);
     }
-    function openTooltip(node) {
-        tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
-        setTimeout(function () {
-            var vm = new _vue2.default({
-                el: '#vue',
-                store: _store2.default
-            });
-        }, 0); //push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
-    }
     function hoverOverNode(e) {
         // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
         // var node = e.data.node
@@ -24661,7 +24859,6 @@ function initKnawledgeMap(treeIdToJumpTo) {
         window.jump = jumpToAndOpenTreeId;
         // jumpToAndOpenTreeId(treeIdToJumpTo || DataKeys.TREE_IDS.EVERYDAY_WORDS)
         s.camera.goTo(_user2.default.camera);
-        console.log('camera going to', _user2.default.camera);
         var myRenderer = s.renderers[0];
     }
 }
@@ -24685,7 +24882,7 @@ var _exercises = __webpack_require__(49);
 
 var _exercises2 = _interopRequireDefault(_exercises);
 
-var _exerciseQA = __webpack_require__(26);
+var _exerciseQA = __webpack_require__(27);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -24693,11 +24890,11 @@ var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(38);
+var _snack = __webpack_require__(25);
 
 var _snack2 = _interopRequireDefault(_snack);
 
-__webpack_require__(270);
+__webpack_require__(273);
 
 var _proficiencyEnum = __webpack_require__(8);
 
@@ -24713,7 +24910,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = {
     props: ['leafId'],
-    template: __webpack_require__(256),
+    template: __webpack_require__(258),
     created: function created() {
         var me = this;
         this.tree = {
@@ -24927,7 +25124,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    template: __webpack_require__(257),
+    template: __webpack_require__(259),
     props: ['leafId'],
     created: function created() {
         console.log('tree review container leafId is', this.leafId);
@@ -24973,6 +25170,7 @@ var Config = exports.Config = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.timeFromNow = timeFromNow;
 exports.secondsToPretty = secondsToPretty;
 
 var _vue = __webpack_require__(19);
@@ -24985,9 +25183,10 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_vue2.default.filter('timeFromNow', function (utcTimestamp) {
+function timeFromNow(utcTimestamp) {
     return (0, _moment2.default)(utcTimestamp).fromNow();
-});
+}
+_vue2.default.filter('timeFromNow', timeFromNow);
 _vue2.default.filter('dateTime', function (utcTimestamp) {
     return (0, _moment2.default)(utcTimestamp).format('MM/DD/YY, h:mm:ss a');
 });
@@ -25244,7 +25443,7 @@ var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(26);
+var _exerciseQA = __webpack_require__(27);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -25366,7 +25565,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _shared_promise = __webpack_require__(32);
+var _shared_promise = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25661,13 +25860,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(31);
+var _errors = __webpack_require__(32);
 
-var _errors2 = __webpack_require__(21);
+var _errors2 = __webpack_require__(22);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(223);
+var _tokenManager = __webpack_require__(225);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -26047,11 +26246,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _fs = __webpack_require__(230);
+var _fs = __webpack_require__(232);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(36);
+var _string = __webpack_require__(37);
 
 var string = _interopRequireWildcard(_string);
 
@@ -26295,7 +26494,7 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(34);
+var _array = __webpack_require__(35);
 
 var array = _interopRequireWildcard(_array);
 
@@ -26305,7 +26504,7 @@ var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(35);
+var _metadata = __webpack_require__(36);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
@@ -26313,13 +26512,13 @@ var _object = __webpack_require__(12);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(234);
+var _requestinfo = __webpack_require__(236);
 
 var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(37);
+var _url = __webpack_require__(38);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -26773,7 +26972,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
  */
 
 
-var _args = __webpack_require__(33);
+var _args = __webpack_require__(34);
 
 var args = _interopRequireWildcard(_args);
 
@@ -26783,9 +26982,9 @@ var _error = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(24);
 
-var _metadata = __webpack_require__(35);
+var _metadata = __webpack_require__(36);
 
 var metadata = _interopRequireWildcard(_metadata);
 
@@ -26801,7 +27000,7 @@ var _requests = __webpack_require__(58);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(36);
+var _string = __webpack_require__(37);
 
 var fbsString = _interopRequireWildcard(_string);
 
@@ -26809,7 +27008,7 @@ var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(239);
+var _task = __webpack_require__(241);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -38189,7 +38388,7 @@ __webpack_require__(199);
 
 __webpack_require__(200);
 
-var _localforage = __webpack_require__(260);
+var _localforage = __webpack_require__(262);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
@@ -38221,21 +38420,21 @@ var _vue = __webpack_require__(19);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(275);
+var _vueRouter = __webpack_require__(278);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _vuex = __webpack_require__(24);
+var _vuex = __webpack_require__(26);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
-var _vueAsyncComputed = __webpack_require__(274);
+var _vueAsyncComputed = __webpack_require__(277);
 
 var _vueAsyncComputed2 = _interopRequireDefault(_vueAsyncComputed);
 
-var _tree = __webpack_require__(20);
+var _tree = __webpack_require__(21);
 
-var _store = __webpack_require__(25);
+var _store = __webpack_require__(20);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -38278,7 +38477,6 @@ var vm = new _vue2.default({
         PubSub.subscribe('goToState.home', function (eventName, data) {
             _this.goBack();
         });
-        console.log('THIS APP is', this);
         // router.go('/83cbe6ea3fa874449982b645f04d14a1')
     },
     data: function data() {
@@ -39025,7 +39223,7 @@ var STATES = {
 var TIME_SHOWING = 16000; //00000
 var TIME_SUBTRACTING_BY_7 = 32000; //64000
 exports.default = {
-    template: __webpack_require__(242),
+    template: __webpack_require__(244),
     created: function created() {
         var _this = this;
 
@@ -39107,11 +39305,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(263);
+__webpack_require__(266);
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(244),
+    template: __webpack_require__(246),
     created: function created() {
         var me = this;
         console.log("creator just created!");
@@ -39144,7 +39342,7 @@ var _exercise = __webpack_require__(16);
 
 var _exercise2 = _interopRequireDefault(_exercise);
 
-var _exerciseQA = __webpack_require__(26);
+var _exerciseQA = __webpack_require__(27);
 
 var _exerciseQA2 = _interopRequireDefault(_exerciseQA);
 
@@ -39152,7 +39350,7 @@ var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _snack = __webpack_require__(38);
+var _snack = __webpack_require__(25);
 
 var _snack2 = _interopRequireDefault(_snack);
 
@@ -39170,7 +39368,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = {
     props: ['contentItemId', 'exerciseToReplaceId'],
-    template: __webpack_require__(245),
+    template: __webpack_require__(247),
     data: function data() {
         return {
             items: {},
@@ -39456,7 +39654,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-    template: __webpack_require__(246),
+    template: __webpack_require__(248),
     created: function created() {
         var _this = this;
 
@@ -39507,16 +39705,16 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(30);
+var _users = __webpack_require__(31);
 
 var _users2 = _interopRequireDefault(_users);
 
-var _vuex = __webpack_require__(24);
+var _vuex = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(247),
+    template: __webpack_require__(249),
     created: function created() {
         var self = this;
         self.loggedIn = false;
@@ -39607,10 +39805,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(264);
+__webpack_require__(267);
 
 exports.default = {
-    template: __webpack_require__(248),
+    template: __webpack_require__(250),
     methods: {
         goBack: function goBack() {
             this.$router.go(-1);
@@ -39638,14 +39836,14 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-__webpack_require__(265);
+__webpack_require__(268);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-    template: __webpack_require__(249), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(251), // '<div> {{movie}} this is the tree template</div>',
     props: ['itemId'],
     created: function created() {
         var _this = this;
@@ -39822,7 +40020,7 @@ var establishURIForContentAndThenAllChildren = function () {
     };
 }();
 
-var _newTree = __webpack_require__(202);
+var _newTree = __webpack_require__(203);
 
 var _trees = __webpack_require__(2);
 
@@ -39836,7 +40034,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(251),
+    template: __webpack_require__(253),
     props: ['parentid', 'initialparenttreecontenturi'],
     data: function data() {
         return {
@@ -39908,13 +40106,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(268);
+__webpack_require__(271);
 
 var _proficiencyEnum = __webpack_require__(8);
 
 exports.default = {
     props: ['value'],
-    template: __webpack_require__(252),
+    template: __webpack_require__(254),
     created: function created() {},
     data: function data() {
         return {};
@@ -40037,14 +40235,14 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _users = __webpack_require__(30);
+var _users = __webpack_require__(31);
 
 var _users2 = _interopRequireDefault(_users);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    template: __webpack_require__(253), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(255), // '<div> {{movie}} this is the tree template</div>',
     created: function created() {
         var self = this;
 
@@ -40087,7 +40285,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-__webpack_require__(269);
+__webpack_require__(272);
 
 var _trees = __webpack_require__(2);
 
@@ -40114,7 +40312,7 @@ var defaultStudySettings = {
     }
 };
 exports.default = {
-    template: __webpack_require__(254), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(256), // '<div> {{movie}} this is the tree template</div>',
     props: [],
     created: function created() {
         var _this = this;
@@ -40129,26 +40327,23 @@ exports.default = {
                                     while (1) {
                                         switch (_context.prev = _context.next) {
                                             case 0:
-                                                console.log("INITIAL studySettings is", _this.studySettings);
-                                                _context.next = 3;
+                                                _context.next = 2;
                                                 return _user2.default.getStudySettings();
 
-                                            case 3:
+                                            case 2:
                                                 _context.t0 = _context.sent;
 
                                                 if (_context.t0) {
-                                                    _context.next = 6;
+                                                    _context.next = 5;
                                                     break;
                                                 }
 
                                                 _context.t0 = defaultStudySettings;
 
-                                            case 6:
+                                            case 5:
                                                 _this.studySettings = _context.t0;
 
-                                                console.log("user study settings loaded from DB are", _this.studySettings);
-
-                                            case 8:
+                                            case 6:
                                             case 'end':
                                                 return _context.stop();
                                         }
@@ -40196,37 +40391,31 @@ exports.default = {
         selectNew: function selectNew() {
             this.studySettings.itemTypes._new = true;
             this.studySettings.itemTypes.old = false;
-            console.log("select _new called");
             this.saveStudySettings();
         },
         selectOld: function selectOld() {
             this.studySettings.itemTypes._new = false;
             this.studySettings.itemTypes.old = true;
-            console.log("select old called");
             this.saveStudySettings();
         },
         selectBothNewAndOld: function selectBothNewAndOld() {
             this.studySettings.itemTypes._new = true;
             this.studySettings.itemTypes.old = true;
-            console.log("select both _new and old called");
             this.saveStudySettings();
         },
         selectOverdue: function selectOverdue() {
             this.studySettings.oldTypes.overdue = true;
             this.studySettings.oldTypes.notOverdue = false;
-            console.log("select overdue called");
             this.saveStudySettings();
         },
         selectNotOverdue: function selectNotOverdue() {
             this.studySettings.oldTypes.overdue = false;
             this.studySettings.oldTypes.notOverdue = true;
-            console.log("select not overdue called");
             this.saveStudySettings();
         },
         selectBothOverdueAndNotOverdue: function selectBothOverdueAndNotOverdue() {
             this.studySettings.oldTypes.overdue = true;
             this.studySettings.oldTypes.notOverdue = true;
-            console.log("select both overdue and not overdue called");
             this.saveStudySettings();
         }
     },
@@ -40329,7 +40518,7 @@ Object.defineProperty(exports, "__esModule", {
 
 //temporary hacky solution for controller
 exports.default = {
-    template: __webpack_require__(255),
+    template: __webpack_require__(257),
     created: function created() {},
     data: function data() {
         return {};
@@ -40364,7 +40553,7 @@ var _trees = __webpack_require__(2);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _fact = __webpack_require__(27);
+var _fact = __webpack_require__(28);
 
 var _contentItems = __webpack_require__(1);
 
@@ -40374,15 +40563,19 @@ var _user = __webpack_require__(4);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _heading = __webpack_require__(28);
+var _heading = __webpack_require__(29);
 
 var _filters = __webpack_require__(45);
 
-var _skill = __webpack_require__(29);
+var _skill = __webpack_require__(30);
 
-__webpack_require__(271);
+__webpack_require__(274);
 
-var _vuex = __webpack_require__(24);
+var _vuex = __webpack_require__(26);
+
+var _message = __webpack_require__(202);
+
+var _message2 = _interopRequireDefault(_message);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40399,8 +40592,9 @@ function removeTreeFromGraph(treeId) {
 function goToFromMap(path) {
     PubSub.publish('goToFromMap', path);
 }
+//TODO every time we click on a node a new instance of this vue element is created . . . so if you click on the node 5 times 5 instances get created . . .
 exports.default = {
-    template: __webpack_require__(258), // '<div> {{movie}} this is the tree template</div>',
+    template: __webpack_require__(260), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     created: function created() {
         var _this = this;
@@ -40429,22 +40623,13 @@ exports.default = {
                             _this.content = _context.sent;
 
                             _this.startTimer();
-
-                            //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
-                            PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
-                                if (data.oldNode != me.id) return;
-
-                                //get reference to content, because by the time
-                                var content = me.content;
-                                content.saveTimer();
-                            });
-                            _context.next = 14;
+                            _context.next = 13;
                             return _this.tree.getLeaves();
 
-                        case 14:
+                        case 13:
                             _this.tree.sortLeavesByStudiedAndStrength();
 
-                        case 15:
+                        case 14:
                         case 'end':
                             return _context.stop();
                     }
@@ -40463,7 +40648,18 @@ exports.default = {
         };
     },
 
+    watch: {
+        //stop timer when
+        openNodeId: function openNodeId(newNodeId, oldNodeId) {
+            if (oldNodeId === this.tree.id && this.tree.id !== newNodeId) {
+                this.content.saveTimer();
+            } else {}
+        }
+    },
     computed: {
+        openNodeId: function openNodeId() {
+            return this.$store.state.openNodeId;
+        },
         typeIsHeading: function typeIsHeading() {
             return this.tree.contentType == 'heading';
         },
@@ -40532,8 +40728,20 @@ exports.default = {
         },
         proficiencyClicked: function proficiencyClicked() {
             this.syncProficiency();
-            // this.itemStudied({contentId:this.content.id})
-            this.$store.commit('itemStudied', this.content.id);
+            var decibelIncrease = this.content.getRecentDecibelIncrease();
+            var whenToReview = (0, _filters.timeFromNow)(this.content.nextReviewTime);
+            var text = '';
+            if (whenToReview.indexOf('in' >= 0)) {
+                text = ' pts, review ';
+            } else {
+                text = ' pts, review in ';
+            }
+            var sign = decibelIncrease >= 0 ? "+" : ""; // when less than 0 the JS num will already have a "-" sign
+            var msg = sign + Math.round(decibelIncrease) + text + whenToReview;
+            console.log(msg);
+            // const color = getColor
+            var color = (0, _proficiencyEnum.proficiencyToColor)(this.content.proficiency);
+            (0, _message2.default)(msg, color);
         },
         syncProficiency: function syncProficiency() {
             this.content.saveProficiency(); //  this.content.proficiency is already set I think, but not saved in db
@@ -40644,7 +40852,7 @@ exports.default = {
 "use strict";
 
 
-__webpack_require__(267);
+__webpack_require__(270);
 
 var _vue = __webpack_require__(19);
 
@@ -40827,7 +41035,6 @@ function measurePreviousStrength(estimatedPreviousStrength, R, t) {
     var logProficiency = Math.log(proficiencyAsDecimal);
     var ebbinghaus = -1 * t / logProficiency;
     var measuredPreviousStrength = 10 * Math.log10(ebbinghaus);
-    console.log(R + "," + t + " -> " + measuredPreviousStrength + " dbE");
     measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength : 0;
 
     //if proficiency is greater than/equal to 99 or less than/equal to 1, we have a wide range of possibilities for measured strength values - see this google sheet - https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=2051263794
@@ -40835,16 +41042,12 @@ function measurePreviousStrength(estimatedPreviousStrength, R, t) {
     //if proficiency is less than 1, and its been a really long time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much higher than it possible could have been, since we are only recording the value as 1% and not the actual .01% or whatever it actually is
     if (doubleLessThanOrEqualTo(R, _proficiencyEnum.PROFICIENCIES.ONE) /* for double comparison */ && measuredPreviousStrength > estimatedPreviousStrength) {
         measuredPreviousStrength = estimatedPreviousStrength;
-    } else {
-        console.log('R is not <= to PROFICIENCIES.ONE', R, _proficiencyEnum.PROFICIENCIES.ONE, measuredPreviousStrength, estimatedPreviousStrength);
-    }
+    } else {}
 
     //if proficiency is greater than 99, and its been a really short time since the user last saw the fact, our measure strength formula above can unintentionally think the user's strength value was much lower than it possible could have been, since we are only recording the value as 99% and not the actually 99.99% or whatever it actually is
     if (doubleGreaterThanOrEqualTo(R, _proficiencyEnum.PROFICIENCIES.FOUR) /* for double comparison */ && measuredPreviousStrength < estimatedPreviousStrength) {
         measuredPreviousStrength = estimatedPreviousStrength;
-    } else {
-        console.log('R is not < PROFICIENCIES.FOUR', R, _proficiencyEnum.PROFICIENCIES.FOUR);
-    }
+    } else {}
     return measuredPreviousStrength;
 }
 
@@ -40871,20 +41074,13 @@ function calculateTime(S, R) {
 
 // current proficiency in [0, 100]
 function estimateCurrentStrength(previousInteractionStrengthDecibels, currentProficiency, secondsSinceLastInteraction) {
-    var _console;
-
-    (_console = console).log.apply(_console, ['estimateCurrentStrength:'].concat(Array.prototype.slice.call(arguments)));
     var newInteractionStrengthDecibels = void 0;
     var t = secondsSinceLastInteraction;
     if (currentProficiency <= _proficiencyEnum.PROFICIENCIES.ONE) {
-        console.log('current proficiency is less than one', currentProficiency);
         var t1percent = calculateTime(previousInteractionStrengthDecibels, currentProficiency / 100);
-        console.log("t and t1percent are", t, t1percent);
         if (t >= t1percent) {
-            console.log('time is greater than time 1percent', currentProficiency);
             newInteractionStrengthDecibels = previousInteractionStrengthDecibels * t1percent / t;
         } else {
-            console.log('time is not greater than time 1percent', currentProficiency);
             newInteractionStrengthDecibels = previousInteractionStrengthDecibels;
         }
     } else {
@@ -40893,16 +41089,57 @@ function estimateCurrentStrength(previousInteractionStrengthDecibels, currentPro
         var Bp = (e * currentProficiency - 1) / (e - 1);
         var Bc = 10 * (e - 1);
         var deltaStrength = Bt * Bp * Bc;
-        console.log(Bt, Bp, Bc, "-> ", deltaStrength);
         newInteractionStrengthDecibels = previousInteractionStrengthDecibels + deltaStrength;
     }
-    console.log(previousInteractionStrengthDecibels + "dBE", currentProficiency, secondsSinceLastInteraction + "s", "->", newInteractionStrengthDecibels + "dbE");
     newInteractionStrengthDecibels = newInteractionStrengthDecibels < 10 ? 10 : newInteractionStrengthDecibels;
     return newInteractionStrengthDecibels;
 }
 
 /***/ }),
 /* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = message;
+
+var _snack = __webpack_require__(265);
+
+var _snack2 = _interopRequireDefault(_snack);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (typeof window !== 'undefined') {
+    window.Snack = _snack2.default;
+}
+function message(msg) {
+    var color = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'black';
+
+    //
+    // var snack = Snack.make("<your_message>", { /*<your_options>*/ });
+    // snack.show();
+
+    //     console.log('Snack constructor is', Snack)
+    //     var snack = new Snack();
+    // snack.message ("Luke, I'm your father." + msg)
+    //      .settings({ duration: Snack.LONG, hideOnClick: true })
+    //      .show();
+
+
+    var html = "<div style='color: " + color + "'>" + msg + "</div>";
+    var snack = new _snack2.default({
+        domParent: document.querySelector('body')
+    });
+    // show a snack for 4s
+    snack.show(html, 2000);
+}
+
+/***/ }),
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41017,15 +41254,15 @@ var _contentItems = __webpack_require__(1);
 
 var _contentItems2 = _interopRequireDefault(_contentItems);
 
-var _fact = __webpack_require__(27);
+var _fact = __webpack_require__(28);
 
-var _heading = __webpack_require__(28);
+var _heading = __webpack_require__(29);
 
-var _skill = __webpack_require__(29);
+var _skill = __webpack_require__(30);
 
 var _proficiencyEnum = __webpack_require__(8);
 
-var _tree = __webpack_require__(20);
+var _tree = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41035,7 +41272,7 @@ var newNodeXOffset = exports.newNodeXOffset = -25;
 var newNodeYOffset = exports.newNodeYOffset = -25;
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -41137,20 +41374,6 @@ var newNodeYOffset = exports.newNodeYOffset = -25;
 
 
 /***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)();
-// imports
-
-
-// module
-exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n}\n.exercise-creator-breadcrumbs {\n  width: 100%;\n}\n.exercise-creator {\n  background-color: rgba(135, 206, 250, 0.45);\n  height: 100%;\n}\n.exercise-creator-header {\n  display: flex;\n  flex-direction: row;\n  padding: 4px 8px 4px 8px;\n  background-color: skyblue;\n}\n.exercise-creator-body {\n  display: flex;\n  flex-direction: column;\n}\n.exercise-creator-content-list {\n  flex: 30;\n}\n.exercise-creator-new-exercise {\n  flex: 30;\n}\n.exercise-creator-exercise-list {\n  flex: 30;\n}\n.exercise-creator-goBack {\n  cursor: pointer;\n  margin-right: 24px;\n}\n.exercise-creator-header-left {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n.exercise-creator-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.exercise-creator-create-button-container {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41159,7 +41382,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".new-exercise-items {\n  z-index: 9001;\n  /*teehee*/\n}\n.exercise-creator-breadcrumbs {\n  width: 100%;\n}\n.exercise-creator {\n  background-color: rgba(135, 206, 250, 0.45);\n  height: 100%;\n}\n.exercise-creator-header {\n  display: flex;\n  flex-direction: row;\n  padding: 4px 8px 4px 8px;\n  background-color: skyblue;\n}\n.exercise-creator-body {\n  display: flex;\n  flex-direction: column;\n}\n.exercise-creator-content-list {\n  flex: 30;\n}\n.exercise-creator-new-exercise {\n  flex: 30;\n}\n.exercise-creator-exercise-list {\n  flex: 30;\n}\n.exercise-creator-goBack {\n  cursor: pointer;\n  margin-right: 24px;\n}\n.exercise-creator-header-left {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n.exercise-creator-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.exercise-creator-create-button-container {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -41187,7 +41410,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -41201,7 +41424,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "/* line 4, ../sass/_offline-theme-base.sass */\n.offline-ui,\n.offline-ui *,\n.offline-ui:before,\n.offline-ui:after,\n.offline-ui *:before,\n.offline-ui *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n/* line 7, ../sass/_offline-theme-base.sass */\n.offline-ui {\n  display: none;\n  position: fixed;\n  background: white;\n  z-index: 2000;\n  margin: auto;\n  top: 0;\n  left: 0;\n  right: 0;\n}\n/* line 17, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-content:before {\n  display: inline;\n}\n/* line 20, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  display: none;\n}\n/* line 24, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry:before {\n  display: inline;\n}\n/* line 29, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-up.offline-ui-up-5s {\n  display: block;\n}\n/* line 32, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down {\n  display: block;\n}\n/* line 37, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-retry {\n  display: block;\n}\n/* line 42, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s.offline-ui-waiting .offline-ui-retry {\n  display: none;\n}\n@-webkit-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-moz-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-ms-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-o-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-webkit-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-moz-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-ms-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-o-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-webkit-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-moz-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-ms-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-o-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n/* line 16, ../sass/offline-theme-dark.sass */\n.offline-ui {\n  -webkit-border-radius: 0 0 4px 4px;\n  -moz-border-radius: 0 0 4px 4px;\n  -ms-border-radius: 0 0 4px 4px;\n  -o-border-radius: 0 0 4px 4px;\n  border-radius: 0 0 4px 4px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: 300;\n  padding: 1em;\n  width: 38em;\n  max-width: 100%;\n  background: black;\n  color: #cccccc;\n  overflow: hidden;\n}\n@media (max-width: 38em) {\n  /* line 16, ../sass/offline-theme-dark.sass */\n  .offline-ui {\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -ms-border-radius: 0;\n    -o-border-radius: 0;\n    border-radius: 0;\n  }\n}\n/* line 30, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content {\n  padding-left: 2em;\n}\n/* line 33, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:before {\n  line-height: 1.25em;\n}\n/* line 36, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:after {\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 1em;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n}\n/* line 48, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-retry {\n  position: absolute;\n  right: 3em;\n  top: 0;\n  bottom: 0;\n  background: rgba(255, 255, 255, 0.2);\n  text-decoration: none;\n  color: inherit;\n  line-height: 3.5em;\n  height: 3.5em;\n  margin: auto;\n  padding: 0 1em;\n}\n/* line 61, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up {\n  -webkit-animation: offline-dropout forwards 0.5s 2s;\n  -moz-animation: offline-dropout forwards 0.5s 2s;\n  -ms-animation: offline-dropout forwards 0.5s 2s;\n  -o-animation: offline-dropout forwards 0.5s 2s;\n  animation: offline-dropout forwards 0.5s 2s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 64, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up .offline-ui-content:after {\n  background: #80d580;\n}\n/* line 67, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down {\n  -webkit-animation: offline-dropin 0.5s;\n  -moz-animation: offline-dropin 0.5s;\n  -ms-animation: offline-dropin 0.5s;\n  -o-animation: offline-dropin 0.5s;\n  animation: offline-dropin 0.5s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 70, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 73, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting,\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 3em;\n}\n/* line 76, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting .offline-ui-content:after,\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 79, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting:after,\n.offline-ui.offline-ui-down.offline-ui-waiting:after {\n  -webkit-animation: offline-rotation 0.7s linear infinite;\n  -moz-animation: offline-rotation 0.7s linear infinite;\n  -ms-animation: offline-rotation 0.7s linear infinite;\n  -o-animation: offline-rotation 0.7s linear infinite;\n  animation: offline-rotation 0.7s linear infinite;\n  -webkit-backface-visibility: hidden;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  right: 1em;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n  border: 2px solid transparent;\n  border-top-color: rgba(255, 255, 255, 0.5);\n  border-left-color: rgba(255, 255, 255, 0.5);\n  opacity: 0.7;\n}\n/* line 96, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 11em;\n}\n/* line 99, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting.offline-ui-reconnect-failed-2s {\n  padding-right: 0;\n}\nhtml,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n.sigma-tooltip {\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  z-index: 9000;\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
+exports.push([module.i, "#graph-container {\n  height: 600px;\n  background-color: skyblue;\n  /*rgb(139, 69, 19);/*ray lightbrown;*/\n  cursor: grab;\n}\n", ""]);
 
 // exports
 
@@ -41215,7 +41438,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
+exports.push([module.i, "/* line 4, ../sass/_offline-theme-base.sass */\n.offline-ui,\n.offline-ui *,\n.offline-ui:before,\n.offline-ui:after,\n.offline-ui *:before,\n.offline-ui *:after {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n/* line 7, ../sass/_offline-theme-base.sass */\n.offline-ui {\n  display: none;\n  position: fixed;\n  background: white;\n  z-index: 2000;\n  margin: auto;\n  top: 0;\n  left: 0;\n  right: 0;\n}\n/* line 17, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-content:before {\n  display: inline;\n}\n/* line 20, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  display: none;\n}\n/* line 24, ../sass/_offline-theme-base.sass */\n.offline-ui .offline-ui-retry:before {\n  display: inline;\n}\n/* line 29, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-up.offline-ui-up-5s {\n  display: block;\n}\n/* line 32, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down {\n  display: block;\n}\n/* line 37, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-retry {\n  display: block;\n}\n/* line 42, ../sass/_offline-theme-base.sass */\n.offline-ui.offline-ui-down.offline-ui-reconnect-failed-2s.offline-ui-waiting .offline-ui-retry {\n  display: none;\n}\n@-webkit-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-moz-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-ms-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-o-keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@keyframes offline-dropin {\n  /* line 40, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 0;\n  }\n  /* line 43, ../sass/_keyframes.sass */\n  1% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 0;\n  }\n  /* line 48, ../sass/_keyframes.sass */\n  2% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n    opacity: 1;\n  }\n  /* line 51, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n    opacity: 1;\n  }\n}\n@-webkit-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-moz-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-ms-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-o-keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@keyframes offline-dropout {\n  /* line 57, ../sass/_keyframes.sass */\n  0% {\n    transform: translateY(0);\n    -webkit-transform: translateY(0);\n    -moz-transform: translateY(0);\n    -ms-transform: translateY(0);\n    -o-transform: translateY(0);\n  }\n  /* line 59, ../sass/_keyframes.sass */\n  100% {\n    transform: translateY(-800px);\n    -webkit-transform: translateY(-800px);\n    -moz-transform: translateY(-800px);\n    -ms-transform: translateY(-800px);\n    -o-transform: translateY(-800px);\n  }\n}\n@-webkit-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-moz-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-ms-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@-o-keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n@keyframes offline-rotation {\n  /* line 64, ../sass/_keyframes.sass */\n  0% {\n    transform: rotate(0deg);\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n  }\n  /* line 66, ../sass/_keyframes.sass */\n  100% {\n    transform: rotate(359deg);\n    -webkit-transform: rotate(359deg);\n    -moz-transform: rotate(359deg);\n    -ms-transform: rotate(359deg);\n    -o-transform: rotate(359deg);\n  }\n}\n/* line 16, ../sass/offline-theme-dark.sass */\n.offline-ui {\n  -webkit-border-radius: 0 0 4px 4px;\n  -moz-border-radius: 0 0 4px 4px;\n  -ms-border-radius: 0 0 4px 4px;\n  -o-border-radius: 0 0 4px 4px;\n  border-radius: 0 0 4px 4px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: 300;\n  padding: 1em;\n  width: 38em;\n  max-width: 100%;\n  background: black;\n  color: #cccccc;\n  overflow: hidden;\n}\n@media (max-width: 38em) {\n  /* line 16, ../sass/offline-theme-dark.sass */\n  .offline-ui {\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -ms-border-radius: 0;\n    -o-border-radius: 0;\n    border-radius: 0;\n  }\n}\n/* line 30, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content {\n  padding-left: 2em;\n}\n/* line 33, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:before {\n  line-height: 1.25em;\n}\n/* line 36, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-content:after {\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 1em;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n}\n/* line 48, ../sass/offline-theme-dark.sass */\n.offline-ui .offline-ui-retry {\n  position: absolute;\n  right: 3em;\n  top: 0;\n  bottom: 0;\n  background: rgba(255, 255, 255, 0.2);\n  text-decoration: none;\n  color: inherit;\n  line-height: 3.5em;\n  height: 3.5em;\n  margin: auto;\n  padding: 0 1em;\n}\n/* line 61, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up {\n  -webkit-animation: offline-dropout forwards 0.5s 2s;\n  -moz-animation: offline-dropout forwards 0.5s 2s;\n  -ms-animation: offline-dropout forwards 0.5s 2s;\n  -o-animation: offline-dropout forwards 0.5s 2s;\n  animation: offline-dropout forwards 0.5s 2s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 64, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-up .offline-ui-content:after {\n  background: #80d580;\n}\n/* line 67, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down {\n  -webkit-animation: offline-dropin 0.5s;\n  -moz-animation: offline-dropin 0.5s;\n  -ms-animation: offline-dropin 0.5s;\n  -o-animation: offline-dropin 0.5s;\n  animation: offline-dropin 0.5s;\n  -webkit-backface-visibility: hidden;\n}\n/* line 70, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 73, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting,\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 3em;\n}\n/* line 76, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting .offline-ui-content:after,\n.offline-ui.offline-ui-down.offline-ui-waiting .offline-ui-content:after {\n  background: #e24949;\n}\n/* line 79, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-connecting:after,\n.offline-ui.offline-ui-down.offline-ui-waiting:after {\n  -webkit-animation: offline-rotation 0.7s linear infinite;\n  -moz-animation: offline-rotation 0.7s linear infinite;\n  -ms-animation: offline-rotation 0.7s linear infinite;\n  -o-animation: offline-rotation 0.7s linear infinite;\n  animation: offline-rotation 0.7s linear infinite;\n  -webkit-backface-visibility: hidden;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  -ms-border-radius: 50%;\n  -o-border-radius: 50%;\n  border-radius: 50%;\n  content: \" \";\n  display: block;\n  position: absolute;\n  right: 1em;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  height: 1em;\n  width: 1em;\n  border: 2px solid transparent;\n  border-top-color: rgba(255, 255, 255, 0.5);\n  border-left-color: rgba(255, 255, 255, 0.5);\n  opacity: 0.7;\n}\n/* line 96, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting {\n  padding-right: 11em;\n}\n/* line 99, ../sass/offline-theme-dark.sass */\n.offline-ui.offline-ui-down.offline-ui-waiting.offline-ui-reconnect-failed-2s {\n  padding-right: 0;\n}\nhtml,\n.tree,\nbutton {\n  font-family: 'Fredoka One', cursive !important;\n}\nhtml,\nbody {\n  min-height: 100%;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n}\n.page {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n}\n/*<style>*/\n.sigma-tooltip {\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n  border-radius: 6px;\n}\n.sigma-tooltip-header {\n  font-variant: small-caps;\n  font-size: 120%;\n  color: #437356;\n  border-bottom: 1px solid #aac789;\n  padding: 10px;\n}\n.sigma-tooltip-body {\n  padding: 10px;\n}\n.sigma-tooltip-body th {\n  color: #999;\n  text-align: left;\n}\n.sigma-tooltip-footer {\n  padding: 10px;\n  border-top: 1px solid #aac789;\n}\n.sigma-tooltip > .arrow {\n  border-width: 10px;\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.sigma-tooltip.top {\n  margin-top: -12px;\n}\n.sigma-tooltip.top > .arrow {\n  left: 50%;\n  bottom: -10px;\n  margin-left: -10px;\n  border-top-color: #f9f7ed;\n  border-bottom-width: 0;\n}\n.sigma-tooltip.bottom {\n  margin-top: 12px;\n  margin-left: -160px;\n}\n.sigma-tooltip.bottom > .arrow {\n  left: 50%;\n  top: -10px;\n  margin-left: -10px;\n  border-bottom-color: #f9f7ed;\n  border-top-width: 0;\n}\n.sigma-tooltip.left {\n  margin-left: -12px;\n}\n.sigma-tooltip.left > .arrow {\n  top: 50%;\n  right: -10px;\n  margin-top: -10px;\n  border-left-color: #f9f7ed;\n  border-right-width: 0;\n}\n.sigma-tooltip.right {\n  margin-left: 12px;\n}\n.sigma-tooltip.right > .arrow {\n  top: 50%;\n  left: -10px;\n  margin-top: -10px;\n  border-right-color: #f9f7ed;\n  border-left-width: 0;\n}\n.footer-container {\n  padding: 0px 4px 0px 4px;\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  z-index: 9000;\n  /*width: 100%;*/\n  /*height: 100%;*/\n  /*height: 100%;*/\n}\n.footer {\n  background-color: skyblue;\n  /*/*saddlebrown*/\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  height: 100%;\n}\n.footer-createExercise {\n  cursor: pointer;\n}\n.branches-app {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n/*todo replace below with a class for the tree html component*/\nbutton {\n  cursor: pointer;\n}\n.footer-photo {\n  width: 25px;\n  height: 25px;\n}\n.divider-horizontal {\n  border-top: 2px dotted #fff;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n/*.exercise-creator-container { height: 100%;*/\n/*}*/\n.contentList-item-id {\n  color: #A9A9A9;\n}\n.new-exercise {\n  padding: 4px 4px 4px 4px;\n}\n", ""]);
 
 // exports
 
@@ -41229,7 +41452,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, ".studyMenu {\n  width: 120px;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9000;\n}\n.studyMenu-settings {\n  background-color: white;\n  width: 100%;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9001;\n}\n.studyMenu-settings-title {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n.button-selected {\n  font-size: 25px;\n}\n.studyMenu-settings-itemTypes {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n.studyMenu-settings-oldTypes {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n", ""]);
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n.proficiency-selector {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n}\n.proficiency-selector-item {\n  min-width: 25px;\n  max-width: 25px;\n  min-height: 25px;\n  max-height: 25px;\n  cursor: pointer;\n}\n.proficiency-selector-item-active {\n  min-width: 35px;\n  max-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  border-style: outset;\n}\n.proficiency-selector-item-zero {\n  background-color: grey;\n}\n.proficiency-selector-item-one {\n  background-color: red;\n}\n.proficiency-selector-item-two {\n  background-color: orange;\n}\n.proficiency-selector-item-three {\n  background-color: yellow;\n}\n.proficiency-selector-item-four {\n  background-color: lawngreen;\n}\n", ""]);
 
 // exports
 
@@ -41243,7 +41466,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
+exports.push([module.i, ".studyMenu {\n  width: 120px;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9000;\n}\n.studyMenu-settings {\n  background-color: white;\n  width: 100%;\n  position: absolute;\n  right: 0;\n  bottom: 40px;\n  z-index: 9001;\n}\n.studyMenu-settings-title {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n.button-selected {\n  font-size: 25px;\n}\n.studyMenu-settings-itemTypes {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n.studyMenu-settings-oldTypes {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n}\n", ""]);
 
 // exports
 
@@ -41257,13 +41480,41 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n", ""]);
+exports.push([module.i, ".tree-review-container {\n  background-color: black;\n  color: white;\n}\n.tree-review {\n  height: 100%;\n}\n.tree-review-body {\n  padding: 4px 8px 4px 8px;\n  height: 100%;\n}\n.tree-review-header {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: center;\n  background-color: skyblue;\n  padding: 4px 8px 4px 8px;\n}\n.tree-review-header-right {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-breadcrumbs-active {\n  text-decoration: underline;\n}\n.tree-review-item {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.tree-review-item-select-all-divider {\n  width: 100%;\n  border-color: grey;\n  border-style: solid;\n  border-width: 2px;\n  margin: 1px 0px 1px 0px;\n}\n.tree-review-next-question {\n  float: right;\n}\n.tree-review-question-container {\n  padding: 18px 0px 18px 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n}\n.tree-review-answer-container {\n  padding-bottom: 18px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-add-exercise {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-no-exercise-found {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-review-answer {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.pointerFinger {\n  cursor: pointer;\n}\n.red {\n  background-color: red;\n}\n.tree-review-modify-button {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-edit {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-exercise-delete {\n  margin-left: 8px;\n  cursor: pointer;\n}\n.tree-review-flip-arrow {\n  width: 100%;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 213 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+// imports
+
+
+// module
+exports.push([module.i, ".tree-proficiency-one {\n  background-color: red;\n}\n.tree-proficiency-two {\n  background-color: orange;\n}\n.tree-proficiency-three {\n  background-color: yellow;\n}\n.tree-proficiency-four {\n  background-color: lawngreen;\n}\n.tree-proficiency-unknown {\n  background-color: grey;\n}\n.tree-proficiency-one-text {\n  color: red;\n}\n.tree-proficiency-two-text {\n  color: orange;\n}\n.tree-proficiency-three-text {\n  color: yellow;\n}\n.tree-proficiency-four-text {\n  color: lawngreen;\n}\n.tree-proficiency-unknown-text {\n  color: grey;\n}\n.tree {\n  cursor: default;\n  padding: 4px;\n  width: 320px;\n  border-radius: 3px;\n  /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */\n}\n.tree-current-heading {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-new-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-current-skill {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.tree-heading-leaf-proficiencies {\n  display: flex;\n  flex-direction: row;\n}\n.tree-heading-leaf-num {\n  margin-left: 4px;\n  margin-right: 4px;\n}\n.tree-heading-leaf-num-unknown {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: grey;\n}\n.tree-heading-leaf-num-one {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: red;\n}\n.tree-heading-leaf-num-two {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: orange;\n}\n.tree-heading-leaf-num-three {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: yellow;\n}\n.tree-heading-leaf-num-four {\n  margin-left: 4px;\n  margin-right: 4px;\n  color: lawngreen;\n}\n.tree-current-fact {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n.tree-proficiency-timeTilReview {\n  display: flex;\n  justify-content: center;\n}\n.tree-footer-row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.tree-edit-button {\n  cursor: pointer;\n}\n.tree-delete-button {\n  cursor: pointer;\n}\n.tree-current-fact-question {\n  padding-bottom: 4px;\n}\n.tree-current-fact-answer {\n  padding-left: 4px;\n}\n.tree-debugging-info {\n  width: 100%;\n  word-wrap: break-word;\n}\n.tree-new-fact {\n  display: flex;\n  flex-direction: column;\n}\n.tree-label {\n  color: white;\n}\n.tree-button-choice-selected {\n  size: 40px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+// imports
+
+
+// module
+exports.push([module.i, ".snack-container{position:fixed;left:20px;bottom:0;z-index:99999}.snack{overflow:hidden;clear:both;min-width:288px;max-width:568px;cursor:pointer;opacity:0;background-color:#323232;color:#fff;font-size:14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);height:0;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,padding 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:translateY(200%);transform:translateY(200%)}.snack.snack-opened{height:auto;opacity:1;padding:14px 15px;margin-bottom:20px;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s;transition:transform .2s ease-in-out,opacity .2s ease-in,height 0s linear .2s,height 0s linear .2s,-webkit-transform .2s ease-in-out;-webkit-transform:none;transform:none}@media (max-width:767px){.snack-container{left:0!important;right:0;width:100%}.snack-container .snack{min-width:100%}.snack-container .snack.snack-opened{border-radius:0;margin-bottom:0}}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41365,7 +41616,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 214 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41400,11 +41651,11 @@ exports.createFirebaseNamespace = createFirebaseNamespace;
 
 var _subscribe = __webpack_require__(51);
 
-var _errors = __webpack_require__(31);
+var _errors = __webpack_require__(32);
 
-var _shared_promise = __webpack_require__(32);
+var _shared_promise = __webpack_require__(33);
 
-var _deep_copy = __webpack_require__(213);
+var _deep_copy = __webpack_require__(215);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41769,7 +42020,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 215 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.1.2
@@ -42048,7 +42299,7 @@ c){a=new T(a);c({INTERNAL:{getUid:q(a.getUid,a),getToken:q(a.getIdToken,a),addAu
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 216 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license Firebase v4.1.2
@@ -42319,7 +42570,7 @@ d;return d.Ya},{Reference:U,Query:X,Database:Pg,enableLogging:Sb,INTERNAL:Z,TEST
 
 
 /***/ }),
-/* 217 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42337,18 +42588,18 @@ var _app = __webpack_require__(17);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(215);
+__webpack_require__(217);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import instance of FirebaseApp from ./app
 var Storage, XMLHttpRequest;
 
-__webpack_require__(216);
-__webpack_require__(225);
+__webpack_require__(218);
+__webpack_require__(227);
 var AsyncStorage;
 
-__webpack_require__(218);
+__webpack_require__(220);
 // Export the single instance of firebase
 exports.default = _app2.default;
 module.exports = exports['default'];
@@ -42356,7 +42607,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42386,11 +42637,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(220);
+var _windowController = __webpack_require__(222);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(219);
+var _swController = __webpack_require__(221);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -42417,7 +42668,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 219 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42454,7 +42705,7 @@ var _controllerInterface = __webpack_require__(52);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(21);
+var _errors = __webpack_require__(22);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -42795,7 +43046,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 220 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42832,7 +43083,7 @@ var _controllerInterface = __webpack_require__(52);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(21);
+var _errors = __webpack_require__(22);
 
 var _errors2 = _interopRequireDefault(_errors);
 
@@ -42840,7 +43091,7 @@ var _workerPageMessage = __webpack_require__(55);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(222);
+var _defaultSw = __webpack_require__(224);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -43196,7 +43447,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 221 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43239,7 +43490,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 222 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43276,7 +43527,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 223 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43307,13 +43558,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = __webpack_require__(31);
+var _errors = __webpack_require__(32);
 
-var _errors2 = __webpack_require__(21);
+var _errors2 = __webpack_require__(22);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(221);
+var _arrayBufferToBase = __webpack_require__(223);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -43698,7 +43949,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 224 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -43935,10 +44186,10 @@ module.exports = exports['default'];
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(273).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(276).setImmediate))
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43953,15 +44204,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(36);
+var _string = __webpack_require__(37);
 
 var _taskenums = __webpack_require__(59);
 
-var _xhriopool = __webpack_require__(237);
+var _xhriopool = __webpack_require__(239);
 
 var _reference = __webpack_require__(61);
 
-var _service = __webpack_require__(238);
+var _service = __webpack_require__(240);
 
 var _app = __webpack_require__(17);
 
@@ -44008,7 +44259,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44066,7 +44317,7 @@ function async(f) {
 
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44083,7 +44334,7 @@ exports.AuthWrapper = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(23);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -44091,15 +44342,15 @@ var _error2 = __webpack_require__(6);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(229);
+var _failrequest = __webpack_require__(231);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(24);
 
 var _promise_external = __webpack_require__(9);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(235);
+var _requestmap = __webpack_require__(237);
 
 var _type = __webpack_require__(3);
 
@@ -44248,7 +44499,7 @@ var AuthWrapper = exports.AuthWrapper = function () {
 
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44380,7 +44631,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44439,7 +44690,7 @@ var FailRequest = exports.FailRequest = function () {
 
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44520,7 +44771,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44576,7 +44827,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44636,7 +44887,7 @@ var Observer = exports.Observer = function Observer(nextOrObserver, opt_error, o
 
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44676,11 +44927,11 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(34);
+var _array = __webpack_require__(35);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(228);
+var _backoff = __webpack_require__(230);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -44700,7 +44951,7 @@ var _type = __webpack_require__(3);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(37);
+var _url = __webpack_require__(38);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -44909,7 +45160,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44956,7 +45207,7 @@ handler, timeout) {
 
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44992,7 +45243,7 @@ var _object = __webpack_require__(12);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(23);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -45051,7 +45302,7 @@ var RequestMap = exports.RequestMap = function () {
 
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45250,7 +45501,7 @@ var NetworkXhrIo = exports.NetworkXhrIo = function () {
 
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45282,7 +45533,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _xhrio_network = __webpack_require__(236);
+var _xhrio_network = __webpack_require__(238);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45307,7 +45558,7 @@ var XhrIoPool = exports.XhrIoPool = function () {
 
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45339,19 +45590,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-var _args = __webpack_require__(33);
+var _args = __webpack_require__(34);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(227);
+var _authwrapper = __webpack_require__(229);
 
-var _location = __webpack_require__(23);
+var _location = __webpack_require__(24);
 
 var _promise_external = __webpack_require__(9);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(233);
+var _request = __webpack_require__(235);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -45498,7 +45749,7 @@ var ServiceInternals = exports.ServiceInternals = function () {
 
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45537,19 +45788,19 @@ var _taskenums = __webpack_require__(59);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(232);
+var _observer = __webpack_require__(234);
 
-var _tasksnapshot = __webpack_require__(240);
+var _tasksnapshot = __webpack_require__(242);
 
-var _args = __webpack_require__(33);
+var _args = __webpack_require__(34);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(34);
+var _array = __webpack_require__(35);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(226);
+var _async = __webpack_require__(228);
 
 var _error = __webpack_require__(6);
 
@@ -46141,7 +46392,7 @@ var UploadTask = exports.UploadTask = function () {
 
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46193,115 +46444,115 @@ var UploadTaskSnapshot = exports.UploadTaskSnapshot = function () {
 
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"item-list\">\r\n    {{numItems}}\r\n    <button v-on:click=\"recalculateProficiencyAggregationForAll\">\r\n       Recalculate Aggregation\r\n    </button>\r\n    <li v-for=\"item in items\">\r\n        <!--<span>Type: {{item.type}}</span>-->\r\n        <!--<span>Id: {{item.id}}</span>-->\r\n        <!--<span> list item</span>-->\r\n        <div class=\"contentList-item-breadcrumb\">{{item.getBreadCrumbsString()}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">URI: {{item.uri}}</div>\r\n        <div class=\"contentList-item-breadcrumb\">INITIAL PARENT TREE CONTENT URI:{{item.primaryParentTreeContentURI}}</div>\r\n        <div class=\"contentList-item-id\"> ID: {{item.id}}</div>\r\n        <button v-on:click=\"remove(item)\">Remove</button>\r\n        <!--<span>uri: {{item.uri}}</span>-->\r\n        <!--<span v-if=\"item.type=='fact'\" class=\"item-fact\"><span>Question: {{item.question}}</span><span>Answer: {{item.answer}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='heading'\" class=\"item-heading\"><span>HEADING: {{item.title}}</span></span>-->\r\n        <!--<span v-if=\"item.type=='skill'\" class=\"item-skill\"><span>SKILL: {{item.title}}</span></span>-->\r\n    </li>\r\n</ul>";
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul>\r\n    <div>state: {{state}}</div>\r\n   <li v-for=\"triplet in triplets\" v-if=\"stateIsShowing || stateIsAnswer\">{{triplet}}</li>\r\n   <h3 v-if=\"stateIsSubtractingBy7\">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>\r\n   <div><input type=\"text\" v-for=\"triplet in triplets\" v-if=\"stateIsQuizzing || stateIsAnswer\"></div>\r\n   <button v-if=\"stateIsQuizzing\" v-on:click=\"showAnswer\">Show Answer</button>\r\n</ul>";
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator-container\">\r\n   <exercise-creator :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\"></exercise-creator>\r\n</div>\r\n";
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"exercise-creator\">\r\n    <header class=\"exercise-creator-header\">\r\n        <go-back></go-back>\r\n        <div class=\"exercise-creator-header-right\">\r\n            <div class=\"exercise-creator-breadcrumbs\"><!-- A > B > CD > E > F > G > H --></div>\r\n            <div class=\"exercise-creator-create-button-container\">\r\n                <!--<div class=\"exercise-creator-create-button\">CREATE EXERCISE</div>-->\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div class=\"exercise-creator-body\">\r\n        <!--<content-list class=\"exercise-creator-content-list\"></content-list>-->\r\n        <new-exercise :contentItemId=\"contentItemId\" :exerciseToReplaceId=\"exerciseToReplaceId\" class=\"exercise-creator-new-exercise\"></new-exercise>\r\n        <!--<exercise-list class=\"exercise-creator-exercise-list\"></exercise-list>-->\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 245 */
+/* 247 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"new-exercise\">\r\n    <div class=\"new-exercise-items input textarea clearfix example4\"><div v-if=\"loading\"> . . . loading items tested in this exercise . . .</div></div>\r\n    <div class=\"ui form\">question\r\n        <textarea rows=\"2\" id='new-exercise-question' v-model=\"question\"></textarea>\r\n    </div>\r\n    <div class=\"ui form\">answer\r\n        <textarea rows=\"2\" id='new-exercise-answer' v-model=\"answer\"></textarea>\r\n    </div>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='!window.exerciseToReplaceId' v-on:click=\"createExercise\">CREATE EXERCISE</button>\r\n    <button class=\"new-exercise-submit ui button positive\" v-if='window.exerciseToReplaceId' v-on:click=\"replaceExercise\">SAVE CHANGES</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 246 */
+/* 248 */
 /***/ (function(module, exports) {
 
 module.exports = "<ul class=\"exercise-list\">\r\n    <li v-for=\"exercise in exercises\">\r\n        <span>Id: {{exercise.id}}</span>\r\n        <span v-if=\"exercise.type=='QA'\" class=\"exercise-QA\"><span>Question: {{exercise.question}}</span><span>Answer: {{exercise.answer}}</span></span>\r\n    </li>\r\n</ul>\r\n\r\n";
 
 /***/ }),
-/* 247 */
+/* 249 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"footer-container\" class=\"footer-container\">\r\n    <button class=\"footer login-button\" v-on:click=\"login\" v-if=\"!loggedIn\"> Login via Facebook </button>\r\n    <span class='footer' v-if=\"loggedIn\">\r\n        <!--<a class=\"footer-createExercise\" v-on:click='goToExerciseCreator' title=\"Create an Exercise\">-->\r\n            <!--<i class=\"fa fa-plus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <!--<a class=\"footer-review\" v-on:click='goToReviewTree' title=\"Review Stuff\">-->\r\n            <!--<i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i>-->\r\n        <!--</a>-->\r\n        <span class=\"footer-numItemsStudied\" title=\"Items studied\">\r\n            {{numItemsStudied}}\r\n            <i class=\"fa fa-pagelines\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-numItemsMastered\" title=\"Items mastered\">\r\n            {{numItemsMastered}}\r\n            <i class=\"fa fa-tree\" aria-hidden=\"true\"></i>\r\n        </span>\r\n        <span class=\"footer-timeSpent\">\r\n            <i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i>\r\n            =\r\n            {{secondsSpentStudying | secondsToPretty}}\r\n        </span>\r\n        <!--<span class=\"footer-flipCards\"><button v-on:click</span>-->\r\n        <img class='footer-photo' :src=\"photoURL\" v-on:click='toggleSettingsMenu' v-if=\"loggedIn\">\r\n        <!--<span class=\"footer-itemsMasteredPerMinute\"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->\r\n    </span>\r\n</div>\r\n";
 
 /***/ }),
-/* 248 */
+/* 250 */
 /***/ (function(module, exports) {
 
 module.exports = "<a class=\"exercise-creator-header-left\" v-on:click=\"goBack\">\r\n    <i class=\"exercise-creator-goBack fa fa-arrow-left\" aria-hidden=\"true\"></i>\r\n</a>\r\n";
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, exports) {
 
 module.exports = "<div>\r\n    <!--<div class=\"ct-chart ct-perfect-fourth\"></div>-->\r\n    <h3>List of Interactions</h3>\r\n    <ul>\r\n        <button v-on:click.stop=\"clearInteractions\">\r\n           Clear Interactions\r\n        </button>\r\n        <li v-for=\"interaction in interactions\">\r\n            {{interaction.timestamp | dateTime}}, {{interaction.proficiency}}%<span v-if=\"interaction.previousInteractionStrength && interaction.currentInteractionStrength\">, {{interaction.previousInteractionStrength | round}} dB -> {{interaction.currentInteractionStrength | round}} dB </span>\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"graph-container\">\r\n    <study-menu class=\"reviewMenu\"></study-menu>\r\n</div>\r\n";
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"newTree\">\r\n    <div class=\"divider-horizontal\"></div>\r\n    <div class=\"arrow\"></div>\r\n    <div class=\"newTree-header\">Add a new child </div>\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child </div>-->\r\n    <!--<div class=\"sigma-tooltip-header\">Add a new child {{initialparenttreecontenturi}} {{parentid}} </div>-->\r\n    <!--<div class=\"sigma-tooltip-body\">-->\r\n    <div>\r\n        <div class=\"newTree-type-selector\">\r\n            <button class=\"newTree-type-selector-heading-button tree-button-choice-selected\"  v-bind:style=\"headingSelectorStyle\" v-on:click=\"setTypeToHeading\">Category</button>\r\n            <button class=\"newTree-type-selector-fact-button\" v-bind:style=\"factSelectorStyle\" v-on:click=\"setTypeToFact\">Fact</button>\r\n            <button class=\"newTree-type-selector-skill-button\" v-bind:style=\"skillSelectorStyle\" v-on:click=\"setTypeToSkill\">Skill</button>\r\n        </div>\r\n        <p class=\"newTree-form\">\r\n            <p class=\"newTree-form tree-fact\" v-if=\"contentIsFact\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Question:</span><input class='newTree-question' type='text' v-model=\"question\"><br>\r\n                <span class=\"tree-label\">Answer:</span> <input class='newTree-answer' type='text' v-model=\"answer\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-heading\" v-if=\"contentIsHeading\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Category:</span> <input class='newTree-heading' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n            <p class=\"newTree-form tree-skill\" v-if=\"contentIsSkill\">\r\n                <input type=\"hidden\" class=\"newTree-parentId\" v-model=\"parentid\">\r\n                <span class=\"tree-label\">Skill:</span><input class='newTree-skill' type='text' v-model=\"title\"><br>\r\n                <button class='newTree-create-button' v-on:click=\"createNewTree\">Create</button>\r\n            </p>\r\n        </p>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports) {
 
 module.exports = "<span class=\"proficiency-selector\">\r\n    <!--<span class=\"proficiency-selector-item proficiency-selector-item-zero\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsUnknown}\"></span>-->\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-one\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsOne}\" v-on:click.stop=\"setProficiencyToOne\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-two\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsTwo}\" v-on:click.stop=\"setProficiencyToTwo\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-three\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsThree}\" v-on:click.stop=\"setProficiencyToThree\"></span>\r\n    <span class=\"proficiency-selector-item proficiency-selector-item-four\" v-bind:class=\"{'proficiency-selector-item-active': proficiencyIsFour}\" v-on:click.stop=\"setProficiencyToFour\"></span>\r\n</span>";
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"review-schedule\">\r\n    <h2>Review Schedule</h2>\r\n    <div> You have {{numItemsToReview}} items to review</div>\r\n    <div> You are logged in: {{loggedIn}}</div>\r\n    <table>\r\n\r\n        <th><td>Item Id</td><td>Next Time to Review</td><td>Current Proficiency</td></th>\r\n        <tr v-for=\"(value, key) in items\">\r\n            <td> {{key}}</td> <td>{{value.nextReviewTime | timeFromNow}} </td> <td>{{value.proficiency}}</td>\r\n        </tr>\r\n\r\n    </table>\r\n\r\n</div>";
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports) {
 
 module.exports = "<div>\r\n    <div class=\"studyMenu-settings\" v-if=\"settingsMenuOpen\">\r\n        <h6 class=\"studyMenu-settings-title\">Show Which Items?</h6>\r\n        <div class=\"studyMenu-settings-itemTypes\">\r\n            <div>\r\n                <button v-bind:class=\"{ 'button-selected': newSelected }\" v-on:click=\"selectNew\">New</button>\r\n                <button v-bind:class=\"{ 'button-selected': oldSelected }\" v-on:click=\"selectOld\">Old</button>\r\n                <button v-bind:class=\"{ 'button-selected': bothSelected }\" v-on:click=\"selectBothNewAndOld\" >Both</button>\r\n            </div>\r\n        </div>\r\n        <div v-if=\"oldTrue\">\r\n            <h6 class=\"studyMenu-settings-title\">Show Which Old Items?</h6>\r\n            <div class=\"studyMenu-settings-oldTypes\">\r\n                <div>\r\n                    <button v-bind:class=\"{ 'button-selected': overdueSelected}\" v-on:click=\"selectOverdue\">Overdue</button>\r\n                    <button v-bind:class=\"{ 'button-selected': notOverdueSelected}\" v-on:click=\"selectNotOverdue\">Not Overdue</button>\r\n                    <button v-bind:class=\"{ 'button-selected': bothOverdueAndNotOverdueSelected}\" v-on:click=\"selectBothOverdueAndNotOverdue\">Both</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <button class=\"studyMenu\">{{title}} [{{numOverdue}}]</button>\r\n</div>\r\n";
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"toolbar\">\r\n    <!--<button class=\"activate-lasso\" v-on:click=\"activateLasso\">Activate Lasso</button>-->\r\n    <!--<button class=\"deactivate-lasso\" v-on:click=\"deactivateLasso\">De-activate Lasso</button>-->\r\n</div>";
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"tree-review\">\r\n    <header class=\"tree-review-header\">\r\n        <go-back></go-back>\r\n        <div class=\"tree-review-header-right\">\r\n            <span class=\"tree-review-breadcrumbs\">\r\n                <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                    <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                </span>\r\n                <span class=\"tree-review-breadcrumb\">\r\n                    <span >{{lastBreadcrumb.text}}</span>\r\n                </span>\r\n            </span>\r\n            <span class=\"tree-review-timer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </span>\r\n        </div>\r\n    </header>\r\n    <div class=\"tree-review-body\" :class=\"{'pointerFinger': !flipped}\" v-on:click=\"flipIfNotFlipped\">\r\n        <div class=\"tree-review-question-container\" v-on:click.stop=\"flip\">\r\n            <div class=\"tree-review-loading\" v-if=\"loading\">\r\n                . . . loading . . .\r\n            </div>\r\n            <div class=\"tree-review-no-exercise-found\" v-if=\"!loading &&!exercise.id\">\r\n                <div class=\"tree-review-no-exercise-found-text\">\r\n                   No exercise found for\r\n                    <span class=\"tree-review-breadcrumb\" v-for=\"breadcrumb in breadcrumbsAllButLast\">\r\n                        <span >{{breadcrumb.text}} <span class=\"breadcrumb-arrow\">> </span></span>\r\n                    </span>\r\n                    <span class=\"tree-review-breadcrumb\">\r\n                        <span >{{lastBreadcrumb.text}}</span>\r\n                    </span>\r\n                </div>\r\n                <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"addExercise\">Add an exercise for this skill</button>\r\n            </div>\r\n            <div class=\"tree-review-question\">{{exercise.question}}</div>\r\n            <i class=\"fa fa-undo\" name='flip-icon' aria-hidden=\"true\" v-if=\"exercise.id\"></i>\r\n        </div>\r\n        <div class=\"tree-review-answer-container\" v-if=\"exercise.id && flipped\">\r\n            <div class=\"tree-review-answer\">{{exercise.answer}}<i v-on:click='editExercise' class='tree-review-exercise-edit fa fa-pencil-square-o'></i><i v-on:click='deleteExercise' class='tree-review-exercise-delete fa fa-trash-o'></i></div>\r\n        </div>\r\n        <div class=\"tree-review-proficiency-container\" v-if=\"exercise.id && flipped\">\r\n            How well did you know this?\r\n            <div v-if=\"oneItemTested\">\r\n            </div>\r\n            <div v-for=\"item in items\">\r\n                <span class=\"tree-review-item\">\r\n                    <span class=\"tree-review-item-title\" :class=\"{'tree-proficiency-unknown-text': item.isProficiencyUnknown(), 'tree-proficiency-one-text': item.isProficiencyOne(),'tree-proficiency-two-text': item.isProficiencyTwo(),'tree-proficiency-three-text': item.isProficiencyThree(),'tree-proficiency-four-text': item.isProficiencyFour()}\">{{item.title}}</span>\r\n                    <proficiency-selector v-model=\"item.proficiency\"></proficiency-selector>\r\n                </span>\r\n            </div>\r\n            <div class=\"tree-review-item-select-all-divider\"></div>\r\n            <div class=\"tree-review-item\" v-if=\"!oneItemTested\">\r\n                Mark all: <proficiency-selector v-on:input=\"updateProficiencyForAllItems\" v-model=\"proficiencyForAllItems\"></proficiency-selector>\r\n            </div>\r\n            <button class=\"tree-review-next-question ui button positive\" v-on:click.stop=\"nextQuestion\">Next Question</button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"tree-review-container\">\r\n   <tree-review :leafId=\"leafId\"></tree-review>\r\n</div>";
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"tree\" v-bind:style=\"styleObject\" v-on:click=\"toggleHistory\">\r\n    <div class=\"tree-history\" v-if=\"!typeIsHeading && showHistory\">\r\n        THIS IS THE TREE History\r\n        <item-history :item-id=\"content.id\"></item-history>\r\n    </div>\r\n    <div v-if=\"!showHistory\">\r\n        <div class=\"tree-skill\" v-if=\"typeIsSkill\">\r\n            <div class=\"tree-current-skill\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-skill-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-skill\">{{content.title}}</div>\r\n                <button class=\"tree-skill-study ui button positive\" v-on:click.stop=\"studySkill\">Study this skill</button>\r\n            </div>\r\n            <div class=\"tree-new-skill\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <textarea style=\"width: 100%\" class=\"tree-new-skill\" v-model=\"content.title\"></textarea>\r\n                <div>\r\n                    <button class=\"skill-new-save ui button positive\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-fact\" v-if=\"typeIsFact\">\r\n            <div class=\"tree-current-fact\" v-show=\"!editing\">\r\n                <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n                <div class=\"tree-current-fact-question\">{{content.question}}</div>\r\n                <div class=\"tree-current-fact-answer\">{{content.answer}}</div>\r\n            </div>\r\n            <div class=\"tree-new-fact\" v-show=\"editing\">\r\n                <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n                <input class=\"tree-new-fact-question\" v-model=\"content.question\">\r\n                <textarea class=\"tree-new-fact-answer\" v-model=\"content.answer\"></textarea>\r\n                <div>\r\n                    <button class=\"fact-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"tree-heading\" v-if=\"typeIsHeading\" v-on:click.stop=\"toggleEditingAndAddChild\">\r\n        <!-- {{numChildren}} -->\r\n        <!--{{tree.id}} &#45;&#45;-->\r\n        <!--<button v-on:click=\"recalculateProficiencyAggregation\">Recalculate Proficiency Aggregation</button>-->\r\n        <div class=\"tree-current-heading\" v-show=\"!editing\">\r\n            <input type=\"text\" class=\"tree-current-fact-id\" :value=\"content.id\" hidden>\r\n            <div class=\"tree-current-heading\">{{content.title}}</div>\r\n            <div class=\"tree-heading-aggregationTimer\">\r\n                {{tree.aggregationTimer | secondsToPretty}}\r\n            </div>\r\n            <div class=\"tree-heading-leaf-proficiencies\">\r\n                <div class=\"tree-heading-leaf-num-unknown\">{{tree.proficiencyStats.UNKNOWN}}</div>\r\n                <div class=\"tree-heading-leaf-num-one\">{{tree.proficiencyStats.ONE}}</div>\r\n                <div class=\"tree-heading-leaf-num-two\">{{tree.proficiencyStats.TWO}}</div>\r\n                <div class=\"tree-heading-leaf-num-three\">{{tree.proficiencyStats.THREE}}</div>\r\n                <div class=\"tree-heading-leaf-num-four\">{{tree.proficiencyStats.FOUR}}</div>\r\n            </div>\r\n            <div class=\"tree-heading-numOverdue\">\r\n                {{tree.numOverdue}} overdue items\r\n            </div>\r\n            <div class=\"tree-heading-study\">\r\n                <button class=\"tree-heading-study ui button positive\" v-on:click.stop=\"studyHeading\">Study this Category</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"tree-new-heading\" v-show=\"editing\">\r\n            <input class=\"tree-id\" v-model=\"content.id\" hidden>\r\n            <textarea class=\"tree-new-heading\" v-model=\"content.title\"></textarea>\r\n            <div>\r\n                <button class=\"heading-new-save\" v-on:click.stop=\"changeContent\">Save</button>\r\n            </div>\r\n            <button class=\"tree-heading-study ui button negative\" v-on:click.stop=\"clearHeading\">Remove All Your Data from this Category</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"tree-proficiency\" v-show=\"!addingChild && typeIsFact && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-proficiency-message\">How well did you know this?</div>\r\n        <proficiency-selector v-on:input=\"proficiencyClicked\" v-model=\"content.proficiency\"></proficiency-selector>\r\n    </div>\r\n    <div class=\"tree-footer\" v-show=\"!addingChild && !showHistory\">\r\n        <div class=\"divider-horizontal\"></div>\r\n        <div class=\"tree-footer-row\">\r\n            <div class=\"tree-edit-button\" v-on:click.stop=\"toggleEditing\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-add-child-button\" v-show=\"typeIsHeading\" v-on:click.stop=\"toggleAddChild\">\r\n                <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n            </div>\r\n            <div class=\"tree-timer\" :title=\"timerMouseOverMessage\" v-if=\"!typeIsHeading\">{{content.timer | secondsToPretty}} </div>\r\n            <!--<div class=\"tree-proficiency-value\" title=\"proficiency\"> {{content.proficiency}}% </div>-->\r\n            <i class=\"tree-delete-button fa fa-trash-o\" aria-hidden=\"true\" v-if=\"user.isAdmin()\" v-on:click.stop=\"remove\" ></i>\r\n        </div>\r\n        <div class=\"tree-proficiency-timeTilReview\" v-if=\"content.inStudyQueue && !typeIsHeading && content.hasInteractions()\">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>\r\n    </div>\r\n    <div v-show=\"addingChild\" class=\"tree-add-child-button\" v-on:click.stop=\"toggleAddChild\">\r\n        <i :class=\"{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}\" aria-hidden=\"true\"></i>\r\n    </div>\r\n    <newtree :parentid=\"id\" :initialparenttreecontenturi=\"content.uri\" v-show=\"addingChild && typeIsHeading\" v-on:click=\"toggleEditingAndAddChild\"></newtree>\r\n</div>\r\n";
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports) {
 
 /*!
@@ -46328,7 +46579,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
@@ -48647,7 +48898,7 @@ module.exports = localforage_js;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -48896,10 +49147,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 261;
+webpackContext.id = 263;
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -49092,13 +49343,112 @@ webpackContext.id = 261;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(18)))
 
 /***/ }),
-/* 263 */
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(214);
+
+/**
+ * Returns true content it is a DOM element
+ * @param {*} content
+ * @returns {boolean}
+ */
+var isElement = function (content) {
+    return !!(
+        typeof HTMLElement === 'object' ? content instanceof HTMLElement : content &&
+        typeof content === 'object' && content !== null &&
+        content.nodeType === 1 && typeof content.nodeName === 'string'
+    );
+};
+
+/**
+ * @class
+ * @constructor
+ *
+ * @property {object} options
+ * @property {Element} [options.domParent=document.body]
+ */
+function Snack(options) {
+
+    options = options || {};
+
+    this.domParent = options.domParent || document.body;
+
+    this.container = document.createElement('div');
+    this.element = document.createElement('div');
+
+    this.container.classList.add('snack-container');
+    this.element.classList.add('snack');
+
+    this.container.appendChild(this.element);
+    this.domParent.appendChild(this.container);
+
+}
+// constructor
+Snack.prototype.constructor = Snack;
+module.exports = Snack;
+
+Object.defineProperties(Snack, {
+    visible: {
+        get: function () {
+            return !!this._isVisible;
+        },
+        set: function (val) {
+            this[val ? 'show' : 'hide']();
+        }
+    }
+});
+
+/**
+ * Toggles show/hide
+ */
+Snack.prototype.toggle = function () {
+    this.visible = !this.visible;
+};
+
+/**
+ * Show the snack
+ *
+ * @param {string} content
+ * @param {number} [timeout]
+ */
+Snack.prototype.show = function (content, timeout) {
+    if (isElement(content)) {
+        this.element.innerHTML = '';
+        this.element.appendChild(content);
+    } else {
+        this.element.innerHTML = content;
+    }
+    this.element.classList.add('snack-opened');
+    this._isVisible = true;
+    if (timeout) {
+        setTimeout(this.hide.bind(this), timeout);
+    }
+};
+/**
+ * Hide the snack
+ */
+Snack.prototype.hide = function () {
+    this.element.classList.remove('snack-opened');
+    this._isVisible = false;
+};
+/**
+ * destroy
+ */
+Snack.prototype.destroy = function () {
+    this.domParent.removeChild(this.container);
+};
+
+
+
+/***/ }),
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(205);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49123,13 +49473,13 @@ if(false) {
 }
 
 /***/ }),
-/* 264 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49154,13 +49504,13 @@ if(false) {
 }
 
 /***/ }),
-/* 265 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(206);
+var content = __webpack_require__(207);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49185,13 +49535,13 @@ if(false) {
 }
 
 /***/ }),
-/* 266 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(207);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49216,13 +49566,13 @@ if(false) {
 }
 
 /***/ }),
-/* 267 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(209);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49247,13 +49597,13 @@ if(false) {
 }
 
 /***/ }),
-/* 268 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(209);
+var content = __webpack_require__(210);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49278,13 +49628,13 @@ if(false) {
 }
 
 /***/ }),
-/* 269 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(210);
+var content = __webpack_require__(211);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49309,13 +49659,13 @@ if(false) {
 }
 
 /***/ }),
-/* 270 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(211);
+var content = __webpack_require__(212);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49340,13 +49690,13 @@ if(false) {
 }
 
 /***/ }),
-/* 271 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(212);
+var content = __webpack_require__(213);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49371,7 +49721,7 @@ if(false) {
 }
 
 /***/ }),
-/* 272 */
+/* 275 */
 /***/ (function(module, exports) {
 
 
@@ -49466,7 +49816,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 273 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -49519,13 +49869,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(262);
+__webpack_require__(264);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 274 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -49660,7 +50010,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 275 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52174,7 +52524,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18)))
 
 /***/ }),
-/* 276 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(180);
