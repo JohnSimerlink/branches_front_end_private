@@ -82,6 +82,7 @@
     "requirejs": "^2.1.11",
     "sass-loader": "^5.0.1",
     "snack.js": "^1.0.1",
+    "snackjs": "^1.1.0",
     "style-loader": "^0.18.2",
     "taggle": "^1.12.0",
     "vue-loader": "^12.2.1",

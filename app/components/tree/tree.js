@@ -5,10 +5,11 @@ import ContentItems from '../../objects/contentItems'
 
 import user from '../../objects/user'
 import {Heading} from "../../objects/heading";
-import {secondsToPretty} from "../../core/filters"
+import {secondsToPretty, timeFromNow} from "../../core/filters"
 import {Skill} from "../../objects/skill";
 import './tree.less'
 import { mapActions } from 'vuex'
+import message from '../../message'
 
 function refreshGraph() {
     PubSub.publish('refreshGraph')
@@ -19,6 +20,7 @@ function removeTreeFromGraph(treeId){
 function goToFromMap(path){
     PubSub.publish('goToFromMap', path)
 }
+//TODO every time we click on a node a new instance of this vue element is created . . . so if you click on the node 5 times 5 instances get created . . .
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
@@ -31,17 +33,6 @@ export default {
         this.tree = await Trees.get(this.id)
         this.content = await ContentItems.get(this.tree.contentId)
         this.startTimer()
-
-        //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
-        PubSub.subscribe('canvas.closeTooltip', function (eventName, data) {
-            //TODO: currently the below code will get run for any tree node tooltip that has ever been opened while the user has logged in in this session. It would be best if it was only run for the most ercent tooltip the user had open
-
-            // if (data.oldNode != me.id) return
-
-            //get reference to content, because by the time this method is called the this reference will be gone
-            const content = me.content
-            content.saveTimer()
-        })
         await this.tree.getLeaves()
         this.tree.sortLeavesByStudiedAndStrength()
 
@@ -56,7 +47,19 @@ export default {
             user,
         }
     },
+    watch: {
+        //stop timer when
+        openNodeId(newNodeId, oldNodeId){
+            if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
+                this.content.saveTimer()
+            } else {
+            }
+        }
+    },
     computed: {
+        openNodeId(){
+            return this.$store.state.openNodeId
+        },
         typeIsHeading() {
             return this.tree.contentType == 'heading'
         },
@@ -126,6 +129,18 @@ export default {
         },
         proficiencyClicked() {
             this.syncProficiency()
+            const decibelIncrease = this.content.getRecentDecibelIncrease()
+            const whenToReview = timeFromNow(this.content.nextReviewTime)
+            let text = ''
+            if (whenToReview.indexOf('in' >= 0)){
+                text = ' pts, review '
+            } else {
+                text = ' pts, review in '
+            }
+            const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
+            const msg = sign + Math.round(decibelIncrease) + text + whenToReview
+            console.log(msg)
+            message(msg)
         },
         syncProficiency() {
             this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
