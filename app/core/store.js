@@ -2,6 +2,7 @@ import Vuex from "vuex"
 import Vue from "vue"
 import {Trees} from '../objects/trees'
 import Snack from '../../node_modules/snack.js/dist/snack'
+import {syncGraphWithNode} from "../components/knawledgeMap/knawledgeMap";
 Vue.use(Vuex)
 
 export const MODES = {
@@ -19,7 +20,8 @@ const state = {
         }
     },
     settingsMenuOpen: false,
-    openNodeId: null
+    openNodeId: null,
+    nodeIdToSync: null,
 }
 //
 // function setCurrentStudyingContentId(state, contentId){
@@ -83,6 +85,9 @@ const mutations = {
         if (getters.settingsMenuOpen(state)) {
             this.commit('closeSettingsMenu')
         }
+    },
+    syncGraphWithNode(state, nodeId){
+        state.nodeIdToSync = nodeId
     }
 }
 

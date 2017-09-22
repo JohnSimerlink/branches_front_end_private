@@ -162,7 +162,8 @@ export default {
             let num = 1
             while (parentId) {
                 // syncGraphWithNode(parentId)
-                PubSub.publish('syncGraphWithNode', parentId)
+                this.commit('syncGraphWithNode', parentId)
+                // PubSub.publish('syncGraphWithNode', parentId)
                 parent = await Trees.get(parentId)
                 parentId = parent.parentId
                 num++
@@ -170,7 +171,8 @@ export default {
         },
         syncGraphWithNode() {
             // syncGraphWithNode(this.tree.id)
-            PubSub.publish('syncGraphWithNode', this.tree.id)
+            this.commit('syncGraphWithNode', this.tree.id)
+            // PubSub.publish('syncGraphWithNode', this.tree.id)
         },
         toggleAddChild() {
             this.addingChild = !this.addingChild

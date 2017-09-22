@@ -132,8 +132,10 @@ export default class ContentItem {
 
     markOverdue(){
         this.overdue = true
+        const me = this
         Object.keys(this.trees).forEach(async treeId => {
-            PubSub.publish('syncGraphWithNode', treeId)
+            store.commit('syncGraphWithNode', treeId)
+            // PubSub.publish('syncGraphWithNode', treeId)
             const tree = await Trees.get(treeId)
             tree.calculateNumOverdueAggregation()
         })
@@ -259,6 +261,7 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     clearInteractions(){
+        const me = this
         delete this.studiers[user.getId()]
 
         this.proficiency = PROFICIENCIES.UNKNOWN
@@ -287,7 +290,8 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
         Object.keys(this.trees).forEach(treeId => {
-           PubSub.publish('syncGraphWithNode', treeId)
+            store.commit('syncGraphWithNode', treeId)
+           // PubSub.publish('syncGraphWithNode', treeId)
         })
         this.calculateAggregationTimerForTreeChain()
         this.recalculateProficiencyAggregationForTreeChain()

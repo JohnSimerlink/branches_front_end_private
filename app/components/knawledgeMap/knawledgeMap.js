@@ -54,6 +54,9 @@ export default {
         openNodeId(){
             return this.$store.state.openNodeId
         },
+        nodeIdToSync(){
+            return this.$store.state.nodeIdToSync
+        }
     },
     watch: {
         '$route': 'init',
@@ -74,7 +77,9 @@ export default {
             }
             openTooltipFromId(newNodeId)
         },
-
+        nodeIdToSync(newNodeId, oldNodeId){
+            newNodeId && syncGraphWithNode(newNodeId)
+        }
     },
     methods: {
         init(){
