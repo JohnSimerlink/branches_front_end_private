@@ -2,7 +2,7 @@ import Snack from 'snack.js'
 if (typeof window !== 'undefined'){
     window.Snack = Snack
 }
-export default function message(msg) {
+export default function message(msg, color = 'black') {
     //
     // var snack = Snack.make("<your_message>", { /*<your_options>*/ });
     // snack.show();
@@ -14,9 +14,10 @@ export default function message(msg) {
 //      .show();
 
 
+    var html =  "<div style='color: " + color + "'>" + msg + "</div>"
     var snack = new Snack({
         domParent: document.querySelector('body')
     });
     // show a snack for 4s
-    snack.show(msg, 2000);
+    snack.show(html, 2000);
 }
