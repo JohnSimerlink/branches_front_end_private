@@ -11,6 +11,7 @@ import './tree.less'
 import { mapActions } from 'vuex'
 import message from '../../message'
 
+import store from '../../core/store'
 function refreshGraph() {
     PubSub.publish('refreshGraph')
 }
@@ -162,7 +163,7 @@ export default {
             let num = 1
             while (parentId) {
                 // syncGraphWithNode(parentId)
-                this.commit('syncGraphWithNode', parentId)
+                store.commit('syncGraphWithNode', parentId)
                 // PubSub.publish('syncGraphWithNode', parentId)
                 parent = await Trees.get(parentId)
                 parentId = parent.parentId
@@ -171,7 +172,7 @@ export default {
         },
         syncGraphWithNode() {
             // syncGraphWithNode(this.tree.id)
-            this.commit('syncGraphWithNode', this.tree.id)
+            store.commit('syncGraphWithNode', this.tree.id)
             // PubSub.publish('syncGraphWithNode', this.tree.id)
         },
         toggleAddChild() {

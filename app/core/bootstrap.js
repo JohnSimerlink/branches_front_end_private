@@ -1,3 +1,4 @@
+console.log("1: bootstrap.js", Date.now())
 import './components'
 import './filters'
 import './objects'
