@@ -396,9 +396,13 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
     }
     async function loadTreeAndSubTrees(treeId, level){
+        console.log(level, "A", treeId, Date.now())
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
         const tree = await Trees.get(treeId)
-        return onGetTree(tree, level)
+        console.log(level, "B", treeId, Date.now())
+        const getTreeResult = onGetTree(tree, level)
+        console.log(level, "C", treeId, Date.now())
+        return getTreeResult
     }
 
     async function onGetTree(tree, level) {
