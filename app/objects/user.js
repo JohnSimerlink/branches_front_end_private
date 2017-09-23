@@ -1,3 +1,4 @@
+console.log(".5: user.js just called", calculateLoadTimeSoFar(Date.now()))
 import firebase from './firebaseService.js'
 import {clearInteractionsForHeadings} from "../fixData";
 import Users from './users'
@@ -10,12 +11,15 @@ class User {
       this.dataLoaded = false
       const me = this;
       firebase.auth().onAuthStateChanged(async (user) => {
+          console.log(".6: onAuthStateChanged called ", calculateLoadTimeSoFar(Date.now()))
           if (user) {
               me.loggedIn = true;
               userLoggedIn = true
               me.fbData = user;
               await me.loadBranchesData()
+              console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
               PubSub.publish('login')
+              console.log("2.5: PubSub publish login", calculateLoadTimeSoFar(Date.now()))
           } else {
               me.loggedIn = false
           }
