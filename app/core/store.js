@@ -88,7 +88,7 @@ const mutations = {
     },
     syncGraphWithNode(state, nodeId){
         state.nodeIdToSync = nodeId
-        console.log('syncGraphWithNode', + Date.now())
+        // console.log('syncGraphWithNode', + Date.now())
     }
 }
 

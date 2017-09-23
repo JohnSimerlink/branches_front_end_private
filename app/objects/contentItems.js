@@ -63,8 +63,8 @@ export default class ContentItems {
             }
             const lookupKey = 'content/' + contentId
             LocalForage.getItem(lookupKey).then( contentData => {
-                console.log('contentData from localforage is', contentData)
-                if (contentData){
+                // console.log('contentData from localforage is', contentData)
+                if (window.fullCache && contentData){
                     processContentData(contentData, resolve, reject, contentId)
                     return
                 }

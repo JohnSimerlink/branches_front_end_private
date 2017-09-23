@@ -9,6 +9,7 @@ import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
 import {Globals} from '../../core/globals'
 import './knawledgeMap.less'
+import LocalForage from 'localforage'
 
 let router
 
@@ -25,11 +26,11 @@ var toolTipsConfig = {
                     case 'tree':
                         template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                         break;
-                    case 'newChildTree':
-                        template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                        break;
+                    // case 'newChildTree':
+                    //     template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
+                    //     break;
                 }
-                var result = Mustache.render(template, node)
+                var result = template // Mustache.render(template, node)
 
                 return result
             }
@@ -384,24 +385,35 @@ function initKnawledgeMap(treeIdToJumpTo){
     if (typeof PubSub !== 'undefined') {
         PubSub.subscribe('login', async () => {
             console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now())
-            await loadTreeAndSubTrees(1, 1)
-            console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now())
-            try {
-                initSigma()
-                console.log("5: knawledgeMap.js initSigma finished" + Date.now())
-            } catch (err) {
-                console.error('initSigma Error', err)
-                alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
-            }
+            LocalForage.getItem('g').then(async gFromLocalForage => {
+                // console.log("result of LocalForage is ", gFromLocalForage, JSON.stringify(gFromLocalForage), g, JSON.stringify(g))
+                if (window.fullCache && gFromLocalForage){
+                    g = gFromLocalForage
+                }
+                else {
+                    await loadTreeAndSubTrees(1, 1)
+                    LocalForage.setItem('g', g).then(() => {
+                    }).catch(()=> {
+                    })
+                    console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now())
+                }
+                try {
+                    initSigma()
+                    console.log("5: knawledgeMap.js initSigma finished" + Date.now())
+                } catch (err) {
+                    console.error('initSigma Error', err)
+                    alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
+                }
+            })
         })
     }
     async function loadTreeAndSubTrees(treeId, level){
-        console.log(level, "A", treeId, Date.now())
+        // console.log(level, "A", treeId, Date.now())
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
         const tree = await Trees.get(treeId)
-        console.log(level, "B", treeId, Date.now())
+        // console.log(level, "B", treeId, Date.now())
         const getTreeResult = onGetTree(tree, level)
-        console.log(level, "C", treeId, Date.now())
+        // console.log(level, "C", treeId, Date.now())
         return getTreeResult
     }
 
@@ -409,14 +421,20 @@ function initKnawledgeMap(treeIdToJumpTo){
         // var contentPromise = ContentItems.get(tree.contentId)
         try {
             const content = await ContentItems.get(tree.contentId)
+            // console.log(level, tree.id, "onGetTree 1 ", Date.now())
+
             addTreeNodeToGraph(tree, content, level)
+            // console.log(level, tree.id, "onGetTree 2 ", Date.now())
         } catch( err) {
             console.error("CONTENTITEMS.get Err is", err)
         }
         // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
+        // console.log(level, tree.id, "onGetTree 3 ", Date.now())
         var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
             return loadTreeAndSubTrees(child, level + 1)
         }): []
+
+        // console.log(level, tree.id, "onGetTree 4 ", Date.now())
 
         return Promise.all([...childTreesPromises])
     }
@@ -486,6 +504,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
 
         window.s = s;
+        window.g = g
         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
         s.refresh();
 
