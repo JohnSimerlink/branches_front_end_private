@@ -1,9 +1,9 @@
 //TODO: take into account if a user reviews the card to early - e.g. a user shouldn't be able to click "All the way baby" 5 times
-function calculateMinutesTilNextReview(dateProficiencyMap){
+function calculateMinutesTilNextReview(interactionsList){
     var minutesTilNextReview;
-    const numInteractions = dateProficiencyMap.length
+    const numInteractions = interactionsList.length
 
-    const mostRecentInteraction = dateProficiencyMap[numInteractions - 1]
+    const mostRecentInteraction = interactionsList[numInteractions - 1]
     switch (getProficiencyCategory(mostRecentInteraction.proficiency)){
         case USER_SUCKS:
             minutesTilNextReview = 2;
@@ -17,7 +17,7 @@ function calculateMinutesTilNextReview(dateProficiencyMap){
         case DAYYYAAAMN:
             minutesTilNextReview = 60 * 24; // 1 day
             for (let i = numInteractions - 1 - 1; i > 0; i--){ // for every DAYYYAAAMN in a row the user got, multiply the time til next review by 5
-                var interaction = dateProficiencyMap[i]
+                var interaction = interactionsList[i]
                 var proficiencyCategory = getProficiencyCategory(interaction.proficiency);
                 if (proficiencyCategory === DAYYYAAAMN){
                     minutesTilNextReview *= 5; //hot diggity
@@ -29,8 +29,8 @@ function calculateMinutesTilNextReview(dateProficiencyMap){
     }
     return minutesTilNextReview;
 }
-export function calculateMillisecondsTilNextReview(dateProficiencyMap){
-   return calculateMinutesTilNextReview(dateProficiencyMap) * 60 * 1000
+export function calculateMillisecondsTilNextReview(interactionsList){
+   return calculateMinutesTilNextReview(interactionsList) * 60 * 1000
 }
 const USER_SUCKS = 1
 const USER_OK = 2

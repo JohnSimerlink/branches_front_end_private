@@ -1,8 +1,8 @@
-import {newTree} from '../../objects/newTree.js'
 import {Config} from '../../core/config'
 import {login} from '../../core/login'
 import user from '../../objects/user'
 import Users from '../../objects/users'
+import {mapGetters} from 'vuex'
 
 export default {
     template: require('./branches-footer.html'),
@@ -40,12 +40,14 @@ export default {
         }
     },
     computed: {
+        ...mapGetters(['currentStudyingCategoryTreeId']),
         itemsMasteredPerMinute() {
             return this.numItemsMastered / (this.secondsSpentStudying * 60)
         },
         numItemsStudied() {
             return Object.keys(this.items).length
         },
+        //not a useful metric imo
         numItemsMastered() {
             var itemsKeys = Object.keys(this.items)
             var numMastered = itemsKeys.reduce((sum, key) => {
@@ -56,16 +58,31 @@ export default {
 
             }, 0)
             return numMastered
+        },
+        reviewId() {
+
+        },
+    },
+    watch: {
+        currentStudyingCategoryTreeId(newId, oldId){
+            console.log('now studying ', newId)
+            // const Tree = Trees.get(newId)
         }
     },
-
     methods: {
         login () {
             this.loggedIn=true
             login()
         },
         goToExerciseCreator () {
+            window.exerciseToReplaceId = null
             PubSub.publish('goToState.exerciseCreator')
         },
+        goToReviewTree () {
+            PubSub.publish('goToState.reviewTree')
+        },
+        toggleSettingsMenu(){
+            this.$store.commit('toggleSettingsMenu')
+        }
     }
 }

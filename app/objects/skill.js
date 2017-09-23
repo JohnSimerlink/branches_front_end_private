@@ -27,7 +27,7 @@ export class Skill extends ContentItem {
     }
 
     getURIAddition(){
-        return "/" + encodeURIComponent(this.title)
+        return encodeURIComponent(this.title)
     }
     getDBRepresentation(){
         var baseRep = super.getDBRepresentation()

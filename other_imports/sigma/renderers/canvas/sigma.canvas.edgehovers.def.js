@@ -1,6 +1,10 @@
 ;(function() {
   'use strict';
 
+  const EDGE_TYPES = {
+     SUGGESTED_CONNECTION: 9001,
+     HIERARCHICAL: 9002,
+  }
   sigma.utils.pkg('sigma.canvas.edgehovers');
 
   /**
@@ -14,6 +18,10 @@
    */
   sigma.canvas.edgehovers.def =
     function(edge, source, target, context, settings) {
+    if (window.awaitingEdgeConnection && edge.type !== EDGE_TYPES.SUGGESTED_CONNECTION){
+      return
+    } else {
+    }
       var color = edge.color,
         prefix = settings('prefix') || '',
         size = edge[prefix + 'size'] || 1,
@@ -42,7 +50,7 @@
     size *= settings('edgeHoverSizeRatio');
 
     context.strokeStyle = color;
-    context.lineWidth = size;
+    context.lineWidth = size * 3;
     context.beginPath();
     context.moveTo(
       source[prefix + 'x'],

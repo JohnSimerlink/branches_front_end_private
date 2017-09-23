@@ -1,0 +1,12 @@
+<div>
+    <!--<div class="ct-chart ct-perfect-fourth"></div>-->
+    <h3>List of Interactions</h3>
+    <ul>
+        <button v-on:click.stop="clearInteractions">
+           Clear Interactions
+        </button>
+        <li v-for="interaction in interactions">
+            {{interaction.timestamp | dateTime}}, {{interaction.proficiency}}%<span v-if="interaction.previousInteractionStrength && interaction.currentInteractionStrength">, {{interaction.previousInteractionStrength | round}} dB -> {{interaction.currentInteractionStrength | round}} dB </span>
+        </li>
+    </ul>
+</div>

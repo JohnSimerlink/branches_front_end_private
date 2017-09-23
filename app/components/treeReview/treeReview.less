@@ -1,0 +1,112 @@
+@import '../common.less';
+
+.tree-review-container {
+  background-color: black;
+  color: white; //rgba(250,253, 255,1); //lightskyblue;
+}
+.tree-review {
+  height: 100%;
+}
+.tree-review-body {
+  padding: 4px 8px 4px 8px;
+  height: 100%;
+}
+.tree-review-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: @globalBackground;
+  padding: 4px 8px 4px 8px;
+}
+.tree-review-header-right {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.tree-review-breadcrumbs-non-active{
+
+}
+.tree-review-breadcrumbs-active{
+  text-decoration: underline;
+}
+.tree-review-item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.tree-review-item-select-all-divider {
+  width: 100%;
+  border-color: grey;
+  border-style: solid;
+  //border-top: 8px;
+  border-width: 2px;
+  margin: 1px 0px 1px 0px;
+}
+.tree-review-next-question {
+  float: right;
+}
+
+.tree-review-question-container {
+  padding: 18px 0px 18px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.tree-review-answer-container {
+  padding-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tree-review-add-exercise {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tree-review-no-exercise-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tree-review-answer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.pointerFinger {
+  cursor: pointer;
+}
+.red {
+  background-color: red;
+}
+.tree-review-modify-button {
+  margin-left: 8px;
+  .pointerFinger;
+}
+.tree-review-exercise-edit {
+  .tree-review-modify-button;
+}
+.tree-review-exercise-delete {
+  .tree-review-modify-button;
+}
+
+.tree-review-flip-arrow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+

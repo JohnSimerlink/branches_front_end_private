@@ -95,6 +95,7 @@
         var rowHeight = sigma.settings.defaultLabelSize * 1.75
     document.addEventListener('DOMContentLoaded', function(event){
         var graphContainer = document.querySelector('#graph-container')
+        if (!graphContainer) return //e.g. a user is not on the knowledgeMap page
         packageData.width = graphContainer.clientWidth
         packageData.height = graphContainer.clientHeight
         packageData.rowHeight = rowHeight
@@ -138,7 +139,7 @@
         var section = {row, column}
         return {row, column}
     }
-    function sectionOffScreen(section, node){
+    function sectionOffScreen(section){
         if (section.row <0 || section.row >= packageData.numRowsOnScreen || section.column < 0 || section.column >= packageData.numColumnsOnScreen ){
             return true
         }
@@ -173,9 +174,11 @@
         // settings('labelSizeRatio') * size;
 
         var section = determineSection(node)
-        if (sectionOffScreen(section,node)){
+        if (sectionOffScreen(section)){
             packageData.hideCount++
             return
+        }
+        else {
         }
 
             // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})

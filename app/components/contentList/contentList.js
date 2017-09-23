@@ -2,24 +2,29 @@ import ContentItems from '../../objects/contentItems'
 
 export default {
     template: require('./contentList.html'),
-    created () {
-        var me = this;
-        this.items = {}
-        
-        ContentItems.getAllExceptForHeadings().then(items => {
-            console.log('all items returned are ', items)
-            me.items = items
+    async created () {
+        this.items = await ContentItems.getAllExceptForHeadings()
+        Object.keys(this.items).forEach(key => {
+            let item = this.items[key]
         })
-        this.num = 5
     },
     data () {
         return {
-            items: this.items
+            items: {}
         }
     },
     computed: {
         numItems() {
-            return Object.keys(this.items.length)
+            return this.items && Object.keys(this.items).length
+        },
+    },
+    methods: {
+        remove(item) {
+            ContentItems.remove(item.id)
+        },
+        recalculateProficiencyAggregationForAll(){
+           ContentItems.recalculateProficiencyAggregationForEntireGraph()
         }
     }
 }
+

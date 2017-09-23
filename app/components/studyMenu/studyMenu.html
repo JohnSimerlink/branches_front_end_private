@@ -1,0 +1,23 @@
+<div>
+    <div class="studyMenu-settings" v-if="settingsMenuOpen">
+        <h6 class="studyMenu-settings-title">Show Which Items?</h6>
+        <div class="studyMenu-settings-itemTypes">
+            <div>
+                <button v-bind:class="{ 'button-selected': newSelected }" v-on:click="selectNew">New</button>
+                <button v-bind:class="{ 'button-selected': oldSelected }" v-on:click="selectOld">Old</button>
+                <button v-bind:class="{ 'button-selected': bothSelected }" v-on:click="selectBothNewAndOld" >Both</button>
+            </div>
+        </div>
+        <div v-if="oldTrue">
+            <h6 class="studyMenu-settings-title">Show Which Old Items?</h6>
+            <div class="studyMenu-settings-oldTypes">
+                <div>
+                    <button v-bind:class="{ 'button-selected': overdueSelected}" v-on:click="selectOverdue">Overdue</button>
+                    <button v-bind:class="{ 'button-selected': notOverdueSelected}" v-on:click="selectNotOverdue">Not Overdue</button>
+                    <button v-bind:class="{ 'button-selected': bothOverdueAndNotOverdueSelected}" v-on:click="selectBothOverdueAndNotOverdue">Both</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="studyMenu">{{title}} [{{numOverdue}}]</button>
+</div>

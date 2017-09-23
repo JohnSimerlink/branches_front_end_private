@@ -266,7 +266,7 @@
         self.dispatchEvent('click', e.data);
 
         nodes = getNodes(e);
-        edges = getEdges(e);
+        edges = getEdges(e).filter(e => e.state !== 'severedh');
 
         if (nodes.length) {
           var node = nodes[0]
@@ -288,10 +288,12 @@
             captor: e.data
           });
         } else if (edges.length) {
-          self.dispatchEvent('clickEdge', {
+          var eventData = {
             edge: edges[0],
             captor: e.data
-          });
+          }
+          PubSub.publish('canvas.clickEdge', eventData)
+          self.dispatchEvent('clickEdge', eventData);
           self.dispatchEvent('clickEdges', {
             edge: edges,
             captor: e.data
@@ -488,6 +490,7 @@
             delete overEdges[k];
           }
 
+          newOverEdges = newOverEdges.filter(e => e.state !== 'severed')
         // Dispatch both single and multi events:
         for (i = 0, le = newOverEdges.length; i < le; i++)
           self.dispatchEvent('overEdge', {

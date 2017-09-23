@@ -1,12 +1,12 @@
 export const Globals = {
     currentTreeSelected: null,
-    existingColor: 'brown',
-    newColor: 'lightgreen',
     colors: {
-        proficiency_4: 'aqua',
-        proficiency_3: 'lawngreen',
-        proficiency_2: 'yellow',
-        proficiency_1: 'lightpink',
+        proficiency_4: 'lawngreen',
+        proficiency_3: 'yellow',
+        proficiency_2: 'orange',
+        proficiency_1: 'red',
         proficiency_unknown: 'gray',
-    }
+    },
+    overdueSize: 14,
+    regularSize: 10,
 }

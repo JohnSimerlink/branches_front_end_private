@@ -274,6 +274,12 @@
           _tooltip.className = options.cssClass + ' right';
           _tooltip.style.left = x + 'px';
           _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
+        } else if (options.position === 'center') {
+          _tooltip.className = options.cssClass
+            // _tooltip.style.left = x + 'px';
+            // _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
+          _tooltip.style.left = x - 160 + 'px';
+          _tooltip.style.top = y - 80 + 'px';
         }
 
         // Adjust position to keep the tooltip inside body:
@@ -553,8 +559,9 @@
               _nodeTooltips[i].position !== 'bottom' &&
               _nodeTooltips[i].position !== 'left' &&
               _nodeTooltips[i].position !== 'right' &&
+              _nodeTooltips[i].position !== 'center' &&
               _nodeTooltips[i].position !== 'css') {
-            throw new Error('"options.position" is not "top", "bottom", "left", "right", or "css", was ' + _nodeTooltips[i].position);
+            throw new Error('"options.position" is not "top", "bottom", "left", "right","center", or "css", was ' + _nodeTooltips[i].position);
           }
         }
 

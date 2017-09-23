@@ -4,36 +4,52 @@ import ContentItems from "../../objects/contentItems";
 import Snack from '../../../node_modules/snack.js/dist/snack'
 
 import invert from 'invert-object'
+import Exercises from "../../objects/exercises";
 
 export default {
+    props: ['contentItemId','exerciseToReplaceId'],
     template: require('./newExercise.html'),
-    created () {
+    data () {
+        return {
+            items: {},
+            question: "",
+            answer: "",
+            selectedItems: [],
+            selectedItemIds: [],
+            factsAndSkills: [],
+            itemIds: this.itemIds,
+            type: 'fact',
+            window,
+            loading: true,
+        }
+    },
+    async created () {
         var me = this
-        this.items = {} // [{breadcrumb: "Spanish > Hola", id: 'a12345'},{breadcrumb: "Spanish > Senorita", id: 'b23456'}]
-        // this.itemIds = {12345: true} //[12345]
-        this.selectedItems = []
-        this.selectedItemIds = []
-        this.question=""
-        this.answer=""
+        if (this.contentItemId){
+            this.selectedItemIds.push(this.contentItemId)
+        }
         this.tags = null
+        //TODO: replace with Vuex/redux store . . . or maybe a routing system
+        if (this.exerciseToReplaceId){
+            const exercise = await Exercises.get(this.exerciseToReplaceId)
+            me.question = exercise.question
+            me.answer = exercise.answer
+            me.selectedItemIds = Object.keys(exercise.contentItemIds)
+        }
 
 
         // this.factsAndSkills = [{breadcrumb: "<span>Spanish > Hola<span item-id='12345'></span></span>", id: '12345'},{breadcrumb: "Spanish > Senorita", id: '23456'}]
-
-        ContentItems.getAllExceptForHeadings().then(items => {
-            this.items = items
-            console.log('items received from api is', items)
-            var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
-                var item = items[key]
-                var breadCrumb = item.getBreadCrumbs()
-                map[breadCrumb] = item.id
-                return map
-            },{})
-            var idBreadcrumbMap = invert(breadcrumbIdMap)
-            this.idBreadcrumbMap = idBreadcrumbMap
-            this.breadcrumbIdMap = breadcrumbIdMap
-            initTagSearch()
-        })
+        this.items = await ContentItems.getAllExceptForHeadings()
+        var breadcrumbIdMap = Object.keys(this.items).reduce((map, key) => {
+            var item = me.items[key]
+            var breadCrumb = item.getBreadCrumbsString()
+            map[breadCrumb] = item.id
+            return map
+        },{})
+        var idBreadcrumbMap = invert(breadcrumbIdMap)
+        this.idBreadcrumbMap = idBreadcrumbMap
+        this.breadcrumbIdMap = breadcrumbIdMap
+        initTagSearch()
         // hacky solution, but each breadcrumb should be uniquely mapped to a contentId so i guess no big deal
 
         function initTagSearch(){
@@ -47,6 +63,13 @@ export default {
                         delete me.selectedItemIds[id]
                     }
                 });
+                me.selectedItemIds.map(id => {
+                    return me.idBreadcrumbMap[id]
+                }).forEach(existingBreadcrumb => {
+                    console.log('existing breadcrumb', existingBreadcrumb)
+                    me.tags.add(existingBreadcrumb)
+                    // me.tags.add
+                })
 
                 var container = me.tags.getContainer();
                 var input = me.tags.getInput();
@@ -70,21 +93,10 @@ export default {
                         }
                     }
                 });
+                me.loading = false
             },0)
         }
 
-    },
-    data () {
-        return {
-            items: this.items,
-            question: this.question,
-            answer: this.answer,
-            selectedItems: this.selectedItems,
-            selectedItemIds: this.selectedItemIds,
-            factsAndSkills: [],
-            itemIds: this.itemIds,
-            type: 'fact'
-        }
     },
     computed: {
         selectedBreadcrumbs() {
@@ -101,42 +113,65 @@ export default {
         },
     },
     methods: {
+        getExerciseData(){
+            const exerciseData = {
+                question: this.question,
+                answer: this.answer,
+                contentItemIds:
+                    this.selectedItemIds.reduce((obj,key) => {
+                        obj[key] = true;
+                        return obj
+                    }, {})
+            }
+            return exerciseData
+        },
         createExercise() {
-           //TODO allow creation of other types of exercises than QA
-           const exerciseData = {
-               question: this.question,
-               answer: this.answer,
-               contentItemIds:
-                   this.selectedItemIds.reduce((obj,key) => {
-                       obj[key] = true;
-                       return obj
-               }, {})
-           }
-           console.log('exercise data is', exerciseData)
-           const exercise = ExerciseQA.create(exerciseData)
-            console.log('exercise created is ', exercise)
+            const exerciseData = this.getExerciseData()
+            //TODO allow creation of other types of exercises than QA
+            const exercise = ExerciseQA.create(exerciseData)
 
-            console.log('this.selectedItemIds is', this.selectedItemIds)
-           this.selectedItemIds.forEach(id => {
-               ContentItems.get(id).then(contentItem => {
-                   console.log('contentItem gotten is ',id, contentItem, contentItem.toString())
-                   contentItem.addExercise(exercise.id)
-                   console.log('contentItem gotten is ',contentItem, contentItem.toString())
-               })
-           })
+            this.selectedItemIds.forEach(async id => {
+                const contentItem = await ContentItems.get(id)
+                contentItem.addExercise(exercise.id)
+            })
 
-           var snack = new Snack({
+            var snack = new Snack({
                domParent: document.querySelector('.new-exercise')
-           });
+            });
             // show a snack for 4s
-            snack.show('Exercise created!', 4000);
+            snack.show('Exercise created! +1000 points', 4000); //TODO: make the number of points added be based on the supply and demand of the current exercises for the content items. We need to balance the content creators with content consumers, as we are creating a platform - as explained in "The Platform Revolution" book -  https://www.amazon.com/Platform-Revolution-Networked-Transforming-Economy/dp/0393249131. e.g. so you don't get 1000 Uber drivers in a city with only 300 people who need to be driven
 
-           //clear exercise
+            //clear exercise
             this.selectedItemIds = []
             this.question = ""
             this.answer = ""
             this.tags.removeAll()
 
+        },
+        async replaceExercise(){
+            const exerciseData = this.getExerciseData()
+            //TODO allow creation of other types of exercises than QA
+            const newExercise = ExerciseQA.create(exerciseData)
+            const me = this
+
+            const exercise = await Exercises.get(this.exerciseToReplaceId)
+            exercise.contentItemIds.forEach(async contentItemId => {
+                const contentIdem = await ContentItems.get(contentItemId)
+                contentItem.removeExercise(me.exerciseToReplaceId)
+                contentItem.addExercise(newExercise.id)
+            })
+
+            var snack = new Snack({
+                domParent: document.querySelector('.new-exercise')
+            });
+            // show a snack for 4s
+            snack.show('Exercise edited!', 4000);
+
+            //TODO: eventually redirect the user back to the tree/exercise they were studying
+
         }
     },
+}
+function convertItemIdsObjectToList(obj){
+    return Object.keys(obj)
 }

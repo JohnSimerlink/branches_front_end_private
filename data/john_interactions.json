@@ -1,0 +1,5027 @@
+{
+  "001cbd4ca49ad90d4cc6591e83c3fc61" : {
+    "nextReviewTime" : 1504120946496,
+    "proficiency" : 0
+  },
+  "02bb3052c02ad050799176bf83d27a69" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256705681
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256705681
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256705681
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256705681
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256705681
+    }, {
+      "millisecondsSinceLastInteraction" : 103202542,
+      "previousInteractionStrength" : 49.68890987862587,
+      "proficiency" : 33,
+      "timeSpent" : 11,
+      "timestamp" : 1505359908223
+    }, {
+      "millisecondsSinceLastInteraction" : 53088,
+      "previousInteractionStrength" : 37.228157894648454,
+      "proficiency" : 99,
+      "timeSpent" : 14,
+      "timestamp" : 1505359961311
+    }, {
+      "millisecondsSinceLastInteraction" : 157985,
+      "previousInteractionStrength" : 41.96435279628946,
+      "proficiency" : 99,
+      "timeSpent" : 16,
+      "timestamp" : 1505360119296
+    }, {
+      "millisecondsSinceLastInteraction" : 33963468,
+      "previousInteractionStrength" : 44.86212622777149,
+      "proficiency" : 33,
+      "timeSpent" : 24,
+      "timestamp" : 1505394082764
+    } ],
+    "nextReviewTime" : 1505394682768,
+    "proficiency" : 33
+  },
+  "03d438a30a45509c34ec2e1bd27edb96" : {
+    "nextReviewTime" : 1505271939687,
+    "proficiency" : 33
+  },
+  "0527e3be67b29aa4011b631942e6e071" : {
+    "nextReviewTime" : 1505360151557,
+    "proficiency" : 67
+  },
+  "06e057a8708fb71888eb3204eb9a0bf6" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242979713
+    } ],
+    "nextReviewTime" : 1505243580715,
+    "proficiency" : 33
+  },
+  "0771f7087d99bfc45ca79d38a46ab254" : {
+    "nextReviewTime" : 1504382704609,
+    "proficiency" : 100
+  },
+  "07d43de30e300ee9470716996a2f344d" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251277728
+    } ],
+    "nextReviewTime" : 1505251878631,
+    "proficiency" : 33
+  },
+  "09d3823dad114117c32dc679c7424ec6" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503707672428
+    } ],
+    "nextReviewTime" : 1503707793644,
+    "proficiency" : 0
+  },
+  "09e4e1f62230e29b3a06b9332bb94bf6" : {
+    "nextReviewTime" : 1504500162619,
+    "proficiency" : 66
+  },
+  "0b69d534e0a2ac070712f0b829004134" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242832988
+    } ],
+    "nextReviewTime" : 1505243433987,
+    "proficiency" : 33
+  },
+  "0c21cbbdd9d105ca9f9456d0087f81ac" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504392984532
+    } ],
+    "nextReviewTime" : 1504393585648,
+    "proficiency" : 33
+  },
+  "0c8d5696a6a8cb1b6b756a41f23b3824" : {
+    "nextReviewTime" : 1505321970171,
+    "proficiency" : 33
+  },
+  "0cc2e9a26f03dfaec6955685261848b7" : {
+    "nextReviewTime" : 1502496032349,
+    "proficiency" : 0
+  },
+  "0ce7d12fa2af2ab329290efc0d7c722f" : {
+    "nextReviewTime" : 1505323246399,
+    "proficiency" : 33
+  },
+  "1090e511c41c86aa59e1fe85c0ca0c01" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330060537
+    } ],
+    "nextReviewTime" : 1505330180538,
+    "proficiency" : 0
+  },
+  "112eb3cd30788d921023bcc3667ba56f" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358458779
+    } ],
+    "nextReviewTime" : 1505358578783,
+    "proficiency" : 1
+  },
+  "11566248cbc6a18314b466e5ce82b2ae" : {
+    "nextReviewTime" : 1505322331318,
+    "proficiency" : 33
+  },
+  "119aae732e14b187e7816ce30186e038" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332511861
+    } ],
+    "nextReviewTime" : 1505332631861,
+    "proficiency" : 1
+  },
+  "12a259d79aee3b430313b8551ea2dd70" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505329590592
+    } ],
+    "nextReviewTime" : 1505329710593,
+    "proficiency" : 0
+  },
+  "13ab35a0c23237bfd721b908ba4d11cd" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251783606
+    } ],
+    "nextReviewTime" : 1505252384510,
+    "proficiency" : 33
+  },
+  "15bec0ab0a923e3431e6c4a41dc6731f" : {
+    "nextReviewTime" : 1505321162515,
+    "proficiency" : 33
+  },
+  "1a0ad556332bddcc4477c3d2067be01b" : {
+    "nextReviewTime" : 1503627531278,
+    "proficiency" : 0
+  },
+  "1abf6bb3299bc344af7c6e2cab389c1e" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1504126016380
+    } ],
+    "nextReviewTime" : 1504126134191,
+    "proficiency" : 0
+  },
+  "1b4072d87ecc8ddef5d48d2f9d206a80" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503627307642
+    } ],
+    "nextReviewTime" : 1503627428090,
+    "proficiency" : 0
+  },
+  "1b690e51066aec243406819b0fae6713" : {
+    "nextReviewTime" : 1505272031159,
+    "proficiency" : 33
+  },
+  "1c19462435bfbf3ad5a35f4501d48a7d" : {
+    "nextReviewTime" : 1503627521610,
+    "proficiency" : 0
+  },
+  "1e6bf026ea9f278517029b777ef68110" : {
+    "interactions" : [ {
+      "proficiency" : 66,
+      "timestamp" : 1504382390714
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504382390714
+    } ],
+    "nextReviewTime" : 1504382991742,
+    "proficiency" : 33
+  },
+  "1e8c7e9ad835793a0082c4835af55d92" : {
+    "nextReviewTime" : 1505179086772,
+    "proficiency" : 33
+  },
+  "1f11eade9c69f51105492ab1e78d5fa7" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251748089
+    } ],
+    "nextReviewTime" : 1505252348999,
+    "proficiency" : 33
+  },
+  "2182e93ea75bca299e2ae953dcdf4882" : {
+    "nextReviewTime" : 1504639434056,
+    "proficiency" : 100
+  },
+  "21d482369c40b35367939c098eba777a" : {
+    "nextReviewTime" : 1503680100759,
+    "proficiency" : 33
+  },
+  "223ecdc0397dc78a82466aa9a71e08b6" : {
+    "nextReviewTime" : 1505322337795,
+    "proficiency" : 33
+  },
+  "22c2a4438319955806b1cc0b1082bda1" : {
+    "nextReviewTime" : 1503544314164,
+    "proficiency" : 66
+  },
+  "2371620d9773f227eb5a1fb327761493" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 5,
+      "timestamp" : 1505359658739
+    }, {
+      "millisecondsSinceLastInteraction" : 4689,
+      "previousInteractionStrength" : 26.688996578594285,
+      "proficiency" : 99,
+      "timeSpent" : 9,
+      "timestamp" : 1505359663428
+    }, {
+      "millisecondsSinceLastInteraction" : 90066,
+      "previousInteractionStrength" : 19.09761468595215,
+      "proficiency" : 33,
+      "timeSpent" : 12,
+      "timestamp" : 1505359753494
+    }, {
+      "millisecondsSinceLastInteraction" : 2991,
+      "previousInteractionStrength" : 8.732382196421488,
+      "proficiency" : 67,
+      "timeSpent" : 14,
+      "timestamp" : 1505359756485
+    }, {
+      "millisecondsSinceLastInteraction" : 56005,
+      "previousInteractionStrength" : 37.46046226688825,
+      "proficiency" : 99,
+      "timeSpent" : 16,
+      "timestamp" : 1505359812490
+    }, {
+      "millisecondsSinceLastInteraction" : 34426509,
+      "previousInteractionStrength" : 44.920935788153415,
+      "proficiency" : 33,
+      "timeSpent" : 37,
+      "timestamp" : 1505394238999
+    } ],
+    "nextReviewTime" : 1505394839003,
+    "proficiency" : 33
+  },
+  "242181c89e45a54cc1182c873d3c5ebd" : {
+    "nextReviewTime" : 1503935989463,
+    "proficiency" : 0
+  },
+  "24a7b8170e2cfb5887e4628642dc49ea" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 6,
+      "timestamp" : 1505359778163
+    }, {
+      "millisecondsSinceLastInteraction" : 1494,
+      "previousInteractionStrength" : 21.721700225999587,
+      "proficiency" : 99,
+      "timeSpent" : 7,
+      "timestamp" : 1505359779657
+    }, {
+      "millisecondsSinceLastInteraction" : 3920,
+      "previousInteractionStrength" : 25.91105492141036,
+      "proficiency" : 99,
+      "timeSpent" : 11,
+      "timestamp" : 1505359783577
+    }, {
+      "millisecondsSinceLastInteraction" : 9591,
+      "previousInteractionStrength" : 29.79683316111929,
+      "proficiency" : 99,
+      "timeSpent" : 12,
+      "timestamp" : 1505359793168
+    }, {
+      "millisecondsSinceLastInteraction" : 34491483,
+      "previousInteractionStrength" : 44.929124610029525,
+      "proficiency" : 33,
+      "timeSpent" : 17,
+      "timestamp" : 1505394284651
+    } ],
+    "nextReviewTime" : 1505394884669,
+    "proficiency" : 33
+  },
+  "25c90bee001741d4c593c1936074efd0" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504393156572
+    } ],
+    "nextReviewTime" : 1504393757685,
+    "proficiency" : 33
+  },
+  "2627a36178f2e068e510d6e6195b3e76" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1503531221693
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503531221693
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503531221693
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503533973895
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503533973895
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503533973895
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503534081845
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503534089241
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503538541867
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503538541867
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503538541867
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503538576901
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503541547656
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503541547656
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503541547656
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503542252650
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503542252650
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503542252650
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503542897601
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503542897601
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503542897601
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503642196272
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503642196272
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503642196272
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503642196272
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503879961169
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503879961169
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503879961169
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503879961169
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503879961169
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503879961169
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503880495089
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504200329856
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504200363991
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504219725131
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504219844802
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504219872139
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504219930121
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504219966166
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504220036325
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504220214736
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504220214736
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504220214736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220214736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220214736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220214736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220977686
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221848197
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221848197
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221968678
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221968678
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221968678
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021218
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504222106118
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504222106118
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222180866
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504222218922
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222218922
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222218922
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222218922
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504222349461
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504245553434
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504284639781
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375652048
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742236
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742236
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742236
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742236
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742236
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504382807178
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504394238977
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744677
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243624
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243624
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243624
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243624
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415381354
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327186
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494351962
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504498356267
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504540680986
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504636780865
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504636780865
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504636780865
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504675689132
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504739987873
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504741986177
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743587089
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744184684
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504833106027
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504935527244
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505004932780
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505062792274
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505064799122
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071348431
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505079892214
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505161644484
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505257753586
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505258613233
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505260127358
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505260127358
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505260127358
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505260291529
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505260293566
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505260295908
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505260297454
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505260299100
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505260306471
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505260308105
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505260309343
+    } ],
+    "nextReviewTime" : 1505346709421,
+    "proficiency" : 100
+  },
+  "2641c04ab76451243d6d30bda6629ddc" : {
+    "nextReviewTime" : 1505270980728,
+    "proficiency" : 33
+  },
+  "26aa20f746e1cc77fd5b5efebab6a723" : {
+    "nextReviewTime" : 1504126403245,
+    "proficiency" : 0
+  },
+  "2737fa666731a2f8a5ad514daf1aaecf" : {
+    "nextReviewTime" : 1503017110077,
+    "proficiency" : 100
+  },
+  "29b2b0a60d0b1e5f5d8603980bfb9947" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1502409371880
+    } ],
+    "nextReviewTime" : 1502409491774,
+    "proficiency" : 0
+  },
+  "29da7a3cc1fa8acc53e1b45d8d4a1fe1" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332624489
+    } ],
+    "nextReviewTime" : 1505332744489,
+    "proficiency" : 1
+  },
+  "2b3083a322b689a9d2c8af11db50d4dc" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358697144
+    } ],
+    "nextReviewTime" : 1505358817150,
+    "proficiency" : 1
+  },
+  "2ba2bb04d710a032295fc430496bf147" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505243352187
+    } ],
+    "nextReviewTime" : 1505243953180,
+    "proficiency" : 33
+  },
+  "2bcd78d41ad2e3d26c110670803c2f5d" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332725283
+    } ],
+    "nextReviewTime" : 1505332845283,
+    "proficiency" : 1
+  },
+  "2d54ec12871a0c07282144b305c04732" : {
+    "nextReviewTime" : 1505321028171,
+    "proficiency" : 33
+  },
+  "2e79cae54e5a6fc607f056d0d16c5e00" : {
+    "nextReviewTime" : 1504126144919,
+    "proficiency" : 0
+  },
+  "2f8780aa7b5054e5d7040a449d64feb3" : {
+    "interactions" : [ {
+      "proficiency" : 66,
+      "timestamp" : 1503327968359
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503327968359
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503327968359
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504540696869
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504549294565
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071732094
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071732094
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505072252320
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505072252320
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505072252320
+    } ],
+    "nextReviewTime" : 1505503732845,
+    "proficiency" : 100
+  },
+  "2fc1540c55aec0b8e95af151868d01f9" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251366891
+    } ],
+    "nextReviewTime" : 1505251967748,
+    "proficiency" : 33
+  },
+  "306ab865737648ff8859d62eba354a7d" : {
+    "nextReviewTime" : 1504490158907,
+    "proficiency" : 33
+  },
+  "30f00d153ed178a6108ea56244f11aed" : {
+    "nextReviewTime" : 1505356106362,
+    "proficiency" : 33
+  },
+  "325afaf7786b58042ba7b83be951eb40" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242148339
+    } ],
+    "nextReviewTime" : 1505242749341,
+    "proficiency" : 33
+  },
+  "338d634426403e78c8d1f84efb7c9eeb" : {
+    "nextReviewTime" : 1505335351770,
+    "proficiency" : 67
+  },
+  "342e8ad215f2027063ede3b09724fabb" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504389389089
+    } ],
+    "nextReviewTime" : 1504389989575,
+    "proficiency" : 33
+  },
+  "343ebd23b6c9fcf36c94ada01e0d5ad0" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358428759
+    } ],
+    "nextReviewTime" : 1505358548762,
+    "proficiency" : 1
+  },
+  "34bcee46f85018ef7b872d939748a737" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241962387
+    } ],
+    "nextReviewTime" : 1505242563389,
+    "proficiency" : 33
+  },
+  "3517338b448f8f9d3c8125d2887c7334" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1502669028833
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502669028833
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502669028833
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502669028833
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502669028833
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502737420651
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502737420651
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502737420651
+    } ],
+    "nextReviewTime" : 1502739221361,
+    "proficiency" : 66
+  },
+  "36323ad90dc97720d6ce02e84c494b7d" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504675541449
+    } ],
+    "nextReviewTime" : 1504675661186,
+    "proficiency" : 33
+  },
+  "37007cd5b12eb809d38c998ffa03589d" : {
+    "nextReviewTime" : 1503684083610,
+    "proficiency" : 66
+  },
+  "3a84537e32ec2d37d4e36e5c26374629" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332314895
+    } ],
+    "nextReviewTime" : 1505332434899,
+    "proficiency" : 1
+  },
+  "3b0278d667b8d5e7c1fcefd8fe90bf87" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256709463
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256709463
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256709463
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256709463
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256709463
+    }, {
+      "proficiency" : 67,
+      "timestamp" : 1505325613855
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505325615770
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1505325617132
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505325620543
+    }, {
+      "proficiency" : 67,
+      "timestamp" : 1505325621256
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505325622369
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1505325623002
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505325624331
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505325624903
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1505325625642
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1505325666250
+    }, {
+      "millisecondsSinceLastInteraction" : 34252686,
+      "previousInteractionStrength" : 49.32116439935327,
+      "proficiency" : 67,
+      "timeSpent" : 7303,
+      "timestamp" : 1505359918936
+    }, {
+      "millisecondsSinceLastInteraction" : 35778,
+      "previousInteractionStrength" : 35.514354848499615,
+      "proficiency" : 99,
+      "timeSpent" : 7306,
+      "timestamp" : 1505359954714
+    }, {
+      "millisecondsSinceLastInteraction" : 168428,
+      "previousInteractionStrength" : 42.24233716765555,
+      "proficiency" : 99,
+      "timeSpent" : 7308,
+      "timestamp" : 1505360123142
+    }, {
+      "millisecondsSinceLastInteraction" : 33878650,
+      "previousInteractionStrength" : 65.27745521311957,
+      "proficiency" : 99,
+      "timeSpent" : 7311,
+      "timestamp" : 1505394001792
+    } ],
+    "nextReviewTime" : 1507554001800,
+    "proficiency" : 99
+  },
+  "3b779903b44e82b3cab99193c79f8b75" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504392604905
+    } ],
+    "nextReviewTime" : 1504393206024,
+    "proficiency" : 33
+  },
+  "3c4f495fc8c2ef14191913003df6c322" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505243497914
+    } ],
+    "nextReviewTime" : 1505244098912,
+    "proficiency" : 33
+  },
+  "3db208d057a856aee2b1941c18c57365" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241639543
+    } ],
+    "nextReviewTime" : 1505242240553,
+    "proficiency" : 33
+  },
+  "3e461bb2544e1d54238b8e2090a601f8" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359539307
+    } ],
+    "nextReviewTime" : 1505359659311,
+    "proficiency" : 1
+  },
+  "3ecfa3b4295013942c9a15b9d07c7c11" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 9,
+      "timestamp" : 1505359619518
+    }, {
+      "millisecondsSinceLastInteraction" : 2756,
+      "previousInteractionStrength" : 24.38098638356167,
+      "proficiency" : 99,
+      "timeSpent" : 12,
+      "timestamp" : 1505359622274
+    }, {
+      "millisecondsSinceLastInteraction" : 51735,
+      "previousInteractionStrength" : 37.11603878543651,
+      "proficiency" : 99,
+      "timeSpent" : 14,
+      "timestamp" : 1505359674009
+    }, {
+      "millisecondsSinceLastInteraction" : 65968,
+      "previousInteractionStrength" : 38.17152742577862,
+      "proficiency" : 99,
+      "timeSpent" : 15,
+      "timestamp" : 1505359739977
+    }, {
+      "millisecondsSinceLastInteraction" : 81256,
+      "previousInteractionStrength" : 39.076748645645154,
+      "proficiency" : 99,
+      "timeSpent" : 17,
+      "timestamp" : 1505359821233
+    }, {
+      "millisecondsSinceLastInteraction" : 349259,
+      "previousInteractionStrength" : 45.409670313168945,
+      "proficiency" : 99,
+      "timeSpent" : 20,
+      "timestamp" : 1505360170492
+    }, {
+      "millisecondsSinceLastInteraction" : 34023283,
+      "previousInteractionStrength" : 44.86976810821307,
+      "proficiency" : 33,
+      "timeSpent" : 22,
+      "timestamp" : 1505394193775
+    }, {
+      "millisecondsSinceLastInteraction" : 15886,
+      "previousInteractionStrength" : 31.988339833339513,
+      "proficiency" : 99,
+      "timeSpent" : 24,
+      "timestamp" : 1505394209661
+    }, {
+      "millisecondsSinceLastInteraction" : 255332,
+      "previousInteractionStrength" : 23.623058403064462,
+      "proficiency" : 33,
+      "timeSpent" : 27,
+      "timestamp" : 1505394464993
+    } ],
+    "nextReviewTime" : 1505395064997,
+    "proficiency" : 33
+  },
+  "3f199c58a4ce587834523b50fee22010" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359560164
+    } ],
+    "nextReviewTime" : 1505359680167,
+    "proficiency" : 1
+  },
+  "3fde776ce2d3fc3bcb0f77f8cd80eee3" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504675568533
+    } ],
+    "nextReviewTime" : 1504675688271,
+    "proficiency" : 33
+  },
+  "41037226c53404f33b257d7e6e034824" : {
+    "nextReviewTime" : 1503627549825,
+    "proficiency" : 0
+  },
+  "41850aad6afe8e362031db5e83f8137d" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505231603959
+    } ],
+    "nextReviewTime" : 1505232204801,
+    "proficiency" : 33
+  },
+  "42a5fda7ef213e1e7d86fd579c212f23" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359520938
+    } ],
+    "nextReviewTime" : 1505359640941,
+    "proficiency" : 1
+  },
+  "42e127c25bb265496a885cf5fadd5920" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242879988
+    } ],
+    "nextReviewTime" : 1505243480991,
+    "proficiency" : 33
+  },
+  "4748ab840639cb9c078706130991fa95" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241993786
+    } ],
+    "nextReviewTime" : 1505242594524,
+    "proficiency" : 33
+  },
+  "4860abeb04769a6936e4bcd536f7da45" : {
+    "nextReviewTime" : 1504495318863,
+    "proficiency" : 33
+  },
+  "490c95c31686d4f1311c068668c93861" : {
+    "interactions" : [ {
+      "proficiency" : 66,
+      "timestamp" : 1503950475836
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504135094451
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504135522426
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504295654795
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504295654795
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504295654795
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504498358600
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504732391482
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504739891285
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504740390517
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504740601222
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504741922071
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504741922071
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504741922071
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504741922071
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504741922071
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504741969220
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504741969220
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504741969220
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504741969220
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504742305700
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742305700
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504742482460
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743532953
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504743532953
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743532953
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504804724911
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504805941803
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504805941803
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504806004099
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504807139185
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504807139185
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504935512511
+    } ],
+    "nextReviewTime" : 1504937311976,
+    "proficiency" : 66
+  },
+  "495ac239d9df06581f1aa6232d428c54" : {
+    "nextReviewTime" : 1505317642927,
+    "proficiency" : 33
+  },
+  "4a145146665183bebdd7fd7be6d58ae3" : {
+    "nextReviewTime" : 1505271687987,
+    "proficiency" : 33
+  },
+  "4a1c1d21e7b8ea8b509db3f289dcb020" : {
+    "nextReviewTime" : 1505272017340,
+    "proficiency" : 33
+  },
+  "4a23a1f17a030e69b4d867c15416b1fe" : {
+    "nextReviewTime" : 1505261413714,
+    "proficiency" : 33
+  },
+  "4ab85f3fdfaa45785e305e7dd8bf42c1" : {
+    "nextReviewTime" : 1503626528935,
+    "proficiency" : 0
+  },
+  "4b852f219826fda81c5b26c18576ca4c" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330118509
+    } ],
+    "nextReviewTime" : 1505330238510,
+    "proficiency" : 0
+  },
+  "4c5803b7dcd7a5a6a4523da5bf68be3e" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242671146
+    } ],
+    "nextReviewTime" : 1505243272142,
+    "proficiency" : 33
+  },
+  "4c6faf9d502496f931f5e5e5aa1bd16c" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503414616833
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503414616833
+    } ],
+    "nextReviewTime" : 1503415218101,
+    "proficiency" : 33
+  },
+  "4ca65c326b3fa1b902cb3987afc7e2ad" : {
+    "nextReviewTime" : 1503627543155,
+    "proficiency" : 0
+  },
+  "4cfe27615b1f70066bf9f0e10d94e97e" : {
+    "nextReviewTime" : 1501727480625,
+    "proficiency" : 66
+  },
+  "4ddaf82320549c7ee1629a19451ca69e" : {
+    "nextReviewTime" : 1513729542302,
+    "proficiency" : 100
+  },
+  "4ed8464a837b3f127006ab85c657225c" : {
+    "nextReviewTime" : 1503627557029,
+    "proficiency" : 0
+  },
+  "4fc55f00239382b11c15604e54fe3dfa" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330141353
+    } ],
+    "nextReviewTime" : 1505330261354,
+    "proficiency" : 0
+  },
+  "521e4dbf9e823763d8e1f53a6cf0774d" : {
+    "nextReviewTime" : 1505263538719,
+    "proficiency" : 33
+  },
+  "5257b2227aca58064ef0191a228c7931" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504394286465
+    } ],
+    "nextReviewTime" : 1504394887566,
+    "proficiency" : 33
+  },
+  "52730cddf0c5b4e22b9cfe5536f1489d" : {
+    "nextReviewTime" : 1503936069978,
+    "proficiency" : 0
+  },
+  "52c3fdec2d3156cec30040539be00e7a" : {
+    "nextReviewTime" : 1503627044433,
+    "proficiency" : 0
+  },
+  "53b77f069f5d94aeb51790b33ecd215f" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251526182
+    } ],
+    "nextReviewTime" : 1505252127058,
+    "proficiency" : 33
+  },
+  "53c42d04d8a96bef3014865087fa7328" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 4,
+      "timestamp" : 1505359712930
+    }, {
+      "millisecondsSinceLastInteraction" : 1085,
+      "previousInteractionStrength" : 20.332491633051273,
+      "proficiency" : 99,
+      "timeSpent" : 5,
+      "timestamp" : 1505359714015
+    }, {
+      "millisecondsSinceLastInteraction" : 11396,
+      "previousInteractionStrength" : 14.5417424717827,
+      "proficiency" : 67,
+      "timeSpent" : 8,
+      "timestamp" : 1505359725411
+    }, {
+      "millisecondsSinceLastInteraction" : 2606,
+      "previousInteractionStrength" : 24.13793836497145,
+      "proficiency" : 99,
+      "timeSpent" : 10,
+      "timestamp" : 1505359728017
+    }, {
+      "millisecondsSinceLastInteraction" : 121543,
+      "previousInteractionStrength" : 24.821517582812223,
+      "proficiency" : 67,
+      "timeSpent" : 11,
+      "timestamp" : 1505359849560
+    }, {
+      "millisecondsSinceLastInteraction" : 2820,
+      "previousInteractionStrength" : 24.4806853343994,
+      "proficiency" : 99,
+      "timeSpent" : 13,
+      "timestamp" : 1505359852380
+    }, {
+      "millisecondsSinceLastInteraction" : 34486537,
+      "previousInteractionStrength" : 49.350713930542085,
+      "proficiency" : 67,
+      "timeSpent" : 17,
+      "timestamp" : 1505394338917
+    } ],
+    "nextReviewTime" : 1505396138929,
+    "proficiency" : 67
+  },
+  "54238c2260da8e2d56d752da79eadb47" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332583066
+    } ],
+    "nextReviewTime" : 1505332703066,
+    "proficiency" : 1
+  },
+  "5579601dfcebf1e91aed116522bd77a1" : {
+    "interactions" : [ {
+      "proficiency" : 100,
+      "timestamp" : 1505071746556
+    } ],
+    "nextReviewTime" : 1505158147314,
+    "proficiency" : 100
+  },
+  "572d0829dc37ac9549e72177671e747a" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242240480
+    } ],
+    "nextReviewTime" : 1505242840580,
+    "proficiency" : 33
+  },
+  "5881738869b44e5444e1c2b7fabdc1d7" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505176633697
+    } ],
+    "nextReviewTime" : 1505177233273,
+    "proficiency" : 33
+  },
+  "594e53dde47736fb42280680c2c1c1bb" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505179400758
+    } ],
+    "nextReviewTime" : 1505180000444,
+    "proficiency" : 33
+  },
+  "59c45962f3a78bb193eb3a7a424be838" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256662781
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505256662781
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256662781
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256662781
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256662781
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256662781
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256662781
+    }, {
+      "millisecondsSinceLastInteraction" : 103372978,
+      "previousInteractionStrength" : 49.69607620996204,
+      "proficiency" : 33,
+      "timeSpent" : 19,
+      "timestamp" : 1505360035759
+    }, {
+      "millisecondsSinceLastInteraction" : 10555,
+      "previousInteractionStrength" : 30.21277662764254,
+      "proficiency" : 99,
+      "timeSpent" : 21,
+      "timestamp" : 1505360046314
+    }, {
+      "millisecondsSinceLastInteraction" : 19929,
+      "previousInteractionStrength" : 12.546861004169404,
+      "proficiency" : 33,
+      "timeSpent" : 23,
+      "timestamp" : 1505360066243
+    }, {
+      "millisecondsSinceLastInteraction" : 5079,
+      "previousInteractionStrength" : 27.035976379491764,
+      "proficiency" : 99,
+      "timeSpent" : 25,
+      "timestamp" : 1505360071322
+    }, {
+      "millisecondsSinceLastInteraction" : 33963286,
+      "previousInteractionStrength" : 49.28431508872635,
+      "proficiency" : 67,
+      "timeSpent" : 27,
+      "timestamp" : 1505394034608
+    } ],
+    "nextReviewTime" : 1505395834620,
+    "proficiency" : 67
+  },
+  "5b27b98aaf491a7d04eb94e668f0f4b6" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359324331
+    } ],
+    "nextReviewTime" : 1505359444335,
+    "proficiency" : 1
+  },
+  "5b94301b9ab19aefc7c001a9f4bfc1b3" : {
+    "nextReviewTime" : 1505321185670,
+    "proficiency" : 33
+  },
+  "5bd95ffd2f23fb8e827398f209e5a399" : {
+    "nextReviewTime" : 1505271820979,
+    "proficiency" : 33
+  },
+  "5bf00d802c147dfeb42646f5fd794add" : {
+    "nextReviewTime" : 1501785268071,
+    "proficiency" : 66
+  },
+  "5cb6c57e4b6cdf0ce8e06c671cb2b48a" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242064942
+    } ],
+    "nextReviewTime" : 1505242665945,
+    "proficiency" : 33
+  },
+  "5ce5155618863d8c6033c07613f6b494" : {
+    "nextReviewTime" : 1503936103094,
+    "proficiency" : 0
+  },
+  "5d922dc6c3c121c37ee7d9c7c91e2a40" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359276625
+    } ],
+    "nextReviewTime" : 1505359396628,
+    "proficiency" : 1
+  },
+  "5daed4168c9d8639a78c2bf04d37c08e" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505356071307
+    } ],
+    "nextReviewTime" : 1505356191312,
+    "proficiency" : 1
+  },
+  "62027a917403b10cb73a295d4473a78c" : {
+    "nextReviewTime" : 1505271628350,
+    "proficiency" : 33
+  },
+  "62378347c2b75f1d4a51ea7695bc4b48" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332446077
+    } ],
+    "nextReviewTime" : 1505332566081,
+    "proficiency" : 1
+  },
+  "630cdf4471f550dabb124a5fc5360e49" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332660270
+    } ],
+    "nextReviewTime" : 1505332780270,
+    "proficiency" : 1
+  },
+  "637e50ef5ddc1d32c072b113e277441b" : {
+    "nextReviewTime" : 1504498950475,
+    "proficiency" : 33
+  },
+  "638326b66182580d2da8cb3a2dfd78b9" : {
+    "nextReviewTime" : 1504396125139,
+    "proficiency" : 66
+  },
+  "645bae323e5db6b874f1136e90d10265" : {
+    "nextReviewTime" : 1505321784652,
+    "proficiency" : 33
+  },
+  "65e1717123e062daf242245141d7bf51" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505243458670
+    } ],
+    "nextReviewTime" : 1505244059671,
+    "proficiency" : 33
+  },
+  "6615131ad3517e61e8cfdd8c58bdf509" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256721189
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256721189
+    }, {
+      "millisecondsSinceLastInteraction" : 103212091,
+      "previousInteractionStrength" : 49.689311698782745,
+      "proficiency" : 33,
+      "timeSpent" : 41,
+      "timestamp" : 1505359933280
+    }, {
+      "millisecondsSinceLastInteraction" : 17074,
+      "previousInteractionStrength" : 32.30154702206234,
+      "proficiency" : 99,
+      "timeSpent" : 44,
+      "timestamp" : 1505359950354
+    }, {
+      "millisecondsSinceLastInteraction" : 184466,
+      "previousInteractionStrength" : 42.63735755653024,
+      "proficiency" : 99,
+      "timeSpent" : 47,
+      "timestamp" : 1505360134820
+    }, {
+      "millisecondsSinceLastInteraction" : 1815,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 48,
+      "timestamp" : 1505360136635
+    }, {
+      "millisecondsSinceLastInteraction" : 1203,
+      "previousInteractionStrength" : 20.780850524604237,
+      "proficiency" : 99,
+      "timeSpent" : 50,
+      "timestamp" : 1505360137838
+    }, {
+      "millisecondsSinceLastInteraction" : 33872651,
+      "previousInteractionStrength" : 44.850497807364164,
+      "proficiency" : 33,
+      "timeSpent" : 53,
+      "timestamp" : 1505394010489
+    } ],
+    "nextReviewTime" : 1505394610501,
+    "proficiency" : 33
+  },
+  "661635794d10908d2128045787cb4330" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504393216104
+    } ],
+    "nextReviewTime" : 1504393817215,
+    "proficiency" : 33
+  },
+  "66a2d03e7c6d55a1c5ce0d4cd834913f" : {
+    "nextReviewTime" : 1505271704689,
+    "proficiency" : 33
+  },
+  "66c9cef6ef38082454babed4285662a9" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504675527522
+    } ],
+    "nextReviewTime" : 1504675647259,
+    "proficiency" : 33
+  },
+  "66fa61429538d3bd2cd22c5cc70d0d13" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503553780481
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503553780481
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503553780481
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503553780481
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503553780481
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503553827957
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503553868644
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503553868644
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503553955363
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503553955363
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503554057370
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503554057370
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503557402498
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503557596172
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503557596172
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503557596172
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503594240529
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504066400470
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504066400470
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504066400470
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504066400470
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1504066400470
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504066400470
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504293484589
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504293551882
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504293551882
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504295858547
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504295858547
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504295858547
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504295858547
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504295858547
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504295858547
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504487231655
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504487231655
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504487231655
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504497915918
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504498363682
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742122891
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504742203393
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504744394797
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744394797
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744394797
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504805951855
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504805951855
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504805951855
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504805951855
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504805951855
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071299293
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505161057237
+    } ],
+    "nextReviewTime" : 1505161657059,
+    "proficiency" : 33
+  },
+  "673bd06932fd281a14980cd57d93c401" : {
+    "nextReviewTime" : 1505319526266,
+    "proficiency" : 33
+  },
+  "6784c1c3ffde52e07373acf29386f0af" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505329874435
+    } ],
+    "nextReviewTime" : 1505329994436,
+    "proficiency" : 0
+  },
+  "67f22036338063618edccfbdd20a9c23" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505238090430
+    } ],
+    "nextReviewTime" : 1505238691220,
+    "proficiency" : 33
+  },
+  "68833af62f45fa2317b3e8299972e608" : {
+    "nextReviewTime" : 1504490140143,
+    "proficiency" : 33
+  },
+  "68cfde4e9b7ff581cf4150bc975c76b9" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1501727317014
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1501734912090
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501734927415
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503509590633
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503542388718
+    } ],
+    "nextReviewTime" : 1503544188245,
+    "proficiency" : 66
+  },
+  "6944b1748c33ec71004fb6e9197dbbbd" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 4,
+      "timestamp" : 1505359599705
+    }, {
+      "millisecondsSinceLastInteraction" : 6725,
+      "previousInteractionStrength" : 28.255117137950243,
+      "proficiency" : 99,
+      "timeSpent" : 11,
+      "timestamp" : 1505359606430
+    }, {
+      "millisecondsSinceLastInteraction" : 1758,
+      "previousInteractionStrength" : 22.42838295858332,
+      "proficiency" : 99,
+      "timeSpent" : 13,
+      "timestamp" : 1505359608188
+    }, {
+      "millisecondsSinceLastInteraction" : 21771,
+      "previousInteractionStrength" : 17.353001844120353,
+      "proficiency" : 67,
+      "timeSpent" : 16,
+      "timestamp" : 1505359629959
+    }, {
+      "millisecondsSinceLastInteraction" : 2520,
+      "previousInteractionStrength" : 23.99219965902123,
+      "proficiency" : 99,
+      "timeSpent" : 17,
+      "timestamp" : 1505359632479
+    }, {
+      "millisecondsSinceLastInteraction" : 46581,
+      "previousInteractionStrength" : 36.66028232844792,
+      "proficiency" : 99,
+      "timeSpent" : 18,
+      "timestamp" : 1505359679060
+    }, {
+      "millisecondsSinceLastInteraction" : 55100,
+      "previousInteractionStrength" : 37.38971023972364,
+      "proficiency" : 99,
+      "timeSpent" : 19,
+      "timestamp" : 1505359734160
+    }, {
+      "millisecondsSinceLastInteraction" : 93862,
+      "previousInteractionStrength" : 39.70309228989275,
+      "proficiency" : 99,
+      "timeSpent" : 25,
+      "timestamp" : 1505359828022
+    }, {
+      "millisecondsSinceLastInteraction" : 34652938,
+      "previousInteractionStrength" : 38.7649437718456,
+      "proficiency" : 1,
+      "timeSpent" : 37,
+      "timestamp" : 1505394480960
+    } ],
+    "nextReviewTime" : 1505394600972,
+    "proficiency" : 1
+  },
+  "69b74880468ed4cfd1a0ed6fac137f0c" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241501088
+    } ],
+    "nextReviewTime" : 1505242102099,
+    "proficiency" : 33
+  },
+  "69dd75a858ddccca07d23ba1e9087844" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241933061
+    } ],
+    "nextReviewTime" : 1505242534068,
+    "proficiency" : 33
+  },
+  "6b485c31f8c99cfed1ba718b1a77d52e" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359358240
+    } ],
+    "nextReviewTime" : 1505359478243,
+    "proficiency" : 1
+  },
+  "6b617c2390ca7415ef1e04ec8af33405" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242573771
+    } ],
+    "nextReviewTime" : 1505243174774,
+    "proficiency" : 33
+  },
+  "6b62c9ab4fb168f3979c73fe39713129" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503960573311
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504120540772
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504200329867
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504200364000
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504219725116
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504219844771
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504219872116
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504219930115
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504219966133
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504220036311
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504220214754
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504220214754
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504220214754
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220214754
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220214754
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220214754
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504220977659
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221848228
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221848228
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221968705
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221968705
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504221968705
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222021255
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504222106153
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504222106153
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222180840
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504222218926
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222218926
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222218926
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504222218926
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504222349420
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504245553476
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504284639741
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504296135316
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504301627069
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375652070
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742279
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742279
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742279
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742279
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504375742279
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504382336022
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504382807202
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504394238999
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504403311547
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504413636861
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504413636861
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504414744738
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243648
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243648
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243648
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415243648
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504415381381
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504487235047
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504490049865
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504490085453
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504490379045
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494327227
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504494352102
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494352102
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504494558578
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504497822801
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504498112740
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504498252259
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504498366205
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504498366205
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504498519994
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504540596685
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504550860622
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504551974710
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504553034222
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504675689545
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504741980690
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742120540
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504742200034
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743587209
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744181089
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744384206
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504749144277
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504833106061
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504935527382
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505004933418
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505062792456
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505064799224
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505071348638
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505079892328
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505161644800
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505257753706
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505258613522
+    } ],
+    "nextReviewTime" : 4220255258614346,
+    "proficiency" : 100
+  },
+  "6b856920bb3e64d51a0587f28f7a3a88" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256671122
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256671122
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256671122
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256671122
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256671122
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256671122
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256671122
+    }, {
+      "millisecondsSinceLastInteraction" : 103357845,
+      "previousInteractionStrength" : 43.5109776138852,
+      "proficiency" : 1,
+      "timeSpent" : 20,
+      "timestamp" : 1505360028967
+    }, {
+      "millisecondsSinceLastInteraction" : 1234,
+      "previousInteractionStrength" : 20.89134584817802,
+      "proficiency" : 99,
+      "timeSpent" : 21,
+      "timestamp" : 1505360030201
+    }, {
+      "millisecondsSinceLastInteraction" : 45793,
+      "previousInteractionStrength" : 36.58618521165582,
+      "proficiency" : 99,
+      "timeSpent" : 24,
+      "timestamp" : 1505360075994
+    }, {
+      "millisecondsSinceLastInteraction" : 33965163,
+      "previousInteractionStrength" : 65.28853128246668,
+      "proficiency" : 99,
+      "timeSpent" : 26,
+      "timestamp" : 1505394041157
+    } ],
+    "nextReviewTime" : 1507554041165,
+    "proficiency" : 99
+  },
+  "6eb4351e14c7624aaccea6aea873e935" : {
+    "nextReviewTime" : 1504490107465,
+    "proficiency" : 33
+  },
+  "6fef38f2b29f1adb328dd14f7667b95c" : {
+    "nextReviewTime" : 1505321745620,
+    "proficiency" : 33
+  },
+  "706b191227ca74fcf936354ec7748876" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503539671056
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503539671056
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503540242683
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503540242683
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503540242683
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503540982699
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503540982699
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503540982699
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503859302698
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503950481917
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503950481917
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504498351684
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504571240256
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504571435104
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504571435104
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504571435104
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504571499813
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504573575229
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504573575229
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504573575229
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504573734578
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504574274940
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504575176549
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504576169736
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576574737
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504576574737
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504576574737
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504576574737
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504576574737
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504586400992
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504675299858
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504675299858
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504741988541
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743508797
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504743508797
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504743508797
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743508797
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504743508797
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504743508797
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744189489
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744378218
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505062739247
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505062739247
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505064749549
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505064749549
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505257642614
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505257642614
+    } ],
+    "nextReviewTime" : 1505344043479,
+    "proficiency" : 100
+  },
+  "71f62c7d547332f5fe26a96a737e1c57" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256658124
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256658124
+    }, {
+      "millisecondsSinceLastInteraction" : 103287068,
+      "previousInteractionStrength" : 49.692465425796286,
+      "proficiency" : 33,
+      "timeSpent" : 20,
+      "timestamp" : 1505359945192
+    }, {
+      "millisecondsSinceLastInteraction" : 105152,
+      "previousInteractionStrength" : 24.192393440297796,
+      "proficiency" : 67,
+      "timeSpent" : 22,
+      "timestamp" : 1505360050344
+    }, {
+      "millisecondsSinceLastInteraction" : 11332,
+      "previousInteractionStrength" : 30.521259909689785,
+      "proficiency" : 99,
+      "timeSpent" : 26,
+      "timestamp" : 1505360061676
+    }, {
+      "millisecondsSinceLastInteraction" : 33968057,
+      "previousInteractionStrength" : 65.28890130709715,
+      "proficiency" : 99,
+      "timeSpent" : 27,
+      "timestamp" : 1505394029733
+    } ],
+    "nextReviewTime" : 1505826029737,
+    "proficiency" : 99
+  },
+  "72b496b0e5fcfa52ac3d3942fc5220b3" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358674098
+    } ],
+    "nextReviewTime" : 1505358794101,
+    "proficiency" : 1
+  },
+  "7401d28cccc4a94cb79b771e8c174a0a" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505315298072
+    } ],
+    "nextReviewTime" : 1505315898073,
+    "proficiency" : 33
+  },
+  "754f675d884cc2c25c007299c95ce762" : {
+    "nextReviewTime" : 1505323210615,
+    "proficiency" : 33
+  },
+  "7643a1892edc8db7cf2b6828d068f6aa" : {
+    "interactions" : [ {
+      "proficiency" : 66,
+      "timestamp" : 1505271539621
+    } ],
+    "nextReviewTime" : 1505273339622,
+    "proficiency" : 66
+  },
+  "77ec4293fb2c83237b2a1dfb8d0ead60" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503604626024
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503852351336
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503852351336
+    } ],
+    "nextReviewTime" : 1503852950264,
+    "proficiency" : 33
+  },
+  "79735f4b20c9eb888cec564fa2128513" : {
+    "nextReviewTime" : 1502757816015,
+    "proficiency" : 33
+  },
+  "7ba53543a6892a538b6a7f7a8f8e9ab1" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359427816
+    } ],
+    "nextReviewTime" : 1505359547819,
+    "proficiency" : 1
+  },
+  "7be9d81cfbc77af1d4a36eca34f312f4" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503934338808
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504120545793
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504502719873
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504502719873
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504548382459
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504549286809
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504549286809
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504675507294
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504719839165
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504739926684
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504739926684
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742289297
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504805247238
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504805247238
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504805247238
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504805959128
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504806022194
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504806022194
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504806022194
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504806022194
+    } ],
+    "nextReviewTime" : 1504807822311,
+    "proficiency" : 66
+  },
+  "7bed77b1d1c9eabfe3bbafc2f49123bc" : {
+    "nextReviewTime" : 1505272035049,
+    "proficiency" : 33
+  },
+  "7c96e72490588ad5ab295284bb610e78" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505231749703
+    } ],
+    "nextReviewTime" : 1505232350539,
+    "proficiency" : 33
+  },
+  "7cab71dfd3621bf1995b910b8414706a" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358641753
+    } ],
+    "nextReviewTime" : 1505358761756,
+    "proficiency" : 1
+  },
+  "7cff84ba7cc8b95d52d4a1c739ff7de6" : {
+    "nextReviewTime" : 1505319012560,
+    "proficiency" : 33
+  },
+  "7e3c90ac83dcf265a616f002727083f9" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242275829
+    } ],
+    "nextReviewTime" : 1505242876833,
+    "proficiency" : 33
+  },
+  "811e385278d48816fc163dc68821a8e7" : {
+    "interactions" : [ {
+      "proficiency" : 95,
+      "timestamp" : 1504675481346
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504741977867
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504741977867
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742106284
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504742311044
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504742311044
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504742383152
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744178101
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744178101
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744178101
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744445088
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744572379
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504744877817
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505077743379
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505077743379
+    } ],
+    "nextReviewTime" : 1504831277089,
+    "proficiency" : 95
+  },
+  "812734500a23d529dd6306135f0883f1" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503707711328
+    } ],
+    "nextReviewTime" : 1503707832547,
+    "proficiency" : 0
+  },
+  "838658d075b1e6c8844985c770ff9cd8" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1504288642402
+    } ],
+    "nextReviewTime" : 1504288762240,
+    "proficiency" : 0
+  },
+  "85fc12d80528e9db5028cce6134f9985" : {
+    "nextReviewTime" : 1504490334930,
+    "proficiency" : 33
+  },
+  "8690643d160712568a7aeebfce9a85f8" : {
+    "nextReviewTime" : 1503627537395,
+    "proficiency" : 0
+  },
+  "880e53341435ff72b4678462bb99439e" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 5,
+      "timestamp" : 1505359687510
+    }, {
+      "millisecondsSinceLastInteraction" : 1444,
+      "previousInteractionStrength" : 21.57386618354199,
+      "proficiency" : 99,
+      "timeSpent" : 7,
+      "timestamp" : 1505359688954
+    }, {
+      "millisecondsSinceLastInteraction" : 693,
+      "previousInteractionStrength" : 18.385526597323857,
+      "proficiency" : 99,
+      "timeSpent" : 7,
+      "timestamp" : 1505359689647
+    }, {
+      "millisecondsSinceLastInteraction" : 426,
+      "previousInteractionStrength" : 16.272290242232977,
+      "proficiency" : 99,
+      "timeSpent" : 8,
+      "timestamp" : 1505359690073
+    }, {
+      "millisecondsSinceLastInteraction" : 41640,
+      "previousInteractionStrength" : 36.173301459590775,
+      "proficiency" : 99,
+      "timeSpent" : 10,
+      "timestamp" : 1505359731713
+    }, {
+      "millisecondsSinceLastInteraction" : 102968,
+      "previousInteractionStrength" : 24.101240839112343,
+      "proficiency" : 67,
+      "timeSpent" : 13,
+      "timestamp" : 1505359834681
+    }, {
+      "millisecondsSinceLastInteraction" : 1809,
+      "previousInteractionStrength" : 22.55257991980393,
+      "proficiency" : 99,
+      "timeSpent" : 14,
+      "timestamp" : 1505359836490
+    }, {
+      "millisecondsSinceLastInteraction" : 3106,
+      "previousInteractionStrength" : 24.900208765131183,
+      "proficiency" : 99,
+      "timeSpent" : 16,
+      "timestamp" : 1505359839596
+    }, {
+      "millisecondsSinceLastInteraction" : 34614727,
+      "previousInteractionStrength" : 44.944615040158055,
+      "proficiency" : 33,
+      "timeSpent" : 20,
+      "timestamp" : 1505394454323
+    } ],
+    "nextReviewTime" : 1505395054328,
+    "proficiency" : 33
+  },
+  "893446149385836472100247defd3668" : {
+    "nextReviewTime" : 1502215460391,
+    "proficiency" : 100
+  },
+  "8e6848926a41868c89e11155013da1f0" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242016457
+    } ],
+    "nextReviewTime" : 1505242617466,
+    "proficiency" : 33
+  },
+  "8f1a0f20923ed18ab2f7d0a3aef9d711" : {
+    "nextReviewTime" : 1505426452285,
+    "proficiency" : 100
+  },
+  "8fca50024742c71a566f5afaa1e42238" : {
+    "nextReviewTime" : 1503017424767,
+    "proficiency" : 100
+  },
+  "8fe7ebb113413be9c2499a819aab514c" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251225813
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330376731
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330377267
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330377842
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330378393
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330378860
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330379341
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330379943
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505330380716
+    } ],
+    "nextReviewTime" : 8255330380718,
+    "proficiency" : 100
+  },
+  "9375ce823240fe5d1bba84c313a9176f" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330199452
+    } ],
+    "nextReviewTime" : 1505330319453,
+    "proficiency" : 0
+  },
+  "944cf271cefa8ed34a5776af342408a4" : {
+    "nextReviewTime" : 1505316591556,
+    "proficiency" : 33
+  },
+  "9492df308ffd15ceba53f127a862611d" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332471853
+    } ],
+    "nextReviewTime" : 1505332591855,
+    "proficiency" : 1
+  },
+  "9497f38b71eda944d4f4b0cffb2dcede" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503539715442
+    } ],
+    "nextReviewTime" : 1503539834950,
+    "proficiency" : 0
+  },
+  "94c933975301bd3773dd43dead6ca6c2" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504387298575
+    } ],
+    "nextReviewTime" : 1504387899739,
+    "proficiency" : 33
+  },
+  "9588b5eb33968497b42cefacfe266c02" : {
+    "nextReviewTime" : 1505321813580,
+    "proficiency" : 33
+  },
+  "979cfc4c6c669a73892134038201da8b" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505315583555
+    } ],
+    "nextReviewTime" : 1505316183557,
+    "proficiency" : 33
+  },
+  "991a8f45f124264e95e6ea06fae721c7" : {
+    "nextReviewTime" : 1505318255685,
+    "proficiency" : 33
+  },
+  "997564b4632ed8bbc7503c27605da348" : {
+    "nextReviewTime" : 1505317249965,
+    "proficiency" : 33
+  },
+  "9ae3460fa6f22e7dbe478cd02db112db" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504389067190
+    } ],
+    "nextReviewTime" : 1504389668342,
+    "proficiency" : 33
+  },
+  "9caea31b375471a52200fecd9a9a7cae" : {
+    "nextReviewTime" : 1505270948052,
+    "proficiency" : 33
+  },
+  "a2571ef2967153fef602be15feff2ae7" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330285617
+    } ],
+    "nextReviewTime" : 1505330405618,
+    "proficiency" : 0
+  },
+  "a2aa2695898944d34ec16ce816613e93" : {
+    "nextReviewTime" : 1505321975462,
+    "proficiency" : 33
+  },
+  "a2ffaf79dbe2b89c77515c4cba316af7" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504392720677
+    } ],
+    "nextReviewTime" : 1504393321795,
+    "proficiency" : 33
+  },
+  "a52d285707ab0e64ad7fa98c4e12bc98" : {
+    "nextReviewTime" : 1505333551537,
+    "proficiency" : 1
+  },
+  "a65ffde63ea69bbfc16ca83827259608" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242194359
+    } ],
+    "nextReviewTime" : 1505242795362,
+    "proficiency" : 33
+  },
+  "a7939caa3518202b70a794fd9b0fafd2" : {
+    "nextReviewTime" : 1505320994992,
+    "proficiency" : 33
+  },
+  "a7b99155b5ee58a3fa560d28fa8b6a09" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1502929638797
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502929638797
+    } ],
+    "nextReviewTime" : 1503016038738,
+    "proficiency" : 100
+  },
+  "a7d890f01e0a03b243ee5caf0ae82374" : {
+    "nextReviewTime" : 170255356921140,
+    "proficiency" : 99
+  },
+  "a904b64de41166448eee4aff3e55f03a" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 9,
+      "timestamp" : 1505359645697
+    }, {
+      "millisecondsSinceLastInteraction" : 2429,
+      "previousInteractionStrength" : 23.832469399257093,
+      "proficiency" : 99,
+      "timeSpent" : 12,
+      "timestamp" : 1505359648126
+    }, {
+      "millisecondsSinceLastInteraction" : 21089,
+      "previousInteractionStrength" : 33.2187541193553,
+      "proficiency" : 99,
+      "timeSpent" : 13,
+      "timestamp" : 1505359669215
+    }, {
+      "millisecondsSinceLastInteraction" : 73372,
+      "previousInteractionStrength" : 38.63349782509726,
+      "proficiency" : 99,
+      "timeSpent" : 14,
+      "timestamp" : 1505359742587
+    }, {
+      "millisecondsSinceLastInteraction" : 74959,
+      "previousInteractionStrength" : 38.72643209278599,
+      "proficiency" : 99,
+      "timeSpent" : 16,
+      "timestamp" : 1505359817546
+    }, {
+      "millisecondsSinceLastInteraction" : 34388959,
+      "previousInteractionStrength" : 44.9161962259916,
+      "proficiency" : 33,
+      "timeSpent" : 21,
+      "timestamp" : 1505394206505
+    } ],
+    "nextReviewTime" : 1505394806517,
+    "proficiency" : 33
+  },
+  "a968c348eec5a55885e6f217cd03c868" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242399163
+    } ],
+    "nextReviewTime" : 1505243000166,
+    "proficiency" : 33
+  },
+  "aa17b38a9fffffb96241d8cbf95caf0d" : {
+    "nextReviewTime" : 1505271640658,
+    "proficiency" : 33
+  },
+  "aa21b5e012b07b05f62b598c3d634b24" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359451395
+    } ],
+    "nextReviewTime" : 1505359571398,
+    "proficiency" : 1
+  },
+  "aa7771154b5f32487124ed5016bb8587" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505250666653
+    } ],
+    "nextReviewTime" : 1505251267560,
+    "proficiency" : 33
+  },
+  "ab8a410b4705e8daee588234916e7adf" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359301801
+    } ],
+    "nextReviewTime" : 1505359421805,
+    "proficiency" : 1
+  },
+  "adde48c139e1008c43e9931a04f99586" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358516990
+    } ],
+    "nextReviewTime" : 1505358636994,
+    "proficiency" : 1
+  },
+  "ae1f4bc506edaaaa5a0eb271b4ea4a12" : {
+    "nextReviewTime" : 1504294781002,
+    "proficiency" : 66
+  },
+  "ae7b806455f6db156e013d7181fe8950" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332548381
+    } ],
+    "nextReviewTime" : 1505332668381,
+    "proficiency" : 1
+  },
+  "aea4fbfd030134d711eed838697d4125" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1501724970766
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501724970766
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501725032593
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501725572210
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1501725572210
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501725682689
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1501725682689
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501725682689
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1501725682689
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501726207130
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1501726926410
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501727249516
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1501727352211
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503327812387
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503327812387
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503327812387
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503327987550
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503879939821
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504502755786
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504502755786
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504549289549
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071737654
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071737654
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505072080584
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505072080584
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505072080584
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505072080584
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505072080584
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505072080584
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505072110731
+    } ],
+    "nextReviewTime" : 1505503738414,
+    "proficiency" : 100
+  },
+  "af5ee45273ae5fc1cb523d0f8dfa817f" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503627350672
+    } ],
+    "nextReviewTime" : 1503627471138,
+    "proficiency" : 0
+  },
+  "b1ce5f0ed631121e09e667719ff7d5e7" : {
+    "nextReviewTime" : 1503935998096,
+    "proficiency" : 0
+  },
+  "b4cb07442c75310495bbb7c95d99d383" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1504126166053
+    } ],
+    "nextReviewTime" : 1504126283863,
+    "proficiency" : 0
+  },
+  "b4e9bbc8ec7c5598c28819a60a479fa3" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358724790
+    } ],
+    "nextReviewTime" : 1505358844793,
+    "proficiency" : 1
+  },
+  "b501d3c7864a164c93ec770846114ce8" : {
+    "nextReviewTime" : 1505321149953,
+    "proficiency" : 33
+  },
+  "b52fe642cbc31ed4ac0eaf47d0db4ec5" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505315845799
+    } ],
+    "nextReviewTime" : 1505316445800,
+    "proficiency" : 33
+  },
+  "b63cea3e534347a4b09a8d2fba0268c3" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504675552983
+    } ],
+    "nextReviewTime" : 1504675672720,
+    "proficiency" : 33
+  },
+  "b6c47d7367236812358f25dff5151857" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504675582236
+    } ],
+    "nextReviewTime" : 1504675701971,
+    "proficiency" : 33
+  },
+  "b73a74c38288b02f3bc3dbd734b9ea45" : {
+    "nextReviewTime" : 1504495290623,
+    "proficiency" : 33
+  },
+  "b971a372c561b018136d344119f62bd3" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332603719
+    }, {
+      "millisecondsSinceLastInteraction" : 76078384,
+      "previousInteractionStrength" : 52.7868308568035,
+      "proficiency" : 67,
+      "timeSpent" : 7,
+      "timestamp" : 1505408682103
+    }, {
+      "millisecondsSinceLastInteraction" : 50640,
+      "previousInteractionStrength" : 37.023131221298776,
+      "proficiency" : 99,
+      "timeSpent" : 58,
+      "timestamp" : 1505408732743
+    }, {
+      "millisecondsSinceLastInteraction" : 1288,
+      "previousInteractionStrength" : 0.6511645627952198,
+      "proficiency" : 33,
+      "timeSpent" : 58,
+      "timestamp" : 1505408734031
+    }, {
+      "millisecondsSinceLastInteraction" : 1345,
+      "previousInteractionStrength" : 21.265417094590056,
+      "proficiency" : 99,
+      "timeSpent" : 60,
+      "timestamp" : 1505408735376
+    } ],
+    "nextReviewTime" : 1505332723719,
+    "proficiency" : 1
+  },
+  "bd6f78593642165a9f1a3c2dc00bbd1b" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251701267
+    } ],
+    "nextReviewTime" : 1505252302174,
+    "proficiency" : 33
+  },
+  "c04367208eec3067ac7d2562f08c2136" : {
+    "nextReviewTime" : 1505442631907,
+    "proficiency" : 100
+  },
+  "c2c9ebb13f3d7a2aa4eb19aaeb744f25" : {
+    "nextReviewTime" : 1501731521561,
+    "proficiency" : 66
+  },
+  "c3dd88b107d3ce49762e8ca344d4baf8" : {
+    "nextReviewTime" : 1504331929062,
+    "proficiency" : 100
+  },
+  "c400cdc3362fbba7b08f28d42bdd9299" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330256095
+    } ],
+    "nextReviewTime" : 1505330376095,
+    "proficiency" : 0
+  },
+  "c4ba7d1109a5d5d45e455e372ceb6617" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242783188
+    }, {
+      "millisecondsSinceLastInteraction" : 116396348,
+      "previousInteractionStrength" : 50.21139947553025,
+      "proficiency" : 33,
+      "timeSpent" : 6,
+      "timestamp" : 1505359179536
+    } ],
+    "nextReviewTime" : 1505359779540,
+    "proficiency" : 33
+  },
+  "c5f87601bc637d3f31126903b24362ea" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251448924
+    } ],
+    "nextReviewTime" : 1505252049835,
+    "proficiency" : 33
+  },
+  "c62096623e8de9e8657a764501ce63f5" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505329927515
+    } ],
+    "nextReviewTime" : 1505330047516,
+    "proficiency" : 0
+  },
+  "c649fefb50d2fd6464028df545b017f8" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504393129347
+    } ],
+    "nextReviewTime" : 1504393730454,
+    "proficiency" : 33
+  },
+  "c684b908771832e93640adcc26ed6bb2" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358548491
+    } ],
+    "nextReviewTime" : 1505358668494,
+    "proficiency" : 1
+  },
+  "c747926cad47fc33eff0aa5eaafb0809" : {
+    "nextReviewTime" : 1504490267494,
+    "proficiency" : 33
+  },
+  "c8db5446ebf86120d66cdc765e2d894d" : {
+    "nextReviewTime" : 1505323295454,
+    "proficiency" : 33
+  },
+  "c8dbba99f704073d552fd0f60dde7d86" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1502763846435
+    } ],
+    "nextReviewTime" : 1502764446930,
+    "proficiency" : 33
+  },
+  "c92a435744b82b67de62994b2f0b41a5" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505260880168
+    } ],
+    "nextReviewTime" : 1505261480173,
+    "proficiency" : 33
+  },
+  "c9d9ac5ab3027721d9d1d748e98189f1" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503634514864
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503635072536
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503635072536
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503635072536
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503635072536
+    } ],
+    "nextReviewTime" : 1503721470904,
+    "proficiency" : 100
+  },
+  "ca3959c926463d6a2bfd2eec2af7a8e4" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503626538717
+    } ],
+    "nextReviewTime" : 1503626659144,
+    "proficiency" : 0
+  },
+  "ca84e5f14b82385632fa4b9e5afb3982" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505243548096
+    } ],
+    "nextReviewTime" : 1505244149085,
+    "proficiency" : 33
+  },
+  "cc54dc73d26c35a684ef84e71d39c7b3" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503594774722
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503594787214
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1503594787214
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503594787214
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503594802218
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503594989315
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503594992444
+    } ],
+    "nextReviewTime" : 1503681393327,
+    "proficiency" : 100
+  },
+  "cd0f30d65b2cd4566920de7068cc28f8" : {
+    "nextReviewTime" : 1504490196296,
+    "proficiency" : 33
+  },
+  "cd907a28c02b0693a6e1d5ae7675aecd" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505260892717
+    } ],
+    "nextReviewTime" : 1505261492721,
+    "proficiency" : 33
+  },
+  "ce4acaa8905124e0cd1f9c3fd2d46b73" : {
+    "nextReviewTime" : 1504490213371,
+    "proficiency" : 33
+  },
+  "cee34dc3d19c0ce196dca2d350c5297a" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359406785
+    } ],
+    "nextReviewTime" : 1505359526788,
+    "proficiency" : 1
+  },
+  "d00447cf558b369866200fbf51b883e0" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256700848
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256700848
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256700848
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256700848
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256700848
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256700848
+    }, {
+      "millisecondsSinceLastInteraction" : 103270326,
+      "previousInteractionStrength" : 70.11794973108645,
+      "proficiency" : 99,
+      "timeSpent" : 15,
+      "timestamp" : 1505359971174
+    }, {
+      "millisecondsSinceLastInteraction" : 127428,
+      "previousInteractionStrength" : 41.030842919691906,
+      "proficiency" : 99,
+      "timeSpent" : 18,
+      "timestamp" : 1505360098602
+    }, {
+      "millisecondsSinceLastInteraction" : 33964888,
+      "previousInteractionStrength" : 65.28849611953635,
+      "proficiency" : 99,
+      "timeSpent" : 19,
+      "timestamp" : 1505394063490
+    } ],
+    "nextReviewTime" : 8255394063494,
+    "proficiency" : 99
+  },
+  "d0e75a202667dc7b5d7c999bdfa1c94a" : {
+    "nextReviewTime" : 1505321379807,
+    "proficiency" : 33
+  },
+  "d113e3cf3dc896228bc2fa6831434cda" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503679293413
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503679293413
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1503679293413
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1503679293413
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504502673220
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504502673220
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504503313521
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504504064436
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504504128712
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504504224481
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504504275008
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504504325707
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504504622528
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504504720886
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504505015307
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504540544546
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504540544546
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504548561990
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504548561990
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504549297246
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071751095
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071751095
+    } ],
+    "nextReviewTime" : 1505503751846,
+    "proficiency" : 100
+  },
+  "d16b7ab551267ff3096c4fff892ecd1d" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251645144
+    } ],
+    "nextReviewTime" : 1505252246055,
+    "proficiency" : 33
+  },
+  "d17617d7dfecb6d71d785fd701a58d53" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1504126177115
+    } ],
+    "nextReviewTime" : 1504126294924,
+    "proficiency" : 0
+  },
+  "d2f0e0497a090c6fca613f13ce226089" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242475046
+    } ],
+    "nextReviewTime" : 1505243076052,
+    "proficiency" : 33
+  },
+  "d3446e140c41a3a512e0c8d292f549c6" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1504126193219
+    } ],
+    "nextReviewTime" : 1504126311024,
+    "proficiency" : 0
+  },
+  "d39f8d28735b499574a05c64b5c55a9d" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1502668870110
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502668870110
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502668870110
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502668870110
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502668870110
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502735267227
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736355058
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736407375
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736453831
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736538336
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736567782
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1502736567782
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1502736567782
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1502736567782
+    }, {
+      "proficiency" : 0,
+      "timestamp" : 1502736567782
+    } ],
+    "nextReviewTime" : 1502736688495,
+    "proficiency" : 0
+  },
+  "d46ae44d6cab66eb4a809d611ac2212e" : {
+    "nextReviewTime" : 1504126158427,
+    "proficiency" : 0
+  },
+  "d46d6c2ea4ec64088efabbfd88d08614" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330037929
+    } ],
+    "nextReviewTime" : 1505330157930,
+    "proficiency" : 0
+  },
+  "d52cffbdbde1322b4d41f721c4ffb171" : {
+    "nextReviewTime" : 1503331313043,
+    "proficiency" : 100
+  },
+  "d5a4a7a0f17f9e3bd45e1ae5054a5183" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 99,
+      "timeSpent" : 5,
+      "timestamp" : 1505359764728
+    }, {
+      "millisecondsSinceLastInteraction" : 2328,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 6,
+      "timestamp" : 1505359767056
+    }, {
+      "millisecondsSinceLastInteraction" : 1033,
+      "previousInteractionStrength" : 20.119197466401992,
+      "proficiency" : 99,
+      "timeSpent" : 7,
+      "timestamp" : 1505359768089
+    }, {
+      "millisecondsSinceLastInteraction" : 31831,
+      "previousInteractionStrength" : 35.00669707714562,
+      "proficiency" : 99,
+      "timeSpent" : 12,
+      "timestamp" : 1505359799920
+    }, {
+      "millisecondsSinceLastInteraction" : 34477712,
+      "previousInteractionStrength" : 44.92739030839246,
+      "proficiency" : 33,
+      "timeSpent" : 16,
+      "timestamp" : 1505394277632
+    } ],
+    "nextReviewTime" : 1505394877640,
+    "proficiency" : 33
+  },
+  "d601f0e59eaaf5c01867631b0398e7bb" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256696985
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256696985
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256696985
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256696985
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256696985
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256696985
+    }, {
+      "millisecondsSinceLastInteraction" : 103287867,
+      "previousInteractionStrength" : 70.11868734012677,
+      "proficiency" : 99,
+      "timeSpent" : 18,
+      "timestamp" : 1505359984852
+    }, {
+      "millisecondsSinceLastInteraction" : 107250,
+      "previousInteractionStrength" : 40.28216725977341,
+      "proficiency" : 99,
+      "timeSpent" : 20,
+      "timestamp" : 1505360092102
+    }, {
+      "millisecondsSinceLastInteraction" : 33968843,
+      "previousInteractionStrength" : 65.28900179901326,
+      "proficiency" : 99,
+      "timeSpent" : 21,
+      "timestamp" : 1505394060945
+    } ],
+    "nextReviewTime" : 1775394060979,
+    "proficiency" : 99
+  },
+  "d63c8d1c5944c8f3fa7fdd0dd049db66" : {
+    "nextReviewTime" : 1505321098435,
+    "proficiency" : 33
+  },
+  "d694c03166d9483c80ce7f26246216ba" : {
+    "nextReviewTime" : 1502305372781,
+    "proficiency" : 66
+  },
+  "d71eb9a50ea24e2d00c7283e7ac1b07d" : {
+    "nextReviewTime" : 1505320694035,
+    "proficiency" : 33
+  },
+  "da53b54d1d8e8b270b353f96c6f39b6d" : {
+    "nextReviewTime" : 1505321666254,
+    "proficiency" : 33
+  },
+  "da6d6a3b2c59c6dd788a3851e59199bf" : {
+    "nextReviewTime" : 1504126380129,
+    "proficiency" : 0
+  },
+  "dbff60d284e0b86fd39df84f1a701b21" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505243186825
+    } ],
+    "nextReviewTime" : 1505243787819,
+    "proficiency" : 33
+  },
+  "de0b74cccf395d961a78e931b5c48261" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256730323
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256730323
+    }, {
+      "millisecondsSinceLastInteraction" : 103290746,
+      "previousInteractionStrength" : 70.11880839174923,
+      "proficiency" : 99,
+      "timeSpent" : 28,
+      "timestamp" : 1505360021069
+    }, {
+      "millisecondsSinceLastInteraction" : 58106,
+      "previousInteractionStrength" : 37.62040404883571,
+      "proficiency" : 99,
+      "timeSpent" : 30,
+      "timestamp" : 1505360079175
+    }, {
+      "millisecondsSinceLastInteraction" : 33971286,
+      "previousInteractionStrength" : 65.28931412736335,
+      "proficiency" : 99,
+      "timeSpent" : 32,
+      "timestamp" : 1505394050461
+    } ],
+    "nextReviewTime" : 1516194050473,
+    "proficiency" : 99
+  },
+  "def969c650dd486de78d567a6d8e0907" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504675599001
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504675689580
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504743587218
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504833106071
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504935527436
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505004933466
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505062792490
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505064799334
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071348707
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505079892375
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505161644847
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505257753929
+    } ],
+    "nextReviewTime" : 1516057754620,
+    "proficiency" : 100
+  },
+  "e05bd542889af4c03055c25b66050f8a" : {
+    "nextReviewTime" : 1502944037302,
+    "proficiency" : 100
+  },
+  "e0924bdcbe6c92617dda0812b00201cd" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505242527316
+    } ],
+    "nextReviewTime" : 1505243128321,
+    "proficiency" : 33
+  },
+  "e19d7c20a23d927669ac5f8d4435fe7c" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1505330224180
+    } ],
+    "nextReviewTime" : 1505330344181,
+    "proficiency" : 0
+  },
+  "e1b40979f529d4dccdb90d92af94e2e1" : {
+    "nextReviewTime" : 3.218650817871095E27,
+    "proficiency" : 95
+  },
+  "e43aa2c9a154fd72d1a07e1033a63bad" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 4,
+      "timestamp" : 1505359700843
+    }, {
+      "millisecondsSinceLastInteraction" : 4349,
+      "previousInteractionStrength" : 26.362088327859148,
+      "proficiency" : 99,
+      "timeSpent" : 9,
+      "timestamp" : 1505359705192
+    }, {
+      "millisecondsSinceLastInteraction" : 13967,
+      "previousInteractionStrength" : 15.425249397572124,
+      "proficiency" : 67,
+      "timeSpent" : 11,
+      "timestamp" : 1505359719159
+    }, {
+      "millisecondsSinceLastInteraction" : 2178,
+      "previousInteractionStrength" : 23.35877300540335,
+      "proficiency" : 99,
+      "timeSpent" : 12,
+      "timestamp" : 1505359721337
+    }, {
+      "millisecondsSinceLastInteraction" : 123198,
+      "previousInteractionStrength" : 40.884230826566636,
+      "proficiency" : 99,
+      "timeSpent" : 14,
+      "timestamp" : 1505359844535
+    }, {
+      "millisecondsSinceLastInteraction" : 34599678,
+      "previousInteractionStrength" : 65.36891482194457,
+      "proficiency" : 99,
+      "timeSpent" : 16,
+      "timestamp" : 1505394444213
+    } ],
+    "nextReviewTime" : 1507554444225,
+    "proficiency" : 99
+  },
+  "e519a923830cc6dc931cf620f569fc23" : {
+    "nextReviewTime" : 1501975370635,
+    "proficiency" : 33
+  },
+  "e585486139ade1ae59423de7f3e32cc4" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1504120805205
+    } ],
+    "nextReviewTime" : 1504120923062,
+    "proficiency" : 0
+  },
+  "e5ee51c06ecf110779194490c94c7d27" : {
+    "nextReviewTime" : 1505267370554,
+    "proficiency" : 33
+  },
+  "e78b575701632d382f7abbbd894b5703" : {
+    "nextReviewTime" : 1505271773545,
+    "proficiency" : 33
+  },
+  "e80a49f71f4f007cd084ed2d46db4b1e" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505359385255
+    } ],
+    "nextReviewTime" : 1505359505258,
+    "proficiency" : 1
+  },
+  "ea961d1a8639fdeeb622aae52beabe98" : {
+    "nextReviewTime" : 1505323271048,
+    "proficiency" : 33
+  },
+  "eda98724d63849efe6a671acf7685ee8" : {
+    "nextReviewTime" : 1504490278500,
+    "proficiency" : 33
+  },
+  "ee52c54b1d3aeecc133dace6d5360f77" : {
+    "interactions" : [ {
+      "proficiency" : 66,
+      "timestamp" : 1504292970422
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504292970422
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1504292970422
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1504292970422
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504292970422
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1504292970422
+    } ],
+    "nextReviewTime" : 1504294770205,
+    "proficiency" : 66
+  },
+  "ee711767c21ac67ded55f10d2efa6136" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241542368
+    } ],
+    "nextReviewTime" : 1505242143373,
+    "proficiency" : 33
+  },
+  "eed4992658ed9f76182e8a5680b46648" : {
+    "nextReviewTime" : 1505272039999,
+    "proficiency" : 33
+  },
+  "ef2ccec495c374b3f660750767e82a3d" : {
+    "nextReviewTime" : 1505323224101,
+    "proficiency" : 33
+  },
+  "f0a2b0b005687dbd3dccb3c7cab1c4ef" : {
+    "nextReviewTime" : 1502929993711,
+    "proficiency" : 0
+  },
+  "f0d88a75e38fea81f949a05cae04ff44" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505251579705
+    } ],
+    "nextReviewTime" : 1505252180605,
+    "proficiency" : 33
+  },
+  "f168055661ba6d07c852f6f0b9abc5e0" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358618394
+    } ],
+    "nextReviewTime" : 1505358738397,
+    "proficiency" : 1
+  },
+  "f1a85532663fadae52ae05e991f546e7" : {
+    "nextReviewTime" : 1505317357407,
+    "proficiency" : 33
+  },
+  "f32207fa6807adcd63b2ab515bbe1f09" : {
+    "nextReviewTime" : 1505261502605,
+    "proficiency" : 33
+  },
+  "f33c40a63f1f450e9fc55bdacc1d2e7b" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 1,
+      "timestamp" : 1505359786887
+    }, {
+      "millisecondsSinceLastInteraction" : 3580,
+      "previousInteractionStrength" : 25.51702451764453,
+      "proficiency" : 99,
+      "timeSpent" : 4,
+      "timestamp" : 1505359790467
+    }, {
+      "millisecondsSinceLastInteraction" : 70939,
+      "previousInteractionStrength" : 38.487044872161455,
+      "proficiency" : 99,
+      "timeSpent" : 5,
+      "timestamp" : 1505359861406
+    }, {
+      "millisecondsSinceLastInteraction" : 34462412,
+      "previousInteractionStrength" : 65.35165095261955,
+      "proficiency" : 99,
+      "timeSpent" : 7,
+      "timestamp" : 1505394323818
+    } ],
+    "nextReviewTime" : 1507554323822,
+    "proficiency" : 99
+  },
+  "f387329e6c48624174f94015c52b4915" : {
+    "nextReviewTime" : 1505321569001,
+    "proficiency" : 33
+  },
+  "f3f98bc8ab809472a8432ddfec37ab5d" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 66,
+      "timestamp" : 1505256734077
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505256734077
+    }, {
+      "millisecondsSinceLastInteraction" : 103257588,
+      "previousInteractionStrength" : 49.691225693753694,
+      "proficiency" : 33,
+      "timeSpent" : 26,
+      "timestamp" : 1505359991665
+    }, {
+      "millisecondsSinceLastInteraction" : 3168,
+      "previousInteractionStrength" : 24.98604598038035,
+      "proficiency" : 99,
+      "timeSpent" : 28,
+      "timestamp" : 1505359994833
+    }, {
+      "millisecondsSinceLastInteraction" : 89088,
+      "previousInteractionStrength" : 23.47241015869261,
+      "proficiency" : 67,
+      "timeSpent" : 31,
+      "timestamp" : 1505360083921
+    }, {
+      "millisecondsSinceLastInteraction" : 3313,
+      "previousInteractionStrength" : 25.180408610025392,
+      "proficiency" : 99,
+      "timeSpent" : 33,
+      "timestamp" : 1505360087234
+    }, {
+      "millisecondsSinceLastInteraction" : 33970935,
+      "previousInteractionStrength" : 65.28926925471688,
+      "proficiency" : 99,
+      "timeSpent" : 35,
+      "timestamp" : 1505394058169
+    } ],
+    "nextReviewTime" : 1505826058185,
+    "proficiency" : 99
+  },
+  "f3fcce8581a21aa2d3453fcd87541f93" : {
+    "interactions" : [ {
+      "millisecondsSinceLastInteraction" : 0,
+      "previousInteractionStrength" : 0,
+      "proficiency" : 1,
+      "timeSpent" : 0,
+      "timestamp" : 1505358753881
+    }, {
+      "millisecondsSinceLastInteraction" : 181318,
+      "previousInteractionStrength" : 22.136415132510585,
+      "proficiency" : 33,
+      "timeSpent" : 26,
+      "timestamp" : 1505358935199
+    } ],
+    "nextReviewTime" : 1505359535203,
+    "proficiency" : 33
+  },
+  "f605a5dbac89f65e7abf5d45920711c6" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505241834689
+    } ],
+    "nextReviewTime" : 1505242435694,
+    "proficiency" : 33
+  },
+  "f823ef95cd268c67bd8133100980e61b" : {
+    "nextReviewTime" : 1504500038667,
+    "proficiency" : 100
+  },
+  "f9902f0cb3ccd8f2dfe61e905ba395d0" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505237962191
+    } ],
+    "nextReviewTime" : 1505238562984,
+    "proficiency" : 33
+  },
+  "fa14dc9b65b26e956fa65736a3751dbe" : {
+    "interactions" : [ {
+      "proficiency" : 0,
+      "timestamp" : 1503595059311
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1503595063512
+    } ],
+    "nextReviewTime" : 1503595664372,
+    "proficiency" : 33
+  },
+  "fa6118186fe236050052a3f74a92e3f1" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505258529393
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505258613619
+    } ],
+    "nextReviewTime" : 1505345014456,
+    "proficiency" : 95
+  },
+  "fc020bce57989c3e07e3bd0449477ee0" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1504392903753
+    } ],
+    "nextReviewTime" : 1504393504863,
+    "proficiency" : 33
+  },
+  "fc0f9f031b0214e057419296389687a7" : {
+    "interactions" : [ {
+      "proficiency" : 33,
+      "timestamp" : 1505243020274
+    } ],
+    "nextReviewTime" : 1505243620688,
+    "proficiency" : 33
+  },
+  "fd8458bc28ef6e7d9318c904274d41d8" : {
+    "interactions" : [ {
+      "proficiency" : 1,
+      "timestamp" : 1505332679725
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1505332821161
+    } ],
+    "nextReviewTime" : 1505333421165,
+    "proficiency" : 33
+  },
+  "ff078142256c6ec00b7042186ee8c549" : {
+    "interactions" : [ {
+      "proficiency" : 66,
+      "timestamp" : 1503950703655
+    }, {
+      "proficiency" : 33,
+      "timestamp" : 1504549291907
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071742744
+    }, {
+      "proficiency" : 100,
+      "timestamp" : 1505071742744
+    }, {
+      "proficiency" : 95,
+      "timestamp" : 1505072255811
+    } ],
+    "nextReviewTime" : 1505503743502,
+    "proficiency" : 100
+  }
+}

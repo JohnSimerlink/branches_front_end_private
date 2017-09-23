@@ -1,12 +1,24 @@
 const content = {}
-window.content = content //expose to window for easy debugging
+if (typeof window !== 'undefined') {
+    window.content = content //expose to window for easy debugging
+}
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
+import {PROFICIENCIES} from "../components/proficiencyEnum";
+import {Trees} from './trees'
+import {
+    measurePreviousStrength, estimateCurrentStrength,
+    calculateSecondsTilCriticalReviewTime
+} from "../forgettingCurve";
+import store from '../core/store'
+
+const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
+
 export default class ContentItem {
 
     constructor(args) {
         this.initialParentTreeId = this.initialParentTreeId || (args && args.initialParentTreeId) || null
-        this.initialParentTreeContentURI = this.initialParentTreeContentURI || (args && args.initialParentTreeContentURI) || null
+        this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || (args && args.primaryParentTreeContentURI) || null
         this.trees = args.trees || {}
 
         this.userTimeMap = args.userTimeMap || {} ;
@@ -14,13 +26,24 @@ export default class ContentItem {
         this.timerId = null;
 
         this.userProficiencyMap = args.userProficiencyMap || {}
-        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || 0
+        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || PROFICIENCIES.UNKNOWN
 
         this.userInteractionsMap = args.userInteractionsMap || {}
         this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
 
+        this.userStrengthMap = args.userStrengthMap || {}
+        this.lastRecordedStrength = this.userStrengthMap[user.getId()] || INITIAL_LAST_RECORDED_STRENGTH
+
         this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
+        this.overdue = args.overdue || false
+        if (!this.overdue && this.hasInteractions()){
+            if(this.determineIfOverdueNow()){
+                this.set('overdue', true)
+            } else {
+                this.setOverdueTimeout()
+            }
+        }
 
         this.studiers = args.studiers || {}
         this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
@@ -28,9 +51,12 @@ export default class ContentItem {
         this.exercises = args.exercises || {}
 
         this.uri = args.uri || null
+
+        this.type = args.type
     }
     init () {
-        this.uri = this.uri || this.initialParentTreeContentURI + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
+        this.calculateURIBasedOnParentTreeContentURI()
+        // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -38,7 +64,7 @@ export default class ContentItem {
     getDBRepresentation(){
         return {
             initialParentTreeId: this.initialParentTreeId,
-            initialParentTreeContentURI: this.initialParentTreeContentURI,
+            primaryParentTreeContentURI: this.primaryParentTreeContentURI,
             userTimeMap: this.userTimeMap,
             userProficiencyMap: this.userProficiencyMap,
             userInteractionsMap: this.userInteractionsMap,
@@ -51,19 +77,22 @@ export default class ContentItem {
     getURIAddition(){
 
     }
+    getURIAdditionNotEncoded(){
+
+    }
     //removes the prefix "content/
     getURIWithoutRootElement(){
         return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
     }
-    getBreadCrumbs(){
+    getBreadCrumbsString(){
         let sections = this.getURIWithoutRootElement().split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
-            if (val == "null" || val == "content"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+            if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
                 return accum
             }
             return accum + " > " + decodeURIComponent(val)
-        } )
+        })
         return sectionsResult
         // console.log('breadcrumb result is', sectionsResult)
         //
@@ -73,13 +102,69 @@ export default class ContentItem {
         // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
         // return breadcrumbs
     }
+    getBreadcrumbsObjArray() {
+        let sections = this.getURIWithoutRootElement().split("/")
+        // console.log('breadcrumb sections for ', this,' are', sections)
+        let breadcrumbsObjArray = sections.reduce((accum, val) => {
+            if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
+                return accum
+            }
+            accum.push({text: decodeURIComponent(val)})
+            return accum
+        }, [])
+        return breadcrumbsObjArray
+    }
+    getLastNBreadcrumbsString(n) {
+        let sections = this.getURIWithoutRootElement().split("/")
+        let result = getLastNBreadcrumbsStringFromList(sections, n)
+        return result
+    }
+    getBreadCrumbs(){
+
+    }
+
+    isLeafType(){
+        return this.type === 'fact' || this.type === 'skill'
+    }
+
+    determineIfOverdueNow(){
+        let millisecondsTilOverdue = this.nextReviewTime - Date.now()
+        return millisecondsTilOverdue < 0
+        // millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
+    }
+
+    setOverdueTimeout(){
+        let millisecondsTilOverdue = this.nextReviewTime - Date.now()
+        millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
+
+        if (this.hasInteractions()){
+            this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this),millisecondsTilOverdue)
+        }
+    }
+
+    markOverdue(){
+        this.set('overdue', true)
+        this.overdue = true
+        const me = this
+        Object.keys(this.trees).forEach(async treeId => {
+            store.commit('syncGraphWithNode', treeId)
+            // PubSub.publish('syncGraphWithNode', treeId)
+            const tree = await Trees.get(treeId)
+            tree.calculateNumOverdueAggregation()
+        })
+        this.clearOverdueTimeout()
+    }
+
+    clearOverdueTimeout(){
+        clearTimeout(this.markOverdueTimeout)
+    }
     /**
      * Used to update tree X and Y coordinates
      * @param prop
      * @param val
      */
     set(prop, val){
-        if (this[prop] == val) {
+        if (this[prop] === val) {
             return;
         }
 
@@ -102,14 +187,22 @@ export default class ContentItem {
         };
         firebase.database().ref('content/' +this.id).update(updates)
     }
+    calculateURIBasedOnParentTreeContentURI(){
+        const uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition()
+        this.set('uri', uri)
+    }
         //TODO : make timer for heading be the sum of the time of all the child facts
+    resetTimer(){
+        this.timer = 0
+    }
     startTimer() {
-        var self = this
+        var me = this
 
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
-                self.timer  = self.timer || 0
-                self.timer++ // = fact.timer || 0
+                me.timer  = me.timer || 0
+                me.timer++ // = fact.timer || 0
+                me.calculateAggregationTimerForTreeChain()//propagate the time increase all the way up
             }, 1000)
         }
 
@@ -125,6 +218,17 @@ export default class ContentItem {
         this.timerId = null
         firebase.database().ref('content/' + this.id).update(updates)
     }
+
+    calculateAggregationTimerForTreeChain(){
+        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
+            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        const calculationPromises = treePromises.map(async treePromise => {
+            const tree = await treePromise
+            return tree.calculateAggregationTimer()
+        })
+        return Promise.all(calculationPromises)
+    }
+
     addToStudyQueue() { //don't display nextReviewTime if not in user's study queue
         this.studiers[user.getId()] = true
 
@@ -144,23 +248,134 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
     }
-    setProficiency(proficiency) {
-        !this.inStudyQueue && this.addToStudyQueue()
-        //proficiency
+    removeExercise(exerciseId){
+        delete this.exercises[exerciseId] // remove from local cache
+        firebase.database().ref('content/' + this.id +'/exercises/').child(exerciseId).remove() //delete from db
+    }
+    remove(){
+        firebase.database().ref('content/').child(this.id).remove() //delete from db
+        delete window.content[this.id]
+    }
+    recalculateProficiencyAggregationForTreeChain(){
+        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
+            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        const calculationPromises = treePromises.map(async treePromise => {
+            const tree = await treePromise
+            return tree.recalculateProficiencyAggregation()
+        })
+        return Promise.all(calculationPromises)
+    }
+    recalculateNumOverdueAggregationForTreeChain(){
+        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
+            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        const calculationPromises = treePromises.map(async treePromise => {
+            const tree = await treePromise
+            return tree.calculateNumOverdueAggregation()
+        })
+        return Promise.all(calculationPromises)
+    }
+    clearInteractions(){
+        const me = this
+        delete this.studiers[user.getId()]
 
-        //-proficiency stored under fact
-        this.proficiency = proficiency
+        this.proficiency = PROFICIENCIES.UNKNOWN
+        delete this.userProficiencyMap[user.getId()]
+
+        this.interactions = []
+        delete this.userInteractionsMap[user.getId()]
+
+        this.lastRecordedStrength = INITIAL_LAST_RECORDED_STRENGTH
+        delete this.userStrengthMap[user.getId()]
+
+        this.nextReviewTime = 0
+        delete this.userReviewTimeMap[user.getId()]
+
+        this.timer = 0
+        delete this.userTimeMap[user.getId()]
+
+        const updates = {
+            studiers: this.studiers,
+            userProficiencyMap : this.userProficiencyMap,
+            userInteractionsMap : this.userInteractionsMap,
+            userStrengthMap : this.userStrengthMap,
+            userReviewTimeMap : this.userReviewTimeMap,
+            userTimeMap: this.userTimeMap,
+        }
+
+        firebase.database().ref('content/' + this.id).update(updates)
+        Object.keys(this.trees).forEach(treeId => {
+            store.commit('syncGraphWithNode', treeId)
+           // PubSub.publish('syncGraphWithNode', treeId)
+        })
+        this.calculateAggregationTimerForTreeChain()
+        this.recalculateProficiencyAggregationForTreeChain()
+        this.recalculateNumOverdueAggregationForTreeChain()
+        this.resortTrees()
+    }
+    async resortTrees(){
+        await Promise.all(
+            this.getTreePromises().map(async treePromise => {
+                const tree = await treePromise
+                await tree.sortLeavesByStudiedAndStrength()
+            })
+        )
+    }
+    hasInteractions() {
+        return this.interactions.length
+    }
+
+    getMostRecentInteraction(){
+       if (!this.interactions.length){
+           return null
+       } else {
+           return this.interactions[this.interactions.length - 1]
+       }
+    }
+    getTwoInteractionsAgo(){
+        if (!this.interactions.length >=2){
+            return null
+        } else {
+            return this.interactions[this.interactions.length - 2]
+        }
+    }
+    getRecentDecibelIncrease(){
+        const mostRecentInteraction = this.getMostRecentInteraction()
+        const twoInteractionsAgo = this.getTwoInteractionsAgo()
+
+        var newDecibels =  mostRecentInteraction && mostRecentInteraction.currentInteractionStrength || 0
+        var oldDecibels = twoInteractionsAgo && twoInteractionsAgo.currentInteractionStrength || 0
+        return newDecibels - oldDecibels
+    }
+    saveProficiency(){
+        !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
+        const timestamp = Date.now()
+        this.clearOverdueTimeout()
+
+        //content
         this.userProficiencyMap[user.getId()] = this.proficiency
 
         var updates = {
-           userProficiencyMap : this.userProficiencyMap
+            userProficiencyMap : this.userProficiencyMap
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
 
-
         //interactions
-        this.interactions.push({timestamp: firebase.database.ServerValue.TIMESTAMP, proficiency: proficiency})
+
+        const mostRecentInteraction = this.hasInteractions() ? this.interactions[this.interactions.length - 1] : {currentInteractionStrength: 0, timestamp: nowMilliseconds}
+        const nowMilliseconds = timestamp
+        let millisecondsSinceLastInteraction = this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+
+        // if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE we can assume they have learned it before. We will simply assume that they last saw it/learned it an hour ago. (e.g. like in a lecture 1 hour ago).
+        if (this.proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
+            millisecondsSinceLastInteraction = 60 * 60 * 1000
+        }
+        const previousInteractionStrength = measurePreviousStrength(mostRecentInteraction.currentInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
+        const currentInteractionStrength = estimateCurrentStrength(previousInteractionStrength, this.proficiency, millisecondsSinceLastInteraction / 1000) || 0
+
+        const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
+        this.interactions.push(interaction)
+        //store user interactions under content
         this.userInteractionsMap[user.getId()] = this.interactions
 
         var updates = {
@@ -169,17 +384,126 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
 
-        //duplicate some of the information in the user database <<< we should really start using a graph db to avoid this . . .
-        //user review time map
-        const millisecondsTilNextReview = calculateMillisecondsTilNextReview(this.interactions)
-        this.nextReviewTime = Date.now() + millisecondsTilNextReview
+        //store contentItem interaction under users
+        user.addInteraction(this.id, interaction)
+
+        //store contentItem strength and timestamp under userStrengthMap
+        this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
+        this.userStrengthMap[user.getId()] = this.lastRecordedStrength
+        var updates = {
+            userStrengthMap : this.userStrengthMap
+        }
+        firebase.database().ref('content/' + this.id).update(updates)
+        //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
+        const millisecondsTilNextReview = 1000 * calculateSecondsTilCriticalReviewTime(currentInteractionStrength)
+        this.nextReviewTime = timestamp + millisecondsTilNextReview
 
         this.userReviewTimeMap[user.getId()] = this.nextReviewTime
         var updates = {
             userReviewTimeMap : this.userReviewTimeMap
         }
+
         firebase.database().ref('content/' + this.id).update(updates)
 
-        user.setItemProperties(this.id, {nextReviewTime: this.nextReviewTime, proficiency});
+        //set timeout to mark the item overdue when it becomes overdue
+        this.set('overdue', false)
+        this.setOverdueTimeout()
+
+        this.resortTrees()
+        store.commit('itemStudied', this.id)
+
     }
+
+    setProficiency(proficiency) {
+        //-proficiency stored as part of this content item
+        this.proficiency = proficiency
+        this.saveProficiency()
+    }
+    //methods for html templates
+    isProficiencyUnknown(){
+        return this.proficiency == PROFICIENCIES.UNKNOWN
+    }
+    isProficiencyOne(){
+        return this.proficiency == PROFICIENCIES.ONE
+    }
+    isProficiencyTwo(){
+        return this.proficiency == PROFICIENCIES.TWO
+    }
+    isProficiencyThree(){
+        return this.proficiency == PROFICIENCIES.THREE
+    }
+    isProficiencyFour(){
+        return this.proficiency == PROFICIENCIES.FOUR
+    }
+    //returns exerciseId of the best exercise for the user
+    //returns null if no exercise found
+    getBestExerciseId(){
+        const exerciseKeys = Object.keys(this.exercises).filter(key => key !== 'undefined');// not sure how but some data keys are undefined
+        console.log('exercise keys in get best exercise id are', exerciseKeys)
+        if (exerciseKeys.length <= 0) {
+            return null
+        }
+        var keyIndex = Math.floor(Math.random() * exerciseKeys.length)
+        const exercise = exerciseKeys[keyIndex]
+
+        return exercise
+    }
+    getTreeIds(){
+        if (!this.trees){
+            return []
+        }
+        return Object.keys(this.trees).filter(treeId => {
+            return treeId //removes any "undefined"'s
+        })
+    }
+    getTreeId(){
+        const treeIds = this.getTreeIds()
+        if (treeIds.length){
+            return treeIds[0]
+        } else {
+            return null
+        }
+
+    }
+    async getTree(){
+        const treeId = this.getTreeId()
+        const tree = await this.getTreeId()
+        return tree
+    }
+    getTreePromises(){
+        return this.getTreeIds().map(Trees.get)
+    }
+
+
+}
+
+/**
+ *
+ * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
+ * @returns {string}
+ */
+export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
+    if (breadcrumbList.length <= n) {
+        return breadcrumbList
+    }
+
+    var breadcrumbListCopy = breadcrumbList.slice()
+    const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
+    const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
+
+    return result
+}
+
+function convertBreadcrumbListToString(breadcrumbList){
+    if (breadcrumbList.length <= 0) return []
+
+    const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
+
+    let firstItems =
+        breadcrumbList.reduce((accum, val) => {
+            return accum + decodeURIComponent(val) + " > "
+        },'')
+    let result = firstItems + lastItem
+
+    return result
 }
