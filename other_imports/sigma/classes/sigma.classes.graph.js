@@ -856,4 +856,4 @@
     exports.graph = graph;
   } else
     this.graph = graph;
-}).call(this);
+}).call(window);

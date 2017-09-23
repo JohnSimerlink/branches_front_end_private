@@ -714,4 +714,4 @@
    * node, the renderer and a settings function.
    */
   sigma.utils.pkg('sigma.canvas.labels');
-}).call(this);
+}).call(window);

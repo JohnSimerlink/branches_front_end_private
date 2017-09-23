@@ -238,4 +238,4 @@
       )
     };
   };
-}).call(this);
+}).call(window);

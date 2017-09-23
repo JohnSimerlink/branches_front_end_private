@@ -446,4 +446,4 @@
   sigma.utils.pkg('sigma.canvas.nodes');
   sigma.utils.pkg('sigma.canvas.edges');
   sigma.utils.pkg('sigma.canvas.labels');
-}).call(this);
+}).call(window);
