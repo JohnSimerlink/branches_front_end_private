@@ -1,7 +1,7 @@
-console.log("1: bootstrap.js", Date.now())
+import './objects'
+console.log("1: bootstrap.js", Date.now(), calculateLoadTimeSoFar(Date.now()))
 import './components'
 import './filters'
-import './objects'
 import './utils'
 import TreeReview from '../components/treeReview/treeReview'
 import ContentList from '../components/contentList/contentList'

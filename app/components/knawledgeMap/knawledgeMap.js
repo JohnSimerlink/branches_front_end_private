@@ -375,7 +375,7 @@ function closeTooltip(nodeId){
 window.closeTooltip = closeTooltip
 
 function initKnawledgeMap(treeIdToJumpTo){
-    console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now())
+    console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now(), calculateLoadTimeSoFar(Date.now()))
     var me = this;// bound/called
 
     if (typeof sigma !== 'undefined') {
@@ -384,7 +384,7 @@ function initKnawledgeMap(treeIdToJumpTo){
 
     if (typeof PubSub !== 'undefined') {
         PubSub.subscribe('login', async () => {
-            console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now())
+            console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now(), " ", calculateLoadTimeSoFar(Date.now()))
             LocalForage.getItem('g').then(async gFromLocalForage => {
                 // console.log("result of LocalForage is ", gFromLocalForage, JSON.stringify(gFromLocalForage), g, JSON.stringify(g))
                 if (window.fullCache && gFromLocalForage){
@@ -395,11 +395,12 @@ function initKnawledgeMap(treeIdToJumpTo){
                     LocalForage.setItem('g', g).then(() => {
                     }).catch(()=> {
                     })
-                    console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now())
+                    console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
                 }
                 try {
                     initSigma()
-                    console.log("5: knawledgeMap.js initSigma finished" + Date.now())
+                    window.endTime = Date.now()
+                    console.log("5: knawledgeMap.js initSigma finished" + window.endTime, calculateLoadTimeSoFar(window.endTime))
                 } catch (err) {
                     console.error('initSigma Error', err)
                     alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
