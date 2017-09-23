@@ -10,8 +10,10 @@ import store from '../../core/store'
 import {Globals} from '../../core/globals'
 import './knawledgeMap.less'
 import LocalForage from 'localforage'
+import {isMobile} from '../../core/utils';
+import clonedeep from 'lodash.clonedeep'
 
-let router
+let router;
 
 var toolTipsConfig = {
     node: [
@@ -57,7 +59,10 @@ export default {
         },
         nodeIdToSync(){
             return this.$store.state.nodeIdToSync
-        }
+        },
+        browserIsMobile() {
+            return this.$store.state.mobile;
+        },
     },
     watch: {
         '$route': 'init',
@@ -353,9 +358,16 @@ function openTooltipFromId(nodeId){
 }
 window.openTooltipFromId = openTooltipFromId
 function openTooltip(node){
-    console.log('openTooltip called for', node.id, node)
+    console.log('openTooltip called for', node.id, node);
 
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    //Make copy of singleton's config by value to avoid mutation
+    let configClone = clonedeep(toolTipsConfig);
+
+    if (!!isMobile.any()) {
+        configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
+    }
+
+    tooltips.open(node, configClone.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
         var vm = new Vue(
             {
@@ -509,9 +521,14 @@ function initKnawledgeMap(treeIdToJumpTo){
         s.refresh();
 
         initialized = true;
-        initSigmaPlugins()
+        initSigmaPlugins();
+
+        store.commit('mobile', !!isMobile.any());
+        window.addEventListener('resize', function(){
+            store.commit('mobile', !!isMobile.any());
+        }, true);
         s.bind('coordinatesUpdated', function(){
-        })
+        });
         s.bind('clickNode', function(event) {
             const nodeId = event && event.data && event.data.node && event.data.node.id
             console.log("node clicked s.bind",nodeId)
@@ -766,19 +783,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
         // var node = e.data.node
     }
-    function mobileOutNode() {
-        let ele = document.getElementById('mobileAnswerTray');
-        ele.style.display = 'none';
-        console.log("Mobile OUT");
-    }
 
-    function mobileOverNode(node) {
-        //TODO append dom instead of modifying visibility of node
-        let ele = document.getElementById('mobileAnswerTray');
-        ele.setAttribute('treeid', node.id);
-        ele.style.display = 'flex';
-        console.log("Mobile OVER");
-    }
     async function updateTreePosition(data){
         console.log("update tree Position called");
         let {newX, newY, treeId} = data;
