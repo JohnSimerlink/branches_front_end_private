@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
   entry: ['babel-regenerator-runtime', './app/core/bootstrap.js'],
@@ -75,6 +76,17 @@ if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
+    // Added as the last plugin
+    // Not sure if it's worth gzipping index.html - no harm no foul
+
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8
+    })
+
     // new webpack.DefinePlugin({
     //   'process.env': {
     //     NODE_ENV: '"production"'
