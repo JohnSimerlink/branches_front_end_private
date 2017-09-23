@@ -528,4 +528,4 @@
     for (i = 0, l = this.captors.length; i < l; i++)
       bindCaptor(this.captors[i]);
   };
-}).call(this);
+}).call(window);

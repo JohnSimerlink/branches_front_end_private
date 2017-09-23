@@ -236,4 +236,4 @@
 
     return false;
   };
-}).call(this);
+}).call(window);

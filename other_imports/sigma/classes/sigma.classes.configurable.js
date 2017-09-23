@@ -113,4 +113,4 @@
     exports.configurable = configurable;
   } else
     this.configurable = configurable;
-}).call(this);
+}).call(window);

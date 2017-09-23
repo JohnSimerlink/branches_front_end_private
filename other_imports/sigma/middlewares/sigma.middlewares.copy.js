@@ -32,4 +32,4 @@
     for (i = 0, l = a.length; i < l; i++)
       a[i][writePrefix + 'size'] = a[i][readPrefix + 'size'];
   };
-}).call(this);
+}).call(window);

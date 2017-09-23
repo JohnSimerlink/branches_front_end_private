@@ -216,4 +216,4 @@
             Math.round(node[prefix + 'y'] + fontSize / 3)
         );
     };
-}).call(this);
+}).call(window);

@@ -201,4 +201,4 @@
     exports.dispatcher = dispatcher;
   } else
     this.dispatcher = dispatcher;
-}).call(this);
+}).call(window);

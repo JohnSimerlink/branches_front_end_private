@@ -829,4 +829,4 @@
     exports.edgequad = edgequad;
   } else
     this.edgequad = edgequad;
-}).call(this);
+}).call(window);

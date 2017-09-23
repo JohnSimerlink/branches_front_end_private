@@ -737,4 +737,4 @@
 
   this.sigma = sigma;
 
-}).call(this);
+}).call(window);

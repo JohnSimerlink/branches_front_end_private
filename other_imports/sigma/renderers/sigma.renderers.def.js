@@ -26,4 +26,4 @@
   sigma.renderers.def = webgl ?
     sigma.renderers.webgl :
     sigma.renderers.canvas;
-})(this);
+})(window);

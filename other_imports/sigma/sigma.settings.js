@@ -239,4 +239,4 @@
 
   // Export the previously designed settings:
   sigma.settings = sigma.utils.extend(sigma.settings || {}, settings);
-}).call(this);
+}).call(window);
