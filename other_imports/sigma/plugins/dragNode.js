@@ -59,7 +59,9 @@
             _hoverIndex = {},
             _isMouseDown = false,
             _isMouseOverCanvas = false,
-            _drag = false;
+            _drag = false,
+            _wasJustBeingDragged = false,
+            _wasJustBeingDraggedTimeout = null;
 
         if (renderer instanceof sigma.renderers.svg) {
             _mouse = renderer.container.firstChild;
@@ -196,9 +198,11 @@
         };
 
         function nodeMouseUp(event) {
-            PubSub.publish('canvas.stopDraggingNode', _node)
-            PubSub.publish('canvas.nodeMouseUp', _node)
-            //console.log("node mouse up");
+            if(_wasJustBeingDragged){
+                PubSub.publish('canvas.stopDraggingNode', _node)
+            } else {
+                PubSub.publish('canvas.nodeMouseUp', _node)
+            }
             _isMouseDown = false;
             _mouse.addEventListener('mousedown', nodeMouseDown);
             _body.removeEventListener('mousemove', nodeMouseMove);
@@ -244,6 +248,9 @@
             }
 
             function executeNodeMouseMove() {
+                clearTimeout(_wasJustBeingDraggedTimeout)
+                window.nodeBeingDragged = true
+                PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
                 var offset = calculateOffset(_renderer.container),
                     x = event.clientX - offset.left,
                     y = event.clientY - offset.top,
@@ -300,6 +307,10 @@
                     captor: event,
                     renderer: _renderer
                 });
+                _wasJustBeingDragged = true
+                _wasJustBeingDraggedTimeout = setTimeout(()=> {
+                    _wasJustBeingDragged = false
+                }, 800)
             }
         };
     };

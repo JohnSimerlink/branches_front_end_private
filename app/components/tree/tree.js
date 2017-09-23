@@ -1,61 +1,66 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor, syncGraphWithNode} from "../treesGraph"
+import {proficiencyToColor} from "../proficiencyEnum"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
+import user from '../../objects/user'
 import {Heading} from "../../objects/heading";
-import {removeTreeFromGraph} from "../treesGraph"
-import {secondsToPretty} from "../../core/filters"
+import {secondsToPretty, timeFromNow} from "../../core/filters"
 import {Skill} from "../../objects/skill";
+import './tree.less'
+import { mapActions } from 'vuex'
+import message from '../../message'
+
+import store from '../../core/store'
+function refreshGraph() {
+    PubSub.publish('refreshGraph')
+}
+function removeTreeFromGraph(treeId){
+    PubSub.publish('removeTreeFromGraph', treeId)
+}
+function goToFromMap(path){
+    PubSub.publish('goToFromMap', path)
+}
+//TODO every time we click on a node a new instance of this vue element is created . . . so if you click on the node 5 times 5 instances get created . . .
 export default {
     template: require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
-    created () {
+    async created() {
         var me = this;
 
         this.editing = false
         this.addingChild = false
-        this.tree = {} // init to empty object until promises resolve, so vue does not complain
-        this.fact = {}
-        this.content = {}
         this.nodeBeingDragged = false
-        Trees.get(this.id).then(tree => {
-            me.tree = tree
-            ContentItems.get(tree.contentId).then(content => {
-                me.content = content
-                console.log('content uri in tree.js is', content.uri)
-                // console.log('this.content in tree.js is ', me.content)
-                me.startTimer()
-            })
-
-        })
-        //using this pubsub, bc for some reason vue's beforeDestroy or destroy() methods don't seem to be working
-        PubSub.subscribe('canvas.closeTooltip',function (eventName, data) {
-            if (data.oldNode != me.id) return
-
-            //get reference to content, because by the time
-            const content = me.content
-            content.saveTimer()
-        })
-        //todo replace with vuex
-        PubSub.subscribe('canvas.startDraggingNode', function() {
-            window.draggingNode = true
-        })
-        PubSub.subscribe('canvas.stopDraggingNode', function() {
-            window.draggingNode = false
-        })
+        this.tree = await Trees.get(this.id)
+        this.content = await ContentItems.get(this.tree.contentId)
+        this.startTimer()
+        await this.tree.getLeaves()
+        this.tree.sortLeavesByStudiedAndStrength()
 
     },
-    data () {
+    data() {
         return {
-             tree: this.tree
-            , content: this.content
-            , editing: this.editing
-            , addingChild: this.addingChild
-            , draggingNode: window.draggingNode
+            tree: {}, //this.tree
+            content: {},// this.content
+            editing: this.editing,
+            showHistory: false,
+            addingChild: this.addingChild,
+            user,
         }
     },
-    computed : {
+    watch: {
+        //stop timer when
+        openNodeId(newNodeId, oldNodeId){
+            if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
+                this.content.saveTimer()
+            } else {
+            }
+        }
+    },
+    computed: {
+        openNodeId(){
+            return this.$store.state.openNodeId
+        },
         typeIsHeading() {
             return this.tree.contentType == 'heading'
         },
@@ -65,16 +70,30 @@ export default {
         typeIsSkill() {
             return this.tree.contentType == 'skill'
         },
-        styleObject(){
+        styleObject() {
             const styles = {}
-            styles['background-color'] = proficiencyToColor(this.content.proficiency)
+            if (this.typeIsHeading) {
+                styles['background-color'] = 'black'
+                styles['color'] = 'white'
+            } else {
+                styles['background-color'] = proficiencyToColor(this.content.proficiency)
+                if (this.showHistory) {
+                    styles['background-color'] = 'black'
+                    styles['color'] = 'white'
+                }
+            }
             return styles
         },
-        timerMouseOverMessage(){
+        timerMouseOverMessage() {
             return "You have spent " + secondsToPretty(this.content.timer) + "studying this item"
-        }
+        },
+        numChildren() {
+            return this.tree && this.tree.children instanceof Object ? Object.keys(this.tree.children).length : 0
+        },
     },
     methods: {
+        ...mapActions(['itemStudied']),
+        // ...mapAction
         //user methods
         startTimer() {
             this.content.startTimer()
@@ -88,28 +107,80 @@ export default {
         toggleAddChild() {
             this.addingChild = !this.addingChild
         },
-        setProficiencyToOne() {
-            this.content.setProficiency(0)
-            syncGraphWithNode(this.tree.id)
+        toggleHistory() {
+            if (this.typeisHeading) return
+            this.showHistory = !this.showHistory
         },
-        setProficiencyToTwo() {
-            this.content.setProficiency(33)
-            syncGraphWithNode(this.tree.id)
+        toggleEditingAndAddChild() {
+            this.addingChild = !this.addingChild
+            this.editing = this.addingChild
         },
-        setProficiencyToThree() {
-            this.content.setProficiency(66)
-            syncGraphWithNode(this.tree.id)
+        studySkill() {
+            goToFromMap({name: 'study', params: {leafId: this.id}})
+            // this.$router.push()
         },
-        setProficiencyToFour() {
-            this.content.setProficiency(100)
-            syncGraphWithNode(this.tree.id)
+        studyHeading() {
+            console.log('study HEADING called!')
+            this.$store.commit('setCurrentStudyingTree', this.id)
+            // goToFromMap({name: 'study', params: {leafId: this.id}})
+            // this.$router.push()
         },
-        toggleAddChild(){
+        clearHeading() {
+            this.tree.clearChildrenInteractions()
+        },
+        proficiencyClicked() {
+            this.syncProficiency()
+            const decibelIncrease = this.content.getRecentDecibelIncrease()
+            const whenToReview = timeFromNow(this.content.nextReviewTime)
+            let text = ''
+            if (whenToReview.indexOf('in' >= 0)){
+                text = ' pts, review '
+            } else {
+                text = ' pts, review in '
+            }
+            const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
+            const msg = sign + Math.round(decibelIncrease) + text + whenToReview
+            console.log(msg)
+            // const color = getColor
+            const color = proficiencyToColor(this.content.proficiency)
+            message(msg, color)
+        },
+        syncProficiency() {
+            this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
+            this.content.recalculateProficiencyAggregationForTreeChain()
+                .then(this.syncTreeChainWithUI)
+                .then(refreshGraph)
+            this.content.recalculateNumOverdueAggregationForTreeChain()
+        },
+        clearInteractions(){
+            this.content.clearInteractions()
+        },
+        //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
+        async syncTreeChainWithUI() {
+            this.syncGraphWithNode()
+            let parentId = this.tree.parentId;
+            let parent
+            let num = 1
+            while (parentId) {
+                // syncGraphWithNode(parentId)
+                store.commit('syncGraphWithNode', parentId)
+                // PubSub.publish('syncGraphWithNode', parentId)
+                parent = await Trees.get(parentId)
+                parentId = parent.parentId
+                num++
+            }
+        },
+        syncGraphWithNode() {
+            // syncGraphWithNode(this.tree.id)
+            store.commit('syncGraphWithNode', this.tree.id)
+            // PubSub.publish('syncGraphWithNode', this.tree.id)
+        },
+        toggleAddChild() {
             this.addingChild = !this.addingChild
         },
         //global methods
         changeContent() {
-            switch (this.tree.contentType){
+            switch (this.tree.contentType) {
                 case 'fact':
                     var fact = new Fact({question: this.content.question, answer: this.content.answer})
                     this.content = ContentItems.create(fact)
@@ -128,11 +199,11 @@ export default {
 
             this.toggleEditing()
         },
-        unlinkFromParent(){
-            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?")){
-                this.tree.unlinkFromParent()
+        async remove() {
+            if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")) {
+                removeTreeFromGraph(this.id)
+                return this.tree.remove()
             }
-            removeTreeFromGraph(this.id)
         }
     }
 }

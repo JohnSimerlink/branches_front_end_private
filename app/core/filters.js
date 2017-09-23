@@ -1,9 +1,14 @@
 import Vue from 'vue'
 
 import moment from 'moment'
-Vue.filter('timeFromNow', utcTimestamp => {
+export function timeFromNow(utcTimestamp){
     return moment(utcTimestamp).fromNow()
+}
+Vue.filter('timeFromNow', timeFromNow)
+Vue.filter('dateTime', utcTimestamp => {
+    return moment(utcTimestamp).format('MM/DD/YY, h:mm:ss a')
 })
+Vue.filter('round', Math.round)
 Vue.filter('sortByNextReviewTime', arr => {
     return arr.sort((a,b) => a.nextReviewTime > b.nextReviewTime)
 })

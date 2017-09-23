@@ -14,7 +14,7 @@
      */
     // {boolean} Indicates if the data have to be cloned in methods to add
     //           nodes or edges.
-    clone: true,
+    clone: false,
     // {boolean} Indicates if nodes "id" values and edges "id", "source" and
     //           "target" values must be set as immutable.
     immutable: true,
@@ -139,10 +139,10 @@
     //          equals, then the minimal display size will be 0. And if they
     //          are both equal to 0, then there is no mapping, and the radius
     //          of the nodes will be their size.
-    minEdgeSize: 0.5,
-    maxEdgeSize: 1,
-    minNodeSize: 1,
-    maxNodeSize: 8,
+    minEdgeSize: 0,//0.5
+    maxEdgeSize: 0, //1
+    minNodeSize: 0, //1
+    maxNodeSize: 0, //8
 
 
 
@@ -191,9 +191,6 @@
     // {number} The maximum time of dragging to trigger intertia.
     dragTimeout: 200,
 
-
-
-
     /**
      * GLOBAL SETTINGS:
      * ****************
@@ -204,14 +201,14 @@
     autoResize: true,
     // {boolean} Determines whether the "rescale" middleware has to be called
     //           automatically for each camera on refresh.
-    autoRescale: true,
+    autoRescale: false,
     // {boolean} If set to false, the camera method "goTo" will basically do
     //           nothing.
     enableCamera: true,
     // {boolean} If set to false, the nodes cannot be hovered.
     enableHovering: true,
     // {boolean} If set to true, the edges can be hovered.
-    enableEdgeHovering: false,
+    enableEdgeHovering: true,
     // {number} The size of the area around the edges to activate hovering.
     edgeHoverPrecision: 5,
     // {boolean} If set to true, the rescale middleware will ignore node sizes
@@ -221,9 +218,6 @@
     //           rendering.
     skipErrors: false,
 
-
-
-
     /**
      * CAMERA SETTINGS:
      * ****************
@@ -232,11 +226,8 @@
     //          the zooming level. Basically:
     //           > onScreenR = Math.pow(zoom, nodesPowRatio) * R
     //           > onScreenT = Math.pow(zoom, edgesPowRatio) * T
-    nodesPowRatio: 0.5,
-    edgesPowRatio: 0.5,
-
-
-
+    nodesPowRatio: 1,
+    edgesPowRatio: 1,
 
     /**
      * ANIMATIONS SETTINGS:

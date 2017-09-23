@@ -2,16 +2,12 @@ import Exercise from "../../objects/exercise";
 
 export default {
     template: require('./exerciseList.html'),
-    created () {
-        var me = this;
-        this.exercises = {}
-        Exercise.getAll().then(exercises => {
-            this.exercises = exercises
-        })
+    async created () {
+        this.exercises = await Exercise.getAll()
     },
     data () {
         return {
-            exercises: this.exercises
+            exercises: {}
         }
     },
 }

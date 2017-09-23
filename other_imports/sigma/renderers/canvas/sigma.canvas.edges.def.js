@@ -1,6 +1,10 @@
 ;(function() {
   'use strict';
 
+  const EDGE_TYPES = {
+      SUGGESTED_CONNECTION: 9001,
+      HIERARCHICAL: 9002,
+  }
   sigma.utils.pkg('sigma.canvas.edges');
 
   /**
@@ -12,7 +16,20 @@
    * @param  {CanvasRenderingContext2D} context      The canvas context.
    * @param  {configurable}             settings     The settings function.
    */
+  function renderSeveredEdge(edge, source, target, context, settings){
+     return;
+  }
+  function renderPreSeveredEdge(edge, source, target, context, settings) {
+
+  }
+
   sigma.canvas.edges.def = function(edge, source, target, context, settings) {
+      if (edge.state == 'severed') {
+          return
+      }
+    if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION && !window.awaitingEdgeConnection){
+        return
+    }
     var color = edge.color,
         prefix = settings('prefix') || '',
         size = edge[prefix + 'size'] || 1,
@@ -32,9 +49,22 @@
           color = defaultEdgeColor;
           break;
       }
+      if (window.awaitingEdgeConnection){
+        if(edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+          color = setOpacityOfRgbString(colorToRgbString(color), .8)
+        } else {
+          color = setOpacityOfRgbString(colorToRgbString(color), .1)
+        }
+      }
 
     context.strokeStyle = color;
-    context.lineWidth = size;
+      if (edge.state == 'pre-severed' || edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+          size = size * 3 * window.haloEdgeSizeScalingFactor
+      } else {
+          size = size * 3
+      }
+
+      context.lineWidth = size
     context.beginPath();
     context.moveTo(
       source[prefix + 'x'],
@@ -45,5 +75,27 @@
       target[prefix + 'y']
     );
     context.stroke();
+
+    if (edge.state == "pre-severed") {
+
+        var x1 = source[prefix + 'x'],
+            x2= target[prefix + 'x'],
+            y1 = source[prefix + 'y'],
+            y2 = target[prefix + 'y']
+        var midX = (x1 + x2) / 2,
+            midY = (y1 + y2) / 2
+
+        var X_LEG_SIZE = 20
+        context.strokeStyle = 'red'
+        context.beginPath();
+        context.moveTo(midX - X_LEG_SIZE, midY - X_LEG_SIZE)
+        context.lineTo(midX + X_LEG_SIZE, midY + X_LEG_SIZE)
+        context.stroke()
+
+        context.beginPath();
+        context.moveTo(midX + X_LEG_SIZE, midY - X_LEG_SIZE)
+        context.lineTo(midX - X_LEG_SIZE, midY + X_LEG_SIZE)
+        context.stroke()
+    }
   };
 })();
