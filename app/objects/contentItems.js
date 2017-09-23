@@ -2,6 +2,7 @@ import firebase from './firebaseService.js'
 import {Fact} from "./fact";
 import {Skill} from "./skill";
 import {Heading} from "./heading";
+import LocalForage from 'localforage'
 
 const factsAndSkills = {}
 const headings = {}
@@ -41,6 +42,15 @@ function createContentItemFromData(contentData, contentDatumKey){
     content[contentItem.id] = contentItem // add to cache
     return contentItem
 }
+function processContentData(contentData, resolve, reject, contentId){
+    if (!contentData){
+        console.log("NO CONTENTDATA FOUND FOR", contentId)
+        reject("ERROR!: no data found found for contentid of " + contentId)
+    } else {
+        let contentItem = createContentItemFromData(contentData)
+        resolve(contentItem)
+    }
+}
 export default class ContentItems {
     static get(contentId) {
         if(!contentId){
@@ -49,18 +59,21 @@ export default class ContentItems {
         return new Promise((resolve, reject) => {
             if (content[contentId]){
                 resolve(content[contentId])
-            } else {
-                firebase.database().ref('content/' + contentId).once("value", function(snapshot){
-                    const contentData = snapshot.val()
-                    if (!contentData){
-                        console.log("NO CONTENTDATA FOUND FOR", contentId)
-                        reject("ERROR!: no data found found for contentid of " + contentId)
-                    } else {
-                        let contentItem = createContentItemFromData(contentData)
-                        resolve(contentItem)
-                    }
-                }, reject)
+                return
             }
+            const lookupKey = 'content/' + contentId
+            LocalForage.getItem(lookupKey).then( contentData => {
+                console.log('contentData from localforage is', contentData)
+                if (contentData){
+                    processContentData(contentData, resolve, reject, contentId)
+                    return
+                }
+                firebase.database().ref(lookupKey).once("value", function(snapshot){
+                    const contentData = snapshot.val()
+                    processContentData(contentData, resolve)
+                    LocalForage.setItem(lookupKey, contentData)
+                }, reject)
+            })
         })
     }
     static getAll() {
