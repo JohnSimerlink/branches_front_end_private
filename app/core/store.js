@@ -22,7 +22,8 @@ const state = {
     settingsMenuOpen: false,
     openNodeId: null,
     nodeIdToSync: null,
-}
+    mobile: false
+};
 //
 // function setCurrentStudyingContentId(state, contentId){
 //     state.currentStudyingContentItem = contentId
@@ -66,6 +67,10 @@ const mutations = {
             console.log('next itemId to Study is', itemToStudy)
             state.currentStudyingContentItem = itemToStudy
         }
+    },
+    mobile(state, isMobile) {
+        console.log("store.js mobile called",state.mobile, isMobile);
+        state.mobile = isMobile;
     },
     toggleSettingsMenu(state){
         state.settingsMenuOpen = !state.settingsMenuOpen

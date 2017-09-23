@@ -214,7 +214,7 @@
       }
 
 
-      // Style it:
+      // Style it (pretty sure this does nothing):
       _tooltip.className = options.cssClass;
 
       if (options.position !== 'css') {
