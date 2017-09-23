@@ -1,3 +1,7 @@
+<script>
+    window.fullCache = false // setting this to true will cause the initial load to be faster - but makes it so that certain features dont work / sync with the db yet
+   console.log("0: page open" + Date.now())
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +18,6 @@
 <style>
 </style>
 
-
-<script src="node_modules/chartist/dist/chartist.min.js"></script>
 <script src="node_modules/pubsub-js/src/pubsub.js"></script>
 <script src="other_imports/taggle/jquery-1.10.1.js"></script>
 <script src="other_imports/taggle/jquery-ui.js"></script>
@@ -51,32 +53,13 @@
 <script src="other_imports/sigma/misc/sigma.misc.bindEvents.js"></script>
 <script src="other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"></script>
 <script src="other_imports/sigma/misc/sigma.misc.drawHovers.js"></script>
-<script src="other_imports/sigma/layout/sigma.layout.nooverlap.js"></script>
 
 <!-- END SIGMA IMPORTS -->
 <script src="other_imports/sigma/plugins/dragNode.js"></script>
-<script src="other_imports/sigma/plugins/sigma.plugins.animate.js"></script>
 <script>
     document.write('<script src="other_imports/sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js?v='+Date.now() +'"><\/script>');
 </script>
-<script src="other_imports/sigma/plugins/sigma.plugins.lasso.js"></script>
-<!--<script src="other_imports/sigma/plugins/sigma.plugins.activeState.js"></script>-->
-<script src="other_imports/sigma/plugins/sigma.plugins.select.js"></script>
 
-<script src="other_imports/sigma/renderers/sigma.renderers.halo/settings.js"></script>
-<script src="other_imports/sigma/renderers/sigma.renderers.halo/sigma.renderers.halo.js"></script>
-
-
-<script src="other_imports/sigma/renderers/sigma.renderers.glyphs/settings.js"></script>
-<script src="other_imports/sigma/renderers/sigma.renderers.glyphs/sigma.renderers.glyphs.js"></script>
-<!--<script src="other_imports/sigma/renderers/canvas/sigma.canvas.labels.prioritizable.js"></script>-->
-
-
-
-
-
-<script src="other_imports/mustache/mustache.min.js"></script>
-<!--<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>-->
 </head>
 <body>
 
