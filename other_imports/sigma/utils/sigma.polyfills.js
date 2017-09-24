@@ -74,4 +74,4 @@
 
       return fBound;
     };
-})(this);
+})(window);

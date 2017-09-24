@@ -1375,4 +1375,4 @@
         context.restore();
     };
 
-}).call(this);
+}).call(window);

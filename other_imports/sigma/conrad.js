@@ -981,4 +981,4 @@
     exports.conrad = conrad;
   }
   global.conrad = conrad;
-})(this);
+})(window);

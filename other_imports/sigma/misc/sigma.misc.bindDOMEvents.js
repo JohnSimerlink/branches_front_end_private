@@ -153,4 +153,4 @@
     // Mouseout
     container.addEventListener('mouseout', onOut, true);
   };
-}).call(this);
+}).call(window);

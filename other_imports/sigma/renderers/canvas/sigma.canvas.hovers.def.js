@@ -103,4 +103,4 @@
       );
     }
   };
-}).call(this);
+}).call(window);

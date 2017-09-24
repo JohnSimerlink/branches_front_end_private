@@ -3,11 +3,15 @@ var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
-  entry: ['babel-regenerator-runtime', './app/core/bootstrap.js'],
+  entry: {
+    regenerator: 'babel-regenerator-runtime',
+    build: './app/core/bootstrap.js',
+    vendor: './vendor.js',
+  },
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -69,7 +73,10 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+    // plugins: [new webpack.]
+
+
 }
 
 if (process.env.NODE_ENV === 'production') {

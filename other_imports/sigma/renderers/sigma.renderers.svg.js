@@ -476,4 +476,4 @@
   sigma.utils.pkg('sigma.svg.nodes');
   sigma.utils.pkg('sigma.svg.edges');
   sigma.utils.pkg('sigma.svg.labels');
-}).call(this);
+}).call(window);

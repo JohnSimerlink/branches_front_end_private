@@ -350,4 +350,4 @@
       }
     }
   };
-}).call(this);
+}).call(window);

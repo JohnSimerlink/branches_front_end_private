@@ -89,6 +89,7 @@ export default {
     },
     methods: {
         init(){
+            console.log('3.9. knawledgeMap.js init called', calculateLoadTimeSoFar(Date.now()))
             initKnawledgeMap.call(this, this.treeId)
         }
     }
@@ -394,31 +395,40 @@ function initKnawledgeMap(treeIdToJumpTo){
         sigma.settings.font = 'Fredoka One'
     }
 
-    if (typeof PubSub !== 'undefined') {
-        PubSub.subscribe('login', async () => {
-            console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now(), " ", calculateLoadTimeSoFar(Date.now()))
-            LocalForage.getItem('g').then(async gFromLocalForage => {
-                // console.log("result of LocalForage is ", gFromLocalForage, JSON.stringify(gFromLocalForage), g, JSON.stringify(g))
-                if (window.fullCache && gFromLocalForage){
-                    g = gFromLocalForage
-                }
-                else {
-                    await loadTreeAndSubTrees(1, 1)
-                    LocalForage.setItem('g', g).then(() => {
-                    }).catch(()=> {
-                    })
-                    console.log("4: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
-                }
-                try {
-                    initSigma()
-                    window.endTime = Date.now()
-                    console.log("5: knawledgeMap.js initSigma finished" + window.endTime, calculateLoadTimeSoFar(window.endTime))
-                } catch (err) {
-                    console.error('initSigma Error', err)
-                    alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
-                }
+    if (window.cachedUserId){
+        loadDataAndInit()
+    } else {
+        if (typeof PubSub !== 'undefined') {
+            PubSub.subscribe('userId', async () => {
+                console.log("3: knawledgeMap.js PubSub.subscribe('userId'')" + Date.now(), " ", calculateLoadTimeSoFar(Date.now()))
+                LocalForage.getItem('g').then(async gFromLocalForage => {
+                    // console.log("result of LocalForage is ", gFromLocalForage, JSON.stringify(gFromLocalForage), g, JSON.stringify(g))
+                    if (window.fullCache && gFromLocalForage){
+                        g = gFromLocalForage
+                    }
+                    else {
+                        LocalForage.setItem('g', g)
+                        loadDataAndInit()
+                    }
+                })
             })
-        })
+        }
+    }
+
+    async function loadDataAndInit(){
+        console.log("4.0: knawledgeMap.js loadTreeAndSubTrees about to be loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
+        await loadTreeAndSubTrees(1, 1)
+        console.log("4.1: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
+
+        try {
+            initSigma()
+            window.endTime = Date.now()
+            console.log("5: knawledgeMap.js initSigma finished" + window.endTime, calculateLoadTimeSoFar(window.endTime))
+        } catch (err) {
+            console.error('initSigma Error', err)
+            alert ('The app isn\'t working!! Let me (John) know ASAP via text/call at 513-787-0992')
+        }
+
     }
     async function loadTreeAndSubTrees(treeId, level){
         // console.log(level, "A", treeId, Date.now())

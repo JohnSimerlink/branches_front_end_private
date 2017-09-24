@@ -35,4 +35,4 @@
       target, context, settings
     );
   };
-}).call(this);
+}).call(window);

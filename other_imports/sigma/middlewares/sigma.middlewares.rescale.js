@@ -186,4 +186,4 @@
       maxY: maxY
     };
   };
-}).call(this);
+}).call(window);

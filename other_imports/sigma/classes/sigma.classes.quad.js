@@ -671,4 +671,4 @@
     exports.quad = quad;
   } else
     this.quad = quad;
-}).call(this);
+}).call(window);

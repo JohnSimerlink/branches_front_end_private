@@ -219,4 +219,4 @@
       }
     }
   };
-}).call(this);
+}).call(window);
