@@ -14,33 +14,35 @@ class User {
       const me = this;
 
       console.log(".501: user.js get userId from cache about to be called", calculateLoadTimeSoFar(Date.now()))
-      LocalForage.getItem('userId').then(userId => {
-          console.log(".51: user.js get userId from cache just called", calculateLoadTimeSoFar(Date.now()))
-          if (userId){
-              console.log(".515: user.js userId from cache is ",userId, calculateLoadTimeSoFar(Date.now()))
-              window.cachedUserId = userId
-              PubSub.publish('userId')
-              this.loadBranchesData()
-              me.dataGoingToBeLoaded = true
-          }
+      const userId = window.cachedUserId
 
-          firebase.auth().onAuthStateChanged(async (user) => {
-              console.log(".6: onAuthStateChanged called ", calculateLoadTimeSoFar(Date.now()))
-              if (user) {
-                  me.loggedIn = true;
-                  userLoggedIn = true
-                  me.fbData = user;
-                  LocalForage.setItem('userId', me.getId())
-                  if(!me.dataGoingToBeLoaded){
-                      PubSub.publish('userId')
-                      await me.loadBranchesData()
-                  }
-              } else {
-                  me.loggedIn = false
+      console.log(".51: user.js get userId from cache just called", calculateLoadTimeSoFar(Date.now()))
+
+      if (userId){
+          // console.log(".515: user.js userId from cache is ",userId, calculateLoadTimeSoFar(Date.now()))
+          // window.cachedUserId = userId
+          // PubSub.publish('userId')
+          this.loadBranchesData()
+          me.dataGoingToBeLoaded = true
+      }
+
+      firebase.auth().onAuthStateChanged(async (user) => {
+          console.log(".6: onAuthStateChanged called ", calculateLoadTimeSoFar(Date.now()))
+          if (user) {
+              me.loggedIn = true;
+              userLoggedIn = true
+              me.fbData = user;
+              localStorage.setItem('userId', me.getId())
+              // LocalForage.setItem('userId', me.getId())
+              if(!me.dataGoingToBeLoaded){
+                  PubSub.publish('userId')
+                  await me.loadBranchesData()
               }
-          })
-
+          } else {
+              me.loggedIn = false
+          }
       })
+
   }
   async loadBranchesData(){
       console.log(".52: user.js loadBranchesData just called", calculateLoadTimeSoFar(Date.now()))
