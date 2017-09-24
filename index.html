@@ -1,68 +1,19 @@
 <script>
     window.fullCache = false // setting this to true will cause the initial load to be faster - but makes it so that certain features dont work / sync with the db yet . . . essentially as of 9/22 7:30pm PST enabling this option decreases the loadtime from 6.5ish seconds to 3.5 seconds on localhost
     window.startTime = Date.now()
-   console.log("0: page open" + window.startTime, calculateLoadTimeSoFar(window.startTime))
+    console.log("0: page open" + window.startTime, calculateLoadTimeSoFar(window.startTime))
     function calculateLoadTimeSoFar(utcTimestamp){
         return (utcTimestamp - window.startTime ) / 1000 + " s"
     }
+    window.cachedUserId = localStorage.getItem('userId')
+    console.log("1: userId from cache is", window.cachedUserId, calculateLoadTimeSoFar(Date.now()))
 </script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
-    <link rel='stylesheet' href="styles.css">
+    <!--<link rel="stylesheet" type="text/css" href="other_imports/font-awesome.min.css" >-->
+    <!--<link rel="stylesheet" type="text/css" href="dist/css/import.min.css" >-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="app/static/css/taggle.css">
-    <link rel="stylesheet" type="text/css" href="other_imports/semantic/semantic-ui.min.css">
-    <link rel="stylesheet" type="text/css" href="node_modules/chartist/dist/chartist.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-
-</style>
-<style>
-</style>
-
-<script src="node_modules/pubsub-js/src/pubsub.js"></script>
-<script src="other_imports/taggle/jquery-1.10.1.js"></script>
-<script src="other_imports/taggle/jquery-ui.js"></script>
-<script src="other_imports/taggle/taggle.js"></script>
-<!-- START SIGMA IMPORTS -->
-<script src="other_imports/sigma/sigma.core.js"></script>
-<script src="other_imports/sigma/conrad.js"></script>
-<script src="other_imports/sigma/utils/sigma.utils.js"></script>
-<script src="other_imports/sigma/utils/sigma.utils.branches.js"></script>
-<script src="other_imports/sigma/utils/sigma.polyfills.js"></script>
-<script src="other_imports/sigma/sigma.settings.js"></script>
-<script src="other_imports/sigma/classes/sigma.classes.dispatcher.js"></script>
-<script src="other_imports/sigma/classes/sigma.classes.configurable.js"></script>
-<script src="other_imports/sigma/classes/sigma.classes.graph.js"></script>
-<script src="other_imports/sigma/classes/sigma.classes.camera.js"></script>
-<script src="other_imports/sigma/classes/sigma.classes.quad.js"></script>
-<script src="other_imports/sigma/classes/sigma.classes.edgequad.js"></script>
-<script src="other_imports/sigma/captors/sigma.captors.mouse.js"></script>
-<script src="other_imports/sigma/captors/sigma.captors.touch.js"></script>
-<script src="other_imports/sigma/renderers/sigma.renderers.canvas.js"></script>
-<script src="other_imports/sigma/renderers/sigma.renderers.webgl.js"></script>
-<script src="other_imports/sigma/renderers/sigma.renderers.svg.js"></script>
-<script src="other_imports/sigma/renderers/sigma.renderers.def.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.labels.def.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.hovers.def.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.nodes.def.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.edges.def.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
-<script src="other_imports/sigma/renderers/canvas/sigma.canvas.extremities.def.js"></script>
-<script src="other_imports/sigma/middlewares/sigma.middlewares.rescale.js"></script>
-<script src="other_imports/sigma/middlewares/sigma.middlewares.copy.js"></script>
-<script src="other_imports/sigma/misc/sigma.misc.animation.js"></script>
-<script src="other_imports/sigma/misc/sigma.misc.bindEvents.js"></script>
-<script src="other_imports/sigma/misc/sigma.misc.bindDOMEvents.js"></script>
-<script src="other_imports/sigma/misc/sigma.misc.drawHovers.js"></script>
-
-<!-- END SIGMA IMPORTS -->
-<script src="other_imports/sigma/plugins/dragNode.js"></script>
-<script src="other_imports/sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js"></script>
-
 </head>
 <body>
 
@@ -115,32 +66,25 @@
     })();
     console.log(".3: main html just written", calculateLoadTimeSoFar(Date.now()))
 </script>
+<!--<script type='text/javascript' src='/other_imports/pubsub.js'></script>-->
+<!--<script type='text/javascript' src='/dist/build2/build2.min.js'></script>-->
+<script type='text/javascript' src='/dist/funny/funny.min.js'></script>
+<script type='text/javascript' src='/dist/regenerator.js'></script>
+<script type='text/javascript' src='/dist/vendor.js'></script>
+<script>
+    if (window.cachedUserId){
+        PubSub.publish('userId')
+    }
+</script>
+<script type='text/javascript' src='/dist/build.js'></script>
+<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="app/static/css/taggle.css">
+<link rel="stylesheet" type="text/css" href="other_imports/semantic/semantic-ui.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 <script>
     console.log(".4: build.js about to get called", calculateLoadTimeSoFar(Date.now()))
 </script>
-<script type='text/javascript' src='/dist/build.js'></script>
-<script>
-  function toggleFullScreen() {
-      var doc = window.document;
-      var docEl = doc.documentElement;
-
-      var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-      var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-      if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-        requestFullScreen.call(docEl);
-      }
-      else {
-        cancelFullScreen.call(doc);
-      }
-    }
-//window.scrollTo(0,1);// hide url / browser bar on mobile
-toggleFullScreen()
-
-</script>
-<script src="other_imports/offlinejs.js">
-    
-</script>
-
 </body>
 </html>

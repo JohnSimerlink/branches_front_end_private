@@ -407,4 +407,4 @@
       }
     }
   };
-}).call(this);
+}).call(window);
