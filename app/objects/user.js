@@ -1,8 +1,10 @@
 console.log(".5: user.js just called", calculateLoadTimeSoFar(Date.now()))
 import firebase from './firebaseService.js'
 import {clearInteractionsForHeadings} from "../fixData";
+import LocalForage from 'localforage'
 import Users from './users'
 let userLoggedIn = false
+let cachedId = null
 class User {
 
   constructor() {
@@ -10,22 +12,38 @@ class User {
       this.branchesData = {}
       this.dataLoaded = false
       const me = this;
-      firebase.auth().onAuthStateChanged(async (user) => {
-          console.log(".6: onAuthStateChanged called ", calculateLoadTimeSoFar(Date.now()))
-          if (user) {
-              me.loggedIn = true;
-              userLoggedIn = true
-              me.fbData = user;
-              await me.loadBranchesData()
-              console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
-              PubSub.publish('login')
-              console.log("2.5: PubSub publish login", calculateLoadTimeSoFar(Date.now()))
-          } else {
-              me.loggedIn = false
+
+      console.log(".501: user.js get userId from cache about to be called", calculateLoadTimeSoFar(Date.now()))
+      LocalForage.getItem('userId').then(userId => {
+          console.log(".51: user.js get userId from cache just called", calculateLoadTimeSoFar(Date.now()))
+          if (userId){
+              console.log(".515: user.js userId from cache is ",userId, calculateLoadTimeSoFar(Date.now()))
+              window.cachedUserId = userId
+              PubSub.publish('userId')
+              this.loadBranchesData()
+              me.dataGoingToBeLoaded = true
           }
+
+          firebase.auth().onAuthStateChanged(async (user) => {
+              console.log(".6: onAuthStateChanged called ", calculateLoadTimeSoFar(Date.now()))
+              if (user) {
+                  me.loggedIn = true;
+                  userLoggedIn = true
+                  me.fbData = user;
+                  LocalForage.setItem('userId', me.getId())
+                  if(!me.dataGoingToBeLoaded){
+                      PubSub.publish('userId')
+                      await me.loadBranchesData()
+                  }
+              } else {
+                  me.loggedIn = false
+              }
+          })
+
       })
   }
   async loadBranchesData(){
+      console.log(".52: user.js loadBranchesData just called", calculateLoadTimeSoFar(Date.now()))
       const me = this
       const user = await Users.get(this.getId())
       me.branchesData = user || {}
@@ -34,9 +52,12 @@ class User {
       me.camera = me.branchesData.camera
       me.applyDataPatches()
       me.dataLoaded = true
+      console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
+      PubSub.publish('login')
+      console.log("2.5: PubSub publish login", calculateLoadTimeSoFar(Date.now()))
   }
   getId() {
-      return this.fbData && this.fbData.uid || 0
+      return (this.fbData && this.fbData.uid) || window.cachedUserId || 0
   }
   isAdmin() {
       return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'

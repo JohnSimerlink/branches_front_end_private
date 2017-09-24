@@ -16,16 +16,18 @@ export default {
         this.items = {}
 
 
-        PubSub.subscribe('login', () => {
-            self.loggedIn = true
-            self.user = user
-            self.username = user.fbData.displayName
-            self.photoURL = user.fbData.photoURL
+        PubSub.subscribe('userId', () => {
             //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
             Users.get(user.getId()).then(user => {
                 self.items = user.items
                 self.user = user
             })
+        })
+        PubSub.subscribe('login', () => {
+            self.loggedIn = true
+            self.user = user
+            self.username = user.fbData.displayName
+            self.photoURL = user.fbData.photoURL
         })
     },
     data () {

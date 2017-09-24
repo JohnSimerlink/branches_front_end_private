@@ -383,8 +383,8 @@ function initKnawledgeMap(treeIdToJumpTo){
     }
 
     if (typeof PubSub !== 'undefined') {
-        PubSub.subscribe('login', async () => {
-            console.log("3: knawledgeMap.js PubSub.subscribe('login'')" + Date.now(), " ", calculateLoadTimeSoFar(Date.now()))
+        PubSub.subscribe('userId', async () => {
+            console.log("3: knawledgeMap.js PubSub.subscribe('userId'')" + Date.now(), " ", calculateLoadTimeSoFar(Date.now()))
             LocalForage.getItem('g').then(async gFromLocalForage => {
                 // console.log("result of LocalForage is ", gFromLocalForage, JSON.stringify(gFromLocalForage), g, JSON.stringify(g))
                 if (window.fullCache && gFromLocalForage){

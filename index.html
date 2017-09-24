@@ -9,10 +9,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="app/static/css/taggle.css">
-    <link rel="stylesheet" type="text/css" href="other_imports/semantic/semantic-ui.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" type="text/css" href="other_imports/font-awesome.min.css" >-->
     <!--<link rel="stylesheet" type="text/css" href="dist/css/import.min.css" >-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,37 +65,20 @@
     })()
     console.log(".3: main html just written", calculateLoadTimeSoFar(Date.now()))
 </script>
-<script>
-    console.log(".4: build.js about to get called", calculateLoadTimeSoFar(Date.now()))
-</script>
-<script type="text/javascript" src="/other_imports/pubsub.js"></script>
-<script type="text/javascript" src="/other_imports/taggle/taggle.js"></script>
+<!--<script type='text/javascript' src='/other_imports/pubsub.js'></script>-->
+<!--<script type='text/javascript' src='/dist/build2/build2.min.js'></script>-->
 <script type='text/javascript' src='/dist/funny/funny.min.js'></script>
 <script type='text/javascript' src='/dist/regenerator.js'></script>
 <script type='text/javascript' src='/dist/vendor.js'></script>
 <script type='text/javascript' src='/dist/build.js'></script>
+<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="app/static/css/taggle.css">
+<link rel="stylesheet" type="text/css" href="other_imports/semantic/semantic-ui.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 <script>
-  function toggleFullScreen() {
-      var doc = window.document;
-      var docEl = doc.documentElement;
-
-      var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-      var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-      if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-        requestFullScreen.call(docEl);
-      }
-      else {
-        cancelFullScreen.call(doc);
-      }
-    }
-//window.scrollTo(0,1);// hide url / browser bar on mobile
-toggleFullScreen()
-
+    console.log(".4: build.js about to get called", calculateLoadTimeSoFar(Date.now()))
 </script>
-<script src="other_imports/offlinejs.js">
-    
-</script>
-
 </body>
 </html>
