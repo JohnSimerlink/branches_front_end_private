@@ -61,6 +61,9 @@ export default {
         },
     },
     computed:{
+        browserIsMobile() {
+            return this.$store.state.mobile;
+        },
         newSelected(){
             return this.studySettings.itemTypes._new && !this.studySettings.itemTypes.old
         },

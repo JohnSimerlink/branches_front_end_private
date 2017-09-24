@@ -14,7 +14,12 @@ if (typeof window !== 'undefined') {
 }
 
 function createContentItemFromData(contentData, contentDatumKey){
-    let contentItem
+    let contentItem;
+
+    if (!contentData || !contentData.type) {
+        console.error("No type detected for contentData", contentData);
+        return;
+    }
 
     switch(contentData.type){
         case 'fact':

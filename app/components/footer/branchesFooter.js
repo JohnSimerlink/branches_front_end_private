@@ -19,6 +19,7 @@ export default {
         PubSub.subscribe('userId', () => {
             //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
             Users.get(user.getId()).then(user => {
+                //if (!user) return;
                 self.items = user.items
                 self.user = user
             })

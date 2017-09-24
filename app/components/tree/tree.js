@@ -59,21 +59,21 @@ export default {
     },
     computed: {
         openNodeId(){
-            return this.$store.state.openNodeId
+            return this.$store.state.openNodeId;
         },
         typeIsHeading() {
-            return this.tree.contentType == 'heading'
+            return this.tree.contentType === 'heading'
         },
         typeIsFact() {
-            return this.tree.contentType == 'fact'
+            return this.tree.contentType === 'fact'
         },
         typeIsSkill() {
-            return this.tree.contentType == 'skill'
+            return this.tree.contentType === 'skill'
         },
         styleObject() {
             const styles = {}
             if (this.typeIsHeading) {
-                styles['background-color'] = 'black'
+                styles['background-color'] = 'black';
                 styles['color'] = 'white'
             } else {
                 styles['background-color'] = proficiencyToColor(this.content.proficiency)
