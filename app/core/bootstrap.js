@@ -9,14 +9,15 @@ import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exerciseCreatorContainer'
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
-import Vue from 'vue'
+import Vue from 'vue';
+import MobileAnswerTray from '../components/mobileAnswerTray/mobileAnswerTray';
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import AsyncComputed from 'vue-async-computed'
 import {Tree} from "../objects/tree";
-Vue.use(Vuex)
-Vue.use(VueRouter)
-Vue.use(AsyncComputed)
+Vue.use(Vuex);
+Vue.use(VueRouter);
+Vue.use(AsyncComputed);
 import store from './store.js'
 // 1. Define route components.
 // These can be imported from other files

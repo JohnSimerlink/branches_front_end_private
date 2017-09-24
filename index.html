@@ -59,12 +59,11 @@
             '<div class="page">' +
                 '<div id="branches-app" class="branches-app">' +
                     '<router-view style="height:' + bodyHeight + 'px;" v-if="routing"></router-view>' +
-                    '<!--<review-schedule></review-schedule>-->' +
                     '<branches-footer style="height:' + footerSize +'px;"></branches-footer>'+
                 '</div>' +
             '</div>' +
             '')
-    })()
+    })();
     console.log(".3: main html just written", calculateLoadTimeSoFar(Date.now()))
 </script>
 <!--<script type='text/javascript' src='/other_imports/pubsub.js'></script>-->

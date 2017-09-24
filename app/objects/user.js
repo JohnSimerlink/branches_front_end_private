@@ -92,6 +92,7 @@ class User {
   }
 
   setCamera({angle, ratio, x, y}){
+      if (!angle) return;
       const me = this
       angle = angle || me.camera.angle
       ratio = ratio || me.camera.ratio
@@ -100,7 +101,7 @@ class User {
       const camera = {angle, ratio, x, y}
       let updates = {
           camera
-      }
+      };
       firebase.database().ref('users/' + this.getId()).update(updates)
       me.camera = me.branchesData.camera = camera
   }

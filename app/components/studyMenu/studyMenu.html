@@ -19,5 +19,5 @@
             </div>
         </div>
     </div>
-    <button class="studyMenu">{{title}} [{{numOverdue}}]</button>
+    <button class="studyMenu" v-bind:class="{ mobile: browserIsMobile }">{{title}} [{{numOverdue}}]</button>
 </div>

@@ -10,8 +10,10 @@ import store from '../../core/store'
 import {Globals} from '../../core/globals'
 import './knawledgeMap.less'
 import LocalForage from 'localforage'
+import {isMobile} from '../../core/utils';
+import clonedeep from 'lodash.clonedeep'
 
-let router
+let router;
 
 var toolTipsConfig = {
     node: [
@@ -57,7 +59,10 @@ export default {
         },
         nodeIdToSync(){
             return this.$store.state.nodeIdToSync
-        }
+        },
+        browserIsMobile() {
+            return this.$store.state.mobile;
+        },
     },
     watch: {
         '$route': 'init',
@@ -354,9 +359,16 @@ function openTooltipFromId(nodeId){
 }
 window.openTooltipFromId = openTooltipFromId
 function openTooltip(node){
-    console.log('openTooltip called for', node.id, node)
+    console.log('openTooltip called for', node.id, node);
 
-    tooltips.open(node, toolTipsConfig.node[0], node["renderer1:x"], node["renderer1:y"]);
+    //Make copy of singleton's config by value to avoid mutation
+    let configClone = clonedeep(toolTipsConfig);
+
+    if (!!isMobile.any()) {
+        configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
+    }
+
+    tooltips.open(node, configClone.node[0], node["renderer1:x"], node["renderer1:y"]);
     setTimeout(function(){
         var vm = new Vue(
             {
@@ -511,7 +523,6 @@ function initKnawledgeMap(treeIdToJumpTo){
             //         console.log('invalid target tree is ', tree, tree.id, tree.parentId)
             //     })
             // })()
-
         }
 
         window.s = s;
@@ -520,9 +531,14 @@ function initKnawledgeMap(treeIdToJumpTo){
         s.refresh();
 
         initialized = true;
-        initSigmaPlugins()
+        initSigmaPlugins();
+
+        store.commit('mobile', !!isMobile.any());
+        window.addEventListener('resize', function(){
+            store.commit('mobile', !!isMobile.any());
+        }, true);
         s.bind('coordinatesUpdated', function(){
-        })
+        });
         s.bind('clickNode', function(event) {
             const nodeId = event && event.data && event.data.node && event.data.node.id
             console.log("node clicked s.bind",nodeId)
@@ -538,7 +554,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         PubSub.subscribe('canvas.dragStop', (eventName, data) => {
             // console.log('dragStop', eventName, data)
             var canvas = document.querySelector('#graph-container')
-            canvas.style.cursor = 'grab'
+            canvas.style.cursor = '-webkit-grab'
         })
         PubSub.subscribe('canvas.startDraggingNode', (eventName, node) => {
         })
@@ -605,7 +621,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         PubSub.subscribe('canvas.outNode', function(eventName, data){
             var canvas = document.querySelector('#graph-container')
             if (!canvas || !canvas.style) return // maybe the user just clicked on the node which navigated the user to another route where the canvas is no longer present
-            canvas.style.cursor = 'grab'
+            canvas.style.cursor = '-webkit-grab'
         })
         PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
             const edge = eventData.edge
@@ -777,12 +793,10 @@ function initKnawledgeMap(treeIdToJumpTo){
         // PubSub.publish('canvas.closeTooltip') // close any existing tooltips, so as to stop their timers from counting
         // var node = e.data.node
     }
+
     async function updateTreePosition(data){
-        console.log("update tree Position called")
-        let {newX, newY, treeId} = data
-        // let newX = e.data.node.x
-        // let newY = e.data.node.y
-        // let treeId = e.data.node.id;
+        console.log("update tree Position called");
+        let {newX, newY, treeId} = data;
 
         if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
             return; //node isn't an actual node in the db - its like a shadow node or helper node
