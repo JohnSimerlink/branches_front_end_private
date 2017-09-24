@@ -4,7 +4,7 @@ License: MIT - http://mrgnrdrck.mit-license.org
 
 https://github.com/mroderick/PubSubJS
 */
-(function (root, factory){
+;(function (root, factory){
 	'use strict';
 
 	var PubSub = {};
