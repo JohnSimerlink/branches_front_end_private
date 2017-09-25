@@ -410,7 +410,8 @@ export default class ContentItem {
         this.setOverdueTimeout()
 
         this.resortTrees()
-        store.commit('itemStudied', this.id)
+        user.addMutation('itemStudied', this.id)
+        // store.commit('itemStudied', this.id)
 
     }
 

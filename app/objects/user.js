@@ -5,6 +5,7 @@ import LocalForage from 'localforage'
 import Users from './users'
 let userLoggedIn = false
 let cachedId = null
+import store from '../core/store'
 class User {
 
   constructor() {
@@ -51,12 +52,14 @@ class User {
       me.branchesData = user || {}
       me.branchesData.patches = me.branchesData.patches || {}
       me.branchesData.items = me.branchesData.items || {}
+      me.branchesData.mutations = me.branchesData.mutations || []
       me.camera = me.branchesData.camera
       me.applyDataPatches()
       me.dataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
       PubSub.publish('login')
       console.log("2.5: PubSub publish login", calculateLoadTimeSoFar(Date.now()))
+      me.subscribeToMutations()
   }
   getId() {
       return (this.fbData && this.fbData.uid) || window.cachedUserId || 0
@@ -145,11 +148,38 @@ class User {
     async applyUpdates(updates){
         return await firebase.database().ref('users/' + this.getId() + '/').update(updates)
     }
-
-
+    async addMutation(type, data){
+        const action = {
+            type,
+            data,
+        }
+        const mutation = {
+            timestamp: Date.now(),
+            action
+        }
+        this.branchesData.mutations.push(mutation)
+        const updates = {
+            mutations: this.branchesData.mutations
+        }
+        firebase.database().ref('users/' + this.getId() + '/').update(updates)
+    }
+    subscribeToMutations(){
+        firebase.database().ref('users/' + this.getId() + '/' + 'mutations').on('value', snapshot => {
+            const mutationsArray = snapshot.val()
+            if (!mutationsArray) return
+            const mostRecentMutation = mutationsArray.length ? mutationsArray[mutationsArray.length - 1] : null
+            if (!mostRecentMutation) return
+            if (mostRecentMutation.timestamp > window.startTime){
+                const action = mostRecentMutation.action
+                console.log('mutation added', mostRecentMutation)
+                store.commit(action.type, action.data)
+            }
+        })
+    }
 }
 
 //user singleton
 const user = new User()
+window.user = user
 export default user
 
