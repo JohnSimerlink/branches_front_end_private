@@ -2,6 +2,7 @@ import Vuex from "vuex"
 import Vue from "vue"
 import {Trees} from '../objects/trees'
 import Snack from '../../node_modules/snack.js/dist/snack'
+import user from '../objects/user'
 import {syncGraphWithNode} from "../components/knawledgeMap/knawledgeMap";
 Vue.use(Vuex)
 
@@ -24,17 +25,30 @@ const state = {
     nodeIdToSync: null,
     mobile: false
 };
-//
-// function setCurrentStudyingContentId(state, contentId){
-//     state.currentStudyingContentItem = contentId
-//
-// }
+
 const getters = {
     studying: state => state.mode === MODES.STUDYING,
     currentStudyingCategoryTreeId: state => state.currentStudyingCategoryTreeId,
     settingsMenuOpen: state => state.settingsMenuOpen,
 }
-const mutations = {
+const serverMutations = {
+    async itemStudied(state, contentId){
+        console.log('itemStudied called mutation called inside of store', state, contentId, ...arguments)
+        if (!getters.studying(state)){
+            return
+        }
+        this.commit('closeNode')
+        const tree = await Trees.get(state.currentStudyingCategoryTreeId)
+        PubSub.publish('canvas.closeTooltip', tree.id)
+        if (tree.areItemsToStudy()){
+            const itemToStudy  = tree.getNextItemToStudy()
+            console.log('next itemId to Study is', itemToStudy)
+            state.currentStudyingContentItem = itemToStudy
+        }
+        // user.addMutation({type: 'itemStudied', data: contentId})
+    },
+}
+const localMutations = {
     changeMode(state, mode){
         state.mode = mode
     },
@@ -52,20 +66,6 @@ const mutations = {
             });
             // show a snack for 4s
             snack.show("No items to study for this tree!", 4000)
-        }
-    },
-    async itemStudied(state, contentId){
-        console.log('itemStudied called', state, contentId, ...arguments)
-        if (!getters.studying(state)){
-            return
-        }
-        this.commit('closeNode')
-        const tree = await Trees.get(state.currentStudyingCategoryTreeId)
-        PubSub.publish('canvas.closeTooltip', tree.id)
-        if (tree.areItemsToStudy()){
-            const itemToStudy  = tree.getNextItemToStudy()
-            console.log('next itemId to Study is', itemToStudy)
-            state.currentStudyingContentItem = itemToStudy
         }
     },
     mobile(state, isMobile) {
@@ -95,6 +95,10 @@ const mutations = {
         state.nodeIdToSync = nodeId
         // console.log('syncGraphWithNode', + Date.now())
     }
+}
+const mutations = {
+    ...serverMutations,
+    ...localMutations
 }
 
 const actions = {
