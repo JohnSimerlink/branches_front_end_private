@@ -10,7 +10,6 @@ import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exe
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
 import Vue from 'vue';
-import MobileAnswerTray from '../components/mobileAnswerTray/mobileAnswerTray';
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import AsyncComputed from 'vue-async-computed'
