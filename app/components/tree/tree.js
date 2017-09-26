@@ -33,7 +33,7 @@ export default {
         this.nodeBeingDragged = false
         this.tree = await Trees.get(this.id)
         this.content = await ContentItems.get(this.tree.contentId)
-        console.log("this contentId is ", this.content.id, this.content)
+        console.log("this contentId is ", this.content.id, this.content, this.content.nextReviewTime, timeFromNow(this.content.nextReviewTime))
         this.startTimer()
         await this.tree.getLeaves()
         this.tree.sortLeavesByStudiedAndStrength()
@@ -178,6 +178,7 @@ export default {
             this.tree.changeContent(this.content.id, this.tree.contentType)
 
             this.toggleEditing()
+            this.syncGraphWithNode()
         },
         async remove() {
             if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")) {

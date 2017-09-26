@@ -217,6 +217,8 @@ async function _syncGraphWithNode(treeId){
     sigmaNode.proficiencyStats = tree.proficiencyStats
     sigmaNode.size = getSizeFromContent(content)
 
+    sigmaNode.label = getLabelFromContent(content)
+
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)
     var sigmaEdge = s.graph.edges(edgeId)
