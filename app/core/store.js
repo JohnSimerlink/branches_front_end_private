@@ -81,6 +81,9 @@ const localMutations = {
     },
     clickNode(state, nodeId){
         console.log("store.js clickNode called",state.openNodeId, nodeId)
+        this.commit('openNode', nodeId)
+    },
+    openNode(state, nodeId){
         state.openNodeId = nodeId
     },
     closeNode(state){

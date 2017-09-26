@@ -1,5 +1,6 @@
 import {Trees} from '../../objects/trees.js'
 import ContentItems from '../../objects/contentItems'
+import {getLabelFromContent} from "../../objects/contentItem";
 import {Tree} from '../../objects/tree.js'
 import '../../core/login.js'
 import user from '../../objects/user'
@@ -170,20 +171,10 @@ export function addTreeNodeToGraph(tree,content, level){
     return content.id
 }
 
-function getLabelFromContent(content) {
-    switch (content.type){
-        case "fact":
-            return content.question
-        case "heading":
-            return content.title
-        case "skill":
-            return content.title
-    }
-}
 
 function getSizeFromContent(content) {
     // return Globals.regularSize
-    return content.overdue ? Globals.overdueSize : Globals.regularSize
+    return /*content.overdue ? Globals.overdueSize : */ Globals.regularSize
 }
 
 function createEdgeId(nodeOneId, nodeTwoId){
@@ -215,6 +206,7 @@ async function _syncGraphWithNode(treeId){
     var color = getTreeColor(content)
     sigmaNode.color = color
     sigmaNode.proficiencyStats = tree.proficiencyStats
+    sigmaNode.overdue = content.overdue
     sigmaNode.size = getSizeFromContent(content)
 
     sigmaNode.label = getLabelFromContent(content)
