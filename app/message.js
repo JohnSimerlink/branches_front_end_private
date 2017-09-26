@@ -1,4 +1,4 @@
-import Snack from 'snack.js'
+import Snack from '../other_imports/snack/snack.js'
 if (typeof window !== 'undefined'){
     window.Snack = Snack
 }
