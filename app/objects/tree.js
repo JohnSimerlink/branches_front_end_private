@@ -87,6 +87,14 @@ export class Tree {
             return childKey
         })
     }
+    getChildTreePromises(){
+        return this.getChildKeys().map(childKey => {
+           return Trees.get(childKey)
+        })
+    }
+    getChildTrees(){
+        return Promise.all(this.getChildTreePromises().map(async childPromise => await childPromise))
+    }
     /**
      * Add a child tree to this tree
      * @param treeId
@@ -172,10 +180,10 @@ export class Tree {
         }) : []
         return Promise.all(childUpdatePromises)
     }
-    changeFact(newfactid) {
-        this.factId = newfactid
+    changeFact(newFactId) {
+        this.factId = newFactId
         firebase.database().ref('trees/' + this.id).update({
-           factId: newfactid
+           factId: newFactId
         })
     }
     async clearChildrenInteractions(){
@@ -186,8 +194,7 @@ export class Tree {
             const contentItem = await ContentItems.get(this.contentId)
             contentItem.clearInteractions()
         } else {
-            this.getChildKeys()
-                .map(Trees.get)
+            this.getChildTreePromises()
                 .map(async treePromise => {
                     const tree = await treePromise
                     tree.clearChildrenInteractions()
@@ -229,10 +236,11 @@ export class Tree {
         this.numOverdue = numOverdue
         this.userNumOverdueMap = this.userNumOverdueMap || {}
         this.userNumOverdueMap[user.getId()] = this.numOverdue
+        console.log(this.id, "tree setNumOverdue: numOverdue is ",numOverdue, addChangeToDB)
         if (!addChangeToDB){
             return
         }
-
+        console.log(this.id, "tree setNumOverdue: set firebase going to be called ",numOverdue, addChangeToDB)
         const updates = {
             userNumOverdueMap: this.userNumOverdueMap
         }
@@ -270,7 +278,6 @@ export class Tree {
         updates[prop] = val
         // this.treeRef.update(updates)
         const lookupKey = 'trees/' + this.id
-        console.log('trees update lookupKey', lookupKey)
         firebase.database().ref(lookupKey).update(updates)
         this[prop] = val
     }
@@ -378,32 +385,34 @@ export class Tree {
 
     async calculateNumOverdueAggregationLeaf(){
         let contentItem = await ContentItems.get(this.contentId)
-        return contentItem.overdue ? 1 : 0
+        const overdue = contentItem.overdue ? 1 : 0
+        console.log(this.id, "calculateNumOverdueAggregation LEAF overdue is ", overdue)
+        return overdue
     }
     async calculateNumOverdueAggregationNotLeaf(){
-        const me = this
-        let numOverdue = 0
-        if (!this.children || !Object.keys(this.children).length) return numOverdue
-        const children = await Promise.all(
-            this.getChildKeys()
-                .map(Trees.get)
-                .map(async childPromise => await childPromise)
-        )
+        console.log(this.id, "tree calculateNumOverdueAggregation NOT LEAF called")
+        const children = await this.getChildTrees()// await Promise.all(
+        console.log(this.id, "tree calculateNumOverdueAggregation NOT LEAF called. the children are", children)
+        let numOverdue = children.reduce((sum, child) => sum + (+child.numOverdue || 0), 0)
+        console.log(this.id, "tree calculateNumOverdueAggregation NOT LEAF called: numOverdue is", numOverdue)
 
-        children.forEach(child => {
-            numOverdue += +child.numOverdue || 0
-        })
         return numOverdue
         //TODO start storing numOverdue in db - the way we do with the other aggregations
     }
     async calculateNumOverdueAggregation(addChangeToDB){
+        console.log(this.id, "tree calculateNumOverdueAggregation called",addChangeToDB)
         let numOverdue;
         const isLeaf = await this.isLeaf()
-        if (isLeaf){
-            numOverdue = await this.calculateNumOverdueAggregationLeaf()
-        } else {
-            numOverdue = await this.calculateNumOverdueAggregationNotLeaf()
+        try {
+            if (isLeaf){
+                numOverdue = await this.calculateNumOverdueAggregationLeaf()
+            } else {
+                numOverdue = await this.calculateNumOverdueAggregationNotLeaf()
+            }
+        } catch (err){
+            console.error('calcNumOverdue promise err is', err)
         }
+        console.log(this.id, "tree calculateNumOverdueAggregation called: numOverdue is ",numOverdue)
         this.setNumOverdue(numOverdue, addChangeToDB)
 
         if (!this.parentId) return

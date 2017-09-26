@@ -152,7 +152,6 @@ export default class ContentItem {
     markOverdue(){
         this.set('overdue', true)
         const colorForMessage = proficiencyToColor(this.proficiency)
-        console.log("color for message", colorForMessage)
         message(
             {
                 text: "Click to review " + getLabelFromContent(this),
@@ -380,7 +379,6 @@ export default class ContentItem {
     }
 
     async syncTreeChainWithUI(){
-        console.log('this in syncTreeChainWith UI is', this)
         this.syncGraphWithNode()
 
         const treeId = this.getTreeId()
@@ -400,7 +398,6 @@ export default class ContentItem {
     }
 
     async addInteraction({proficiency, timestamp}, addChangeToDB){
-        console.log('contentItem.js addInteraction addChangeToDB', proficiency, timestamp, addChangeToDB)
         this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.proficiency is already set I think, but not saved in db
         this.messageRecentDecibelIncrease()
         try {
@@ -510,7 +507,6 @@ export default class ContentItem {
     //returns null if no exercise found
     getBestExerciseId(){
         const exerciseKeys = Object.keys(this.exercises).filter(key => key !== 'undefined');// not sure how but some data keys are undefined
-        console.log('exercise keys in get best exercise id are', exerciseKeys)
         if (exerciseKeys.length <= 0) {
             return null
         }
