@@ -33,6 +33,7 @@ export default {
         this.nodeBeingDragged = false
         this.tree = await Trees.get(this.id)
         this.content = await ContentItems.get(this.tree.contentId)
+        console.log("this contentId is ", this.content.id, this.content)
         this.startTimer()
         await this.tree.getLeaves()
         this.tree.sortLeavesByStudiedAndStrength()

@@ -146,7 +146,6 @@ export class Tree {
 
         const updates = {children: this.children}
         const lookupKey = 'trees/' + this.id
-        console.log("lookup Key is", lookupKey)
         firebase.database().ref(lookupKey).update(updates)
     }
 
@@ -154,7 +153,6 @@ export class Tree {
         this.parentId = newParentId
         const updates = {parentId: newParentId}
         const lookupKey = 'trees/' + this.id
-        console.log("lookup Key is", lookupKey)
         firebase.database().ref(lookupKey).update(updates)
 
         this.updatePrimaryParentTreeContentURI()
@@ -194,7 +192,6 @@ export class Tree {
                 .map(Trees.get)
                 .map(async treePromise => {
                     const tree = await treePromise
-                    console.log('about to clear Interactions for ', tree.id)
                     tree.clearChildrenInteractions()
                 })
         }
@@ -213,7 +210,7 @@ export class Tree {
             userProficiencyStatsMap: this.userProficiencyStatsMap
         }
         const lookupKey = 'trees/' + this.id
-        console.log("lookup Key is", lookupKey)
+        
         firebase.database().ref(lookupKey).update(updates)
     }
 
@@ -228,7 +225,7 @@ export class Tree {
             userAggregationTimerMap: this.userAggregationTimerMap
         }
         const lookupKey = 'trees/' + this.id
-        console.log("lookup Key is", lookupKey)
+        
         firebase.database().ref(lookupKey).update(updates)
     }
     setNumOverdue(numOverdue, addChangeToDB){
@@ -243,7 +240,7 @@ export class Tree {
             userNumOverdueMap: this.userNumOverdueMap
         }
         const lookupKey = 'trees/' + this.id
-        console.log("lookup Key is", lookupKey)
+        
         firebase.database().ref(lookupKey).update(updates)
     }
     /**
@@ -258,7 +255,7 @@ export class Tree {
             contentType
         }
         const lookupKey = 'trees/' + this.id
-        console.log("lookup Key is", lookupKey)
+        
         firebase.database().ref(lookupKey).update(updates)
     }
 
