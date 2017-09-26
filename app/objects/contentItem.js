@@ -282,7 +282,7 @@ export default class ContentItem {
         })
         return Promise.all(calculationPromises)
     }
-    clearInteractions(){
+    clearInteractions(addChangeToDB){
         const me = this
         delete this.studiers[user.getId()]
 
@@ -301,6 +301,14 @@ export default class ContentItem {
         this.timer = 0
         delete this.userTimeMap[user.getId()]
 
+        this.calculateAggregationTimerForTreeChain()
+        this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
+        this.recalculateNumOverdueAggregationForTreeChain(addChangeToDB)
+        this.resortTrees()
+        if (!addChangeToDB) {
+            return
+        }
+
         const updates = {
             studiers: this.studiers,
             userProficiencyMap : this.userProficiencyMap,
@@ -313,12 +321,8 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
         Object.keys(this.trees).forEach(treeId => {
             store.commit('syncGraphWithNode', treeId)
-           // PubSub.publish('syncGraphWithNode', treeId)
+            // PubSub.publish('syncGraphWithNode', treeId)
         })
-        this.calculateAggregationTimerForTreeChain()
-        this.recalculateProficiencyAggregationForTreeChain()
-        this.recalculateNumOverdueAggregationForTreeChain()
-        this.resortTrees()
     }
     async resortTrees(){
         await Promise.all(

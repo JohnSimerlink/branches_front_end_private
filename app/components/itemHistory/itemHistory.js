@@ -32,9 +32,8 @@ export default {
     },
     methods: {
         clearInteractions(){
-            this.content.clearInteractions()
-            user.clearInteractionsForItem(this.content.id)
-            console.log('clearing Interactions!')
+            console.log("A: tree/tree clearInteractions() called")
+            user.addMutation('clearInteractions', {contentId: this.content.id, timestamp: Date.now()})
             this.loadItemHistory()
         },
         loadItemHistory(){
