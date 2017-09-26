@@ -453,6 +453,8 @@ export default class ContentItem {
         // user.addMutation('itemStudied', this.id)
         // store.commit('itemStudied', this.id)
 
+        this.set('overdue', false, addChangeToDB)
+
         if (!addChangeToDB) {
             return
         }
@@ -467,7 +469,6 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
         //set timeout to mark the item overdue when it becomes overdue
-        this.set('overdue', false, addChangeToDB)
     }
 
     setProficiency(proficiency) {
