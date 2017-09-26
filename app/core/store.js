@@ -80,7 +80,6 @@ const localMutations = {
         state.settingsMenuOpen = false
     },
     clickNode(state, nodeId){
-        console.log("store.js clickNode called",state.openNodeId, nodeId)
         this.commit('openNode', nodeId)
     },
     openNode(state, nodeId){
@@ -101,11 +100,8 @@ const localMutations = {
     },
     async interaction(state, {data, addChangeToDB}){
         const interaction = data
-        console.log('store.js interaction is', interaction, addChangeToDB)
         const contentId = interaction.contentId
-        console.log('store.js contentId', interaction, contentId)
         const contentItem = await ContentItems.get(contentId)
-        console.log('store.js contentItem', interaction, contentItem)
         contentItem.addInteraction(interaction, addChangeToDB)
     },
     async clearInteractions(state, {data, addChangeToDB}){
@@ -123,7 +119,6 @@ const mutations = {
 
 const actions = {
     itemStudied: ({commit, contentId}) => {
-        console.log('item studied action called', contentId)
         commit('itemStudied', contentId)
     }
 }
