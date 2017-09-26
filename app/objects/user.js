@@ -126,6 +126,7 @@ class User {
     }
 
     setInteractionsForItem(itemId, interactions, addChangeToDB){
+        console.log(itemId, "user.setInteractionsForItem",  itemId, interactions, addChangeToDB)
         if (!this.branchesData.items[itemId]) return
 
         this.branchesData.items[itemId].interactions = interactions
@@ -139,6 +140,7 @@ class User {
     }
 
     clearInteractionsForItem(itemId, addChangeToDB){
+        console.log(itemId, "user.clearInteractionsForItem called", itemId, addChangeToDB)
         this.setInteractionsForItem(itemId, [], addChangeToDB)
     }
 

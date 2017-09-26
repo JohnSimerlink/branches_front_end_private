@@ -66,16 +66,19 @@ export class Tree {
         if (typeof arguments[0] === 'object'){//TODO: use a boolean to determine if the tree already exists. or use Trees.get() and Trees.create() separate methods, so we aren't getting confused by the same constructor
             return
         }
-        firebase.database().ref('trees/' + this.id).update(
-            {
-                id: this.id,
-                contentId,
-                contentType,
-                parentId,
-                x,
-                y
-            }
-        )
+
+        const updates = {
+            id: this.id,
+            contentId,
+            contentType,
+            parentId,
+            x,
+            y
+        }
+        const lookupKey = 'trees/' + this.id
+        console.log('trees update lookupKey', lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
+
     }
     getChildKeys(){
         if (!this.children){
@@ -97,7 +100,10 @@ export class Tree {
             children: this.children
         }
         try {
-            await firebase.database().ref('trees/' +this.id).update(updates)
+
+            const lookupKey = 'trees/' + this.id
+            console.log('trees update lookupKey', lookupKey)
+            await firebase.database().ref(lookupKey).update(updates)
         } catch (err){
             console.error(' error for addChild firebase call', err)
         }
@@ -138,14 +144,19 @@ export class Tree {
         }
         delete this.children[childId]
 
-        firebase.database().ref('trees/' + this.id).update({children: this.children})
+        const updates = {children: this.children}
+        const lookupKey = 'trees/' + this.id
+        console.log("lookup Key is", lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
     }
 
     changeParent(newParentId) {
         this.parentId = newParentId
-        firebase.database().ref('trees/' + this.id).update({
-            parentId: newParentId
-        })
+        const updates = {parentId: newParentId}
+        const lookupKey = 'trees/' + this.id
+        console.log("lookup Key is", lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
+
         this.updatePrimaryParentTreeContentURI()
         this.recalculateProficiencyAggregation()
         this.calculateAggregationTimer()
@@ -190,6 +201,7 @@ export class Tree {
 
     }
     setProficiencyStats(proficiencyStats, addChangeToDB){
+        console.log(this.id, "setProficiencyStats", addChangeToDB)
         this.proficiencyStats = proficiencyStats
         this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
         this.userProficiencyStatsMap[user.getId()] = this.proficiencyStats
@@ -200,17 +212,24 @@ export class Tree {
         const updates = {
             userProficiencyStatsMap: this.userProficiencyStatsMap
         }
-        firebase.database().ref('trees/' + this.id).update(updates)
+        const lookupKey = 'trees/' + this.id
+        console.log("lookup Key is", lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
     }
 
-    setAggregationTimer(timer){
+    setAggregationTimer(timer,addChangeToDB){
         this.aggregationTimer = timer
         this.userAggregationTimerMap = this.userAggregationTimerMap || {}
         this.userAggregationTimerMap[user.getId()] = this.aggregationTimer
+        if (!addChangeToDB){
+            return
+        }
         const updates = {
             userAggregationTimerMap: this.userAggregationTimerMap
         }
-        firebase.database().ref('trees/' + this.id).update(updates)
+        const lookupKey = 'trees/' + this.id
+        console.log("lookup Key is", lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
     }
     setNumOverdue(numOverdue, addChangeToDB){
         this.numOverdue = numOverdue
@@ -223,7 +242,9 @@ export class Tree {
         const updates = {
             userNumOverdueMap: this.userNumOverdueMap
         }
-        firebase.database().ref('trees/' + this.id).update(updates)
+        const lookupKey = 'trees/' + this.id
+        console.log("lookup Key is", lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
     }
     /**
      * Change the content of a given node ("Tree")
@@ -232,10 +253,13 @@ export class Tree {
     changeContent(contentId, contentType) {
         this.contentId = contentId;
         this.contentType = contentType;
-        firebase.database().ref('trees/' + this.id).update({
+        const updates = {
             contentId,
             contentType
-        });
+        }
+        const lookupKey = 'trees/' + this.id
+        console.log("lookup Key is", lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
     }
 
     /**
@@ -251,7 +275,9 @@ export class Tree {
         var updates = {}
         updates[prop] = val
         // this.treeRef.update(updates)
-        firebase.database().ref('trees/' +this.id).update(updates)
+        const lookupKey = 'trees/' + this.id
+        console.log('trees update lookupKey', lookupKey)
+        firebase.database().ref(lookupKey).update(updates)
         this[prop] = val
     }
     addToX({recursion,deltaX}={recursion:false, deltaX: 0}){
@@ -305,6 +331,7 @@ export class Tree {
         return proficiencyStats
     }
     async recalculateProficiencyAggregation(addChangeToDB){
+        console.log(this.id, "tree recalculateProficiencyAggregation called", addChangeToDB)
         let proficiencyStats;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -312,13 +339,14 @@ export class Tree {
         } else {
             proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf()
         }
+        console.log(this.id, "tree setProficiencyStats about to be called", addChangeToDB)
         this.setProficiencyStats(proficiencyStats,addChangeToDB)
         store.commit('syncGraphWithNode', this.id)
 
         // PubSub.publish('syncGraphWithNode', this.id)
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)
-        return parent.recalculateProficiencyAggregation()
+        return parent.recalculateProficiencyAggregation(addChangeToDB)
     }
 
     async calculateAggregationTimerForLeaf(){
@@ -340,7 +368,7 @@ export class Tree {
         })
         return timer
     }
-    async calculateAggregationTimer(){
+    async calculateAggregationTimer(addChangeToDB){
         let timer;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -348,7 +376,7 @@ export class Tree {
         } else {
             timer = await this.calculateAggregationTimerForNotLeaf()
         }
-        this.setAggregationTimer(timer)
+        this.setAggregationTimer(timer,addChangeToDB)
 
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)
@@ -377,6 +405,7 @@ export class Tree {
         //TODO start storing numOverdue in db - the way we do with the other aggregations
     }
     async calculateNumOverdueAggregation(addChangeToDB){
+        console.log(this.id, 'content calculateNumOverdueAggregation', addChangeToDB)
         let numOverdue;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -388,7 +417,7 @@ export class Tree {
 
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)
-        return parent.calculateNumOverdueAggregation()
+        return parent.calculateNumOverdueAggregation(addChangeToDB)
 
     }
     //returns a list of contentItems that are all on leaf nodes
