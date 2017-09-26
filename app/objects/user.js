@@ -167,7 +167,7 @@ class User {
             timestamp: Date.now(),
             action
         }
-        this.performMutation(mutation)
+        this.performMutationAndSaveChanges(mutation)
         this.branchesData.mutations.push(mutation)
         const updates = {
             mutations: this.branchesData.mutations
@@ -189,17 +189,21 @@ class User {
                 return
             }
 
-            me.performMutation(mostRecentMutation)
+            me.performMutationWithoutSaveChanges(mostRecentMutation)
         })
     }
     mutationIsFromThisDevice(mutation){
         return mutation && mutation.action && mutation.action.sessionId === window.sessionId
     }
-    performMutation(mutation){
+    performMutation(mutation, addChangeToDB){
         const action = mutation.action
-        const addChangeToDB = this.mutationIsFromThisDevice()
         store.commit(action.type, {data: action.data, addChangeToDB})
-
+    }
+    performMutationAndSaveChanges(mutation){
+        this.performMutation(mutation,true)
+    }
+    performMutationWithoutSaveChanges(mutation){
+        this.performMutation(mutation,false)
     }
 }
 
