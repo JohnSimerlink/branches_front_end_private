@@ -125,16 +125,21 @@ class User {
         this[prop] = val
     }
 
-    setInteractionsForItem(itemId, interactions){
+    setInteractionsForItem(itemId, interactions, addChangeToDB){
         if (!this.branchesData.items[itemId]) return
 
         this.branchesData.items[itemId].interactions = interactions
+
+        if (!addChangeToDB){
+            return
+        }
+
         var updates = {interactions}
         firebase.database().ref('users/' +this.getId() + '/items/' + itemId + '/').update(updates)
     }
 
-    clearInteractionsForItem(itemId){
-        this.setInteractionsForItem(itemId, [])
+    clearInteractionsForItem(itemId, addChangeToDB){
+        this.setInteractionsForItem(itemId, [], addChangeToDB)
     }
 
     async applyDataPatches(){
@@ -153,6 +158,7 @@ class User {
         return await firebase.database().ref('users/' + this.getId() + '/').update(updates)
     }
     async addMutation(type, data){
+        console.log("B: user.addMutation called", type, data)
         const action = {
             type,
             data,
@@ -174,13 +180,15 @@ class User {
             if (!mutationsArray) return
             const mostRecentMutation = mutationsArray.length ? mutationsArray[mutationsArray.length - 1] : null
             if (!mostRecentMutation) return
-            if (mostRecentMutation.timestamp > window.startTime){
-                const action = mostRecentMutation.action
-                const addChangeToDB = action.sessionId === window.sessionId
-                console.log('mutation added', mostRecentMutation, 'addChangeToDB is', addChangeToDB, action.sessionId, window.sessionId)
-                const interaction = action.data
-                store.commit(action.type, {interaction, addChangeToDB})
+            if (mostRecentMutation.timestamp <= window.startTime){
+               return
             }
+            console.log("C: user subscribe to mutations", mostRecentMutation)
+
+            const action = mostRecentMutation.action
+            const addChangeToDB = action.sessionId === window.sessionId
+            console.log('D: user about to commit a mutation ', mostRecentMutation, 'addChangeToDB is', addChangeToDB, action.sessionId, window.sessionId, '===========', action.type, action.data, addChangeToDB)
+            store.commit(action.type, {data: action.data, addChangeToDB})
         })
     }
 }

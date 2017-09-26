@@ -134,9 +134,6 @@ export default {
         syncProficiency() {
             user.addMutation('interaction', {contentId: this.content.id, proficiency: this.content.proficiency, timestamp: Date.now()})
         },
-        clearInteractions(){
-            this.content.clearInteractions()
-        },
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
         async syncTreeChainWithUI() {
             this.syncGraphWithNode()

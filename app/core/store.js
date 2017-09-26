@@ -96,14 +96,22 @@ const localMutations = {
         state.nodeIdToSync = nodeId
         // console.log('syncGraphWithNode', + Date.now())
     },
-    async interaction(state, {interaction, addChangeToDB}){
+    async interaction(state, {data, addChangeToDB}){
+        const interaction = data
         console.log('store.js interaction is', interaction, addChangeToDB)
         const contentId = interaction.contentId
         console.log('store.js contentId', interaction, contentId)
         const contentItem = await ContentItems.get(contentId)
         console.log('store.js contentItem', interaction, contentItem)
         contentItem.addInteraction(interaction, addChangeToDB)
+    },
+    async clearInteractions(state, {data, addChangeToDB}){
+        const {contentId, timestamp } = data
+        const contentItem = await ContentItems.get(contentId)
+        contentItem.clearInteractions(addChangeToDB)
+        user.clearInteractionsForItem(this.content.id, addChangeToDB)
     }
+
 }
 const mutations = {
     ...serverMutations,
