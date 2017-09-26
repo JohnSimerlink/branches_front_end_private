@@ -172,6 +172,7 @@ class User {
         const updates = {
             mutations: this.branchesData.mutations
         }
+        //TODO: cache mutation list if app goes offline, so as to push the mutations to the db when the app gets back online
         firebase.database().ref('users/' + this.getId() + '/').update(updates)
     }
     subscribeToMutations(){
