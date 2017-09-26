@@ -33,7 +33,7 @@ export default {
         this.nodeBeingDragged = false
         this.tree = await Trees.get(this.id)
         this.content = await ContentItems.get(this.tree.contentId)
-        console.log("this contentId is ", this.content.id, this.content, this.content.nextReviewTime, timeFromNow(this.content.nextReviewTime))
+        console.log("this next reviewTime is ", this.content.nextReviewTime, timeFromNow(this.content.nextReviewTime))
         this.startTimer()
         await this.tree.getLeaves()
         this.tree.sortLeavesByStudiedAndStrength()
@@ -130,10 +130,8 @@ export default {
             this.tree.clearChildrenInteractions()
         },
         proficiencyClicked() {
-            this.syncProficiency()
-        },
-        syncProficiency() {
             user.addMutation('interaction', {contentId: this.content.id, proficiency: this.content.proficiency, timestamp: Date.now()})
+            store.commit('closeNode', this.id)
         },
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
         async syncTreeChainWithUI() {
