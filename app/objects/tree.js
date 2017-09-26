@@ -438,7 +438,7 @@ export class Tree {
         } else {
             // console.log(this.id, "NOT LEAF!")
             await Promise.all(
-                Object.keys(this.children).map(async childId => {
+                this.getChildKeys().map(async childId => {
                     try{
                         const child = await Trees.get(childId)
                         // console.log('leaves before concat are', leaves)
