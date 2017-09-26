@@ -130,27 +130,9 @@ export default {
         },
         proficiencyClicked() {
             this.syncProficiency()
-            const decibelIncrease = this.content.getRecentDecibelIncrease()
-            const whenToReview = timeFromNow(this.content.nextReviewTime)
-            let text = ''
-            if (whenToReview.indexOf('in' >= 0)){
-                text = ' pts, review '
-            } else {
-                text = ' pts, review in '
-            }
-            const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
-            const msg = sign + Math.round(decibelIncrease) + text + whenToReview
-            console.log(msg)
-            // const color = getColor
-            const color = proficiencyToColor(this.content.proficiency)
-            message(msg, color)
         },
         syncProficiency() {
-            this.content.saveProficiency() //  this.content.proficiency is already set I think, but not saved in db
-            this.content.recalculateProficiencyAggregationForTreeChain()
-                .then(this.syncTreeChainWithUI)
-                .then(refreshGraph)
-            this.content.recalculateNumOverdueAggregationForTreeChain()
+            user.addMutation('interaction', {contentId: this.content.id, proficiency: this.content.proficiency, timestamp: Date.now()})
         },
         clearInteractions(){
             this.content.clearInteractions()

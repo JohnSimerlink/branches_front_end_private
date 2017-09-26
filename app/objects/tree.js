@@ -30,6 +30,7 @@ const unknownProficiencyStats = {
     FOUR: 0,
 }
 
+
 export class Tree {
 
     constructor(contentId, contentType, parentId, parentDegree, x, y) {
@@ -188,11 +189,14 @@ export class Tree {
         }
 
     }
-    setProficiencyStats(proficiencyStats){
+    setProficiencyStats(proficiencyStats, addChangeToDB){
         this.proficiencyStats = proficiencyStats
         this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
         this.userProficiencyStatsMap[user.getId()] = this.proficiencyStats
 
+        if (!addChangeToDB){
+            return
+        }
         const updates = {
             userProficiencyStatsMap: this.userProficiencyStatsMap
         }
@@ -208,10 +212,14 @@ export class Tree {
         }
         firebase.database().ref('trees/' + this.id).update(updates)
     }
-    setNumOverdue(numOverdue){
+    setNumOverdue(numOverdue, addChangeToDB){
         this.numOverdue = numOverdue
         this.userNumOverdueMap = this.userNumOverdueMap || {}
         this.userNumOverdueMap[user.getId()] = this.numOverdue
+        if (!addChangeToDB){
+            return
+        }
+
         const updates = {
             userNumOverdueMap: this.userNumOverdueMap
         }
@@ -296,7 +304,7 @@ export class Tree {
         })
         return proficiencyStats
     }
-    async recalculateProficiencyAggregation(){
+    async recalculateProficiencyAggregation(addChangeToDB){
         let proficiencyStats;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -304,7 +312,7 @@ export class Tree {
         } else {
             proficiencyStats = await this.calculateProficiencyAggregationForNotLeaf()
         }
-        this.setProficiencyStats(proficiencyStats)
+        this.setProficiencyStats(proficiencyStats,addChangeToDB)
         store.commit('syncGraphWithNode', this.id)
 
         // PubSub.publish('syncGraphWithNode', this.id)
@@ -368,7 +376,7 @@ export class Tree {
         return numOverdue
         //TODO start storing numOverdue in db - the way we do with the other aggregations
     }
-    async calculateNumOverdueAggregation(){
+    async calculateNumOverdueAggregation(addChangeToDB){
         let numOverdue;
         const isLeaf = await this.isLeaf()
         if (isLeaf){
@@ -376,7 +384,7 @@ export class Tree {
         } else {
             numOverdue = await this.calculateNumOverdueAggregationNotLeaf()
         }
-        this.setNumOverdue(numOverdue)
+        this.setNumOverdue(numOverdue, addChangeToDB)
 
         if (!this.parentId) return
         const parent = await Trees.get(this.parentId)

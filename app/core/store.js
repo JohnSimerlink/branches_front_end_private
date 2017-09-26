@@ -4,6 +4,7 @@ import {Trees} from '../objects/trees'
 import Snack from '../../node_modules/snack.js/dist/snack'
 import user from '../objects/user'
 import {syncGraphWithNode} from "../components/knawledgeMap/knawledgeMap";
+import ContentItems from "../objects/contentItems";
 Vue.use(Vuex)
 
 export const MODES = {
@@ -94,6 +95,14 @@ const localMutations = {
     syncGraphWithNode(state, nodeId){
         state.nodeIdToSync = nodeId
         // console.log('syncGraphWithNode', + Date.now())
+    },
+    async interaction(state, {interaction, addChangeToDB}){
+        console.log('store.js interaction is', interaction, addChangeToDB)
+        const contentId = interaction.contentId
+        console.log('store.js contentId', interaction, contentId)
+        const contentItem = await ContentItems.get(contentId)
+        console.log('store.js contentItem', interaction, contentItem)
+        contentItem.addInteraction(interaction, addChangeToDB)
     }
 }
 const mutations = {
