@@ -473,8 +473,8 @@ export default class ContentItem {
 
     setProficiency(proficiency) {
         //-proficiency stored as part of this content item
-        this.proficiency = proficiency
-        this.saveProficiency()
+        // this.proficiency = proficiency
+        // this.saveProficiency({proficiency, timestamp: Date.now()})
     }
     //methods for html templates
     isProficiencyUnknown(){

@@ -31,7 +31,7 @@ export async function newTree(nodeType, parentTreeId,primaryParentTreeContentURI
             newContent = ContentItems.create(new Fact(values));
             break;
     }
-    newContent.setProficiency(PROFICIENCIES.ONE)
+    // newContent.setProficiency(PROFICIENCIES.ONE)
 
     const parentTreeUINode = getTreeUINode(parentTreeId)
     let level = 5 // eventually get the laevel from the property on the parent tree - but right now that is not stored in db
