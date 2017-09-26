@@ -402,15 +402,15 @@ export default class ContentItem {
     async addInteraction({proficiency, timestamp}, addChangeToDB){
         console.log('contentItem.js addInteraction addChangeToDB', proficiency, timestamp, addChangeToDB)
         this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.proficiency is already set I think, but not saved in db
+        this.messageRecentDecibelIncrease()
         try {
-            const proficiencyPromise = this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
-            const overduePromise = this.recalculateNumOverdueAggregationForTreeChain(addChangeToDB)
+            const proficiencyAncestorsPromise = this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
+            const overdueAncestorsPromise = this.recalculateNumOverdueAggregationForTreeChain(addChangeToDB)
 
-            const updateDataPromises = [proficiencyPromise, overduePromise]
-            await Promise.all(updateDataPromises)
+            const updateAncestorsPromises = [proficiencyAncestorsPromise, overdueAncestorsPromise]
+            await Promise.all(updateAncestorsPromises)
             await this.syncTreeChainWithUI()
             refreshGraph()
-            this.messageRecentDecibelIncrease()
         } catch( err) {
             console.log("contentItem.js err", err)
         }

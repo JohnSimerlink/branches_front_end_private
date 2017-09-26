@@ -167,6 +167,7 @@ class User {
             timestamp: Date.now(),
             action
         }
+        this.performMutation(mutation)
         this.branchesData.mutations.push(mutation)
         const updates = {
             mutations: this.branchesData.mutations
@@ -174,6 +175,7 @@ class User {
         firebase.database().ref('users/' + this.getId() + '/').update(updates)
     }
     subscribeToMutations(){
+        const me = this
         firebase.database().ref('users/' + this.getId() + '/' + 'mutations').on('value', snapshot => {
             const mutationsArray = snapshot.val()
             if (!mutationsArray) return
@@ -182,11 +184,21 @@ class User {
             if (mostRecentMutation.timestamp <= window.startTime){
                return
             }
+            if (this.mutationIsFromThisDevice(mostRecentMutation)){
+                return
+            }
 
-            const action = mostRecentMutation.action
-            const addChangeToDB = action.sessionId === window.sessionId
-            store.commit(action.type, {data: action.data, addChangeToDB})
+            me.performMutation(mostRecentMutation)
         })
+    }
+    mutationIsFromThisDevice(mutation){
+        return mutation && mutation.action && mutation.action.sessionId === window.sessionId
+    }
+    performMutation(mutation){
+        const action = mutation.action
+        const addChangeToDB = this.mutationIsFromThisDevice()
+        store.commit(action.type, {data: action.data, addChangeToDB})
+
     }
 }
 
