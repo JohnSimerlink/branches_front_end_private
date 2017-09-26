@@ -265,8 +265,7 @@ export default class ContentItem {
         delete window.content[this.id]
     }
     recalculateProficiencyAggregationForTreeChain(addChangeToDB){
-        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
-            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        const treePromises = this.getTreePromises()// again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
             return tree.recalculateProficiencyAggregation(addChangeToDB)
@@ -274,8 +273,8 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     recalculateNumOverdueAggregationForTreeChain(addChangeToDB){
-        const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
-            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
+        console.log(this.id, 'content recalculateNumOverdueAggregationForTreeChain', addChangeToDB)
+        const treePromises = this.getTreePromises() // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
             return tree.calculateNumOverdueAggregation(addChangeToDB)
@@ -388,12 +387,19 @@ export default class ContentItem {
     }
 
     async addInteraction({proficiency, timestamp}, addChangeToDB){
-        console.log('contentItem.js addInteraction addChangeToDB', addChangeToDB)
+        console.log('contentItem.js addInteraction addChangeToDB', proficiency, timestamp, addChangeToDB)
         this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.proficiency is already set I think, but not saved in db
-        const updateDataPromises = [this.recalculateProficiencyAggregationForTreeChain(addChangeToDB), this.recalculateNumOverdueAggregationForTreeChain(addChangeToDB)]
-        await Promise.all(updateDataPromises)
-        await this.syncTreeChainWithUI()
-        refreshGraph()
+        try {
+            const proficiencyPromise = this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
+            const overduePromise = this.recalculateNumOverdueAggregationForTreeChain(addChangeToDB)
+
+            const updateDataPromises = [proficiencyPromise, overduePromise]
+            await Promise.all(updateDataPromises)
+            await this.syncTreeChainWithUI()
+            refreshGraph()
+        } catch( err) {
+            console.log("contentItem.js err", err)
+        }
     }
 
     saveProficiency({proficiency, timestamp}, addChangeToDB){

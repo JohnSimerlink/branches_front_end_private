@@ -7,7 +7,7 @@ function fixInteractionData(){
        const item = await ContentItems.get(contentId)
        console.log('the content we got is', item)
        user.set('interactions', item.interactions)
-       user.setInteractionsForItem(contentId, item.interactions)
+       user.setInteractionsForItem(contentId, item.interactions, true)
    })
 }
 export async function clearInteractionsForHeadings(){
@@ -17,7 +17,7 @@ export async function clearInteractionsForHeadings(){
         Object.keys(headings).map(async headingKey => {
             user.clearInteractionsForItem(headingKey)
             const contentItem = await ContentItems.get(headingKey)
-            contentItem.clearInteractions()
+            contentItem.clearInteractions(true)
         })
     )
 }
