@@ -44,7 +44,6 @@ function proficiencyToColor(proficiency){
           return
       }
 
-
       var prefix = settings('prefix') || '';
 
       var size = node[prefix + 'size'];
@@ -52,46 +51,22 @@ function proficiencyToColor(proficiency){
       var x = node[prefix + 'x']
       var y = node[prefix + 'y']
       if (window.awaitingEdgeConnection){
-                                                if (node.content.type !== 'heading' && node.state !== 'awaitingEdgeConnection'){
-                                                context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), 0)
-                                                // size = size * 1.5
-                                                }
-                                                if (node.content.type == 'heading'){
-                                                var haloSize = size * window.haloSizeScalingFactor
-
-                                                var center =
-                                                context.beginPath()
-                                                // context.fillStyle = 'black'
-                                                context.strokeStyle = 'white'
-                                                context.arc(
-                                                x,
-                                                y,
-                                                haloSize,
-                                                0,
-                                                Math.PI * 2,
-                                                true
-                                                );
-                                                context.stroke()
-                                                }
-                                                }
+        if (node.content.type !== 'heading' && node.state !== 'awaitingEdgeConnection'){
+            context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), 0)
+            // size = size * 1.5
+        }
+      }
+      context.font="Fredoka One"
       if (node.state == 'awaitingEdgeConnection'){
-                                                       // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-                                                       var haloSize = size * window.haloSizeScalingFactor
+           // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
+           var haloSize = size * window.haloSizeScalingFactor
 
-                                                       var center =
-                                                       context.beginPath()
-                                                       // context.fillStyle = 'black'
-                                                       context.strokeStyle = 'black'
-                                                       context.arc(
-                                                       x,
-                                                       y,
-                                                       haloSize,
-                                                       0,
-                                                       Math.PI * 2,
-                                                       true
-                                                       );
-                                                       context.stroke()
-                                                       }
+           var center = context.beginPath()
+           // context.fillStyle = 'black'
+           context.strokeStyle = 'black'
+           context.arc(x, y,haloSize,0,Math.PI * 2,true );
+           context.stroke()
+      }
 
       context.beginPath();
       context.arc(
@@ -105,6 +80,13 @@ function proficiencyToColor(proficiency){
 
       context.closePath();
       context.fill();
+
+      if (node.overdue){
+          var fontSize = Math.floor(size * 1.414)
+         context.font = fontSize + 'px FontAwesome'
+          context.fillText('\uf017', x + size, y + size)
+          context.font = fontSize + 'px Fredoka One'
+      }
 
   };
 })();
@@ -122,6 +104,16 @@ function renderHeading(node,context,settings){
     var fourColor = proficiencyToColor(PROFICIENCIES.FOUR)
 
     var proficiencyStats = node.proficiencyStats
+
+    if(window.awaitingEdgeConnection){
+        var haloSize = size * window.haloSizeScalingFactor
+
+        var center = context.beginPath()
+        // context.fillStyle = 'black'
+        context.strokeStyle = 'white'
+        context.arc(x, y, haloSize, 0, Math.PI * 2, true);
+        context.stroke()
+    }
 
     if (! (proficiencyStats instanceof Object)){
 

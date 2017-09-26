@@ -151,6 +151,19 @@ export default class ContentItem {
 
     markOverdue(){
         this.set('overdue', true)
+        const colorForMessage = proficiencyToColor(this.proficiency)
+        console.log("color for message", colorForMessage)
+        message(
+            {
+                text: "Click to review " + getLabelFromContent(this),
+                color: colorForMessage,
+                duration: 10000,
+                onclick: (snack) => {
+                    store.commit('openNode', this.getTreeId())
+                    snack.hide()
+                }
+            }
+        )
         this.overdue = true
         const me = this
         Object.keys(this.trees).forEach(async treeId => {
@@ -397,6 +410,7 @@ export default class ContentItem {
             await Promise.all(updateDataPromises)
             await this.syncTreeChainWithUI()
             refreshGraph()
+            this.messageRecentDecibelIncrease()
         } catch( err) {
             console.log("contentItem.js err", err)
         }
@@ -545,7 +559,7 @@ export default class ContentItem {
         console.log(msg)
         // const color = getColor
         const color = proficiencyToColor(this.proficiency)
-        message(msg, color)
+        message({text: msg, color})
     }
 
 
@@ -580,4 +594,14 @@ function convertBreadcrumbListToString(breadcrumbList){
     let result = firstItems + lastItem
 
     return result
+}
+export function getLabelFromContent(content) {
+    switch (content.type){
+        case "fact":
+            return content.question
+        case "heading":
+            return content.title
+        case "skill":
+            return content.title
+    }
 }

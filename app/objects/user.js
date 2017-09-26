@@ -126,7 +126,6 @@ class User {
     }
 
     setInteractionsForItem(itemId, interactions, addChangeToDB){
-        console.log(itemId, "user.setInteractionsForItem",  itemId, interactions, addChangeToDB)
         if (!this.branchesData.items[itemId]) return
 
         this.branchesData.items[itemId].interactions = interactions
@@ -140,7 +139,6 @@ class User {
     }
 
     clearInteractionsForItem(itemId, addChangeToDB){
-        console.log(itemId, "user.clearInteractionsForItem called", itemId, addChangeToDB)
         this.setInteractionsForItem(itemId, [], addChangeToDB)
     }
 
@@ -160,7 +158,6 @@ class User {
         return await firebase.database().ref('users/' + this.getId() + '/').update(updates)
     }
     async addMutation(type, data){
-        console.log("B: user.addMutation called", type, data)
         const action = {
             type,
             data,
@@ -185,11 +182,9 @@ class User {
             if (mostRecentMutation.timestamp <= window.startTime){
                return
             }
-            console.log("C: user subscribe to mutations", mostRecentMutation)
 
             const action = mostRecentMutation.action
             const addChangeToDB = action.sessionId === window.sessionId
-            console.log('D: user about to commit a mutation ', mostRecentMutation, 'addChangeToDB is', addChangeToDB, action.sessionId, window.sessionId, '===========', action.type, action.data, addChangeToDB)
             store.commit(action.type, {data: action.data, addChangeToDB})
         })
     }
