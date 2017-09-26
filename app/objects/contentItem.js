@@ -1,18 +1,25 @@
+import {timeFromNow} from "../core/filters";
+
 const content = {}
 if (typeof window !== 'undefined') {
     window.content = content //expose to window for easy debugging
 }
 import user from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
-import {PROFICIENCIES} from "../components/proficiencyEnum";
+import {PROFICIENCIES, proficiencyToColor} from "../components/proficiencyEnum";
 import {Trees} from './trees'
 import {
     measurePreviousStrength, estimateCurrentStrength,
     calculateSecondsTilCriticalReviewTime
 } from "../forgettingCurve";
 import store from '../core/store'
+import message from "../message";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
+
+function refreshGraph() {
+    PubSub.publish('refreshGraph')
+}
 
 export default class ContentItem {
 
@@ -163,7 +170,7 @@ export default class ContentItem {
      * @param prop
      * @param val
      */
-    set(prop, val){
+    set(prop, val, updateInDB){
         if (this[prop] === val) {
             return;
         }
@@ -207,6 +214,7 @@ export default class ContentItem {
         }
 
     }
+
     saveTimer(){
         this.userTimeMap[user.getId()] = this.timer
 
@@ -256,21 +264,21 @@ export default class ContentItem {
         firebase.database().ref('content/').child(this.id).remove() //delete from db
         delete window.content[this.id]
     }
-    recalculateProficiencyAggregationForTreeChain(){
+    recalculateProficiencyAggregationForTreeChain(addChangeToDB){
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
-            return tree.recalculateProficiencyAggregation()
+            return tree.recalculateProficiencyAggregation(addChangeToDB)
         })
         return Promise.all(calculationPromises)
     }
-    recalculateNumOverdueAggregationForTreeChain(){
+    recalculateNumOverdueAggregationForTreeChain(addChangeToDB){
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
             : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
-            return tree.calculateNumOverdueAggregation()
+            return tree.calculateNumOverdueAggregation(addChangeToDB)
         })
         return Promise.all(calculationPromises)
     }
@@ -346,19 +354,53 @@ export default class ContentItem {
         var oldDecibels = twoInteractionsAgo && twoInteractionsAgo.currentInteractionStrength || 0
         return newDecibels - oldDecibels
     }
-    saveProficiency(){
-        !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
-        const timestamp = Date.now()
+
+    async syncGraphWithNode() {
+        // syncGraphWithNode(this.tree.id)
+        const treeId = this.getTreeId()
+        store.commit('syncGraphWithNode', treeId)
+        // PubSub.publish('syncGraphWithNode', this.tree.id)
+
+    }
+
+    async syncTreeChainWithUI(){
+        console.log('this in syncTreeChainWith UI is', this)
+        this.syncGraphWithNode()
+
+        const treeId = this.getTreeId()
+        const tree = await Trees.get(treeId)
+
+        let parentId = tree.parentId;
+        let parent
+        let num = 1
+        while (parentId) {
+            // syncGraphWithNode(parentId)
+            store.commit('syncGraphWithNode', parentId)
+            // PubSub.publish('syncGraphWithNode', parentId)
+            parent = await Trees.get(parentId)
+            parentId = parent.parentId
+            num++
+        }
+    }
+
+    async addInteraction({proficiency, timestamp}, addChangeToDB){
+        console.log('contentItem.js addInteraction addChangeToDB', addChangeToDB)
+        this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.proficiency is already set I think, but not saved in db
+        const updateDataPromises = [this.recalculateProficiencyAggregationForTreeChain(addChangeToDB), this.recalculateNumOverdueAggregationForTreeChain(addChangeToDB)]
+        await Promise.all(updateDataPromises)
+        await this.syncTreeChainWithUI()
+        refreshGraph()
+    }
+
+    saveProficiency({proficiency, timestamp}, addChangeToDB){
+        this.proficiency = proficiency
+        // !this.inStudyQueue && this.addToStudyQueue()// << i don't even think that is used anymore
+        // const timestamp = Date.now()
         this.clearOverdueTimeout()
 
         //content
+        //1. userProficiencyMap
         this.userProficiencyMap[user.getId()] = this.proficiency
-
-        var updates = {
-            userProficiencyMap : this.userProficiencyMap
-        }
-
-        firebase.database().ref('content/' + this.id).update(updates)
 
         //interactions
 
@@ -378,41 +420,44 @@ export default class ContentItem {
         //store user interactions under content
         this.userInteractionsMap[user.getId()] = this.interactions
 
-        var updates = {
-            userInteractionsMap : this.userInteractionsMap
-        }
-
-        firebase.database().ref('content/' + this.id).update(updates)
+        //2. userInteractions
 
         //store contentItem interaction under users
-        user.addInteraction(this.id, interaction)
+        //3. user addInteraction
+        user.addInteraction(this.id, interaction, addChangeToDB)
 
         //store contentItem strength and timestamp under userStrengthMap
+        //4. userStrengthMap
         this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
         this.userStrengthMap[user.getId()] = this.lastRecordedStrength
-        var updates = {
-            userStrengthMap : this.userStrengthMap
-        }
-        firebase.database().ref('content/' + this.id).update(updates)
         //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
         const millisecondsTilNextReview = 1000 * calculateSecondsTilCriticalReviewTime(currentInteractionStrength)
         this.nextReviewTime = timestamp + millisecondsTilNextReview
 
+        //5. userReviewTimeMap
         this.userReviewTimeMap[user.getId()] = this.nextReviewTime
+
+        this.setOverdueTimeout()
+
+        this.resortTrees()
+        // user.addMutation('itemStudied', this.id)
+        // store.commit('itemStudied', this.id)
+
+        if (!addChangeToDB) {
+            return
+        }
+        // all updates
+
         var updates = {
+            userProficiencyMap : this.userProficiencyMap,
+            userInteractionsMap : this.userInteractionsMap,
+            userStrengthMap : this.userStrengthMap,
             userReviewTimeMap : this.userReviewTimeMap
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
-
         //set timeout to mark the item overdue when it becomes overdue
-        this.set('overdue', false)
-        this.setOverdueTimeout()
-
-        this.resortTrees()
-        user.addMutation('itemStudied', this.id)
-        // store.commit('itemStudied', this.id)
-
+        this.set('overdue', false, addChangeToDB)
     }
 
     setProficiency(proficiency) {
@@ -473,6 +518,23 @@ export default class ContentItem {
     }
     getTreePromises(){
         return this.getTreeIds().map(Trees.get)
+    }
+
+    messageRecentDecibelIncrease(){
+        const decibelIncrease = this.getRecentDecibelIncrease()
+        const whenToReview = timeFromNow(this.nextReviewTime)
+        let text = ''
+        if (whenToReview.indexOf('in' >= 0)){
+            text = ' pts, review '
+        } else {
+            text = ' pts, review in '
+        }
+        const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
+        const msg = sign + Math.round(decibelIncrease) + text + whenToReview
+        console.log(msg)
+        // const color = getColor
+        const color = proficiencyToColor(this.proficiency)
+        message(msg, color)
     }
 
 

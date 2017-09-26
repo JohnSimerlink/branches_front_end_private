@@ -83,14 +83,18 @@ class User {
   //   }
   //   firebase.database().ref('users/' + this.getId()).update(updates)
   // }
-  addInteraction(contentItemId,interaction){
+  addInteraction(contentItemId,interaction, addChangeToDB){
       const item = this.branchesData.items[contentItemId] || {}
       item.interactions = item.interactions || []
       item.interactions.push(interaction)
+      this.branchesData.items[contentItemId]
+      if (!addChangeToDB) {
+          return
+      }
+
       const updates = {
           interactions: item.interactions,
       }
-      this.branchesData.items[contentItemId]
       firebase.database().ref('users/' + this.getId() + '/items/' + contentItemId +'/').update(updates)
   }
 
@@ -152,6 +156,7 @@ class User {
         const action = {
             type,
             data,
+            sessionId: window.sessionId
         }
         const mutation = {
             timestamp: Date.now(),
@@ -171,8 +176,10 @@ class User {
             if (!mostRecentMutation) return
             if (mostRecentMutation.timestamp > window.startTime){
                 const action = mostRecentMutation.action
-                console.log('mutation added', mostRecentMutation)
-                store.commit(action.type, action.data)
+                const addChangeToDB = action.sessionId === window.sessionId
+                console.log('mutation added', mostRecentMutation, 'addChangeToDB is', addChangeToDB, action.sessionId, window.sessionId)
+                const interaction = action.data
+                store.commit(action.type, {interaction, addChangeToDB})
             }
         })
     }

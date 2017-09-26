@@ -17,6 +17,9 @@ import {Tree} from "../objects/tree";
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(AsyncComputed);
+import md5 from 'md5'
+
+window.sessionId = md5(Math.random() + Date.now() + Math.random())
 import store from './store.js'
 // 1. Define route components.
 // These can be imported from other files
