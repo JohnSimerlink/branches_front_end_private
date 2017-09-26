@@ -24,11 +24,12 @@ export default {
     data () {
         return {
             content: {},// this.content
-            interactions: [],
         }
     },
     computed : {
-
+        interactions(){
+            return this.content.interactions || []
+        }
     },
     methods: {
         clearInteractions(){
