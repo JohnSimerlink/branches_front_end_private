@@ -43,10 +43,12 @@ export default class ContentItem {
 
         this.userReviewTimeMap = args.userReviewTimeMap || {}
         this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
-        this.overdue = args.overdue || false
+
+        this.userOverdueMap = args.userOverdueMap || {}
+        this.overdue = user.loggedIn && this.userOverdueMap[user.getId()] || false
         if (!this.overdue && this.hasInteractions()){
             if(this.determineIfOverdueNow()){
-                this.set('overdue', true)
+                this.setOverdue(true)
             } else {
                 this.setOverdueTimeout()
             }
@@ -126,9 +128,6 @@ export default class ContentItem {
         let result = getLastNBreadcrumbsStringFromList(sections, n)
         return result
     }
-    getBreadCrumbs(){
-
-    }
 
     isLeafType(){
         return this.type === 'fact' || this.type === 'skill'
@@ -138,6 +137,23 @@ export default class ContentItem {
         let millisecondsTilOverdue = this.nextReviewTime - Date.now()
         return millisecondsTilOverdue < 0
         // millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
+    }
+
+    setOverdue(overdue, updateInDB = true){
+        this.overdue = overdue
+
+        this.userOverdueMap[user.getId()] = this.timer
+
+        if (!updateInDB){
+            return
+        }
+
+        var updates = {
+            userOverdueMap: this.userOverdueMap
+        }
+
+        firebase.database().ref('content/' + this.id).update(updates)
+
     }
 
     setOverdueTimeout(){
@@ -150,7 +166,7 @@ export default class ContentItem {
     }
 
     markOverdue(){
-        this.set('overdue', true)
+        this.setOverdue(true)
         const colorForMessage = proficiencyToColor(this.proficiency)
         message(
             {
@@ -163,7 +179,6 @@ export default class ContentItem {
                 }
             }
         )
-        this.overdue = true
         const me = this
         Object.keys(this.trees).forEach(async treeId => {
             store.commit('syncGraphWithNode', treeId)
@@ -285,7 +300,6 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     recalculateNumOverdueAggregationForTreeChain(addChangeToDB){
-        console.log(this.id, 'content recalculateNumOverdueAggregationForTreeChain', addChangeToDB)
         const treePromises = this.getTreePromises() // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
@@ -552,7 +566,6 @@ export default class ContentItem {
         }
         const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
         const msg = sign + Math.round(decibelIncrease) + text + whenToReview
-        console.log(msg)
         // const color = getColor
         const color = proficiencyToColor(this.proficiency)
         message({text: msg, color})

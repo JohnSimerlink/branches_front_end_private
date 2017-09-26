@@ -14,7 +14,6 @@ export const MODES = {
 
 const state = {
     mode: MODES.STUDYING,
-    currentStudyingContentItem:'8904d53adfef7376627f4227ada47cd8',
     currentStudyingCategoryTreeId: '1',
     modes: {
         2: {
@@ -24,6 +23,7 @@ const state = {
     settingsMenuOpen: false,
     openNodeId: null,
     nodeIdToSync: null,
+    hoverOverItemId: null,
     mobile: false
 };
 
@@ -34,19 +34,34 @@ const getters = {
 }
 const serverMutations = {
     async itemStudied(state, contentId){
-        console.log('itemStudied called mutation called inside of store', state, contentId, ...arguments)
+        console.log('STORE JSitemStudied called mutation called inside of store', state, contentId, ...arguments)
+        this.commit('closeNode')
         if (!getters.studying(state)){
             return
         }
-        this.commit('closeNode')
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
-        PubSub.publish('canvas.closeTooltip', tree.id)
+        console.log(" STORE JS tree leaf values before sorting are ",
+            JSON.stringify(tree.leaves.map(leaf =>
+                {
+                    return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+                }
+            )),
+        )
+        await tree.sortLeavesByStudiedAndStrength()
+        console.log(" STORE JS tree leaf values after sorting are ",
+            JSON.stringify(tree.leaves.map(leaf =>
+            {
+                return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+            }
+            )),
+        )
         if (tree.areItemsToStudy()){
-            const itemToStudy  = tree.getNextItemToStudy()
-            console.log('next itemId to Study is', itemToStudy)
-            state.currentStudyingContentItem = itemToStudy
+            const itemIdToStudy  = tree.getNextItemIdToStudy()
+            console.log(' STORE JS next itemId to Study is', itemIdToStudy)
+            this.commit('hoverOverItemId', itemIdToStudy)
+        } else {
+            console.log(" STORE JS no items to study in tree")
         }
-        // user.addMutation({type: 'itemStudied', data: contentId})
     },
 }
 const localMutations = {
@@ -57,10 +72,11 @@ const localMutations = {
         state.currentStudyingCategoryTreeId = treeId
         const tree = await Trees.get(treeId)
         if (tree.areItemsToStudy()){
-            const itemToStudy = tree.getNextItemToStudy()
-            console.log('next itemId to Study is', itemToStudy)
-            state.currentStudyingContentItem = itemToStudy
-            PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
+            const itemIdToStudy = tree.getNextItemIdToStudy()
+            console.log('next itemId to Study is', itemIdToStudy)
+            this.commit('hoverOverItemId', itemIdToStudy)
+            this.commit('closeNode')
+            // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
         } else {
             var snack = new Snack({
                 domParent: document.querySelector('.new-exercise')
@@ -78,6 +94,9 @@ const localMutations = {
     },
     closeSettingsMenu(state){
         state.settingsMenuOpen = false
+    },
+    hoverOverItemId(state, itemId){
+        state.hoverOverItemId = itemId
     },
     clickNode(state, nodeId){
         this.commit('openNode', nodeId)
@@ -108,7 +127,7 @@ const localMutations = {
         const {contentId, timestamp } = data
         const contentItem = await ContentItems.get(contentId)
         contentItem.clearInteractions(addChangeToDB)
-        user.clearInteractionsForItem(this.content.id, addChangeToDB)
+        user.clearInteractionsForItem(contentItem.id, addChangeToDB)
     }
 
 }

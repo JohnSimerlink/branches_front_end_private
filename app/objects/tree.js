@@ -35,7 +35,6 @@ export class Tree {
 
     constructor(contentId, contentType, parentId, parentDegree, x, y) {
         this.leaves = []
-        this.sortedLeaves = []
         var treeObj
         if (arguments[0] && typeof arguments[0] === 'object'){
             treeObj = arguments[0]
@@ -191,8 +190,7 @@ export class Tree {
         // const isLeaf = await this.isLeaf()
         if(await this.isLeaf()){
             console.log(this.id, "clearChildrenInteractions THIS IS LEAF")
-            const contentItem = await ContentItems.get(this.contentId)
-            contentItem.clearInteractions()
+            user.addMutation('clearInteractions', {timestamp: Date.now(), contentId: this.contentId})
         } else {
             this.getChildTreePromises()
                 .map(async treePromise => {
@@ -236,11 +234,9 @@ export class Tree {
         this.numOverdue = numOverdue
         this.userNumOverdueMap = this.userNumOverdueMap || {}
         this.userNumOverdueMap[user.getId()] = this.numOverdue
-        console.log(this.id, "tree setNumOverdue: numOverdue is ",numOverdue, addChangeToDB)
         if (!addChangeToDB){
             return
         }
-        console.log(this.id, "tree setNumOverdue: set firebase going to be called ",numOverdue, addChangeToDB)
         const updates = {
             userNumOverdueMap: this.userNumOverdueMap
         }
@@ -386,21 +382,16 @@ export class Tree {
     async calculateNumOverdueAggregationLeaf(){
         let contentItem = await ContentItems.get(this.contentId)
         const overdue = contentItem.overdue ? 1 : 0
-        console.log(this.id, "calculateNumOverdueAggregation LEAF overdue is ", overdue)
         return overdue
     }
     async calculateNumOverdueAggregationNotLeaf(){
-        console.log(this.id, "tree calculateNumOverdueAggregation NOT LEAF called")
         const children = await this.getChildTrees()// await Promise.all(
-        console.log(this.id, "tree calculateNumOverdueAggregation NOT LEAF called. the children are", children)
         let numOverdue = children.reduce((sum, child) => sum + (+child.numOverdue || 0), 0)
-        console.log(this.id, "tree calculateNumOverdueAggregation NOT LEAF called: numOverdue is", numOverdue)
 
         return numOverdue
         //TODO start storing numOverdue in db - the way we do with the other aggregations
     }
     async calculateNumOverdueAggregation(addChangeToDB){
-        console.log(this.id, "tree calculateNumOverdueAggregation called",addChangeToDB)
         let numOverdue;
         const isLeaf = await this.isLeaf()
         try {
@@ -412,7 +403,6 @@ export class Tree {
         } catch (err){
             console.error('calcNumOverdue promise err is', err)
         }
-        console.log(this.id, "tree calculateNumOverdueAggregation called: numOverdue is ",numOverdue)
         this.setNumOverdue(numOverdue, addChangeToDB)
 
         if (!this.parentId) return
@@ -422,43 +412,55 @@ export class Tree {
     }
     //returns a list of contentItems that are all on leaf nodes
     async getLeaves(){
+        // console.log(this.id, " 1: getLeaves called ")
         if (!this.leaves.length){
+            // console.log(this.id, " 2: getLeaves. this.leaves has no length, this.leaves is ", this.leaves)
             await this.recalculateLeaves()
         }
+        // console.log(this.id, " 3: getLeaves. this.leaves after recalculateLeaves is", this.leaves)
         return this.leaves
     }
+    async recalculateLeavesLeaf(){
+        let leaves = []
+        try {
+            if (this.contentId){
+                leaves = [await this.getContentItem()]
+            }
+        } catch(err){
+            console.error(err)
+        }
+        return leaves
+    }
+    async recalculateLeavesNotLeaf(){
+        let leaves = []
+        await Promise.all(
+            this.getChildKeys().map(async childId => {
+                try{
+                    const child = await Trees.get(childId)
+                    leaves.push(... await child.getLeaves())
+                } catch (err){
+
+                }
+            })
+        )
+        return leaves
+    }
+    //TODO: FIX: this can get called multiple times simultaneously if like three children simultaneously call parent.recalculateLeaves()
     async recalculateLeaves(){
+        // console.log(this.id, " recalculateLeaves called")
         let leaves = []
         const isLeaf = await this.isLeaf()
         if (isLeaf){
-            try {
-                if (this.contentId){
-                    leaves = [await this.getContentItem()]
-                }
-            } catch(err){
-                leaves = []
-            }
+            leaves = await this.recalculateLeavesLeaf()
         } else {
-            // console.log(this.id, "NOT LEAF!")
-            await Promise.all(
-                this.getChildKeys().map(async childId => {
-                    try{
-                        const child = await Trees.get(childId)
-                        // console.log('leaves before concat are', leaves)
-                        leaves.push(... await child.getLeaves())
-                        // console.log('leaves after concat are', leaves)
-                    } catch (err){
-
-                    }
-                })
-            )
+            leaves = await this.recalculateLeavesNotLeaf()
         }
-        // console.log('leaves being return are', leaves)
         this.leaves = leaves
-
     }
     async sortLeavesByStudiedAndStrength(){
-        const studiedLeaves = this.leaves
+        // console.log(this.id, " sortLeavesByStudiedAndStrength called")
+        const leaves = await this.getLeaves()
+        const studiedLeaves = leaves
            .filter(leaf => leaf.hasInteractions)
            .sort((a,b) => {
                 //lowest decibels first
@@ -466,13 +468,14 @@ export class Tree {
            })
         const overdueLeaves = studiedLeaves.filter(leaf => leaf.overdue)
         const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.overdue)
-        studiedLeaves.forEach(leaf => {
-            // console.log('leaf is ', leaf, leaf.lastRecordedStrength.value, leaf.id, leaf.question, leaf.answer)
-        })
 
         const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)
-        this.sortedLeaves = [...overdueLeaves, ...notStudiedLeaves, ...notOverdueLeaves]
-        this.sortedLeaves = removeDuplicatesById(this.sortedLeaves)
+        this.leaves = [...overdueLeaves, ...notStudiedLeaves, ...notOverdueLeaves]
+        this.leaves = removeDuplicatesById(this.leaves)
+        // console.log(this.id, " sortLeavesByStudiedAndStrength, this sortedLeaves are", this.sortedLeaves)
+        this.leaves.forEach(leaf => {
+            // console.log(this.id, " has a leaf ", leaf.id, " with strength of ", leaf.lastRecordedStrength.value)
+        })
         if (this.parentId){
             const parent = await Trees.get(this.parentId)
             parent.sortLeavesByStudiedAndStrength()
@@ -489,10 +492,10 @@ export class Tree {
         return contentItem
     }
     areItemsToStudy(){
-        return this.sortedLeaves.length
+        return this.leaves.length
     }
-    getNextItemToStudy(){
-        return this.sortedLeaves[0]
+    getNextItemIdToStudy(){
+        return this.leaves[0].id
 
     }
 }
