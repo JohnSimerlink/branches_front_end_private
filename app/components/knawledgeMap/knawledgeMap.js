@@ -51,9 +51,8 @@ export default {
         router = this.$router
     },
     computed: {
-        currentStudyingContentItem(){
-            return this.$store.state.currentStudyingContentItem
-            console.log("current studying contentItem is", this.$store.state.currentStudyingContentItem)
+        hoverOverItemId(){
+            return this.$store.state.hoverOverItemId
         },
         openNodeId(){
             return this.$store.state.openNodeId
@@ -67,16 +66,22 @@ export default {
     },
     watch: {
         '$route': 'init',
-        currentStudyingContentItem(newContentItem, oldContentItem){
-            console.log('new content id to jump to is ', newContentItem, oldContentItem)
+        //     console.log('new content id to jump to is ', newContentItem, oldContentItem)
+        //     const treeId = newContentItem.getTreeId()
+        //     jumpToTreeId(treeId)
+        // },
+        async hoverOverItemId(newContentItemId, oldContentItemId){
+            const newContentItem = await ContentItems.get(newContentItemId)
+            console.log('newCOntentItem in hoverOverItemId is', newContentItem)
+            if (!newContentItem){ return }
+            console.log('new content to jump to is ', newContentItemId, newContentItem, oldContentItemId)
             const treeId = newContentItem.getTreeId()
             jumpToTreeId(treeId)
-            // const item = ContentItems.get()
         },
         openNodeId(newNodeId, oldNodeId){
             console.log('knawledgeMap openNodeId knawledgeMap.js! newNodeId, oldNodeId', newNodeId, oldNodeId)
             if (!newNodeId && oldNodeId){
-                closeTooltip(oldNodeId) // necessary for when currentStudyingContentItem is set after clicking study on a tree
+                closeTooltip(oldNodeId)
                 return
             }
             if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
@@ -353,7 +358,6 @@ function openTooltipFromId(nodeId){
 }
 window.openTooltipFromId = openTooltipFromId
 function openTooltip(node){
-    console.log('openTooltip called for', node.id, node);
 
     //Make copy of singleton's config by value to avoid mutation
     let configClone = clonedeep(toolTipsConfig);
@@ -376,7 +380,6 @@ function openTooltip(node){
 window.openTooltip = openTooltip
 function closeTooltip(nodeId){
     const node = s.graph.nodes(nodeId)
-    console.log("close tooltip called", node.label, node)
     tooltips.close(node);
 }
 window.closeTooltip = closeTooltip
