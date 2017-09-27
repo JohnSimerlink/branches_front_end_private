@@ -53,8 +53,10 @@ class User {
       me.branchesData.patches = me.branchesData.patches || {}
       me.branchesData.items = me.branchesData.items || {}
       me.branchesData.mutations = me.branchesData.mutations || []
+      me.branchesData.points = me.branchesData.points || 0
       me.camera = me.branchesData.camera
       me.applyDataPatches()
+      PubSub.publish('dataLoaded')
       me.dataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
       PubSub.publish('login')
@@ -125,6 +127,18 @@ class User {
         this[prop] = val
     }
 
+    getPoints(){
+        return this.branchesData.points
+    }
+    setPoints(points, addChangeToDB = true){
+        this.branchesData.points = points
+        const updates = {
+            points: this.branchesData.points
+        }
+        if(!addChangeToDB) return
+        //TODO: cache mutation list if app goes offline, so as to push the mutations to the db when the app gets back online
+        firebase.database().ref('users/' + this.getId() + '/').update(updates)
+    }
     setInteractionsForItem(itemId, interactions, addChangeToDB){
         if (!this.branchesData.items[itemId]) return
 

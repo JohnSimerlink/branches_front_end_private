@@ -25,7 +25,7 @@ const state = {
     nodeIdToSync: null,
     hoverOverItemId: null,
     mobile: false,
-    points: 34,
+    points: 0,
 };
 
 const getters = {
@@ -131,12 +131,14 @@ const localMutations = {
         user.clearInteractionsForItem(contentItem.id, addChangeToDB)
         this.commit('syncGraphWithNode',contentItem.getTreeId())
     },
+    //triggered by other mutations - shouldn't be triggered on its own, and thus shouldn't be recorded in the mutation list in the db
     addPoints(state, delta){
         console.log("store commit add points delta is ", delta)
         state.points += +delta
+        user.setPoints(state.points)
     }
-
 }
+
 const mutations = {
     ...serverMutations,
     ...localMutations
@@ -148,9 +150,14 @@ const actions = {
     }
 }
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state,
     mutations,
     actions,
     getters
+})
+export default store
+
+PubSub.subscribe('dataLoaded', function(){
+    state.points = user.getPoints()
 })
