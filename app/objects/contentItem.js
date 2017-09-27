@@ -140,9 +140,10 @@ export default class ContentItem {
     }
 
     setOverdue(overdue, updateInDB = true){
+        console.log(this.id, "setOverdue called with parameter of ", overdue)
         this.overdue = overdue
 
-        this.userOverdueMap[user.getId()] = this.timer
+        this.userOverdueMap[user.getId()] = this.overdue
 
         if (!updateInDB){
             return
@@ -157,15 +158,18 @@ export default class ContentItem {
     }
 
     setOverdueTimeout(){
+        this.setOverdue(false)
         let millisecondsTilOverdue = this.nextReviewTime - Date.now()
         millisecondsTilOverdue = millisecondsTilOverdue > 0 ? millisecondsTilOverdue: 0
 
+        const me = this
         if (this.hasInteractions()){
-            this.markOverdueTimeout = setTimeout(this.markOverdue.bind(this),millisecondsTilOverdue)
+            this.markOverdueTimeout = setTimeout(me.markOverdue.bind(me), millisecondsTilOverdue)
         }
     }
 
     markOverdue(){
+        this.clearOverdueTimeout()
         this.setOverdue(true)
         const colorForMessage = proficiencyToColor(this.proficiency)
         message(
@@ -186,7 +190,6 @@ export default class ContentItem {
             const tree = await Trees.get(treeId)
             tree.calculateNumOverdueAggregation()
         })
-        this.clearOverdueTimeout()
     }
 
     clearOverdueTimeout(){
@@ -323,6 +326,9 @@ export default class ContentItem {
         this.nextReviewTime = 0
         delete this.userReviewTimeMap[user.getId()]
 
+        this.overdue = false
+        delete this.userOverdueMap[user.getId()]
+
         this.timer = 0
         delete this.userTimeMap[user.getId()]
 
@@ -340,6 +346,7 @@ export default class ContentItem {
             userInteractionsMap : this.userInteractionsMap,
             userStrengthMap : this.userStrengthMap,
             userReviewTimeMap : this.userReviewTimeMap,
+            userOverdueMap : this.userOverdueMap,
             userTimeMap: this.userTimeMap,
         }
 
@@ -477,8 +484,6 @@ export default class ContentItem {
         this.resortTrees()
         // user.addMutation('itemStudied', this.id)
         // store.commit('itemStudied', this.id)
-
-        this.set('overdue', false, addChangeToDB)
 
         if (!addChangeToDB) {
             return
