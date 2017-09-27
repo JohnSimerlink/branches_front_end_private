@@ -420,6 +420,11 @@ export default class ContentItem {
 
     async addInteraction({proficiency, timestamp}, addChangeToDB){
         this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.proficiency is already set I think, but not saved in db
+        // console.log
+        const recentDecibelIncrease = this.getRecentDecibelIncrease()
+        console.log('recent decibel increase', recentDecibelIncrease)
+        // console.lo
+        store.commit('addPoints', recentDecibelIncrease)
         this.messageRecentDecibelIncrease()
         try {
             const proficiencyAncestorsPromise = this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
