@@ -18,6 +18,7 @@ import GoBack from '../components/goBack/goBack'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import StudyMenu from '../components/studyMenu/studyMenu'
+import Points from '../components/points/points.vue'
 import '../fixData'
 // Vue.component('branchesHeader', Header)
 Vue.component('branchesFooter', Footer)
@@ -36,3 +37,4 @@ Vue.component('goBack', GoBack)
 Vue.component('proficiencySelector', ProficiencySelector)
 Vue.component('itemHistory', ItemHistory)
 Vue.component('studyMenu', StudyMenu)
+Vue.component('points', Points)

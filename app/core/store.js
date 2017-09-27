@@ -24,7 +24,8 @@ const state = {
     openNodeId: null,
     nodeIdToSync: null,
     hoverOverItemId: null,
-    mobile: false
+    mobile: false,
+    points: 34,
 };
 
 const getters = {
@@ -129,6 +130,10 @@ const localMutations = {
         contentItem.clearInteractions(addChangeToDB)
         user.clearInteractionsForItem(contentItem.id, addChangeToDB)
         this.commit('syncGraphWithNode',contentItem.getTreeId())
+    },
+    addPoints(state, delta){
+        console.log("store commit add points delta is ", delta)
+        state.points += +delta
     }
 
 }
