@@ -128,6 +128,7 @@ const localMutations = {
         const contentItem = await ContentItems.get(contentId)
         contentItem.clearInteractions(addChangeToDB)
         user.clearInteractionsForItem(contentItem.id, addChangeToDB)
+        this.commit('syncGraphWithNode',contentItem.getTreeId())
     }
 
 }
