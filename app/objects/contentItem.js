@@ -140,7 +140,7 @@ export default class ContentItem {
     }
 
     setOverdue(overdue, updateInDB = true){
-        console.log(this.id, "setOverdue called with parameter of ", overdue)
+        // console.log(this.id, "setOverdue called with parameter of ", overdue)
         this.overdue = overdue
 
         this.userOverdueMap[user.getId()] = this.overdue
