@@ -35,27 +35,26 @@ const getters = {
 }
 const serverMutations = {
     async itemStudied(state, contentId){
-        console.log('STORE JSitemStudied called mutation called inside of store', state, contentId, ...arguments)
         this.commit('closeNode')
         if (!getters.studying(state)){
             return
         }
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
-        console.log(" STORE JS tree leaf values before sorting are ",
-            JSON.stringify(tree.leaves.map(leaf =>
-                {
-                    return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
-                }
-            )),
-        )
+        // console.log(" STORE JS tree leaf values before sorting are ",
+        //     JSON.stringify(tree.leaves.map(leaf =>
+        //         {
+        //             return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+        //         }
+        //     )),
+        // )
         await tree.sortLeavesByStudiedAndStrength()
-        console.log(" STORE JS tree leaf values after sorting are ",
-            JSON.stringify(tree.leaves.map(leaf =>
-            {
-                return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
-            }
-            )),
-        )
+        // console.log(" STORE JS tree leaf values after sorting are ",
+        //     JSON.stringify(tree.leaves.map(leaf =>
+        //     {
+        //         return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+        //     }
+        //     ))
+        // )
         if (tree.areItemsToStudy()){
             const itemIdToStudy  = tree.getNextItemIdToStudy()
             console.log(' STORE JS next itemId to Study is', itemIdToStudy)
