@@ -12,17 +12,21 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16)
     } : null;
 }
+window.hexToRgb = hexToRgb
 
 function hexToRgbString(hex) {
     const rgb = hexToRgb(hex)
     var result ="rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")"
     return result
 }
+window.hexToRgbString = hexToRgbString
 function setOpacityOfRgbString(rgb, opacity){
     var newColor = rgb.replace(/rgb/i, "rgba");
     newColor = newColor.replace(/\)/i,', ' + opacity + ')');
     return newColor
 }
+window.setOpacityOfRgbString = setOpacityOfRgbString
+
 function colorToRGBA(color) {
     // Returns the color as an array of [r, g, b, a] -- all range from 0 - 255
     // color must be a valid canvas fillStyle. This will cover most anything
@@ -39,7 +43,9 @@ function colorToRGBA(color) {
     ctx.fillRect(0, 0, 1, 1);
     return ctx.getImageData(0, 0, 1, 1).data;
 }
+window.colorToRGBA = colorToRGBA
 function colorToRgbString(color){
     var rgbaArray = colorToRGBA(color)
     return "rgb(" +rgbaArray[0] + ", " + rgbaArray[1] + ", " + rgbaArray[2] + ")"
 }
+window.colorToRgbString = colorToRgbString
