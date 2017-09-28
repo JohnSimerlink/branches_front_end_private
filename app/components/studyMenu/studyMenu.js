@@ -59,6 +59,14 @@ export default {
             this.studySettings.oldTypes.notOverdue = true
             this.saveStudySettings()
         },
+        toggleStudying(){
+            console.log("toggleStudying called!")
+            if (this.$store.getters.studying){
+                this.$store.commit('enterExploringMode')
+            } else {
+                this.$store.commit('enterStudyingMode')
+            }
+        }
     },
     computed:{
         browserIsMobile() {
@@ -93,6 +101,16 @@ export default {
             return id
            // return this.$store.state.currentStudyingCategoryTreeId
         },
+        treeId (){
+            const id = this.$store.state.currentStudyingCategoryTreeId
+            return id
+            // return this.$store.state.currentStudyingCategoryTreeId
+        },
+        studying(){
+            console.log("studying getter called",this.$store.getters.studying)
+            // return true
+            return this.$store.getters.studying
+        }
     },
     asyncComputed: {
         async numOverdue(){
@@ -102,7 +120,8 @@ export default {
         async title(){
             const tree = await Trees.get(this.treeId)
             const item = await ContentItems.get(tree.contentId)
-            return item.title
+            return item.getLastNBreadcrumbsString(4)
+            // return item.title
         },
-    }
+    },
 }

@@ -1,5 +1,4 @@
 <div>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <div class="studyMenu-settings" v-if="settingsMenuOpen">
         <h6 class="studyMenu-settings-title">Show Which Items?</h6>
         <div class="studyMenu-settings-itemTypes">
@@ -20,6 +19,9 @@
             </div>
         </div>
     </div>
+    <span>
+        <i class="fa" v-bind:class="{'fa-pause-circle': studying, 'fa-play-circle': !studying}" v-on:click="toggleStudying" aria-hidden="true"><!-- {{treeId}}--></i>
+    </span>
     <!--<div class="studyMenu" v-bind:class="{ mobile: browserIsMobile }">Hello<i class="fa fa-pause-circle" aria-hidden="true"></i></div>-->
     <!--<button class="studyMenu" v-bind:class="{ mobile: browserIsMobile }">{{title}}&lt;!&ndash; [{{numOverdue}}]&ndash;&gt;</button>-->
 </div>
