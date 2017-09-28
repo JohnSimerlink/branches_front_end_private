@@ -2,7 +2,7 @@ import Snack from '../other_imports/snack/snack.js'
 if (typeof window !== 'undefined'){
     window.Snack = Snack
 }
-export default function message({text, color = 'black', duration = 2000, onclick = (snack) => {snack.hide()}}) {
+export default function message({text, color = 'white', duration = 2000, onclick = (snack) => {snack.hide()}}) {
     //
     // var snack = Snack.make("<your_message>", { /*<your_options>*/ });
     // snack.show();

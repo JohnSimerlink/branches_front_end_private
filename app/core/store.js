@@ -4,6 +4,7 @@ import {Trees} from '../objects/trees'
 import Snack from '../../node_modules/snack.js/dist/snack'
 import user from '../objects/user'
 import {syncGraphWithNode} from "../components/knawledgeMap/knawledgeMap";
+import message from '../message'
 import ContentItems from "../objects/contentItems";
 Vue.use(Vuex)
 
@@ -13,7 +14,7 @@ export const MODES = {
 }
 
 const state = {
-    mode: MODES.STUDYING,
+    mode: MODES.EXPLORING,
     currentStudyingCategoryTreeId: '1',
     modes: {
         2: {
@@ -55,12 +56,20 @@ const serverMutations = {
         //     }
         //     ))
         // )
-        if (tree.areItemsToStudy()){
+        if (tree.areNewOrOverdueItems()){
             const itemIdToStudy  = tree.getNextItemIdToStudy()
             console.log(' STORE JS next itemId to Study is', itemIdToStudy)
             this.commit('hoverOverItemId', itemIdToStudy)
         } else {
-            console.log(" STORE JS no items to study in tree")
+            const contentItem = await tree.getContentItem()
+            const label = contentItem.getLabel()
+            message(
+                {
+                    text: 'No new or overdue items for ' + label + "! Study something else :)",
+                }
+            )
+            this.commit('hoverOverItemId', contentItem.id)
+            this.commit('enterExploringMode')
         }
     },
 }
@@ -69,6 +78,7 @@ const localMutations = {
         state.mode = mode
     },
     async setCurrentStudyingTree(state, treeId){
+        this.commit('enterStudyingMode')
         state.currentStudyingCategoryTreeId = treeId
         const tree = await Trees.get(treeId)
         if (tree.areItemsToStudy()){
@@ -78,11 +88,7 @@ const localMutations = {
             this.commit('closeNode')
             // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
         } else {
-            var snack = new Snack({
-                domParent: document.querySelector('.new-exercise')
-            });
-            // show a snack for 4s
-            snack.show("No items to study for this tree!", 4000)
+            message({text: "No items to study for this tree!"})
         }
     },
     mobile(state, isMobile) {
@@ -135,6 +141,28 @@ const localMutations = {
         console.log("store commit add points delta is ", delta)
         state.points += +delta
         user.setPoints(state.points)
+    },
+    enterExploringMode(state){
+        state.mode = MODES.EXPLORING
+    },
+    enterStudyingMode(state){
+        state.mode = MODES.STUDYING
+    },
+    async openReview(state, itemId){
+        const me = this
+        const contentItem = await ContentItems.get(itemId)
+        if (!contentItem) {return}
+        if (state.mobile){
+            this.commit('openNode', contentItem.getTreeId())
+            return
+        } else {
+            this.commit('hoverOverItemId', itemId)
+            setTimeout(function(){
+                me.commit('openNode', contentItem.getTreeId())
+            }, 0)
+            return
+        }
+
     }
 }
 

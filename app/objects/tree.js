@@ -494,9 +494,14 @@ export class Tree {
     areItemsToStudy(){
         return this.leaves.length
     }
+    /*should only be called after sorted*/
+    areNewOrOverdueItems(){
+        if (!this.areItemsToStudy()) {return false}
+        const firstItem = this.leaves[0]
+        return firstItem.isNew() || firstItem.overdue
+    }
     getNextItemIdToStudy(){
         return this.leaves[0].id
-
     }
 }
 //TODO: get typeScript so we can have a schema for treeObj

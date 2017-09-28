@@ -3,6 +3,8 @@ import {login} from '../../core/login'
 import user from '../../objects/user'
 import Users from '../../objects/users'
 import {mapGetters} from 'vuex'
+import {Trees} from "../../objects/trees";
+import ContentItems from "../../objects/contentItems";
 
 export default {
     template: require('./branches-footer.html'),
@@ -64,13 +66,36 @@ export default {
         reviewId() {
 
         },
-    },
-    watch: {
-        currentStudyingCategoryTreeId(newId, oldId){
-            console.log('now studying ', newId)
-            // const Tree = Trees.get(newId)
+        treeId (){
+            const id = this.$store.state.currentStudyingCategoryTreeId
+            return id
+            // return this.$store.state.currentStudyingCategoryTreeId
+        },
+        studying(){
+            // return true
+            return this.$store.getters.studying
         }
     },
+
+    asyncComputed: {
+        async numOverdue(){
+            const tree = await Trees.get(this.treeId)
+            return tree.numOverdue
+        },
+        async title(){
+            const tree = await Trees.get(this.treeId)
+            const item = await ContentItems.get(tree.contentId)
+            return item.getLastNBreadcrumbsString(4)
+            // return item.title
+        },
+    },
+
+    // watch: {
+    //     currentStudyingCategoryTreeId(newId, oldId){
+    //         console.log('now studying ', newId)
+    //         // const Tree = Trees.get(newId)
+    //     }
+    // },
     methods: {
         login () {
             this.loggedIn=true
@@ -85,6 +110,13 @@ export default {
         },
         toggleSettingsMenu(){
             this.$store.commit('toggleSettingsMenu')
+        },
+        toggleStudying(){
+            if (this.$store.getters.studying){
+                this.$store.commit('enterExploringMode')
+            } else {
+                this.$store.commit('enterStudyingMode')
+            }
         }
     }
 }
