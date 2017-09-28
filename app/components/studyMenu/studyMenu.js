@@ -89,7 +89,9 @@ export default {
             return this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue //!this.itemTypes.old
         },
         treeId (){
-           return this.$store.state.currentStudyingCategoryTreeId
+            const id = this.$store.state.currentStudyingCategoryTreeId
+            return id
+           // return this.$store.state.currentStudyingCategoryTreeId
         },
     },
     asyncComputed: {

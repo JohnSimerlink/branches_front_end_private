@@ -178,7 +178,8 @@ export default class ContentItem {
                 color: colorForMessage,
                 duration: 10000,
                 onclick: (snack) => {
-                    store.commit('openNode', this.getTreeId())
+                    store.commit('openReview', this.id)
+                    // store.commit('openNode', this.getTreeId())
                     snack.hide()
                 }
             }
@@ -366,6 +367,9 @@ export default class ContentItem {
     }
     hasInteractions() {
         return this.interactions.length
+    }
+    isNew(){
+        return !this.hasInteractions()
     }
 
     getMostRecentInteraction(){
@@ -580,8 +584,9 @@ export default class ContentItem {
         const color = proficiencyToColor(this.proficiency)
         message({text: msg, color})
     }
-
-
+    getLabel(){
+        return getLabelFromContent(this)
+    }
 }
 
 /**
