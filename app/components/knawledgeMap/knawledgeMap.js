@@ -215,15 +215,17 @@ async function _syncGraphWithNode(treeId){
 
     //update the node
     var sigmaNode = s.graph.nodes(treeId)
-    sigmaNode.x = tree.x
-    sigmaNode.y = tree.y
-    var color = getTreeColor(content)
-    sigmaNode.color = color
-    sigmaNode.proficiencyStats = tree.proficiencyStats
-    sigmaNode.overdue = content.overdue
-    sigmaNode.size = getSizeFromContent(content)
+    if (sigmaNode){
+        sigmaNode.x = tree.x
+        sigmaNode.y = tree.y
+        var color = getTreeColor(content)
+        sigmaNode.color = color
+        sigmaNode.proficiencyStats = tree.proficiencyStats
+        sigmaNode.overdue = content.overdue
+        sigmaNode.size = getSizeFromContent(content)
 
-    sigmaNode.label = getLabelFromContent(content)
+        sigmaNode.label = getLabelFromContent(content)
+    }
 
     //update the edge
     var edgeId = createEdgeId(tree.parentId, treeId)

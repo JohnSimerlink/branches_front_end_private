@@ -57,6 +57,7 @@ class User {
       me.branchesData.points = me.branchesData.points || 0
       me.camera = me.branchesData.camera
       me.applyDataPatches()
+      const currentStudyingCategoryTreeId = this.getCurrentStudyingCategoryTreeId()
       store.commit('setCurrentStudyingTree', this.getCurrentStudyingCategoryTreeId())
       PubSub.publish('dataLoaded')
       me.dataLoaded = true
@@ -164,10 +165,15 @@ class User {
             currentStudyingCategoryTreeId:this.branchesData.currentStudyingCategoryTreeId,
         }
 
-        firebase.database().ref('users/' +this.getId() + '/').update(updates)
+        try {
+            firebase.database().ref('users/' +this.getId() + '/').update(updates)
+        } catch(err){
+            console.error(err)
+        }
     }
     getCurrentStudyingCategoryTreeId(){
-        return this.branchesData.currentStudyingCategoryTreeId || DATA_KEYS.DEFAULT
+        const id = this.branchesData.currentStudyingCategoryTreeId || DATA_KEYS.TREE_IDS.DEFAULT
+        return id
     }
 
     async applyDataPatches(){
