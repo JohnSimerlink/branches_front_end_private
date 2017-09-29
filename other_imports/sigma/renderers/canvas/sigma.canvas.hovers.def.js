@@ -29,13 +29,10 @@
         fontSize = window.getLabelFontSizeFromNode(node, settings)
         // var fontSize =
 
-    console.log("size is", size)
-    console.log("fontSize is", fontSize)
     // Label background:
     context.font = (fontStyle ? fontStyle + ' ' : '') +
       fontSize + 'px ' + (settings('hoverFont') || settings('font'));
 
-    console.log("font is " + context.font)
     context.beginPath();
     context.fillStyle = settings('labelHoverBGColor') === 'node' ?
       (node.color || settings('defaultNodeColor')) :
@@ -87,7 +84,6 @@
         0,
         2 * Math.PI,
       );
-      console.log("the font and fontStyle being used for border are", context.font, context.fillStyle, size)
       // context.closePath();
       context.stroke();
     }
@@ -109,7 +105,6 @@
         Math.round(node[prefix + 'x']),
         Math.round(node[prefix + 'y'] + fontSize / 3)
       );
-        console.log("the context while filling text in label is", context)
     }
   };
 }).call(window);

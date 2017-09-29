@@ -111,7 +111,8 @@ const localMutations = {
         }
     },
     syncGraphWithNode(state, nodeId){
-        state.nodeIdToSync = nodeId
+        syncGraphWithNode(nodeId)
+        // state.nodeIdToSync = nodeId
         // console.log('syncGraphWithNode', + Date.now())
     },
     async interaction(state, {data, addChangeToDB}){
@@ -135,17 +136,24 @@ const localMutations = {
     },
     async enterExploringMode(state, data){
         state.mode = MODES.EXPLORING
-        const tree = await Trees.get(state.currentStudyingCategoryTreeId)
-        const contentItem = await tree.getContentItem()
+        const itemIdBeingStudied = state.hoverOverItemId; //tree.getNextItemIdToStudy()
+        const contentItem = await ContentItems.get(itemIdBeingStudied)
+        console.log('contentItem being studied is', contentItem)
+        const leafTreeIdBeingStudied = contentItem.getTreeId()
+        console.log("leafTreeId being studied is", leafTreeIdBeingStudied)
+        const leafTreeBeingStudied = await Trees.get(leafTreeIdBeingStudied)
+        console.log("active leafTree being studied is", leafTreeBeingStudied)
+        leafTreeBeingStudied.setInactive()
+
         const reason = data && data.reason || ""
         let text = ""
-        let middle = "Stopped Auto-Study for " + contentItem.getLastNBreadcrumbsString(4) + "."
+        let middle = "Stopped Auto-Study."
         if (reason){
-            text = reason + " " + middle + " Study something else :)"
+            text = reason + " " + /*+ middle +*/ " Study something else :)"
         } else {
             text = middle
         }
-        message({text, duration: 15000})
+        message({text, duration: 5000})
     },
     async enterStudyingMode(state, data){
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)

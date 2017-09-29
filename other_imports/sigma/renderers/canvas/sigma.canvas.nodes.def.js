@@ -61,7 +61,7 @@ function proficiencyToColor(proficiency){
            // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
            var haloSize = size * window.haloSizeScalingFactor
 
-           var center = context.beginPath()
+           context.beginPath()
            // context.fillStyle = 'black'
            context.strokeStyle = 'black'
            context.arc(x, y,haloSize,0,Math.PI * 2,true );
@@ -83,10 +83,23 @@ function proficiencyToColor(proficiency){
 
       if (node.overdue){
           var fontSize = Math.floor(size * 1.414)
-         context.font = fontSize + 'px FontAwesome'
+          context.font = fontSize + 'px FontAwesome'
           context.fillText('\uf017', x + size, y + size)
           // context.font = fontSize + 'px Fredoka One'
       }
+      var lineWidth = context.lineWidth
+      if (node.active){
+          // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
+          var haloSize = size  + 2
+
+          context.strokeStyle = 'blue'
+          context.lineWidth = 4
+          var center = context.beginPath()
+          // context.fillStyle = 'black'
+          context.arc(x, y,haloSize,0,Math.PI * 2,true );
+          context.stroke()
+      }
+      context.lineWidth = lineWidth
 
   };
 })();
