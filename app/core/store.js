@@ -25,6 +25,7 @@ const state = {
     openNodeId: null,
     nodeIdToSync: null,
     hoverOverItemId: null,
+    itemHovered: Math.random(),
     mobile: false,
     points: 0,
 };
@@ -93,7 +94,10 @@ const localMutations = {
         state.settingsMenuOpen = false
     },
     hoverOverItemId(state, itemId){
+        console.log("hoverOverItemId called START ",state.hoverOverItemId, itemId)
         state.hoverOverItemId = itemId
+        state.itemHovered = Math.random()
+        console.log("hoverOverItemId called END ",state.hoverOverItemId, itemId)
     },
     clickNode(state, nodeId){
         this.commit('openNode', nodeId)
@@ -150,6 +154,7 @@ const localMutations = {
     async enterStudyingMode(state, data){
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
         const contentItem = await tree.getContentItem()
+        await tree.sortLeavesByStudiedAndStrength()
         if (tree.areItemsToStudy()){
             state.mode = MODES.STUDYING
             const itemIdToStudy = tree.getNextItemIdToStudy()
