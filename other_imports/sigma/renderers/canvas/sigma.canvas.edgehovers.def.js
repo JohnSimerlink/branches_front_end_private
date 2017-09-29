@@ -49,6 +49,8 @@
     }
     size *= settings('edgeHoverSizeRatio');
 
+    var colorSave = context.strokeStyle
+    var lineWidth = context.lineWidth
     context.strokeStyle = color;
     context.lineWidth = size * 3;
     context.beginPath();
@@ -61,5 +63,7 @@
       target[prefix + 'y']
     );
     context.stroke();
+    context.lineWidth = lineWidth
+    context.color = colorSave
   };
 })();
