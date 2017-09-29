@@ -85,7 +85,7 @@ function proficiencyToColor(proficiency){
           var fontSize = Math.floor(size * 1.414)
          context.font = fontSize + 'px FontAwesome'
           context.fillText('\uf017', x + size, y + size)
-          context.font = fontSize + 'px Fredoka One'
+          // context.font = fontSize + 'px Fredoka One'
       }
 
   };

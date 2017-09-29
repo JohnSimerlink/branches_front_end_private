@@ -1,76 +1,3 @@
-;(function(undefined) {
-  'use strict';
-
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
-  // Initialize packages:
-  sigma.utils.pkg('sigma.canvas.labels');
-
-  /**
-   * This label renderer will just display the label on the right of the node.
-   *
-   * @param  {object}                   node     The node object.
-   * @param  {CanvasRenderingContext2D} context  The canvas context.
-   * @param  {configurable}             settings The settings function.
-   */
-  sigma.canvas.labels.def = function(node, context, settings) {
-    var fontSize,
-        prefix = settings('prefix') || '',
-        size = node[prefix + 'size'];
-
-    if (size < settings('labelThreshold'))
-      return;
-
-    if (!node.label || typeof node.label !== 'string')
-      return;
-
-    fontSize = (settings('labelSize') === 'fixed') ?
-      settings('defaultLabelSize') :
-      settings('labelSizeRatio') * size;
-
-    context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
-      fontSize + 'px ' + settings('font');
-    context.fillStyle = (settings('labelColor') === 'node') ?
-      (node.color || settings('defaultNodeColor')) :
-      settings('defaultLabelColor');
-
-    context.fillText(
-      node.label,
-      Math.round(node[prefix + 'x'] + size + 3),
-      Math.round(node[prefix + 'y'] + fontSize / 3)
-    );
-  };
-
-    sigma.canvas.labels.def2 = function(node, context, settings) {
-        var fontSize,
-            prefix = settings('prefix') || '',
-            size = node[prefix + 'size'];
-
-        if (size < settings('labelThreshold'))
-            return;
-
-        if (!node.label || typeof node.label !== 'string')
-            return;
-
-        fontSize = (settings('labelSize') === 'fixed') ?
-            settings('defaultLabelSize') :
-            settings('labelSizeRatio') * size;
-
-        context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
-            fontSize + 'px ' + settings('font');
-        context.fillStyle = (settings('labelColor') === 'node') ?
-            (node.color || settings('defaultNodeColor')) :
-            settings('defaultLabelColor');
-
-        context.fillText(
-            node.label,
-            Math.round(node[prefix + 'x'] + size + 3),
-            Math.round(node[prefix + 'y'] + fontSize / 3)
-        );
-    };
-
-}).call(this);
 
 ;(function(undefined) {
     'use strict';
@@ -169,7 +96,8 @@
         if (!node.label || typeof node.label !== 'string')
             return;
 
-        fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+        // fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+        fontSize = getLabelFontSizeFromNode(node, settings)
         // settings('defaultLabelSize') :
         // settings('labelSizeRatio') * size;
 
@@ -177,8 +105,6 @@
         if (sectionOffScreen(section)){
             packageData.hideCount++
             return
-        }
-        else {
         }
 
             // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
@@ -212,8 +138,13 @@
         var label = node.label.length > 20 ? node.label.substring(0,19) + ' . . .' : node.label
         context.fillText(
             label,
-            Math.round(node[prefix + 'x'] + size + 3),
+            Math.round(node[prefix + 'x'] /*+ size + 3*/),
             Math.round(node[prefix + 'y'] + fontSize / 3)
         );
     };
 }).call(window);
+
+window.getLabelFontSizeFromNode = function(node, settings){
+    var fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+    return fontSize
+}

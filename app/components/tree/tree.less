@@ -31,23 +31,55 @@
   color: @proficiencyUnknown;
 }
 
+.tree-textarea{
+  width: 100%;
+}
 .tree {
   cursor: default;
   padding: 4px;
   width: 320px;
   border-radius: 3px; /* doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
+
+
+
+  .tree-skill{
+    .tree-new-skill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tree-new-skill-input{
+      .tree-textarea;
+    }
+    .tree-current-skill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+
+  .tree-fact {
+    .tree-current-fact {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .tree-new-fact {
+      display: flex;
+      flex-direction: column;
+    }
+    .tree-new-fact-answer {
+      .tree-textarea;
+
+    }
+  }
+
+
+
 }
 .tree-current-heading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.tree-new-skill {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.tree-current-skill {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,13 +113,6 @@
   .tree-heading-leaf-num;
   .tree-proficiency-four-text;
 }
-
-.tree-current-fact {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 .tree-proficiency {
   display: flex;
   flex-direction: column;
@@ -119,10 +144,6 @@
 .tree-debugging-info {
   width: 100%;
   word-wrap: break-word;
-}
-.tree-new-fact {
-  display: flex;
-  flex-direction: column;
 }
 .tree-label {
   color: white;

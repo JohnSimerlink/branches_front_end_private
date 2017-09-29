@@ -46,7 +46,7 @@
     // {number} Defines the minimal edge's arrow display size.
     minArrowSize: 0,
     // {string}
-    font: 'arial',
+    font: 'Fredoka One',
     // {string} Example: 'bold'
     fontStyle: '',
     // {string} Indicates how to choose the labels color. Available values:
@@ -62,12 +62,12 @@
     // {number} The oversampling factor used in WebGL renderer.
     webglOversamplingRatio: 2,
     // {number} The size of the border of hovered nodes.
-    borderSize: 0,
+    borderSize: 1,
     // {number} The default hovered node border's color.
     defaultNodeBorderColor: '#000',
     // {number} The hovered node's label font. If not specified, will heritate
     //          the "font" value.
-    hoverFont: '',
+    hoverFont: 'Fredoka One',
     // {boolean} If true, then only one node can be hovered at a time.
     singleHover: true,
     // {string} Example: 'bold'
