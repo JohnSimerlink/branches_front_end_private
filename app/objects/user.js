@@ -6,6 +6,7 @@ import Users from './users'
 let userLoggedIn = false
 let cachedId = null
 import store from '../core/store'
+import DATA_KEYS from '../../dataKeys'
 class User {
 
   constructor() {
@@ -56,6 +57,7 @@ class User {
       me.branchesData.points = me.branchesData.points || 0
       me.camera = me.branchesData.camera
       me.applyDataPatches()
+      store.commit('setCurrentStudyingTree', this.getCurrentStudyingCategoryTreeId())
       PubSub.publish('dataLoaded')
       me.dataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
@@ -154,6 +156,18 @@ class User {
 
     clearInteractionsForItem(itemId, addChangeToDB){
         this.setInteractionsForItem(itemId, [], addChangeToDB)
+    }
+    setCurrentStudyingCategoryTreeId(treeId){
+        this.branchesData.currentStudyingCategoryTreeId = treeId
+
+        var updates = {
+            currentStudyingCategoryTreeId:this.branchesData.currentStudyingCategoryTreeId,
+        }
+
+        firebase.database().ref('users/' +this.getId() + '/').update(updates)
+    }
+    getCurrentStudyingCategoryTreeId(){
+        return this.branchesData.currentStudyingCategoryTreeId || DATA_KEYS.DEFAULT
     }
 
     async applyDataPatches(){
