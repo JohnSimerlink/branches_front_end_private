@@ -155,7 +155,7 @@ const localMutations = {
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
         const contentItem = await tree.getContentItem()
         await tree.sortLeavesByStudiedAndStrength()
-        if (tree.areItemsToStudy()){
+        if (tree.areNewOrOverdueItems()){
             state.mode = MODES.STUDYING
             const itemIdToStudy = tree.getNextItemIdToStudy()
             message({text: "Started Auto-Study for " + contentItem.getLastNBreadcrumbsString(4)})
