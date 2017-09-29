@@ -51,8 +51,12 @@ export default {
         router = this.$router
     },
     computed: {
-        hoverOverItemId(){
-            return this.$store.state.hoverOverItemId
+        hoverOverItemId(){ // can't be done in watch because sometimes state.hoverOverItemId changes to itself, which watch wont pick up
+            const hoverOverItemId = this.$store.state.hoverOverItemId
+            return hoverOverItemId
+        },
+        itemHovered(){
+            return this.$store.state.itemHovered
         },
         openNodeId(){
             return this.$store.state.openNodeId
@@ -71,12 +75,17 @@ export default {
         //     jumpToTreeId(treeId)
         // },
         async hoverOverItemId(newContentItemId, oldContentItemId){
+        },
+        async itemHovered(){
+            const newContentItemId = this.$store.state.hoverOverItemId
+            // console.log('hoverOverItemId called', this.$store.state.hoverOverItemId, newContentItemId)
             const newContentItem = await ContentItems.get(newContentItemId)
             console.log('newCOntentItem in hoverOverItemId is', newContentItem)
             if (!newContentItem){ return }
-            console.log('new content to jump to is ', newContentItemId, newContentItem, oldContentItemId)
+            // console.log('new content to jump to is ', newContentItemId, newContentItem, oldContentItemId)
             const treeId = newContentItem.getTreeId()
             jumpToTreeId(treeId)
+
         },
         openNodeId(newNodeId, oldNodeId){
             console.log('knawledgeMap openNodeId knawledgeMap.js! newNodeId, oldNodeId', newNodeId, oldNodeId)
@@ -313,6 +322,17 @@ export function getTreeUINode(nodeId){
 }
 
 function jumpToTreeId(treeId){
+
+    if (!s){
+        PubSub.subscribe('sigma.initialized', (eventName, data) => {
+            _jumpToTreeId(treeId)
+        })
+    } else {
+        _jumpToTreeId(treeId)
+    }
+
+}
+function _jumpToTreeId(treeId){
     console.log("jumping to tree id", treeId)
     let node = s.graph.nodes(treeId)
     focusNode(s.cameras[0], node);
@@ -321,7 +341,16 @@ function jumpToTreeId(treeId){
  * Go to a given tree ID on the graph, centering the viewport on the tree
  */
 function jumpToAndOpenTreeId(treeId) {
-    //let tree = sigma.nodes[treeid];
+    if (!s){
+        PubSub.subscribe('sigma.initialized', (eventName, data) => {
+            _jumpToAndOpenTreeId(treeId)
+        })
+    } else {
+        _jumpToAndOpenTreeId(treeId)
+    }
+}
+
+function _jumpToAndOpenTreeId(treeId){
     jumpToTreeId(treeId)
     let node = s.graph.nodes(treeId)
     openTooltip(node)
