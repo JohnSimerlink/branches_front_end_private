@@ -62,14 +62,14 @@ const serverMutations = {
             this.commit('hoverOverItemId', itemIdToStudy)
         } else {
             const contentItem = await tree.getContentItem()
-            const label = contentItem.getLabel()
-            message(
-                {
-                    text: 'No new or overdue items for ' + label + "! Study something else :)",
-                }
-            )
+            // const label = contentItem.getLabel()
+            // message(
+            //     {
+            //         text: 'No new or overdue items for ' + label + "! Study something else :)",
+            //     }
+            // )
             this.commit('hoverOverItemId', contentItem.id)
-            this.commit('enterExploringMode')
+            this.commit('enterExploringMode', {reason: "No more new or overdue items!"})
         }
     },
 }
@@ -78,8 +78,8 @@ const localMutations = {
         state.mode = mode
     },
     async setCurrentStudyingTree(state, treeId){
-        this.commit('enterStudyingMode')
         state.currentStudyingCategoryTreeId = treeId
+        this.commit('enterStudyingMode')
         const tree = await Trees.get(treeId)
         if (tree.areItemsToStudy()){
             const itemIdToStudy = tree.getNextItemIdToStudy()
@@ -142,11 +142,25 @@ const localMutations = {
         state.points += +delta
         user.setPoints(state.points)
     },
-    enterExploringMode(state){
+    async enterExploringMode(state, data){
         state.mode = MODES.EXPLORING
+        const tree = await Trees.get(state.currentStudyingCategoryTreeId)
+        const contentItem = await tree.getContentItem()
+        const reason = data && data.reason || ""
+        let text = ""
+        let middle = "Stopped Auto-Study for " + contentItem.getLastNBreadcrumbsString(4) + "."
+        if (reason){
+            text = reason + " " + middle + " Study something else :)"
+        } else {
+            text = middle
+        }
+        message({text, duration: 15000})
     },
-    enterStudyingMode(state){
+    async enterStudyingMode(state, data){
         state.mode = MODES.STUDYING
+        const tree = await Trees.get(state.currentStudyingCategoryTreeId)
+        const contentItem = await tree.getContentItem()
+        message({text: "Started Auto-Study for " + contentItem.getLastNBreadcrumbsString(4)})
     },
     async openReview(state, itemId){
         const me = this
