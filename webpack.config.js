@@ -13,6 +13,10 @@ module.exports = {
     publicPath: '/dist/',
     filename: '[name].js'
   },
+  // build: {
+  //   assetsPublicPath: '/',
+  //   assetsSubDirectory: 'static',
+  // },
   module: {
     rules: [
       {
