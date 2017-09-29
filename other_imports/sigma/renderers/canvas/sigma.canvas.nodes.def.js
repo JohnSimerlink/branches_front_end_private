@@ -83,8 +83,18 @@ function proficiencyToColor(proficiency){
 
       if (node.overdue){
           var fontSize = Math.floor(size * 1.414)
-          context.font = fontSize + 'px FontAwesome'
-          context.fillText('\uf017', x + size, y + size)
+          context.font = fontSize + 'px FredokaOne'
+          // context.fillText('\uf017', x + size, y + size) // << TODO : Seems to only work on localhost . .. not on production
+          context.fillText('⏱', x + size, y + size) //■►☼!⌚&#9200;&#8987', x + size, y + size)
+          //■►☼⏱⌚⏳⌛
+          // var imageObj = new Image()
+          // imageObj.width=20
+          // imageObj.height=20
+          // imageObj.onload = function(){
+          //     context.drawImage(imageObj, 50, 50)
+          // }
+          // imageObj.src = require('../../../../app/static/images/alarm_clock_32.png')// '/static/images/timer_icon.png'
+
           // context.font = fontSize + 'px Fredoka One'
       }
       var lineWidth = context.lineWidth
