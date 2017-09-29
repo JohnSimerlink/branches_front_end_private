@@ -75,6 +75,11 @@ export default {
         //     jumpToTreeId(treeId)
         // },
         async hoverOverItemId(newContentItemId, oldContentItemId){
+            const newContentItem = await ContentItems.get(newContentItemId)
+            // const newContentItemId = this.$store.state.hoverOverItemId
+            const treeId = await newContentItem.getTreeId()
+            // const tree = await Trees.get(treeId)
+            // tree.setActive()
         },
         async itemHovered(){
             const newContentItemId = this.$store.state.hoverOverItemId
@@ -85,6 +90,8 @@ export default {
             // console.log('new content to jump to is ', newContentItemId, newContentItem, oldContentItemId)
             const treeId = newContentItem.getTreeId()
             jumpToTreeId(treeId)
+            const tree = await Trees.get(treeId)
+            tree.setActive()
 
         },
         openNodeId(newNodeId, oldNodeId){
@@ -209,7 +216,6 @@ export function syncGraphWithNode(treeId){
     }
 }
 async function _syncGraphWithNode(treeId){
-    // console.log('sync graph with node called', treeId)
     const tree = await Trees.get(treeId)
     const content = await ContentItems.get(tree.contentId)
 
@@ -218,6 +224,7 @@ async function _syncGraphWithNode(treeId){
     if (sigmaNode){
         sigmaNode.x = tree.x
         sigmaNode.y = tree.y
+        sigmaNode.active = tree.active
         var color = getTreeColor(content)
         sigmaNode.color = color
         sigmaNode.proficiencyStats = tree.proficiencyStats

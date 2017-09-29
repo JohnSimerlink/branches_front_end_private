@@ -130,6 +130,7 @@ export default {
         proficiencyClicked() {
             user.addMutation('interaction', {contentId: this.content.id, proficiency: this.content.proficiency, timestamp: Date.now()})
             store.commit('itemStudied', this.content.id)
+            this.tree.setInactive()
             // store.commit('closeNode', this.id)
         },
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color

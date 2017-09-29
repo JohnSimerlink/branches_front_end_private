@@ -503,6 +503,17 @@ export class Tree {
     getNextItemIdToStudy(){
         return this.leaves[0].id
     }
+    setActive(){
+        this.active = true
+        this.syncGraphWithNode()
+    }
+    setInactive(){
+        this.active = false
+        this.syncGraphWithNode()
+    }
+    syncGraphWithNode(){
+        syncGraphWithNode(this.id)
+    }
 }
 //TODO: get typeScript so we can have a schema for treeObj
 //treeObj  example
