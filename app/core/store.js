@@ -59,7 +59,6 @@ const serverMutations = {
         // )
         if (tree.areNewOrOverdueItems()){
             const itemIdToStudy  = tree.getNextItemIdToStudy()
-            console.log(' STORE JS next itemId to Study is', itemIdToStudy)
             this.commit('hoverOverItemId', itemIdToStudy)
         } else {
             const contentItem = await tree.getContentItem()
@@ -84,7 +83,6 @@ const localMutations = {
         this.commit('enterStudyingMode')
     },
     mobile(state, isMobile) {
-        console.log("store.js mobile called",state.mobile, isMobile);
         state.mobile = isMobile;
     },
     toggleSettingsMenu(state){
@@ -94,10 +92,8 @@ const localMutations = {
         state.settingsMenuOpen = false
     },
     hoverOverItemId(state, itemId){
-        console.log("hoverOverItemId called START ",state.hoverOverItemId, itemId)
         state.hoverOverItemId = itemId
         state.itemHovered = Math.random()
-        console.log("hoverOverItemId called END ",state.hoverOverItemId, itemId)
     },
     clickNode(state, nodeId){
         this.commit('openNode', nodeId)
@@ -159,7 +155,6 @@ const localMutations = {
             state.mode = MODES.STUDYING
             const itemIdToStudy = tree.getNextItemIdToStudy()
             message({text: "Started Auto-Study for " + contentItem.getLastNBreadcrumbsString(4)})
-            console.log('next itemId to Study is', itemIdToStudy)
             this.commit('hoverOverItemId', itemIdToStudy)
             this.commit('closeNode')
             // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
