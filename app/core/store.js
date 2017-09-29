@@ -15,7 +15,7 @@ export const MODES = {
 
 const state = {
     mode: MODES.EXPLORING,
-    currentStudyingCategoryTreeId: '1',
+    currentStudyingCategoryTreeId: 1,//user.getCurrentStudyingCategoryTreeId(),
     modes: {
         2: {
             contentId: 12345,
@@ -79,17 +79,8 @@ const localMutations = {
     },
     async setCurrentStudyingTree(state, treeId){
         state.currentStudyingCategoryTreeId = treeId
+        user.setCurrentStudyingCategoryTreeId(treeId)
         this.commit('enterStudyingMode')
-        const tree = await Trees.get(treeId)
-        if (tree.areItemsToStudy()){
-            const itemIdToStudy = tree.getNextItemIdToStudy()
-            console.log('next itemId to Study is', itemIdToStudy)
-            this.commit('hoverOverItemId', itemIdToStudy)
-            this.commit('closeNode')
-            // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
-        } else {
-            message({text: "No items to study for this tree!"})
-        }
     },
     mobile(state, isMobile) {
         console.log("store.js mobile called",state.mobile, isMobile);
@@ -157,10 +148,20 @@ const localMutations = {
         message({text, duration: 15000})
     },
     async enterStudyingMode(state, data){
-        state.mode = MODES.STUDYING
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
         const contentItem = await tree.getContentItem()
-        message({text: "Started Auto-Study for " + contentItem.getLastNBreadcrumbsString(4)})
+        if (tree.areItemsToStudy()){
+            state.mode = MODES.STUDYING
+            const itemIdToStudy = tree.getNextItemIdToStudy()
+            message({text: "Started Auto-Study for " + contentItem.getLastNBreadcrumbsString(4)})
+            console.log('next itemId to Study is', itemIdToStudy)
+            this.commit('hoverOverItemId', itemIdToStudy)
+            this.commit('closeNode')
+            // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
+        } else {
+            // this.commit('enterExploringMode', {reason: "No Items to study for this tree" })
+            message({text: "No new / overdue items to study for this tree!"})
+        }
     },
     async openReview(state, itemId){
         const me = this
