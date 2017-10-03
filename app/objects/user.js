@@ -57,8 +57,6 @@ class User {
       me.branchesData.points = me.branchesData.points || 0
       me.camera = me.branchesData.camera
       me.applyDataPatches()
-      const currentStudyingCategoryTreeId = this.getCurrentStudyingCategoryTreeId()
-      store.commit('setCurrentStudyingTree', this.getCurrentStudyingCategoryTreeId())
       PubSub.publish('dataLoaded')
       me.dataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))

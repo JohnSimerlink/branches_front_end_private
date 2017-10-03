@@ -1,5 +1,5 @@
 <div class="tree" v-bind:style="styleObject" >
-    <div class="tree-history" v-if="!typeIsHeading && showHistory" v-on:click="toggleHistory">
+    <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
         <item-history :item-id="content.id" ></item-history>
     </div>
     <div v-if="!showHistory">
@@ -83,7 +83,7 @@
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" v-if="!typeIsHeading">{{content.timer | secondsToPretty}} </div>
             <!--<div class="tree-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>-->
-            <i class="tree-delete-button fa fa-cog" aria-hidden="true" v-on:click="toggleHistory"></i>
+            <i class="tree-delete-button fa fa-cog" aria-hidden="true" v-on:click.stop="toggleHistory"></i>
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-if="user.isAdmin()" v-on:click.stop="remove" ></i>
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="!typeIsHeading && content.hasInteractions && content.nextReviewTime">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>

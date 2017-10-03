@@ -39,9 +39,13 @@ const routes = [
   { path: '/ebbinghaus', name: 'ebbinghaus', component: Ebbinghaus, props: true },
   { path: '/edit/:exerciseToReplaceId', name: 'edit',  component: ExerciseCreatorContainer, props: true },
   { path: '/contentList', name: 'contentList',  component: ContentList, props: true },
-  { path: '/:treeId', component: KnawledgeMap, props: true },
+  // { path: '/:treeId', component: KnawledgeMap, props: true },
+  { path: '/:contentUri', component: KnawledgeMap, props: true },
   { path: '/', component: KnawledgeMap, props: true },
   { path: 'trees/:treeId/', component: Tree, props: true },
+  { path: '/Everything/:contentUri/', component: Tree, props: true },
+  // {path: '*/:path1/:path2/:path3/:path4/', component: KnawledgeMap, props: true },
+   {path: '*/:path1', component: KnawledgeMap, props: true },
 ]
 
 // 3. Create the router instance and pass the `routes` option
