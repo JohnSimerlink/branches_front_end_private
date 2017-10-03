@@ -1,7 +1,3 @@
-import md5 from 'md5';
-import ContentItem from "./contentItem";
-import merge from 'lodash.merge'
-// import ExerciseQA from "./exerciseQA";
 import Exercise from './exercise'
 import ExerciseQA from "./exerciseQA";
 

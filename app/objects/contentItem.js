@@ -14,6 +14,7 @@ import {
 } from "../forgettingCurve";
 import store from '../core/store'
 import message from "../message";
+import UriContentMap from "./uriContentMap";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -228,6 +229,8 @@ export default class ContentItem {
     calculateURIBasedOnParentTreeContentURI(){
         const uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition()
         this.set('uri', uri)
+        UriContentMap.set(uri, this.id)
+
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
     resetTimer(){

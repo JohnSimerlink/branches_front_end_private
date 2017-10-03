@@ -80,7 +80,7 @@ const localMutations = {
     async setCurrentStudyingTree(state, treeId){
         state.currentStudyingCategoryTreeId = treeId
         user.setCurrentStudyingCategoryTreeId(treeId)
-        this.commit('enterStudyingMode')
+        // this.commit('enterStudyingMode')
     },
     mobile(state, isMobile) {
         state.mobile = isMobile;

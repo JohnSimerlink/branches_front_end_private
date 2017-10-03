@@ -13,6 +13,7 @@ import './knawledgeMap.less'
 import LocalForage from 'localforage'
 import {isMobile} from '../../core/utils';
 import clonedeep from 'lodash.clonedeep'
+import UriContentMap from '../../objects/uriContentMap'
 
 let router;
 
@@ -44,11 +45,34 @@ var toolTipsConfig = {
 };
 
 export default {
-    props: ['treeId'],
+    props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
     template: require('./knawledgeMap.html'),
-    created () {
+    async created () {
         this.init()
         router = this.$router
+        const uri1 = window.location.pathname
+        const uri2 = 'Everything' + uri1
+        // const uri3 = 'content/' + uri2
+        const uri3 = 'null/' + uri2
+        const [id1, id2, id3,] = await Promise.all([UriContentMap.get(uri1), UriContentMap.get(uri2), UriContentMap.get(uri3), ])
+        console.log('KNAWLEDGE map', window.location.pathname, id3,)
+        if (id3){
+            store.commit('enterExploringMode')
+            store.commit('hoverOverItemId', id3)
+            const contentItemId = id3
+            const contentItem = await ContentItems.get(contentItemId)
+            const treeId = contentItem.getTreeId()
+            const tree = await Trees.get(treeId)
+            const parentTreeId = tree.parentId
+            store.commit('setCurrentStudyingTree', parentTreeId)
+
+
+        } else {
+            const currentStudyingCategoryTreeId = this.getCurrentStudyingCategoryTreeId()
+            store.commit('setCurrentStudyingTree', this.getCurrentStudyingCategoryTreeId())
+            store.commit('enterStudyingMode')
+        }
+        // if ()
     },
     computed: {
         hoverOverItemId(){ // can't be done in watch because sometimes state.hoverOverItemId changes to itself, which watch wont pick up
