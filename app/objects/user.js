@@ -57,6 +57,7 @@ class User {
       me.branchesData.points = me.branchesData.points || 0
       me.camera = me.branchesData.camera
       me.applyDataPatches()
+      store.commit('setCurrentStudyingTree', me.branchesData.currentStudyingCategoryTreeId)
       PubSub.publish('dataLoaded')
       me.dataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
@@ -171,6 +172,7 @@ class User {
     }
     getCurrentStudyingCategoryTreeId(){
         const id = this.branchesData.currentStudyingCategoryTreeId || DATA_KEYS.TREE_IDS.DEFAULT
+        console.log('user.getCurrentStudyingCategoryTreeId is ', this.branchesData.currentStudyingCategoryTreeId, DATA_KEYS.TREE_IDS.DEFAULT)
         return id
     }
 
