@@ -170,10 +170,25 @@
     // Find which nodes are on screen:
     this.edgesOnScreen = [];
     var rect = this.camera.getRectangle(this.width, this.height);
-      this.graph.nodes().forEach(node => node.onScreen = false)
-      var nodesOnScreen = this.camera.quadtree.area(rect)
-      nodesOnScreen.sort((a,b) => a.level < b.level ? -1: 1)
-      nodesOnScreen.forEach(node => node.onScreen = true)
+    this.graph.nodes().forEach(node => {
+      node.onScreen = false
+      delete node.distanceFromCenter
+    })
+    var A_BIG_NUMBER = 999999999
+    window.mostCenteredNodeId = null
+    window.mostCenteredNodeDistance = A_BIG_NUMBER
+    var nodesOnScreen = this.camera.quadtree.area(rect)
+    nodesOnScreen.sort((a,b) => a.level < b.level ? -1: 1)
+    nodesOnScreen.forEach(node => {
+      console.log("node on screen ", node.id)
+      node.onScreen = true
+      node.distanceFromCenter = Math.sqrt(Math.pow(node["renderer1:x"] - window.xCenter, 2) + Math.pow(node["renderer1:y"] -  window.yCenter, 2))
+        if (node.distanceFromCenter < mostCenteredNodeDistance){
+          window.mostCenteredNodeId = node.id
+          window.mostCenteredNodeDistance = node.distanceFromCenter
+        }
+      console.log('node rendered is ', node)
+    })
     this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(
       // this.camera.getRectangle(this.width, this.height)
     // );
