@@ -434,11 +434,12 @@ function initKnawledgeMap(treeIdToJumpTo){
         sigma.settings.font = 'Fredoka One'
     }
 
-    if (window.cachedUserId){
-        loadDataAndInit()
-    } else {
+    // if (window.cachedUserId){
+    //     loadDataAndInit()
+    // } else {
         if (typeof PubSub !== 'undefined') {
-            PubSub.subscribe('userId', async () => {
+            // PubSub.subscribe('userId', async () => {
+            PubSub.subscribe('dataLoaded', async () => {
                 console.log("3: knawledgeMap.js PubSub.subscribe('userId'')" + Date.now(), " ", calculateLoadTimeSoFar(Date.now()))
                 LocalForage.getItem('g').then(async gFromLocalForage => {
                     // console.log("result of LocalForage is ", gFromLocalForage, JSON.stringify(gFromLocalForage), g, JSON.stringify(g))
@@ -451,7 +452,7 @@ function initKnawledgeMap(treeIdToJumpTo){
                     }
                 })
             })
-        }
+        // }
     }
 
     async function loadDataAndInit(){
@@ -464,7 +465,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         console.log('KNAWLEDGE map', window.location.pathname, contentId,)
         if (contentId){
-            store.commit('enterExploringMode')
+            // store.commit('enterExploringMode')
             store.commit('hoverOverItemId', contentId)
             const contentItemId = contentId
             const contentItem = await ContentItems.get(contentItemId)
@@ -472,6 +473,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             const tree = await Trees.get(treeId)
             const parentTreeId = tree.parentId
             store.commit('setCurrentStudyingTree', parentTreeId)
+            store.commit('enterStudyingMode')
         } else {
             const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
