@@ -121,6 +121,7 @@ export default {
         studyHeading() {
             console.log('study HEADING called!')
             this.$store.commit('setCurrentStudyingTree', this.id)
+            this.$store.commit('enterStudyingMode')
             // goToFromMap({name: 'study', params: {leafId: this.id}})
             // this.$router.push()
         },
