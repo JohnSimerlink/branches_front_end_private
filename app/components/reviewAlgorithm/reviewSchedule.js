@@ -1,6 +1,6 @@
 import branchuser from '../../objects/user'
 import Users from '../../objects/users'
-import user from '../../objects/user'
+import {user} from '../../objects/user'
 
 export default {
     template: require('./reviewSchedule.html'), // '<div> {{movie}} this is the tree template</div>',

@@ -1,6 +1,6 @@
 import './studyMenu.less'
 import {Trees} from "../../objects/trees";
-import user from '../../objects/user'
+import {user} from '../../objects/user'
 import ContentItems from "../../objects/contentItems";
 let defaultStudySettings = {
     itemTypes: {

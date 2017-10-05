@@ -1,3 +1,4 @@
+import store from '../../../app/core/store'
 ;(function(undefined) {
   'use strict';
 
@@ -188,6 +189,7 @@
         }
     })
     this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(
+      // store.commit('setMostCenteredTree', window.mostCenteredNodeId)
       // this.camera.getRectangle(this.width, this.height)
     // );
 

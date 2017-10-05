@@ -1,5 +1,5 @@
 import ContentItems from '../../objects/contentItems'
-import user from '../../objects/user'
+import {user} from '../../objects/user'
 import './itemHistory.less'
 
 export default {

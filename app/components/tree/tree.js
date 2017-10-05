@@ -3,7 +3,7 @@ import {proficiencyToColor} from "../proficiencyEnum"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
-import user from '../../objects/user'
+import {user} from '../../objects/user'
 import {Heading} from "../../objects/heading";
 import {secondsToPretty, timeFromNow} from "../../core/filters"
 import {Skill} from "../../objects/skill";

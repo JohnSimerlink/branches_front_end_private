@@ -1,4 +1,4 @@
-import user from './user'
+import {user} from './user'
 import md5 from 'md5'
 import firebase from './firebaseService.js';
 const treesRef = firebase.database().ref('trees');

@@ -4,7 +4,7 @@ const content = {}
 if (typeof window !== 'undefined') {
     window.content = content //expose to window for easy debugging
 }
-import user from './user'
+import {user} from './user'
 import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
 import {PROFICIENCIES, proficiencyToColor} from "../components/proficiencyEnum";
 import {Trees} from './trees'

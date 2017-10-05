@@ -1,4 +1,4 @@
-import user from './objects/user'
+import {user} from './objects/user'
 import ContentItems from "./objects/contentItems";
 
 function fixInteractionData(){
