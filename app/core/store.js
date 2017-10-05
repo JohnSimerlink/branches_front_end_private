@@ -2,7 +2,7 @@ import Vuex from "vuex"
 import Vue from "vue"
 import {Trees} from '../objects/trees'
 import Snack from '../../node_modules/snack.js/dist/snack'
-import user from '../objects/user'
+import {user} from '../objects/user'
 import {syncGraphWithNode} from "../components/knawledgeMap/knawledgeMap";
 import message from '../message'
 import ContentItems from "../objects/contentItems";
@@ -28,6 +28,7 @@ const state = {
     itemHovered: Math.random(),
     mobile: false,
     points: 0,
+    uri: null,
 };
 
 const getters = {
@@ -186,6 +187,16 @@ const localMutations = {
             return
         }
 
+    },
+    async setMostCenteredTree(state, treeId){
+        if (!window.s) return
+        const tree = await Trees.get(treeId)
+        const contentItem = await tree.getContentItem()
+        this.commit('setUri', contentItem.uri)
+    },
+    setUri(state, uri){
+        state.uri = uri
+        console.log('NEW URI is', state.uri)
     }
 }
 

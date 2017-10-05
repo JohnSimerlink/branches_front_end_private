@@ -1,6 +1,6 @@
 import {Config} from '../../core/config'
 import {login} from '../../core/login'
-import user from '../../objects/user'
+import {user} from '../../objects/user'
 import Users from '../../objects/users'
 import {mapGetters} from 'vuex'
 import {Trees} from "../../objects/trees";

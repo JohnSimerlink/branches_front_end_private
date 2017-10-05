@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import user from './user'
+import {user} from './user'
 import firebase from './firebaseService'
 import {Trees} from './trees'
 import merge from 'lodash.merge'

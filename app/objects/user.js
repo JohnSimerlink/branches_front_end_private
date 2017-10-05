@@ -1,4 +1,5 @@
 console.log(".5: user.js just called", calculateLoadTimeSoFar(Date.now()))
+
 import firebase from './firebaseService.js'
 import {clearInteractionsForHeadings} from "../fixData";
 import LocalForage from 'localforage'
@@ -7,9 +8,47 @@ let userLoggedIn = false
 let cachedId = null
 import store from '../core/store'
 import DATA_KEYS from '../../dataKeys'
+// create a unique, global symbol name
+// -----------------------------------
+const SINGLETON_KEY = Symbol.for("Branches.Singletons.User");
+
+// check if the global object has this symbol
+// add it if it does not have the symbol, yet
+// ------------------------------------------
+
+var globalSymbols = Object.getOwnPropertySymbols(global);
+var hasSingleton = (globalSymbols.indexOf(SINGLETON_KEY) > -1);
+
+if (!hasSingleton){
+  global[SINGLETON_KEY] = new User()
+}
+
+// define the singleton API
+// ------------------------
+
+var singleton = {};
+
+Object.defineProperty(singleton, "instance", {
+  get: function(){
+    return global[SINGLETON_KEY];
+  }
+});
+
+// ensure the API is never changed
+// -------------------------------
+
+Object.freeze(singleton);
+
+// export the singleton API only
+// -----------------------------
+
+module.exports = singleton;
+
+
 class User {
 
   constructor() {
+      this.r = Math.random()
       this.loggedIn = false;
       this.branchesData = {}
       this.dataLoaded = false
@@ -24,8 +63,8 @@ class User {
           // console.log(".515: user.js userId from cache is ",userId, calculateLoadTimeSoFar(Date.now()))
           // window.cachedUserId = userId
           // PubSub.publish('userId')
-          this.loadBranchesData()
           me.dataGoingToBeLoaded = true
+          this.loadBranchesData()
       }
 
       firebase.auth().onAuthStateChanged(async (user) => {
@@ -47,8 +86,9 @@ class User {
 
   }
   async loadBranchesData(){
-      console.log(".52: user.js loadBranchesData just called", calculateLoadTimeSoFar(Date.now()))
       const me = this
+      if (me.dataLoaded) return
+      console.log(".52: user.js loadBranchesData just called", calculateLoadTimeSoFar(Date.now()))
       const user = await Users.get(this.getId())
       me.branchesData = user || {}
       me.branchesData.patches = me.branchesData.patches || {}
@@ -58,8 +98,8 @@ class User {
       me.camera = me.branchesData.camera
       me.applyDataPatches()
       store.commit('setCurrentStudyingTree', me.branchesData.currentStudyingCategoryTreeId)
-      console.log("user.js dataLoaded", me.branchesData, me.branchesData.currentStudyingCategoryTreeId)
-      PubSub.publish('dataLoaded')
+      console.log(this.r, this.dataLoaded, "user.js dataLoaded", me.branchesData, me.branchesData.currentStudyingCategoryTreeId)
+      !me.dataLoaded && PubSub.publish('dataLoaded')
       me.dataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
       PubSub.publish('login')
@@ -242,8 +282,8 @@ class User {
     }
 }
 
-//user singleton
-const user = new User()
-window.user = user
-export default user
+// //user singleton
+// const user = new User()
+// window.user = user
+export let user = new User()
 

@@ -23,7 +23,7 @@
 <script>
 import {Config} from './config.js'
 import {login} from './login.js'
-import user from '../objects/user.js'
+import {user} from '../objects/user.js'
 
 export default {
   name: 'app',
