@@ -19,30 +19,6 @@ const SINGLETON_KEY = Symbol.for("Branches.Singletons.User");
 var globalSymbols = Object.getOwnPropertySymbols(global);
 var hasSingleton = (globalSymbols.indexOf(SINGLETON_KEY) > -1);
 
-if (!hasSingleton){
-  global[SINGLETON_KEY] = new User()
-}
-
-// define the singleton API
-// ------------------------
-
-var singleton = {};
-
-Object.defineProperty(singleton, "instance", {
-  get: function(){
-    return global[SINGLETON_KEY];
-  }
-});
-
-// ensure the API is never changed
-// -------------------------------
-
-Object.freeze(singleton);
-
-// export the singleton API only
-// -----------------------------
-
-module.exports = singleton;
 
 
 class User {
@@ -51,7 +27,7 @@ class User {
       this.r = Math.random()
       this.loggedIn = false;
       this.branchesData = {}
-      this.dataLoaded = false
+      window.userDataLoaded = false
       const me = this;
 
       console.log(".501: user.js get userId from cache about to be called", calculateLoadTimeSoFar(Date.now()))
@@ -87,7 +63,7 @@ class User {
   }
   async loadBranchesData(){
       const me = this
-      if (me.dataLoaded) return
+      if (window.userDataLoaded) return
       console.log(".52: user.js loadBranchesData just called", calculateLoadTimeSoFar(Date.now()))
       const user = await Users.get(this.getId())
       me.branchesData = user || {}
@@ -98,9 +74,9 @@ class User {
       me.camera = me.branchesData.camera
       me.applyDataPatches()
       store.commit('setCurrentStudyingTree', me.branchesData.currentStudyingCategoryTreeId)
-      console.log(this.r, this.dataLoaded, "user.js dataLoaded", me.branchesData, me.branchesData.currentStudyingCategoryTreeId)
-      !me.dataLoaded && PubSub.publish('dataLoaded')
-      me.dataLoaded = true
+      console.log(this.r, window.userDataLoaded, "user.js dataLoaded", me.branchesData, me.branchesData.currentStudyingCategoryTreeId)
+      !window.userDataLoaded && PubSub.publish('dataLoaded')
+      window.userDataLoaded = true
       console.log(".7: loadBranchesData loaded ", calculateLoadTimeSoFar(Date.now()))
       PubSub.publish('login')
       console.log("2.5: PubSub publish login", calculateLoadTimeSoFar(Date.now()))
@@ -282,8 +258,35 @@ class User {
     }
 }
 
-// //user singleton
-// const user = new User()
-// window.user = user
-export let user = new User()
+// // //user singleton
+// // const user = new User()
+// // window.user = user
+// export let user = new User()
+//
 
+if (!hasSingleton){
+    global[SINGLETON_KEY] = new User()
+}
+
+// define the singleton API
+// ------------------------
+
+var singleton = {};
+
+Object.defineProperty(singleton, "instance", {
+    get: function(){
+        return global[SINGLETON_KEY];
+    }
+});
+
+// ensure the API is never changed
+// -------------------------------
+
+Object.freeze(singleton);
+
+// export the singleton API only
+// -----------------------------
+
+// module.exports = singleton;
+// const user = new User()
+export let user = new User()

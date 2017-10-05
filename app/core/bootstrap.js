@@ -7,6 +7,7 @@ import TreeReview from '../components/treeReview/treeReview'
 import ContentList from '../components/contentList/contentList'
 import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exerciseCreatorContainer'
+import UserInfo from '../components/UserInfo/UserInfo'
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap'
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
 import Vue from 'vue';
@@ -36,6 +37,7 @@ const routes = [
   { path: '/bar', component: Bar },
   { path: '/study/:leafId', name: 'study', component: TreeReviewContainer, props: true },
   { path: '/create', name: 'create',  component: ExerciseCreatorContainer, props: true },
+   {path: '/user', name: 'user', component: UserInfo, props: true },
   { path: '/ebbinghaus', name: 'ebbinghaus', component: Ebbinghaus, props: true },
   { path: '/edit/:exerciseToReplaceId', name: 'edit',  component: ExerciseCreatorContainer, props: true },
   { path: '/contentList', name: 'contentList',  component: ContentList, props: true },
