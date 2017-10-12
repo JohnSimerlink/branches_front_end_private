@@ -1,5 +1,6 @@
 import {timeFromNow} from "../core/filters";
 
+const URI_WINDOW_PREFIX = 'null/Everything'
 const content = {}
 if (typeof window !== 'undefined') {
     window.content = content //expose to window for easy debugging
@@ -84,6 +85,17 @@ export default class ContentItem {
             uri: this.uri,
         }
     }
+    getURIForWindow(){
+        let uri = this.uri
+        if (uri.substring(URI_WINDOW_PREFIX) == 0){
+            uri = uri.substring(URI_WINDOW_PREFIX.length)
+        } else {
+            console.log("uri does not have prefix", URI_WINDOW_PREFIX, this.uri)
+        }
+        uri = "/" + uri
+        return uri
+    }
+
     getURIAddition(){
 
     }

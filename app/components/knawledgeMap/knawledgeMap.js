@@ -426,6 +426,17 @@ function closeTooltip(nodeId){
 }
 window.closeTooltip = closeTooltip
 
+async function setURLFromTreeId(treeId){
+    console.log('treeId is', treeId)
+    const tree = await Trees.get(treeId)
+    const contentItem = await tree.getContentItem()
+    const uri = contentItem.getURIForWindow()
+    console.log('uri is', uri)
+    history.pushState("","", uri)
+    // window.location.pathname = uri
+}
+
+window.setURLFromTreeId = setURLFromTreeId
 function initKnawledgeMap(treeIdToJumpTo){
     console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now(), calculateLoadTimeSoFar(Date.now()))
     var me = this;// bound/called
@@ -557,6 +568,10 @@ function initKnawledgeMap(treeIdToJumpTo){
                 glyphTextThreshold: 6,
                 glyphThreshold: 3
             });
+            PubSub.subscribe('mostCenteredNodeId', (eventName, treeId) => {
+                console.log("mostCenteredNodeId is", treeId)
+                setURLFromTreeId(treeId)
+            })
         } catch (err){
             console.error('error in init KnawledgeMap is ', err)
             const nodes = {}
