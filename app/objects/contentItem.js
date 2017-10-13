@@ -87,12 +87,16 @@ export default class ContentItem {
     }
     getURIForWindow(){
         let uri = this.uri
-        if (uri.substring(URI_WINDOW_PREFIX) == 0){
+        console.log("contentItem.js 1 uri is", uri, this.id)
+        if (uri.indexOf(URI_WINDOW_PREFIX) === 0){
             uri = uri.substring(URI_WINDOW_PREFIX.length)
         } else {
-            console.log("uri does not have prefix", URI_WINDOW_PREFIX, this.uri)
+            console.log("contentItem.js 2 uri does not have prefix", URI_WINDOW_PREFIX, this.uri)
         }
-        uri = "/" + uri
+        if(uri.indexOf("/") !== 0){
+            uri = "/" + uri
+        }
+        console.log("contemtItem.js 3 uri going to be returned from getURIForWIndow is ", uri)
         return uri
     }
 
