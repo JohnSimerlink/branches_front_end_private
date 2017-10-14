@@ -17,6 +17,7 @@ import UriContentMap from '../../objects/uriContentMap'
 import {stripTrailingSlash} from '../../objects/uriContentMap'
 
 let router;
+var initialized = false;
 
 var toolTipsConfig = {
     node: [
@@ -49,6 +50,7 @@ export default {
     props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
     template: require('./knawledgeMap.html'),
     async created () {
+        console.log("knawledgeMap.js called")
         this.init()
         router = this.$router
         // if ()
@@ -114,6 +116,8 @@ export default {
     },
     methods: {
         init(){
+            if (initialized) return
+            
             console.log('3.9. knawledgeMap.js init called', calculateLoadTimeSoFar(Date.now()))
             initKnawledgeMap.call(this, this.treeId)
         }
@@ -127,7 +131,6 @@ var s,
     }
 
 
-var initialized = false;
 
 const EDGE_TYPES = {
     SUGGESTED_CONNECTION: 9001,
@@ -442,9 +445,6 @@ async function setURLFromTreeId(treeId){
 }
 
 window.setURLFromTreeId = setURLFromTreeId
-window.addEventListener('popstate', function(event) {
-    console.log('WINDOW POPSTATE CALLED')
-}, false);
 
 
 function initKnawledgeMap(treeIdToJumpTo){
@@ -579,7 +579,6 @@ function initKnawledgeMap(treeIdToJumpTo){
                 glyphThreshold: 3
             });
             PubSub.subscribe('mostCenteredNodeId', (eventName, treeId) => {
-                console.log("mostCenteredNodeId is", treeId)
                 setURLFromTreeId(treeId)
             })
         } catch (err){
@@ -756,7 +755,13 @@ function initKnawledgeMap(treeIdToJumpTo){
         //     const treeId = data.oldNode || data
         //     window.closeTooltip(treeId)
         // })
+        window.addEventListener('popstate', function(event) {
+            console.log('WINDOW POPSTATE CALLED', event, event.state, event.state.coordinates)
+            // event && event.state && event.state.coordinates && Object.keys(event.state.coordinates)
+            // && s.camera.goTo(event.state.coordinates)
+        }, false);
         PubSub.publish('sigma.initialized')
+
     }
     async function click_SUGGESTED_CONNECTION(edge){
         const childBeingAdoptedId = edge.target
