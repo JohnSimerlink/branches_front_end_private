@@ -103,7 +103,7 @@ const localMutations = {
         state.openNodeId = nodeId
     },
     updateURIAndJump(state, {uri, coordinates, timestamp}){
-        history.pushState("","", uri)
+        history.pushState({coordinates},"", uri)
         console.log("UPDATE URI AND JUMP", uri, coordinates, timestamp)
 
     },
