@@ -190,7 +190,6 @@ import store from '../../../app/core/store'
     })
       if (!window.previousMostCenteredNodeId || window.mostCenteredNodeId !== window.previousMostCenteredNodeId){
           PubSub.publish('mostCenteredNodeId', window.mostCenteredNodeId)
-          console.log('canvas.js:mostCenteredNodeId is ', window.mostCenteredNodeId, window.mostCenteredNodeDistance)
       }
       window.previousMostCenteredNodeId = window.mostCenteredNodeId
     this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(

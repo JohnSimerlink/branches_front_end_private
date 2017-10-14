@@ -426,17 +426,27 @@ function closeTooltip(nodeId){
 }
 window.closeTooltip = closeTooltip
 
+function getCenterPoint(x,y){
+    return s.camera.graphPosition(window.xCenter, window.yCenter) || null
+}
+
 async function setURLFromTreeId(treeId){
-    console.log('treeId is', treeId)
     const tree = await Trees.get(treeId)
     const contentItem = await tree.getContentItem()
     const uri = contentItem.getURIForWindow()
-    console.log('uri is', uri)
-    history.pushState("","", uri)
+    console.log(uri, tree.x, tree.y)
+    const coordinates = {x: tree.x, y: tree.y, ratio: s.camera.ratio, angle: s.camera.angle}
+    store.commit('updateURIAndJump', {uri, coordinates, timestamp: Date.now()})
+    // jumpTo
     // window.location.pathname = uri
 }
 
 window.setURLFromTreeId = setURLFromTreeId
+window.addEventListener('popstate', function(event) {
+    console.log('WINDOW POPSTATE CALLED')
+}, false);
+
+
 function initKnawledgeMap(treeIdToJumpTo){
     console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now(), calculateLoadTimeSoFar(Date.now()))
     var me = this;// bound/called
