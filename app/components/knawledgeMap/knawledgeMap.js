@@ -485,12 +485,12 @@ function initKnawledgeMap(treeIdToJumpTo){
             const tree = await Trees.get(treeId)
             const parentTreeId = tree.parentId
             store.commit('setCurrentStudyingTree', parentTreeId)
-            store.commit('enterStudyingMode')
+            // store.commit('enterStudyingMode')
         } else {
             const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
             store.commit('setCurrentStudyingTree', currentStudyingCategoryTreeId)
-            store.commit('enterStudyingMode')
+            // store.commit('enterStudyingMode')
         }
 
         console.log("4.0: knawledgeMap.js loadTreeAndSubTrees about to be loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
