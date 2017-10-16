@@ -6,6 +6,10 @@ var PROFICIENCIES = {
     FOUR: 87.5,// DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
 }
 
+const NODE_TYPES = {
+    SHADOW_NODE: 9100,
+}
+
 var Globals = {
     currentTreeSelected: null,
     colors: {
@@ -28,7 +32,6 @@ function proficiencyToColor(proficiency){
 ;(function() {
   'use strict';
 
-
   sigma.utils.pkg('sigma.canvas.nodes');
 
   /**
@@ -39,6 +42,12 @@ function proficiencyToColor(proficiency){
    * @param  {configurable}             settings The settings function.
    */
   sigma.canvas.nodes.def = function(node, context, settings) {
+      if (node.type === NODE_TYPES.SHADOW_NODE){
+          return
+      }
+      if (node.trailingDots){
+          renderTrailingDots(node, context, settings)
+      }
       if (node.content.type === 'heading') {
           renderHeading(node, context, settings)
           return
@@ -174,12 +183,80 @@ function renderHeading(node,context,settings){
     endRadians = startRadians + percentageToRadians(fourPercentage)
     drawPieSlice(context,x,y,size, startRadians, endRadians, fourColor)
 }
+
+function renderTrailingDots(node,context,settings){
+    var prefix = settings('prefix') || '';
+    var x = node[prefix + 'x']
+    var y = node[prefix + 'y']
+    var size = node[prefix + 'size'];
+
+    const angle = getAngleFromCenter(x,y)
+    const r = size * 10
+    const deltaX = r * Math.cos(angle)
+    const deltaY = r * Math.sin(angle)
+
+    const shadowNodeX = x + deltaX
+    const shadowNodeY = y + deltaY
+
+    context.strokeStyle = 'red'
+
+    //draw line
+    context.beginPath()
+    context.moveTo(x, y)
+    context.lineTo(shadowNodeX, shadowNodeY)
+    context.closePath()
+    context.stroke()
+
+    //draw arrowhead
+    drawTriangle(context, shadowNodeX,shadowNodeY,size, angle)
+
+
+}
 function percentageToRadians(percentage){
     return percentage * 2 * Math.PI
 }
 
+function drawTriangle(context, x, y, size, angle){
+    let perpendicularAngle1 = angle + Math.PI / 2
+    let perpendicularAngle2 = angle - Math.PI / 2
+    let width = size / 2 * Math.cos(perpendicularAngle1)
+    let height = size / 2 * Math.sin(perpendicularAngle1)
+
+    const point1X = x + width
+    const point1Y = y + height
+
+    width = size / 2 * Math.cos(perpendicularAngle2)
+    height = size / 2 * Math.sin(perpendicularAngle2)
+
+    const point2X = x + width
+    const point2Y = y + height
+
+    width = size * Math.cos(angle)
+    height = size * Math.sin(angle)
+
+    const point3X = x + width
+    const point3Y = y + height
+
+    context.strokeStyle = 'pink'
+    context.lineWidth = 2
+
+    //draw line
+    context.beginPath()
+    context.moveTo(point1X, point1Y)
+    context.lineTo(point2X, point2Y)
+    context.lineTo(point3X, point3Y)
+    context.lineTo(point1X, point1Y)
+    context.closePath()
+    context.fill()
+
+    console.log("triangle 1 is", point1X, point1Y)
+    console.log("triangle 2 is", point2X, point2Y)
+    console.log("triangle 3 is", point3X, point3Y)
+}
+
 function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color){
     ctx.fillStyle = color;
+
     ctx.beginPath();
     ctx.moveTo(centerX,centerY);
     ctx.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -187,3 +264,20 @@ function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color)
     ctx.fill();
 }
 
+//in radians
+function getAngleFromCenter(x, y){
+    let width = x - window.xCenter
+    let height = y - window.yCenter
+
+    let reflect = false
+    if (width < 0){
+        width = width * -1
+        reflect = true
+    }
+    let angle = Math.atan(height / width)
+    if (reflect){
+        angle = Math.PI - angle
+    }
+    console.log('angleFromCenter', width, height, '->', angle)
+    return angle
+}
