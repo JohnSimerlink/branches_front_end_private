@@ -8,7 +8,7 @@ import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
 import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
-import {Globals} from '../../core/globals'
+import {Globals, NODE_TYPES} from '../../core/globals'
 import './knawledgeMap.less'
 import LocalForage from 'localforage'
 import {isMobile} from '../../core/utils';
@@ -134,6 +134,7 @@ var s,
 const EDGE_TYPES = {
     SUGGESTED_CONNECTION: 9001,
     HIERARCHICAL: 9002,
+    TRAILING_DOTS: 9003,
 }
 
 function getTreeColor(content) {
@@ -171,7 +172,7 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
         label: getLabelFromContent(content),
         size: getSizeFromContent(content),
         color: getTreeColor(content),
-        type: 'tree',
+        type: NODE_TYPES.TREE,
     };
     return node;
 }
@@ -292,7 +293,7 @@ export function addTreeToGraph(parentTreeId, content) {
         label: getLabelFromContent(content),
         size: getSizeFromContent(content),
         color: getTreeColor(content),
-        type: 'tree',
+        type: NODE_TYPES.TREE,
     }
 
     s.graph.addNode(newTree);
@@ -436,11 +437,8 @@ async function setURLFromTreeId(treeId){
     const tree = await Trees.get(treeId)
     const contentItem = await tree.getContentItem()
     const uri = contentItem.getURIForWindow()
-    console.log(uri, tree.x, tree.y)
     const coordinates = {x: tree.x, y: tree.y, ratio: s.camera.ratio, angle: s.camera.angle}
     store.commit('updateURIAndJump', {uri, coordinates, timestamp: Date.now()})
-    // jumpTo
-    // window.location.pathname = uri
 }
 
 window.setURLFromTreeId = setURLFromTreeId
@@ -757,8 +755,10 @@ function initKnawledgeMap(treeIdToJumpTo){
             && s.camera.goTo(event.state.coordinates,true)
         }, false);
         PubSub.publish('sigma.initialized')
-
+        const loadingGif = document.querySelector('#loadingGif')
+        loadingGif.style.display = 'none';
     }
+
     async function click_SUGGESTED_CONNECTION(edge){
         const childBeingAdoptedId = edge.target
         const newParentId = edge.source
@@ -921,4 +921,55 @@ function initKnawledgeMap(treeIdToJumpTo){
 
 
 
+}
+function addTrailingDots(treeId){
+
+    const tree = s.graph.nodes(treeId)
+    tree.trailingDots = true
+    return
+
+    const angle = getAngleFromCenter(treeId)
+    const r = 100
+    const deltaX = r * Math.cos(angle)
+    const deltaY = r * Math.sin(angle)
+
+    const shadowNodeX = tree.x + deltaX
+    const shadowNodeY = tree.y + deltaY
+
+    const shadowNode = {
+        id: treeId + "__" + "trailingDots",
+        x: shadowNodeX,
+        y: shadowNodeY,
+        size: 0,
+        color: 'black',
+        type: NODE_TYPES.SHADOW_NODE,
+        label: ''
+    }
+
+    s.graph.addNode(shadowNode);
+
+    const edge = {
+        id: 'trailingDots__' + treeId + "__" + shadowNode.id,
+        source: treeId,
+        target: shadowNode.id,
+        size: 2,
+        color: 'black',
+        type: EDGE_TYPES.TRAILING_DOTS,
+    }
+    s.graph.addEdge(edge)
+    s.refresh()
+}
+window.addTrailingDots = addTrailingDots
+
+//in radians
+function getAngleFromCenter(treeId){
+    let tree = s.graph.nodes(treeId)
+    let x = tree.x
+    let y = tree.y
+
+    let width = x - window.xCenter
+    let height = y - window.yCenter
+
+    let angle = Math.atan(height / width)
+    return angle
 }

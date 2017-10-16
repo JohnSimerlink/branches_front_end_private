@@ -1,5 +1,7 @@
-import store from '../../../app/core/store'
-;(function(undefined) {
+import store from '../../../app/core/store';
+import {NODE_TYPES} from "../../../app/core/globals";
+
+(function(undefined) {
   'use strict';
 
   if (typeof sigma === 'undefined')
@@ -182,6 +184,9 @@ import store from '../../../app/core/store'
     var nodesOnScreen = this.camera.quadtree.area(rect)
     nodesOnScreen.sort((a,b) => a.level < b.level ? -1: 1)
     nodesOnScreen.forEach(node => {
+      if (node.type !== NODE_TYPES.TREE){
+        return
+      }
       node.onScreen = true
       node.distanceFromCenter = Math.sqrt(Math.pow(node["renderer1:x"] - window.xCenter, 2) + Math.pow(node["renderer1:y"] -  window.yCenter, 2))
         if (node.distanceFromCenter < mostCenteredNodeDistance){
