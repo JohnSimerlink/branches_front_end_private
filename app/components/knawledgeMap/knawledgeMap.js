@@ -50,7 +50,6 @@ export default {
     props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
     template: require('./knawledgeMap.html'),
     async created () {
-        console.log("knawledgeMap.js called")
         this.init()
         router = this.$router
         // if ()
@@ -117,7 +116,7 @@ export default {
     methods: {
         init(){
             if (initialized) return
-            
+
             console.log('3.9. knawledgeMap.js init called', calculateLoadTimeSoFar(Date.now()))
             initKnawledgeMap.call(this, this.treeId)
         }
@@ -628,8 +627,6 @@ function initKnawledgeMap(treeIdToJumpTo){
         window.addEventListener('resize', function(){
             store.commit('mobile', !!isMobile.any());
         }, true);
-        s.bind('coordinatesUpdated', function(){
-        });
         s.bind('clickNode', function(event) {
             const nodeId = event && event.data && event.data.node && event.data.node.id
             console.log("node clicked s.bind",nodeId)
@@ -756,9 +753,8 @@ function initKnawledgeMap(treeIdToJumpTo){
         //     window.closeTooltip(treeId)
         // })
         window.addEventListener('popstate', function(event) {
-            console.log('WINDOW POPSTATE CALLED', event, event.state, event.state.coordinates)
-            // event && event.state && event.state.coordinates && Object.keys(event.state.coordinates)
-            // && s.camera.goTo(event.state.coordinates)
+            event && event.state && event.state.coordinates && Object.keys(event.state.coordinates)
+            && s.camera.goTo(event.state.coordinates,true)
         }, false);
         PubSub.publish('sigma.initialized')
 
@@ -879,7 +875,6 @@ function initKnawledgeMap(treeIdToJumpTo){
     if (typeof window !== 'undefined'){
         window.printNodesOnScreen = function() {
             var nodesOnScreen = s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
-            console.log('nodes on screen is', nodesOnScreen)
         }
     }
 

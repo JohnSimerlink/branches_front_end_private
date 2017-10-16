@@ -47,7 +47,7 @@
    * @param  {object} coordinates The new coordinates object.
    * @return {camera}             Returns the camera.
    */
-  sigma.classes.camera.prototype.goTo = function(coordinates) {
+  sigma.classes.camera.prototype.goTo = function(coordinates, stop) {
     if (!this.settings('enableCamera'))
       return this;
 
@@ -64,8 +64,8 @@
           throw 'Value for "' + keys[i] + '" is not a number.';
       }
 
-    this.dispatchEvent('coordinatesUpdated');
     PubSub.publish('canvas.coordinatesUpdated', c)
+    this.dispatchEvent('coordinatesUpdated', {stop});
     return this;
   };
 

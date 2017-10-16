@@ -112,8 +112,9 @@ import store from '../../../app/core/store'
    * @param  {?object}                options Eventually an object of options.
    * @return {sigma.renderers.canvas}         Returns the instance itself.
    */
-  sigma.renderers.canvas.prototype.render = function(options) {
+  sigma.renderers.canvas.prototype.render = function(options, dontPublish) {
     options = options || {};
+    dontPublish = dontPublish || false
 
     window.resetLabelData()
     var a,
@@ -189,7 +190,7 @@ import store from '../../../app/core/store'
         }
     })
       if (!window.previousMostCenteredNodeId || window.mostCenteredNodeId !== window.previousMostCenteredNodeId){
-          PubSub.publish('mostCenteredNodeId', window.mostCenteredNodeId)
+          !dontPublish && PubSub.publish('mostCenteredNodeId', window.mostCenteredNodeId)
       }
       window.previousMostCenteredNodeId = window.mostCenteredNodeId
     this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(
@@ -347,7 +348,7 @@ import store from '../../../app/core/store'
     }
 
     this.dispatchEvent('render');
-    PubSub.publish('canvas.rendered')
+    !dontPublish && PubSub.publish('canvas.rendered')
 
     return this;
   };
