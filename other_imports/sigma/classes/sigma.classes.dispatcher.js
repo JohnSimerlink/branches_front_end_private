@@ -122,6 +122,7 @@
    * @return {dispatcher}        Returns the instance itself.
    */
   dispatcher.prototype.dispatchEvent = function(events, data) {
+    // console.log('dispatchEvent called with the following data', data)
     var i,
         n,
         j,

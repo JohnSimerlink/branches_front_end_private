@@ -265,8 +265,10 @@
       camera.edgequadtree = new sigma.classes.edgequad();
     }
 
-    camera.bind('coordinatesUpdated', function(e) {
-      self.renderCamera(camera, camera.isAnimated);
+    camera.bind('coordinatesUpdated', function(event) {
+      var stop = event && event.data && event.data.stop || false
+      // console.log('core camera bind coordinatesUpdated called',...arguments, stop)
+      self.renderCamera(camera, camera.isAnimated,stop);
     });
 
     this.renderersPerCamera[id] = [];
@@ -584,8 +586,8 @@
    *
    * @return {sigma} Returns the instance itself.
    */
-  sigma.prototype.render = function() {
-    PubSub.publish('canvas.nodesRendering')
+  sigma.prototype.render = function(publishEvents) {
+    !publishEvents && PubSub.publish('canvas.nodesRendering')
     var i,
         l,
         a,
@@ -620,43 +622,16 @@
    *                                       directly.
    * @return {sigma}                       Returns the instance itself.
    */
-  sigma.prototype.renderCamera = function(camera, force) {
-    var i,
-        l,
-        a,
-        self = this;
+  sigma.prototype.renderCamera = function(camera, force, stop) {
+      // if
+    var self = this;
 
     if (force) {
-      a = this.renderersPerCamera[camera.id];
-      for (i = 0, l = a.length; i < l; i++)
-        if (this.settings('skipErrors'))
-          try {
-            a[i].render();
-          } catch (e) {
-            if (this.settings('verbose'))
-              console.log(
-                'Warning: The renderer "' + a[i].id + '" crashed on ".render()"'
-              );
-          }
-        else
-          a[i].render();
+      this.renderAllRenderers(camera, stop)
     } else {
       if (!this.cameraFrames[camera.id]) {
-        a = this.renderersPerCamera[camera.id];
-        for (i = 0, l = a.length; i < l; i++)
-          if (this.settings('skipErrors'))
-            try {
-              a[i].render();
-            } catch (e) {
-              if (this.settings('verbose'))
-                console.log(
-                  'Warning: The renderer "' +
-                    a[i].id +
-                    '" crashed on ".render()"'
-                );
-            }
-          else
-            a[i].render();
+        this.renderAllRenderers(camera, stop)
+        // if(stop) return
 
         this.cameraFrames[camera.id] = requestAnimationFrame(function() {
           delete self.cameraFrames[camera.id];
@@ -664,9 +639,29 @@
       }
     }
 
+
     return this;
   };
 
+  sigma.prototype.renderAllRenderers = function(camera, stop){
+      // if (stop) return
+      var a = this.renderersPerCamera[camera.id];
+      for (var i = 0, l = a.length; i < l; i++) {
+          if (this.settings('skipErrors')) {
+              try {
+                  a[i].render(null, stop);
+              } catch (e) {
+                  if (this.settings('verbose'))
+                      console.log(
+                          'Warning: The renderer "' + a[i].id + '" crashed on ".render()"'
+                      );
+              }
+          }
+          else {
+              a[i].render(null,stop);
+          }
+      }
+  }
   /**
    * This method calls the "kill" method of each module and destroys any
    * reference from the instance.
