@@ -3,12 +3,12 @@ import ContentItem from "./contentItem";
 import merge from 'lodash.merge'
 
 export class Heading extends ContentItem {
-    constructor (args /*={title, initialParentTreeId} and more */){
+    constructor (args /*={title, primaryParentTreeId} and more */){
         super(args)
         this.type = 'heading';
 
         this.title = args.title && args.title.trim();
-        this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId: args.initialParentTreeId}));
+        this.id = args.id || md5(JSON.stringify({title:this.title,primaryParentTreeId: args.primaryParentTreeId}));
         super.init()
     }
     getURIAddition(){

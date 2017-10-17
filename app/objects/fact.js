@@ -6,9 +6,9 @@ import merge from 'lodash.merge'
 import ContentItem from './contentItem'// from './firebaseService'
 export class Fact extends ContentItem {
   //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
-  constructor (args /*= {question, answer, id, userTimeMap, initialParentTreeId}*/){
-      // if (initialParentTreeId){
-      //     super({initialParentTreeId})
+  constructor (args /*= {question, answer, id, userTimeMap, primaryParentTreeId}*/){
+      // if (primaryParentTreeId){
+      //     super({primaryParentTreeId})
       // } else {
       //     super()
       // }
