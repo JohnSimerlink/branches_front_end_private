@@ -432,6 +432,7 @@ export async function loadDescendants(treeId, numGenerations){
     }
     const tree = await Trees.get(treeId)
     const level = tree.level
+    console.log("loadDescendants level", treeId, level)
 
     tree.getChildIds().forEach(async childId => {
         await loadTree(childId, level + 1)
@@ -440,14 +441,15 @@ export async function loadDescendants(treeId, numGenerations){
 }
 
 async function loadTree(treeId, level){
+    console.log("loadTree", treeId, level)
     const tree = await Trees.get(treeId)
+    tree.setLocal('level', level)
     const content = await ContentItems.get(tree.contentId)
     const parentId = tree.parentId
     if (parentId && !treeAlreadyLoaded(parentId)){
         await loadTree(parentId, level - .01)
         connectTreeToParent(tree, content, g)
     }
-    tree.setLocal('level', level)
     try {
         addTreeNodeToGraph(tree, content, level)
     } catch( err) {
