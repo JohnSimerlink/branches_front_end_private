@@ -32,19 +32,14 @@ var toolTipsConfig = {
                     case 'tree':
                         template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                         break;
-                    // case 'newChildTree':
-                    //     template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                    //     break;
                 }
                 var result = template // Mustache.render(template, node)
 
                 return result
             }
         }],
-    // stage: {
-    //     template:require('./rightClickMenu.html')
-    // }
 };
+const DEFAULT_NUM_GENERATIONS_TO_LOAD = 2
 
 export default {
     props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
@@ -156,14 +151,6 @@ PubSub.subscribe('removeTreeFromGraph', (eventName, treeId) => {
 })
 
 function createTreeNodeFromTreeAndContent(tree, content, level){
-    // var node = tree
-    // node.level = level
-    // node.content = content
-    // node.label = getLabelFromContent(content)
-    // node.size = 1
-    // node.color = getTreeColor(content)
-    // node.type = 'tree'
-
     const node = {
         ...tree,
         level,
@@ -185,7 +172,7 @@ export function addTreeNodeToGraph(tree,content, level){
             g.nodes.push(treeUINode);
             connectTreeToParent(tree, content, g)
         } else {
-            if (!alreadyLoaded(tree.id)){
+            if (!treeAlreadyLoaded(tree.id)){
                 s.graph.addNode(treeUINode)
                 connectTreeToParent(tree, content, g)
                 s.refresh()
@@ -200,8 +187,11 @@ export function addTreeNodeToGraph(tree,content, level){
     }
     return content.id
 }
-function alreadyLoaded(treeId){
-    return s.graph.nodes(treeId)
+function treeAlreadyLoaded(treeId){
+    return g.nodes.find(node => node.id === treeId || (s && s.graph.nodes(treeId)))
+}
+function edgeAlreadyLoaded(edgeId){
+    return g.edges.find(edge => edge.id === edgeId || (s && s.graph.edges(edgeId)))
 }
 
 function getSizeFromContent(content) {
@@ -212,10 +202,6 @@ function getSizeFromContent(content) {
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
-//
-// PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
-//     syncGraphWithNode(treeId)
-// })
 
 export function syncGraphWithNode(treeId){
     if (!s){
@@ -235,6 +221,7 @@ async function _syncGraphWithNode(treeId){
     if (sigmaNode){
         sigmaNode.x = tree.x
         sigmaNode.y = tree.y
+        sigmaNode.level = tree.level
         sigmaNode.active = tree.active
         var color = getTreeColor(content)
         sigmaNode.color = color
@@ -262,7 +249,7 @@ export function refreshGraph(){
 PubSub.subscribe('refreshGraph',refreshGraph)
 
 function connectTreeToParent(tree,content, g){
-    if (tree.parentId) {
+    if (tree.parentId && treeAlreadyLoaded(tree.parentId)) {
         const edge = {
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
@@ -271,6 +258,9 @@ function connectTreeToParent(tree,content, g){
             color: getTreeColor(content),
             type: EDGE_TYPES.HIERARCHICAL,
         };
+        if (edgeAlreadyLoaded(edge.id)){
+            return
+        }
         if(!initialized){
             g.edges.push(edge);
         } else {
@@ -388,17 +378,6 @@ function focusNode(camera, node) {
         ratio: 0.20
     };
     camera.goTo(cameraCoord);
-    // sigma.misc.animation.camera(
-    //     camera,
-    //     {
-    //         x: node['read_cammain:x'],
-    //         y: node['read_cammain:y'],
-    //         ratio: 0.075
-    //     },
-    //     {
-    //         duration: 150
-    //     }
-    // );
 }
 
 function openTooltipFromId(nodeId){
@@ -452,8 +431,7 @@ export async function loadDescendants(treeId, numGenerations){
         return
     }
     const tree = await Trees.get(treeId)
-    const treeUINode = s.graph.nodes(tree.id)
-    const level = treeUINode.level
+    const level = tree.level
 
     tree.getChildIds().forEach(async childId => {
         await loadTree(childId, level + 1)
@@ -463,8 +441,14 @@ export async function loadDescendants(treeId, numGenerations){
 
 async function loadTree(treeId, level){
     const tree = await Trees.get(treeId)
+    const content = await ContentItems.get(tree.contentId)
+    const parentId = tree.parentId
+    if (parentId && !treeAlreadyLoaded(parentId)){
+        await loadTree(parentId, level - .01)
+        connectTreeToParent(tree, content, g)
+    }
+    tree.setLocal('level', level)
     try {
-        const content = await ContentItems.get(tree.contentId)
         addTreeNodeToGraph(tree, content, level)
     } catch( err) {
         console.error("CONTENTITEMS.get Err is", err)
@@ -519,15 +503,19 @@ function initKnawledgeMap(treeIdToJumpTo){
             const parentTreeId = tree.parentId
             store.commit('setCurrentStudyingTree', parentTreeId)
             // store.commit('enterStudyingMode')
+            console.log('CONTENT ID IS PRESENT IN URL')
+            // debugger;
+            await loadTree(treeId, 1)
+            await loadDescendants(treeId, DEFAULT_NUM_GENERATIONS_TO_LOAD)
         } else {
             const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
             store.commit('setCurrentStudyingTree', currentStudyingCategoryTreeId)
             // store.commit('enterStudyingMode')
+            await loadTreeAndSubTrees(1, 1)
         }
 
         console.log("4.0: knawledgeMap.js loadTreeAndSubTrees about to be loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
-        await loadTreeAndSubTrees(1, 1)
         console.log("4.1: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
 
         try {
@@ -562,7 +550,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         let childTreesPromises = []
 
-        if (level <= 2 ){
+        if (level <= DEFAULT_NUM_GENERATIONS_TO_LOAD ){
             childTreesPromises = tree.getChildIds().map(childKey => {
                 return loadTreeAndSubTrees(childKey, level + 1)
             })
@@ -610,6 +598,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             } )
             window.nodesArr = nodesArr
             const sources = {}
+            var edgesArr = g.edges.map(edge => edge.id)
             var sourcesArr = g.edges.map(edge => {
                 sources[edge.source] = true
                 return edge.source
@@ -623,7 +612,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             var invalidTargets = targetsArr.filter( t => !nodes[t])
             console.error("the following targets are invalid", invalidTargets)
             console.error("the following sources are invalid", invalidSources)
-            console.log("invalid targets instanceof Array", invalidTargets instanceof Array, invalidTargets.map)
+            console.error('sourcesArr and targets Arr are', sourcesArr, targetsArr, nodesArr, edgesArr)
             const invalidTargetPromises = invalidTargets.map(target =>{
                 return Trees.get(target)
             })
@@ -669,41 +658,6 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
             updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
-        })
-        PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
-            // var node = data
-            // console.log('nodeMouseUp',eventName, data)
-            // // console.log('nodeMouseUp', eventName, data)
-            // if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
-            //     return
-            // }
-            // switch(node.content.type){
-            //     case 'fact':
-            //         console.log("node mouse up on fact")
-            //         openTooltip(node)
-            //         break;
-            //     case 'heading':
-            //         openTooltip(node)
-            //         break;
-            //     case 'skill':
-            //         console.log('node mouse up on skill!!!',node)
-            //         openTooltip(node)
-            //         break;
-            //     default:
-            //         // console.log()
-            //         // me.$router.push({name: 'study', params: {leafId: node.id}})
-            //         // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
-            //         break;
-            // }
-        })
-        PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
-            // console.log("canvas.differentNodeClicked subscribe", eventName, data)
-            // PubSub.publish('canvas.closeTooltip', data)
-            // const nodeToOpen = s.graph.nodes(data.newNode)
-            // openTooltip(nodeToOpen)
-        })
-        PubSub.subscribe('canvas.cameraChange', function(eventName, data){
-            console.log('camera change',eventName, data)
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
             store.commit('clickStage')
@@ -768,11 +722,6 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
-        // PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
-        //     if (!data) return
-        //     const treeId = data.oldNode || data
-        //     window.closeTooltip(treeId)
-        // })
         window.addEventListener('popstate', function(event) {
             event && event.state && event.state.coordinates && Object.keys(event.state.coordinates)
             && s.camera.goTo(event.state.coordinates,true)

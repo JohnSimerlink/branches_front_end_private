@@ -275,6 +275,9 @@ export class Tree {
         firebase.database().ref(lookupKey).update(updates)
         this[prop] = val
     }
+    setLocal(prop, val){
+        this[prop] = val
+    }
     addToX({recursion,deltaX}={recursion:false, deltaX: 0}){
        var newX = this.x + deltaX
        this.set('x', newX)
