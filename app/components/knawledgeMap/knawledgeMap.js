@@ -8,7 +8,7 @@ import Snack from '../../../node_modules/snack.js/dist/snack'
 import Vue from 'vue'
 import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
-import {Globals} from '../../core/globals'
+import {Globals, NODE_TYPES} from '../../core/globals'
 import './knawledgeMap.less'
 import LocalForage from 'localforage'
 import {isMobile} from '../../core/utils';
@@ -32,19 +32,14 @@ var toolTipsConfig = {
                     case 'tree':
                         template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
                         break;
-                    // case 'newChildTree':
-                    //     template = '<div id="vue"><newtree parentid="' + node.parentId + '"></newtree></div>';
-                    //     break;
                 }
                 var result = template // Mustache.render(template, node)
 
                 return result
             }
         }],
-    // stage: {
-    //     template:require('./rightClickMenu.html')
-    // }
 };
+const DEFAULT_NUM_GENERATIONS_TO_LOAD = 2
 
 export default {
     props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
@@ -134,6 +129,7 @@ var s,
 const EDGE_TYPES = {
     SUGGESTED_CONNECTION: 9001,
     HIERARCHICAL: 9002,
+    TRAILING_DOTS: 9003,
 }
 
 function getTreeColor(content) {
@@ -154,39 +150,30 @@ PubSub.subscribe('removeTreeFromGraph', (eventName, treeId) => {
     removeTreeFromGraph(treeId)
 })
 
-function createTreeNodeFromTreeAndContent(tree, content, level){
-    // var node = tree
-    // node.level = level
-    // node.content = content
-    // node.label = getLabelFromContent(content)
-    // node.size = 1
-    // node.color = getTreeColor(content)
-    // node.type = 'tree'
-
+function createTreeNodeFromTreeAndContent(tree, content){
     const node = {
         ...tree,
-        level,
         content,
         overdue: content.overdue,
         label: getLabelFromContent(content),
         size: getSizeFromContent(content),
         color: getTreeColor(content),
-        type: 'tree',
+        type: NODE_TYPES.TREE,
     };
     return node;
 }
 
-export function addTreeNodeToGraph(tree,content, level){
+export function addTreeNodeToGraph(tree,content){
     if(!content) return
     try {
-        const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
+        const treeUINode = createTreeNodeFromTreeAndContent(tree,content)
         if(!initialized){
             g.nodes.push(treeUINode);
-            connectTreeToParent(tree, content, g)
         } else {
-            s.graph.addNode(treeUINode)
-            connectTreeToParent(tree, content, g)
-            s.refresh()
+            if (!treeAlreadyLoaded(tree.id)){
+                s.graph.addNode(treeUINode)
+                s.refresh()
+            }
         }
     } catch (err) {
         var snack = new Snack({
@@ -197,7 +184,12 @@ export function addTreeNodeToGraph(tree,content, level){
     }
     return content.id
 }
-
+function treeAlreadyLoaded(treeId){
+    return g.nodes.find(node => node.id === treeId || (s && s.graph.nodes(treeId)))
+}
+function edgeAlreadyLoaded(edgeId){
+    return g.edges.find(edge => edge.id === edgeId || (s && s.graph.edges(edgeId)))
+}
 
 function getSizeFromContent(content) {
     // return Globals.regularSize
@@ -207,10 +199,6 @@ function getSizeFromContent(content) {
 function createEdgeId(nodeOneId, nodeTwoId){
     return nodeOneId + "__" + nodeTwoId
 }
-//
-// PubSub.subscribe('syncGraphWithNode', (eventName, treeId) => {
-//     syncGraphWithNode(treeId)
-// })
 
 export function syncGraphWithNode(treeId){
     if (!s){
@@ -230,6 +218,7 @@ async function _syncGraphWithNode(treeId){
     if (sigmaNode){
         sigmaNode.x = tree.x
         sigmaNode.y = tree.y
+        sigmaNode.level = tree.level
         sigmaNode.active = tree.active
         var color = getTreeColor(content)
         sigmaNode.color = color
@@ -256,8 +245,8 @@ export function refreshGraph(){
 }
 PubSub.subscribe('refreshGraph',refreshGraph)
 
-function connectTreeToParent(tree,content, g){
-    if (tree.parentId) {
+export function connectTreeToParent(tree,content){
+    if (tree.parentId && treeAlreadyLoaded(tree.parentId)) {
         const edge = {
             id: createEdgeId(tree.parentId, tree.id),
             source: tree.parentId,
@@ -266,11 +255,15 @@ function connectTreeToParent(tree,content, g){
             color: getTreeColor(content),
             type: EDGE_TYPES.HIERARCHICAL,
         };
+        if (edgeAlreadyLoaded(edge.id)){
+            return
+        }
         if(!initialized){
             g.edges.push(edge);
         } else {
             s.graph.addEdge(edge)
         }
+    } else {
     }
 }
 //returns sigma tree node
@@ -292,7 +285,7 @@ export function addTreeToGraph(parentTreeId, content) {
         label: getLabelFromContent(content),
         size: getSizeFromContent(content),
         color: getTreeColor(content),
-        type: 'tree',
+        type: NODE_TYPES.TREE,
     }
 
     s.graph.addNode(newTree);
@@ -383,17 +376,6 @@ function focusNode(camera, node) {
         ratio: 0.20
     };
     camera.goTo(cameraCoord);
-    // sigma.misc.animation.camera(
-    //     camera,
-    //     {
-    //         x: node['read_cammain:x'],
-    //         y: node['read_cammain:y'],
-    //         ratio: 0.075
-    //     },
-    //     {
-    //         duration: 150
-    //     }
-    // );
 }
 
 function openTooltipFromId(nodeId){
@@ -436,16 +418,38 @@ async function setURLFromTreeId(treeId){
     const tree = await Trees.get(treeId)
     const contentItem = await tree.getContentItem()
     const uri = contentItem.getURIForWindow()
-    console.log(uri, tree.x, tree.y)
     const coordinates = {x: tree.x, y: tree.y, ratio: s.camera.ratio, angle: s.camera.angle}
     store.commit('updateURIAndJump', {uri, coordinates, timestamp: Date.now()})
-    // jumpTo
-    // window.location.pathname = uri
 }
 
 window.setURLFromTreeId = setURLFromTreeId
 
+export async function loadDescendants(treeId, numGenerations){
+    if (numGenerations <=0 ) {
+        return
+    }
+    const tree = await Trees.get(treeId)
 
+    tree.getChildIds().forEach(async childId => {
+        await loadTree(childId)
+        loadDescendants(childId, numGenerations - 1)
+    })
+}
+
+async function loadTree(treeId){
+    const tree = await Trees.get(treeId)
+    const content = await ContentItems.get(tree.contentId)
+    try {
+        addTreeNodeToGraph(tree, content)
+    } catch( err) {
+        console.error("CONTENTITEMS.get Err is", err)
+    }
+    const parentId = tree.parentId
+    if (parentId && !treeAlreadyLoaded(parentId)){
+        await loadTree(parentId)
+    }
+    connectTreeToParent(tree, content)
+}
 function initKnawledgeMap(treeIdToJumpTo){
     console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now(), calculateLoadTimeSoFar(Date.now()))
     var me = this;// bound/called
@@ -495,15 +499,19 @@ function initKnawledgeMap(treeIdToJumpTo){
             const parentTreeId = tree.parentId
             store.commit('setCurrentStudyingTree', parentTreeId)
             // store.commit('enterStudyingMode')
+            console.log('CONTENT ID IS PRESENT IN URL')
+            // debugger;
+            await loadTree(treeId, 1)
+            await loadDescendants(treeId, DEFAULT_NUM_GENERATIONS_TO_LOAD)
         } else {
             const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
             store.commit('setCurrentStudyingTree', currentStudyingCategoryTreeId)
             // store.commit('enterStudyingMode')
+            await loadTreeAndSubTrees(1, 1)
         }
 
         console.log("4.0: knawledgeMap.js loadTreeAndSubTrees about to be loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
-        await loadTreeAndSubTrees(1, 1)
         console.log("4.1: knawledgeMap.js loadTreeAndSubTrees just loaded" + Date.now(), calculateLoadTimeSoFar(Date.now()))
 
         try {
@@ -516,39 +524,30 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
 
     }
-    async function loadTreeAndSubTrees(treeId, level){
-        // console.log(level, "A", treeId, Date.now())
+
+    async function loadTreeAndSubTrees(treeId){
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
         const tree = await Trees.get(treeId)
-        // console.log(level, "B", treeId, Date.now())
-        const getTreeResult = onGetTree(tree, level)
-        // console.log(level, "C", treeId, Date.now())
+        const getTreeResult = onGetTree(tree)
         return getTreeResult
     }
 
-    async function onGetTree(tree, level) {
-        // var contentPromise = ContentItems.get(tree.contentId)
+    async function onGetTree(tree) {
+        console.log(tree.id, calculateLoadTimeSoFar(Date.now()))
         try {
             const content = await ContentItems.get(tree.contentId)
-            // console.log(level, tree.id, "onGetTree 1 ", Date.now())
-
-            addTreeNodeToGraph(tree, content, level)
-            // console.log(level, tree.id, "onGetTree 2 ", Date.now())
+            addTreeNodeToGraph(tree, content)
+            connectTreeToParent(tree,content)
         } catch( err) {
             console.error("CONTENTITEMS.get Err is", err)
         }
-        // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
-        // console.log(level, tree.id, "onGetTree 3 ", Date.now())
-        var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
-            return loadTreeAndSubTrees(child, level + 1)
-        }): []
+        let childTreesPromises = []
 
-        // console.log(level, tree.id, "onGetTree 4 ", Date.now())
-
+        childTreesPromises = tree.getChildIds().map(childKey => {
+            return loadTreeAndSubTrees(childKey)
+        })
         return Promise.all([...childTreesPromises])
     }
-
-
 
 //recursively load the entire tree
 // Instantiate sigma:
@@ -579,6 +578,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             });
             PubSub.subscribe('mostCenteredNodeId', (eventName, treeId) => {
                 setURLFromTreeId(treeId)
+                loadDescendants(treeId, 2)
             })
         } catch (err){
             console.error('error in init KnawledgeMap is ', err)
@@ -589,6 +589,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             } )
             window.nodesArr = nodesArr
             const sources = {}
+            var edgesArr = g.edges.map(edge => edge.id)
             var sourcesArr = g.edges.map(edge => {
                 sources[edge.source] = true
                 return edge.source
@@ -602,7 +603,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             var invalidTargets = targetsArr.filter( t => !nodes[t])
             console.error("the following targets are invalid", invalidTargets)
             console.error("the following sources are invalid", invalidSources)
-            console.log("invalid targets instanceof Array", invalidTargets instanceof Array, invalidTargets.map)
+            console.error('sourcesArr and targets Arr are', sourcesArr, targetsArr, nodesArr, edgesArr)
             const invalidTargetPromises = invalidTargets.map(target =>{
                 return Trees.get(target)
             })
@@ -648,41 +649,6 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         PubSub.subscribe('canvas.stopDraggingNode', (eventName, node) => {
             updateTreePosition({newX: node.x, newY: node.y, treeId: node.id})
-        })
-        PubSub.subscribe('canvas.nodeMouseUp', function(eventName,data) {
-            // var node = data
-            // console.log('nodeMouseUp',eventName, data)
-            // // console.log('nodeMouseUp', eventName, data)
-            // if (window.awaitingDisconnectConfirmation || window.awaitingEdgeConnection){
-            //     return
-            // }
-            // switch(node.content.type){
-            //     case 'fact':
-            //         console.log("node mouse up on fact")
-            //         openTooltip(node)
-            //         break;
-            //     case 'heading':
-            //         openTooltip(node)
-            //         break;
-            //     case 'skill':
-            //         console.log('node mouse up on skill!!!',node)
-            //         openTooltip(node)
-            //         break;
-            //     default:
-            //         // console.log()
-            //         // me.$router.push({name: 'study', params: {leafId: node.id}})
-            //         // console.log('knawledgeMap.js: leaf Id that we are going to study is --- ', node.id)
-            //         break;
-            // }
-        })
-        PubSub.subscribe('canvas.differentNodeClicked', function(eventName, data){
-            // console.log("canvas.differentNodeClicked subscribe", eventName, data)
-            // PubSub.publish('canvas.closeTooltip', data)
-            // const nodeToOpen = s.graph.nodes(data.newNode)
-            // openTooltip(nodeToOpen)
-        })
-        PubSub.subscribe('canvas.cameraChange', function(eventName, data){
-            console.log('camera change',eventName, data)
         })
         PubSub.subscribe('canvas.stageClicked', function(eventName, data){
             store.commit('clickStage')
@@ -747,18 +713,15 @@ function initKnawledgeMap(treeIdToJumpTo){
             }
             s.refresh()
         })
-        // PubSub.subscribe('canvas.closeTooltip', (eventName, data) => {
-        //     if (!data) return
-        //     const treeId = data.oldNode || data
-        //     window.closeTooltip(treeId)
-        // })
         window.addEventListener('popstate', function(event) {
             event && event.state && event.state.coordinates && Object.keys(event.state.coordinates)
             && s.camera.goTo(event.state.coordinates,true)
         }, false);
         PubSub.publish('sigma.initialized')
-
+        const loadingGif = document.querySelector('#loadingGif')
+        loadingGif.style.display = 'none';
     }
+
     async function click_SUGGESTED_CONNECTION(edge){
         const childBeingAdoptedId = edge.target
         const newParentId = edge.source
@@ -922,3 +885,63 @@ function initKnawledgeMap(treeIdToJumpTo){
 
 
 }
+function addTrailingDots(treeId){
+
+    const tree = s.graph.nodes(treeId)
+    tree.trailingDots = true
+    return
+
+    const angle = getAngleFromCenter(treeId)
+    const r = 100
+    const deltaX = r * Math.cos(angle)
+    const deltaY = r * Math.sin(angle)
+
+    const shadowNodeX = tree.x + deltaX
+    const shadowNodeY = tree.y + deltaY
+
+    const shadowNode = {
+        id: treeId + "__" + "trailingDots",
+        x: shadowNodeX,
+        y: shadowNodeY,
+        size: 0,
+        color: 'black',
+        type: NODE_TYPES.SHADOW_NODE,
+        label: ''
+    }
+
+    s.graph.addNode(shadowNode);
+
+    const edge = {
+        id: 'trailingDots__' + treeId + "__" + shadowNode.id,
+        source: treeId,
+        target: shadowNode.id,
+        size: 2,
+        color: 'black',
+        type: EDGE_TYPES.TRAILING_DOTS,
+    }
+    s.graph.addEdge(edge)
+    s.refresh()
+}
+window.addTrailingDots = addTrailingDots
+
+//in radians
+function getAngleFromCenter(treeId){
+    let tree = s.graph.nodes(treeId)
+    let x = tree.x
+    let y = tree.y
+
+    let width = x - window.xCenter
+    let height = y - window.yCenter
+
+    let angle = Math.atan(height / width)
+    return angle
+}
+
+async function assignLevels(treeId, startingLevel){
+    const tree = await Trees.get(treeId)
+    tree.set('level', startingLevel)
+    tree.getChildIds().forEach(async childId => {
+        assignLevels(childId, startingLevel + 1)
+    })
+}
+window.assignLevels = assignLevels

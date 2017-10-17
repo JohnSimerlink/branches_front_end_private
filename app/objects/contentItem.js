@@ -26,7 +26,7 @@ function refreshGraph() {
 export default class ContentItem {
 
     constructor(args) {
-        this.initialParentTreeId = this.initialParentTreeId || (args && args.initialParentTreeId) || null
+        this.primaryParentTreeId = this.primaryParentTreeId || (args && args.primaryParentTreeId) || null
         this.primaryParentTreeContentURI = this.primaryParentTreeContentURI || (args && args.primaryParentTreeContentURI) || null
         this.trees = args.trees || {}
 
@@ -74,7 +74,7 @@ export default class ContentItem {
 
     getDBRepresentation(){
         return {
-            initialParentTreeId: this.initialParentTreeId,
+            primaryParentTreeId: this.primaryParentTreeId,
             primaryParentTreeContentURI: this.primaryParentTreeContentURI,
             userTimeMap: this.userTimeMap,
             userProficiencyMap: this.userProficiencyMap,

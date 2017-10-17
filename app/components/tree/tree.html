@@ -91,5 +91,5 @@
     <div v-show="addingChild" class="tree-add-child-button" v-on:click.stop="toggleAddChild">
         <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
     </div>
-    <newtree :parentid="id" :initialparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading" v-on:click="toggleEditingAndAddChild"></newtree>
+    <newtree :parentid="id" :primaryparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading" v-on:click="toggleEditingAndAddChild"></newtree>
 </div>
