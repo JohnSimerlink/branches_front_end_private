@@ -74,7 +74,7 @@ async function establishURIs(){
    contentItem.set('initialParentTreeId', null)
    contentItem.set('primaryParentTreeContentURI', null)
 
-   tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren)
+   tree.getChildIds().forEach(establishURIForContentAndThenAllChildren)
 }
 window.establishURIs = establishURIs
 
@@ -96,5 +96,5 @@ async function establishURIForContentAndThenAllChildren(treeId){
    contentItem.set('uri', uri)
    contentItem.set('initialParentTreeId', parentTree.id)
    contentItem.set('primaryParentTreeContentURI', parentContentItem.uri)
-   tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren)
+   tree.getChildIds().forEach(establishURIForContentAndThenAllChildren)
 }

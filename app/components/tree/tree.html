@@ -87,6 +87,7 @@
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-if="user.isAdmin()" v-on:click.stop="remove" ></i>
         </div>
         <div class="tree-proficiency-timeTilReview" v-if="!typeIsHeading && content.hasInteractions && content.nextReviewTime">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
+        <div><button v-on:click.stop="loadChildren"> Load Children</button></div>
     </div>
     <div v-show="addingChild" class="tree-add-child-button" v-on:click.stop="toggleAddChild">
         <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
