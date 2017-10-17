@@ -10,3 +10,7 @@ export const Globals = {
     overdueSize: 14,
     regularSize: 10,
 }
+export const NODE_TYPES = {
+    SHADOW_NODE: 9100,
+    TREE: 'tree',
+}

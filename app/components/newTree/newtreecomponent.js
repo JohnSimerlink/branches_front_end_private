@@ -4,7 +4,7 @@ import ContentItems from "../../objects/contentItems";
 //temporary hacky solution for controller
 export default {
     template: require('./newTree.html'),
-    props: ['parentid','initialparenttreecontenturi'],
+    props: ['parentid','primaryparenttreecontenturi'],
     data () {
         return {
             question: '',
@@ -23,7 +23,6 @@ export default {
         skillSelectorStyle () {
             return this.contentIsSkill ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
         },
-
         contentIsFact () {
             return this.type == 'fact'
         },
@@ -48,7 +47,7 @@ export default {
                     contentArgs = {title: this.title.trim()}
                     break;
             }
-            newTree(this.type, this.parentid, this.initialparenttreecontenturi, contentArgs)
+            newTree(this.type, this.parentid, this.primaryparenttreecontenturi, contentArgs)
         },
         setTypeToHeading() {
             this.type = 'heading'
@@ -71,10 +70,10 @@ async function establishURIs(){
    console.log('contentItem gotten is', contentItem)
 
    contentItem.set('uri', 'content/' + contentItem.title)
-   contentItem.set('initialParentTreeId', null)
+   contentItem.set('primaryParentTreeId', null)
    contentItem.set('primaryParentTreeContentURI', null)
 
-   tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren)
+   tree.getChildIds().forEach(establishURIForContentAndThenAllChildren)
 }
 window.establishURIs = establishURIs
 
@@ -94,7 +93,7 @@ async function establishURIForContentAndThenAllChildren(treeId){
    console.log(treeId + ": URI is ", uri)
    console.log(treeId + ": children are ", tree.children && Object.keys(tree.children))
    contentItem.set('uri', uri)
-   contentItem.set('initialParentTreeId', parentTree.id)
+   contentItem.set('primaryParentTreeId', parentTree.id)
    contentItem.set('primaryParentTreeContentURI', parentContentItem.uri)
-   tree.getChildKeys().forEach(establishURIForContentAndThenAllChildren)
+   tree.getChildIds().forEach(establishURIForContentAndThenAllChildren)
 }

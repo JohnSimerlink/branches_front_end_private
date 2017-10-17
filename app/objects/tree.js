@@ -78,18 +78,16 @@ export class Tree {
         firebase.database().ref(lookupKey).update(updates)
 
     }
-    getChildKeys(){
+    getChildIds(){
         if (!this.children){
            return []
         }
-        return Object.keys(this.children).filter(childKey => {
+        return Object.keys(this.children).filter(childKey => { // this filter is necessary to remove undefined keys
             return childKey
         })
     }
     getChildTreePromises(){
-        return this.getChildKeys().map(childKey => {
-           return Trees.get(childKey)
-        })
+        return this.getChildIds().map(Trees.get) //childId => {
     }
     getChildTrees(){
         return Promise.all(this.getChildTreePromises().map(async childPromise => await childPromise))
@@ -277,6 +275,9 @@ export class Tree {
         firebase.database().ref(lookupKey).update(updates)
         this[prop] = val
     }
+    setLocal(prop, val){
+        this[prop] = val
+    }
     addToX({recursion,deltaX}={recursion:false, deltaX: 0}){
        var newX = this.x + deltaX
        this.set('x', newX)
@@ -434,7 +435,7 @@ export class Tree {
     async recalculateLeavesNotLeaf(){
         let leaves = []
         await Promise.all(
-            this.getChildKeys().map(async childId => {
+            this.getChildIds().map(async childId => {
                 try{
                     const child = await Trees.get(childId)
                     leaves.push(... await child.getLeaves())
