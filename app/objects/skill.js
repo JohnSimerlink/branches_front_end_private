@@ -11,9 +11,9 @@ export class Skill extends ContentItem {
      * ^^ Both skills are different, but have the same title: "1st Person Plural"
      * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
    */
-    constructor (args /* ={title, initialParentTreeId} */){
-        // if (initialParentTreeId){
-        //     super({initialParentTreeId})
+    constructor (args /* ={title, primaryParentTreeId} */){
+        // if (primaryParentTreeId){
+        //     super({primaryParentTreeId})
         // } else {
         //     super()
         // }
@@ -22,7 +22,7 @@ export class Skill extends ContentItem {
 
         this.title = args.title && args.title.trim();
         // this.calculateLongURI
-        this.id = args.id || md5(JSON.stringify({title:this.title,initialParentTreeId:args.initialParentTreeId}));
+        this.id = args.id || md5(JSON.stringify({title:this.title,primaryParentTreeId:args.primaryParentTreeId}));
         super.init()
     }
 

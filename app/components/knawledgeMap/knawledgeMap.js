@@ -150,10 +150,9 @@ PubSub.subscribe('removeTreeFromGraph', (eventName, treeId) => {
     removeTreeFromGraph(treeId)
 })
 
-function createTreeNodeFromTreeAndContent(tree, content, level){
+function createTreeNodeFromTreeAndContent(tree, content){
     const node = {
         ...tree,
-        level,
         content,
         overdue: content.overdue,
         label: getLabelFromContent(content),
@@ -164,17 +163,15 @@ function createTreeNodeFromTreeAndContent(tree, content, level){
     return node;
 }
 
-export function addTreeNodeToGraph(tree,content, level){
+export function addTreeNodeToGraph(tree,content){
     if(!content) return
     try {
-        const treeUINode = createTreeNodeFromTreeAndContent(tree,content, level)
+        const treeUINode = createTreeNodeFromTreeAndContent(tree,content)
         if(!initialized){
             g.nodes.push(treeUINode);
-            connectTreeToParent(tree, content, g)
         } else {
             if (!treeAlreadyLoaded(tree.id)){
                 s.graph.addNode(treeUINode)
-                connectTreeToParent(tree, content, g)
                 s.refresh()
             }
         }
@@ -248,7 +245,7 @@ export function refreshGraph(){
 }
 PubSub.subscribe('refreshGraph',refreshGraph)
 
-function connectTreeToParent(tree,content, g){
+export function connectTreeToParent(tree,content){
     if (tree.parentId && treeAlreadyLoaded(tree.parentId)) {
         const edge = {
             id: createEdgeId(tree.parentId, tree.id),
@@ -266,6 +263,7 @@ function connectTreeToParent(tree,content, g){
         } else {
             s.graph.addEdge(edge)
         }
+    } else {
     }
 }
 //returns sigma tree node
@@ -431,30 +429,26 @@ export async function loadDescendants(treeId, numGenerations){
         return
     }
     const tree = await Trees.get(treeId)
-    const level = tree.level
-    console.log("loadDescendants level", treeId, level)
 
     tree.getChildIds().forEach(async childId => {
-        await loadTree(childId, level + 1)
+        await loadTree(childId)
         loadDescendants(childId, numGenerations - 1)
     })
 }
 
-async function loadTree(treeId, level){
-    console.log("loadTree", treeId, level)
+async function loadTree(treeId){
     const tree = await Trees.get(treeId)
-    tree.setLocal('level', level)
     const content = await ContentItems.get(tree.contentId)
-    const parentId = tree.parentId
-    if (parentId && !treeAlreadyLoaded(parentId)){
-        await loadTree(parentId, level - .01)
-        connectTreeToParent(tree, content, g)
-    }
     try {
-        addTreeNodeToGraph(tree, content, level)
+        addTreeNodeToGraph(tree, content)
     } catch( err) {
         console.error("CONTENTITEMS.get Err is", err)
     }
+    const parentId = tree.parentId
+    if (parentId && !treeAlreadyLoaded(parentId)){
+        await loadTree(parentId)
+    }
+    connectTreeToParent(tree, content)
 }
 function initKnawledgeMap(treeIdToJumpTo){
     console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now(), calculateLoadTimeSoFar(Date.now()))
@@ -531,32 +525,27 @@ function initKnawledgeMap(treeIdToJumpTo){
 
     }
 
-    async function loadTreeAndSubTrees(treeId, level){
-        // if (level >2) return
-        // console.log(level, "A", treeId, Date.now())
+    async function loadTreeAndSubTrees(treeId){
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
         const tree = await Trees.get(treeId)
-        // console.log(level, "B", treeId, Date.now())
-        const getTreeResult = onGetTree(tree, level)
-        // console.log(level, "C", treeId, Date.now())
+        const getTreeResult = onGetTree(tree)
         return getTreeResult
     }
 
-    async function onGetTree(tree, level) {
-        console.log(tree.id, level, calculateLoadTimeSoFar(Date.now()))
+    async function onGetTree(tree) {
+        console.log(tree.id, calculateLoadTimeSoFar(Date.now()))
         try {
             const content = await ContentItems.get(tree.contentId)
-            addTreeNodeToGraph(tree, content, level)
+            addTreeNodeToGraph(tree, content)
+            connectTreeToParent(tree,content)
         } catch( err) {
             console.error("CONTENTITEMS.get Err is", err)
         }
         let childTreesPromises = []
 
-        if (level <= DEFAULT_NUM_GENERATIONS_TO_LOAD ){
-            childTreesPromises = tree.getChildIds().map(childKey => {
-                return loadTreeAndSubTrees(childKey, level + 1)
-            })
-        }
+        childTreesPromises = tree.getChildIds().map(childKey => {
+            return loadTreeAndSubTrees(childKey)
+        })
         return Promise.all([...childTreesPromises])
     }
 
@@ -947,3 +936,12 @@ function getAngleFromCenter(treeId){
     let angle = Math.atan(height / width)
     return angle
 }
+
+async function assignLevels(treeId, startingLevel){
+    const tree = await Trees.get(treeId)
+    tree.set('level', startingLevel)
+    tree.getChildIds().forEach(async childId => {
+        assignLevels(childId, startingLevel + 1)
+    })
+}
+window.assignLevels = assignLevels
