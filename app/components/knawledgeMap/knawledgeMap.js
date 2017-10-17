@@ -185,9 +185,11 @@ export function addTreeNodeToGraph(tree,content, level){
             g.nodes.push(treeUINode);
             connectTreeToParent(tree, content, g)
         } else {
-            s.graph.addNode(treeUINode)
-            connectTreeToParent(tree, content, g)
-            s.refresh()
+            if (!alreadyLoaded(tree.id)){
+                s.graph.addNode(treeUINode)
+                connectTreeToParent(tree, content, g)
+                s.refresh()
+            }
         }
     } catch (err) {
         var snack = new Snack({
@@ -198,7 +200,9 @@ export function addTreeNodeToGraph(tree,content, level){
     }
     return content.id
 }
-
+function alreadyLoaded(treeId){
+    return s.graph.nodes(treeId)
+}
 
 function getSizeFromContent(content) {
     // return Globals.regularSize
