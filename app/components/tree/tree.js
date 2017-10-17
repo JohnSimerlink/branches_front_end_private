@@ -12,6 +12,7 @@ import { mapActions } from 'vuex'
 import message from '../../message'
 
 import store from '../../core/store'
+import {loadDescendants} from "../knawledgeMap/knawledgeMap";
 function refreshGraph() {
     PubSub.publish('refreshGraph')
 }
@@ -184,6 +185,9 @@ export default {
                 removeTreeFromGraph(this.id)
                 return this.tree.remove()
             }
+        },
+        async loadChildren(){
+           return loadDescendants(this.tree.id, 2)
         }
     }
 }

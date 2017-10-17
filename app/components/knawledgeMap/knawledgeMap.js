@@ -443,7 +443,29 @@ async function setURLFromTreeId(treeId){
 
 window.setURLFromTreeId = setURLFromTreeId
 
+export async function loadDescendants(treeId, numGenerations){
+    if (numGenerations <=0 ) {
+        return
+    }
+    const tree = await Trees.get(treeId)
+    const treeUINode = s.graph.nodes(tree.id)
+    const level = treeUINode.level
 
+    tree.getChildIds().forEach(async childId => {
+        await loadTree(childId, level + 1)
+        loadDescendants(childId, numGenerations - 1)
+    })
+}
+
+async function loadTree(treeId, level){
+    const tree = await Trees.get(treeId)
+    try {
+        const content = await ContentItems.get(tree.contentId)
+        addTreeNodeToGraph(tree, content, level)
+    } catch( err) {
+        console.error("CONTENTITEMS.get Err is", err)
+    }
+}
 function initKnawledgeMap(treeIdToJumpTo){
     console.log("2: knawledgeMap.js initKnawledgeMap" + Date.now(), calculateLoadTimeSoFar(Date.now()))
     var me = this;// bound/called
@@ -514,7 +536,9 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
 
     }
+
     async function loadTreeAndSubTrees(treeId, level){
+        // if (level >2) return
         // console.log(level, "A", treeId, Date.now())
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
         const tree = await Trees.get(treeId)
@@ -525,28 +549,22 @@ function initKnawledgeMap(treeIdToJumpTo){
     }
 
     async function onGetTree(tree, level) {
-        // var contentPromise = ContentItems.get(tree.contentId)
+        console.log(tree.id, level, calculateLoadTimeSoFar(Date.now()))
         try {
             const content = await ContentItems.get(tree.contentId)
-            // console.log(level, tree.id, "onGetTree 1 ", Date.now())
-
             addTreeNodeToGraph(tree, content, level)
-            // console.log(level, tree.id, "onGetTree 2 ", Date.now())
         } catch( err) {
             console.error("CONTENTITEMS.get Err is", err)
         }
-        // .then( function onContentGet(content) {return addTreeNodeToGraph(tree,content, level)})
-        // console.log(level, tree.id, "onGetTree 3 ", Date.now())
-        var childTreesPromises = tree.children ? Object.keys(tree.children).map(child => {
-            return loadTreeAndSubTrees(child, level + 1)
-        }): []
+        let childTreesPromises = []
 
-        // console.log(level, tree.id, "onGetTree 4 ", Date.now())
-
+        if (level <= 2 ){
+            childTreesPromises = tree.getChildIds().map(childKey => {
+                return loadTreeAndSubTrees(childKey, level + 1)
+            })
+        }
         return Promise.all([...childTreesPromises])
     }
-
-
 
 //recursively load the entire tree
 // Instantiate sigma:
@@ -577,6 +595,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             });
             PubSub.subscribe('mostCenteredNodeId', (eventName, treeId) => {
                 setURLFromTreeId(treeId)
+                loadDescendants(treeId, 2)
             })
         } catch (err){
             console.error('error in init KnawledgeMap is ', err)
