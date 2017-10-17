@@ -186,8 +186,5 @@ export default {
                 return this.tree.remove()
             }
         },
-        async loadChildren(){
-           return loadDescendants(this.tree.id, 2)
-        }
     }
 }
