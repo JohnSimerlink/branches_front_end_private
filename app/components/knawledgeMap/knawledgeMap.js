@@ -1,6 +1,6 @@
 import {Trees} from '../../objects/trees.js'
 import ContentItems from '../../objects/contentItems'
-import {getLabelFromContent} from "../../objects/contentItem";
+import {getLabelFromContent} from "../../objects/contentItem/contentItem";
 import {Tree} from '../../objects/tree.js'
 import '../../core/login.js'
 import {user} from '../../objects/user'

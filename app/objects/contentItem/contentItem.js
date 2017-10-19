@@ -16,6 +16,7 @@ import {
 import store from '../core/store'
 import message from "../message";
 import UriContentMap from "./uriContentMap";
+import {convertBreadcrumbListToString} from "./uriParser";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -621,19 +622,6 @@ export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
     return result
 }
 
-function convertBreadcrumbListToString(breadcrumbList){
-    if (breadcrumbList.length <= 0) return []
-
-    const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
-
-    let firstItems =
-        breadcrumbList.reduce((accum, val) => {
-            return accum + decodeURIComponent(val) + " > "
-        },'')
-    let result = firstItems + lastItem
-
-    return result
-}
 export function getLabelFromContent(content) {
     switch (content.type){
         case "fact":
