@@ -6,15 +6,15 @@ function getURIWIthoutRootElement(uri) {
 }
 export function convertBreadcrumbListToString(breadcrumbList) {
     if (breadcrumbList.length <= 0) {
-      return ""
+      return ''
     }
 
     const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
 
     const firstItems =
         breadcrumbList.reduce((accum, val) => {
-            return accum + decodeURIComponent(val) + " > "
-        },'')
+            return accum + decodeURIComponent(val) + ' > '
+        }, '')
     const result = firstItems + lastItem
 
     return result
