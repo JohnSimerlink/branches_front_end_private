@@ -30,18 +30,27 @@ module.exports = {
             'scss': 'vue-style-loader!css-loader!sass-loader',
             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }          // other vue-loader options go here
-
         }
       },
-        {
-            test: /\.less$/,
-            loader: "style-loader!css-loader!less-loader"
-        },
-        {
-            test: /\.html$/,
-            loader: 'html-loader',
-            exclude: /node_modules/
-        },
+      {
+          enforce: 'pre',
+          test: /\.tsx?$/,
+          loader: 'tslint-loader',
+          exclude: /(node_modules)/,
+      },
+      {
+          test: /\.tsx?$/,
+          loader: 'awesome-typescript-loader',
+      },
+      {
+          test: /\.less$/,
+          loader: "style-loader!css-loader!less-loader"
+      },
+      {
+          test: /\.html$/,
+          loader: 'html-loader',
+          exclude: /node_modules/
+      },
       {
         test: /\.js$/,
         loader: 'babel-loader',

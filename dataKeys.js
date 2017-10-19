@@ -12,10 +12,10 @@ const dataKeys = {
     }
 }
 export default dataKeys
-const trees  = {}
-trees[dataKeys["TREE_IDS"]["AMAR"]] = { contentId: "6b62c9ab4fb168f3979c73fe39713129"}
-export trees
-
-const content = {}
-content["6b62c9ab4fb168f3979c73fe39713129"] =
+// const trees  = {}
+// trees[dataKeys["TREE_IDS"]["AMAR"]] = { contentId: "6b62c9ab4fb168f3979c73fe39713129"};
+// export trees
+//
+// const content = {}
+// content["6b62c9ab4fb168f3979c73fe39713129"] =
 
