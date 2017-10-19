@@ -1,5 +1,7 @@
 const uriContentMap = {} //cache
-window.uriContentMap = uriContentMap
+if (typeof window !== 'undefined'){
+    window.uriContentMap = uriContentMap
+}
 //URI contentId map
 export default class UriContentMap {
     static get(uri) {
