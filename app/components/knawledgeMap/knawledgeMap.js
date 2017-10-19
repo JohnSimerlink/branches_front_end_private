@@ -4,17 +4,22 @@ import {getLabelFromContent} from "../../objects/contentItem";
 import {Tree} from '../../objects/tree.js'
 import '../../core/login.js'
 import {user} from '../../objects/user'
-import Snack from '../../../node_modules/snack.js/dist/snack'
+var Snack
 import Vue from 'vue'
 import {proficiencyToColor} from "../proficiencyEnum";
 import store from '../../core/store'
 import {Globals, NODE_TYPES} from '../../core/globals'
-import './knawledgeMap.less'
 import LocalForage from 'localforage'
 import {isMobile} from '../../core/utils';
 import clonedeep from 'lodash.clonedeep'
 import UriContentMap from '../../objects/uriContentMap'
 import {stripTrailingSlash} from '../../objects/uriContentMap'
+if (typeof document !== 'undefined'){
+    Snack = '../../../node_modules/snack.js/dist/snack'
+    require('./knawledgeMap.less')
+} else {
+    Snack = null
+}
 
 let router;
 var initialized = false;
@@ -43,7 +48,7 @@ const DEFAULT_NUM_GENERATIONS_TO_LOAD = 2
 
 export default {
     props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
-    template: require('./knawledgeMap.html'),
+    template: typeof document !== 'undefined' ? require('./knawledgeMap.html') : '',
     async created () {
         this.init()
         router = this.$router
@@ -146,7 +151,7 @@ export async function removeTreeFromGraph(treeId){
         return `removed all children of ${treeId}`
     })
 }
-PubSub.subscribe('removeTreeFromGraph', (eventName, treeId) => {
+typeof PubSub !== 'undefined' && PubSub.subscribe('removeTreeFromGraph', (eventName, treeId) => {
     removeTreeFromGraph(treeId)
 })
 
@@ -243,7 +248,7 @@ async function _syncGraphWithNode(treeId){
 export function refreshGraph(){
     s.refresh()
 }
-PubSub.subscribe('refreshGraph',refreshGraph)
+typeof PubSub !== 'undefined' && PubSub.subscribe('refreshGraph',refreshGraph)
 
 export function connectTreeToParent(tree,content){
     if (tree.parentId && treeAlreadyLoaded(tree.parentId)) {
@@ -307,7 +312,7 @@ export function addTreeToGraph(parentTreeId, content) {
 export function goToFromMap(path){
     router.push(path)
 }
-PubSub.subscribe('goToFromMap', (eventName, path) => {
+typeof PubSub !== 'undefined' && PubSub.subscribe('goToFromMap', (eventName, path) => {
     goToFromMap(path)
 })
 export function cameraToGraphPosition(x,y){
@@ -332,7 +337,7 @@ export function getTreeUINode(nodeId){
 function jumpToTreeId(treeId){
 
     if (!s){
-        PubSub.subscribe('sigma.initialized', (eventName, data) => {
+        typeof PubSub !== 'undefined' && PubSub.subscribe('sigma.initialized', (eventName, data) => {
             _jumpToTreeId(treeId)
         })
     } else {
@@ -382,7 +387,9 @@ function openTooltipFromId(nodeId){
     const node = s.graph.nodes(nodeId)
     openTooltip(node)
 }
-window.openTooltipFromId = openTooltipFromId
+if (typeof window !== 'undefined') {
+    window.openTooltipFromId = openTooltipFromId
+}
 function openTooltip(node){
 
     //Make copy of singleton's config by value to avoid mutation
@@ -403,12 +410,16 @@ function openTooltip(node){
     },0)//push this bootstrap function to the end of the callstack so that it is called after mustace does the tooltip rendering
 
 }
-window.openTooltip = openTooltip
+if (typeof window !== 'undefined') {
+    window.openTooltip = openTooltip
+}
 function closeTooltip(nodeId){
     const node = s.graph.nodes(nodeId)
     tooltips.close(node);
 }
-window.closeTooltip = closeTooltip
+if (typeof window !== 'undefined') {
+    window.closeTooltip = closeTooltip
+}
 
 function getCenterPoint(x,y){
     return s.camera.graphPosition(window.xCenter, window.yCenter) || null
@@ -422,7 +433,9 @@ async function setURLFromTreeId(treeId){
     store.commit('updateURIAndJump', {uri, coordinates, timestamp: Date.now()})
 }
 
-window.setURLFromTreeId = setURLFromTreeId
+if (typeof window !== 'undefined') {
+    window.setURLFromTreeId = setURLFromTreeId
+}
 
 export async function loadDescendants(treeId, numGenerations){
     if (numGenerations <=0 ) {
@@ -922,7 +935,9 @@ function addTrailingDots(treeId){
     s.graph.addEdge(edge)
     s.refresh()
 }
-window.addTrailingDots = addTrailingDots
+if (typeof window !== 'undefined') {
+    window.addTrailingDots = addTrailingDots
+}
 
 //in radians
 function getAngleFromCenter(treeId){
@@ -944,4 +959,6 @@ async function assignLevels(treeId, startingLevel){
         assignLevels(childId, startingLevel + 1)
     })
 }
-window.assignLevels = assignLevels
+if (typeof window !== 'undefined') {
+    window.assignLevels = assignLevels
+}
