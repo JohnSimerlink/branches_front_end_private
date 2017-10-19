@@ -1,22 +1,22 @@
-import {timeFromNow} from "../core/filters";
+import {timeFromNow} from "../../core/filters";
 
 const URI_WINDOW_PREFIX = 'null/Everything'
 const content = {}
 if (typeof window !== 'undefined') {
     window.content = content //expose to window for easy debugging
 }
-import {user} from './user'
-import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
-import {PROFICIENCIES, proficiencyToColor} from "../components/proficiencyEnum";
-import {Trees} from './trees'
+import {user} from '../user'
+import {calculateMillisecondsTilNextReview} from '../../components/reviewAlgorithm/review'
+import {PROFICIENCIES, proficiencyToColor} from "../../components/proficiencyEnum";
+import {Trees} from '../trees'
 import {
     measurePreviousStrength, estimateCurrentStrength,
     calculateSecondsTilCriticalReviewTime
-} from "../forgettingCurve";
-import store from '../core/store'
-import message from "../message";
-import UriContentMap from "./uriContentMap";
-import {convertBreadcrumbListToString} from "./uriParser";
+} from "../../forgettingCurve";
+import store from '../../core/store'
+import message from "../../message";
+import UriContentMap from "../uriContentMap";
+import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList} from "./uriParser.ts";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -603,23 +603,6 @@ export default class ContentItem {
     getLabel(){
         return getLabelFromContent(this)
     }
-}
-
-/**
- *
- * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
- * @returns {string}
- */
-export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
-    if (breadcrumbList.length <= n) {
-        return breadcrumbList
-    }
-
-    var breadcrumbListCopy = breadcrumbList.slice()
-    const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
-    const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
-
-    return result
 }
 
 export function getLabelFromContent(content) {
