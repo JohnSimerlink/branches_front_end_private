@@ -1,12 +1,19 @@
 import Vuex from "vuex"
 import Vue from "vue"
 import {Trees} from '../objects/trees'
-import Snack from '../../node_modules/snack.js/dist/snack'
+var Snack
+
+// import Snack from '../../node_modules/snack.js/dist/snack'
 import {user} from '../objects/user'
 import {syncGraphWithNode} from "../components/knawledgeMap/knawledgeMap";
 import message from '../message'
 import ContentItems from "../objects/contentItems";
 Vue.use(Vuex)
+if (typeof document !== 'undefined'){
+    Snack = require('../../node_modules/snack.js/dist/snack')
+} else {
+    Snack = null
+}
 
 export const MODES = {
     EXPLORING: 1,
