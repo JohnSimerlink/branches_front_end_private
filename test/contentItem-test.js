@@ -1,38 +1,35 @@
 var cleanup = require('jsdom-global')()
 import {expect} from 'chai'
 
-// import {Trees} from '../app/objects/trees'
+// // import {Trees} from '../app/objects/trees'
 // import ContentItems from '../app/objects/contentItems'
 // import DATA_KEYS from '../dataKeys'
 
 
 
 
-describe('Get Breadcrumbs', () => {
-    // it('should correctly get all the breadcrumb sections for Everyday Words Node in branches-dev 10/31 database', () => {
-    //     let everydayWordsTreeNode = {}
-    //     Trees.get(EVERYDAY_WORDS_TREE_ID).then(tree => {
-    //         ContentItems.get(tree.contentId).then(contentItem => {
-    //             const breadcrumbs = contentItem.getBreadCrumbs()
-    //             //Everything > Spanish > Vocab > Everyday Words
-    //             expect(breadcrumbs.length).to.equal(4)
-    //         })
-    //     })
-    // })
-})
+// describe('Get Breadcrumbs', () => {
+//     // it('should correctly get all the breadcrumb sections for Everyday Words Node in branches-dev 10/31 database', () => {
+//     //     let everydayWordsTreeNode = {}
+//     //     Trees.get(EVERYDAY_WORDS_TREE_ID).then(tree => {
+//     //         ContentItems.get(tree.contentId).then(contentItem => {
+//     //             const breadcrumbs = contentItem.getBreadCrumbs()
+//     //             //Everything > Spanish > Vocab > Everyday Words
+//     //             expect(breadcrumbs.length).to.equal(4)
+//     //         })
+//     //     })
+//     // })
+// })
 // describe('Breadcrumb', () => {
 //     it('should correctly get all the breadcrumb sections for Amar Node in branches-dev 9/17 database', () => {
-//         let everydayWordsTreeNode = {}
-//         return Trees.get(DATA_KEYS.TREE_IDS.AMAR).then(tree => {
-//             return ContentItems.get(tree.contentId).then(contentItem => {
-//                 const breadcrumbs = contentItem.getLastNBreadcrumbsString(4)
-//                 //Everything > Spanish > Vocab > Everyday Words
-//                 try {
-//                     expect(breadcrumbs).to.equal("Vocab > Nouns > Everyday Words > amar:to love")
-//                 } catch(err) {
-//                     console.error("there was an error", err)
-//                 }
-//             })
+//         return ContentItems.get(DATA_KEYS.CONTENT_IDS.AMAR).then(contentItem => {
+//             const breadcrumbs = contentItem.getLastNBreadcrumbsString(4)
+//             //Everything > Spanish > Vocab > Everyday Words > amar:to love
+//             try {
+//                 expect(breadcrumbs).to.equal("Vocab > Nouns > Everyday Words > amar:to love")
+//             } catch(err) {
+//                 console.error("there was an error", err)
+//             }
 //         })
 //     })
 //     it('should correctly get all the breadcrumb sections as an array of objects for Amar Node in branches-dev 9/17 database', () => {
@@ -70,5 +67,5 @@ describe('Get Breadcrumbs', () => {
 //         })
 //     })
 // })
-//
+
 cleanup()
