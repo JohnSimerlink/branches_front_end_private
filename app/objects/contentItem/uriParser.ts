@@ -1,8 +1,10 @@
-function getLastNBreadcrumbsString(uri, n) {
-    return true
+export function getLastNBreadcrumbsString(uri, n) {
+    const sections = getURIWithoutRootElement(uri).split('/')
+    const result = getLastNBreadcrumbsStringFromList(sections, n)
+    return result
 }
-function getURIWIthoutRootElement(uri) {
-    return true
+export function getURIWithoutRootElement(uri) {
+    return uri.substring(uri.indexOf('/') + 1, uri.length)
 }
 export function convertBreadcrumbListToString(breadcrumbList) {
     if (breadcrumbList.length <= 0) {
@@ -28,7 +30,7 @@ export function convertBreadcrumbListToString(breadcrumbList) {
  */
 export function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
     if (breadcrumbList.length <= n) {
-        return breadcrumbList
+        return convertBreadcrumbListToString(breadcrumbList)
     }
 
     const breadcrumbListCopy = breadcrumbList.slice()
