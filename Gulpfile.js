@@ -9,10 +9,8 @@ var concat = require('gulp-concat')
 var pump = require('pump')
 var gzip = require('gulp-gzip')
 var babel = require('gulp-babel')
+var mocha = require('gulp-mocha')
 
-gulp.task('test', function () {
-    test()
-});
 //for the files that error out when used in ./vendor.js
 gulp.task("build-funny-modules", function(){
     const jsDest = 'dist/funny/'
@@ -60,13 +58,42 @@ gulp.task("build-css", function(){
     )
 })
 
-gulp.task('test-watch', function () {
-    test()
-    watch('**/*.js', batch(function (events, done) {
+function handleError(err) {
+    console.log(err.toString())
+    this.emit('end')
+}
+
+const paths = {
+    scripts: '**/*.js',
+    tests: 'test/*.js',
+}
+
+gulp.task('test-watch', function() {
+    gulp.start('test');
+    watch(paths.scripts, batch(function (events, done) {
         gulp.start('test', done);
-    }));
-});
+    }))
+    // gulp.watch(paths.scripts, ["test2"])
+})
+
+gulp.task('test', function() {
+    test()
+})
+
+// function test(){
+//     console.log('rerunning tests! . . .');
+//     run("mocha --compilers js:babel-register --require babel-polyfill").exec() //, function(err, out, code){
+// }
+
 function test(){
-    console.log('rerunning tests! . . .');
-    run("mocha --compilers js:babel-register --require babel-polyfill").exec() //, function(err, out, code){
+    console.log("running gulp test")
+    return gulp.src(paths.tests)
+        .pipe(
+            mocha({
+                reporter: 'spec',
+                compilers: 'js:babel-register',
+                require: 'babel-polyfill',
+            })
+            .on('error', handleError)
+        )
 }

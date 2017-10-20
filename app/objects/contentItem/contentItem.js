@@ -16,7 +16,7 @@ import {
 import store from '../../core/store'
 import message from "../../message";
 import UriContentMap from "../uriContentMap";
-import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList} from "./uriParser.ts";
+import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList, getURIWithoutRootElement} from "./uriParser.ts";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -103,12 +103,8 @@ export default class ContentItem {
     getURIAdditionNotEncoded(){
 
     }
-    //removes the prefix "content/
-    getURIWithoutRootElement(){
-        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
-    }
     getBreadCrumbsString(){
-        let sections = this.getURIWithoutRootElement().split("/")
+        let sections = getURIWithoutRootElement(this.uri).split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
             if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
@@ -117,13 +113,6 @@ export default class ContentItem {
             return accum + " > " + decodeURIComponent(val)
         })
         return sectionsResult
-        // console.log('breadcrumb result is', sectionsResult)
-        //
-        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-        //     return total + decodeURIComponent(section) + " > "
-        // },"")
-        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-        // return breadcrumbs
     }
     getBreadcrumbsObjArray() {
         let sections = this.getURIWithoutRootElement().split("/")
@@ -138,9 +127,7 @@ export default class ContentItem {
         return breadcrumbsObjArray
     }
     getLastNBreadcrumbsString(n) {
-        let sections = this.getURIWithoutRootElement().split("/")
-        let result = getLastNBreadcrumbsStringFromList(sections, n)
-        return result
+        return this.getLastNBreadcrumbsString(uri, n)
     }
 
     isLeafType(){
@@ -524,12 +511,6 @@ export default class ContentItem {
 
         firebase.database().ref('content/' + this.id).update(updates)
         //set timeout to mark the item overdue when it becomes overdue
-    }
-
-    setProficiency(proficiency) {
-        //-proficiency stored as part of this content item
-        // this.proficiency = proficiency
-        // this.saveProficiency({proficiency, timestamp: Date.now()})
     }
     //methods for html templates
     isProficiencyUnknown(){
