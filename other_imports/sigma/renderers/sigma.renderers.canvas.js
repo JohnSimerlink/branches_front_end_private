@@ -1,5 +1,5 @@
 import store from '../../../app/core/store';
-import {NODE_TYPES} from "../../../app/core/globals";
+import {NODE_TYPES} from "../../../app/core/globals.ts";
 
 (function(undefined) {
   'use strict';

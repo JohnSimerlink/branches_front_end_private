@@ -1,10 +1,11 @@
-import {user} from './user'
+import {user} from '../user'
 import md5 from 'md5'
-import firebase from './firebaseService.js';
-import {Trees} from './trees.js'
-import ContentItems from './contentItems'
-import {PROFICIENCIES} from "../components/proficiencyEnum";
-import store from "../core/store"
+import firebase from '../firebaseService.js';
+import {Trees} from '../trees.js'
+import ContentItems from '../contentItems'
+import {incrementProficiencyStatsCategory, addObjToProficiencyStats} from './proficiencyStats.ts'
+import store from "../../core/store"
+
 
 function syncGraphWithNode(treeId){
     store.commit('syncGraphWithNode', treeId)
@@ -28,9 +29,7 @@ const unknownProficiencyStats = {
     FOUR: 0,
 }
 
-
 export class Tree {
-
     constructor(contentId, contentType, parentId, parentDegree, x, y) {
         this.leaves = []
         var treeObj
@@ -74,7 +73,6 @@ export class Tree {
         }
         const lookupKey = 'trees/' + this.id
         firebase.database().ref(lookupKey).update(updates)
-
     }
     getChildIds(){
         if (!this.children){
@@ -102,7 +100,6 @@ export class Tree {
             children: this.children
         }
         try {
-
             const lookupKey = 'trees/' + this.id
             await firebase.database().ref(lookupKey).update(updates)
         } catch (err){
@@ -201,7 +198,7 @@ export class Tree {
         this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
         this.userProficiencyStatsMap[user.getId()] = this.proficiencyStats
 
-        if (!addChangeToDB){
+        if (!addChangeToDB) {
             return
         }
         const updates = {
@@ -309,7 +306,7 @@ export class Tree {
     async calculateProficiencyAggregationForLeaf(){
         let proficiencyStats = {...blankProficiencyStats}
         let contentItem = await ContentItems.get(this.contentId)
-        proficiencyStats = addValToProficiencyStats(proficiencyStats, contentItem.proficiency)
+        proficiencyStats = incrementProficiencyStatsCategory(proficiencyStats, contentItem.proficiency)
         return proficiencyStats
     }
     async calculateProficiencyAggregationForNotLeaf(){
@@ -529,30 +526,6 @@ export class Tree {
  */
 //invoke like a constructor - new Tree(parentId, factId)
 
-function addObjToProficiencyStats(proficiencyStats, proficiencyObj){
-    Object.keys(proficiencyObj).forEach(key => {
-        proficiencyStats[key] += proficiencyObj[key]
-    })
-    return proficiencyStats
-}
-function addValToProficiencyStats(proficiencyStats, proficiency){
-    if (proficiency <= PROFICIENCIES.UNKNOWN){
-        proficiencyStats.UNKNOWN++
-    }
-    else if (proficiency <= PROFICIENCIES.ONE){
-        proficiencyStats.ONE++
-    }
-    else if (proficiency <= PROFICIENCIES.TWO){
-        proficiencyStats.TWO++
-    }
-    else if (proficiency <= PROFICIENCIES.THREE){
-        proficiencyStats.THREE++
-    }
-    else if (proficiency <= PROFICIENCIES.FOUR){
-        proficiencyStats.FOUR++
-    }
-    return proficiencyStats
-}
 function removeDuplicatesById(list){
     const newList = []
     const usedIds = []

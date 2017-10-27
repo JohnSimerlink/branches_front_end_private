@@ -7,7 +7,7 @@ if (typeof window !== 'undefined') {
 }
 import {user} from '../user'
 import {calculateMillisecondsTilNextReview} from '../../components/reviewAlgorithm/review'
-import {PROFICIENCIES, proficiencyToColor} from "../../components/proficiencyEnum";
+import {PROFICIENCIES, proficiencyToColor} from "../../components/proficiencyEnum.ts";
 import {Trees} from '../trees'
 import {
     measurePreviousStrength, estimateCurrentStrength,
@@ -16,7 +16,7 @@ import {
 import store from '../../core/store'
 import message from "../../message";
 import UriContentMap from "../uriContentMap";
-import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList, getURIWithoutRootElement} from "./uriParser.ts";
+import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList, getLastNBreadcrumbsString, getURIWithoutRootElement} from "./uriParser.ts";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -115,7 +115,7 @@ export default class ContentItem {
         return sectionsResult
     }
     getBreadcrumbsObjArray() {
-        let sections = this.getURIWithoutRootElement().split("/")
+        let sections = getURIWithoutRootElement(this.uri).split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let breadcrumbsObjArray = sections.reduce((accum, val) => {
             if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
@@ -127,7 +127,7 @@ export default class ContentItem {
         return breadcrumbsObjArray
     }
     getLastNBreadcrumbsString(n) {
-        return this.getLastNBreadcrumbsString(uri, n)
+        return getLastNBreadcrumbsString(this.uri, n)
     }
 
     isLeafType(){
@@ -271,16 +271,6 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
 
-    addToStudyQueue() { //don't display nextReviewTime if not in user's study queue
-        this.studiers[user.getId()] = true
-
-        var updates = {
-            studiers: this.studiers
-        }
-        this.inStudyQueue = true
-
-        firebase.database().ref('content/' + this.id).update(updates)
-    }
     addExercise(exerciseId){
         this.exercises[exerciseId] = true
 
