@@ -219,11 +219,15 @@ export default class ContentItem {
             return;
         }
 
-        var updates = {}
-        updates[prop] = val
-        // this.treeRef.update(updates)
-        firebase.database().ref('content/' +this.id).update(updates)
         this[prop] = val
+        try {
+            var updates = {}
+            updates[prop] = val
+            // this.treeRef.update(updates)
+            firebase.database().ref('content/' + this.id).update(updates)
+        } catch (err) {
+            console.error('contentItem.set error', err)
+        }
     }
     /**
      * Add a tree to the given content item
