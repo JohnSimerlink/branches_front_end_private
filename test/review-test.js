@@ -1,6 +1,4 @@
 var cleanup = require('jsdom-global')()
-import {PROFICIENCIES} from "../app/components/proficiencyEnum";
-import {calculateMillisecondsTilNextReview} from '../app/components/reviewAlgorithm/review'
 import {expect} from 'chai'
 import * as curve from '../app/forgettingCurve'
     describe('measuringPreviousStrength', () => {

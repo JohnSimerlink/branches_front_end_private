@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "deploy": "sh .deploy.sh",
-    "test": "mocha --compilers js:babel-register --require babel-polyfill"
+    "test": "gulp test-watch"
   },
   "author": "",
   "license": "ISC",

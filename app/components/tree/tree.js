@@ -1,5 +1,5 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor} from "../proficiencyEnum"
+import {proficiencyToColor} from "../proficiencyEnum.ts"
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 

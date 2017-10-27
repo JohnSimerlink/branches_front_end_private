@@ -1,14 +1,14 @@
 import {Trees} from '../../objects/trees.js'
 import ContentItems from '../../objects/contentItems'
 import {getLabelFromContent} from "../../objects/contentItem/contentItem";
-import {Tree} from '../../objects/tree.js'
+import {Tree} from '../../objects/tree/tree.js'
 import '../../core/login.js'
 import {user} from '../../objects/user'
 var Snack
 import Vue from 'vue'
-import {proficiencyToColor} from "../proficiencyEnum";
+import {proficiencyToColor} from "../proficiencyEnum.ts";
 import store from '../../core/store'
-import {Globals, NODE_TYPES} from '../../core/globals'
+import {Globals, NODE_TYPES} from '../../core/globals.ts'
 import LocalForage from 'localforage'
 import {isMobile} from '../../core/utils';
 import clonedeep from 'lodash.clonedeep'
