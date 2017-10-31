@@ -28,7 +28,9 @@ const unknownProficiencyStats = {
     THREE: 0,
     FOUR: 0,
 }
-
+// interface ITree {
+//
+// }
 export class Tree {
     constructor(contentId, contentType, parentId, parentDegree, x, y) {
         this.leaves = []
@@ -46,6 +48,7 @@ export class Tree {
         this.contentType = contentType
         this.parentId = parentId;
         this.children = {};
+        this.mutations = []
 
         this.userProficiencyStatsMap = {}
         this.userAggregationTimerMap = {}
