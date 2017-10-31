@@ -3,7 +3,7 @@ import {PROFICIENCIES} from "../app/components/proficiencyEnum.ts";
 import {calculateMillisecondsTilNextReview} from '../app/components/reviewAlgorithm/review'
 import {expect} from 'chai'
 import * as curve from '../app/forgettingCurve'
-describe('Add a subtree', () => {
+describe('Add a leaf', () => {
     const tree = {
         children: {},
         userProficiencyStatsMap: {

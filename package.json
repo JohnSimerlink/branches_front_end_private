@@ -1,5 +1,5 @@
 {
-  "name": "testf",
+  "name": "Branches",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "deploy": "sh .deploy.sh",
-    "test": "gulp test-watch"
+    "test": "echo \"To run the tests type `gulp test-watch` into your terminal. \n\n. For some reason running gulp test-watch through npm run, causes some weird mocha issues where it cant resolve file paths for certain .ts files\""
   },
   "author": "",
   "license": "ISC",
@@ -34,6 +34,7 @@
     "angular": "^1.4.9",
     "angular-mocks": "^1.4.9",
     "awesome-typescript-loader": "^3.2.3",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^6.4.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
@@ -41,6 +42,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
     "babel-regenerator-runtime": "^6.5.0",
     "brfs": "^1.4.0",
     "browserify": "^14.4.0",

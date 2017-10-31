@@ -1,5 +1,20 @@
 /* tslint:disable object-literal-sort-keys */
-import {Globals} from '../core/globals'
+// import {Globals} from '../core/globals'
+/* TODO: for some reason ^^ importing the above causes my unit tests to not work,
+ so I have manually copied and pasted the Globals var here
+  */
+const Globals = {
+    colors: {
+        proficiency_1: 'red',
+        proficiency_2: 'orange',
+        proficiency_3: 'yellow',
+        proficiency_4: 'lawngreen',
+        proficiency_unknown: 'gray',
+    },
+    currentTreeSelected: null,
+    overdueSize: 14,
+    regularSize: 10,
+}
 export const PROFICIENCIES = {
     UNKNOWN: 0,
     ONE: 12.5,
