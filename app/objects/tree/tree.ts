@@ -18,6 +18,7 @@ function syncGraphWithNode(treeId) {
 function loadObject(treeObj, self) {
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
+
 const blankProficiencyStats = {
     UNKNOWN: 0,
     ONE: 0,
@@ -58,11 +59,7 @@ export class Tree implements IMutable<ITreeMutation> {
         let treeObj
         if (arguments[0] && typeof arguments[0] === 'object') {
             treeObj = arguments[0]
-            loadObject(treeObj, this)
-            this.proficiencyStats = this.userProficiencyStatsMap
-                && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
-            this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
-            this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
+            this._loadExistingTreeFromDB(treeObj)
             return
         }
 
@@ -104,6 +101,13 @@ export class Tree implements IMutable<ITreeMutation> {
         }
         const lookupKey = 'trees/' + this.id
         firebase.database().ref(lookupKey).update(updates)
+    }
+    public _loadExistingTreeFromDB(treeObj) {
+        loadObject(treeObj, this)
+        this.proficiencyStats = this.userProficiencyStatsMap
+            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
+        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
+        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
     }
     public getChildIds() {
         if (!this.children) {
