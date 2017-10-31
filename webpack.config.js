@@ -82,7 +82,7 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     inline: true,
-    overlay: true
+    overlay: true,
   },
   performance: {
     hints: false

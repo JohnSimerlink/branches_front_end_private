@@ -7,7 +7,9 @@
     "rules": {
         "semicolon": false,
         "quotemark": [true, "single", "avoid-escape", "avoid-template"],
-        "arrow-parens" : ["error", "as-needed"]
+        "arrow-parens" : ["error", "as-needed"],
+        "trailing-comma": false
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "force": true
 }
