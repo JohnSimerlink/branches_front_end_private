@@ -1,30 +1,42 @@
 var cleanup = require('jsdom-global')()
 import {PROFICIENCIES} from "../app/components/proficiencyEnum.ts";
 import {calculateMillisecondsTilNextReview} from '../app/components/reviewAlgorithm/review'
+import {Tree} from "../app/objects/tree/tree";
+import {TreeMutationTypes} from "../app/objects/mutations/IMutable";
 import {expect} from 'chai'
 import * as curve from '../app/forgettingCurve'
-describe('Add a leaf', () => {
-    const tree = {
-        children: {},
-        userProficiencyStatsMap: {
-            'user1': {
-                //total = 19
-                UNKNOWN: 5,
-                ONE: 7,
-                TWO: 1,
-                THREE: 2,
-                FOUR: 4,
-            },
-            'user2': {
-                //total = 19
-                UNKNOWN: 15,
-                ONE: 1,
-                TWO: 1,
-                THREE: 1,
-                FOUR: 1,
-            },
-        }
+const tree1 = {
+    children: {},
+    userProficiencyStatsMap: {
+        'user1': {
+            //total = 19
+            UNKNOWN: 5,
+            ONE: 7,
+            TWO: 1,
+            THREE: 2,
+            FOUR: 4,
+        },
+        'user2': {
+            //total = 19
+            UNKNOWN: 15,
+            ONE: 1,
+            TWO: 1,
+            THREE: 1,
+            FOUR: 1,
+        },
     }
+}
+const tree2 = {
+    children: {'3': true}
+}
+const treeWithFalseChildId3 = {
+    children: {'3': false}
+}
+const tree3 = {
+    children: {'4': true}
+}
+describe('Add a leaf', () => {
+
     //1 - update users proficiency stats, for an individual user stats map
     //2 - test for checking getting all users who have studied an individual tree
     //do action here:
@@ -39,6 +51,30 @@ describe('Add a leaf', () => {
     })
 })
 
+describe('Tree Mutations is addTree redundant', () => {
+    it('Should mark a TREE_MUTATIONS.ADD_TREE(treeId) on a tree with the child treeId as redundant', () => {
+        const tree = Object.create(Tree, tree2)
+        const mutation = {
+            type:  TreeMutationTypes.ADD_TREE,
+            data: {
+                treeId: 3
+            }
+        }
+        expect(tree._isMutationRedundant(mutation).to.be(true))
+    })
+    it('Should mark a TREE_MUTATIONS.ADD_TREE(treeId) on a tree without the child treeId as NOT redundant', () => {
+        const tree = {...tree3}
+        const mutation = {
+            type:  TreeMutationTypes.ADD_TREE,
+            data: {
+                treeId: 3
+            }
+        }
+        expect(tree._isMutationRedundant(mutation).to.be(false))
+        expect(treeWithFalseChildId3._isMutationRedundant(mutation).to.be(false))
+    })
+
+})
 describe('Remove a subtree : with an unknown proficiency', () => {
     it('Should be removed from children set', () => {
         expect(1).to.equal(0)

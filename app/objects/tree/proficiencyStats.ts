@@ -12,10 +12,10 @@ const PROFICIENCIES = {
     bc n/0 is undefined, which is what was happening in our math. */
 }
 
-export function addObjToProficiencyStats(proficiencyStats, proficiencyObj) {
+export function addObjToProficiencyStats(proficiencyStats, deltaObj) {
     const newStats = {...proficiencyStats}
-    Object.keys(proficiencyObj).forEach((key) => {
-        newStats[key] = proficiencyObj[key]
+    Object.keys(deltaObj).forEach((key) => {
+        newStats[key] = (newStats[key] || 0) + (deltaObj[key] || 0)
     })
     return newStats
 }

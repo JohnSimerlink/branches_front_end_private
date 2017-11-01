@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
-
+var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
 module.exports = {
   entry: {
     regenerator: 'babel-regenerator-runtime',
@@ -19,6 +19,7 @@ module.exports = {
   // },
   module: {
     rules: [
+      ...CodeAndTestConfig.rules,
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -33,16 +34,6 @@ module.exports = {
         }
       },
       {
-          enforce: 'pre',
-          test: /\.tsx?$/,
-          loader: 'tslint-loader',
-          exclude: /(node_modules)/,
-      },
-      {
-          test: /\.tsx?$/,
-          loader: 'awesome-typescript-loader',
-      },
-      {
           test: /\.less$/,
           loader: "style-loader!css-loader!less-loader"
       },
@@ -50,11 +41,6 @@ module.exports = {
           test: /\.html$/,
           loader: 'html-loader',
           exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -76,7 +62,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     },
-  extensions: ['.ts', '.js', '.json']
+    extensions: CodeAndTestConfig.extensions
   },
   devServer: {
     historyApiFallback: true,

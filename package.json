@@ -31,6 +31,7 @@
     "vuefire": "^1.4.3"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.44",
     "angular": "^1.4.9",
     "angular-mocks": "^1.4.9",
     "awesome-typescript-loader": "^3.2.3",
@@ -63,6 +64,7 @@
     "gulp-mocha": "^4.3.1",
     "gulp-rename": "^1.2.2",
     "gulp-run": "^1.7.1",
+    "gulp-typescript": "^3.2.3",
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.11",
     "html2js": "^0.2.0",
@@ -93,12 +95,14 @@
     "phantomjs-prebuilt": "~2.1.7",
     "pump": "^1.0.2",
     "requirejs": "^2.1.11",
+    "run-sequence": "^2.2.0",
     "sass-loader": "^5.0.1",
     "snack.js": "^1.0.1",
     "snackjs": "^1.1.0",
     "style-loader": "^0.18.2",
     "taggle": "^1.12.0",
     "ts-loader": "^3.0.3",
+    "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.5.3",
@@ -110,7 +114,8 @@
     "vuex": "^2.4.0",
     "watchify": "^3.9.0",
     "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack-dev-server": "^2.4.5",
+    "webpack-stream": "^4.0.0"
   },
   "browserify-shim": {
     "external": "global:External"

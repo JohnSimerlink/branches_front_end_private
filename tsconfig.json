@@ -4,7 +4,8 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "lib": ["es2015", "dom"]
+    "lib": ["es2015", "dom"],
+    "types": ["mocha"]
   },
   "exclude": [
     "node_modules"
