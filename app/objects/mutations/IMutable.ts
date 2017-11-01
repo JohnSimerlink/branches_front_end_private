@@ -9,8 +9,8 @@ interface IMutation {
     data,
 }
 export enum TreeMutationTypes {
-    ADD_LEAF,
-    REMOVE_LEAF,
+    ADD_CHILD,
+    REMOVE_CHILD,
 }
 enum UserMutationTypes {
     SOME_ACTION,

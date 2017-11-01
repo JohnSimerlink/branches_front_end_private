@@ -128,9 +128,19 @@ export class Tree implements IMutable<ITreeMutation> {
      * @param treeId
      */
     public async addChild(treeId) {
-        // this.treeRef.child('/children').push(treeId)
+        this._addChildLocal(treeId)
+        this._addChildDB()
+
+        this.recalculateProficiencyAggregation()
+        this.calculateAggregationTimer()
+        this.calculateNumOverdueAggregation()
+        this.updatePrimaryParentTreeContentURI()
+    }
+    private async _addChildLocal(treeId) {
         this.children = this.children || {}
         this.children[treeId] = true
+    }
+    private async _addChildDB() {
         const updates = {
             children: this.children,
         }
@@ -140,10 +150,6 @@ export class Tree implements IMutable<ITreeMutation> {
         } catch (err) {
             error(' error for addChild firebase call', err)
         }
-        this.updatePrimaryParentTreeContentURI()
-        this.recalculateProficiencyAggregation()
-        this.calculateAggregationTimer()
-        this.calculateNumOverdueAggregation()
     }
 
     public async removeAndDisconnectFromParent() {
@@ -546,12 +552,12 @@ export class Tree implements IMutable<ITreeMutation> {
     }
     public _isMutationRedundant(mutation: ITreeMutation) {
        switch (mutation.type) {
-           case TreeMutationTypes.ADD_LEAF: {
+           case TreeMutationTypes.ADD_CHILD: {
                const leafId = mutation.data.leafId
                const leafAlreadyExists = this.children[leafId]
                return leafAlreadyExists
            }
-           case TreeMutationTypes.REMOVE_LEAF: {
+           case TreeMutationTypes.REMOVE_CHILD: {
                const leafId = mutation.data.leafId
                const leafExists = this.children[leafId]
                return !leafExists
