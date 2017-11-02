@@ -13,7 +13,18 @@ var mocha = require('gulp-mocha')
 var typescript = require('gulp-typescript')
 var webpack = require('webpack-stream')
 var runSequence = require('run-sequence')
+var sourcemaps = require('gulp-sourcemaps')
 var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
+var tslint = require("gulp-tslint");
+
+var sourcemaps = require('gulp-sourcemaps');
+var istanbul = require('gulp-istanbul');
+var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+var del = require('del');
+var ts = require('gulp-typescript');
+
+var __coverageThreshold = 60;
+
 //for the files that error out when used in ./vendor.js
 gulp.task("build-funny-modules", function(){
     const jsDest = 'dist/funny/'
@@ -42,6 +53,14 @@ gulp.task("build-funny-modules2", function(){
             .pipe(gzip())
             .pipe(gulp.dest(jsDest))
 })
+
+gulp.task('build:clean', function() {
+    return del([
+        './transpiled',
+        './coverage',
+        './coverage-report'
+    ]);
+});
 
 gulp.task("build-css", function(){
     const dest = 'dist/css/'
@@ -101,7 +120,9 @@ function build() {
     var tsProject = typescript.createProject('./tsconfig.json')
     console.log('building!')
     return gulp.src(paths.scripts, {base: '.'})
+        .pipe(sourcemaps.init())
         .pipe(tsProject())
+        .pipe(sourcemaps.write())
         /*flush to disk*/ // necessary or else mocha won't be able to find the files
         .pipe(gulp.dest('.'))
 
@@ -135,4 +156,67 @@ function test(){
 function testfunc(){
     console.log("THIS IS ", this, "ARGUMENTS IS", arguments)
     return this
+}
+
+gulp.task("build:lint", function() {
+    return gulp.src(["./**/*.ts", "!./node_modules/**/*", "!./typings/**/*"])
+        .pipe(tslint({
+            configuration:  {
+                rules: {
+                    "variable-name": true,
+                    "quotemark": [true, "single"]
+                }
+            }
+        }))
+        .pipe(tslint.report("verbose", {
+            emitError: true
+        }));
+});
+
+
+gulp.task('build:clean', function() {
+    return del([
+        './transpiled',
+        './coverage',
+        './coverage-report'
+    ]);
+});
+
+gulp.task('build', ['build:clean'], function() {
+    var tsProject = typescript.createProject('./tsconfig.json')
+    return gulp.src([
+        './src/**/*.ts',
+        './test/**/*.ts',
+    ], { base: '.'})
+        .pipe(sourcemaps.init())
+        .pipe(tsProject())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./transpiled'));
+})
+
+gulp.task('test:instrument', ['build'], function() {
+    return gulp.src('./transpiled/src/**/*.js')
+        .pipe(istanbul())
+        .pipe(istanbul.hookRequire()); //this forces any call to 'require' to return our instrumented files
+});
+
+gulp.task('test:cover', ['test:instrument'], function() {
+    return gulp.src('./transpiled/**/*Tests.js')
+        .pipe(mocha({ui:'bdd'})) //runs tests
+        .pipe(istanbul.writeReports({
+            reporters: [ 'json' ] //this yields a basic non-sourcemapped coverage.json file
+        })).on('end', remapCoverageFiles); //remap
+});
+
+//using remap-istanbul we can point our coverage data back to the original ts files
+function remapCoverageFiles() {
+    return gulp.src('./coverage/coverage-final.json')
+        .pipe(remapIstanbul({
+            basePath: '.',
+            reports: {
+                'html': './coverage',
+                'text-summary': null,
+                'lcovonly': './coverage/lcov.info'
+            }
+        }));
 }
