@@ -10,7 +10,6 @@ export function calculateStrength(R, t) {
     const logProficiency = Math.log(proficiencyAsDecimal)
     const ebbinghaus = -1 * t / logProficiency
     const dbE = 10 * Math.log10(ebbinghaus)
-    console.log(R, t, ' -> ', dbE, ' dbE')
     return dbE > 0 ? dbE : 0
 }
 // Se = previous estimated strength
@@ -55,10 +54,10 @@ export function measurePreviousStrength(estimatedPreviousStrength, R, t) {
     return measuredPreviousStrength
 }
 
-function doubleLessThanOrEqualTo(doubleOne, doubleTwo){
+function doubleLessThanOrEqualTo(doubleOne, doubleTwo) {
     return doubleOne <= (doubleTwo + .01)
 }
-function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo){
+function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo) {
     return doubleOne >= (doubleTwo - .01)
 }
 
@@ -77,7 +76,11 @@ export function calculateTime(S, R) {
 }
 
 // current proficiency in [0, 100]
-export function estimateCurrentStrength(previousInteractionStrengthDecibels, currentProficiency, secondsSinceLastInteraction) {
+export function estimateCurrentStrength(
+    previousInteractionStrengthDecibels,
+    currentProficiency,
+    secondsSinceLastInteraction
+) {
     let newInteractionStrengthDecibels
     const t = secondsSinceLastInteraction
     if (currentProficiency <= PROFICIENCIES.ONE) {
