@@ -1,4 +1,4 @@
-import {Tree} from './tree.js'
+import {Tree} from './tree/tree.ts'
 import firebase from './firebaseService.js'
 import LocalForage from 'localforage'
 

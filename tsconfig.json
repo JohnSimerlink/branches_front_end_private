@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "lib": ["es2015", "dom"],
+    "types": ["mocha"]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

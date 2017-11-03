@@ -1,21 +1,22 @@
-import {timeFromNow} from "../core/filters";
+import {timeFromNow} from "../../core/filters";
 
 const URI_WINDOW_PREFIX = 'null/Everything'
 const content = {}
 if (typeof window !== 'undefined') {
     window.content = content //expose to window for easy debugging
 }
-import {user} from './user'
-import {calculateMillisecondsTilNextReview} from '../components/reviewAlgorithm/review'
-import {PROFICIENCIES, proficiencyToColor} from "../components/proficiencyEnum";
-import {Trees} from './trees'
+import {user} from '../user'
+import {calculateMillisecondsTilNextReview} from '../../components/reviewAlgorithm/review'
+import {PROFICIENCIES, proficiencyToColor} from "../../components/proficiencyEnum.ts";
+import {Trees} from '../trees'
 import {
     measurePreviousStrength, estimateCurrentStrength,
     calculateSecondsTilCriticalReviewTime
-} from "../forgettingCurve";
-import store from '../core/store'
-import message from "../message";
-import UriContentMap from "./uriContentMap";
+} from "../../forgettingCurve";
+import store from '../../core/store'
+import message from "../../message";
+import UriContentMap from "../uriContentMap";
+import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList, getLastNBreadcrumbsString, getURIWithoutRootElement} from "./uriParser.ts";
 
 const INITIAL_LAST_RECORDED_STRENGTH = {value: 0,}
 
@@ -102,12 +103,8 @@ export default class ContentItem {
     getURIAdditionNotEncoded(){
 
     }
-    //removes the prefix "content/
-    getURIWithoutRootElement(){
-        return this.uri.substring(this.uri.indexOf("/") + 1, this.uri.length)
-    }
     getBreadCrumbsString(){
-        let sections = this.getURIWithoutRootElement().split("/")
+        let sections = getURIWithoutRootElement(this.uri).split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let sectionsResult = sections.reduce((accum, val) => {
             if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
@@ -116,16 +113,9 @@ export default class ContentItem {
             return accum + " > " + decodeURIComponent(val)
         })
         return sectionsResult
-        // console.log('breadcrumb result is', sectionsResult)
-        //
-        // let breadcrumbs = this.uri.split("/").reduce((total, section) => {
-        //     return total + decodeURIComponent(section) + " > "
-        // },"")
-        // breadcrumbs = breadcrumbs.substring(breadcrumbs.length - 3, breadcrumbs.length) //remove trailing arrow
-        // return breadcrumbs
     }
     getBreadcrumbsObjArray() {
-        let sections = this.getURIWithoutRootElement().split("/")
+        let sections = getURIWithoutRootElement(this.uri).split("/")
         // console.log('breadcrumb sections for ', this,' are', sections)
         let breadcrumbsObjArray = sections.reduce((accum, val) => {
             if (val == "null" || val == "content" || val == "Everything"){ //filter out sections of the breadcrumbs we dont want // really just for the first section tho
@@ -137,9 +127,7 @@ export default class ContentItem {
         return breadcrumbsObjArray
     }
     getLastNBreadcrumbsString(n) {
-        let sections = this.getURIWithoutRootElement().split("/")
-        let result = getLastNBreadcrumbsStringFromList(sections, n)
-        return result
+        return getLastNBreadcrumbsString(this.uri, n)
     }
 
     isLeafType(){
@@ -287,16 +275,6 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
 
-    addToStudyQueue() { //don't display nextReviewTime if not in user's study queue
-        this.studiers[user.getId()] = true
-
-        var updates = {
-            studiers: this.studiers
-        }
-        this.inStudyQueue = true
-
-        firebase.database().ref('content/' + this.id).update(updates)
-    }
     addExercise(exerciseId){
         this.exercises[exerciseId] = true
 
@@ -528,12 +506,6 @@ export default class ContentItem {
         firebase.database().ref('content/' + this.id).update(updates)
         //set timeout to mark the item overdue when it becomes overdue
     }
-
-    setProficiency(proficiency) {
-        //-proficiency stored as part of this content item
-        // this.proficiency = proficiency
-        // this.saveProficiency({proficiency, timestamp: Date.now()})
-    }
     //methods for html templates
     isProficiencyUnknown(){
         return this.proficiency == PROFICIENCIES.UNKNOWN
@@ -608,36 +580,6 @@ export default class ContentItem {
     }
 }
 
-/**
- *
- * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating", "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
- * @returns {string}
- */
-export function getLastNBreadcrumbsStringFromList(breadcrumbList, n){
-    if (breadcrumbList.length <= n) {
-        return breadcrumbList
-    }
-
-    var breadcrumbListCopy = breadcrumbList.slice()
-    const lastNBreadcrumbSections = breadcrumbListCopy.splice(breadcrumbList.length - n, breadcrumbList.length)
-    const result = convertBreadcrumbListToString(lastNBreadcrumbSections)
-
-    return result
-}
-
-function convertBreadcrumbListToString(breadcrumbList){
-    if (breadcrumbList.length <= 0) return []
-
-    const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
-
-    let firstItems =
-        breadcrumbList.reduce((accum, val) => {
-            return accum + decodeURIComponent(val) + " > "
-        },'')
-    let result = firstItems + lastItem
-
-    return result
-}
 export function getLabelFromContent(content) {
     switch (content.type){
         case "fact":

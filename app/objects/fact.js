@@ -3,7 +3,7 @@ import {user} from './user'
 import firebase from './firebaseService'
 import {Trees} from './trees'
 import merge from 'lodash.merge'
-import ContentItem from './contentItem'// from './firebaseService'
+import ContentItem from './contentItem/contentItem'// from './firebaseService'
 export class Fact extends ContentItem {
   //constructor is used when LOADING facts from db or when CREATING facts from Facts.create
   constructor (args /*= {question, answer, id, userTimeMap, primaryParentTreeId}*/){

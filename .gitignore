@@ -6,3 +6,5 @@ src/env.js
 
 branches.pem
 .deploy-configured
+.coveralls.yml
+.nyc_output
