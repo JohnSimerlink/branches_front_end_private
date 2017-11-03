@@ -86,7 +86,8 @@ class User {
       return (this.fbData && this.fbData.uid) || window.cachedUserId || 0
   }
   isAdmin() {
-      return this.getId() == 'svyioFSkuqPTf1gjmHYGIsi42IA3'
+      const id = this.getId()
+      return id == 'svyioFSkuqPTf1gjmHYGIsi42IA3' || id == 'VhwnuPYmaDY56O1dzz3u72YL97t2'
   }
   //should only be called after login event
   async getStudySettings(){

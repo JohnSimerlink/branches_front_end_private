@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import ContentItem from "./contentItem";
+import ContentItem from "./contentItem/contentItem";
 import merge from 'lodash.merge'
 import {Trees} from './trees'
 

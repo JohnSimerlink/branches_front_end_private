@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
-
+var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
 module.exports = {
   entry: {
     regenerator: 'babel-regenerator-runtime',
@@ -19,6 +19,7 @@ module.exports = {
   // },
   module: {
     rules: [
+      ...CodeAndTestConfig.rules,
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -30,22 +31,16 @@ module.exports = {
             'scss': 'vue-style-loader!css-loader!sass-loader',
             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }          // other vue-loader options go here
-
         }
       },
-        {
-            test: /\.less$/,
-            loader: "style-loader!css-loader!less-loader"
-        },
-        {
-            test: /\.html$/,
-            loader: 'html-loader',
-            exclude: /node_modules/
-        },
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+          test: /\.less$/,
+          loader: "style-loader!css-loader!less-loader"
+      },
+      {
+          test: /\.html$/,
+          loader: 'html-loader',
+          exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -66,13 +61,14 @@ module.exports = {
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
-    }
+    },
+    extensions: CodeAndTestConfig.extensions
   },
   devServer: {
     historyApiFallback: true,
     noInfo: true,
     inline: true,
-    overlay: true
+    overlay: true,
   },
   performance: {
     hints: false
