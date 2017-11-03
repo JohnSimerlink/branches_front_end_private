@@ -1,4 +1,5 @@
-var exec = require('exec');
+var fs = require('fs')
+var exec = require('child_process').exec;
 var gulp = require('gulp');
 var watch = require('gulp-watch');
 var batch = require('gulp-batch');
@@ -90,7 +91,7 @@ const paths = {
     tests: 'test/*.ts',
 }
 
-gulp.task('test-watch', function() {
+gulp.task('test-watch-old', function() {
     gulp.start('build-and-test')
     watch([paths.scripts, paths.tests], batch(function (events, done) {
         gulp.start('build-and-test',done)
@@ -98,9 +99,37 @@ gulp.task('test-watch', function() {
     // gulp.watch(paths.scripts, ["test2"])
 })
 
-gulp.task('test', function() {
-    test()
+// gulp.task('test', function() {
+//     test()
+// })
+
+gulp.task('test-watch', function() {
+    gulp.start('test')
+    watch([paths.scripts, paths.tests], function(){
+        gulp.start('test')
+    })
 })
+
+gulp.task('test', function() {
+    console.log("gulp test running")
+    exec('npm t', function(err, stdout, stderr){
+        console.log(stdout)
+        publishCoverageIfConfigExists()
+    })
+})
+function publishCoverageIfConfigExists(){
+    fs.open('.coveralls.yml', 'r', function (err, fd) {
+        if (!err){
+            console.log('Sending coverage report to coveralls.io')
+            exec('npm run coverage', function (err, stdout, stderr){
+                console.log(stdout)
+                console.log('Coverage report sent')
+            })
+        }
+    })
+}
+
+
 gulp.task('build', function() {
     build()
 })
