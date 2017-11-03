@@ -9,6 +9,7 @@
     "deploy": "sh .deploy.sh",
     "test": "cross-env NODE_ENV=test ./node_modules/.bin/ts-mocha -c --recursive --bail ./test/**/*.ts",
     "coverage": "cross-env NODE_ENV=test nyc npm t",
+    "publish-coverage": "nyc report --reporter=text-lcov | coveralls",
     "test-watch": "gulp test-watch"
   },
   "author": "",
@@ -53,6 +54,7 @@
     "chai": "^4.1.0",
     "chartist": "^0.11.0",
     "compression-webpack-plugin": "^1.0.0",
+    "coveralls": "^3.0.0",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "del": "^3.0.0",

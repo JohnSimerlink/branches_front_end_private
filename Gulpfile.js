@@ -112,7 +112,7 @@ gulp.task('test-watch', function() {
 
 gulp.task('test', function() {
     console.log("gulp test running")
-    exec('npm t', function(err, stdout, stderr){
+    exec('npm run coverage', function(err, stdout, stderr){
         console.log(stdout)
         publishCoverageIfConfigExists()
     })
@@ -121,7 +121,7 @@ function publishCoverageIfConfigExists(){
     fs.open('.coveralls.yml', 'r', function (err, fd) {
         if (!err){
             console.log('Sending coverage report to coveralls.io')
-            exec('npm run coverage', function (err, stdout, stderr){
+            exec('npm run publish-coverage', function (err, stdout, stderr){
                 console.log(stdout)
                 console.log('Coverage report sent')
             })
