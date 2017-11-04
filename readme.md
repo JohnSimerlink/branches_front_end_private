@@ -1,5 +1,6 @@
 [![Mocha tests](https://travis-ci.org/branchesorg/branches_front_end.svg?branch=master)](https://travis-ci.org/branchesorg/branches_front_end)
 [![Coverage Status](https://coveralls.io/repos/github/branchesorg/branches_front_end/badge.svg?branch=master)](https://coveralls.io/github/branchesorg/branches_front_end?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3acef66c7eb699b612f1/maintainability)](https://codeclimate.com/github/branchesorg/branches_front_end/maintainability)
 [![NSP Status](https://nodesecurity.io/orgs/branchesorg/projects/9c73b1c9-6468-4857-b251-2f402a4106b0/badge)](https://nodesecurity.io/orgs/branchesorg/projects/9c73b1c9-6468-4857-b251-2f402a4106b0/badge)
 [![Dependencies](https://david-dm.org/branchesorg/branches_front_end.svg)](https://david-dm.org/branchesorg/branches_front_end)
 [![Dev Dependencies](https://david-dm.org/branchesorg/branches_front_end/dev-status.svg)](https://david-dm.org/branchesorg/branches_front_end?type=dev)
