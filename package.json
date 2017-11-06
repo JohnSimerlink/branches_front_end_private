@@ -40,7 +40,9 @@
     "awesome-typescript-loader": "^3.2.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-istanbul": "^0.12.2",
     "babel-loader": "^6.4.1",
+    "babel-plugin-istanbul": "^4.1.5",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
@@ -77,6 +79,7 @@
     "gulp-watch": "^4.3.11",
     "html2js": "^0.2.0",
     "invert-object": "0.0.0",
+    "istanbul": "^0.4.5",
     "jasmine": "^2.8.0",
     "jasmine-core": "^2.8.0",
     "jsdom": "11.2.0",
@@ -140,5 +143,16 @@
       "babel-runtime": "npm:babel-runtime@^5.8.24",
       "core-js": "npm:core-js@^1.1.4"
     }
+  },
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
 }

@@ -87,8 +87,8 @@ function handleError(err) {
 }
 
 const paths = {
-    scripts: 'app/**/*.ts',
-    tests: 'test/*.ts',
+    scripts: './app/**/*.ts',
+    tests: './test/*.ts',
 }
 
 gulp.task('test-watch-old', function() {
@@ -112,9 +112,11 @@ gulp.task('test-watch', function() {
 
 gulp.task('test', function() {
     console.log("gulp test running")
-    exec('npm run coverage', function(err, stdout, stderr){
-        console.log(stdout)
-        // publishCoverageIfConfigExists()
+    exec('npm run t', function(err, stdout, stderr) {
+        exec('npm run coverage', function(err, stdout, stderr){
+            console.log(stdout)
+            // publishCoverageIfConfigExists()
+        })
     })
 })
 
