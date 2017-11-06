@@ -1,0 +1,4 @@
+exclude_paths:
+- "coverage"
+- "other_imports"
+- "dist"
