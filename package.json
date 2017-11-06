@@ -99,6 +99,8 @@
     "karma-webpack": "^2.0.4",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
+    "lesshint": "^4.3.0",
+    "lesshint-webpack-plugin": "0.0.3",
     "mocha": "^3.5.0",
     "moment": "^2.18.1",
     "node-sass": "^4.5.3",
