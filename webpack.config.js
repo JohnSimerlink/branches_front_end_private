@@ -78,7 +78,8 @@ module.exports = {
 // plugins: [new webpack.]
   plugins: [
     new LessHintPlugin({
-      files: ['./app/**/*.less',],
+      files: ['./app/**/*.less'],
+      configFile: path.resolve(__dirname, './lesshintrc.json'),
     }),
   ]
 

@@ -395,7 +395,7 @@ function openTooltip(node){
     //Make copy of singleton's config by value to avoid mutation
     let configClone = clonedeep(toolTipsConfig);
 
-    if (!!isMobile.any()) {
+    if (isMobile.any()) {
         configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
     }
 

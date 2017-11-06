@@ -1,0 +1,6 @@
+{
+  "fileExtensions": [".less", ".css"],
+  "excludedFiles": ["offline.less"],
+  "propertyOrdering": false,
+  "zeroUnit": false
+}
