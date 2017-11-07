@@ -1,6 +1,6 @@
 <div class="tree" v-bind:style="styleObject" >
     <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
-        <item-history :item-id="content.id" ></item-history>
+        <item-history :item-id="content.id" :tree="tree" ></item-history>
     </div>
     <div v-if="!showHistory">
         <div class="tree-skill" v-if="typeIsSkill">
