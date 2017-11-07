@@ -11,7 +11,6 @@ import {Trees} from '../trees.js'
 import {user} from '../user'
 import {ITree} from './ITree';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
-import _quarter = moment.unitOfTime._quarter;
 
 function syncGraphWithNode(treeId) {
     store.commit('syncGraphWithNode', treeId)
@@ -38,7 +37,7 @@ const unknownProficiencyStats = {
 // interface ITree {
 //
 // }
-export class Tree implements IMutable<ITreeMutation> {
+export class Tree /*implements IMutable<ITreeMutation> */ {
     public id;
     public parentId;
     public active;
