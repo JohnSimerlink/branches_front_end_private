@@ -1,5 +1,6 @@
 /* tslint:disable object-literal-sort-keys */
 import md5 from 'md5'
+import * as moment from 'moment';
 import {error, log} from '../../core/log';
 import store from '../../core/store'
 import {IContentItem} from '../contentItem/IContentItem';
@@ -10,6 +11,7 @@ import {Trees} from '../trees.js'
 import {user} from '../user'
 import {ITree} from './ITree';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
+import _quarter = moment.unitOfTime._quarter;
 
 function syncGraphWithNode(treeId) {
     store.commit('syncGraphWithNode', treeId)
@@ -54,61 +56,55 @@ export class Tree implements IMutable<ITreeMutation> {
     public contentType;
     public mutations;
 
-    constructor(contentId, contentType, parentId, parentDegree, x, y) {
-        this.leaves = []
-        let treeObj
-        if (arguments[0] && typeof arguments[0] === 'object') {
-            treeObj = arguments[0]
-            this._loadExistingTreeFromDB(treeObj)
-            return
+    // constructor(contentId, contentType, parentId, parentDegree, x, y) {
+    constructor(
+        {
+            contentId, contentType, parentId, x, y,
+            children = {}, mutations = [],
+            createInDB,
+            id = null, // TODO: making it an optional, threw a typescript error
+            userProficiencyStatsMap = {},
+            userNumOverdueMap = {},
+            userAggregationTimerMap = {},
         }
-
+    ) {
         this.contentId = contentId
         this.contentType = contentType
-        this.parentId = parentId;
-        this.children = {};
-        this.mutations = []
-
-        this.userProficiencyStatsMap = {}
-        this.userAggregationTimerMap = {}
-        this.userNumOverdueMap = {}
-        this.proficiencyStats = this.userProficiencyStatsMap
-            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
-        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
-        this.userNumOverdueMap = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
-
+        this.parentId = parentId
         this.x = x
         this.y = y
-
-        treeObj = {contentType: this.contentType, contentId: this.contentId, parentId, children: this.children}
-        this.id = md5(JSON.stringify(treeObj))
-        if (typeof arguments[0] === 'object') {
-            /*
-         TODO: use a boolean to determine if the tree already exists.
-         or use Trees.get() and Trees.create() separate methods,
-          so we aren't getting confused by the same constructor
-        */
-            return
+        if (createInDB) {
+            this._createInDB()
+        } else {
+            this.id = id
         }
-
-        const updates = {
-            id: this.id,
-            contentId,
-            contentType,
-            parentId,
-            x,
-            y,
-        }
-        const lookupKey = 'trees/' + this.id
-        firebase.database().ref(lookupKey).update(updates)
-    }
-    public _loadExistingTreeFromDB(treeObj) {
-        loadObject(treeObj, this)
+        // TODO: Handle the below 6 lines in a userData object
+        this.userProficiencyStatsMap = userProficiencyStatsMap
+        this.userNumOverdueMap = userNumOverdueMap
+        this.userAggregationTimerMap = userAggregationTimerMap
         this.proficiencyStats = this.userProficiencyStatsMap
             && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
         this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
         this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
+
+        this.leaves = []
     }
+
+    private _createInDB() {
+        const treeObj: any = {
+            contentId: this.contentId,
+            parentId: this.parentId,
+        }
+
+        this.id = md5(JSON.stringify(treeObj))
+
+        treeObj.x = this.x
+        treeObj.y = this.y
+        treeObj.id = this.id
+        const lookupKey = 'trees/' + this.id
+        firebase.database().ref(lookupKey).update(treeObj)
+    }
+
     public getChildIds() {
         if (!this.children) {
            return []

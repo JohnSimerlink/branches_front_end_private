@@ -271,43 +271,43 @@ export function connectTreeToParent(tree,content){
     } else {
     }
 }
-//returns sigma tree node
-export function addTreeToGraph(parentTreeId, content) {
-    //1. delete current addNewNode button
-    var parentTree = s.graph.nodes(parentTreeId);
-    var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
-    var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
-    var tree = new Tree(content.id, content.type, parentTreeId, parentTree.degree + 1, newChildTreeX, newChildTreeY)
-    //2. add new node to parent tree on UI
-    const newTree = {
-        id: tree.id,
-        parentId: parentTreeId,
-        contentId: content.id,
-        content: content,
-        x: newChildTreeX,
-        y: newChildTreeY,
-        children: {},
-        label: getLabelFromContent(content),
-        size: getSizeFromContent(content),
-        color: getTreeColor(content),
-        type: NODE_TYPES.TREE,
-    }
-
-    s.graph.addNode(newTree);
-    //3. add edge between new node and parent tree
-    const newEdge = {
-        id: createEdgeId(parentTreeId, newTree.id),
-        source: parentTreeId,
-        target: newTree.id,
-        size: 2,
-        color: getTreeColor(content),
-        type: EDGE_TYPES.HIERARCHICAL,
-    }
-    s.graph.addEdge(newEdge)
-
-    s.refresh();
-    return newTree;
-}
+// //returns sigma tree node
+// export function addTreeToGraph(parentTreeId, content) {
+//     //1. delete current addNewNode button
+//     var parentTree = s.graph.nodes(parentTreeId);
+//     var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
+//     var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
+//     var tree = new Tree({contentId: content.id, parentId: parentTreeId, x: newChildTreeX, y: newChildTreeY})
+//     //2. add new node to parent tree on UI
+//     const newTree = {
+//         id: tree.id,
+//         parentId: parentTreeId,
+//         contentId: content.id,
+//         content: content,
+//         x: newChildTreeX,
+//         y: newChildTreeY,
+//         children: {},
+//         label: getLabelFromContent(content),
+//         size: getSizeFromContent(content),
+//         color: getTreeColor(content),
+//         type: NODE_TYPES.TREE,
+//     }
+//
+//     s.graph.addNode(newTree);
+//     //3. add edge between new node and parent tree
+//     const newEdge = {
+//         id: createEdgeId(parentTreeId, newTree.id),
+//         source: parentTreeId,
+//         target: newTree.id,
+//         size: 2,
+//         color: getTreeColor(content),
+//         type: EDGE_TYPES.HIERARCHICAL,
+//     }
+//     s.graph.addEdge(newEdge)
+//
+//     s.refresh();
+//     return newTree;
+// }
 
 export function goToFromMap(path){
     router.push(path)
