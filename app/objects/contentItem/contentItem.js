@@ -67,8 +67,6 @@ export default class ContentItem {
         this.type = args.type
     }
     init () {
-        this.calculateURIBasedOnParentTreeContentURI()
-        // this.uri = this.uri || this.primaryParentTreeContentURI + "/" + this.getURIAddition() // this is for contentItems just created from a parent, not ones loaded from the db.
     }
 
     //used for creating a new fact in db. new Fact is just used for loading a fact from the db, and/or creating a local fact that never talks to the db.
@@ -231,6 +229,7 @@ export default class ContentItem {
         firebase.database().ref('content/' +this.id).update(updates)
     }
     calculateURIBasedOnParentTreeContentURI(){
+        console.log('calculateURIBasedOnParentTreeContentURI called', this)
         const uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition()
         this.set('uri', uri)
         UriContentMap.set(uri, this.id)
