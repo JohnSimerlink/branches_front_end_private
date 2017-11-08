@@ -34,6 +34,7 @@ export default {
         this.nodeBeingDragged = false
         this.tree = await Trees.get(this.id)
         this.content = await ContentItems.get(this.tree.contentId)
+        console.log("components/tree.js content is", this.content)
         this.startTimer()
         this.tree.sortLeavesByStudiedAndStrength()
 
@@ -62,13 +63,16 @@ export default {
             return this.$store.state.openNodeId;
         },
         typeIsHeading() {
-            return this.tree.contentType === 'heading'
+            return this.content.type === 'heading'
+            || this.tree.contentType === 'heading' // backwards compatibility
         },
         typeIsFact() {
-            return this.tree.contentType === 'fact'
+            return this.content.type === 'fact'
+            || this.tree.contentType === 'fact' // backwards compatibility
         },
         typeIsSkill() {
-            return this.tree.contentType === 'skill'
+            return this.content.type === 'skill'
+            || this.tree.contentType === 'skill' // backwards compatibility
         },
         styleObject() {
             const styles = {}
