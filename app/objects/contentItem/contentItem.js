@@ -233,7 +233,6 @@ export default class ContentItem {
         const uri = this.primaryParentTreeContentURI + "/" + this.getURIAddition()
         this.set('uri', uri)
         UriContentMap.set(uri, this.id)
-
     }
         //TODO : make timer for heading be the sum of the time of all the child facts
     resetTimer(){
