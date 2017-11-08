@@ -54,7 +54,7 @@ export class Tree implements IMutable<ITreeMutation> {
     public userAggregationTimerMap;
     public mutations;
 
-    constructor({contentId, parentId, parentDegree, x, y, createInDB}) {
+    constructor({contentId, parentId, x, y, createInDB}) {
         this.leaves = []
         let treeObj
         if (arguments[0] && typeof arguments[0] === 'object' && !arguments[0].createInDB) {
