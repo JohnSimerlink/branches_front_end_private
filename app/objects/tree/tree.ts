@@ -37,7 +37,7 @@ const unknownProficiencyStats = {
 // interface ITree {
 //
 // }
-export class Tree /*implements IMutable<ITreeMutation> */ {
+export class Tree implements IMutable<ITreeMutation> {
     public id;
     public parentId;
     public active;
@@ -55,62 +55,62 @@ export class Tree /*implements IMutable<ITreeMutation> */ {
     public contentType;
     public mutations;
 
-    // constructor(contentId, contentType, parentId, parentDegree, x, y) {
-    constructor(
-        {
-            contentId, contentType, parentId, x, y,
-            children = {}, mutations = [],
-            createInDB,
-            id = null, // TODO: making it an optional, threw a typescript error
-            userProficiencyStatsMap = {},
-            userNumOverdueMap = {},
-            userAggregationTimerMap = {},
+    constructor({contentId, contentType, parentId, parentDegree, x, y, createInDB}) {
+        log('TREE.ts construcotr arguments are', arguments)
+        this.leaves = []
+        let treeObj
+        if (arguments[0] && typeof arguments[0] === 'object' && !arguments[0].createInDB) {
+            treeObj = arguments[0]
+            this._loadExistingTreeFromDB(treeObj)
+            return
         }
-    ) {
-        try {
-            this.contentId = contentId
-        } catch (err) {
-            error('contentId not working', contentId, this.contentId)
-        }
+
+        this.contentId = contentId
         this.contentType = contentType
-        this.parentId = parentId
-        this.x = x
-        this.y = y
-        this.children = children
-        this.mutations = mutations
-        if (createInDB) {
-            this._createInDB()
-        } else {
-            this.id = id
-        }
-        // TODO: Handle the below 6 lines in a userData object
-        this.userProficiencyStatsMap = userProficiencyStatsMap
-        this.userNumOverdueMap = userNumOverdueMap
-        this.userAggregationTimerMap = userAggregationTimerMap
+        this.parentId = parentId;
+        this.children = {};
+        this.mutations = []
+
+        this.userProficiencyStatsMap = {}
+        this.userAggregationTimerMap = {}
+        this.userNumOverdueMap = {}
         this.proficiencyStats = this.userProficiencyStatsMap
             && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
         this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
         this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
 
-        this.leaves = []
-    }
+        this.x = x
+        this.y = y
 
-    private _createInDB() {
-        const me = this
-        const treeObj: any = {
-            contentId: me.contentId,
-            parentId: me.parentId,
+        treeObj = {contentType: this.contentType, contentId: this.contentId, parentId, children: this.children}
+        this.id = md5(JSON.stringify(treeObj))
+        if (typeof arguments[0] === 'object') {
+            /*
+         TODO: use a boolean to determine if the tree already exists.
+         or use Trees.get() and Trees.create() separate methods,
+          so we aren't getting confused by the same constructor
+        */
+            return
         }
 
-        this.id = md5(JSON.stringify(treeObj))
-
-        treeObj.x = this.x
-        treeObj.y = this.y
-        treeObj.id = this.id
+        const updates = {
+            id: this.id,
+            contentId,
+            contentType,
+            parentId,
+            x,
+            y,
+        }
         const lookupKey = 'trees/' + this.id
-        firebase.database().ref(lookupKey).update(treeObj)
+        firebase.database().ref(lookupKey).update(updates)
     }
-
+    public _loadExistingTreeFromDB(treeObj) {
+        loadObject(treeObj, this)
+        this.proficiencyStats = this.userProficiencyStatsMap
+            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
+        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
+        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
+    }
     public getChildIds() {
         if (!this.children) {
            return []

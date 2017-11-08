@@ -50,7 +50,7 @@ export async function newTree(type, parentTreeId,primaryParentTreeContentURI, va
     var newChildTreeGraphPosition = cameraToGraphPosition(newChildTreeCameraX, newChildTreeCameraY)
     const {x: newChildTreeX, y: newChildTreeY} = newChildTreeGraphPosition
 
-    var tree = new Tree({contentId: newContent.id, parentId: parentTreeId,x: newChildTreeX, y: newChildTreeY, createInDB: true})
+    var tree = new Tree({contentId: newContent.id, contentType: newContent.type, parentId: parentTreeId, parentDegree: parentTreeUINode.degree + 1, x: newChildTreeX, y: newChildTreeY, createInDB: true})
 
     newContent.addTree(tree.id)
     addTreeNodeToGraph(tree,newContent)
