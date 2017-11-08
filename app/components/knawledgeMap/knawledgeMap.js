@@ -14,12 +14,14 @@ import {isMobile} from '../../core/utils';
 import clonedeep from 'lodash.clonedeep'
 import UriContentMap from '../../objects/uriContentMap'
 import {stripTrailingSlash} from '../../objects/uriContentMap'
+import md5 from 'md5'
 if (typeof document !== 'undefined'){
     Snack = '../../../node_modules/snack.js/dist/snack'
     require('./knawledgeMap.less')
 } else {
     Snack = null
 }
+console.log('MD5 of 5555 is', md5(5555))
 
 let router;
 var initialized = false;

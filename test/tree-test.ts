@@ -1,15 +1,14 @@
+import {expect} from 'chai'
 import {PROFICIENCIES} from '../app/components/proficiencyEnum';
 import {calculateMillisecondsTilNextReview} from '../app/components/reviewAlgorithm/review'
+import * as curve from '../app/forgettingCurve'
 import {TreeMutationTypes} from '../app/objects/mutations/IMutable';
 import {Tree} from '../app/objects/tree/tree';
 interface IDriveable {
     start();
     stop();
 }
-const x: number = 5
 
-import {expect} from 'chai'
-import * as curve from '../app/forgettingCurve'
 const tree1 = {
     children: {},
     userProficiencyStatsMap: {
