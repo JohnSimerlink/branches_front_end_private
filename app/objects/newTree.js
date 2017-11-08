@@ -34,6 +34,7 @@ export async function newTree(type, parentTreeId,primaryParentTreeContentURI, va
             newContent = ContentItems.create(new Fact(values));
             break;
     }
+    newContent.calculateURIBasedOnParentTreeContentURI()
     // newContent.setProficiency(PROFICIENCIES.ONE)
 
     const parentTreeUINode = getTreeUINode(parentTreeId)
