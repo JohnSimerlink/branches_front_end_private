@@ -3,6 +3,7 @@
 /* TODO: for some reason ^^ importing the above causes my unit tests to not work,
  so I have manually copied and pasted the PROFICIENCIES var here
   */
+let x: number = 5;
 const PROFICIENCIES = {
     UNKNOWN: 0,
     ONE: 12.5,
