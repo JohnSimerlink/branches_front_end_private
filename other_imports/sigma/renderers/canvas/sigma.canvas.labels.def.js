@@ -88,14 +88,12 @@
      * @param  {configurable}             settings The settings function.
      */
     sigma.canvas.labels.prioritizable = function(node, context, settings) {
-        console.log('sigma canvas label def .js', node, context, settings)
         // debugger;
         packageData.recentHistory.push(node)
         var fontSize,
             prefix = settings('prefix') || '',
             size = node[prefix + 'size'];
         if (!node.label || typeof node.label !== 'string') {
-            console.log('sigma canvas label def .js NO LABEL!', node, context, settings)
             return;
         }
 
@@ -107,11 +105,9 @@
 
         var section = determineSection(node)
         if (sectionOffScreen(section)){
-            console.log('sigma canvas label def .js sectionOffScreen!', node, context, settings)
             packageData.hideCount++
             return
         } else {
-            console.log('sigma canvas label def .js sectionOnScreen!', node, context, settings)
         }
 
             // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
@@ -150,7 +146,6 @@
             x,
             y
         );
-        console.log('label actually got DRAWN', label, context.font, context.fillStyle,)
     };
 }).call(window);
 

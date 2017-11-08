@@ -56,7 +56,6 @@ export class Tree implements IMutable<ITreeMutation> {
     public mutations;
 
     constructor({contentId, contentType, parentId, parentDegree, x, y, createInDB}) {
-        log('TREE.ts construcotr arguments are', arguments)
         this.leaves = []
         let treeObj
         if (arguments[0] && typeof arguments[0] === 'object' && !arguments[0].createInDB) {
