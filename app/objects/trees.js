@@ -33,8 +33,12 @@ export class Trees {
                     return
                 }
                 firebase.database().ref(lookupKey).once("value", function onFirebaseTreeGet(snapshot){
-                    let treeData = snapshot.val();
-                    processTreeData(treeData, resolve)
+                    try {
+                        let treeData = snapshot.val();
+                        processTreeData(treeData, resolve)
+                    } catch (err){
+                        console.error(err)
+                    }
                 })
             })
         })

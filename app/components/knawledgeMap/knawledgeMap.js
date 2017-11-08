@@ -438,12 +438,15 @@ if (typeof window !== 'undefined') {
 }
 
 export async function loadDescendants(treeId, numGenerations){
+    console.log('loadDescendants called', ...arguments)
     if (numGenerations <=0 ) {
         return
     }
     const tree = await Trees.get(treeId)
+    console.log('tree in loadDescendants function is', tree, tree.getChildIds())
 
     tree.getChildIds().forEach(async childId => {
+        console.log('the tree\'s child id is ', childId)
         await loadTree(childId)
         loadDescendants(childId, numGenerations - 1)
     })
