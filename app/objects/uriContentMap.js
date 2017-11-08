@@ -27,6 +27,7 @@ export default class UriContentMap {
         })
     }
     static set(uri, contentId){
+        console.log("uriContentMap.set called!", ...arguments)
         const updates = {}
         uriContentMap[uri] = contentId
         try {
