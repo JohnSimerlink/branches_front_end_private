@@ -26,7 +26,7 @@ export class Fact extends ContentItem {
   //bc certain properties used in the local js object in memory, shouldn't be stored in the db
 
     getURIAdditionNotEncoded(){
-      return this.question + ":" + this.answer
+      return this.id
     }
     getURIAddition(){
       return encodeURIComponent(this.getURIAdditionNotEncoded())
