@@ -72,6 +72,8 @@ export class Tree /*implements IMutable<ITreeMutation> */ {
         this.parentId = parentId
         this.x = x
         this.y = y
+        this.children = children
+        this.mutations = mutations
         if (createInDB) {
             this._createInDB()
         } else {
