@@ -1,4 +1,4 @@
-import md5 from 'md5';
+import md5 from '../core/md5wrapper';
 import {user} from './user'
 import firebase from './firebaseService'
 import {Trees} from './trees'

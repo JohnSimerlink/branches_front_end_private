@@ -1,4 +1,4 @@
-import md5 from 'md5';
+import md5 from '../core/md5wrapper';
 import ContentItem from "./contentItem/contentItem";
 import merge from 'lodash.merge'
 import Exercise from './exercise'
