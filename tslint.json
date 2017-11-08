@@ -9,7 +9,7 @@
         "quotemark": [true, "single", "avoid-escape", "avoid-template"],
         "arrow-parens" : ["error", "as-needed"],
         "trailing-comma": false,
-        "cyclomatic-complexity": [true, 10],
+        "cyclomatic-complexity": [true, 12],
         "member-ordering": false
     },
     "rulesDirectory": [],

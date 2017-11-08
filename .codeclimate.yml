@@ -2,3 +2,5 @@ exclude_paths:
 - "coverage"
 - "other_imports"
 - "dist"
+- "data"
+- "app/static"
