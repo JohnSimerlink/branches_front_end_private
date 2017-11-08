@@ -34,10 +34,10 @@ export async function newTree(type, parentTreeId,primaryParentTreeContentURI, va
             newContent = ContentItems.create(new Fact(values));
             break;
     }
+    newContent.calculateURIBasedOnParentTreeContentURI()
     // newContent.setProficiency(PROFICIENCIES.ONE)
 
     const parentTreeUINode = getTreeUINode(parentTreeId)
-    let level = 5 // eventually get the laevel from the property on the parent tree - but right now that is not stored in db
 
     // const cameraScaleFactor = 1/ getCamera().ratio
     let xOffset = newNodeXOffset * getCamera().ratio
@@ -49,17 +49,13 @@ export async function newTree(type, parentTreeId,primaryParentTreeContentURI, va
     var newChildTreeGraphPosition = cameraToGraphPosition(newChildTreeCameraX, newChildTreeCameraY)
     const {x: newChildTreeX, y: newChildTreeY} = newChildTreeGraphPosition
 
-    var tree = new Tree(newContent.id, newContent.type, parentTreeId, parentTreeUINode.degree + 1, newChildTreeX, newChildTreeY)
+    const parentTreePromise = Trees.get(parentTreeId)
+    const parentTree = await parentTreePromise
+    var tree = new Tree({contentId: newContent.id, parentId: parentTreeId,  x: newChildTreeX, y: newChildTreeY, createInDB: true, level: parentTree.level + 1})
+    parentTree.addChild(tree.id)
 
     newContent.addTree(tree.id)
-    addTreeNodeToGraph(tree,newContent)
+    addTreeNodeToGraph(tree, newContent)
     connectTreeToParent(tree, newContent)
-    try {
-        const parentTreePromise = Trees.get(parentTreeId)
-        const parentTree = await parentTreePromise
-        parentTree.addChild(tree.id)
-        tree.set('level', parentTree.level + 1)
-    } catch (err) {
-        console.error('parent tree couldn\'t be added because of ', err)
-    }
+    console.log('the new tree and new content just created are', tree, newContent)
 }

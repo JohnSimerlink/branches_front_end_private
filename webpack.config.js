@@ -1,6 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
+var LessHintPlugin = require('lesshint-webpack-plugin');
 var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
 module.exports = {
   entry: {
@@ -74,8 +75,13 @@ module.exports = {
     hints: false
   },
   devtool: '#eval-source-map',
-    // plugins: [new webpack.]
-
+// plugins: [new webpack.]
+  plugins: [
+    new LessHintPlugin({
+      files: ['./app/**/*.less'],
+      configFile: path.resolve(__dirname, './lesshintrc.json'),
+    }),
+  ]
 
 }
 
@@ -84,7 +90,8 @@ if (process.env.NODE_ENV === 'production') {
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
 
-    new webpack.optimize.UglifyJsPlugin(), //minify everything
+
+      new webpack.optimize.UglifyJsPlugin(), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
 
 
