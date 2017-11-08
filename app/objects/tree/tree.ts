@@ -52,10 +52,9 @@ export class Tree implements IMutable<ITreeMutation> {
     public userNumOverdueMap;
     public userProficiencyStatsMap;
     public userAggregationTimerMap;
-    public contentType;
     public mutations;
 
-    constructor({contentId, contentType, parentId, parentDegree, x, y, createInDB}) {
+    constructor({contentId, parentId, parentDegree, x, y, createInDB}) {
         this.leaves = []
         let treeObj
         if (arguments[0] && typeof arguments[0] === 'object' && !arguments[0].createInDB) {
@@ -65,7 +64,6 @@ export class Tree implements IMutable<ITreeMutation> {
         }
 
         this.contentId = contentId
-        this.contentType = contentType
         this.parentId = parentId;
         this.children = {};
         this.mutations = []
@@ -81,21 +79,12 @@ export class Tree implements IMutable<ITreeMutation> {
         this.x = x
         this.y = y
 
-        treeObj = {contentType: this.contentType, contentId: this.contentId, parentId, children: this.children}
+        treeObj = {contentId: this.contentId, parentId, children: this.children}
         this.id = md5(JSON.stringify(treeObj))
-        if (typeof arguments[0] === 'object') {
-            /*
-         TODO: use a boolean to determine if the tree already exists.
-         or use Trees.get() and Trees.create() separate methods,
-          so we aren't getting confused by the same constructor
-        */
-            return
-        }
 
         const updates = {
             id: this.id,
             contentId,
-            contentType,
             parentId,
             x,
             y,
@@ -279,12 +268,10 @@ export class Tree implements IMutable<ITreeMutation> {
      * Change the content of a given node ("Tree")
      * Available content types currently header and fact
      */
-    public changeContent(contentId, contentType) {
+    public changeContent(contentId) {
         this.contentId = contentId;
-        this.contentType = contentType;
         const updates = {
             contentId,
-            contentType,
         }
         const lookupKey = 'trees/' + this.id
 
