@@ -79,7 +79,10 @@
 34
 35
 36
-37</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+37
+38
+39
+40</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -88,10 +91,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -115,13 +114,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* tslint:disable object-literal-sort-keys */<span class="fstat-no" title="function not covered" ><span class="branch-3 cbranch-no" title="branch not covered" ></span></span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* tslint:disable object-literal-sort-keys */<span class="fstat-no" title="function not covered" ><span class="branch-3 cbranch-no" title="branch not covered" ></span></span>
 // i<span class="cstat-no" title="statement not covered" >mport {PROFICIENCIES} from '../../components/proficiencyEnum';</span>
 /* TODO:<span class="cstat-no" title="statement not covered" > for some reason ^</span>^ importing the above causes my unit tests to not work,
  so I ha<span class="cstat-no" title="statement not covered" >ve manually copie<span class="cstat-no" title="statement not covered" >d and pasted the PROFICIENCIES var here</span></span>
   */<span class="cstat-no" title="statement not covered" ></span>
+import {log} from '../../core/log'
+impo<span class="cstat-no" title="statement not covered" >rt md5 fro</span>m '../../core/md5wrapper'
+// log('proficiency stats md5 of 55555 is ', md5(55555))
 const x: number = 5;
-cons<span class="cstat-no" title="statement not covered" >t PROFICIE</span>NCIES = {
+const PROFICIENCIES = {
     UNKNOWN: 0,
     ONE: 12.5,
     TWO: 37.5,
@@ -138,26 +147,26 @@ export function addObjToProficiencyStats(proficiencyStats, deltaObj) {
     return newStats
 }
 export function incrementProficiencyStatsCategory(proficiencyStats, proficiency) {
-    if (proficiency &lt;= PROFICIENCIES.UNKNOWN) {
-        proficiencyStats.UNKNOWN++
-    } else if (proficiency &lt;= PROFICIENCIES.ONE) {
+<span class="fstat-no" title="function not covered" >    if (proficiency &lt;= PROFICIENCIES.UNKNOW</span>N) {
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.UNKNOWN++</span>
+    } el<span class="cstat-no" title="statement not covered" >se if (proficiency &lt;= PROFIC</span>IENCIES.ONE) {
         proficiencyStats.ONE++
-    } else if (proficiency &lt;= PROFICIENCIES.TWO) {
-        proficiencyStats.TWO++
+    } els<span class="cstat-no" title="statement not covered" >e if (proficiency &lt;= PROFICIENCIES.TWO) {</span>
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.TWO++</span>
     } else if (proficiency &lt;= PROFICIENCIES.THREE) {
-<span class="fstat-no" title="function not covered" >        proficiencyStats.THREE++</span>
-<span class="cstat-no" title="statement not covered" >    } else if (proficiency &lt;= PROFICIENCIES.FOUR) {</span>
-<span class="cstat-no" title="statement not covered" >        proficiencyStats.FOUR++</span>
-    }
-    retur<span class="cstat-no" title="statement not covered" >n proficiencyStats</span>
-}<span class="cstat-no" title="statement not covered" ></span>
-&nbsp;</pre></td></tr>
+        p<span class="cstat-no" title="statement not covered" >roficiencyStats.THREE++</span>
+    } el<span class="cstat-no" title="statement not covered" >se if (proficiency &lt;= PR</span>OFICIENCIES.FOUR) {
+        proficiencyStats.FOUR++
+    }<span class="cstat-no" title="statement not covered" ></span>
+    retu<span class="cstat-no" title="statement not covered" >rn proficiencyStats</span>
+}
+<span class="cstat-no" title="statement not covered" ></span></pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Nov 08 2017 12:25:46 GMT-0800 (Pacific Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Nov 08 2017 13:41:30 GMT-0800 (Pacific Standard Time)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>
