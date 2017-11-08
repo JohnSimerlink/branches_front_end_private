@@ -75,7 +75,6 @@ describe('addObjToProficiencyStats', () => {
             FOUR: 2,
         }
         expect(addObjToProficiencyStats(proficiencyStats, obj)).to.deep.equal(answer)
-
     })
 
 })
