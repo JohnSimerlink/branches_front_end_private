@@ -67,7 +67,11 @@ export class Tree /*implements IMutable<ITreeMutation> */ {
             userAggregationTimerMap = {},
         }
     ) {
-        this.contentId = contentId
+        try {
+            this.contentId = contentId
+        } catch (err) {
+            error('contentId not working', contentId, this.contentId)
+        }
         this.contentType = contentType
         this.parentId = parentId
         this.x = x
@@ -92,9 +96,10 @@ export class Tree /*implements IMutable<ITreeMutation> */ {
     }
 
     private _createInDB() {
+        const me = this
         const treeObj: any = {
-            contentId: this.contentId,
-            parentId: this.parentId,
+            contentId: me.contentId,
+            parentId: me.parentId,
         }
 
         this.id = md5(JSON.stringify(treeObj))

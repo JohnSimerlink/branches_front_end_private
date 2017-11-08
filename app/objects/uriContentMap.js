@@ -27,16 +27,15 @@ export default class UriContentMap {
         })
     }
     static set(uri, contentId){
-
+        const updates = {}
         uriContentMap[uri] = contentId
         try {
             const base64uri = btoa(uri)
-            const updates = {}
             updates[base64uri] = contentId
             firebase.database().ref('uriContentMap').update(updates)
 
         } catch (err) {
-            console.error('uriContentMap.set error', err)
+            console.error('uriContentMap.set error', err, updates)
         }
     }
 }
