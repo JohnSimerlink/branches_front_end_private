@@ -1,7 +1,13 @@
+// tslint:disable no-var-requires
 // import {proficiencyToColor} from "../app/components/proficiencyEnum";
 import * as assert from 'assert'
 import {expect} from 'chai'
 import {} from 'mocha' // types
+import {log} from '../app/core/log'
+// const md5 = require('crypto-js/md5')
+import md5 from '../app/core/md5wrapper'
+log('md5 is', md5)
+log('md5 of 5533 is', md5(5533))
 
 import {addObjToProficiencyStats} from '../app/objects/tree/proficiencyStats';
 

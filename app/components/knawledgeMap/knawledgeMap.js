@@ -14,7 +14,7 @@ import {isMobile} from '../../core/utils';
 import clonedeep from 'lodash.clonedeep'
 import UriContentMap from '../../objects/uriContentMap'
 import {stripTrailingSlash} from '../../objects/uriContentMap'
-import md5 from 'md5'
+import md5 from '../../core/md5wrapper';
 if (typeof document !== 'undefined'){
     Snack = '../../../node_modules/snack.js/dist/snack'
     require('./knawledgeMap.less')
