@@ -21,7 +21,6 @@ if (typeof document !== 'undefined'){
 } else {
     Snack = null
 }
-console.log('MD5 of 5555 is', md5(5555))
 
 let router;
 var initialized = false;
