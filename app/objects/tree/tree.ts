@@ -2,6 +2,7 @@
 import {error, log} from '../../core/log';
 import md5 from '../../core/md5wrapper'
 import store from '../../core/store'
+import { convertTreeDataForATree } from '../../fixData'
 import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
@@ -10,7 +11,6 @@ import {Trees} from '../trees.js'
 import {user} from '../user'
 import {ITree} from './ITree';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
-
 // log('md5 is ', md5)
 // log('md5 of 1234 is', md5(1234))
 function syncGraphWithNode(treeId) {
@@ -20,15 +20,22 @@ function syncGraphWithNode(treeId) {
 function loadObject(treeObj, self) {
     Object.keys(treeObj).forEach(key => self[key] = treeObj[key])
 }
+interface IProficiencyStats {
+    UNKNOWN: number;
+    ONE: number;
+    TWO: number;
+    THREE: number;
+    FOUR: number;
+}
 
-const blankProficiencyStats = {
+const blankProficiencyStats: IProficiencyStats = {
     UNKNOWN: 0,
     ONE: 0,
     TWO: 0,
     THREE: 0,
     FOUR: 0,
 }
-const unknownProficiencyStats = {
+const unknownProficiencyStats: IProficiencyStats = {
     UNKNOWN: 1,
     ONE: 0,
     TWO: 0,
@@ -38,76 +45,82 @@ const unknownProficiencyStats = {
 // interface ITree {
 //
 // }
+interface ITreeData {
+    contentId;
+    parentId;
+    x: number;
+    y: number;
+    level: number;
+    children: object;
+    mutations: any[];
+}
+interface ITreeUserData {
+    numOverdue: number;
+    aggregationTimer: number;
+    proficiencyStats;
+}
+const blankUserDataObject: ITreeUserData = {
+    numOverdue: 0,
+    aggregationTimer: 0,
+    proficiencyStats: unknownProficiencyStats
+}
+const blankTreeDataObject: ITreeData = {
+    contentId: null,
+    parentId: null,
+    x: null,
+    y: null,
+    level: null,
+    children: {},
+    mutations: []
+}
 export class Tree implements IMutable<ITreeMutation> {
     public id;
-    public parentId;
+    // public parentId;
     public active;
     public leaves;
-    public children;
-    public proficiencyStats;
-    public numOverdue;
-    public contentId;
-    public aggregationTimer;
-    public x;
-    public y;
-    public level;
-    public userNumOverdueMap;
-    public userProficiencyStatsMap;
-    public userAggregationTimerMap;
-    public mutations;
+    // public children;
+    // public proficiencyStats;
+    // public numOverdue;
+    // public contentId;
+    // public aggregationTimer;
+    // public x;
+    // public y;
+    // public level;
+    // public userNumOverdueMap;
+    // public userProficiencyStatsMap;
+    // public userAggregationTimerMap;
+    // public mutations;
+    public treeData: ITreeData;
+    public userData: ITreeUserData;
 
-    public _loadExistingTreeFromDB(treeObj) {
-        loadObject(treeObj, this)
-        this.proficiencyStats = this.userProficiencyStatsMap
-            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
-        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
-        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
-    }
-    constructor({contentId, parentId, x, y, createInDB, level}) {
+    constructor({createInDB,
+                    treeData,
+                    userData = blankUserDataObject
+    }) {
         this.leaves = []
-        let treeObj
-        if (arguments[0] && typeof arguments[0] === 'object' && !arguments[0].createInDB) {
-            treeObj = arguments[0]
-            this._loadExistingTreeFromDB(treeObj)
+
+        this.treeData = treeData
+        this.userData = userData
+        if (!createInDB) {
             return
         }
 
-        this.contentId = contentId
-        this.parentId = parentId;
-        this.level = level
-        this.children = {};
-        this.mutations = []
-
-        this.userProficiencyStatsMap = {}
-        this.userAggregationTimerMap = {}
-        this.userNumOverdueMap = {}
-        this.proficiencyStats = this.userProficiencyStatsMap
-            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
-        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
-        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
-
-        this.x = x
-        this.y = y
-
-        treeObj = {contentId: this.contentId, parentId, children: this.children}
-        this.id = md5(JSON.stringify(treeObj))
+        const identificationInfo = {contentId: this.treeData.contentId, parentId : this.treeData.parentId}
+        this.id = md5(JSON.stringify(identificationInfo))
 
         const updates = {
             id: this.id,
-            contentId,
-            parentId,
-            level,
-            x,
-            y,
+            treeData,
+            userData,
         }
         const lookupKey = 'trees/' + this.id
         firebase.database().ref(lookupKey).update(updates)
     }
     public getChildIds() {
-        if (!this.children) {
+        if (!this.treeData.children) {
            return []
         }
-        return Object.keys(this.children).filter(childKey => { // this filter is necessary to remove undefined keys
+        return Object.keys(this.treeData.children).filter(childKey => { // this filter is necessary to remove undefined keys
             return childKey
         })
     }

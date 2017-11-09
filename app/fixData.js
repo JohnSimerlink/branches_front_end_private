@@ -1,5 +1,6 @@
 import {user} from './objects/user'
 import ContentItems from "./objects/contentItems";
+import {Trees} from "./objects/trees";
 
 function fixInteractionData(){
    Object.keys(user.branchesData.items).forEach(async contentId => {
@@ -23,4 +24,45 @@ export async function clearInteractionsForHeadings(){
 }
 if (typeof window !== 'undefined'){
     window.fixInteractionData = fixInteractionData
+}
+
+function convertTreeUserDataForAllTrees(){
+}
+export async function convertTreeDataForATree(treeId) {
+    if (typeof treeId === 'undefined' || !treeId){
+        return
+    }
+    console.log("CONVERT: START ", treeId)
+    const tree = await Trees.get(treeId)
+    const treeData = {
+        x: tree.x,
+        y: tree.y,
+        id: tree.id,
+        level: tree.level,
+        contentId: tree.contentId,
+        parentId: tree.parentId,
+    }
+    tree.set('treeData', treeData)
+}
+export async function convertTreeUserDataForATree(treeId) {
+    if (typeof treeId === 'undefined' || !treeId){
+        return
+    }
+    console.log("CONVERT: START ", treeId)
+    const tree = await Trees.get(treeId)
+    const usersData = {} // userId : userData
+    tree.userProficiencyStatsMap && Object.keys(tree.userProficiencyStatsMap).forEach(userId => {
+        usersData[userId] = usersData[userId] || {}
+        usersData[userId].proficiencyStats = tree.userProficiencyStatsMap[userId]
+    })
+    tree.userAggregationTimerMap && Object.keys(tree.userAggregationTimerMap).forEach(userId => {
+        usersData[userId] = usersData[userId] || {}
+        usersData[userId].aggregationTimer = tree.userAggregationTimerMap[userId]
+    })
+    tree.userNumOverdueMap && Object.keys(tree.userNumOverdueMap).forEach(userId => {
+        usersData[userId] = usersData[userId] || {}
+        usersData[userId].numOverdue = tree.userNumOverdueMap[userId]
+    })
+    console.log("CONVERT: end ", usersData)
+    tree.set('usersData', usersData)
 }
