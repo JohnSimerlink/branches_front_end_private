@@ -65,7 +65,7 @@ export class Trees {
     }
     static async _handleChildAndOldParent(newParentId,childId){
         const child = await Trees.get(childId)
-        const oldParentPromise = Trees.get(child.parentId)
+        const oldParentPromise = Trees.get(child.treeData.parentId)
         child.changeParent(newParentId)
         const oldParent = await oldParentPromise
         oldParent.removeChild(child.id)

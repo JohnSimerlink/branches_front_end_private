@@ -2,7 +2,6 @@
 import {error, log} from '../../core/log';
 import md5 from '../../core/md5wrapper'
 import store from '../../core/store'
-import { convertTreeDataForATree } from '../../fixData'
 import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
@@ -116,11 +115,15 @@ export class Tree implements IMutable<ITreeMutation> {
         const lookupKey = 'trees/' + this.id
         firebase.database().ref(lookupKey).update(updates)
     }
+    public hasChildren() {
+        return this.getChildIds().length > 0
+    }
     public getChildIds() {
         if (!this.treeData.children) {
            return []
         }
-        return Object.keys(this.treeData.children).filter(childKey => { // this filter is necessary to remove undefined keys
+        return Object.keys(this.treeData.children)
+            .filter(childKey => { // this filter is necessary to remove undefined keys
             return childKey
         })
     }
@@ -144,15 +147,15 @@ export class Tree implements IMutable<ITreeMutation> {
         this.updatePrimaryParentTreeContentURI()
     }
     private async _addChildLocal(treeId) {
-        this.children = this.children || {}
-        this.children[treeId] = true
+        this.treeData.children = this.treeData.children || {}
+        this.treeData.children[treeId] = true
     }
     private async _addChildDB() {
         const updates = {
-            children: this.children,
+            children: this.treeData.children,
         }
         try {
-            const lookupKey = 'trees/' + this.id
+            const lookupKey = 'trees/' + this.id + '/treeData/'
             await firebase.database().ref(lookupKey).update(updates)
         } catch (err) {
             error(' error for addChild firebase call', err)
@@ -161,7 +164,7 @@ export class Tree implements IMutable<ITreeMutation> {
 
     public async removeAndDisconnectFromParent() {
         const me = this
-        const parentTree = await Trees.get(this.parentId)
+        const parentTree = await Trees.get(this.treeData.parentId)
         parentTree.removeChild(me.id)
         this.remove()
 
@@ -169,11 +172,11 @@ export class Tree implements IMutable<ITreeMutation> {
     public remove() {
         log(this.id, 'remove called!')
         const me = this
-        ContentItems.remove(this.contentId)
+        ContentItems.remove(this.treeData.contentId)
         Trees.remove(this.id)
-        log(this.id, 'remove about to be called for', JSON.stringify(this.children))
-        const removeChildPromises = this.children ?
-            Object.keys(this.children)
+        log(this.id, 'remove about to be called for', JSON.stringify(this.treeData.children))
+        const removeChildPromises = this.treeData.children ?
+            Object.keys(this.treeData.children)
             .map(Trees.get)
             .map(async (childPromise: Promise<Tree>) => {
                 const child: Tree = await childPromise
@@ -185,20 +188,20 @@ export class Tree implements IMutable<ITreeMutation> {
     }
 
     public removeChild(childId) {
-        if (!this.children || !this.children[childId]) {
+        if (!this.treeData.children || !this.treeData.children[childId]) {
             return
         }
-        delete this.children[childId]
+        delete this.treeData.children[childId]
 
-        const updates = {children: this.children}
-        const lookupKey = 'trees/' + this.id
+        const updates = {children: this.treeData.children}
+        const lookupKey = 'trees/' + this.id + '/treeData/'
         firebase.database().ref(lookupKey).update(updates)
     }
 
     public changeParent(newParentId) {
-        this.parentId = newParentId
+        this.treeData.parentId = newParentId
         const updates = {parentId: newParentId}
-        const lookupKey = 'trees/' + this.id
+        const lookupKey = 'trees/' + this.id + '/treeData/'
         firebase.database().ref(lookupKey).update(updates)
 
         this.updatePrimaryParentTreeContentURI()
@@ -208,18 +211,19 @@ export class Tree implements IMutable<ITreeMutation> {
     // async sync
     public async updatePrimaryParentTreeContentURI() {
         const [parentTree, contentItem] = await Promise.all(
-            [Trees.get(this.parentId), ContentItems.get(this.contentId)]
+            [Trees.get(this.treeData.parentId), ContentItems.get(this.treeData.contentId)]
         )
-        const parentTreeContentItem = await ContentItems.get(parentTree.contentId)
+        const parentTreeContentItem = await ContentItems.get(parentTree.treeData.contentId)
         // return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
         contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri)
         contentItem.calculateURIBasedOnParentTreeContentURI()
 
         // update for all the children as well
-        const childUpdatePromises = this.children ? Object.keys(this.children).map(async childId => {
+        const childUpdatePromises = this.getChildIds()
+            .map(async childId => {
             const childTree = await Trees.get(childId)
             return childTree.updatePrimaryParentTreeContentURI()
-        }) : []
+        })
         return Promise.all(childUpdatePromises)
     }
     public async clearChildrenInteractions() {
@@ -227,7 +231,7 @@ export class Tree implements IMutable<ITreeMutation> {
         // const isLeaf = await this.isLeaf()
         if (await this.isLeaf()) {
             log(this.id, 'clearChildrenInteractions THIS IS LEAF')
-            user.addMutation('clearInteractions', {timestamp: Date.now(), contentId: this.contentId})
+            user.addMutation('clearInteractions', {timestamp: Date.now(), contentId: this.treeData.contentId})
         } else {
             this.getChildTreePromises()
                 .map(async treePromise => {
@@ -238,46 +242,40 @@ export class Tree implements IMutable<ITreeMutation> {
 
     }
     public setProficiencyStats(proficiencyStats, addChangeToDB) {
-        this.proficiencyStats = proficiencyStats
-        this.userProficiencyStatsMap = this.userProficiencyStatsMap || {}
-        this.userProficiencyStatsMap[user.getId()] = this.proficiencyStats
+        this.userData.proficiencyStats = proficiencyStats
 
         if (!addChangeToDB) {
             return
         }
         const updates = {
-            userProficiencyStatsMap: this.userProficiencyStatsMap,
+            proficiencyStats: this.userData.proficiencyStats,
         }
-        const lookupKey = 'trees/' + this.id
+        const lookupKey = 'trees/' + this.id + '/userData/'
 
         firebase.database().ref(lookupKey).update(updates)
     }
 
     public setAggregationTimer(timer, addChangeToDB) {
-        this.aggregationTimer = timer
-        this.userAggregationTimerMap = this.userAggregationTimerMap || {}
-        this.userAggregationTimerMap[user.getId()] = this.aggregationTimer
+        this.userData.aggregationTimer = timer
         if (!addChangeToDB) {
             return
         }
         const updates = {
-            userAggregationTimerMap: this.userAggregationTimerMap,
+            aggregationTimer: this.userData.aggregationTimer,
         }
-        const lookupKey = 'trees/' + this.id
+        const lookupKey = 'trees/' + this.id + '/userData/'
 
         firebase.database().ref(lookupKey).update(updates)
     }
     public setNumOverdue(numOverdue, addChangeToDB) {
-        this.numOverdue = numOverdue
-        this.userNumOverdueMap = this.userNumOverdueMap || {}
-        this.userNumOverdueMap[user.getId()] = this.numOverdue
+        this.userData.numOverdue = numOverdue
         if (!addChangeToDB) {
             return
         }
         const updates = {
-            userNumOverdueMap: this.userNumOverdueMap,
+            numOverdue: this.userData.numOverdue,
         }
-        const lookupKey = 'trees/' + this.id
+        const lookupKey = 'trees/' + this.id + '/userData/'
 
         firebase.database().ref(lookupKey).update(updates)
     }
@@ -286,11 +284,11 @@ export class Tree implements IMutable<ITreeMutation> {
      * Available content types currently header and fact
      */
     public changeContent(contentId) {
-        this.contentId = contentId;
+        this.treeData.contentId = contentId;
         const updates = {
             contentId,
         }
-        const lookupKey = 'trees/' + this.id
+        const lookupKey = 'trees/' + this.id + '/treeData/'
 
         firebase.database().ref(lookupKey).update(updates)
     }
@@ -312,12 +310,24 @@ export class Tree implements IMutable<ITreeMutation> {
         firebase.database().ref(lookupKey).update(updates)
         this[prop] = val
     }
+    public setTreeData(prop, val) {
+        if (this.treeData[prop] === val) {
+            return;
+        }
+
+        this.treeData[prop] = val
+        const updates = {}
+        updates[prop] = val
+        // this.treeRef.update(updates)
+        const lookupKey = 'trees/' + this.id + '/treeData/'
+        firebase.database().ref(lookupKey).update(updates)
+    }
     public setLocal(prop, val) {
         this[prop] = val
     }
     public addToX({recursion, deltaX}= {recursion: false, deltaX: 0}) {
-       const newX = this.x + deltaX
-       this.set('x', newX)
+       const newX = this.treeData.x + deltaX
+       this.setTreeData('x', newX)
 
        syncGraphWithNode(this.id)
        if (!recursion) {
@@ -330,8 +340,8 @@ export class Tree implements IMutable<ITreeMutation> {
         })
     }
     public addToY({recursion, deltaY}= {recursion: false, deltaY: 0}) {
-        const newY = this.y + deltaY
-        this.set('y', newY)
+        const newY = this.treeData.y + deltaY
+        this.setTreeData('y', newY)
 
         syncGraphWithNode(this.id)
         if (!recursion) { return }
@@ -342,26 +352,26 @@ export class Tree implements IMutable<ITreeMutation> {
     }
 
     public async isLeaf() {
-        const content = await ContentItems.get(this.contentId)
+        const content = await ContentItems.get(this.treeData.contentId)
         return content.isLeafType()
     }
     public async calculateProficiencyAggregationForLeaf() {
         let proficiencyStats = {...blankProficiencyStats}
-        const contentItem = await ContentItems.get(this.contentId)
+        const contentItem = await ContentItems.get(this.treeData.contentId)
         proficiencyStats = incrementProficiencyStatsCategory(proficiencyStats, contentItem.proficiency)
         return proficiencyStats
     }
     public async calculateProficiencyAggregationForNotLeaf() {
         let proficiencyStats = {...blankProficiencyStats}
-        if (!this.children || !Object.keys(this.children).length) { return proficiencyStats }
+        if (!this.treeData.children || !Object.keys(this.treeData.children).length) { return proficiencyStats }
         const children = await Promise.all(
-            Object.keys(this.children)
+            Object.keys(this.treeData.children)
             .map(Trees.get)
             .map(async childPromise => await childPromise),
         )
 
         children.forEach(child => {
-            proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.proficiencyStats)
+            proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.treeData.proficiencyStats)
         })
         return proficiencyStats
     }
@@ -377,27 +387,25 @@ export class Tree implements IMutable<ITreeMutation> {
         store.commit('syncGraphWithNode', this.id)
 
         // PubSub.publish('syncGraphWithNode', this.id)
-        if (!this.parentId) { return }
-        const parent = await Trees.get(this.parentId)
+        if (!this.treeData.parentId) { return }
+        const parent = await Trees.get(this.treeData.parentId)
         return parent.recalculateProficiencyAggregation(addChangeToDB)
     }
 
     public async calculateAggregationTimerForLeaf() {
-        const contentItem = await ContentItems.get(this.contentId)
+        const contentItem = await ContentItems.get(this.treeData.contentId)
         return contentItem.timer
     }
     public async calculateAggregationTimerForNotLeaf() {
         const me = this
         let timer = 0
-        if (!this.children || !Object.keys(this.children).length) { return timer }
-        const children = await Promise.all(
-            Object.keys(this.children)
-                .map(Trees.get)
-                .map(async childPromise => await childPromise),
-        )
+        if (!this.hasChildren()) {
+            return timer
+        }
+        const children = await this.getChildTrees()
 
         children.forEach((child: Tree ) => {
-            timer += +child.aggregationTimer
+            timer += +child.userData.aggregationTimer
         })
         return timer
     }
@@ -411,19 +419,19 @@ export class Tree implements IMutable<ITreeMutation> {
         }
         this.setAggregationTimer(timer, addChangeToDB)
 
-        if (!this.parentId) { return }
-        const parent = await Trees.get(this.parentId)
+        if (!this.treeData.parentId) { return }
+        const parent = await Trees.get(this.treeData.parentId)
         return parent.calculateAggregationTimer()
     }
 
     public async calculateNumOverdueAggregationLeaf() {
-        const contentItem = await ContentItems.get(this.contentId)
+        const contentItem = await ContentItems.get(this.treeData.contentId)
         const overdue = contentItem.overdue ? 1 : 0
         return overdue
     }
     public async calculateNumOverdueAggregationNotLeaf() {
         const children = await this.getChildTrees()// await Promise.all(
-        const numOverdue = children.reduce((sum, child) => sum + (+child.numOverdue || 0), 0)
+        const numOverdue = children.reduce((sum, child) => sum + (+child.treeData.numOverdue || 0), 0)
 
         return numOverdue
         // TODO start storing numOverdue in db - the way we do with the other aggregations
@@ -442,10 +450,9 @@ export class Tree implements IMutable<ITreeMutation> {
         }
         this.setNumOverdue(numOverdue, addChangeToDB)
 
-        if (!this.parentId) { return }
-        const parent = await Trees.get(this.parentId)
+        if (!this.treeData.parentId) { return }
+        const parent = await Trees.get(this.treeData.parentId)
         return parent.calculateNumOverdueAggregation(addChangeToDB)
-
     }
     // returns a list of contentItems that are all on leaf nodes
     public async getLeaves(): Promise<IContentItem[]> {
@@ -460,7 +467,7 @@ export class Tree implements IMutable<ITreeMutation> {
     public async recalculateLeavesLeaf() {
         let leaves = []
         try {
-            if (this.contentId) {
+            if (this.treeData.contentId) {
                 leaves = [await this.getContentItem()]
             }
         } catch (err) {
@@ -478,13 +485,14 @@ export class Tree implements IMutable<ITreeMutation> {
                 } catch (err) {
                     error(err)
                 }
-            }),
+            })
         )
         return leaves
     }
     /* TODO: FIX: this can get called multiple times
      simultaneously if like
     three children simultaneously call parent.recalculateLeaves()
+    That's a waste of CPU
     */
     public async recalculateLeaves() {
         // log(this.id, " recalculateLeaves called")
@@ -499,7 +507,7 @@ export class Tree implements IMutable<ITreeMutation> {
     }
     public async sortLeavesByStudiedAndStrength() {
         // log(this.id, " sortLeavesByStudiedAndStrength called")
-        const leaves = await this.getLeaves()
+        const leaves: IContentItem[] = await this.getLeaves()
         const studiedLeaves = leaves
            .filter(leaf => leaf.hasInteractions)
            .sort((a, b) => {
@@ -517,16 +525,16 @@ export class Tree implements IMutable<ITreeMutation> {
         this.leaves.forEach(leaf => {
             // log(this.id, " has a leaf ", leaf.id, " with strength of ", leaf.lastRecordedStrength.value)
         })
-        if (this.parentId) {
-            const parent = await Trees.get(this.parentId)
+        if (this.treeData.parentId) {
+            const parent = await Trees.get(this.treeData.parentId)
             parent.sortLeavesByStudiedAndStrength()
         }
     }
     public async getContentItem() {
-        if (!this.contentId) {
+        if (!this.treeData.contentId) {
             return null
         }
-        const contentItem = await ContentItems.get(this.contentId)
+        const contentItem = await ContentItems.get(this.treeData.contentId)
         return contentItem
     }
     public areItemsToStudy() {
@@ -535,7 +543,7 @@ export class Tree implements IMutable<ITreeMutation> {
     /*should only be called after sorted*/
     public areNewOrOverdueItems() {
         if (!this.areItemsToStudy()) {return false}
-        const firstItem = this.leaves[0]
+        const firstItem: IContentItem = this.leaves[0]
         return firstItem.isNew() || firstItem.overdue
     }
     public getNextItemIdToStudy() {
@@ -559,12 +567,12 @@ export class Tree implements IMutable<ITreeMutation> {
        switch (mutation.type) {
            case TreeMutationTypes.ADD_CHILD: {
                const leafId = mutation.data.leafId
-               const leafAlreadyExists = this.children[leafId]
+               const leafAlreadyExists = this.treeData.children[leafId]
                return leafAlreadyExists
            }
            case TreeMutationTypes.REMOVE_CHILD: {
                const leafId = mutation.data.leafId
-               const leafExists = this.children[leafId]
+               const leafExists = this.treeData.children[leafId]
                return !leafExists
            }
         }

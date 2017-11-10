@@ -404,7 +404,7 @@ export default class ContentItem {
         const treeId = this.getTreeId()
         const tree = await Trees.get(treeId)
 
-        let parentId = tree.parentId;
+        let parentId = tree.treeData.parentId;
         let parent
         let num = 1
         while (parentId) {
@@ -412,7 +412,7 @@ export default class ContentItem {
             store.commit('syncGraphWithNode', parentId)
             // PubSub.publish('syncGraphWithNode', parentId)
             parent = await Trees.get(parentId)
-            parentId = parent.parentId
+            parentId = parent.treeData.parentId
             num++
         }
     }

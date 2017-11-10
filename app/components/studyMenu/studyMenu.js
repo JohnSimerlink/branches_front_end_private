@@ -2,6 +2,7 @@ import './studyMenu.less'
 import {Trees} from "../../objects/trees";
 import {user} from '../../objects/user'
 import ContentItems from "../../objects/contentItems";
+import {error, log} from "../../core/log"
 let defaultStudySettings = {
     itemTypes: {
         old: true,
@@ -103,6 +104,7 @@ export default {
         },
         treeId (){
             const id = this.$store.state.currentStudyingCategoryTreeId
+            console.log("studymenu - treeId() called",id)
             return id
             // return this.$store.state.currentStudyingCategoryTreeId
         },
@@ -114,13 +116,25 @@ export default {
     },
     asyncComputed: {
         async numOverdue(){
-            const tree = await Trees.get(this.treeId)
-            return tree.numOverdue
+            return  2
+            // const tree = await Trees.get(this.treeId)
+            // return tree.userData.numOverdue
         },
         async title(){
-            const tree = await Trees.get(this.treeId)
-            const item = await ContentItems.get(tree.contentId)
-            return item.getLastNBreadcrumbsString(4)
+            console.log("studyMenu - asyncComputed TITLE() called")
+            try {
+                log("studyMenu.js this.treeId", this.treeId )
+                const tree = await Trees.get(this.treeId)
+                log("studyMenu.js title()", tree, )
+                const item = await ContentItems.get(tree.treeData.contentId)
+                log("studyMenu.js title()", item, )
+                const title = item.getLastNBreadcrumbsString(4)
+                log('studyMenu title is', tree, item)
+                return title
+            } catch (err){
+                error('studyMenu.js', err)
+                return "Sample Title"
+            }
             // return item.title
         },
     },
