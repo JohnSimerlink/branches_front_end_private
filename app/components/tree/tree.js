@@ -142,7 +142,7 @@ export default {
         //unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
         async syncTreeChainWithUI() {
             this.syncGraphWithNode()
-            let parentId = this.tree.parentId;
+            let parentId = this.tree.treeData.parentId;
             let parent
             let num = 1
             while (parentId) {
@@ -150,7 +150,7 @@ export default {
                 store.commit('syncGraphWithNode', parentId)
                 // PubSub.publish('syncGraphWithNode', parentId)
                 parent = await Trees.get(parentId)
-                parentId = parent.parentId
+                parentId = parent.treeData.parentId
                 num++
             }
         },
@@ -164,7 +164,7 @@ export default {
         },
         //global methods
         changeContent() {
-            switch (this.tree.contentType) {
+            switch (this.content.type) {
                 case 'fact':
                     var fact = new Fact({question: this.content.question, answer: this.content.answer})
                     this.content = ContentItems.create(fact)

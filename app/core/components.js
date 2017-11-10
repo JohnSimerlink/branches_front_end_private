@@ -1,7 +1,6 @@
 import '../components/main.less'
 
 import Vue from 'vue'
-// import Header from '../components/header/branchesHeader'
 import Footer from '../components/footer/branchesFooter'
 import ReviewSchedule from '../components/reviewAlgorithm/reviewSchedule'
 import ContentList from '../components/contentList/contentList'
@@ -19,8 +18,6 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 import ItemHistory from '../components/itemHistory/itemHistory'
 import StudyMenu from '../components/studyMenu/studyMenu'
 import Points from '../components/points/points.vue'
-import '../fixData'
-// Vue.component('branchesHeader', Header)
 Vue.component('branchesFooter', Footer)
 Vue.component('reviewSchedule', ReviewSchedule)
 Vue.component('contentList', ContentList)

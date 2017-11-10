@@ -1,7 +1,6 @@
 console.log(".5: user.js just called", calculateLoadTimeSoFar(Date.now()))
 
 import firebase from './firebaseService.js'
-import {clearInteractionsForHeadings} from "../fixData";
 import LocalForage from 'localforage'
 import Users from './users'
 let userLoggedIn = false
@@ -195,15 +194,15 @@ class User {
     }
 
     async applyDataPatches(){
-        if (!this.branchesData.patches.headingInteractions){
-            await clearInteractionsForHeadings()
-            this.branchesData.patches.headingInteractions = true
-            var updates = {
-                patches: this.branchesData.patches
-            }
-            firebase.database().ref('users/' + this.getId() + '/').update(updates)
-        } else {
-        }
+        // if (!this.branchesData.patches.headingInteractions){
+        //     // await clearInteractionsForHeadings()
+        //     this.branchesData.patches.headingInteractions = true
+        //     var updates = {
+        //         patches: this.branchesData.patches
+        //     }
+        //     firebase.database().ref('users/' + this.getId() + '/').update(updates)
+        // } else {
+        // }
 
     }
     async applyUpdates(updates){

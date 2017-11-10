@@ -3,4 +3,5 @@ export interface IContentItem {
     hasInteractions,
     lastRecordedStrength,
     overdue,
+    isNew(),
 }

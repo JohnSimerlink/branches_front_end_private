@@ -146,7 +146,7 @@ function getTreeColor(content) {
 export async function removeTreeFromGraph(treeId){
     s.graph.dropNode(treeId)
     const tree = await Trees.get(treeId)
-    const childPromises = tree.children? Object.keys(tree.children).map(removeTreeFromGraph) : []
+    const childPromises = tree.getChildIds().map(removeTreeFromGraph)
     return Promise.all(childPromises).then(val => {
         s.refresh()
         return `removed all children of ${treeId}`
@@ -157,8 +157,9 @@ typeof PubSub !== 'undefined' && PubSub.subscribe('removeTreeFromGraph', (eventN
 })
 
 function createTreeNodeFromTreeAndContent(tree, content){
+    const treeData = tree.treeData
     const node = {
-        ...tree,
+        ...treeData,
         content,
         overdue: content.overdue,
         label: getLabelFromContent(content),
@@ -217,18 +218,18 @@ export function syncGraphWithNode(treeId){
 }
 async function _syncGraphWithNode(treeId){
     const tree = await Trees.get(treeId)
-    const content = await ContentItems.get(tree.contentId)
+    const content = await ContentItems.get(tree.treeData.contentId)
 
     //update the node
     var sigmaNode = s.graph.nodes(treeId)
     if (sigmaNode){
-        sigmaNode.x = tree.x
-        sigmaNode.y = tree.y
-        sigmaNode.level = tree.level
+        sigmaNode.x = tree.treeData.x
+        sigmaNode.y = tree.treeData.y
+        sigmaNode.level = tree.treeData.level
         sigmaNode.active = tree.active
         var color = getTreeColor(content)
         sigmaNode.color = color
-        sigmaNode.proficiencyStats = tree.proficiencyStats
+        sigmaNode.proficiencyStats = tree.userData.proficiencyStats
         sigmaNode.overdue = content.overdue
         sigmaNode.size = getSizeFromContent(content)
 
@@ -236,7 +237,7 @@ async function _syncGraphWithNode(treeId){
     }
 
     //update the edge
-    var edgeId = createEdgeId(tree.parentId, treeId)
+    var edgeId = createEdgeId(tree.treeData.parentId, treeId)
     var sigmaEdge = s.graph.edges(edgeId)
     if (sigmaEdge){
         sigmaEdge.color = color
@@ -252,10 +253,10 @@ export function refreshGraph(){
 typeof PubSub !== 'undefined' && PubSub.subscribe('refreshGraph',refreshGraph)
 
 export function connectTreeToParent(tree,content){
-    if (tree.parentId && treeAlreadyLoaded(tree.parentId)) {
+    if (tree.treeData.parentId && treeAlreadyLoaded(tree.treeData.parentId)) {
         const edge = {
-            id: createEdgeId(tree.parentId, tree.id),
-            source: tree.parentId,
+            id: createEdgeId(tree.treeData.parentId, tree.id),
+            source: tree.treeData.parentId,
             target: tree.id,
             size: 2,
             color: getTreeColor(content),
@@ -430,7 +431,7 @@ async function setURLFromTreeId(treeId){
     const tree = await Trees.get(treeId)
     const contentItem = await tree.getContentItem()
     const uri = contentItem.getURIForWindow()
-    const coordinates = {x: tree.x, y: tree.y, ratio: s.camera.ratio, angle: s.camera.angle}
+    const coordinates = {x: tree.treeData.x, y: tree.treeData.y, ratio: s.camera.ratio, angle: s.camera.angle}
     store.commit('updateURIAndJump', {uri, coordinates, timestamp: Date.now()})
 }
 
@@ -452,13 +453,13 @@ export async function loadDescendants(treeId, numGenerations){
 
 async function loadTree(treeId){
     const tree = await Trees.get(treeId)
-    const content = await ContentItems.get(tree.contentId)
+    const content = await ContentItems.get(tree.treeData.contentId)
     try {
         addTreeNodeToGraph(tree, content)
     } catch( err) {
         console.error("CONTENTITEMS.get Err is", err)
     }
-    const parentId = tree.parentId
+    const parentId = tree.treeData.parentId
     if (parentId && !treeAlreadyLoaded(parentId)){
         await loadTree(parentId)
     }
@@ -510,7 +511,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             const contentItem = await ContentItems.get(contentItemId)
             const treeId = contentItem.getTreeId()
             const tree = await Trees.get(treeId)
-            const parentTreeId = tree.parentId
+            const parentTreeId = tree.treeData.parentId
             store.commit('setCurrentStudyingTree', parentTreeId)
             // store.commit('enterStudyingMode')
             console.log('CONTENT ID IS PRESENT IN URL')
@@ -549,7 +550,7 @@ function initKnawledgeMap(treeIdToJumpTo){
     async function onGetTree(tree) {
         console.log(tree.id, calculateLoadTimeSoFar(Date.now()))
         try {
-            const content = await ContentItems.get(tree.contentId)
+            const content = await ContentItems.get(tree.treeData.contentId)
             addTreeNodeToGraph(tree, content)
             connectTreeToParent(tree,content)
         } catch( err) {
@@ -625,7 +626,7 @@ function initKnawledgeMap(treeIdToJumpTo){
                 console.log('async iife called')
                 const targetTrees = await Promise.all(invalidTargetPromises)
                 targetTrees.forEach(tree => {
-                    console.log('invalid target tree is ', tree, tree.id, tree.parentId)
+                    console.log('invalid target tree is ', tree, tree.id, tree.treeData.parentId)
                 })
             })()
         }
@@ -872,11 +873,11 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1
         const tree = await Trees.get(treeId)
-        let deltaX = newX - tree.x
+        let deltaX = newX - tree.treeData.x
         if (Math.abs(deltaX) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
             tree.addToX({recursion: true, deltaX})
         }
-        let deltaY = newY - tree.y
+        let deltaY = newY - tree.treeData.y
         if (Math.abs(deltaY) > MINIMUM_DISTANCE_TO_UPDATE_COORDINATES ) {
             tree.addToY({recursion: true, deltaY})
         }
@@ -910,8 +911,8 @@ function addTrailingDots(treeId){
     const deltaX = r * Math.cos(angle)
     const deltaY = r * Math.sin(angle)
 
-    const shadowNodeX = tree.x + deltaX
-    const shadowNodeY = tree.y + deltaY
+    const shadowNodeX = tree.treeData.x + deltaX
+    const shadowNodeY = tree.treeData.y + deltaY
 
     const shadowNode = {
         id: treeId + "__" + "trailingDots",
