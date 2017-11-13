@@ -289,4 +289,5 @@ Object.freeze(singleton);
 
 // module.exports = singleton;
 // const user = new User()
-export let user = new User()
+// export let user = new User()
+export let user = singleton.instance
