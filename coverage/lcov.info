@@ -5,16 +5,17 @@ SF:C:\Users\John\dev\branches_front_end\app\forgettingCurve.ts
 FN:8,calculateStrength
 FN:19,calculateSecondsTilCriticalReviewTime
 FN:24,measurePreviousStrength
-FN:56,doubleLessThanOrEqualTo
-FN:59,doubleGreaterThanOrEqualTo
-FN:64,calculateRecall
-FN:68,decibelsToEbbinghaus
-FN:72,calculateTime
-FN:77,estimateCurrentStrength
+FN:63,doubleLessThanOrEqualTo
+FN:66,doubleGreaterThanOrEqualTo
+FN:71,calculateRecall
+FN:75,decibelsToEbbinghaus
+FN:79,calculateTime
+FN:84,estimateCurrentStrength
 FNF:9
-FNH:7
+FNH:0
 FNDA:0,calculateStrength
 FNDA:0,calculateSecondsTilCriticalReviewTime
+<<<<<<< 116733dc79561386e2613e8f14e7444c0859b14d
 FNDA:6,measurePreviousStrength
 FNDA:6,doubleLessThanOrEqualTo
 FNDA:6,doubleGreaterThanOrEqualTo
@@ -6446,6 +6447,15 @@ FNDA:1,(anonymous_3)
 >>>>>>> Init Forgetting Curve Calculator Widget
 =======
 >>>>>>> 366df2586362df079927af172f325d9c30d9b98e
+=======
+FNDA:0,measurePreviousStrength
+FNDA:0,doubleLessThanOrEqualTo
+FNDA:0,doubleGreaterThanOrEqualTo
+FNDA:0,calculateRecall
+FNDA:0,decibelsToEbbinghaus
+FNDA:0,calculateTime
+FNDA:0,estimateCurrentStrength
+>>>>>>> :tent: Add First Draft of point.ts class. Untested
 DA:1,1
 DA:2,1
 DA:3,1
@@ -6460,61 +6470,61 @@ DA:13,0
 DA:15,1
 DA:20,0
 DA:22,1
-DA:25,6
-DA:26,6
-DA:27,6
-DA:28,6
-DA:29,6
-DA:41,6
-DA:42,2
-DA:50,6
-DA:51,2
-DA:53,6
-DA:55,1
-DA:57,6
-DA:60,6
-DA:65,5
-DA:67,1
-DA:69,6
-DA:73,1
-DA:75,1
-DA:79,5
-DA:80,5
-DA:81,0
-DA:82,0
-DA:83,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:39,0
+DA:40,0
+DA:49,0
+DA:50,0
+DA:52,0
+DA:62,1
+DA:64,0
+DA:67,0
+DA:72,0
+DA:74,1
+DA:76,0
+DA:80,0
+DA:82,1
 DA:86,0
-DA:90,5
-DA:91,5
-DA:92,5
-DA:93,5
-DA:94,5
-DA:95,5
-DA:97,5
-DA:98,5
-DA:100,1
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:93,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:104,0
+DA:105,0
+DA:107,1
 LF:45
-LH:35
+LH:10
 BRDA:13,0,0,0
 BRDA:13,0,1,0
-BRDA:29,1,0,6
+BRDA:29,1,0,0
 BRDA:29,1,1,0
-BRDA:41,2,0,2
-BRDA:41,2,1,4
-BRDA:41,3,0,6
-BRDA:41,3,1,2
-BRDA:50,4,0,2
-BRDA:50,4,1,4
-BRDA:50,5,0,6
-BRDA:50,5,1,2
-BRDA:80,6,0,0
-BRDA:80,6,1,5
-BRDA:82,7,0,0
-BRDA:82,7,1,0
-BRDA:97,8,0,0
-BRDA:97,8,1,5
+BRDA:39,2,0,0
+BRDA:39,2,1,0
+BRDA:39,3,0,0
+BRDA:39,3,1,0
+BRDA:49,4,0,0
+BRDA:49,4,1,0
+BRDA:49,5,0,0
+BRDA:49,5,1,0
+BRDA:87,6,0,0
+BRDA:87,6,1,0
+BRDA:89,7,0,0
+BRDA:89,7,1,0
+BRDA:104,8,0,0
+BRDA:104,8,1,0
 BRF:18
-BRH:11
+BRH:0
 end_of_record
 TN:
 SF:C:\Users\John\dev\branches_front_end\app\components\proficiencyEnum.ts
@@ -6884,6 +6894,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
+<<<<<<< 116733dc79561386e2613e8f14e7444c0859b14d
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 SF:C:\Users\John\dev\branches_front_end\app\objects\contentItem\uriParser.ts
@@ -7063,16 +7074,18 @@ end_of_record
 TN:
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
+=======
+>>>>>>> :tent: Add First Draft of point.ts class. Untested
 SF:C:\Users\John\dev\branches_front_end\app\objects\tree\proficiencyStats.ts
 FN:1,(anonymous_0)
 FN:19,addObjToProficiencyStats
 FN:21,(anonymous_2)
 FN:27,incrementProficiencyStatsCategory
 FNF:4
-FNH:2
+FNH:0
 FNDA:0,(anonymous_0)
-FNDA:3,addObjToProficiencyStats
-FNDA:11,(anonymous_2)
+FNDA:0,addObjToProficiencyStats
+FNDA:0,(anonymous_2)
 FNDA:0,incrementProficiencyStatsCategory
 DA:1,1
 DA:2,0
@@ -7083,10 +7096,10 @@ DA:7,0
 DA:9,1
 DA:11,1
 DA:12,1
-DA:20,3
-DA:21,3
-DA:22,11
-DA:24,3
+DA:20,0
+DA:21,0
+DA:22,0
+DA:24,0
 DA:26,1
 DA:28,0
 DA:29,0
@@ -7101,17 +7114,17 @@ DA:41,0
 DA:43,0
 DA:45,1
 LF:26
-LH:10
+LH:6
 BRDA:1,0,0,1
 BRDA:1,0,1,1
 BRDA:1,0,2,1
 BRDA:1,0,3,0
 BRDA:4,1,0,0
 BRDA:4,1,1,0
-BRDA:22,2,0,11
-BRDA:22,2,1,1
-BRDA:22,3,0,11
-BRDA:22,3,1,1
+BRDA:22,2,0,0
+BRDA:22,2,1,0
+BRDA:22,3,0,0
+BRDA:22,3,1,0
 BRDA:28,4,0,0
 BRDA:28,4,1,0
 BRDA:31,5,0,0
@@ -7123,6 +7136,7 @@ BRDA:37,7,1,0
 BRDA:40,8,0,0
 BRDA:40,8,1,0
 BRF:20
+<<<<<<< 116733dc79561386e2613e8f14e7444c0859b14d
 BRH:7
 =======
 =======
@@ -7522,4 +7536,7 @@ BRH:1
 >>>>>>> Init Forgetting Curve Calculator Widget
 =======
 >>>>>>> 366df2586362df079927af172f325d9c30d9b98e
+=======
+BRH:3
+>>>>>>> :tent: Add First Draft of point.ts class. Untested
 end_of_record

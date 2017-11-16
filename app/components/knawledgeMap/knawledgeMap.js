@@ -95,7 +95,7 @@ export default {
             // console.log('new content to jump to is ', newContentItemId, newContentItem, oldContentItemId)
             const treeId = newContentItem.getTreeId()
             jumpToTreeId(treeId)
-            const tree = await Trees.get(treeId)
+            const tree = await Trees.get(treeId,user.getId())
             tree.setActive()
 
         },
@@ -216,8 +216,8 @@ export function syncGraphWithNode(treeId){
         _syncGraphWithNode(treeId)
     }
 }
-async function _syncGraphWithNode(treeId){
-    const tree = await Trees.get(treeId)
+async function _syncGraphWithNode(treeId, userId){
+    const tree = await Trees.get(treeId, userId)
     const content = await ContentItems.get(tree.treeData.contentId)
 
     //update the node
@@ -439,20 +439,20 @@ if (typeof window !== 'undefined') {
     window.setURLFromTreeId = setURLFromTreeId
 }
 
-export async function loadDescendants(treeId, numGenerations){
+export async function loadDescendants(treeId, userId, numGenerations){
     if (numGenerations <=0 ) {
         return
     }
-    const tree = await Trees.get(treeId)
+    const tree = await Trees.get(treeId, userId)
 
     tree.getChildIds().forEach(async childId => {
-        await loadTree(childId)
-        loadDescendants(childId, numGenerations - 1)
+        await loadTree(childId, userId)
+        loadDescendants(childId, userId, numGenerations - 1)
     })
 }
 
-async function loadTree(treeId){
-    const tree = await Trees.get(treeId)
+async function loadTree(treeId, userId){
+    const tree = await Trees.get(treeId, userId)
     const content = await ContentItems.get(tree.treeData.contentId)
     try {
         addTreeNodeToGraph(tree, content)
@@ -461,7 +461,7 @@ async function loadTree(treeId){
     }
     const parentId = tree.treeData.parentId
     if (parentId && !treeAlreadyLoaded(parentId)){
-        await loadTree(parentId)
+        await loadTree(parentId, userId)
     }
     connectTreeToParent(tree, content)
 }
@@ -516,8 +516,8 @@ function initKnawledgeMap(treeIdToJumpTo){
             // store.commit('enterStudyingMode')
             console.log('CONTENT ID IS PRESENT IN URL')
             // debugger;
-            await loadTree(treeId, 1)
-            await loadDescendants(treeId, DEFAULT_NUM_GENERATIONS_TO_LOAD)
+            await loadTree(treeId,user.getId(), 1)
+            await loadDescendants(treeId, user.getId(), DEFAULT_NUM_GENERATIONS_TO_LOAD)
         } else {
             const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
@@ -540,14 +540,14 @@ function initKnawledgeMap(treeIdToJumpTo){
 
     }
 
-    async function loadTreeAndSubTrees(treeId){
+    async function loadTreeAndSubTrees(treeId, userId){
         //todo: load nodes concurrently, without waiting to connect the nodes or add the fact's informations/labels to the nodes
-        const tree = await Trees.get(treeId)
-        const getTreeResult = onGetTree(tree)
+        const tree = await Trees.get(treeId, userId)
+        const getTreeResult = onGetTree(tree, userId)
         return getTreeResult
     }
 
-    async function onGetTree(tree) {
+    async function onGetTree(tree, userId) {
         console.log(tree.id, calculateLoadTimeSoFar(Date.now()))
         try {
             const content = await ContentItems.get(tree.treeData.contentId)
@@ -559,7 +559,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         let childTreesPromises = []
 
         childTreesPromises = tree.getChildIds().map(childKey => {
-            return loadTreeAndSubTrees(childKey)
+            return loadTreeAndSubTrees(childKey, userId)
         })
         return Promise.all([...childTreesPromises])
     }

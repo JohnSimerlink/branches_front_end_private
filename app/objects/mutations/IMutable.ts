@@ -1,23 +1,18 @@
+import {MutationTypes} from './MutationTypes';
+
 export interface IMutable<MutationInterface/*: IMutation*/> {
     addMutation(mutation: MutationInterface), // idempotent.
-    _isMutationRedundant(mutation: MutationInterface),
-    subscribeToMutations(),
+    // _isMutationRedundant(mutation: MutationInterface),
+    // subscribeToMutations(), // TODO: Maybe separate this into another interface
+    mutations(): MutationInterface[],
 }
-
-interface IMutation {
-    type: any,
-    data,
+export interface IUndoableMutable<MutationInterface> extends IMutable<MutationInterface> {
+    undo(index: number),
+    redo(index: number)
 }
-export enum TreeMutationTypes {
-    ADD_CHILD,
-    REMOVE_CHILD,
-}
-enum UserMutationTypes {
-    SOME_ACTION,
-}
-export interface ITreeMutation extends IMutation {
-   type: TreeMutationTypes,
-}
-export interface IUserMutation extends IMutation {
-    type: UserMutationTypes,
-}
+// export interface ITreeMutation extends IMutation {
+//    type: TreeMutationTypes,
+// }
+// export interface IUserMutation extends IMutation {
+//     type: UserMutationTypes,
+// }
