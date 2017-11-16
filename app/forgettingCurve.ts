@@ -29,31 +29,38 @@ export function measurePreviousStrength(estimatedPreviousStrength, R, t) {
     let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
     measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength : 0
 
-    /* if proficiency is greater than/equal to 99 or less than/equal to 1,
-     we have a wide range of possibilities for measured strength values  */
-    // therefore just use the previous estimated value, because we can't really measure the actual value
-    /* if proficiency is less than 1, and its been a really long time
+    /* if proficiency is less than PROFICIENCIES.ONE, and its been a really long time
     since the user last saw the fact,
     our measure strength formula above can unintentionally think
-     the user's strength value was much higher than it possible
-      could have been,
-      since we are only recording the value as 1% and not the
-      actual .01% or whatever it actually is
-     */
+    the user's strength value was much higher than it possible
+    could have been,
+    since we are only recording the value as 1% and not the
+    actual .01% or whatever it actually is
+    */
+    // TODO: Think about what unintended side effects this could cause
     if (doubleLessThanOrEqualTo(R, PROFICIENCIES.ONE) && measuredPreviousStrength > estimatedPreviousStrength ) {
         measuredPreviousStrength = estimatedPreviousStrength
     }
 
-    /* if proficiency is greater than 99,
+    /* if proficiency is greater than PROFICIENCIES.FOUR,
     and its been a really short time since the user last saw the fact,
-     our measure strength formula above can unintentionally think
-      the user's strength value was much lower than it possible could have been,
-      since we are only recording the value as 99% and not the actually 99.99% or whatever it actually is
-      */
+    our measure strength formula above can unintentionally think
+    the user's strength value was much lower than it possible could have been,
+    since we are only recording the value as PROFICIENCIES.FOUR% and not
+    the actually (PROFICIENCIES.FOUR + epsilon)% or whatever it actually is
+    */
     if (doubleGreaterThanOrEqualTo(R, PROFICIENCIES.FOUR)  && measuredPreviousStrength < estimatedPreviousStrength ) {
         measuredPreviousStrength = estimatedPreviousStrength
     }
     return measuredPreviousStrength
+    /*
+
+    11/10 - Part of me today wondered whether
+    this was going to cause decibel values to get permanently stuck at a level.
+    But then I realized this function isn't the one the determines the decibel delta after an interaction.
+    Rather we use the estimateCurrentStrength function to do that.
+
+    */
 }
 
 function doubleLessThanOrEqualTo(doubleOne, doubleTwo) {

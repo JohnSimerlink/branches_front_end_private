@@ -124,7 +124,7 @@ export default {
             console.log("studyMenu - asyncComputed TITLE() called")
             try {
                 log("studyMenu.js this.treeId", this.treeId )
-                const tree = await Trees.get(this.treeId)
+                const tree = await Trees.get(this.treeId,user.getId())
                 log("studyMenu.js title()", tree, )
                 const item = await ContentItems.get(tree.treeData.contentId)
                 log("studyMenu.js title()", item, )
