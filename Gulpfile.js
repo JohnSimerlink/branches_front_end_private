@@ -123,11 +123,14 @@ gulp.task('coverage', function() {
         console.log(stdout)
         console.error(err)
         console.error(stderr)
-        exec('npm run coverage', function(err, stdout, stderr){
-            console.log(stdout)
-            console.error(err)
-            console.error(stderr)
-            // publishCoverageIfConfigExists()
+        //recompile the files that have injectable tags
+        buildInjectables(() => {
+            exec('npm run coverage', function(err, stdout, stderr){
+                console.log(stdout)
+                console.error(err)
+                console.error(stderr)
+                // publishCoverageIfConfigExists()
+            })
         })
     })
 })
@@ -139,6 +142,20 @@ gulp.task('test', function() {
         console.error(stderr)
     })
 })
+gulp.task('build-injectables', function() {
+    buildInjectables()
+})
+
+function buildInjectables(callback) {
+    console.log('Recompiling typescript files with injectable tags. I don\'t think the errors really matter.')
+    exec('tsc -p ./app/objects/point/point.ts --inlineSourceMap', function(err, stdout, stderr){
+        console.log('Finished recompiling typescript files with injectable tags')
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
+        typeof callback === 'function' && callback()
+    })
+}
 
 function publishCoverageIfConfigExists(){
     fs.open('.coveralls.yml', 'r', function (err, fd) {

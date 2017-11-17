@@ -11,7 +11,8 @@
     "coverage": "cross-env NODE_ENV=test nyc npm t",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls",
     "test-watch": "gulp test-watch",
-    "coverage-watch": "gulp coverage-watch"
+    "coverage-watch": "gulp coverage-watch",
+    "build-injectables": "gulp build-injectables"
   },
   "author": "",
   "license": "ISC",

@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for point.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="index.html">All files</a> point.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>3/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>3/3</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* tslint:disable variable-name */
+import {inject, injectable, multiInject} from 'inversify';
+import {log} from '../../core/log';
+import {IMutable, IUndoableMutable} from '../mutations/IMutable';
+import {IActivatableDatedMutation, IActivatableMutation, IDatedMutation} from '../mutations/IMutation';
+import {MutationTypes} from '../mutations/MutationTypes';
+import {TYPES} from '../types'
+import {ICoordinate, IPoint} from './IPoint';
+import {PointMutationTypes} from './PointMutationTypes';
+&nbsp;
+/* TODO: Maybe split into  Point and PointMutator classes?
+&nbsp;
+ */
+/* TODO: Am I violating the Law of Demeter (SVLOD or WVLOD)
+ by accessing the mutation list, and looking at properties on each mutation?
+ Should I handle mutations as a separate class, rather than a duck type?
+ IMO yes. I should create a generalized mutation module.
+ Will do that after I have 1 to 2 modules using Mutations
+*/
+// @injectable()
+// class Point implements IUndoableMutable&lt;IDatedMutation&gt;, IPoint {
+//     private x = 0;
+//     private y = 0;
+//     private _mutations: IActivatableDatedMutation[];
+//     // @multiInject("IActivatableDatedMutation") mutations
+//
+//     /* NOTE: yes, this isn't the best obeyance of Dependency Inversion standards,
+//     because I am doing some processing in the constructor,
+//     rather than just assignment . . .
+//     */
+//     constructor({x, y, mutations = []}) {
+//         this._mutations = mutations
+//         log('CONSTRUCTOR mutations is ' + JSON.stringify(this._mutations))
+//         const mutation = {
+//             data: {delta: {x, y}},
+//             timestamp: Date.now(),
+//             type: PointMutationTypes.SHIFT,
+//         }
+//         this.addMutation(mutation)
+//     }
+//     public val(): ICoordinate {
+//         return {x: this.x, y: this.y}
+//     }
+//
+//     public shift(delta: ICoordinate): ICoordinate {
+//         this.x += delta.x
+//         this.y += delta.y
+//         return this.val()
+//     }
+//
+//     private unshift(delta: ICoordinate): ICoordinate {
+//         this.x -= delta.x
+//         this.y -= delta.y
+//         return this.val()
+//     }
+//
+//     public addMutation(mutation: IDatedMutation): void {
+//         this.doMutation(mutation)
+//         const activatedMutation = {
+//             ...mutation,
+//             active: true
+//         }
+//         this._mutations.push(activatedMutation)
+//     }
+//
+//     /* NOTE: if we had a non-commutative mutation type (SHIFT is commutative),
+//      we'd need methods different from just doMutation and undoMutation
+//     */
+//     private doMutation(mutation: IDatedMutation) {
+//         switch (mutation.type) {
+//             case PointMutationTypes.SHIFT:
+//                 this.shift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
+//                 break;
+//             default:
+//                 throw new TypeError('Mutation Type needs to be one of the following types'
+//                     + JSON.stringify(PointMutationTypes))
+//         }
+//     }
+//
+//     private undoMutation(mutation: IDatedMutation) {
+//         switch (mutation.type) {
+//             case PointMutationTypes.SHIFT:
+//                 this.unshift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
+//                 break;
+//             default:
+//                 throw new TypeError('Mutation Type needs to be one of the following types'
+//                     + JSON.stringify(PointMutationTypes))
+//         }
+//     }
+//
+//     public mutations(): IDatedMutation[] {
+//         return this._mutations
+//     }
+//     // private getMutation(index: number): IDatedMutation {
+//     //     if (index &gt;= this._mutations.length) {
+//     //         throw new RangeError(index + ' invalid! There are only ' + this._mutations.length + ' mutations.')
+//     //     }  /* Is accessing a length property violating Law of Demeter */
+//     //     else {
+//     //         return this._mutations
+//     //     }
+//     // }
+//
+//     /* TODO: Add unit tests for mutation list
+//     While testing this undo method . . I found that the previousTime
+//     addMutation was called, the mutation list didn't actually add an element ...
+//      */
+//     public undo(index: number) {
+//         const mutation: IActivatableDatedMutation = this._mutations[index]
+//
+//         if (!mutation.active || index === 0) {
+//             const activeMutations = this.getActiveMutations()
+//             throw new RangeError('Mutation ' + JSON.stringify(mutation)
+//                 + ` is already not active and thus cannot be undone.
+//              The current mutations that are active are `
+//                 + JSON.stringify(activeMutations) + '. Also the first mutation can\'t be undone.')
+//         }
+//
+//         this.undoMutation(mutation)
+//         mutation.active = false
+//         return this
+//     }
+//
+//     public redo(index: number) {
+//         // log('redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
+//         const mutation: IActivatableDatedMutation = this._mutations[index]
+//         if (mutation.active) {
+//             const inactiveMutations = this.getInactiveMutations()
+//             throw new RangeError('Mutation' + JSON.stringify(mutation)
+//                 + `is already active and thus cannot be currently redone.
+//              The current mutations that are inactive are `
+//                 + JSON.stringify(inactiveMutations))
+//         }
+//         this.doMutation(mutation)
+//         // log('END redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
+//         mutation.active = true
+//         /* TODO: again is modifying mutations directly
+//         violating law of Demeter? I feel like i should
+//         separate mutations into its own class */
+//         return this
+//     }
+//
+//     private getActiveMutations() {
+//         return this._mutations.filter(mutation =&gt; mutation.active)
+//     }
+//
+//     private getInactiveMutations() {
+//         return this._mutations.filter(mutation =&gt; !mutation.active)
+//     }
+// }
+&nbsp;
+const Point = 5
+export {Point}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 16 2017 18:24:16 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>
