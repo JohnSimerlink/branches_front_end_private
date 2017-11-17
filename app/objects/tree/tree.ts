@@ -5,11 +5,12 @@ import store from '../../core/store'
 import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
-import {IMutable, ITreeMutation, TreeMutationTypes} from '../mutations/IMutable'
+import {IMutable, ITreeMutation, IUndoableMutable, TreeMutationTypes} from '../mutations/IMutable'
 import {Trees} from '../trees.js'
 import {user} from '../user'
 import {ITree} from './ITree';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
+import {IDatedMutation} from '../mutations/IMutation';
 // log('md5 is ', md5)
 // log('md5 of 1234 is', md5(1234))
 function syncGraphWithNode(treeId) {
@@ -72,7 +73,7 @@ const blankTreeDataObject: ITreeData = {
     children: {},
     mutations: []
 }
-export class Tree implements IMutable<ITreeMutation> {
+export class Tree /* implements IUndoableMutable<IDatedMutation> */   {
     public id;
     // public parentId;
     public active;
