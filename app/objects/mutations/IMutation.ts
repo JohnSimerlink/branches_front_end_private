@@ -4,7 +4,7 @@ export interface IMutation {
     data
 }
 export interface IDatedMutation extends IMutation {
-    datetime: number // ISO 8601 POSIX Timestamp
+    timestamp: number // ISO 8601 POSIX Timestamp
 }
 export interface IActivatableMutation extends IMutation {
     active: boolean

@@ -20,6 +20,7 @@
     "babel": "^6.23.0",
     "crypto-js": "^3.1.9-1",
     "firebase": "^4.1.2",
+    "inversify": "^4.5.1",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "json-loader": "^0.5.4",
@@ -28,6 +29,7 @@
     "lodash.merge": "^4.6.0",
     "md5": "^2.2.1",
     "pubsub-js": "^1.5.7",
+    "reflect-metadata": "^0.1.10",
     "vue": "^2.3.4",
     "vue-async-computed": "^3.2.1",
     "vuefire": "^1.4.3"

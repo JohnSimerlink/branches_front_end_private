@@ -1,3 +1,4 @@
+<<<<<<< 53cebed68b197e64fc10daa767544058e588f8a3
 TN:
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
@@ -7540,3 +7541,5 @@ BRH:1
 BRH:3
 >>>>>>> :tent: Add First Draft of point.ts class. Untested
 end_of_record
+=======
+>>>>>>> :bug: :hammer: Fix some Point.ts bugs to make more tests pass

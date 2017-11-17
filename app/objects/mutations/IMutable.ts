@@ -1,15 +1,16 @@
 import {MutationTypes} from './MutationTypes';
 
-export interface IMutable<MutationInterface/*: IMutation*/> {
+interface IMutable<MutationInterface/*: IMutation*/> {
     addMutation(mutation: MutationInterface), // idempotent.
     // _isMutationRedundant(mutation: MutationInterface),
     // subscribeToMutations(), // TODO: Maybe separate this into another interface
     mutations(): MutationInterface[],
 }
-export interface IUndoableMutable<MutationInterface> extends IMutable<MutationInterface> {
-    undo(index: number),
-    redo(index: number)
+interface IUndoableMutable<MutationInterface> extends IMutable<MutationInterface> {
+    undo(mutationListIndex: number),
+    redo(mutationListIndex: number)
 }
+export {IMutable, IUndoableMutable}
 // export interface ITreeMutation extends IMutation {
 //    type: TreeMutationTypes,
 // }
