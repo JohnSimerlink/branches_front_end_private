@@ -110,13 +110,33 @@ gulp.task('test-watch', function() {
     })
 })
 
-gulp.task('test', function() {
+gulp.task('coverage-watch', function() {
+    gulp.start('coverage')
+    watch([paths.scripts, paths.tests], function(){
+        gulp.start('coverage')
+    })
+})
+
+gulp.task('coverage', function() {
     console.log("gulp test running")
-    exec('npm run t', function(err, stdout, stderr) {
+    exec('npm t', function(err, stdout, stderr) {
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
         exec('npm run coverage', function(err, stdout, stderr){
             console.log(stdout)
+            console.error(err)
+            console.error(stderr)
             // publishCoverageIfConfigExists()
         })
+    })
+})
+gulp.task('test', function() {
+    console.log("gulp test running")
+    exec('npm t', function(err, stdout, stderr) {
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
     })
 })
 

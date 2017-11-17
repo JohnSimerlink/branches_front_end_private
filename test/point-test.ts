@@ -1,6 +1,8 @@
 import {expect} from 'chai'
 import 'reflect-metadata'
+import {log} from '../app/core/log'
 import {Point} from '../app/objects/point/point'
+import {PointMutationTypes} from '../app/objects/point/PointMutationTypes';
 import {TYPES} from '../app/objects/types';
 import {myContainer} from '../inversify.config'
 
@@ -27,20 +29,28 @@ describe('Point', () => {
     // const po = new Point({x:5, y:6})
     const FIRST_POINT_VALUE = {x: 5, y: 7}
     const SECOND_MUTATION_VALUE = {x: 3, y: 4}
-    const SECOND_POINT_VALUE = {x: 8, y: 11}
+    const SECOND_POINT_VALUE = {
+        x: FIRST_POINT_VALUE.x + SECOND_MUTATION_VALUE.x, y: FIRST_POINT_VALUE.y + SECOND_MUTATION_VALUE.y
+    }
     const THIRD_MUTATION_VALUE = {x: -3, y: -4}
-    const THIRD_POINT_VALUE = SECOND_MUTATION_VALUE
+    const THIRD_POINT_VALUE = {
+        x: SECOND_POINT_VALUE.x + THIRD_MUTATION_VALUE.x, y: SECOND_POINT_VALUE.y + THIRD_MUTATION_VALUE.y
+    }
     const FOURTH_MUTATION_VALUE = {x: 13, y: 14}
-    const FOURTH_POINT_VALUE = {x: 16, y: 18}
+    const FOURTH_POINT_VALUE = {
+        x: THIRD_POINT_VALUE.x + FOURTH_MUTATION_VALUE.x, y: THIRD_POINT_VALUE.y + FOURTH_MUTATION_VALUE.y
+    }
     const FIFTH_MUTATION_VALUE = {x: 100, y: 100}
-    const FIFTH_POINT_VALUE = {x: 116, y: 118}
+    const FIFTH_POINT_VALUE = {
+        x: FOURTH_POINT_VALUE.x + FIFTH_MUTATION_VALUE.x, y: FOURTH_POINT_VALUE.y + FIFTH_MUTATION_VALUE.y
+    }
     const FIFTH_MINUS_2ND_AND_4TH_MUTATIONS_VALUE = {
-        x: FIFTH_POINT_VALUE.x - FOURTH_POINT_VALUE.x - SECOND_POINT_VALUE.x,
-        y: FIFTH_POINT_VALUE.y - FOURTH_POINT_VALUE.y - SECOND_POINT_VALUE.y
+        x: FIFTH_POINT_VALUE.x - FOURTH_MUTATION_VALUE.x - SECOND_MUTATION_VALUE.x,
+        y: FIFTH_POINT_VALUE.y - FOURTH_MUTATION_VALUE.y - SECOND_MUTATION_VALUE.y
     }
     const FIFTH_MINUS_2ND_MUTATION_VALUE = {
-        x: FIFTH_POINT_VALUE.x - SECOND_POINT_VALUE.x,
-        y: FIFTH_POINT_VALUE.y - SECOND_POINT_VALUE.y
+        x: FIFTH_POINT_VALUE.x - SECOND_MUTATION_VALUE.x,
+        y: FIFTH_POINT_VALUE.y - SECOND_MUTATION_VALUE.y
     }
     // const point = new Point(FIRST_POINT_VALUE.x, FIRST_POINT_VALUE.y)
     const point = new Point(FIRST_POINT_VALUE)
@@ -71,16 +81,18 @@ describe('Point', () => {
     it(`second mutation should change the point val
     to the second point val,
     and mutation result should have the result val`, () => {
-        const result = point.shift(SECOND_MUTATION_VALUE)
+        const mutation = {type: PointMutationTypes.SHIFT, timestamp: Date.now(), data: {delta: SECOND_MUTATION_VALUE}}
+        point.addMutation(mutation)
+        expect(point.mutations().length).to.equal(2)
+        // TODO: ^^ Fix Violation of Law of Demeter
         expect(point.val()).to.deep.equal(SECOND_POINT_VALUE)
-        expect(result).to.deep.equal(SECOND_POINT_VALUE)
     })
     it(`should error on trying to be redo a mutation that hasn't
      been undone PT2, and point val should still be the same`, () => {
         expect(() => point.redo(FIRST_MUTATION_INDEX)).to.throw(RangeError)
     } )
     it(`undoing the second mutation should make point equivalent
-     to the original value second mutation type should be reversible`, () => {
+     to the original value second mutation`, () => {
         point.undo(SECOND_MUTATION_INDEX)
         expect(point.val()).to.deep.equal(FIRST_POINT_VALUE)
     })
@@ -91,9 +103,24 @@ describe('Point', () => {
     })
     it(`adding the third and fourth and fifth mutation should make the point
     equivalent to the fifth point value`, () => {
-        point.shift(THIRD_MUTATION_VALUE)
-        point.shift(FOURTH_MUTATION_VALUE)
-        point.shift(FIFTH_MUTATION_VALUE)
+        const thirdMutation = {
+            data: {delta: THIRD_MUTATION_VALUE},
+            timestamp: Date.now(),
+            type: PointMutationTypes.SHIFT,
+        }
+        const fourthMutation = {
+            data: {delta: FOURTH_MUTATION_VALUE},
+            timestamp: Date.now(),
+            type: PointMutationTypes.SHIFT,
+        }
+        const fifthMutation = {
+            data: {delta: FIFTH_MUTATION_VALUE},
+            timestamp: Date.now(),
+            type: PointMutationTypes.SHIFT,
+        }
+        point.addMutation(thirdMutation)
+        point.addMutation(fourthMutation)
+        point.addMutation(fifthMutation)
         expect(point.val()).to.deep.equal(FIFTH_POINT_VALUE)
     })
     it(`undoing the second and fourth mutations should recalculate
@@ -110,6 +137,6 @@ describe('Point', () => {
     it(`should error on trying to be redo a mutation that hasn't
      been undone (or that has been redone),
      and point val should still be the same`, () => {
-        expect(point.redo, FOURTH_MUTATION_INDEX).to.throw(RangeError)
-    } )
+        expect(() => point.redo(FOURTH_MUTATION_INDEX)).to.throw(RangeError)
+    })
 })

@@ -1,12 +1,12 @@
 /* tslint:disable variable-name */
 import {inject, injectable, multiInject} from 'inversify';
+import {log} from '../../core/log';
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IActivatableMutation, IDatedMutation} from '../mutations/IMutation';
 import {MutationTypes} from '../mutations/MutationTypes';
 import {TYPES} from '../types'
 import {ICoordinate, IPoint} from './IPoint';
 import {PointMutationTypes} from './PointMutationTypes';
-import {log} from 'util';
 
 /* TODO: Maybe split into  Point and PointMutator classes?
 
@@ -54,7 +54,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
         return this.val()
     }
 
-    public addMutation(mutation: IDatedMutation) {
+    public addMutation(mutation: IDatedMutation): void {
         this.doMutation(mutation)
         const activatedMutation = {
             ...mutation,
@@ -100,10 +100,12 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
     //     }
     // }
 
+    /* TODO: Add unit tests for mutation list
+    While testing this undo method . . I found that the previousTime
+    addMutation was called, the mutation list didn't actually add an element ...
+     */
     public undo(index: number) {
-        log('UNDO called ' + index + ' ' + JSON.stringify(this._mutations))
         const mutation: IActivatableDatedMutation = this._mutations[index]
-        log('UNDO called ' + index + ' ' + JSON.stringify(this._mutations))
 
         if (!mutation.active || index === 0) {
             const activeMutations = this.getActiveMutations()
@@ -119,6 +121,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
     }
 
     public redo(index: number) {
+        // log('redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
         const mutation: IActivatableDatedMutation = this._mutations[index]
         if (mutation.active) {
             const inactiveMutations = this.getInactiveMutations()
@@ -127,8 +130,12 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
              The current mutations that are inactive are `
                 + JSON.stringify(inactiveMutations))
         }
-        this.undoMutation(mutation)
-        mutation.active = false
+        this.doMutation(mutation)
+        // log('END redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
+        mutation.active = true
+        /* TODO: again is modifying mutations directly
+        violating law of Demeter? I feel like i should
+        separate mutations into its own class */
         return this
     }
 
