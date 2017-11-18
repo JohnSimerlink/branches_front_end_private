@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">37.04% </span>
+        <span class="strong">22.22% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>10/27</span>
+        <span class='fraction'>6/27</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">35% </span>
+        <span class="strong">15% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>7/20</span>
+        <span class='fraction'>3/20</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>0/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">38.46% </span>
+        <span class="strong">23.08% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>10/26</span>
+        <span class='fraction'>6/26</span>
       </div>
     </div>
   </div>
@@ -84,6 +84,7 @@
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 39
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
 40</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 =======
 39</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
@@ -91,6 +92,9 @@
 =======
 39</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 >>>>>>> 366df2586362df079927af172f325d9c30d9b98e
+=======
+40</td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -98,8 +102,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 =======
@@ -117,6 +122,10 @@
 >>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+=======
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -124,13 +133,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -180,12 +189,12 @@ const PROFICIENCIES = {
     bc n/0 is undefined, which is what was happening in our math. */
 }
 &nbsp;
-export function addObjToProficiencyStats(proficiencyStats, deltaObj) {
-    const newStats = {...proficiencyStats}
-    Object.keys(deltaObj).forEach((key) =&gt; {
-        newStats[key] = (newStats[key] || 0) + (deltaObj[key] || 0)
+<span class="fstat-no" title="function not covered" >export function addObjToProficienc</span>yStats(proficiencyStats, deltaObj) {
+    const newStats <span class="cstat-no" title="statement not covered" >= {...proficiencyStats}</span>
+<span class="cstat-no" title="statement not covered" >    Object.keys(deltaObj).forEach(<span class="fstat-no" title="function not covered" >(key) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        newStats[key] = (newStats[key] || 0) + (deltaObj[key] || 0)</span>
     })
-    return newStats
+<span class="cstat-no" title="statement not covered" >    return newStats</span>
 }
 export function incrementProficiencyStatsCategory(proficiencyStats, proficiency) {
 <<<<<<< HEAD
@@ -230,6 +239,7 @@ export function incrementProficiencyStatsCategory(proficiencyStats, proficiency)
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
 <<<<<<< 1b0d34f5205d8bcc34882711ef4e5656b10c616c
 <<<<<<< 116733dc79561386e2613e8f14e7444c0859b14d
 <<<<<<< HEAD
@@ -247,6 +257,9 @@ export function incrementProficiencyStatsCategory(proficiencyStats, proficiency)
 =======
   generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 16 2017 19:43:59 GMT-0800 (Pacific Standard Time)
 >>>>>>> :bug: Fix coverage for .ts files with @injectable tags by recontinually compiling those files with typescript, emitting .js (with inlineSourceMap) files for istanbul to read via nyc. Eventually would like to find a way to not have to do that intermediate convert to JS step
+=======
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Nov 17 2017 16:28:15 GMT-0800 (Pacific Standard Time)
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

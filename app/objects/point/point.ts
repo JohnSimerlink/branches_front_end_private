@@ -104,10 +104,10 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
     While testing this undo method . . I found that the previousTime
     addMutation was called, the mutation list didn't actually add an element ...
      */
-    public undo(index: number) {
-        const mutation: IActivatableDatedMutation = this._mutations[index]
+    public undo(mutationListIndex: number) {
+        const mutation: IActivatableDatedMutation = this._mutations[mutationListIndex]
 
-        if (!mutation.active || index === 0) {
+        if (!mutation.active || mutationListIndex === 0) {
             const activeMutations = this.getActiveMutations()
             throw new RangeError('Mutation ' + JSON.stringify(mutation)
                 + ` is already not active and thus cannot be undone.
@@ -120,9 +120,9 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
         return this
     }
 
-    public redo(index: number) {
+    public redo(mutationListIndex: number) {
         // log('redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
-        const mutation: IActivatableDatedMutation = this._mutations[index]
+        const mutation: IActivatableDatedMutation = this._mutations[mutationListIndex]
         if (mutation.active) {
             const inactiveMutations = this.getInactiveMutations()
             throw new RangeError('Mutation' + JSON.stringify(mutation)
