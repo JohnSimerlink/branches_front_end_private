@@ -147,13 +147,16 @@ gulp.task('build-injectables', function() {
 })
 
 function buildInjectables(callback) {
-    console.log('Recompiling typescript files with injectable tags. I don\'t think the errors really matter.')
-    exec('tsc -p ./app/objects/point/point.ts --inlineSourceMap', function(err, stdout, stderr){
-        console.log('Finished recompiling typescript files with injectable tags')
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-        typeof callback === 'function' && callback()
+    console.log('Recompiling typescript files with injectable tags. I don\'t think the following errors really matter.')
+    exec('rm ./app/objects/points/PointMutationTypes.js', function (err, stdout, stderr) { // << sometimes if this file isn't removed, the tests can't run . . .
+        exec('tsc -p ./app/objects/point/point.ts --inlineSourceMap', function(err, stdout, stderr){
+            console.log('Finished recompiling typescript files with injectable tags')
+            console.log(stdout)
+            console.error(err)
+            console.error(stderr)
+            typeof callback === 'function' && callback()
+        })
+
     })
 }
 
