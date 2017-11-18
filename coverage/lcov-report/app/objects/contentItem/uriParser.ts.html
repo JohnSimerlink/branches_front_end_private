@@ -20,25 +20,30 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
         <span class="strong">40.91% </span>
+=======
+        <span class="strong">22.73% </span>
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/22</span>
+        <span class='fraction'>5/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>0/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">40% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/5</span>
+        <span class='fraction'>0/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">40.91% </span>
+        <span class="strong">22.73% </span>
         <span class="quiet">Lines</span>
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
         <span class='fraction'>9/22</span>
 =======
 =======
@@ -65,6 +70,9 @@
 >>>>>>> Init Forgetting Curve Calculator Widget
 =======
 >>>>>>> 366df2586362df079927af172f325d9c30d9b98e
+=======
+        <span class='fraction'>5/22</span>
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
       </div>
     </div>
   </div>
@@ -129,8 +137,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 =======
@@ -178,12 +186,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
+=======
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -204,9 +217,9 @@ export function getURIWithoutRootElement(uri) {
 expo<span class="cstat-no" title="statement not covered" >rt function convertBreadcrumbListToString(breadcrumbList</span>) {
     if (breadcrumbList.length &lt;= 0) {
       return ''
-    }
-<span class="missing-if-branch" title="else path not taken" >E</span>
-    const lastItem = decodeURIComponent(breadcrumbList.splice(-1))
+<span class="fstat-no" title="function not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    cons<span class="cstat-no" title="statement not covered" >t lastItem </span>= decodeURIComponent(breadcrumbList.splice(-1))
 &nbsp;
     const firstItem<span class="cstat-no" title="statement not covered" >s =</span>
         breadcrumbLis<span class="cstat-no" title="statement not covered" >t.reduce((accum, val) <span class="fstat-no" title="function not covered" >=&gt; {</span></span>
@@ -264,11 +277,17 @@ expo<span class="cstat-no" title="statement not covered" >rt function convertBre
  * @param breadcrumbList - e.g. ["Everything", "Spanish%20Grammar", "Conjugating",
  * "Indicative%20Mood", "Present%20Tense", "-ar%20verbs", "3rd%20Person%20Singular"]
  * @returns {string}
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
  */
 <<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 expo<span class="missing-if-branch" title="else path not taken" >E</span>rt function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {
     if (breadcrumbList.length &lt;= n) {
+=======
+<span class="fstat-no" title="function not covered" > */</span>
+expo<span class="cstat-no" title="statement not covered" >rt function getLastNBreadcrumbsStringFromList(breadcrumbList, n) {</span>
+    if (<span class="cstat-no" title="statement not covered" >breadcrumbList.length &lt;= n) {</span>
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
         return convertBreadcrumbListToString(breadcrumbList)
     }<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
@@ -301,6 +320,7 @@ expo<span class="missing-if-branch" title="else path not taken" >E</span>rt func
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
+<<<<<<< 96a32b13ff23e553161a0425a435c4f2b531d76f
 <<<<<<< 1b0d34f5205d8bcc34882711ef4e5656b10c616c
 <<<<<<< 116733dc79561386e2613e8f14e7444c0859b14d
 <<<<<<< HEAD
@@ -318,6 +338,9 @@ expo<span class="missing-if-branch" title="else path not taken" >E</span>rt func
 =======
   generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 16 2017 19:43:59 GMT-0800 (Pacific Standard Time)
 >>>>>>> :bug: Fix coverage for .ts files with @injectable tags by recontinually compiling those files with typescript, emitting .js (with inlineSourceMap) files for istanbul to read via nyc. Eventually would like to find a way to not have to do that intermediate convert to JS step
+=======
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Nov 17 2017 15:58:16 GMT-0800 (Pacific Standard Time)
+>>>>>>> :anguished: Adding undo/redo logic to Tree.ADD_CHILD/REMOVE_CHILD is too complicated in the manner I wanted to do it. I'm just going to have it be an always growing list of ADD_CHILD and REMOVE_CHILD mutations. None of this undoing/redoing a specific mutation, and undoing an ADD_CHILD(id1) mutation rather than just appending another REMOVE_CHILD(id1) mutation
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

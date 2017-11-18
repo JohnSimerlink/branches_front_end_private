@@ -5,12 +5,12 @@ import store from '../../core/store'
 import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
-import {IMutable, ITreeMutation, IUndoableMutable, TreeMutationTypes} from '../mutations/IMutable'
+// import {IMutable, } from '../mutations/IMutable'
 import {Trees} from '../trees.js'
 import {user} from '../user'
 import {ITree} from './ITree';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
-import {IDatedMutation} from '../mutations/IMutation';
+// import {IDatedMutation} from '../mutations/IMutation';
 // log('md5 is ', md5)
 // log('md5 of 1234 is', md5(1234))
 function syncGraphWithNode(treeId) {
@@ -561,26 +561,26 @@ export class Tree /* implements IUndoableMutable<IDatedMutation> */   {
     public syncGraphWithNode() {
         syncGraphWithNode(this.id)
     }
-    public addMutation(mutation: ITreeMutation) {
-       return
-    }
-    public _isMutationRedundant(mutation: ITreeMutation) {
-       switch (mutation.type) {
-           case TreeMutationTypes.ADD_CHILD: {
-               const leafId = mutation.data.leafId
-               const leafAlreadyExists = this.treeData.children[leafId]
-               return leafAlreadyExists
-           }
-           case TreeMutationTypes.REMOVE_CHILD: {
-               const leafId = mutation.data.leafId
-               const leafExists = this.treeData.children[leafId]
-               return !leafExists
-           }
-        }
-    }
-    public subscribeToMutations() {
-        return
-    }
+    // public addMutation(mutation: ITreeMutation) {
+    //    return
+    // }
+    // public _isMutationRedundant(mutation: ITreeMutation) {
+    //    switch (mutation.type) {
+    //        case TreeMutationTypes.ADD_CHILD: {
+    //            const leafId = mutation.data.leafId
+    //            const leafAlreadyExists = this.treeData.children[leafId]
+    //            return leafAlreadyExists
+    //        }
+    //        case TreeMutationTypes.REMOVE_CHILD: {
+    //            const leafId = mutation.data.leafId
+    //            const leafExists = this.treeData.children[leafId]
+    //            return !leafExists
+    //        }
+    //     }
+    // }
+    // public subscribeToMutations() {
+    //     return
+    // }
 }
 // TODO: get typeScript so we can have a schema for treeObj
 // treeObj  example
