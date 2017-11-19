@@ -2,12 +2,8 @@
 // import {log} from '../../core/log'
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
-import {PointMutationTypes} from '../point/PointMutationTypes';
 import {IdMutationTypes} from './IdMutationTypes';
 import {IId} from './IId';
-import {ITree} from './ITree';
-import {ITreeChildren} from './ITreeChildren'
-import {TreeMutationTypes} from './TreeMutationTypes';
 /*
 Decided to not implement IUndoable on this class, because undo/redo add/remove aren't
  as commutative as they seem . . . at least for the complicated specs I was setting for myself . . .
