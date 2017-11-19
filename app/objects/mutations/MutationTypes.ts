@@ -9,6 +9,8 @@
 // }
 import {PointMutationTypes} from '../point/PointMutationTypes';
 import {TreeMutationTypes} from '../tree/TreeMutationTypes';
+import {TreeParentMutationTypes} from '../tree/TreeParentMutationTypes';
+import {IdMutationTypes} from '../tree/IdMutationTypes';
 
-type MutationTypes =  PointMutationTypes | TreeMutationTypes
+type MutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes | IdMutationTypes
 export {MutationTypes}

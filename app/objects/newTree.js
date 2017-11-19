@@ -52,7 +52,7 @@ export async function newTree(type, parentTreeId,primaryParentTreeContentURI, va
     const parentTreePromise = Trees.get(parentTreeId)
     const parentTree = await parentTreePromise
     var tree = new Tree({contentId: newContent.id, parentId: parentTreeId,  x: newChildTreeX, y: newChildTreeY, createInDB: true, level: parentTree.treeData.level + 1})
-    parentTree.addChild(tree.id)
+    parentTree.add(tree.id)
 
     newContent.addTree(tree.id)
     addTreeNodeToGraph(tree, newContent)

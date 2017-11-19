@@ -14,7 +14,7 @@ export default {
         this.items = {}
         PubSub.subscribe('login',() => {
             self.loggedIn = true
-            Users.get(user.getId()).then( user => {
+            Users.get(user.get()).then(user => {
                 self.items = user.items
             })
         })

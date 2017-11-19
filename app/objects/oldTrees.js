@@ -78,7 +78,7 @@ export class Trees {
     }
     static async _handleNewParent(newParentId,childId){
         const newParent = await Trees.get(newParentId)
-        newParent.addChild(childId)
+        newParent.add(childId)
     }
 }
 if (typeof window !== 'undefined'){

@@ -1,7 +1,6 @@
 // tslint:disable no-var-requires
 import {expect} from 'chai'
 import {} from 'mocha' // types
-import {log} from '../app/core/log'
 
 import {addObjToProficiencyStats} from '../app/objects/tree/proficiencyStats';
 

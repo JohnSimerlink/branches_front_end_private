@@ -49,7 +49,7 @@ class User {
               userLoggedIn = true
               me.fbData = user;
               localStorage.setItem('userId', me.getId())
-              // LocalForage.setItem('userId', me.getId())
+              // LocalForage.setItem('userId', me.get())
               if(!me.dataGoingToBeLoaded){
                   PubSub.publish('userId')
                   await me.loadBranchesData()
@@ -102,7 +102,7 @@ class User {
   //   let updates = {
   //     items: this.branchesData.items
   //   }
-  //   firebase.database().ref('users/' + this.getId()).update(updates)
+  //   firebase.database().ref('users/' + this.get()).update(updates)
   // }
   addInteraction(contentItemId,interaction, addChangeToDB){
       const item = this.branchesData.items[contentItemId] || {}
@@ -200,7 +200,7 @@ class User {
         //     var updates = {
         //         patches: this.branchesData.patches
         //     }
-        //     firebase.database().ref('users/' + this.getId() + '/').update(updates)
+        //     firebase.database().ref('users/' + this.get() + '/').update(updates)
         // } else {
         // }
 

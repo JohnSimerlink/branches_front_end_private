@@ -95,7 +95,7 @@ export default {
             // console.log('new content to jump to is ', newContentItemId, newContentItem, oldContentItemId)
             const treeId = newContentItem.getTreeId()
             jumpToTreeId(treeId)
-            const tree = await Trees.get(treeId,user.getId())
+            const tree = await Trees.get(treeId,user.get())
             tree.setActive()
 
         },
@@ -139,14 +139,14 @@ const EDGE_TYPES = {
 }
 
 function getTreeColor(content) {
-    let proficiency = user && content.userProficiencyMap && content.userProficiencyMap[user.getId()]
+    let proficiency = user && content.userProficiencyMap && content.userProficiencyMap[user.get()]
     const color = proficiencyToColor(proficiency)
     return color
 }
 export async function removeTreeFromGraph(treeId){
     s.graph.dropNode(treeId)
     const tree = await Trees.get(treeId)
-    const childPromises = tree.getChildIds().map(removeTreeFromGraph)
+    const childPromises = tree.getIds().map(removeTreeFromGraph)
     return Promise.all(childPromises).then(val => {
         s.refresh()
         return `removed all children of ${treeId}`
@@ -445,7 +445,7 @@ export async function loadDescendants(treeId, userId, numGenerations){
     }
     const tree = await Trees.get(treeId, userId)
 
-    tree.getChildIds().forEach(async childId => {
+    tree.getIds().forEach(async childId => {
         await loadTree(childId, userId)
         loadDescendants(childId, userId, numGenerations - 1)
     })
@@ -516,8 +516,8 @@ function initKnawledgeMap(treeIdToJumpTo){
             // store.commit('enterStudyingMode')
             console.log('CONTENT ID IS PRESENT IN URL')
             // debugger;
-            await loadTree(treeId,user.getId(), 1)
-            await loadDescendants(treeId, user.getId(), DEFAULT_NUM_GENERATIONS_TO_LOAD)
+            await loadTree(treeId,user.get(), 1)
+            await loadDescendants(treeId, user.get(), DEFAULT_NUM_GENERATIONS_TO_LOAD)
         } else {
             const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
@@ -558,7 +558,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         let childTreesPromises = []
 
-        childTreesPromises = tree.getChildIds().map(childKey => {
+        childTreesPromises = tree.getIds().map(childKey => {
             return loadTreeAndSubTrees(childKey, userId)
         })
         return Promise.all([...childTreesPromises])
@@ -957,7 +957,7 @@ function getAngleFromCenter(treeId){
 async function assignLevels(treeId, startingLevel){
     const tree = await Trees.get(treeId)
     tree.set('level', startingLevel)
-    tree.getChildIds().forEach(async childId => {
+    tree.getIds().forEach(async childId => {
         assignLevels(childId, startingLevel + 1)
     })
 }

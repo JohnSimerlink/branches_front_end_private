@@ -1,6 +1,5 @@
 import {expect} from 'chai'
 import 'reflect-metadata'
-import {log} from '../app/core/log'
 import {Point} from '../app/objects/point/point'
 import {PointMutationTypes} from '../app/objects/point/PointMutationTypes';
 import {TYPES} from '../app/objects/types';

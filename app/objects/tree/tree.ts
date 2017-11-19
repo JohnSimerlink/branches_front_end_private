@@ -159,7 +159,7 @@ export class Tree /* implements IUndoableMutable<IDatedMutation> */   {
             const lookupKey = 'trees/' + this.id + '/treeData/'
             await firebase.database().ref(lookupKey).update(updates)
         } catch (err) {
-            error(' error for addChild firebase call', err)
+            error(' error for add firebase call', err)
         }
     }
 
