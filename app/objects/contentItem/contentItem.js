@@ -32,23 +32,23 @@ export default class ContentItem {
         this.trees = args.trees || {}
 
         this.userTimeMap = args.userTimeMap || {} ;
-        this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
+        this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.get()] || 0
         this.timerId = null;
 
         this.userProficiencyMap = args.userProficiencyMap || {}
-        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || PROFICIENCIES.UNKNOWN
+        this.proficiency = user.loggedIn && this.userProficiencyMap[user.get()] || PROFICIENCIES.UNKNOWN
 
         this.userInteractionsMap = args.userInteractionsMap || {}
-        this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
+        this.interactions = user.loggedIn && this.userInteractionsMap[user.get()] || []
 
         this.userStrengthMap = args.userStrengthMap || {}
-        this.lastRecordedStrength = this.userStrengthMap[user.getId()] || INITIAL_LAST_RECORDED_STRENGTH
+        this.lastRecordedStrength = this.userStrengthMap[user.get()] || INITIAL_LAST_RECORDED_STRENGTH
 
         this.userReviewTimeMap = args.userReviewTimeMap || {}
-        this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
+        this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.get()] || 0
 
         this.userOverdueMap = args.userOverdueMap || {}
-        this.overdue = user.loggedIn && this.userOverdueMap[user.getId()] || false
+        this.overdue = user.loggedIn && this.userOverdueMap[user.get()] || false
         if (!this.overdue && this.hasInteractions()){
             if(this.determineIfOverdueNow()){
                 this.setOverdue(true)
@@ -58,7 +58,7 @@ export default class ContentItem {
         }
 
         this.studiers = args.studiers || {}
-        this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
+        this.inStudyQueue = user.loggedIn && this.studiers[user.get()]
 
         this.exercises = args.exercises || {}
 
@@ -142,7 +142,7 @@ export default class ContentItem {
         // console.log(this.id, "setOverdue called with parameter of ", overdue)
         this.overdue = overdue
 
-        this.userOverdueMap[user.getId()] = this.overdue
+        this.userOverdueMap[user.get()] = this.overdue
 
         if (!updateInDB){
             return
@@ -252,7 +252,7 @@ export default class ContentItem {
     }
 
     saveTimer(){
-        this.userTimeMap[user.getId()] = this.timer
+        this.userTimeMap[user.get()] = this.timer
 
         var updates = {
             userTimeMap: this.userTimeMap
@@ -308,25 +308,25 @@ export default class ContentItem {
     }
     clearInteractions(addChangeToDB){
         const me = this
-        delete this.studiers[user.getId()]
+        delete this.studiers[user.get()]
 
         this.proficiency = PROFICIENCIES.UNKNOWN
-        delete this.userProficiencyMap[user.getId()]
+        delete this.userProficiencyMap[user.get()]
 
         this.interactions = []
-        delete this.userInteractionsMap[user.getId()]
+        delete this.userInteractionsMap[user.get()]
 
         this.lastRecordedStrength = INITIAL_LAST_RECORDED_STRENGTH
-        delete this.userStrengthMap[user.getId()]
+        delete this.userStrengthMap[user.get()]
 
         this.nextReviewTime = 0
-        delete this.userReviewTimeMap[user.getId()]
+        delete this.userReviewTimeMap[user.get()]
 
         this.overdue = false
-        delete this.userOverdueMap[user.getId()]
+        delete this.userOverdueMap[user.get()]
 
         this.timer = 0
-        delete this.userTimeMap[user.getId()]
+        delete this.userTimeMap[user.get()]
 
         this.calculateAggregationTimerForTreeChain()
         this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
@@ -446,7 +446,7 @@ export default class ContentItem {
 
         //content
         //1. userProficiencyMap
-        this.userProficiencyMap[user.getId()] = this.proficiency
+        this.userProficiencyMap[user.get()] = this.proficiency
 
         //interactions
 
@@ -464,7 +464,7 @@ export default class ContentItem {
         const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
         this.interactions.push(interaction)
         //store user interactions under content
-        this.userInteractionsMap[user.getId()] = this.interactions
+        this.userInteractionsMap[user.get()] = this.interactions
 
         //2. userInteractions
 
@@ -475,13 +475,13 @@ export default class ContentItem {
         //store contentItem strength and timestamp under userStrengthMap
         //4. userStrengthMap
         this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
-        this.userStrengthMap[user.getId()] = this.lastRecordedStrength
+        this.userStrengthMap[user.get()] = this.lastRecordedStrength
         //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
         const millisecondsTilNextReview = 1000 * calculateSecondsTilCriticalReviewTime(currentInteractionStrength)
         this.nextReviewTime = timestamp + millisecondsTilNextReview
 
         //5. userReviewTimeMap
-        this.userReviewTimeMap[user.getId()] = this.nextReviewTime
+        this.userReviewTimeMap[user.get()] = this.nextReviewTime
 
         this.setOverdueTimeout()
 

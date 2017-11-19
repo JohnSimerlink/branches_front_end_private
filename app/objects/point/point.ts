@@ -1,6 +1,6 @@
 /* tslint:disable variable-name */
 import {inject, injectable, multiInject} from 'inversify';
-import {log} from '../../core/log';
+// import {log} from '../../core/log';
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IActivatableMutation, IDatedMutation} from '../mutations/IMutation';
 import {MutationTypes} from '../mutations/MutationTypes';
@@ -30,7 +30,6 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
     */
     constructor({x, y, mutations = []}) {
         this._mutations = mutations
-        log('CONSTRUCTOR mutations is ' + JSON.stringify(this._mutations))
         const mutation = {
             data: {delta: {x, y}},
             timestamp: Date.now(),

@@ -118,45 +118,63 @@ gulp.task('coverage-watch', function() {
 })
 
 gulp.task('coverage', function() {
-    console.log("gulp test running")
-    exec('npm t', function(err, stdout, stderr) {
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-        //recompile the files that have injectable tags
+    console.log("gulp task coverage running")
+    test(() => {
         buildInjectables(() => {
-            exec('npm run coverage', function(err, stdout, stderr){
-                console.log(stdout)
-                console.error(err)
-                console.error(stderr)
-                // publishCoverageIfConfigExists()
-            })
+            coverage()
         })
     })
 })
 gulp.task('test', function() {
-    console.log("gulp test running")
-    exec('npm t', function(err, stdout, stderr) {
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-    })
+    // removeTroublesomeFilesAndTest()
+    test()
 })
 gulp.task('build-injectables', function() {
     buildInjectables()
 })
 
-function buildInjectables(callback) {
-    console.log('Recompiling typescript files with injectable tags. I don\'t think the following errors really matter.')
-    exec('rm ./app/objects/points/PointMutationTypes.js ./app/objects/tree/TreeMutationTypes.js', function (err, stdout, stderr) { // << sometimes if this file isn't removed, the tests can't run . . .
-        exec('tsc -p ./app/objects/point/point.ts --inlineSourceMap', function(err, stdout, stderr){
-            console.log('Finished recompiling typescript files with injectable tags')
-            console.log(stdout)
-            console.error(err)
-            console.error(stderr)
+function coverage() {
+    exec('npm run coverage', function(err, stdout, stderr){
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
+        // publishCoverageIfConfigExists()
+    })
+}
+function test(callback) {
+    exec('npm t', function(err, stdout, stderr) {
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
+        typeof callback === 'function' && callback()
+    })
+   // removeTroublesomeFiles()
+}
+function removeTroublesomeFilesAndTest(callback) {
+    removeTroublesomeFiles(() => {
+        test(() => {
             typeof callback === 'function' && callback()
         })
+    })
+}
 
+function removeTroublesomeFiles(callback) {
+    console.log('REMOVE TROUBLESOME FILES CALLED')
+    exec('rm ./app/objects/points/PointMutationTypes.js ./app/objects/tree/TreeMutationTypes.js ./app/objects/tree/IdMutationTypes.js ' +
+        './test/*.js' +
+        './app/objects/point/*.js', function (err, stdout, stderr) { // << sometimes if this file isn't removed, the tests can't run . . .
+        typeof callback === 'function' && callback()
+    })
+}
+
+function buildInjectables(callback) {
+    console.log('Recompiling typescript files with injectable tags. I don\'t think the following errors really matter.')
+    exec('tsc -p ./app/objects/point/point.ts --inlineSourceMap', function(err, stdout, stderr){
+        console.log('Finished recompiling typescript files with injectable tags')
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
+        typeof callback === 'function' && callback()
     })
 }
 
@@ -199,11 +217,11 @@ function build() {
         .pipe(gulp.dest('.'))
 
 }
-function test(){
+function test(callback){
     console.log('testing!')
     var tsProject = typescript.createProject('./tsconfig.json')
     console.log("running gulp test")
-    return gulp.src(paths.tests, {base: '.'})
+    gulp.src(paths.tests, {base: '.'})
         // .pipe(
         // webpack({
         //     module: {
@@ -224,6 +242,7 @@ function test(){
             })
             .on('error', handleError)
         )
+    typeof callback === 'function' && callback()
 }
 function testfunc(){
     console.log("THIS IS ", this, "ARGUMENTS IS", arguments)
