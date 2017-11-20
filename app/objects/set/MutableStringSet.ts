@@ -2,7 +2,6 @@
 // import {log} from '../../core/log'
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
-import {PointMutationTypes} from '../point/PointMutationTypes';
 import {ISet} from './ISet';
 import {SetMutationTypes} from './SetMutationTypes';
 /*

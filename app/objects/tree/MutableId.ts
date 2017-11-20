@@ -8,7 +8,7 @@ import {IId} from './IId';
 Decided to not implement IUndoable on this class, because undo/redo add/remove aren't
  as commutative as they seem . . . at least for the complicated specs I was setting for myself . . .
  See the commit history for the commit before this file was created to see what I mean.
- */
+*/
 // TODO: Make IDatedMutation a generic, that takes a type as an argument
 interface IMutableId extends IMutable<IDatedMutation>, IId {}
 class MutableId implements IMutableId {
