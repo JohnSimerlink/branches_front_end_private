@@ -1,7 +1,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
+var IdMutationTypes_1 = require("../app/objects/tree/IdMutationTypes");
 var MutableId_1 = require("../app/objects/tree/MutableId");
-var TreeParentMutationTypes_1 = require("../app/objects/tree/TreeParentMutationTypes");
 describe('MutableId', function () {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
     // const po = new Point({x:5, y:6})
@@ -11,7 +11,7 @@ describe('MutableId', function () {
     // const THIRD_NEW_PARENT_ID = 'f31aabc123'
     // const FOURTH_NEW_PARENT_ID = '35dfabc123'
     var SECOND_SUCCESSFUL_MUTATION = {
-        data: { id: NEW_PARENT_ID }, timestamp: Date.now(), type: TreeParentMutationTypes_1.TreeParentMutationTypes.SET_ID
+        data: { id: NEW_PARENT_ID }, timestamp: Date.now(), type: IdMutationTypes_1.IdMutationTypes.SET
     };
     // const THIRD_SUCCESSFUL_MUTATION = {
     //     data: {id: SECOND_NEW_PARENT_ID}, timestamp: Date.now(), type: TreeParentMutationTypes.SET_ID

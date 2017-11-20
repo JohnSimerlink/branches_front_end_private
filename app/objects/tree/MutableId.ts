@@ -10,10 +10,10 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  See the commit history for the commit before this file was created to see what I mean.
 */
 // TODO: Make IDatedMutation a generic, that takes a type as an argument
-interface IMutableId extends IMutable<IDatedMutation>, IId {}
+interface IMutableId extends IMutable<IDatedMutation<IdMutationTypes>>, IId {}
 class MutableId implements IMutableId {
     private id: string;
-    private _mutations: IDatedMutation[];
+    private _mutations: Array<IDatedMutation<IdMutationTypes>>;
     public get(): string {
         return this.id
     }
@@ -24,7 +24,7 @@ class MutableId implements IMutableId {
         this.id = id
         this._mutations = mutations
     }
-    public addMutation(mutation: IDatedMutation) {
+    public addMutation(mutation: IDatedMutation<IdMutationTypes>) {
         switch (mutation.type) {
             case IdMutationTypes.SET:
                 this.set(mutation.data.id) // TODO: Law of Demeter Violation? How to fix?
@@ -36,7 +36,7 @@ class MutableId implements IMutableId {
         this._mutations.push(mutation)
     }
 
-    public mutations(): IDatedMutation[] {
+    public mutations(): Array<IDatedMutation<IdMutationTypes>> {
         return this._mutations;
     }
 

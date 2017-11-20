@@ -18,10 +18,10 @@ import {PointMutationTypes} from './PointMutationTypes';
  Will do that after I have 1 to 2 modules using Mutations
 */
 @injectable()
-class Point implements IUndoableMutable<IDatedMutation>, IPoint {
+class Point implements IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPoint {
     private x = 0;
     private y = 0;
-    private _mutations: IActivatableDatedMutation[];
+    private _mutations: Array<IActivatableDatedMutation<PointMutationTypes>>;
     // @multiInject("IActivatableDatedMutation") mutations
 
     /* NOTE: yes, this isn't the best obeyance of Dependency Inversion standards,
@@ -53,7 +53,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
         return this.val()
     }
 
-    public addMutation(mutation: IDatedMutation): void {
+    public addMutation(mutation: IDatedMutation<PointMutationTypes>): void {
         this.doMutation(mutation)
         const activatedMutation = {
             ...mutation,
@@ -65,7 +65,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
     /* NOTE: if we had a non-commutative mutation type (SHIFT is commutative),
      we'd need methods different from just doMutation and undoMutation
     */
-    private doMutation(mutation: IDatedMutation) {
+    private doMutation(mutation: IDatedMutation<PointMutationTypes>) {
         switch (mutation.type) {
             case PointMutationTypes.SHIFT:
                 this.shift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
@@ -76,7 +76,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
         }
     }
 
-    private undoMutation(mutation: IDatedMutation) {
+    private undoMutation(mutation: IDatedMutation<PointMutationTypes>) {
         switch (mutation.type) {
             case PointMutationTypes.SHIFT:
                 this.unshift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
@@ -87,7 +87,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
         }
     }
 
-    public mutations(): IDatedMutation[] {
+    public mutations(): Array<IDatedMutation<PointMutationTypes>> {
         return this._mutations
     }
     // private getMutation(index: number): IDatedMutation {
@@ -104,7 +104,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
     addMutation was called, the mutation list didn't actually add an element ...
      */
     public undo(mutationListIndex: number) {
-        const mutation: IActivatableDatedMutation = this._mutations[mutationListIndex]
+        const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex]
 
         if (!mutation.active || mutationListIndex === 0) {
             const activeMutations = this.getActiveMutations()
@@ -121,7 +121,7 @@ class Point implements IUndoableMutable<IDatedMutation>, IPoint {
 
     public redo(mutationListIndex: number) {
         // log('redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
-        const mutation: IActivatableDatedMutation = this._mutations[mutationListIndex]
+        const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex]
         if (mutation.active) {
             const inactiveMutations = this.getInactiveMutations()
             throw new RangeError('Mutation' + JSON.stringify(mutation)

@@ -9,9 +9,9 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  as commutative as they seem . . . at least for the complicated specs I was setting for myself . . .
  See the commit history for the commit before this file was created to see what I mean.
  */
-class MutableStringSet implements IMutable<IDatedMutation>, ISet<string> {
+class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
-    private _mutations: IDatedMutation[];
+    private _mutations: Array<IDatedMutation<SetMutationTypes>>;
     private set: object;
     constructor({set, mutations} = {set: {}, mutations: []}) {
         this.set = set
@@ -39,7 +39,7 @@ class MutableStringSet implements IMutable<IDatedMutation>, ISet<string> {
     public hasMember(member: string): boolean {
         return this.set[member]
     }
-    public addMutation(mutation: IDatedMutation) {
+    public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
         switch (mutation.type) {
             case SetMutationTypes.ADD:
                 this.add(mutation.data.member) // TODO: Law of Demeter Violation? How to fix?
@@ -54,7 +54,7 @@ class MutableStringSet implements IMutable<IDatedMutation>, ISet<string> {
         this._mutations.push(mutation)
     }
 
-    public mutations(): IDatedMutation[] {
+    public mutations(): Array<IDatedMutation<SetMutationTypes>> {
         return this._mutations;
     }
 

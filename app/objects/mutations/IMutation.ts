@@ -1,13 +1,18 @@
-import {MutationTypes} from './MutationTypes'
-export interface IMutation {
+// import {MutationTypes} from './MutationTypes'
+// export interface IMutation {
+//     type: MutationTypes,
+//     data
+// }
+export interface IMutation<MutationTypes> {
     type: MutationTypes,
     data
 }
-export interface IDatedMutation extends IMutation {
+export interface IDatedMutation<MutationTypes> extends IMutation<MutationTypes> {
     timestamp: number // ISO 8601 POSIX Timestamp
 }
-export interface IActivatableMutation extends IMutation {
+export interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
     active: boolean
 }
-export interface IActivatableDatedMutation extends IDatedMutation, IActivatableMutation {
+export interface IActivatableDatedMutation<MutationTypes>
+    extends IDatedMutation<MutationTypes>, IActivatableMutation<MutationTypes> {
 }
