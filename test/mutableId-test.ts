@@ -12,7 +12,7 @@ describe('MutableId', () => {
     // const THIRD_NEW_PARENT_ID = 'f31aabc123'
     // const FOURTH_NEW_PARENT_ID = '35dfabc123'
     const SECOND_SUCCESSFUL_MUTATION = {
-        data: {id: NEW_PARENT_ID}, timestamp: Date.now(), type: TreeParentMutationTypes.SET_ID
+        data: {id: NEW_PARENT_ID}, timestamp: Date.now(), type: IdMutationTypes.SET
     }
     // const THIRD_SUCCESSFUL_MUTATION = {
     //     data: {id: SECOND_NEW_PARENT_ID}, timestamp: Date.now(), type: TreeParentMutationTypes.SET_ID

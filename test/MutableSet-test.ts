@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import {PointMutationTypes} from '../app/objects/point/PointMutationTypes';
-import {SetMutationTypes} from '../app/objects/set/SetMutationTypes';
 import {MutableStringSet} from '../app/objects/set/MutableStringSet';
+import {SetMutationTypes} from '../app/objects/set/SetMutationTypes';
 
 describe('MutableSet:string', () => {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}

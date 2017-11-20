@@ -1,7 +1,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
-var SetMutationTypes_1 = require("../app/objects/set/SetMutationTypes");
 var MutableStringSet_1 = require("../app/objects/set/MutableStringSet");
+var SetMutationTypes_1 = require("../app/objects/set/SetMutationTypes");
 describe('MutableSet:string', function () {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
     // const po = new Point({x:5, y:6})
