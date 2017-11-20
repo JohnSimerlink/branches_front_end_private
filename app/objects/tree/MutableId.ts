@@ -17,7 +17,7 @@ class MutableId implements IMutableId {
     public get(): string {
         return this.id
     }
-    public set(id): void {
+    private set(id): void {
         this.id = id
     }
     constructor({id, mutations = []}) {

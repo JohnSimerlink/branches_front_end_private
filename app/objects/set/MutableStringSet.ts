@@ -21,7 +21,7 @@ class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, IS
         return Object.keys(this.set)
     }
 
-    public add(member: string) {
+    private add(member: string) {
         if (this.set[member]) {
             throw new RangeError(
                 member + ' is already a member. The members are' + JSON.stringify(this.getMembers())
@@ -30,7 +30,7 @@ class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, IS
         this.set[member] = true
     }
 
-    public remove(member: string) {
+    private remove(member: string) {
         if (!this.set[member]) {
             throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.getMembers()))
         }
