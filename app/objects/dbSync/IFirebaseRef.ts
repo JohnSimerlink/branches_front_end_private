@@ -1,3 +1,4 @@
 export interface IFirebaseRef {
-    update(updates: object)
+    update(updates: object),
+    child(path: string),
 }

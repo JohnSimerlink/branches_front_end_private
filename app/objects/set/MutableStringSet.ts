@@ -1,7 +1,9 @@
 /* tslint:disable variable-name */
 // import {log} from '../../core/log'
+import {ISubscribable, updatesCallback} from '../ISubscribable';
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
+import {Subscribable} from '../tree/Subscribable';
 import {ISet} from './ISet';
 import {SetMutationTypes} from './SetMutationTypes';
 /*
@@ -9,14 +11,17 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  as commutative as they seem . . . at least for the complicated specs I was setting for myself . . .
  See the commit history for the commit before this file was created to see what I mean.
  */
-class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
+class MutableStringSet extends Subscribable implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
+    /* TODO: maybe this and the above should be inherited protected properties from a base class */
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
     private set: object;
-    constructor({set, mutations} = {set: {}, mutations: []}) {
+    constructor({set, mutations, updatesCallbacks} = {set: {}, mutations: [], updatesCallbacks: []}) {
+        super({updatesCallbacks})
         this.set = set
         this._mutations = mutations
     }
+
     public getMembers(): string[] {
         return Object.keys(this.set)
     }
@@ -28,6 +33,9 @@ class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, IS
             )
         }
         this.set[member] = true
+        this.updates.val = {}
+        this.updates.val[member] = true
+        // TODO: Fix Violation of Law of Demeter ^^
     }
 
     private remove(member: string) {
@@ -35,6 +43,9 @@ class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, IS
             throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.getMembers()))
         }
         delete this.set[member]
+        this.updates.val = {}
+        this.updates.val[member] = false
+        // TODO: Fix Violation of Law of Demeter ^^
     }
     public hasMember(member: string): boolean {
         return this.set[member]
@@ -52,6 +63,8 @@ class MutableStringSet implements IMutable<IDatedMutation<SetMutationTypes>>, IS
                     + JSON.stringify(SetMutationTypes))
         }
         this._mutations.push(mutation)
+        this.pushes = {mutations: mutation}
+        this.callCallbacks()
     }
 
     public mutations(): Array<IDatedMutation<SetMutationTypes>> {
