@@ -41,7 +41,7 @@ class Point implements IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPo
         return {x: this.x, y: this.y}
     }
 
-    public shift(delta: ICoordinate): ICoordinate {
+    private shift(delta: ICoordinate): ICoordinate {
         this.x += delta.x
         this.y += delta.y
         return this.val()
