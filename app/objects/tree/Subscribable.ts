@@ -2,11 +2,11 @@ import {ISubscribable, updatesCallback} from '../ISubscribable';
 import {IDatedMutation} from '../mutations/IMutation';
 import {SetMutationTypes} from '../set/SetMutationTypes';
 
-class Subscribable implements ISubscribable {
+abstract class Subscribable implements ISubscribable {
     protected updates: {val?: object} = {}
     protected pushes: {mutations?: IDatedMutation<SetMutationTypes>} = {}
     private updatesCallbacks: updatesCallback[];
-    constructor({updatesCallbacks}) {
+    constructor({updatesCallbacks} = {updatesCallbacks: []}) {
         this.updatesCallbacks = updatesCallbacks /* let updatesCallbacks be injected for
          1) modularity reasons
          2) if we want to cache the state of this entire object, we could load in the previous state
@@ -20,7 +20,7 @@ class Subscribable implements ISubscribable {
         const me = this
         this.updatesCallbacks.forEach(callback => {
             callback({
-                push: me.pushes,
+                pushes: me.pushes,
                 updates: me.updates,
             })
         })
