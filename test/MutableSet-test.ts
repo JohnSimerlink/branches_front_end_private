@@ -1,5 +1,4 @@
 import {expect} from 'chai'
-import {PointMutationTypes} from '../app/objects/point/PointMutationTypes';
 import {MutableStringSet} from '../app/objects/set/MutableStringSet';
 import {SetMutationTypes} from '../app/objects/set/SetMutationTypes';
 
@@ -13,25 +12,25 @@ describe('MutableSet:string', () => {
     const NONEXISTENT_MEMBER_ID = 'nonexistentid'
     const INIT_MEMBER_VALUE = []
     const FIRST_SUCCESSFUL_MUTATION = {
-        data: {member: FIRST_MEMBER_ID}, timestamp: Date.now(), type: SetMutationTypes.ADD
+        data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
     }
     const FIRST_MEMBER_VALUE = [...INIT_MEMBER_VALUE, FIRST_MEMBER_ID]
     const SECOND_SUCCESSFUL_MUTATION = {
-        data: {member: FIRST_MEMBER_ID}, timestamp: Date.now(), type: SetMutationTypes.REMOVE
+        data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.REMOVE
     }
     const THIRD_SUCCESSFUL_MUTATION = FIRST_SUCCESSFUL_MUTATION
     THIRD_SUCCESSFUL_MUTATION.timestamp = Date.now()
     const FOURTH_SUCCESSFUL_MUTATION = {
-        data: {member: SECOND_MEMBER_ID}, timestamp: Date.now(), type: SetMutationTypes.ADD
+        data: SECOND_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
     }
     const FIFTH_SUCCESSFUL_MUTATION = {
-        data: {member: THIRD_MEMBER_ID}, timestamp: Date.now(), type: SetMutationTypes.ADD
+        data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
     }
     const SIXTH_SUCCESSFUL_MUTATION = {
-        data: {member: FOURTH_MEMBER_ID}, timestamp: Date.now(), type: SetMutationTypes.ADD
+        data: FOURTH_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
     }
     const SEVENTH_SUCCESSFUL_MUTATION = {
-        data: {member: THIRD_MEMBER_ID}, timestamp: Date.now(), type: SetMutationTypes.REMOVE
+        data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.REMOVE
     }
     const membersAfterSixthSuccessfulMutation = [
         ...FIRST_MEMBER_VALUE,
@@ -81,7 +80,7 @@ describe('MutableSet:string', () => {
     and should keep data and mutations the same`
         , () => {
             const badRemoveMutation = {
-                data: {member: NONEXISTENT_MEMBER_ID },
+                data: NONEXISTENT_MEMBER_ID,
                 timestamp: Date.now(),
                 type: SetMutationTypes.REMOVE
             }
@@ -102,7 +101,7 @@ describe('MutableSet:string', () => {
     and should keep data and mutations the same`, () => {
         // const goodRemoveMutation = SECOND_SUCCESSFUL_MUTATION
         const badRemoveMutation = {
-            data: {member: FIRST_MEMBER_ID },
+            data: FIRST_MEMBER_ID,
             timestamp: Date.now(),
             type: SetMutationTypes.REMOVE
         }

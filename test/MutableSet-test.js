@@ -12,25 +12,25 @@ describe('MutableSet:string', function () {
     var NONEXISTENT_MEMBER_ID = 'nonexistentid';
     var INIT_MEMBER_VALUE = [];
     var FIRST_SUCCESSFUL_MUTATION = {
-        data: { member: FIRST_MEMBER_ID }, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
+        data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
     };
     var FIRST_MEMBER_VALUE = INIT_MEMBER_VALUE.concat([FIRST_MEMBER_ID]);
     var SECOND_SUCCESSFUL_MUTATION = {
-        data: { member: FIRST_MEMBER_ID }, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.REMOVE
+        data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.REMOVE
     };
     var THIRD_SUCCESSFUL_MUTATION = FIRST_SUCCESSFUL_MUTATION;
     THIRD_SUCCESSFUL_MUTATION.timestamp = Date.now();
     var FOURTH_SUCCESSFUL_MUTATION = {
-        data: { member: SECOND_MEMBER_ID }, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
+        data: SECOND_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
     };
     var FIFTH_SUCCESSFUL_MUTATION = {
-        data: { member: THIRD_MEMBER_ID }, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
+        data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
     };
     var SIXTH_SUCCESSFUL_MUTATION = {
-        data: { member: FOURTH_MEMBER_ID }, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
+        data: FOURTH_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.ADD
     };
     var SEVENTH_SUCCESSFUL_MUTATION = {
-        data: { member: THIRD_MEMBER_ID }, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.REMOVE
+        data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes_1.SetMutationTypes.REMOVE
     };
     var membersAfterSixthSuccessfulMutation = FIRST_MEMBER_VALUE.concat([
         SECOND_MEMBER_ID,
@@ -72,7 +72,7 @@ describe('MutableSet:string', function () {
     });
     it("BAD REMOVE mutation on non-existent member will throw range error\n    and should keep data and mutations the same", function () {
         var badRemoveMutation = {
-            data: { member: NONEXISTENT_MEMBER_ID },
+            data: NONEXISTENT_MEMBER_ID,
             timestamp: Date.now(),
             type: SetMutationTypes_1.SetMutationTypes.REMOVE
         };
@@ -89,7 +89,7 @@ describe('MutableSet:string', function () {
     it("BAD REMOVE (2) mutation on non-existent member will throw range error\n    and should keep data and mutations the same", function () {
         // const goodRemoveMutation = SECOND_SUCCESSFUL_MUTATION
         var badRemoveMutation = {
-            data: { member: FIRST_MEMBER_ID },
+            data: FIRST_MEMBER_ID,
             timestamp: Date.now(),
             type: SetMutationTypes_1.SetMutationTypes.REMOVE
         };

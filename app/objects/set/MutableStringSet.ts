@@ -16,7 +16,7 @@ class MutableStringSet extends Subscribable implements IMutable<IDatedMutation<S
     /* TODO: maybe this and the above should be inherited protected properties from a base class */
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
     private set: object;
-    constructor({set, mutations, updatesCallbacks} = {set: {}, mutations: [], updatesCallbacks: []}) {
+    constructor({set = {}, mutations = [], updatesCallbacks = []} = {set: [], mutations: [], updatesCallbacks: []} ) {
         super({updatesCallbacks})
         this.set = set
         this._mutations = mutations
@@ -53,10 +53,10 @@ class MutableStringSet extends Subscribable implements IMutable<IDatedMutation<S
     public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
         switch (mutation.type) {
             case SetMutationTypes.ADD:
-                this.add(mutation.data.member) // TODO: Law of Demeter Violation? How to fix?
+                this.add(mutation.data)
                 break;
             case SetMutationTypes.REMOVE:
-                this.remove(mutation.data.member) // TODO: Law of Demeter Violation? How to fix?
+                this.remove(mutation.data)
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'

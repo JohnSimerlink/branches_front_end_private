@@ -1,4 +1,4 @@
 export interface IUpdates {
     updates?: object,
-    push?: object
+    pushes?: object
 }

@@ -11,7 +11,7 @@ class FirebaseSyncer implements ISubscriber {
     }
     private save(updates: IUpdates) {
         this.firebaseRef.update(updates.updates)
-        const pushes = updates.push
+        const pushes = updates.pushes
         for (const [arrayName, pushedValue] of Object.entries(pushes)) {
             this.firebaseRef
                 .child(arrayName)
@@ -20,10 +20,7 @@ class FirebaseSyncer implements ISubscriber {
     }
 
     public subscribe(obj: ISubscribable) {
-        const me = this
-        obj.onUpdate((updates: IUpdates) => {
-            me.save(updates)
-        })
+        obj.onUpdate(this.save)
     }
 }
 
