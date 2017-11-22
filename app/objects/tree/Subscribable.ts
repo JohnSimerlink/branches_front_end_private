@@ -2,9 +2,9 @@ import {ISubscribable, updatesCallback} from '../ISubscribable';
 import {IDatedMutation} from '../mutations/IMutation';
 import {SetMutationTypes} from '../set/SetMutationTypes';
 
-abstract class Subscribable implements ISubscribable {
+class Subscribable<MutationTypes> implements ISubscribable {
     protected updates: {val?: object} = {}
-    protected pushes: {mutations?: IDatedMutation<SetMutationTypes>} = {}
+    protected pushes: {mutations?: IDatedMutation<MutationTypes>} = {}
     private updatesCallbacks: updatesCallback[];
     constructor({updatesCallbacks} = {updatesCallbacks: []}) {
         this.updatesCallbacks = updatesCallbacks /* let updatesCallbacks be injected for

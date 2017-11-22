@@ -2,7 +2,7 @@ import {inject, injectable} from 'inversify';
 import {IMutableStringSet} from '../set/IMutableStringSet';
 import {TYPES} from '../types'
 import {IBasicTree} from './IBasicTree';
-import {IMutableId} from './MutableId';
+import {IMutableId} from '../id/MutableId';
 
 @injectable()
 class BasicTree implements IBasicTree {
@@ -27,3 +27,5 @@ class BasicTree implements IBasicTree {
         this.children = children
     }
 }
+
+export {BasicTree}

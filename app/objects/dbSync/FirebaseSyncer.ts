@@ -1,10 +1,11 @@
 import {ISubscribable} from '../ISubscribable';
 import {ISubscriber} from '../ISubscriber';
+import {IDatabaseSyncer} from './IDatabaseSyncer';
 import {IDbSyncable} from './IDbSyncable';
 import {IFirebaseRef} from './IFirebaseRef';
 import {IUpdates} from './IUpdates';
 
-class FirebaseSyncer implements ISubscriber {
+class FirebaseSyncer implements IDatabaseSyncer {
     private firebaseRef: IFirebaseRef
     constructor({firebaseRef}) {
         this.firebaseRef = firebaseRef

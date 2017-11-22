@@ -1,11 +1,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
 var sinon = require("sinon");
-var MutableStringSet_1 = require("../app/objects/set/MutableStringSet");
+var SubscribableMutableStringSet_1 = require("../app/objects/set/SubscribableMutableStringSet");
 var SetMutationTypes_1 = require("../app/objects/set/SetMutationTypes");
-describe('Subscribable:MutableStringSet', function () {
+describe('Subscribable:SubscribableMutableStringSet', function () {
     var updatesCallbacks = [];
-    var set = new MutableStringSet_1.MutableStringSet({ updatesCallbacks: updatesCallbacks });
+    var set = new SubscribableMutableStringSet_1.SubscribableMutableStringSet({ updatesCallbacks: updatesCallbacks });
     // const firebaseRef = 'path/subpath/prop'
     // const firebaseSyncer = new FirebaseSyncer({firebaseRef})
     var callback1 = sinon.spy(); // () => void 0

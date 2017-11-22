@@ -3,12 +3,12 @@ import * as sinon from 'sinon'
 import {FirebaseSyncer} from '../app/objects/dbSync/FirebaseSyncer';
 import {IUpdates} from '../app/objects/dbSync/IUpdates';
 import {IDatedMutation} from '../app/objects/mutations/IMutation';
-import {MutableStringSet} from '../app/objects/set/MutableStringSet';
+import {SubscribableMutableStringSet} from '../app/objects/set/SubscribableMutableStringSet';
 import {SetMutationTypes} from '../app/objects/set/SetMutationTypes';
 
-describe('Subscribable:MutableStringSet', () => {
+describe('Subscribable:SubscribableMutableStringSet', () => {
     const updatesCallbacks = []
-    const set = new MutableStringSet({updatesCallbacks})
+    const set = new SubscribableMutableStringSet({updatesCallbacks})
     // const firebaseRef = 'path/subpath/prop'
     // const firebaseSyncer = new FirebaseSyncer({firebaseRef})
 
