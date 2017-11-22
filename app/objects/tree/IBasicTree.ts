@@ -1,6 +1,6 @@
 import {IMutableStringSet} from '../set/IMutableStringSet';
-import {IId} from './IId';
-import {IMutableId} from './MutableId';
+import {IId} from '../id/IId';
+import {IMutableId} from '../id/MutableId';
 
 interface IBasicTree {
     getId();

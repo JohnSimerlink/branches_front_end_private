@@ -1,6 +1,6 @@
 import {expect} from 'chai'
-import {IdMutationTypes} from '../app/objects/tree/IdMutationTypes';
-import {MutableId} from '../app/objects/tree/MutableId';
+import {IdMutationTypes} from '../app/objects/id/IdMutationTypes';
+import {MutableId} from '../app/objects/id/MutableId';
 import {TreeParentMutationTypes} from '../app/objects/tree/TreeParentMutationTypes';
 
 describe('MutableId', () => {

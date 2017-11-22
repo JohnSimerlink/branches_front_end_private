@@ -1,6 +1,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
-var MutableStringSet_1 = require("../app/objects/set/MutableStringSet");
+var SubscribableMutableStringSet_1 = require("../app/objects/set/SubscribableMutableStringSet");
 var SetMutationTypes_1 = require("../app/objects/set/SetMutationTypes");
 describe('MutableSet:string', function () {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
@@ -45,7 +45,7 @@ describe('MutableSet:string', function () {
         FIRST_MEMBER_ID, FOURTH_MEMBER_ID
     ];
     // ,SECOND_MEMBER_ID, THIRD_MEMBER_ID, FOURTH_MEMBER_ID]
-    var stringSet = new MutableStringSet_1.MutableStringSet();
+    var stringSet = new SubscribableMutableStringSet_1.SubscribableMutableStringSet();
     var FIRST_MUTATION_INDEX = 0;
     var SECOND_MUTATION_INDEX = 1;
     var THIRD_MUTATION_INDEX = 2;

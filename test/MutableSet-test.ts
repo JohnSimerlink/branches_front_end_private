@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import {MutableStringSet} from '../app/objects/set/MutableStringSet';
+import {SubscribableMutableStringSet} from '../app/objects/set/SubscribableMutableStringSet';
 import {SetMutationTypes} from '../app/objects/set/SetMutationTypes';
 
 describe('MutableSet:string', () => {
@@ -47,7 +47,7 @@ describe('MutableSet:string', () => {
         FIRST_MEMBER_ID, FOURTH_MEMBER_ID
     ]
     // ,SECOND_MEMBER_ID, THIRD_MEMBER_ID, FOURTH_MEMBER_ID]
-    const stringSet = new MutableStringSet()
+    const stringSet = new SubscribableMutableStringSet()
     const FIRST_MUTATION_INDEX = 0
     const SECOND_MUTATION_INDEX = 1
     const THIRD_MUTATION_INDEX = 2

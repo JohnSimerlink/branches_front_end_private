@@ -11,7 +11,8 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  as commutative as they seem . . . at least for the complicated specs I was setting for myself . . .
  See the commit history for the commit before this file was created to see what I mean.
  */
-class MutableStringSet extends Subscribable implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
+class SubscribableMutableStringSet extends Subscribable<SetMutationTypes>
+    implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
     /* TODO: maybe this and the above should be inherited protected properties from a base class */
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
@@ -73,4 +74,4 @@ class MutableStringSet extends Subscribable implements IMutable<IDatedMutation<S
 
 }
 
-export {MutableStringSet}
+export {SubscribableMutableStringSet}

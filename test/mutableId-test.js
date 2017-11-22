@@ -1,7 +1,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
-var IdMutationTypes_1 = require("../app/objects/tree/IdMutationTypes");
-var MutableId_1 = require("../app/objects/tree/MutableId");
+var IdMutationTypes_1 = require("../app/objects/id/IdMutationTypes");
+var MutableId_1 = require("../app/objects/id/MutableId");
 describe('MutableId', function () {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
     // const po = new Point({x:5, y:6})
