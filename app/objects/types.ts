@@ -9,7 +9,12 @@ const TYPES = {
     ISubscribableBasicTree: Symbol('ISubscribableBasicTree'),
     ISubscribableMutableId: Symbol('ISubscribableMutableId'),
     ISubscribableMutableIdArgs: Symbol('ISubscribableMutableIdArgs'),
-    String: Symbol('String')
+    ISubscribableMutableStringSet: Symbol('ISubscribableMutableStringSet'),
+    Object: Symbol('Object'),
+    String: Symbol('String'),
+    Subscribable: Symbol('Subscribable'),
+    SubscribableArgs: Symbol('SubscribableArgs'),
+    SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),
 }
 
 export {TYPES}
