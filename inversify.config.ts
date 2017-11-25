@@ -16,8 +16,8 @@ import {
     SubscribableMutableStringSet,
     SubscribableMutableStringSetArgs
 } from './app/objects/set/SubscribableMutableStringSet';
-import {Subscribable} from './app/objects/tree/Subscribable';
-import {SubscribableArgs} from './app/objects/tree/Subscribable';
+import {Subscribable} from './app/objects/Subscribable';
+import {SubscribableArgs} from './app/objects/Subscribable';
 import {SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 

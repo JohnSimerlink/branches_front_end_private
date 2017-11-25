@@ -5,7 +5,7 @@ import {inject, injectable} from 'inversify';
 import {ISubscribable, updatesCallback} from '../ISubscribable';
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
-import {Subscribable} from '../tree/Subscribable';
+import {Subscribable} from '../Subscribable';
 import {TYPES} from '../types';
 import {ISet} from './ISet';
 import {SetMutationTypes} from './SetMutationTypes';
