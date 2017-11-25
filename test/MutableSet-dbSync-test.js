@@ -1,2 +1,0 @@
-describe('MutableSet-dbSync', function () {
-});
