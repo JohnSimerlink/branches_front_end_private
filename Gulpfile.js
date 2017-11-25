@@ -90,104 +90,13 @@ const paths = {
     scripts: './app/**/*.ts',
     tests: './test/*.ts',
 }
-
-gulp.task('test-watch-old', function() {
-    gulp.start('build-and-test')
-    watch([paths.scripts, paths.tests], batch(function (events, done) {
-        gulp.start('build-and-test',done)
-    }))
-    // gulp.watch(paths.scripts, ["test2"])
-})
-
-// gulp.task('test', function() {
-//     test()
-// })
-
-gulp.task('test-watch', function() {
-    gulp.start('test')
-    watch([paths.scripts, paths.tests], function(){
-        gulp.start('test')
-    })
-})
-
-gulp.task('coverage-watch', function() {
-    gulp.start('coverage')
-    watch([paths.scripts, paths.tests], function(){
-        gulp.start('coverage')
-    })
-})
-
 gulp.task('coverage', function() {
-    console.log("gulp task coverage running")
-    test(() => {
-        buildInjectables(() => {
-            coverage()
-        })
+    coverage()
+    watch([paths.scripts, paths.tests], function(){
+        console.log('file change detected!')
+        coverage()
     })
 })
-gulp.task('test', function() {
-    // removeTroublesomeFilesAndTest()
-    test()
-})
-gulp.task('build-injectables', function() {
-    buildInjectables()
-})
-
-function coverage() {
-    exec('npm run coverage', function(err, stdout, stderr){
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-        // publishCoverageIfConfigExists()
-    })
-}
-function test(callback) {
-    exec('npm t', function(err, stdout, stderr) {
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-        typeof callback === 'function' && callback()
-    })
-   // removeTroublesomeFiles()
-}
-function removeTroublesomeFilesAndTest(callback) {
-    removeTroublesomeFiles(() => {
-        test(() => {
-            typeof callback === 'function' && callback()
-        })
-    })
-}
-
-function removeTroublesomeFiles(callback) {
-    console.log('REMOVE TROUBLESOME FILES CALLED')
-    exec('rm ./app/objects/points/PointMutationTypes.js ./app/objects/tree/TreeMutationTypes.js ./app/objects/tree/IdMutationTypes.js ' +
-        './test/*.js' +
-        './app/objects/point/*.js', function (err, stdout, stderr) { // << sometimes if this file isn't removed, the tests can't run . . .
-        typeof callback === 'function' && callback()
-    })
-}
-
-function buildInjectables(callback) {
-    console.log('Recompiling typescript files with injectable tags. I don\'t think the following errors really matter.')
-    exec('tsc -p ./app/objects/point/point.ts --inlineSourceMap', function(err, stdout, stderr){
-        console.log('Finished recompiling typescript files with injectable tags')
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-        exec('tsc -p ./app/objects/test/AB.ts --inlineSourceMap', function(err, stdout, stderr) {
-            console.log(stdout)
-            console.error(err)
-            console.error(stderr)
-            exec('tsc -p ./app/objects/id/SubscribableMutableId.ts --inlineSourceMap', function(err, stdout, stderr) {
-                console.log(stdout)
-                console.error(err)
-                console.error(stderr)
-                typeof callback === 'function' && callback()
-            })
-        })
-    })
-}
-
 function publishCoverageIfConfigExists(){
     fs.open('.coveralls.yml', 'r', function (err, fd) {
         if (!err){
@@ -210,7 +119,15 @@ gulp.task('build-and-test', function(done) {
         done()
     })
 })
-
+// NOTE: the below cannot be run through npm. npm makes it use a local version of mocha or something which causes the typescript to not be compiled without errors
+function coverage() {
+    console.log('compute test coverage called')
+    exec('nyc mocha', function(err, stdout, stderr){
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
+    })
+}
 // function test(){
 //     console.log('rerunning tests! . . .');
 //     run("mocha --compilers js:babel-register --require babel-polyfill").exec() //, function(err, out, code){
@@ -225,40 +142,7 @@ function build() {
         .pipe(sourcemaps.write())
         /*flush to disk*/ // necessary or else mocha won't be able to find the files
         .pipe(gulp.dest('.'))
-
 }
-function test(callback){
-    console.log('testing!')
-    var tsProject = typescript.createProject('./tsconfig.json')
-    console.log("running gulp test")
-    gulp.src(paths.tests, {base: '.'})
-        // .pipe(
-        // webpack({
-        //     module: {
-        //         rules: CodeAndTestConfig.rules,
-        //     },
-        //     resolve: {
-        //         extensions: CodeAndTestConfig.extensions
-        //     }
-        // }))
-        .pipe(tsProject())
-        /*flush to disk*/ // necessary or else mocha won't be able to find the files
-        .pipe(gulp.dest('.'))
-        .pipe(
-            mocha({
-                reporter: 'spec',
-                // compilers: ['js:babel-register', /*'ts:ts-node/register'*/],
-                // require: ['babel-polyfill', /*'ts-node/register'*/],
-            })
-            .on('error', handleError)
-        )
-    typeof callback === 'function' && callback()
-}
-function testfunc(){
-    console.log("THIS IS ", this, "ARGUMENTS IS", arguments)
-    return this
-}
-
 gulp.task("build:lint", function() {
     return gulp.src(["./**/*.ts", "!./node_modules/**/*", "!./typings/**/*"])
         .pipe(tslint({

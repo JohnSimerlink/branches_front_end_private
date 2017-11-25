@@ -7,13 +7,8 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "deploy": "sh .deploy.sh",
-    "test": "mocha",
-    "__test_comment": "# mocha version 4.0.1 works, only globally and not locally (.node_modules/.bin/mocha",
-    "coverage": "cross-env NODE_ENV=test nyc npm t",
-    "publish-coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test-watch": "gulp test-watch",
-    "coverage-watch": "gulp coverage-watch",
-    "build-injectables": "gulp build-injectables"
+    "test": "echo run `gulp coverage`. Do not insert `gulp coverage` into an npm command. That causes errors",
+    "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "",
   "license": "ISC",

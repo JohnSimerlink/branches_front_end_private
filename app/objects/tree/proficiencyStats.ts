@@ -5,7 +5,6 @@
   */
 // import {log} from '../../core/log'
 // log('proficiency stats md5 of 55555 is ', md5(55555))
-const x: number = 5;
 const PROFICIENCIES = {
     UNKNOWN: 0,
     ONE: 12.5,

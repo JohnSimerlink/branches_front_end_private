@@ -92,6 +92,7 @@ export function estimateCurrentStrength(
     currentProficiency,
     secondsSinceLastInteraction
 ) {
+    let z = 5 + 8 + 2;
     let newInteractionStrengthDecibels
     const t = secondsSinceLastInteraction
     if (currentProficiency <= PROFICIENCIES.ONE) {
