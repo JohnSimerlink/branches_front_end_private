@@ -1,6 +1,7 @@
 import {expect} from 'chai'
-import {SubscribableMutableStringSet} from '../app/objects/set/SubscribableMutableStringSet';
-import {SetMutationTypes} from '../app/objects/set/SetMutationTypes';
+import 'reflect-metadata'
+import {SetMutationTypes} from './SetMutationTypes';
+import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
 
 describe('MutableSet:string', () => {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
