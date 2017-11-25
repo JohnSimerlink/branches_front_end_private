@@ -6,6 +6,7 @@ import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
+import {ISubscribable} from './app/objects/ISubscribable';
 import {ActivatableDatedMutation} from './app/objects/mutations/ActivatableDatedMutation';
 import {IActivatableDatedMutation, IDatedMutation} from './app/objects/mutations/IMutation';
 import {IMutableStringSet} from './app/objects/set/IMutableStringSet';
@@ -17,8 +18,8 @@ import {
 } from './app/objects/set/SubscribableMutableStringSet';
 import {Subscribable} from './app/objects/tree/Subscribable';
 import {SubscribableArgs} from './app/objects/tree/Subscribable';
+import {SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
-import {ISubscribable} from './app/objects/ISubscribable';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -29,6 +30,7 @@ myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableString
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs);
+myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableBasicTreeArgs).to(SubscribableBasicTreeArgs);
 myContainer.bind<ISubscribable>(TYPES.Subscribable).to(Subscribable);
 
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
