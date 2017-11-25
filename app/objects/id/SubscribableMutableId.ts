@@ -4,7 +4,7 @@ import {decorate} from 'inversify'
 import {ISubscribable, updatesCallback} from '../ISubscribable';
 import {Mixin} from '../Mixin';
 import {IDatedMutation} from '../mutations/IMutation';
-import {Subscribable} from '../tree/Subscribable';
+import {Subscribable} from '../Subscribable';
 import {TYPES} from '../types';
 import {IdMutationTypes} from './IdMutationTypes';
 import {ISubscribableMutableId} from './ISubscribableMutableId';
