@@ -174,7 +174,17 @@ function buildInjectables(callback) {
         console.log(stdout)
         console.error(err)
         console.error(stderr)
-        typeof callback === 'function' && callback()
+        exec('tsc -p ./app/objects/test/AB.ts --inlineSourceMap', function(err, stdout, stderr) {
+            console.log(stdout)
+            console.error(err)
+            console.error(stderr)
+            exec('tsc -p ./app/objects/id/SubscribableMutableId.ts --inlineSourceMap', function(err, stdout, stderr) {
+                console.log(stdout)
+                console.error(err)
+                console.error(stderr)
+                typeof callback === 'function' && callback()
+            })
+        })
     })
 }
 
