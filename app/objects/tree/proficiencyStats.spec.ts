@@ -2,7 +2,7 @@
 import {expect} from 'chai'
 import {} from 'mocha' // types
 
-import {addObjToProficiencyStats} from '../app/objects/tree/proficiencyStats';
+import {addObjToProficiencyStats} from './proficiencyStats';
 
 describe('addObjToProficiencyStats', () => {
 
