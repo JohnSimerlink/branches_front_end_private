@@ -1,4 +1,4 @@
-import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList} from '../app/objects/contentItem/uriParser';
+import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList} from './uriParser';
 import {expect} from 'chai'
 describe('Convert Breadcrumbs List to String', () => {
     let list
