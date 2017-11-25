@@ -3,4 +3,7 @@
 --full-trace
 --bail
 -c
-test/**/*.ts
+app/*.spec.ts
+app/**/*.spec.ts
+app/**/**/*.spec.ts
+app/**/**/**/*.spec.ts

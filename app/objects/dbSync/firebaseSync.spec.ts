@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {FirebaseSyncer} from '../app/objects/dbSync/FirebaseSyncer';
-import {ISubscribable} from '../app/objects/ISubscribable';
+import {FirebaseSyncer} from './FirebaseSyncer';
+import {ISubscribable} from '../ISubscribable';
 
 describe('firebaseSync', () => {
     const firebaseRef = 'path/subpath/prop'

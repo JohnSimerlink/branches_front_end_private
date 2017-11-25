@@ -1,9 +1,9 @@
 import {expect} from 'chai'
 import 'reflect-metadata'
-import {Point} from '../app/objects/point/point'
-import {PointMutationTypes} from '../app/objects/point/PointMutationTypes';
-import {TYPES} from '../app/objects/types';
-import {myContainer} from '../inversify.config'
+import {Point} from './point'
+import {PointMutationTypes} from './PointMutationTypes';
+import {TYPES} from '../types';
+import {myContainer} from '../../../inversify.config'
 
 // import {Point} from '../app/objects/point/point'
 /*

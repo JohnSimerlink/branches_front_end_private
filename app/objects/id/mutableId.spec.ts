@@ -1,7 +1,7 @@
 import {expect} from 'chai'
-import {IdMutationTypes} from '../app/objects/id/IdMutationTypes';
-import {MutableId} from '../app/objects/id/MutableId';
-import {TreeParentMutationTypes} from '../app/objects/tree/TreeParentMutationTypes';
+import {IdMutationTypes} from './IdMutationTypes';
+import {MutableId} from './MutableId';
+import {TreeParentMutationTypes} from '../tree/TreeParentMutationTypes';
 
 describe('MutableId', () => {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}

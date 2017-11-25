@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import {AB, RUN, SWIM} from '../app/objects/test/AB';
+import {AB, RUN, SWIM} from './test/AB';
 
 describe('Mixin decorator', () => {
 

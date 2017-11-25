@@ -1,8 +1,8 @@
-import {FirebaseSyncerBasicTree} from '../app/objects/tree/FirebaseSyncableBasicTree';
-import {myContainer} from '../inversify.config';
-import {ISubscribableMutableId} from '../app/objects/id/ISubscribableMutableId';
-import {TYPES} from '../app/objects/types';
-import {ISubscribableMutableStringSet} from '../app/objects/set/ISubscribableMutableStringSet';
+import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
+import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
+import {FirebaseSyncerBasicTree} from './FirebaseSyncableBasicTree';
+import {TYPES} from '../types';
+import {myContainer} from '../../../inversify.config';
 
 describe('FirebaseSyncableBasicTree', () => {
     it('constructor should have firebase syncers subscribe to all the subscribable properties', () => {
