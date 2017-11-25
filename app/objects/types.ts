@@ -14,6 +14,7 @@ const TYPES = {
     String: Symbol('String'),
     Subscribable: Symbol('Subscribable'),
     SubscribableArgs: Symbol('SubscribableArgs'),
+    SubscribableBasicTreeArgs: Symbol('SubscribableBasicTreeArgs'),
     SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),
 }
 
