@@ -49,7 +49,7 @@ myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMuta
 myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
-myContainer.bind<SyncToDBArgs>(TYPES.FirebaseSyncerArgs).to(SyncToDBArgs)
+myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
 myContainer.bind<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction).toConstantValue((updates: IUpdates) => void 0)
 // tslint:disable-next-line ban-types
 myContainer.bind<Object>(TYPES.Object).toConstantValue({})

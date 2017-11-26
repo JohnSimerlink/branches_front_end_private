@@ -12,7 +12,7 @@ import {IUpdates} from './IUpdates';
 @injectable()
 class SyncToDB implements IDatabaseSyncer {
     private saveUpdatesToDBFunction: SaveUpdatesToDBFunction
-    constructor(@inject(TYPES.SyncToFirebaseArgs){saveUpdatesToDBFunction}) {
+    constructor(@inject(TYPES.SyncToDBArgs){saveUpdatesToDBFunction}) {
         this.saveUpdatesToDBFunction = saveUpdatesToDBFunction
     }
 

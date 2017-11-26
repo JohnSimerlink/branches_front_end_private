@@ -20,6 +20,7 @@ const TYPES = {
     SubscribableArgs: Symbol('SubscribableArgs'),
     SubscribableBasicTreeArgs: Symbol('SubscribableBasicTreeArgs'),
     SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),
+    SyncToDBArgs: Symbol('SyncToDBArgs'),
     SyncToFirebaseArgs: Symbol('SyncToDBArgs')
 }
 
