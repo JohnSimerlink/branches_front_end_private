@@ -2,8 +2,10 @@
 language: node_js
 node_js:
 - '6.9.2'
-script: npm test
+script: gulp test
 before_install:
+npm install gulp -g
+npm install mocha -g
 #- openssl aes-256-cbc -K $encrypted_090e6e0a8545_key -iv $encrypted_090e6e0a8545_iv
   #-in branches.pem.enc -out branches.pem -d
 #- export DISPLAY=:99.0

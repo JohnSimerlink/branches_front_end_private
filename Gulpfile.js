@@ -97,6 +97,9 @@ gulp.task('coverage', function() {
         coverage()
     })
 })
+gulp.task('test', function() {
+    test()
+})
 function publishCoverageIfConfigExists(){
     fs.open('.coveralls.yml', 'r', function (err, fd) {
         if (!err){
@@ -123,6 +126,14 @@ gulp.task('build-and-test', function(done) {
 function coverage() {
     console.log('compute test coverage called')
     exec('nyc mocha', function(err, stdout, stderr){
+        console.log(stdout)
+        console.error(err)
+        console.error(stderr)
+    })
+}
+function test() {
+    console.log('compute test coverage called')
+    exec('mocha', function(err, stdout, stderr){
         console.log(stdout)
         console.error(err)
         console.error(stderr)
