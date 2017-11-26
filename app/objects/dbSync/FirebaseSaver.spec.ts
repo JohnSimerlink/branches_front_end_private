@@ -3,11 +3,11 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {ISubscribable} from '../ISubscribable';
 import {TYPES} from '../types';
+import {FirebaseSaver} from './FirebaseSaver';
 import {IFirebaseRef} from './IFirebaseRef';
 import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
-import {SyncToDB} from './SyncToDB';
-import {FirebaseSaver} from './FirebaseSaver';
 import {IUpdates} from './IUpdates';
+import {SyncToDB} from './SyncToDB';
 
 describe('IDatabaseSaver > FirebaseSaver', () => {
     // const firebaseRef = 'path/subpath/prop'
