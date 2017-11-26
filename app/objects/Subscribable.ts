@@ -9,7 +9,7 @@ import {TYPES} from './types';
     // TODO: make abstract?
 class Subscribable<MutationTypes> implements ISubscribable {
     protected updates: {val?: object} = {}
-    protected pushes: {mutations?: IDatedMutation<MutationTypes>} = {}
+    protected pushes: {mutations?: Array<IDatedMutation<MutationTypes>>} = {}
     private updatesCallbacks: updatesCallback[];
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks} = {updatesCallbacks: []}) {
         this.updatesCallbacks = updatesCallbacks /* let updatesCallbacks be injected for
