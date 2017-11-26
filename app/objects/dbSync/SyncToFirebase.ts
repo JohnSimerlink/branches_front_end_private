@@ -5,7 +5,6 @@ import {ISubscribable} from '../ISubscribable';
 import {ISubscriber} from '../ISubscriber';
 import {TYPES} from '../types';
 import {IDatabaseSyncer} from './IDatabaseSyncer';
-import {IDbSyncable} from './IDbSyncable';
 import {IFirebaseRef} from './IFirebaseRef';
 import {IUpdates} from './IUpdates';
 
