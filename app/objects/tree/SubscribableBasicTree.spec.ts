@@ -3,7 +3,7 @@ import {myContainer} from '../../../inversify.config';
 import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
 import {TYPES} from '../types';
-import {DBSubscriberToBasicTree} from './DBSubscriberToBasicTree';
+import {DBSubscriberToTree} from './DBSubscriberToBasicTree';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
 
 describe('FirebaseSyncableBasicTree', () => {

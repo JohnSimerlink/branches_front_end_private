@@ -1,13 +1,18 @@
+// tslint:disable max-classes-per-file
+import {inject, injectable} from 'inversify';
+import 'reflect-metadata'
 import {ISubscribable} from '../ISubscribable';
 import {ISubscriber} from '../ISubscriber';
+import {TYPES} from '../types';
 import {IDatabaseSyncer} from './IDatabaseSyncer';
 import {IDbSyncable} from './IDbSyncable';
 import {IFirebaseRef} from './IFirebaseRef';
 import {IUpdates} from './IUpdates';
 
+@injectable()
 class FirebaseSyncer implements IDatabaseSyncer {
     private firebaseRef: IFirebaseRef
-    constructor({firebaseRef}) {
+    constructor(@inject(TYPES.FirebaseSyncerArgs){firebaseRef}) {
         this.firebaseRef = firebaseRef
     }
     private save(updates: IUpdates) {
@@ -24,5 +29,9 @@ class FirebaseSyncer implements IDatabaseSyncer {
         obj.onUpdate(this.save)
     }
 }
+@injectable()
+class FirebaseSyncerArgs {
+    @inject(TYPES.String) public firebaseRef
+}
 
-export {FirebaseSyncer}
+export {FirebaseSyncer, FirebaseSyncerArgs}

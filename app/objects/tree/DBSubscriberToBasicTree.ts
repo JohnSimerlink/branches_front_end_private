@@ -1,12 +1,14 @@
+// tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import {IDatabaseSyncer} from '../dbSync/IDatabaseSyncer';
 import {TYPES} from '../types';
 import {BasicTree} from './BasicTree';
 import {IBasicTree} from './IBasicTree';
+import {IDBSubscriber} from './IDBSubscriber';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
 
 @injectable()
-class DBSubscriberToBasicTree {
+class DBSubscriberToTree implements IDBSubscriber {
     private contentIdSyncer: IDatabaseSyncer;
     private parentIdSyncer: IDatabaseSyncer;
     private childrenSyncer: IDatabaseSyncer;
@@ -24,11 +26,13 @@ class DBSubscriberToBasicTree {
         this.contentIdSyncer = contentIdSyncer
         this.parentIdSyncer = parentIdSyncer
         this.childrenSyncer = childrenSyncer
+    }
+    public subscribe() {
         // subscribe the database to any local changes in the objects
         this.contentIdSyncer.subscribe(this.subscribableTree.contentId)
         this.parentIdSyncer.subscribe(this.subscribableTree.parentId)
         this.childrenSyncer.subscribe(this.subscribableTree.children)
-        /* subscribe the objects to any changes in the database <<<
+        /* TODO: subscribe the objects to any changes in the database <<<
          OR TODO: do this in a different class. Remember the Single Responsibility Principle
          */
     }
@@ -36,4 +40,4 @@ class DBSubscriberToBasicTree {
 class FirebaseSyncableBasicTreeArgs {
 
 }
-export {DBSubscriberToBasicTree}
+export {DBSubscriberToTree}

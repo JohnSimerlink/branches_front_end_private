@@ -6,9 +6,10 @@ import {IMutableStringSet} from '../set/IMutableStringSet';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
 import {TYPES} from '../types'
 import {IBasicTree} from './IBasicTree';
+import {ISubscribableBasicTree} from './ISubscribableBasicTree';
 
 @injectable()
-class SubscribableBasicTree implements IBasicTree {
+class SubscribableBasicTree implements ISubscribableBasicTree {
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
     public parentId: ISubscribableMutableId;
@@ -28,9 +29,9 @@ class SubscribableBasicTree implements IBasicTree {
 @injectable()
 class SubscribableBasicTreeArgs {
     @inject(TYPES.String) public id
-    @inject(TYPES.IMutableId) public contentId
-    @inject(TYPES.IMutableId) public parentId
-    @inject(TYPES.IMutableStringSet) public children
+    @inject(TYPES.ISubscribableMutableId) public contentId
+    @inject(TYPES.ISubscribableMutableId) public parentId
+    @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
 export {SubscribableBasicTree, SubscribableBasicTreeArgs}
