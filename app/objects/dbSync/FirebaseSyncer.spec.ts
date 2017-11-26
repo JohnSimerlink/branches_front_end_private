@@ -1,11 +1,12 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {FirebaseSyncer} from './FirebaseSyncer';
 import {ISubscribable} from '../ISubscribable';
+import {FirebaseSyncer} from './FirebaseSyncer';
 
-describe('firebaseSync', () => {
+describe('IDatabaseSyncer > firebaseSync', () => {
     const firebaseRef = 'path/subpath/prop'
     const firebaseSyncer = new FirebaseSyncer({firebaseRef})
+    // TODO: test the constructor to ensure it takes into account the firebaseRef
 
     /* so i need to test if subscribe works
     todo that I could 1) check if numSubscribers on the ISubscribable increases after subscribe.
