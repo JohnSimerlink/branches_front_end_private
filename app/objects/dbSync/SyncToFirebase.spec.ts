@@ -1,11 +1,11 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {ISubscribable} from '../ISubscribable';
-import {FirebaseSyncer} from './FirebaseSyncer';
+import {SyncToFirebase} from './SyncToFirebase';
 
 describe('IDatabaseSyncer > firebaseSync', () => {
     const firebaseRef = 'path/subpath/prop'
-    const firebaseSyncer = new FirebaseSyncer({firebaseRef})
+    const firebaseSyncer = new SyncToFirebase({firebaseRef})
     // TODO: test the constructor to ensure it takes into account the firebaseRef
 
     /* so i need to test if subscribe works
