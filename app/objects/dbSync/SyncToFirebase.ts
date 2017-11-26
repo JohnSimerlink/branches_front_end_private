@@ -10,7 +10,7 @@ import {IFirebaseRef} from './IFirebaseRef';
 import {IUpdates} from './IUpdates';
 
 @injectable()
-class FirebaseSyncer implements IDatabaseSyncer {
+class SyncToFirebase implements IDatabaseSyncer {
     private firebaseRef: IFirebaseRef
     constructor(@inject(TYPES.FirebaseSyncerArgs){firebaseRef}) {
         this.firebaseRef = firebaseRef
@@ -30,8 +30,8 @@ class FirebaseSyncer implements IDatabaseSyncer {
     }
 }
 @injectable()
-class FirebaseSyncerArgs {
+class SyncToFirebaseArgs {
     @inject(TYPES.String) public firebaseRef
 }
 
-export {FirebaseSyncer, FirebaseSyncerArgs}
+export {SyncToFirebase, SyncToFirebaseArgs}

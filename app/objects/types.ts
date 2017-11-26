@@ -1,6 +1,6 @@
 const TYPES = {
     Array: Symbol('Array'),
-    FirebaseSyncerArgs: Symbol('FirebaseSyncerArgs'),
+    FirebaseSyncerArgs: Symbol('SyncToFirebaseArgs'),
     IActivatableDatedMutation: Symbol('IActivatableDatedMutation'),
     IActivatableDatedMutationArr: Symbol('IActivatableDatedMutationArr'),
     IBasicTree: Symbol('IBasicTree'),

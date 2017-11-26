@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {FirebaseSyncer} from './dbSync/FirebaseSyncer';
+import {SyncToFirebase} from './dbSync/SyncToFirebase';
 import {IUpdates} from './dbSync/IUpdates';
 import {IDatedMutation} from './mutations/IMutation';
 import {SubscribableMutableStringSet} from './set/SubscribableMutableStringSet';
@@ -10,7 +10,7 @@ describe('Subscribable:SubscribableMutableStringSet', () => {
     const updatesCallbacks = []
     const set = new SubscribableMutableStringSet({updatesCallbacks})
     // const firebaseRef = 'path/subpath/prop'
-    // const firebaseSyncer = new FirebaseSyncer({firebaseRef})
+    // const firebaseSyncer = new SyncToFirebase({firebaseRef})
 
     const callback1 = sinon.spy() // () => void 0
     const callback2 = sinon.spy() // () => void 0

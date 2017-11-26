@@ -1,6 +1,6 @@
 import {Container} from 'inversify'
 import 'reflect-metadata'
-import {FirebaseSyncer, FirebaseSyncerArgs} from './app/objects/dbSync/FirebaseSyncer';
+import {SyncToFirebase, SyncToFirebaseArgs} from './app/objects/dbSync/SyncToFirebase';
 import {IDatabaseSyncer} from './app/objects/dbSync/IDatabaseSyncer';
 import {ISubscribableMutableId} from './app/objects/id/ISubscribableMutableId';
 import {IMutableId, MutableId} from './app/objects/id/MutableId';
@@ -26,8 +26,8 @@ import {TYPES} from './app/objects/types'
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
-myContainer.bind<FirebaseSyncerArgs>(TYPES.FirebaseSyncerArgs).to(FirebaseSyncerArgs)
-myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(FirebaseSyncer)
+myContainer.bind<SyncToFirebaseArgs>(TYPES.FirebaseSyncerArgs).to(SyncToFirebaseArgs)
+myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToFirebase)
 myContainer.bind<IMutableId>(TYPES.IMutableId).to(MutableId)
 myContainer.bind<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
 myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
