@@ -45,10 +45,20 @@ describe('IDatabaseSaver > FirebaseSaver', () => {
 
     it(`save updates with no updates and 3 pushes should call the firebaseSaver's
      update method 0 times, and child().push() method 3 times`, () => {
-        updatesObj = {pushes: {
-            someArrayProperty: [5, 7, 8]
-        }}
         expect(firebaseRefChildSpy.callCount).to.equal(0)
+        updatesObj = {pushes: {
+            someArrayProperty: 9
+        }}
+        firebaseSaver.save(updatesObj)
+        expect(firebaseRefChildSpy.callCount).to.equal(1)
+        updatesObj = {pushes: {
+            someArrayProperty: 8
+        }}
+        firebaseSaver.save(updatesObj)
+        expect(firebaseRefChildSpy.callCount).to.equal(2)
+        updatesObj = {pushes: {
+            someArrayProperty: 5
+        }}
         firebaseSaver.save(updatesObj)
         expect(firebaseRefChildSpy.callCount).to.equal(3)
         expect(firebaseRefUpdateSpy.callCount).to.equal(0)
