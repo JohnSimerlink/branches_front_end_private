@@ -1,3 +1,4 @@
 interface IPushable {
-    push()
+    push(item: any)
 }
+export {IPushable}
