@@ -1,16 +1,10 @@
 import {expect} from 'chai'
 import {IdMutationTypes} from './IdMutationTypes';
 import {MutableId} from './MutableId';
-import {TreeParentMutationTypes} from '../tree/TreeParentMutationTypes';
 
 describe('MutableId', () => {
-    // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
-    // const po = new Point({x:5, y:6})
     const INIT_PARENT_ID = 'abc123'
     const NEW_PARENT_ID = 'def456'
-    // const SECOND_NEW_PARENT_ID = 'df1abc123'
-    // const THIRD_NEW_PARENT_ID = 'f31aabc123'
-    // const FOURTH_NEW_PARENT_ID = '35dfabc123'
     const SECOND_SUCCESSFUL_MUTATION = {
         data: {id: NEW_PARENT_ID}, timestamp: Date.now(), type: IdMutationTypes.SET
     }

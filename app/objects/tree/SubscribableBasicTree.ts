@@ -7,6 +7,9 @@ import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSe
 import {TYPES} from '../types'
 import {IBasicTree} from './IBasicTree';
 import {ISubscribableBasicTree} from './ISubscribableBasicTree';
+import {IDatedMutation, IMutation} from '../mutations/IMutation';
+import {SetMutationTypes} from '../set/SetMutationTypes';
+import {IdMutationTypes} from '../id/IdMutationTypes';
 
 @injectable()
 class SubscribableBasicTree implements ISubscribableBasicTree {
@@ -25,7 +28,28 @@ class SubscribableBasicTree implements ISubscribableBasicTree {
         this.parentId = parentId
         this.children = children
     }
+    public addDescendantMutation(
+        propertyName: TreePropertyNames,
+        mutation: IDatedMutation<SetMutationTypes & IdMutationTypes>
+    ) {
+        switch (propertyName) {
+            case 'contentId':
+                this.contentId.addMutation(mutation)
+                break;
+            case 'parentId':
+                this.parentId.addMutation(mutation)
+                break;
+            case 'children':
+                this.children.addMutation(mutation)
+                break;
+            default:
+                throw new TypeError(
+                    propertyName
+                    + ' does not exist as a property ')
+        }
+    }
 }
+type TreePropertyNames = 'contentId' | 'parentId' | 'children'
 @injectable()
 class SubscribableBasicTreeArgs {
     @inject(TYPES.String) public id
