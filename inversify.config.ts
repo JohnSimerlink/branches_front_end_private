@@ -17,6 +17,7 @@ import {
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
 import {ISubscribable} from './app/objects/ISubscribable';
+import {radian} from './app/objects/MathUtils/MathUtils';
 import {ActivatableDatedMutation} from './app/objects/mutations/ActivatableDatedMutation';
 import {IActivatableDatedMutation, IDatedMutation} from './app/objects/mutations/IMutation';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -27,12 +28,19 @@ import {
     SubscribableMutableStringSet,
     SubscribableMutableStringSetArgs
 } from './app/objects/set/SubscribableMutableStringSet';
-import {SubscribableArgs} from './app/objects/Subscribable';
+import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
+import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
+import {ISigmaNode} from './app/objects/sigmaNode/ISigmaNode';
+import {ISigmaNodeData} from './app/objects/sigmaNode/ISigmaNodeData';
+import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {Subscribable} from './app/objects/Subscribable';
+import {SubscribableArgs} from './app/objects/Subscribable';
+import {IBasicTree} from './app/objects/tree/IBasicTree';
 import {ISubscribableBasicTree} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
-import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
+import {UIColor} from './app/objects/uiColor';
+import {defaultProficiencyStats, IProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -40,14 +48,19 @@ myContainer.bind<any>(TYPES.Any).toConstantValue(false)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
+myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
+myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableId>(TYPES.IMutableId).to(MutableId)
+myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
+myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
 myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
 myContainer.bind<ISubscribableMutableIdArgs>(TYPES.ISubscribableMutableIdArgs).to(SubscribableMutableIdArgs)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
+myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
@@ -59,10 +72,12 @@ myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
 // tslint:disable-next-line ban-types
 myContainer.bind<Number>(TYPES.Number).toConstantValue(0)
 myContainer.bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
+myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
 myContainer.bind<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction).toConstantValue((updates: IUpdates) => void 0)
+myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 myContainer.bind<Object>(TYPES.Object).toConstantValue({})
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutationArr).to()

@@ -6,23 +6,27 @@ import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
 import {IContentUserData} from '../contentUserData/IContentUserData';
 import {ICoordinate, IPoint} from '../point/IPoint';
 import {IBasicTree} from '../tree/IBasicTree';
+import {IBasicTreeData, IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
 import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
 import {IColorSlice} from './IColorSlice';
 import {IEditableSigmaNode} from './IEditableSigmaNode';
 import {ISigmaNode} from './ISigmaNode';
+import {ISigmaNodeData} from './ISigmaNodeData';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
 
 @injectable()
-class SigmaNode implements ISigmaNode, IEditableSigmaNode {
-    public receiveNewTreeData(tree: IBasicTree) {
-        this.parentId = tree.parentId.val()
-        this.contentId = tree.contentId.val()
-        this.children = tree.children.val()
+class SigmaNode implements ISigmaNode {
+    public receiveNewTreeData(tree: IBasicTreeDataWithoutId) {
+        this.parentId = tree.parentId
+        this.contentId = tree.contentId
+        this.children = tree.children
     }
     public receiveNewTreeUserData(treeUserData: ITreeUserData) {
         this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats)
         this.aggregationTimer = treeUserData.aggregationTimer
+        this.proficiencyStats = treeUserData.proficiencyStats
     }
     public receiveNewContentData(contentData: IContentData) {
         this.label = ContentItemUtils.getLabelFromContent(contentData)
@@ -54,6 +58,7 @@ class SigmaNode implements ISigmaNode, IEditableSigmaNode {
     public label: string;
     public size: number;
     public colorSlices: IColorSlice[];
+    public proficiencyStats: IProficiencyStats;
     public overdue: boolean;
 
     constructor(@inject(TYPES.SigmaNodeArgs)
@@ -95,6 +100,7 @@ class SigmaNodeArgs {
     @inject(TYPES.Object) public content: object;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
+    @inject(TYPES.IProficiencyStats) public proficiencyStats: IProficiencyStats;
     @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
     @inject(TYPES.String) public overdue: boolean;
 }

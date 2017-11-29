@@ -14,7 +14,9 @@ const TYPES = {
     IFirebaseRef: Symbol('IFirebaseRef'),
     IMutableId: Symbol('IMutableId'),
     IMutableStringSet: Symbol('IMutableStringSet'),
+    IProficiencyStats: Symbol('IProficiencyStats'),
     ISigmaNode: Symbol('ISigmaNode'),
+    ISigmaNodeData: Symbol('ISigmaNodeData'),
     ISubscribableBasicTree: Symbol('ISubscribableBasicTree'),
     ISubscribableMutableId: Symbol('ISubscribableMutableId'),
     ISubscribableMutableIdArgs: Symbol('ISubscribableMutableIdArgs'),
@@ -30,7 +32,9 @@ const TYPES = {
     SubscribableBasicTreeArgs: Symbol('SubscribableBasicTreeArgs'),
     SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),
     SyncToDBArgs: Symbol('SyncToDBArgs'),
-    SyncToFirebaseArgs: Symbol('SyncToDBArgs')
+    SyncToFirebaseArgs: Symbol('SyncToDBArgs'),
+    UIColor: Symbol('UIColor'),
+    radian: Symbol('radian'),
 }
 
 export {TYPES}

@@ -1,3 +1,4 @@
+// tslint:disable object-literal-sort-keys
 interface IProficiencyStats {
     UNKNOWN: number,
     ONE: number,
@@ -5,4 +6,11 @@ interface IProficiencyStats {
     THREE: number,
     FOUR: number,
 }
-export {IProficiencyStats}
+const defaultProficiencyStats = {
+    UNKNOWN: 1,
+    ONE: 0,
+    TWO: 0,
+    THREE: 0,
+    FOUR: 0,
+}
+export {IProficiencyStats, defaultProficiencyStats}
