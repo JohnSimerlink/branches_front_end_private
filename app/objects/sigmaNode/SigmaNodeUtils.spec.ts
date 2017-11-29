@@ -36,7 +36,8 @@ describe('Get Color Slices from Proficiency Stats', () => {
         const colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats)
         expect(colorSlices).to.deep.equal(expectedColorSlices)
     })
-    it('should do first fifty percent COLOR_THREE for two items that are proficiency THREE' +
+    it('ColorSlices: two proficiency THREE, two proficiency ONE -' +
+        ' should do first fifty percent COLOR_THREE for two items that are proficiency THREE' +
         ' and the next fifty percent COLOR_ONE for two items PROFICIENCY UNKNOWN', () => {
         const proficiencyStats: IProficiencyStats = {
             THREE: 2,
@@ -44,10 +45,15 @@ describe('Get Color Slices from Proficiency Stats', () => {
         } as IProficiencyStats
         const expectedColorSlices: IColorSlice[] = [
             {
-                color: ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN),
+                color: ProficiencyUtils.getColor(PROFICIENCIES.ONE),
                 start: INITIAL_START_RADIANS,
+                end: INITIAL_START_RADIANS + Math.PI
+            },
+            {
+                color: ProficiencyUtils.getColor(PROFICIENCIES.THREE),
+                start: INITIAL_START_RADIANS + Math.PI,
                 end: INITIAL_START_RADIANS + 2 * Math.PI
-            }
+            },
         ]
         const colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats)
         expect(colorSlices).to.deep.equal(expectedColorSlices)
