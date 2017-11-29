@@ -21,7 +21,7 @@ describe('IDatabaseSaver > FirebaseSaver', () => {
         firebaseRef = myContainer.get<IFirebaseRef>(TYPES.IFirebaseRef)
         firebaseRefUpdateSpy = sinon.spy(firebaseRef, 'update')
         firebaseRefChildSpy = sinon.spy(firebaseRef, 'child')
-        // const saveUpdatesToDBFunction = myContainer.get<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction)
+        // const saveUpdatesToDBFunction = myContainer.val<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction)
         firebaseSaver = new FirebaseSaver({firebaseRef})
     })
     // TODO: test the constructor to ensure it takes into account the firebaseRef

@@ -10,7 +10,6 @@ import ContentItems from "./contentItems";
 import {Fact} from './fact';
 import {Heading} from './heading';
 import {Skill} from './skill';
-import {PROFICIENCIES} from "../components/proficiencyEnum.ts";
 import {Tree} from "./tree/tree";
 
 

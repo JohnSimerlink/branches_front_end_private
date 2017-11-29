@@ -8,8 +8,7 @@ import firebase from '../firebaseService.js';
 // import {IMutable, } from '../mutations/IMutable'
 import {Trees} from '../trees.js'
 import {user} from '../user'
-import {ITree} from './ITree';
-import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
+import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from '../proficiencyStats/proficiencyStatsUtils'
 // import {IDatedMutation} from '../mutations/IMutation';
 // log('md5 is ', md5)
 // log('md5 of 1234 is', md5(1234))
@@ -582,7 +581,6 @@ export class Tree /* implements IUndoableMutable<IDatedMutation> */   {
     //     return
     // }
 }
-// TODO: get typeScript so we can have a schema for treeObj
 // treeObj  example
 /*
  parentId: parentTreeId,

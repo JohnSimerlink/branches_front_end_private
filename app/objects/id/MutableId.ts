@@ -14,7 +14,7 @@ interface IMutableId extends IMutable<IDatedMutation<IdMutationTypes>>, IId {}
 class MutableId implements IMutableId {
     private id: string;
     private _mutations: Array<IDatedMutation<IdMutationTypes>>;
-    public get(): string {
+    public val(): string {
         return this.id
     }
     private set(id): void {

@@ -1,3 +1,3 @@
 export interface ISet<T> {
-    getMembers(): T[],
+    val(): T[],
 }

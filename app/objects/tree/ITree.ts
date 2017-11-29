@@ -1,8 +1,3 @@
-export interface ITree {
-    children,
-    mutations: ITreeMutation[],
-}
-
 interface ITreeMutation {
    type: TreeMutationType,
 }

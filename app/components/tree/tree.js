@@ -1,5 +1,5 @@
 import {Trees} from '../../objects/trees'
-import {proficiencyToColor} from "../proficiencyEnum.ts"
+import {ProficiencyUtils} from "../../objects/proficiency/ProficiencyUtils";
 import {Fact} from '../../objects/fact'
 import ContentItems from '../../objects/contentItems'
 
@@ -80,7 +80,7 @@ export default {
                 styles['background-color'] = 'black';
                 styles['color'] = 'white'
             } else {
-                styles['background-color'] = proficiencyToColor(this.content.proficiency)
+                styles['background-color'] = ProficiencyUtils.getColor(this.content.proficiency)
                 if (this.showHistory) {
                     styles['background-color'] = 'black'
                     styles['color'] = 'white'

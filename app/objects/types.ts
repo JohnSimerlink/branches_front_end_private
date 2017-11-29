@@ -8,6 +8,7 @@ const TYPES = {
     IActivatableDatedMutation: Symbol('IActivatableDatedMutation'),
     IActivatableDatedMutationArr: Symbol('IActivatableDatedMutationArr'),
     IBasicTree: Symbol('IBasicTree'),
+    IColorSlice: Symbol('IColorSlice'),
     IContentUserData: Symbol('IContentUserData'),
     IDatabaseSyncer: Symbol('IDatabaseSyncer'),
     IFirebaseRef: Symbol('IFirebaseRef'),

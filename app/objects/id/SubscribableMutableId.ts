@@ -15,7 +15,7 @@ decorate(injectable(), Array)
 @injectable()
 class SubscribableMutableId implements ISubscribableMutableId {
     public onUpdate(func: updatesCallback) {return null}
-    public get(): string { return null  }
+    public val(): string { return null  }
     public addMutation(mutation: IDatedMutation<IdMutationTypes>): void { return null}
     public mutations(): Array<IDatedMutation<IdMutationTypes>> { return null}
     constructor(@inject(TYPES.ISubscribableMutableIdArgs) {updatesCallbacks = [], id, mutations = []}) {

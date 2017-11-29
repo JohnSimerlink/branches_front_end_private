@@ -1,5 +1,5 @@
 import './proficiency-selector.less'
-import {PROFICIENCIES} from "../proficiencyEnum.ts";
+import {PROFICIENCIES} from "../../objects/proficiency/proficiencyEnum.ts";
 
 export default {
     props: ['value'],

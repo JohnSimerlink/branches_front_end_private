@@ -6,7 +6,6 @@ import '../../core/login.js'
 import {user} from '../../objects/user'
 var Snack
 import Vue from 'vue'
-import {proficiencyToColor} from "../proficiencyEnum.ts";
 import store from '../../core/store'
 import {Globals, NODE_TYPES} from '../../core/globals.ts'
 import LocalForage from 'localforage'
@@ -14,6 +13,7 @@ import {isMobile} from '../../core/utils';
 import clonedeep from 'lodash.clonedeep'
 import UriContentMap from '../../objects/uriContentMap'
 import {stripTrailingSlash} from '../../objects/uriContentMap'
+import {ProficiencyUtils} from "../../objects/proficiency/ProficiencyUtils";
 import md5 from '../../core/md5wrapper';
 if (typeof document !== 'undefined'){
     Snack = '../../../node_modules/snack.js/dist/snack'
@@ -140,7 +140,7 @@ const EDGE_TYPES = {
 
 function getTreeColor(content) {
     let proficiency = user && content.userProficiencyMap && content.userProficiencyMap[user.get()]
-    const color = proficiencyToColor(proficiency)
+    const color = ProficiencyUtils.getColor(proficiency)
     return color
 }
 export async function removeTreeFromGraph(treeId){
