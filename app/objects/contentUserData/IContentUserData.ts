@@ -1,4 +1,9 @@
+import {PROFICIENCIES} from '../../proficiencyEnum';
+
 interface IContentUserData {
-    overdue;
+    overdue: boolean;
+    timer: number;
+    proficiency: PROFICIENCIES;
+    lastRecordedStrength;
 }
 export {IContentUserData}

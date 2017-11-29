@@ -4,10 +4,34 @@ import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
 import {IContentData} from '../contentItem/IContentData';
-import {IUserContentData} from '../contentUserData/IContentUserData';
+import {IContentUserData} from '../contentUserData/IContentUserData';
+import {IEditableSigmaNode} from './IEditableSigmaNode';
+import {ICoordinate, IPoint} from '../point/IPoint';
+import {ITreeUserData} from '../treeUserData/ITreeUserData';
+import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
 
 @injectable()
-class SigmaNode implements ISigmaNode {
+class SigmaNode implements ISigmaNode, IEditableSigmaNode {
+    public receiveTreeUserData(treeUserData: ITreeUserData) {
+    }
+    public receiveNewContentData(contentData: IContentData) {
+    }
+
+    public receiveNewContentUserData(contentData: IContentUserData) {
+        this.overdue = contentData.overdue
+        this.size = ContentUserDataUtils.getSizeFrom
+        // eventually will affect size (size will be correlated to numDecibels)
+    }
+
+    public receiveTreeLocationData(treeLocationData: ICoordinate) {
+        this.x = treeLocationData.x
+        this.y = treeLocationData.y
+    }
+    /* TODO: this class shouldn't have a reference to sigma instance.
+     But whatever class (SigmaNodesHandlers?) that has acccess to the instance
+      of this class should call sigmaInstance.refresh() after an update is called on this class
+      */
+
     public id: string;
     public parentId: string;
     public contentId: string;
@@ -45,14 +69,6 @@ class SigmaNode implements ISigmaNode {
         this.size = size
         this.color = color
         this.overdue = overdue
-    }
-    public receiveNewUserContentData(newUserContentData: IUserContentData) {
-        // this.content = newContentData
-        // this.label =
-    }
-    public receiveNewTreeLocationData(newUserContentData: IUserContentData) {
-        // this.content = newContentData
-        // this.label =
     }
 }
 
