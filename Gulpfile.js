@@ -127,8 +127,7 @@ function coverage() {
     console.log('compute test coverage called')
     exec('nyc mocha', function(err, stdout, stderr){
         console.log(stdout)
-        console.error(err)
-        console.error(stderr)
+        stderr && console.error(stderr)
     })
 }
 function test() {
