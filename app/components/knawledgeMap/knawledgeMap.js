@@ -741,7 +741,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         const childBeingAdoptedId = edge.target
         const newParentId = edge.source
 
-        Trees.adoptChild(newParentId,childBeingAdoptedId)
+        Trees.adoptChild(newParentId, childBeingAdoptedId)
         handleAdoptionProcessUIUpdate(childBeingAdoptedId, newParentId, edge)
     }
 

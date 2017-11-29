@@ -1,7 +1,8 @@
 import ContentItems from '../../objects/contentItems'
+import template from './contentList.html'
 
 export default {
-    template: require('./contentList.html'),
+    template,
     async created () {
         this.items = await ContentItems.getAllExceptForHeadings()
         Object.keys(this.items).forEach(key => {
