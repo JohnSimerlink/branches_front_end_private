@@ -1,7 +1,7 @@
 import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
 
 interface ITreeUserData {
-    proficiencyStats: IProficiencyStats
-
+    proficiencyStats: IProficiencyStats,
+    aggregationTimer: number,
 }
 export {ITreeUserData}

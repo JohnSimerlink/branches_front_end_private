@@ -1,17 +1,17 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {TYPES} from '../types';
-import {ISigmaNode} from './ISigmaNode';
-import {CONTENT_TYPES} from '../contentItem/ContentTypes';
+import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {IContentData} from '../contentItem/IContentData';
-import {IContentUserData} from '../contentUserData/IContentUserData';
-import {IEditableSigmaNode} from './IEditableSigmaNode';
-import {ICoordinate, IPoint} from '../point/IPoint';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
+import {IContentUserData} from '../contentUserData/IContentUserData';
+import {ICoordinate, IPoint} from '../point/IPoint';
 import {IBasicTree} from '../tree/IBasicTree';
-import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {ITreeUserData} from '../treeUserData/ITreeUserData';
+import {TYPES} from '../types';
 import {IColorSlice} from './IColorSlice';
+import {IEditableSigmaNode} from './IEditableSigmaNode';
+import {ISigmaNode} from './ISigmaNode';
+import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 @injectable()
 class SigmaNode implements ISigmaNode, IEditableSigmaNode {
@@ -22,14 +22,16 @@ class SigmaNode implements ISigmaNode, IEditableSigmaNode {
     }
     public receiveNewTreeUserData(treeUserData: ITreeUserData) {
         this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats)
+        this.aggregationTimer = treeUserData.aggregationTimer
     }
     public receiveNewContentData(contentData: IContentData) {
+        this.label = ContentItemUtils.getLabelFromContent(contentData)
+        this.content = contentData
     }
 
     public receiveNewContentUserData(contentUserData: IContentUserData) {
         this.overdue = contentUserData.overdue
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
-        // eventually will affect size (size will be correlated to numDecibels)
     }
 
     public receiveNewTreeLocationData(treeLocationData: ICoordinate) {
@@ -47,6 +49,7 @@ class SigmaNode implements ISigmaNode, IEditableSigmaNode {
     public children: string[];
     public x: number;
     public y: number;
+    public aggregationTimer: number;
     public content: IContentData;
     public label: string;
     public size: number;
@@ -76,6 +79,7 @@ class SigmaNode implements ISigmaNode, IEditableSigmaNode {
         this.content = content
         this.label = label
         this.size = size
+        this.colorSlices = colorSlices
         this.overdue = overdue
     }
 }
