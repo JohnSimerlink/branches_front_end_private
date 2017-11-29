@@ -2,8 +2,6 @@
 import {inject, injectable} from 'inversify';
 import {IDatabaseSyncer} from '../dbSync/IDatabaseSyncer';
 import {TYPES} from '../types';
-import {BasicTree} from './BasicTree';
-import {IBasicTree} from './IBasicTree';
 import {IDBSubscriber} from './IDBSubscriber';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
 

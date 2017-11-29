@@ -3,7 +3,7 @@ import {IId} from '../id/IId';
 import {IMutableId} from '../id/MutableId';
 
 interface IBasicTree {
-    getId();
+    getId(): string;
     contentId: IMutableId;
     parentId: IMutableId;
     children: IMutableStringSet;
