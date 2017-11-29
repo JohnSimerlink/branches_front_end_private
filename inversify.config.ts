@@ -19,6 +19,7 @@ import {
 import {ISubscribable} from './app/objects/ISubscribable';
 import {ActivatableDatedMutation} from './app/objects/mutations/ActivatableDatedMutation';
 import {IActivatableDatedMutation, IDatedMutation} from './app/objects/mutations/IMutation';
+import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {IMutableStringSet} from './app/objects/set/IMutableStringSet';
 import {ISubscribableMutableStringSet} from './app/objects/set/ISubscribableMutableStringSet';
 import {SetMutationTypes} from './app/objects/set/SetMutationTypes';
@@ -31,7 +32,7 @@ import {Subscribable} from './app/objects/Subscribable';
 import {ISubscribableBasicTree} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
-import {PROFICIENCIES} from './app/proficiencyEnum';
+import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -39,6 +40,7 @@ myContainer.bind<any>(TYPES.Any).toConstantValue(false)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
+myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableId>(TYPES.IMutableId).to(MutableId)

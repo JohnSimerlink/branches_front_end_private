@@ -9,21 +9,30 @@ import {IEditableSigmaNode} from './IEditableSigmaNode';
 import {ICoordinate, IPoint} from '../point/IPoint';
 import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
+import {IBasicTree} from '../tree/IBasicTree';
+import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {IColorSlice} from './IColorSlice';
 
 @injectable()
 class SigmaNode implements ISigmaNode, IEditableSigmaNode {
-    public receiveTreeUserData(treeUserData: ITreeUserData) {
+    public receiveNewTreeData(tree: IBasicTree) {
+        this.parentId = tree.parentId.val()
+        this.contentId = tree.contentId.val()
+        this.children = tree.children.val()
+    }
+    public receiveNewTreeUserData(treeUserData: ITreeUserData) {
+        this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats)
     }
     public receiveNewContentData(contentData: IContentData) {
     }
 
-    public receiveNewContentUserData(contentData: IContentUserData) {
-        this.overdue = contentData.overdue
-        this.size = ContentUserDataUtils.getSizeFrom
+    public receiveNewContentUserData(contentUserData: IContentUserData) {
+        this.overdue = contentUserData.overdue
+        this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
         // eventually will affect size (size will be correlated to numDecibels)
     }
 
-    public receiveTreeLocationData(treeLocationData: ICoordinate) {
+    public receiveNewTreeLocationData(treeLocationData: ICoordinate) {
         this.x = treeLocationData.x
         this.y = treeLocationData.y
     }
@@ -35,29 +44,29 @@ class SigmaNode implements ISigmaNode, IEditableSigmaNode {
     public id: string;
     public parentId: string;
     public contentId: string;
-    public children: string;
+    public children: string[];
     public x: number;
     public y: number;
-    public content: object;
+    public content: IContentData;
     public label: string;
     public size: number;
-    public color: string;
+    public colorSlices: IColorSlice[];
     public overdue: boolean;
 
     constructor(@inject(TYPES.SigmaNodeArgs)
-                {
-                    id,
-                    parentId,
-                    contentId,
-                    children,
-                    x,
-                    y,
-                    content,
-                    label,
-                    size,
-                    color,
-                    overdue
-                }) {
+        {
+            id,
+            parentId,
+            contentId,
+            children,
+            x,
+            y,
+            content,
+            label,
+            size,
+            colorSlices,
+            overdue
+        }) {
         this.id = id
         this.parentId = parentId
         this.contentId = contentId
@@ -67,7 +76,6 @@ class SigmaNode implements ISigmaNode, IEditableSigmaNode {
         this.content = content
         this.label = label
         this.size = size
-        this.color = color
         this.overdue = overdue
     }
 }
@@ -83,7 +91,7 @@ class SigmaNodeArgs {
     @inject(TYPES.Object) public content: object;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
-    @inject(TYPES.String) public color: string;
+    @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
     @inject(TYPES.String) public overdue: boolean;
 }
 

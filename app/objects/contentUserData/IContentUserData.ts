@@ -1,4 +1,4 @@
-import {PROFICIENCIES} from '../../proficiencyEnum';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 
 interface IContentUserData {
     overdue: boolean;

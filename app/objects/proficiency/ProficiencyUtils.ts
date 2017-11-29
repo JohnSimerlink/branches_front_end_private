@@ -1,0 +1,16 @@
+import {UIColor} from '../uiColor';
+import {PROFICIENCIES} from './proficiencyEnum';
+
+const PROFICIENCY_COLOR_MAP = {
+}
+PROFICIENCY_COLOR_MAP[PROFICIENCIES.UNKNOWN] = UIColor.GRAY
+PROFICIENCY_COLOR_MAP[PROFICIENCIES.ONE] = UIColor.RED
+PROFICIENCY_COLOR_MAP[PROFICIENCIES.TWO] = UIColor.ORANGE
+PROFICIENCY_COLOR_MAP[PROFICIENCIES.THREE] = UIColor.YELLOW
+PROFICIENCY_COLOR_MAP[PROFICIENCIES.FOUR] =  UIColor.LAWNGREEN
+class ProficiencyUtils {
+    public static getColor(proficiency: PROFICIENCIES): UIColor {
+        return PROFICIENCY_COLOR_MAP[proficiency]
+    }
+}
+export {ProficiencyUtils}

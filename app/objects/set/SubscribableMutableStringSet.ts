@@ -29,14 +29,14 @@ class SubscribableMutableStringSet extends Subscribable<SetMutationTypes>
         this._mutations = mutations
     }
 
-    public getMembers(): string[] {
+    public val(): string[] {
         return Object.keys(this.set)
     }
 
     private add(member: string) {
         if (this.set[member]) {
             throw new RangeError(
-                member + ' is already a member. The members are' + JSON.stringify(this.getMembers())
+                member + ' is already a member. The members are' + JSON.stringify(this.val())
             )
         }
         this.set[member] = true
@@ -47,7 +47,7 @@ class SubscribableMutableStringSet extends Subscribable<SetMutationTypes>
 
     private remove(member: string) {
         if (!this.set[member]) {
-            throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.getMembers()))
+            throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()))
         }
         delete this.set[member]
         this.updates.val = {}

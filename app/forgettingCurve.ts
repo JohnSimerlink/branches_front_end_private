@@ -1,4 +1,4 @@
-import {PROFICIENCIES} from './components/proficiencyEnum';
+import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum'
 
 export const e = 2.7182828
 export const criticalRecall = 1 - 1 / e

@@ -13,13 +13,13 @@ describe('MutableId', () => {
     // TESTS with empty mutation history
     it(`INIT should setId
     AND set mutations length to 0`, () => {
-        expect(id.get()).to.equal(INIT_ID)
+        expect(id.val()).to.equal(INIT_ID)
         expect(id.mutations().length).to.equal(0)
     })
     it('ADD MUTATION SET should change Id' +
         'and increment num mutations', () => {
         id.addMutation(FIRST_SUCCESSFUL_MUTATION)
-        expect(id.get()).to.deep.equal(NEW_ID)
+        expect(id.val()).to.deep.equal(NEW_ID)
         expect(id.mutations().length).to.equal(1)
     })
 })

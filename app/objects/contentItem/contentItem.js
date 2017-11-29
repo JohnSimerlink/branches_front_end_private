@@ -7,7 +7,6 @@ if (typeof window !== 'undefined') {
 }
 import {user} from '../user'
 import {calculateMillisecondsTilNextReview} from '../../components/reviewAlgorithm/review'
-import {PROFICIENCIES, proficiencyToColor} from "../../components/proficiencyEnum.ts";
 import {Trees} from '../trees'
 import {
     measurePreviousStrength, estimateCurrentStrength,
@@ -170,7 +169,7 @@ export default class ContentItem {
     markOverdue(){
         this.clearOverdueTimeout()
         this.setOverdue(true)
-        const colorForMessage = proficiencyToColor(this.proficiency)
+        const colorForMessage = ProficiencyUtils.getColor(this.proficiency)
         message(
             {
                 text: "Click to review " + getLabelFromContent(this),
@@ -570,7 +569,7 @@ export default class ContentItem {
         const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
         const msg = sign + Math.round(decibelIncrease) + text + whenToReview
         // const color = getColor
-        const color = proficiencyToColor(this.proficiency)
+        const color = ProficiencyUtils.getColor(this.proficiency)
         message({text: msg, color})
     }
     getLabel(){

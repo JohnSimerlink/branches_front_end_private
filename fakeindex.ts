@@ -4,7 +4,7 @@ import {log} from './app/core/log';
 import {IActivatableDatedMutation} from './app/objects/mutations/IMutation';
 import {TYPES} from './app/objects/types';
 
-// const ActivatableDatedMutation = myContainer.get<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation)
+// const ActivatableDatedMutation = myContainer.val<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation)
 // const ActivatableDatedMutationArr = myContainer.getAll<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation)
 import {Point} from './app/objects/point/point';
 
