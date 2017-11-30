@@ -1,25 +1,19 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {ISubscribable, updatesCallback} from './ISubscribable';
 import {IDatedMutation} from '../mutations/IMutation';
 import {TYPES} from '../types';
+import {ISubscribable, updatesCallback} from './ISubscribable';
+import {SubscribableCore} from './ISubscribableCore';
 
 @injectable()
     // TODO: make abstract?
-class Subscribable<MutationTypes, UpdatesType> implements ISubscribable<UpdatesType> {
+class Subscribable<MutationTypes, UpdatesType>
+    extends SubscribableCore<UpdatesType>
+    implements ISubscribable<UpdatesType> {
     protected updates: {val?: object} = {}
     protected pushes: {mutations?: IDatedMutation<MutationTypes>} = {}
-    private updatesCallbacks: Array<updatesCallback<UpdatesType>>;
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
-        this.updatesCallbacks = updatesCallbacks /* let updatesCallbacks be injected for
-         1) modularity reasons
-         2) if we want to cache the state of this entire object, we could load in the previous state
-         of set, mutations, and updatesCallbacks easy-peasy
-         */
-    }
-    public onUpdate(func: updatesCallback<UpdatesType>) {
-        // throw new TypeError('func - ' + JSON.stringify(func))
-        this.updatesCallbacks.push(func)
+        super({updatesCallbacks})
     }
     protected callbackArguments(): UpdatesType {
         return {
@@ -28,16 +22,7 @@ class Subscribable<MutationTypes, UpdatesType> implements ISubscribable<UpdatesT
         } as any // TODO: figure out how to remove this cast
     }
     protected callCallbacks() {
-        const me = this
-        // if (this instanceof SubscribableBasicTree) {
-        //     throw new TypeError('func - ' + JSON.stringify(me.updatesCallbacks) + ' - is not a function')
-        // }
-        this.updatesCallbacks.forEach(callback => {
-            if (typeof callback !== 'function') {
-                throw new TypeError('func - ' + JSON.stringify(callback) + ' - is not a function')
-            }
-            callback(me.callbackArguments())
-        })
+        super.callCallbacks()
         this.clearPushesAndUpdates()
     }
     private clearPushesAndUpdates() {
