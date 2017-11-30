@@ -11,7 +11,7 @@ class Subscribable<MutationTypes> implements ISubscribable {
     protected updates: {val?: object} = {}
     protected pushes: {mutations?: IDatedMutation<MutationTypes>} = {}
     private updatesCallbacks: updatesCallback[];
-    constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks} = {updatesCallbacks: []}) {
+    constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
         this.updatesCallbacks = updatesCallbacks /* let updatesCallbacks be injected for
          1) modularity reasons
          2) if we want to cache the state of this entire object, we could load in the previous state
@@ -19,11 +19,16 @@ class Subscribable<MutationTypes> implements ISubscribable {
          */
     }
     public onUpdate(func: updatesCallback) {
+        // throw new TypeError('func - ' + JSON.stringify(func))
         this.updatesCallbacks.push(func)
     }
     protected callCallbacks() {
         const me = this
         this.updatesCallbacks.forEach(callback => {
+            if (typeof callback !== 'function') {
+                throw new TypeError('func - ' + JSON.stringify(callback) + ' - is not a function')
+            }
+
             callback({
                 pushes: me.pushes,
                 updates: me.updates,

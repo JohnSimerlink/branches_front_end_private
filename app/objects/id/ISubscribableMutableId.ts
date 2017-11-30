@@ -1,5 +1,5 @@
 import {ISubscribable} from '../ISubscribable';
-import {IMutableId} from './MutableId';
+import {IMutableId} from './IMutableId';
 
 interface ISubscribableMutableId extends ISubscribable, IMutableId {
 }
