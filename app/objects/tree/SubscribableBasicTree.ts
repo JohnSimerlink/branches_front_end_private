@@ -5,7 +5,7 @@ import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
 import {IDatedMutation} from '../mutations/IMutation';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
 import {SetMutationTypes} from '../set/SetMutationTypes';
-import {Subscribable} from '../Subscribable';
+import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 import {IBasicTreeDataWithoutId} from './IBasicTreeData';
 import {ISubscribableBasicTree} from './ISubscribableBasicTree';
@@ -37,14 +37,14 @@ class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> impleme
         this.parentId = parentId
         this.children = children
     }
-    private notifySubscribersOfUpdate() {
-        this.updates.val = this.val()
-        this.callCallbacks()
+    protected callbackArguments(): any {
+        return this.val()
     }
     public publishUponDescendantUpdates() {
-        this.children.onUpdate(this.notifySubscribersOfUpdate.bind(this))
-        this.contentId.onUpdate(this.notifySubscribersOfUpdate.bind(this))
-        this.parentId.onUpdate(this.notifySubscribersOfUpdate.bind(this))
+        const boundCallCallbacks = this.callCallbacks.bind(this)
+        this.children.onUpdate(boundCallCallbacks)
+        this.contentId.onUpdate(boundCallCallbacks)
+        this.parentId.onUpdate(boundCallCallbacks)
     }
 
     public addDescendantMutation(

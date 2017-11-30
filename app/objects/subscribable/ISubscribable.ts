@@ -1,4 +1,4 @@
-import {IDetailedUpdates} from './dbSync/IDetailedUpdates';
+import {IDetailedUpdates} from '../dbSync/IDetailedUpdates';
 
 export type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
 

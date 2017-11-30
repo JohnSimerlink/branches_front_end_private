@@ -3,10 +3,10 @@
 // import {log} from '../../core/log'
 import {inject, injectable} from 'inversify';
 import {IDetailedUpdates} from '../dbSync/IDetailedUpdates';
-import {ISubscribable, updatesCallback} from '../ISubscribable';
+import {ISubscribable, updatesCallback} from '../subscribable/ISubscribable';
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
-import {Subscribable} from '../Subscribable';
+import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {ISet} from './ISet';
 import {SetMutationTypes} from './SetMutationTypes';

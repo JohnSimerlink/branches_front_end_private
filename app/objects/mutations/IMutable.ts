@@ -1,4 +1,3 @@
-import {MutationTypes} from './MutationTypes';
 
 interface IMutable<MutationInterface/*: IMutation*/> {
     addMutation(mutation: MutationInterface), // idempotent.

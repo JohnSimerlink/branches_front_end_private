@@ -4,12 +4,12 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {IdMutationTypes} from '../id/IdMutationTypes';
 import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
+import {SubscribableMutableId} from '../id/SubscribableMutableId';
 import {IDatedMutation} from '../mutations/IMutation';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
+import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
-import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 
 describe('FirebaseSyncableBasicTree', () => {
     it('constructor should set all the subscribable properties', () => {
@@ -43,7 +43,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const newTreeDataValue = tree.val()
         const calledWith = callback.getCall(0).args[0]
         expect(callback.callCount).to.equal(1)
-        expect(calledWith.updates.val).to.deep.equal(newTreeDataValue)
+        expect(calledWith).to.deep.equal(newTreeDataValue)
 
     })
 })

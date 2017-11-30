@@ -1,8 +1,8 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import {ISubscribable, updatesCallback} from './ISubscribable';
-import {IDatedMutation} from './mutations/IMutation';
-import {TYPES} from './types';
+import {IDatedMutation} from '../mutations/IMutation';
+import {TYPES} from '../types';
 
 @injectable()
     // TODO: make abstract?
@@ -21,6 +21,12 @@ class Subscribable<MutationTypes, UpdatesType> implements ISubscribable<UpdatesT
         // throw new TypeError('func - ' + JSON.stringify(func))
         this.updatesCallbacks.push(func)
     }
+    protected callbackArguments(): UpdatesType {
+        return {
+            pushes: this.pushes,
+            updates: this.updates
+        } as any // TODO: figure out how to remove this cast
+    }
     protected callCallbacks() {
         const me = this
         // if (this instanceof SubscribableBasicTree) {
@@ -30,11 +36,7 @@ class Subscribable<MutationTypes, UpdatesType> implements ISubscribable<UpdatesT
             if (typeof callback !== 'function') {
                 throw new TypeError('func - ' + JSON.stringify(callback) + ' - is not a function')
             }
-
-            callback({
-                pushes: me.pushes,
-                updates: me.updates,
-            } as any) // TODO: this as any might be a bad hack to fix the type error
+            callback(me.callbackArguments())
         })
         this.clearPushesAndUpdates()
     }

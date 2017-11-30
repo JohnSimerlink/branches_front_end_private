@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
-import {ISubscribable} from '../ISubscribable';
+import {ISubscribable} from '../subscribable/ISubscribable';
 import {TYPES} from '../types';
 import {IDatabaseSyncer} from './IDatabaseSyncer';
 import {IDetailedUpdates} from './IDetailedUpdates';
