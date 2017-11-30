@@ -17,6 +17,7 @@ import {ISigmaNode} from './ISigmaNode';
 import {ISigmaNodeData} from './ISigmaNodeData';
 import {SigmaNode} from './SigmaNode';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {ICoordinate} from '../point/IPoint';
 
 describe('sigmaNode', () => {
     it('receive new tree', () => {
@@ -88,5 +89,20 @@ describe('sigmaNode', () => {
         expect(sigmaNode.size).to.equal(size)
         expect(sigmaNode.overdue).to.equal(overdue)
         expect(sigmaNode.contentUserData).to.deep.equal(contentUserData)
+    })
+    it('receive new TreeLocation', () => {
+        const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const x = 5
+        const y = 7
+        const location: ICoordinate = {
+            x,
+            y
+        }
+        /* QUESTION / TODO: Doesn't this entire test seem useless?
+         e.g. a redundant implementation of the implementation? */
+
+        sigmaNode.receiveNewTreeLocationData(location)
+        expect(sigmaNode.x).to.equal(x)
+        expect(sigmaNode.y).to.equal(y)
     })
 })
