@@ -33,6 +33,7 @@ class SubscribableMutableStringSet extends Subscribable<SetMutationTypes>
         return Object.keys(this.set)
     }
 
+    // TODO: factor out these private methods into a separate testable class
     private add(member: string) {
         if (this.set[member]) {
             throw new RangeError(
@@ -55,7 +56,7 @@ class SubscribableMutableStringSet extends Subscribable<SetMutationTypes>
         // TODO: Fix Violation of Law of Demeter ^^
     }
     public hasMember(member: string): boolean {
-        return this.set[member]
+        return !!this.set[member]
     }
     public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
         switch (mutation.type) {

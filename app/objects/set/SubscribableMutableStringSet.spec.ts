@@ -1,9 +1,13 @@
 import {expect} from 'chai'
+import * as sinon from 'sinon'
 import 'reflect-metadata'
 import {SetMutationTypes} from './SetMutationTypes';
 import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
+import {myContainer} from '../../../inversify.config';
+import {IDatedMutation} from '../mutations/IMutation';
+import {TYPES} from '../types';
 
-describe('MutableSet:string', () => {
+describe('SubscribableMutableStringSet > IMutable, ISet :string', () => {
     // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
     // const po = new Point({x:5, y:6})
     const FIRST_MEMBER_ID = 'abc123'
@@ -140,5 +144,30 @@ describe('MutableSet:string', () => {
         expect(stringSet.mutations().length).to.equal(7)
     })
     // TODO: do tests with injecting a mutations array that is not empty
+
+})
+
+describe('SubscribableMutableStringSet > Subscribable', () => {
+    /* subscribable capabilities already tested in subscribable base class. But I will retest here as a sort of integration test
+    */
+    it('Adding a mutation, should trigger an update for one of the subscribers ', () => {
+        const subscribableMutableStringSet = new SubscribableMutableStringSet()
+        const callback = sinon.spy() // (updates: IUpdates) => void 0
+        const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedMutation)
+        subscribableMutableStringSet.onUpdate(callback)
+        subscribableMutableStringSet.addMutation(sampleMutation)
+        expect(callback.callCount).to.equal(1)
+    })
+    it('Adding a mutation, should trigger an update for multiple subscribers ', () => {
+        const subscribableMutableStringSet = new SubscribableMutableStringSet()
+        const callback1 = sinon.spy() // (updates: IUpdates) => void 0
+        const callback2 = sinon.spy() // (updates: IUpdates) => void 0
+        const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedMutation)
+        subscribableMutableStringSet.onUpdate(callback1)
+        subscribableMutableStringSet.onUpdate(callback2)
+        subscribableMutableStringSet.addMutation(sampleMutation)
+        expect(callback1.callCount).to.equal(1)
+        expect(callback2.callCount).to.equal(1)
+    })
 
 })
