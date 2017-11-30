@@ -2,13 +2,14 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
+import {IIdAndValUpdates} from '../interfaces';
+import {IValUpdates} from '../interfaces';
 import {ISubscribable} from '../subscribable/ISubscribable';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {ISubscribableBasicTreeCore} from '../tree/ISubscribableBasicTree';
 import {TYPES} from '../types';
-import {IIdAndValUpdates} from './IIdAndValUpdates';
 import {ICoreSubscribableDataStore} from './ISubscribableDataStore';
-import {IValUpdates} from './IValUpdates';
+
 if (!Object.entries) {
     entries.shim()
 }

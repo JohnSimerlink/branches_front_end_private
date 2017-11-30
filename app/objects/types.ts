@@ -5,6 +5,8 @@ const TYPES = {
     ContentUserDataArgs: Symbol('ContentUserDataArgs'),
     FirebaseSaverArgs: Symbol('FirebaseSaverArgs'),
     FirebaseSyncerArgs: Symbol('SyncToDBArgs'),
+    GlobalDataStore: Symbol('SubscribableGlobalDataStore'),
+    GlobalDataStoreArgs: Symbol('GlobalDataStoreArgs'),
     IActivatableDatedMutation: Symbol('IActivatableDatedMutation'),
     IActivatableDatedMutationArr: Symbol('IActivatableDatedMutationArr'),
     IBasicTree: Symbol('IBasicTree'),
