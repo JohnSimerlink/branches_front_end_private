@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {ISubscribable} from '../ISubscribable';
+import {ISubscribable} from '../subscribable/ISubscribable';
 import {TYPES} from '../types';
 import {FirebaseSaver} from './FirebaseSaver';
 import {IDetailedUpdates} from './IDetailedUpdates';

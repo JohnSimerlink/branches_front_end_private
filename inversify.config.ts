@@ -1,7 +1,6 @@
 import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
-import {ContentUserDataUtils} from './app/objects/contentUserData/ContentUserDataUtils';
 import {IContentUserData} from './app/objects/contentUserData/IContentUserData';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
@@ -11,21 +10,17 @@ import {IFirebaseRef} from './app/objects/dbSync/IFirebaseRef';
 import {SaveUpdatesToDBFunction} from './app/objects/dbSync/ISaveUpdatesToDBFunction';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
 import {IdMutationTypes} from './app/objects/id/IdMutationTypes';
-import {IMutableId} from './app/objects/id/IMutableId';
 import {ISubscribableMutableId} from './app/objects/id/ISubscribableMutableId';
 import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
-import {ISubscribable} from './app/objects/ISubscribable';
 import {radian} from './app/objects/MathUtils/MathUtils';
-import {ActivatableDatedMutation} from './app/objects/mutations/ActivatableDatedMutation';
-import {IActivatableDatedMutation, IDatedMutation} from './app/objects/mutations/IMutation';
+import {IDatedMutation} from './app/objects/mutations/IMutation';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats, IProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {IMutableStringSet} from './app/objects/set/IMutableStringSet';
 import {ISubscribableMutableStringSet} from './app/objects/set/ISubscribableMutableStringSet';
-import {SetMutationTypes} from './app/objects/set/SetMutationTypes';
 import {
     SubscribableMutableStringSet,
     SubscribableMutableStringSetArgs
@@ -33,10 +28,8 @@ import {
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
 import {ISigmaNode} from './app/objects/sigmaNode/ISigmaNode';
-import {ISigmaNodeData} from './app/objects/sigmaNode/ISigmaNodeData';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
-import {SubscribableArgs} from './app/objects/Subscribable';
-import {Subscribable} from './app/objects/Subscribable';
+import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {IBasicTree} from './app/objects/tree/IBasicTree';
 import {ISubscribableBasicTree} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';

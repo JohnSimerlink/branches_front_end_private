@@ -1,5 +1,5 @@
 import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
-import {ISubscribable} from '../ISubscribable';
+import {ISubscribable} from '../subscribable/ISubscribable';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
 import {IBasicTree} from './IBasicTree';
 import {IBasicTreeDataWithoutId} from './IBasicTreeData';

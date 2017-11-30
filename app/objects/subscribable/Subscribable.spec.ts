@@ -1,10 +1,10 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {SyncToDB} from './dbSync/SyncToDB';
-import {IDetailedUpdates} from './dbSync/IDetailedUpdates';
-import {IDatedMutation} from './mutations/IMutation';
-import {SubscribableMutableStringSet} from './set/SubscribableMutableStringSet';
-import {SetMutationTypes} from './set/SetMutationTypes';
+import {SyncToDB} from '../dbSync/SyncToDB';
+import {IDetailedUpdates} from '../dbSync/IDetailedUpdates';
+import {IDatedMutation} from '../mutations/IMutation';
+import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {SetMutationTypes} from '../set/SetMutationTypes';
 
 describe('Subscribable:SubscribableMutableStringSet', () => {
     const updatesCallbacks = []
