@@ -4,10 +4,8 @@ import {myContainer} from '../../../inversify.config';
 import {ISubscribable} from '../ISubscribable';
 import {TYPES} from '../types';
 import {FirebaseSaver} from './FirebaseSaver';
+import {IDetailedUpdates} from './IDetailedUpdates';
 import {IFirebaseRef} from './IFirebaseRef';
-import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
-import {IUpdates} from './IUpdates';
-import {SyncToDB} from './SyncToDB';
 
 describe('IDatabaseSaver > FirebaseSaver', () => {
     // const firebaseRef = 'path/subpath/prop'
@@ -16,7 +14,7 @@ describe('IDatabaseSaver > FirebaseSaver', () => {
     let firebaseRefUpdateSpy
     let firebaseRefChildSpy
     let firebaseSaver
-    let updatesObj: IUpdates
+    let updatesObj: IDetailedUpdates
     beforeEach(() => {
         firebaseRef = myContainer.get<IFirebaseRef>(TYPES.IFirebaseRef)
         firebaseRefUpdateSpy = sinon.spy(firebaseRef, 'update')

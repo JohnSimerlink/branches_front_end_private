@@ -12,7 +12,7 @@ import {ISubscribableBasicTree} from './ISubscribableBasicTree';
 import {TreeMutationTypes} from './TreeMutationTypes';
 
 @injectable()
-class SubscribableBasicTree extends Subscribable<TreeMutationTypes> implements ISubscribableBasicTree {
+class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> implements ISubscribableBasicTree {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;

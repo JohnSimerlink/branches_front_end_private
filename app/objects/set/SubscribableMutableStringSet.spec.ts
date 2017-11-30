@@ -153,7 +153,7 @@ describe('SubscribableMutableStringSet > Subscribable', () => {
     */
     it('Adding a mutation, should trigger an update for one of the subscribers ', () => {
         const subscribableMutableStringSet = new SubscribableMutableStringSet()
-        const callback = sinon.spy() // (updates: IUpdates) => void 0
+        const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedMutation)
         subscribableMutableStringSet.onUpdate(callback)
         subscribableMutableStringSet.addMutation(sampleMutation)
@@ -161,8 +161,8 @@ describe('SubscribableMutableStringSet > Subscribable', () => {
     })
     it('Adding a mutation, should trigger an update for multiple subscribers ', () => {
         const subscribableMutableStringSet = new SubscribableMutableStringSet()
-        const callback1 = sinon.spy() // (updates: IUpdates) => void 0
-        const callback2 = sinon.spy() // (updates: IUpdates) => void 0
+        const callback1 = sinon.spy() // (updates: IDetailedUpdates) => void 0
+        const callback2 = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedMutation)
         subscribableMutableStringSet.onUpdate(callback1)
         subscribableMutableStringSet.onUpdate(callback2)

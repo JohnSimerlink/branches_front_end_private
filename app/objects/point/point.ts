@@ -1,10 +1,7 @@
 /* tslint:disable variable-name */
-import {inject, injectable, multiInject} from 'inversify';
-// import {log} from '../../core/log';
-import {IMutable, IUndoableMutable} from '../mutations/IMutable';
-import {IActivatableDatedMutation, IActivatableMutation, IDatedMutation} from '../mutations/IMutation';
-import {MutationTypes} from '../mutations/MutationTypes';
-import {TYPES} from '../types'
+import {injectable} from 'inversify';
+import { IUndoableMutable} from '../mutations/IMutable';
+import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
 import {ICoordinate, IPoint} from './IPoint';
 import {PointMutationTypes} from './PointMutationTypes';
 

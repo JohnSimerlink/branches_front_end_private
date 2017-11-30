@@ -11,12 +11,12 @@ describe('SubscribableMutableId > Subscribable', () => {
     it('Adding a mutation, should trigger an update for one of the subscribers [is this an integration test?]', () => {
         // const subscribableMutableId: ISubscribableMutableId =
         //     myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
-        /* TODO: ^^^ USING THE ABOVE dependency injection fetcher fetches like an IUpdates object
+        /* TODO: ^^^ USING THE ABOVE dependency injection fetcher fetches like an IDetailedUpdates object
         * and places it into the updatesCallbacks array, which causes a type error because ISubscribable
         * tries to invoke one of the updates, and the update is just an object not a function . . . .
         * */
         const subscribableMutableId: ISubscribableMutableId = new SubscribableMutableId()
-        const callback = sinon.spy() // (updates: IUpdates) => void 0
+        const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
         expect(typeof callback).to.equal('function')
         const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
         subscribableMutableId.onUpdate(callback)
