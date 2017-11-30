@@ -1,26 +1,40 @@
 // tslint:disable max-classes-per-file
-import {ISubscribableDataStore} from './ISubscribableDataStore';
-import {ISubscribable, updatesCallback} from '../subscribable/ISubscribable';
-import {IIdAndValUpdates} from './IIdAndValUpdates';
 import {inject, injectable} from 'inversify';
+import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
-import {Subscribable} from '../subscribable/Subscribable';
 
 @injectable()
-class SubscribableDataStore<UpdatesType, ObjectType> extends Subscribable<UpdatesType> implements ISubscribableDataStore<UpdatesType, ObjectType> {
-    private store;
-    constructor(@inject(TYPES.SubscribableDataStoreArgs){store, updatesCallbacks}) {
+class SubscribableDataStore<UpdatesType, ObjectType, ObjectUpdateType>
+    extends SubscribableCore<UpdatesType> {
+
+    private store: object;
+    constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
         super({updatesCallbacks})
         this.store = store
     }
-    public addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType) {
+    protected callbackArguments() {
+        throw new Error('Method not implemented.')
+    }
+    /*
+    public addAndSubscribeToItem(id: any, item: ISubscribable<ObjectUpdateType> & ObjectType) {
+        this.store[id] = item
+        this.subscribeToItem(item)
+    }
+    private onItemUpdate(id, item) {
+        this.update = {id, val: item.vau
+
+    }
+    private subscribeToItem(item: ISubscribable<UpdatesType> & ObjectType) {
+        this.update +
+        item.onUpdate( (updates: ObjectUpdateType) => { } ) // this.callCallbacks.bind(this))
     }
 
     public subscribeToAllItems() {
     }
+    */
 
-    public onUpdate(func: updatesCallback<IIdAndValUpdates>) {
-    }
+}
+class SubscribableTreeDataStore {
 
 }
 class SubscribableDataStoreArgs {

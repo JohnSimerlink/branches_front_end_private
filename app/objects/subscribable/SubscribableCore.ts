@@ -17,9 +17,8 @@ abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesTyp
     public onUpdate(func: updatesCallback<UpdatesType>) {
         this.updatesCallbacks.push(func)
     }
-    protected callbackArguments(): UpdatesType {
-        throw new Error('Abstract. Not Implemented')
-    }
+    protected abstract callbackArguments()
+
     protected callCallbacks() {
         const me = this
         this.updatesCallbacks.forEach(callback => {

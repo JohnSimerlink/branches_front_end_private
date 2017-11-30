@@ -10,6 +10,7 @@ import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSe
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
+import {TreePropertyNames} from './TreePropertyNames';
 
 describe('FirebaseSyncableBasicTree', () => {
     it('constructor should set all the subscribable properties', () => {
@@ -24,7 +25,8 @@ describe('FirebaseSyncableBasicTree', () => {
         expect(tree.getId()).to.deep.equal(TREE_ID)
     })
     it('a mutation in one of the subscribable properties' +
-        ' should publish an update of the entire object\'s value', () => {
+        ' should publish an update of the entire object\'s value '
+        + ' after publishUponDescendantUpdates has been called', () => {
         const contentId = new SubscribableMutableId()
         /* = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
          // TODO: figure out why DI puts in a bad updatesCallback!
@@ -44,6 +46,38 @@ describe('FirebaseSyncableBasicTree', () => {
         const calledWith = callback.getCall(0).args[0]
         expect(callback.callCount).to.equal(1)
         expect(calledWith).to.deep.equal(newTreeDataValue)
+    })
+    it('a mutation in one of the subscribable properties' +
+        ' should NOT publish an update of the entire object\'s value'
+        + ' before publishUponDescendantUpdates has been called', () => {
+        const contentId = new SubscribableMutableId()
+        /* = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
+         // TODO: figure out why DI puts in a bad updatesCallback!
+        */
+        const parentId = new SubscribableMutableId()
+        const children = new SubscribableMutableStringSet()
+        const TREE_ID = 'efa123'
+        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
 
+        const callback = sinon.spy()
+        tree.onUpdate(callback)
+
+        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
+        contentId.addMutation(sampleMutation)
+        const newTreeDataValue = tree.val()
+        expect(callback.callCount).to.equal(0)
+    })
+    it('addDescendantMutation ' +
+        ' should call addMutation on the appropriate descendant property', () => {
+        const contentId = new SubscribableMutableId()
+        const parentId = new SubscribableMutableId()
+        const children = new SubscribableMutableStringSet()
+        const TREE_ID = 'efa123'
+        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const parentIdAddMutationSpy = sinon.spy(parentId, 'addMutation')
+
+        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
+        tree.addDescendantMutation(TreePropertyNames.parentId, sampleMutation)
+        expect(parentIdAddMutationSpy.callCount).to.equal(1)
     })
 })
