@@ -1,39 +1,53 @@
+/* tslint:disable variable-name */
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {decorate} from 'inversify'
-import {ISubscribable, updatesCallback} from '../ISubscribable';
-import {Mixin} from '../Mixin';
 import {IDatedMutation} from '../mutations/IMutation';
 import {Subscribable} from '../Subscribable';
 import {TYPES} from '../types';
 import {IdMutationTypes} from './IdMutationTypes';
-import {ISubscribableMutableId} from './ISubscribableMutableId';
-import {IMutableId, MutableId} from './MutableId';
-decorate(injectable(), Array)
+import {IMutableId} from './IMutableId';
 
-@Mixin(Subscribable, MutableId)
 @injectable()
-class SubscribableMutableId implements ISubscribableMutableId {
-    // private subscribable: ISubscribable
-    // private mutableId: IMutableId
-    public onUpdate(func: updatesCallback) {return null}
-    public val(): string { return null  }
-    public addMutation(mutation: IDatedMutation<IdMutationTypes>): void {
-        // this.mutableId.addMutation(mutation)
-        // this.subscribable.callCallbacks()
-        return void 0
+class SubscribableMutableId extends Subscribable<IdMutationTypes> implements IMutableId {
+    private id: string
+    private _mutations: Array<IDatedMutation<IdMutationTypes>>
+    constructor(@inject(TYPES.ISubscribableMutableIdArgs) {
+        updatesCallbacks = [], id = '', mutations = []
+    } =
+        {
+             id: '',  mutations: [], updatesCallbacks: [],
+        }) {
+        super({updatesCallbacks})
+        this.id = id
+        this._mutations = mutations
     }
-    public mutations(): Array<IDatedMutation<IdMutationTypes>> { return null }
-    constructor(@inject(TYPES.ISubscribableMutableIdArgs) {updatesCallbacks = [], id, mutations = []}) {
-        const subscribable = new Subscribable({updatesCallbacks})
-        Object.getOwnPropertyNames(subscribable).forEach(prop => {
-            this[prop] = subscribable[prop]
-        })
-        const mutableId = new MutableId({id, mutations})
-        Object.getOwnPropertyNames(mutableId).forEach(prop => {
-            this[prop] = mutableId[prop]
-        })
 
+    public val(): string {
+        return this.id
+    }
+    /* TODO: refactor this private method into another class,
+     with it as a public method, and use that class internally via composition
+     * That way we can test the set method in a unit test */
+    private set(id): void {
+        this.id = id
+        this.updates.val = id
+    }
+    public addMutation(mutation: IDatedMutation<IdMutationTypes>) {
+        switch (mutation.type) {
+            case IdMutationTypes.SET:
+                this.set(mutation.data.id) // TODO: Law of Demeter Violation? How to fix?
+                break;
+            default:
+                throw new TypeError('Mutation Type needs to be one of the following types'
+                    + JSON.stringify(IdMutationTypes))
+        }
+        this._mutations.push(mutation)
+        this.pushes = {mutations: mutation}
+        this.callCallbacks()
+    }
+
+    public mutations(): Array<IDatedMutation<IdMutationTypes>> {
+        return this._mutations;
     }
 }
 interface ISubscribableMutableIdArgs {

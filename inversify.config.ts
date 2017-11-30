@@ -10,8 +10,9 @@ import {IFirebaseRef} from './app/objects/dbSync/IFirebaseRef';
 import {SaveUpdatesToDBFunction} from './app/objects/dbSync/ISaveUpdatesToDBFunction';
 import {IUpdates} from './app/objects/dbSync/IUpdates';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
+import {IdMutationTypes} from './app/objects/id/IdMutationTypes';
+import {IMutableId} from './app/objects/id/IMutableId';
 import {ISubscribableMutableId} from './app/objects/id/ISubscribableMutableId';
-import {IMutableId, MutableId} from './app/objects/id/MutableId';
 import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
@@ -21,6 +22,7 @@ import {radian} from './app/objects/MathUtils/MathUtils';
 import {ActivatableDatedMutation} from './app/objects/mutations/ActivatableDatedMutation';
 import {IActivatableDatedMutation, IDatedMutation} from './app/objects/mutations/IMutation';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
+import {defaultProficiencyStats, IProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {IMutableStringSet} from './app/objects/set/IMutableStringSet';
 import {ISubscribableMutableStringSet} from './app/objects/set/ISubscribableMutableStringSet';
 import {SetMutationTypes} from './app/objects/set/SetMutationTypes';
@@ -33,15 +35,13 @@ import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
 import {ISigmaNode} from './app/objects/sigmaNode/ISigmaNode';
 import {ISigmaNodeData} from './app/objects/sigmaNode/ISigmaNodeData';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
-import {Subscribable} from './app/objects/Subscribable';
 import {SubscribableArgs} from './app/objects/Subscribable';
+import {Subscribable} from './app/objects/Subscribable';
 import {IBasicTree} from './app/objects/tree/IBasicTree';
 import {ISubscribableBasicTree} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
-import {defaultProficiencyStats, IProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
-import {IdMutationTypes} from './app/objects/id/IdMutationTypes';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -58,7 +58,6 @@ myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConsta
     type: IdMutationTypes.SET,
 })
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
-myContainer.bind<IMutableId>(TYPES.IMutableId).to(MutableId)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)

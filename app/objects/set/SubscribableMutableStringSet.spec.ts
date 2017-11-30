@@ -148,7 +148,8 @@ describe('SubscribableMutableStringSet > IMutable, ISet :string', () => {
 })
 
 describe('SubscribableMutableStringSet > Subscribable', () => {
-    /* subscribable capabilities already tested in subscribable base class. But I will retest here as a sort of integration test
+    /* subscribable capabilities already tested in subscribable base class.
+     But I will retest here as a sort of integration test
     */
     it('Adding a mutation, should trigger an update for one of the subscribers ', () => {
         const subscribableMutableStringSet = new SubscribableMutableStringSet()
