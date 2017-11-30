@@ -2,7 +2,6 @@
 import {inject, injectable} from 'inversify';
 import {ISubscribable, updatesCallback} from './ISubscribable';
 import {IDatedMutation} from './mutations/IMutation';
-import {SetMutationTypes} from './set/SetMutationTypes';
 import {TYPES} from './types';
 
 @injectable()
@@ -24,6 +23,9 @@ class Subscribable<MutationTypes> implements ISubscribable {
     }
     protected callCallbacks() {
         const me = this
+        // if (this instanceof SubscribableBasicTree) {
+        //     throw new TypeError('func - ' + JSON.stringify(me.updatesCallbacks) + ' - is not a function')
+        // }
         this.updatesCallbacks.forEach(callback => {
             if (typeof callback !== 'function') {
                 throw new TypeError('func - ' + JSON.stringify(callback) + ' - is not a function')

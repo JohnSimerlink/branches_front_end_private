@@ -7,9 +7,9 @@ import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSe
 import {SetMutationTypes} from '../set/SetMutationTypes';
 import {Subscribable} from '../Subscribable';
 import {TYPES} from '../types'
+import {IBasicTreeDataWithoutId} from './IBasicTreeData';
 import {ISubscribableBasicTree} from './ISubscribableBasicTree';
 import {TreeMutationTypes} from './TreeMutationTypes';
-import {IBasicTreeDataWithoutId} from './IBasicTreeData';
 
 @injectable()
 class SubscribableBasicTree extends Subscribable<TreeMutationTypes> implements ISubscribableBasicTree {
@@ -45,8 +45,8 @@ class SubscribableBasicTree extends Subscribable<TreeMutationTypes> implements I
         this.children.onUpdate(this.notifySubscribersOfUpdate.bind(this))
         this.contentId.onUpdate(this.notifySubscribersOfUpdate.bind(this))
         this.parentId.onUpdate(this.notifySubscribersOfUpdate.bind(this))
-
     }
+
     public addDescendantMutation(
         propertyName: TreePropertyNames,
         mutation: IDatedMutation<SetMutationTypes & IdMutationTypes>
