@@ -2,6 +2,10 @@ import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
 import {IContentUserData} from './app/objects/contentUserData/IContentUserData';
+import {
+    ISubscribableTreeDataStore, SubscribableDataStoreArgs,
+    SubscribableTreeDataStore
+} from './app/objects/dataStores/SubscribableTreeDataStore';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
 import {IDatabaseSyncer} from './app/objects/dbSync/IDatabaseSyncer';
@@ -31,7 +35,7 @@ import {ISigmaNode} from './app/objects/sigmaNode/ISigmaNode';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {IBasicTree} from './app/objects/tree/IBasicTree';
-import {ISubscribableBasicTree} from './app/objects/tree/ISubscribableBasicTree';
+import {ISubscribableBasicTreeCore} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
@@ -50,14 +54,15 @@ myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConsta
     timestamp: Date.now(),
     type: IdMutationTypes.SET,
 })
+myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
-myContainer.bind<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
+myContainer.bind<ISubscribableBasicTreeCore>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
 myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
 myContainer.bind<ISubscribableMutableIdArgs>(TYPES.ISubscribableMutableIdArgs).to(SubscribableMutableIdArgs)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
-myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
+myContainer.bind<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore).to(SubscribableTreeDataStore)
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
@@ -74,6 +79,7 @@ myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
+myContainer.bind<SubscribableDataStoreArgs>(TYPES.SubscribableDataStoreArgs).to(SubscribableDataStoreArgs)
 myContainer.bind<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction)
     .toConstantValue((updates: IDetailedUpdates) => void 0)
 myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);

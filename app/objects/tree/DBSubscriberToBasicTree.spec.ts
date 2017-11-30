@@ -4,7 +4,7 @@ import {myContainer} from '../../../inversify.config';
 import {IDatabaseSyncer} from '../dbSync/IDatabaseSyncer';
 import {TYPES} from '../types';
 import {DBSubscriberToTree} from './DBSubscriberToBasicTree';
-import {ISubscribableBasicTree} from './ISubscribableBasicTree';
+import {ISubscribableBasicTreeCore} from './ISubscribableBasicTree';
 
 describe('IDBSubscriber > DBSubscriberToTree', () => {
 
@@ -14,7 +14,7 @@ describe('IDBSubscriber > DBSubscriberToTree', () => {
     let childrenSyncer
     let dbSubscriberToTree: DBSubscriberToTree
     beforeEach('constructor', () => {
-        subscribableTree = myContainer.get<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree)
+        subscribableTree = myContainer.get<ISubscribableBasicTreeCore>(TYPES.ISubscribableBasicTree)
         contentIdSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
         parentIdSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
         childrenSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
