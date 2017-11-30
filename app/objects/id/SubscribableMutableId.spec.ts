@@ -21,7 +21,7 @@ describe('SubscribableMutableId > Subscribable', () => {
         const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
         subscribableMutableId.onUpdate(callback)
         subscribableMutableId.addMutation(sampleMutation)
-        // expect(callback.callCount).to.equal(1)
+        expect(callback.callCount).to.equal(1)
     })
 })
 describe('SubscribableMutableId > MutableId', () => {
