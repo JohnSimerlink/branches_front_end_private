@@ -5,11 +5,14 @@ import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
 import {IDatedMutation} from '../mutations/IMutation';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
 import {SetMutationTypes} from '../set/SetMutationTypes';
+import {Subscribable} from '../Subscribable';
 import {TYPES} from '../types'
 import {ISubscribableBasicTree} from './ISubscribableBasicTree';
+import {TreeMutationTypes} from './TreeMutationTypes';
+import {IBasicTreeDataWithoutId} from './IBasicTreeData';
 
 @injectable()
-class SubscribableBasicTree implements ISubscribableBasicTree {
+class SubscribableBasicTree extends Subscribable<TreeMutationTypes> implements ISubscribableBasicTree {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
@@ -20,11 +23,29 @@ class SubscribableBasicTree implements ISubscribableBasicTree {
     public getId() {
         return this.id
     }
-    constructor(@inject(TYPES.SubscribableBasicTreeArgs) {id, contentId, parentId, children}) {
+    public val(): IBasicTreeDataWithoutId {
+        return {
+            children: this.children.val(),
+            contentId: this.contentId.val(),
+            parentId: this.parentId.val(),
+        }
+    }
+    constructor(@inject(TYPES.SubscribableBasicTreeArgs) {updatesCallbacks, id, contentId, parentId, children}) {
+        super({updatesCallbacks})
         this.id = id
         this.contentId = contentId
         this.parentId = parentId
         this.children = children
+    }
+    private notifySubscribersOfUpdate() {
+        this.updates.val = this.val()
+        this.callCallbacks()
+    }
+    public publishUponDescendantUpdates() {
+        this.children.onUpdate(this.notifySubscribersOfUpdate.bind(this))
+        this.contentId.onUpdate(this.notifySubscribersOfUpdate.bind(this))
+        this.parentId.onUpdate(this.notifySubscribersOfUpdate.bind(this))
+
     }
     public addDescendantMutation(
         propertyName: TreePropertyNames,
@@ -50,6 +71,7 @@ class SubscribableBasicTree implements ISubscribableBasicTree {
 type TreePropertyNames = 'contentId' | 'parentId' | 'children'
 @injectable()
 class SubscribableBasicTreeArgs {
+    @inject(TYPES.Array) public updatesCallbacks
     @inject(TYPES.String) public id
     @inject(TYPES.ISubscribableMutableId) public contentId
     @inject(TYPES.ISubscribableMutableId) public parentId
