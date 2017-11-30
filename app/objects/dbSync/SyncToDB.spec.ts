@@ -1,10 +1,11 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {ISubscribable} from '../ISubscribable';
-import {SyncToDB} from './SyncToDB';
 import {myContainer} from '../../../inversify.config';
-import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
+import {ISubscribable} from '../ISubscribable';
 import {TYPES} from '../types';
+import {IDetailedUpdates} from './IDetailedUpdates';
+import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
+import {SyncToDB} from './SyncToDB';
 
 describe('IDatabaseSyncer > SyncToDB', () => {
     // const firebaseRef = 'path/subpath/prop'
@@ -22,7 +23,7 @@ describe('IDatabaseSyncer > SyncToDB', () => {
       but that would be unit testing a private method . . .
     */
 
-    const objectToKeepSynced: ISubscribable = {
+    const objectToKeepSynced: ISubscribable<IDetailedUpdates> = {
         onUpdate() { return void 0 }
     }
 

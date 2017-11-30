@@ -1,5 +1,5 @@
-import {IUpdates} from './IUpdates';
+import {IDetailedUpdates} from './IDetailedUpdates';
 
-type SaveUpdatesToDBFunction = (updates: IUpdates) => void
+type SaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 
 export {SaveUpdatesToDBFunction}

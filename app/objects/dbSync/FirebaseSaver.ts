@@ -4,8 +4,8 @@ import * as entries from 'object.entries' // TODO: why cant i get this working n
 import {log} from  '../../core/log'
 import {TYPES} from '../types';
 import {IDatabaseSaver} from './IDatabaseSaver';
+import {IDetailedUpdates} from './IDetailedUpdates';
 import {IFirebaseRef} from './IFirebaseRef';
-import {IUpdates} from './IUpdates';
 if (!Object.entries) {
     entries.shim()
 }
@@ -15,7 +15,7 @@ class FirebaseSaver implements IDatabaseSaver {
     constructor(@inject(TYPES.FirebaseSaverArgs) {firebaseRef}) {
         this.firebaseRef = firebaseRef
     }
-    public save(updatesObj: IUpdates) {
+    public save(updatesObj: IDetailedUpdates) {
         const updates = updatesObj.updates
         if (updates && Object.keys(updates)) {
             this.firebaseRef.update(updates)

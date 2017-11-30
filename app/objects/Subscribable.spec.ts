@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {SyncToDB} from './dbSync/SyncToDB';
-import {IUpdates} from './dbSync/IUpdates';
+import {IDetailedUpdates} from './dbSync/IDetailedUpdates';
 import {IDatedMutation} from './mutations/IMutation';
 import {SubscribableMutableStringSet} from './set/SubscribableMutableStringSet';
 import {SetMutationTypes} from './set/SetMutationTypes';
@@ -31,7 +31,7 @@ describe('Subscribable:SubscribableMutableStringSet', () => {
         const val = {}
         val[ADDED_KEY] = true
 
-        const expectedPublishedUpdates: IUpdates = {
+        const expectedPublishedUpdates: IDetailedUpdates = {
             pushes: {
                 mutations: mutation
             },

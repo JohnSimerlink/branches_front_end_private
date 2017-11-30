@@ -5,10 +5,10 @@ import store from '../../core/store'
 import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
+import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from '../proficiencyStats/proficiencyStatsUtils'
 // import {IMutable, } from '../mutations/IMutable'
 import {Trees} from '../trees.js'
 import {user} from '../user'
-import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from '../proficiencyStats/proficiencyStatsUtils'
 // import {IDatedMutation} from '../mutations/IMutation';
 // log('md5 is ', md5)
 // log('md5 of 1234 is', md5(1234))

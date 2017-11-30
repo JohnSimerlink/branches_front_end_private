@@ -1,7 +1,7 @@
-import {IUpdates} from './dbSync/IUpdates';
+import {IDetailedUpdates} from './dbSync/IDetailedUpdates';
 
-export type updatesCallback = (updates: IUpdates) => void;
+export type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
 
-export interface ISubscribable {
-    onUpdate(func: updatesCallback);
+export interface ISubscribable<UpdateObjectType> {
+    onUpdate(func: updatesCallback<UpdateObjectType>);
 }

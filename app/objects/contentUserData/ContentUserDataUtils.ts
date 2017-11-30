@@ -1,4 +1,3 @@
-import {injectable} from 'inversify';
 import {IContentUserData} from './IContentUserData';
 
 const REGULAR_SIZE = 10

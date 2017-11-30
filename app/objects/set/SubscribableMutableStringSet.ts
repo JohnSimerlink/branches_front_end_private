@@ -2,6 +2,7 @@
 /* tslint:disable variable-name */
 // import {log} from '../../core/log'
 import {inject, injectable} from 'inversify';
+import {IDetailedUpdates} from '../dbSync/IDetailedUpdates';
 import {ISubscribable, updatesCallback} from '../ISubscribable';
 import {IMutable, IUndoableMutable} from '../mutations/IMutable';
 import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
@@ -16,7 +17,7 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  See the commit history for the commit before this file was created to see what I mean.
  */
 @injectable()
-class SubscribableMutableStringSet extends Subscribable<SetMutationTypes>
+class SubscribableMutableStringSet extends Subscribable<SetMutationTypes, IDetailedUpdates>
     implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
     /* TODO: maybe this and the above should be inherited protected properties from a base class */

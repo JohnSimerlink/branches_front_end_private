@@ -6,10 +6,10 @@ import {TYPES} from './types';
 
 @injectable()
     // TODO: make abstract?
-class Subscribable<MutationTypes> implements ISubscribable {
+class Subscribable<MutationTypes, UpdatesType> implements ISubscribable<UpdatesType> {
     protected updates: {val?: object} = {}
     protected pushes: {mutations?: IDatedMutation<MutationTypes>} = {}
-    private updatesCallbacks: updatesCallback[];
+    private updatesCallbacks: Array<updatesCallback<UpdatesType>>;
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
         this.updatesCallbacks = updatesCallbacks /* let updatesCallbacks be injected for
          1) modularity reasons
@@ -17,7 +17,7 @@ class Subscribable<MutationTypes> implements ISubscribable {
          of set, mutations, and updatesCallbacks easy-peasy
          */
     }
-    public onUpdate(func: updatesCallback) {
+    public onUpdate(func: updatesCallback<UpdatesType>) {
         // throw new TypeError('func - ' + JSON.stringify(func))
         this.updatesCallbacks.push(func)
     }
@@ -34,7 +34,7 @@ class Subscribable<MutationTypes> implements ISubscribable {
             callback({
                 pushes: me.pushes,
                 updates: me.updates,
-            })
+            } as any) // TODO: this as any might be a bad hack to fix the type error
         })
         this.clearPushesAndUpdates()
     }

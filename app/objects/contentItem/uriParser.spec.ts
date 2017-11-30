@@ -1,5 +1,5 @@
-import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList} from './uriParser';
 import {expect} from 'chai'
+import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList} from './uriParser';
 describe('Convert Breadcrumbs List to String', () => {
     let list
     let expectedBreadcrumbs
@@ -56,7 +56,6 @@ describe('Last N BreadCrumbs String From List', () => {
         const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n)
         expect(breadcrumbs).to.equal(expectedBreadcrumbs)
     })
-
 
     list = ['Everything', 'Spanish', 'Vocab', 'amar : to love']
     expectedBreadcrumbs = 'Everything > Spanish > Vocab > amar : to love'

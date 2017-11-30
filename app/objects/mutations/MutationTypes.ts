@@ -7,11 +7,11 @@
 //     // ADD_LEAF,
 //     // REMOVE_LEAF,
 // }
+import {IdMutationTypes} from '../id/IdMutationTypes';
 import {PointMutationTypes} from '../point/PointMutationTypes';
+import {SetMutationTypes} from '../set/SetMutationTypes';
 import {TreeMutationTypes} from '../tree/TreeMutationTypes';
 import {TreeParentMutationTypes} from '../tree/TreeParentMutationTypes';
-import {IdMutationTypes} from '../id/IdMutationTypes';
-import {SetMutationTypes} from '../set/SetMutationTypes';
 
 type MutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes | IdMutationTypes | SetMutationTypes
 export {MutationTypes}

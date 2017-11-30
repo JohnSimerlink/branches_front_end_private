@@ -6,9 +6,9 @@ import {IContentUserData} from './app/objects/contentUserData/IContentUserData';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
 import {IDatabaseSyncer} from './app/objects/dbSync/IDatabaseSyncer';
+import {IDetailedUpdates} from './app/objects/dbSync/IDetailedUpdates';
 import {IFirebaseRef} from './app/objects/dbSync/IFirebaseRef';
 import {SaveUpdatesToDBFunction} from './app/objects/dbSync/ISaveUpdatesToDBFunction';
-import {IUpdates} from './app/objects/dbSync/IUpdates';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
 import {IdMutationTypes} from './app/objects/id/IdMutationTypes';
 import {IMutableId} from './app/objects/id/IMutableId';
@@ -70,7 +70,7 @@ myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
 myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableBasicTreeArgs).to(SubscribableBasicTreeArgs)
-myContainer.bind<ISubscribable>(TYPES.Subscribable).to(Subscribable);
+// myContainer.bind<ISubscribable<IDetailedUpdates>>(TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
 
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
@@ -81,7 +81,8 @@ myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
-myContainer.bind<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction).toConstantValue((updates: IUpdates) => void 0)
+myContainer.bind<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction)
+    .toConstantValue((updates: IDetailedUpdates) => void 0)
 myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 myContainer.bind<Object>(TYPES.Object).toConstantValue({})

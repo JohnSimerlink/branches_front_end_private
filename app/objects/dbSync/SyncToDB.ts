@@ -2,12 +2,10 @@
 import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {ISubscribable} from '../ISubscribable';
-import {ISubscriber} from '../ISubscriber';
 import {TYPES} from '../types';
 import {IDatabaseSyncer} from './IDatabaseSyncer';
-import {IFirebaseRef} from './IFirebaseRef';
+import {IDetailedUpdates} from './IDetailedUpdates';
 import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
-import {IUpdates} from './IUpdates';
 
 @injectable()
 class SyncToDB implements IDatabaseSyncer {
@@ -16,7 +14,7 @@ class SyncToDB implements IDatabaseSyncer {
         this.saveUpdatesToDBFunction = saveUpdatesToDBFunction
     }
 
-    public subscribe(obj: ISubscribable) {
+    public subscribe(obj: ISubscribable<IDetailedUpdates>) {
         obj.onUpdate(this.saveUpdatesToDBFunction)
     }
 }

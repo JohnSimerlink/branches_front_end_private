@@ -1,6 +1,6 @@
-import {IUpdates} from './IUpdates';
+import {IDetailedUpdates} from './IDetailedUpdates';
 
 interface IDatabaseSaver {
-    save(updates: IUpdates)
+    save(updates: IDetailedUpdates)
 }
 export {IDatabaseSaver}
