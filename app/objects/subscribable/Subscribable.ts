@@ -2,11 +2,10 @@
 import {inject, injectable} from 'inversify';
 import {IDatedMutation} from '../mutations/IMutation';
 import {TYPES} from '../types';
-import {ISubscribable, updatesCallback} from './ISubscribable';
-import {SubscribableCore} from './ISubscribableCore';
+import {ISubscribable} from './ISubscribable';
+import {SubscribableCore} from './SubscribableCore';
 
 @injectable()
-    // TODO: make abstract?
 class Subscribable<MutationTypes, UpdatesType>
     extends SubscribableCore<UpdatesType>
     implements ISubscribable<UpdatesType> {
