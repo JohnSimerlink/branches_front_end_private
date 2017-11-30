@@ -11,6 +11,7 @@ const TYPES = {
     IColorSlice: Symbol('IColorSlice'),
     IContentUserData: Symbol('IContentUserData'),
     IDatabaseSyncer: Symbol('IDatabaseSyncer'),
+    IDatedMutation: Symbol('IDatedMutation'),
     IFirebaseRef: Symbol('IFirebaseRef'),
     IMutableId: Symbol('IMutableId'),
     IMutableStringSet: Symbol('IMutableStringSet'),

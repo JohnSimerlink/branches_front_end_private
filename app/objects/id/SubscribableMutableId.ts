@@ -14,10 +14,16 @@ decorate(injectable(), Array)
 @Mixin(Subscribable, MutableId)
 @injectable()
 class SubscribableMutableId implements ISubscribableMutableId {
+    // private subscribable: ISubscribable
+    // private mutableId: IMutableId
     public onUpdate(func: updatesCallback) {return null}
     public val(): string { return null  }
-    public addMutation(mutation: IDatedMutation<IdMutationTypes>): void { return null}
-    public mutations(): Array<IDatedMutation<IdMutationTypes>> { return null}
+    public addMutation(mutation: IDatedMutation<IdMutationTypes>): void {
+        // this.mutableId.addMutation(mutation)
+        // this.subscribable.callCallbacks()
+        return void 0
+    }
+    public mutations(): Array<IDatedMutation<IdMutationTypes>> { return null }
     constructor(@inject(TYPES.ISubscribableMutableIdArgs) {updatesCallbacks = [], id, mutations = []}) {
         const subscribable = new Subscribable({updatesCallbacks})
         Object.getOwnPropertyNames(subscribable).forEach(prop => {
