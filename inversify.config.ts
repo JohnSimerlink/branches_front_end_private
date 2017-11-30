@@ -41,6 +41,7 @@ import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tr
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {defaultProficiencyStats, IProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
+import {IdMutationTypes} from './app/objects/id/IdMutationTypes';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -51,6 +52,11 @@ myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArg
 myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
+myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
+    data: {id: '12345'},
+    timestamp: Date.now(),
+    type: IdMutationTypes.SET,
+})
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableId>(TYPES.IMutableId).to(MutableId)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)

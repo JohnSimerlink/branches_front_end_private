@@ -10,9 +10,11 @@ import {SetMutationTypes} from '../set/SetMutationTypes';
 import {TYPES} from '../types'
 import {IBasicTree} from './IBasicTree';
 import {ISubscribableBasicTree} from './ISubscribableBasicTree';
+import {IUpdates} from '../dbSync/IUpdates';
 
 @injectable()
 class SubscribableBasicTree implements ISubscribableBasicTree {
+
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
     public parentId: ISubscribableMutableId;
