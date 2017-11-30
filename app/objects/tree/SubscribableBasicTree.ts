@@ -1,9 +1,9 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {IValUpdates} from '../dataStores/IValUpdates';
 import {IdMutationTypes} from '../id/IdMutationTypes';
 import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
+import {IValUpdates} from '../interfaces';
 import {IDatedMutation} from '../mutations/IMutation';
 import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
 import {SetMutationTypes} from '../set/SetMutationTypes';

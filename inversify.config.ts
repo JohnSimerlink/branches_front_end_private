@@ -2,6 +2,7 @@ import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
 import {IContentUserData} from './app/objects/contentUserData/IContentUserData';
+import {SubscribableGlobalDataStore, GlobalDataStoreArgs} from './app/objects/dataStores/SubscribableGlobalDataStore';
 import {
     ISubscribableTreeDataStore, SubscribableDataStoreArgs,
     SubscribableTreeDataStore
@@ -46,6 +47,8 @@ myContainer.bind<any>(TYPES.Any).toConstantValue(false)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
+myContainer.bind<SubscribableGlobalDataStore>(TYPES.GlobalDataStore).to(SubscribableGlobalDataStore)
+myContainer.bind<GlobalDataStoreArgs>(TYPES.GlobalDataStoreArgs).to(GlobalDataStoreArgs)
 myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)

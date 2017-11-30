@@ -26,7 +26,7 @@ describe('FirebaseSyncableBasicTree', () => {
     })
     it('a mutation in one of the subscribable properties' +
         ' should publish an update of the entire object\'s value '
-        + ' after publishUponDescendantUpdates has been called', () => {
+        + ' after startBroadcasting has been called', () => {
         const contentId = new SubscribableMutableId()
         /* = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
          // TODO: figure out why DI puts in a bad updatesCallback!
@@ -49,7 +49,7 @@ describe('FirebaseSyncableBasicTree', () => {
     })
     it('a mutation in one of the subscribable properties' +
         ' should NOT publish an update of the entire object\'s value'
-        + ' before publishUponDescendantUpdates has been called', () => {
+        + ' before startBroadcasting has been called', () => {
         const contentId = new SubscribableMutableId()
         /* = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
          // TODO: figure out why DI puts in a bad updatesCallback!
