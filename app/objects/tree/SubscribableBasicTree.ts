@@ -1,4 +1,5 @@
 // tslint:disable max-classes-per-file
+// tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {IValUpdates} from '../dataStores/IValUpdates';
 import {IdMutationTypes} from '../id/IdMutationTypes';
@@ -9,11 +10,13 @@ import {SetMutationTypes} from '../set/SetMutationTypes';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 import {IBasicTreeDataWithoutId} from './IBasicTreeData';
-import {ISubscribableBasicTree} from './ISubscribableBasicTree';
+import {ISubscribableBasicTreeCore} from './ISubscribableBasicTree';
 import {TreeMutationTypes} from './TreeMutationTypes';
 
+interface ISubscribableBasicTree extends SubscribableBasicTree {}
+
 @injectable()
-class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> implements ISubscribableBasicTree {
+class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> implements ISubscribableBasicTreeCore {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
@@ -81,4 +84,4 @@ class SubscribableBasicTreeArgs {
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
-export {SubscribableBasicTree, SubscribableBasicTreeArgs}
+export {SubscribableBasicTree, SubscribableBasicTreeArgs, ISubscribableBasicTree}

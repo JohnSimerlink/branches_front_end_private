@@ -1,9 +1,10 @@
 // tslint:disable max-classes-per-file
+// tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
 import {ISubscribable} from '../subscribable/ISubscribable';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
-import {ISubscribableBasicTree} from '../tree/ISubscribableBasicTree';
+import {ISubscribableBasicTreeCore} from '../tree/ISubscribableBasicTree';
 import {TYPES} from '../types';
 import {IIdAndValUpdates} from './IIdAndValUpdates';
 import {ICoreSubscribableDataStore} from './ISubscribableDataStore';
@@ -12,10 +13,11 @@ if (!Object.entries) {
     entries.shim()
 }
 
+interface ISubscribableTreeDataStore extends SubscribableTreeDataStore {}
 @injectable()
 class SubscribableTreeDataStore
     extends SubscribableCore<IIdAndValUpdates>
-    implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableBasicTree> {
+    implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableBasicTreeCore> {
     private store: object;
     private update: IIdAndValUpdates;
     constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
@@ -25,7 +27,9 @@ class SubscribableTreeDataStore
     protected callbackArguments(): IIdAndValUpdates {
         return this.update
     }
-    public addAndSubscribeToItem(id: any, item: ISubscribable<IIdAndValUpdates> & ISubscribableBasicTree) {
+    public addAndSubscribeToItem(
+        {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableBasicTreeCore }
+        ) {
         this.store[id] = item
         this.subscribeToItem(id, item)
         // throw new Error('Method not implemented.");
@@ -33,7 +37,7 @@ class SubscribableTreeDataStore
     private onItemUpdate(id, val) {
         this.update = {id, val}
     }
-    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableBasicTree) {
+    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableBasicTreeCore) {
         const me = this
         item.onUpdate( (val: IValUpdates) => {
             me.onItemUpdate(id, val)
@@ -47,9 +51,11 @@ class SubscribableTreeDataStore
     }
 
 }
+
+@injectable()
 class SubscribableDataStoreArgs {
     @inject(TYPES.Object) public store;
     @inject(TYPES.Array) public updatesCallbacks;
 }
 
-export {SubscribableDataStoreArgs}
+export {SubscribableDataStoreArgs, ISubscribableTreeDataStore, SubscribableTreeDataStore}
