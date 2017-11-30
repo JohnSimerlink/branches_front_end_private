@@ -1,3 +1,4 @@
+import {IContentUserData} from '../contentUserData/IContentUserData';
 import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
 import {IColorSlice} from './IColorSlice';
 
@@ -9,6 +10,7 @@ interface ISigmaNodeData {
     x: number;
     y: number;
     aggregationTimer: number;
+    contentUserData: IContentUserData;
     content: object;
     label: string;
     size: number;

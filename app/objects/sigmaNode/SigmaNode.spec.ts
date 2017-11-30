@@ -1,15 +1,21 @@
 import {expect} from 'chai'
 import {myContainer} from '../../../inversify.config';
+import {ContentItemUtils} from '../contentItem/ContentItemUtils';
+import {CONTENT_TYPES} from '../contentItem/ContentTypes';
+import {IContentData} from '../contentItem/IContentData';
+import {ContentUserDataUtils, REGULAR_SIZE} from '../contentUserData/ContentUserDataUtils';
+import {IContentUserData} from '../contentUserData/IContentUserData';
 import {IdMutationTypes} from '../id/IdMutationTypes';
 import {IDatedMutation, IMutation} from '../mutations/IMutation';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
 import {IBasicTree} from '../tree/IBasicTree';
 import {IBasicTreeData, IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
+import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 import {ISigmaNodeData} from './ISigmaNodeData';
 import {SigmaNode} from './SigmaNode';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
-import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 describe('sigmaNode', () => {
@@ -46,5 +52,41 @@ describe('sigmaNode', () => {
         expect(sigmaNode.aggregationTimer).to.equal(aggregationTimer)
         expect(sigmaNode.colorSlices).to.deep.equal(colorSlices)
         expect(sigmaNode.proficiencyStats).to.deep.equal(proficiencyStats)
+    })
+    it('receive new ContentData', () => {
+        const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const contentData: IContentData = {
+            answer: 'Columbus',
+            question: 'Ohio',
+            type: CONTENT_TYPES.FACT
+        }
+        const label = ContentItemUtils.getLabelFromContent(contentData)
+        /* QUESTION / TODO: Doesn't this entire test seem useless?
+         e.g. a redundant implementation of the implementation? */
+
+        sigmaNode.receiveNewContentData(contentData)
+        expect(sigmaNode.content).to.equal(contentData)
+        expect(sigmaNode.label).to.equal(label)
+    })
+    it('receive new ContentUserData', () => {
+        const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const overdue = true
+        const lastRecordedStrength = 50
+        const proficiency: PROFICIENCIES = PROFICIENCIES.THREE
+        const timer = 40
+        const contentUserData: IContentUserData = {
+            lastRecordedStrength,
+            overdue,
+            proficiency,
+            timer,
+        }
+        const size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
+        /* QUESTION / TODO: Doesn't this entire test seem useless?
+         e.g. a redundant implementation of the implementation? */
+
+        sigmaNode.receiveNewContentUserData(contentUserData)
+        expect(sigmaNode.size).to.equal(size)
+        expect(sigmaNode.overdue).to.equal(overdue)
+        expect(sigmaNode.contentUserData).to.deep.equal(contentUserData)
     })
 })
