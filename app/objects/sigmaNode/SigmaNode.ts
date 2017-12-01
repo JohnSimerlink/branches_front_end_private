@@ -4,16 +4,13 @@ import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {IContentData} from '../contentItem/IContentData';
 import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
 import {IContentUserData} from '../contentUserData/IContentUserData';
-import {ICoordinate, IPoint} from '../point/IPoint';
+import {ICoordinate} from '../point/IPoint';
 import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
-import {IBasicTree} from '../tree/IBasicTree';
-import {IBasicTreeData, IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
+import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
 import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
 import {IColorSlice} from './IColorSlice';
-import {IEditableSigmaNode} from './IEditableSigmaNode';
 import {ISigmaNode} from './ISigmaNode';
-import {ISigmaNodeData} from './ISigmaNodeData';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 @injectable()

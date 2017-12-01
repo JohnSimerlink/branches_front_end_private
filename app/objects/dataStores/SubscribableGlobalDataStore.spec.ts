@@ -9,7 +9,7 @@ import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
 import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
 import {TreePropertyNames} from '../tree/TreePropertyNames';
 import {TYPES} from '../types';
-import {ObjectTypes} from './ObjectTypes';
+import {ObjectDataTypes} from './ObjectTypes';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 
@@ -68,11 +68,11 @@ describe('SubscribableGlobalDataStore', () => {
         expect(callback1.callCount).to.equal(1)
         expect(callback1.getCall(0).args[0].id).to.equal(TREE_ID)
         expect(callback1.getCall(0).args[0].val).to.deep.equal(treeNewVal)
-        expect(callback1.getCall(0).args[0].type).to.deep.equal(ObjectTypes.TREE)
+        expect(callback1.getCall(0).args[0].type).to.deep.equal(ObjectDataTypes.TREE_DATA)
         expect(callback2.callCount).to.equal(1)
         expect(callback2.getCall(0).args[0].id).to.equal(TREE_ID)
         expect(callback2.getCall(0).args[0].val).to.deep.equal(treeNewVal)
-        expect(callback2.getCall(0).args[0].type).to.deep.equal(ObjectTypes.TREE)
+        expect(callback2.getCall(0).args[0].type).to.deep.equal(ObjectDataTypes.TREE_DATA)
 
     })
     //

@@ -4,7 +4,7 @@ import {log} from '../../core/log'
 import {IIdAndValUpdates, ITypeAndIdAndValUpdates} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
-import {ObjectTypes} from './ObjectTypes';
+import {ObjectDataTypes} from './ObjectTypes';
 
 @injectable()
 class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates> {
@@ -24,7 +24,7 @@ class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdat
         const me = this
         this.subscribableTreeDataStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectTypes.TREE,
+                type: ObjectDataTypes.TREE_DATA,
                 ...update
             }
             me.callCallbacks()

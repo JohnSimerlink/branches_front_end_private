@@ -15,7 +15,7 @@ abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesTyp
          1) modularity reasons
          2) if we want to cache the state of this entire object, we could load in the previous state
          of set, mutations, and updatesCallbacks easy-peasy
-         */
+        */
     }
     public onUpdate(func: updatesCallback<UpdatesType>) {
         this.updatesCallbacks.push(func)
