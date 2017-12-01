@@ -35,13 +35,10 @@ class SubscribableTreeDataStore
         this.subscribeToItem(id, item)
         // throw new Error('Method not implemented.");
     }
-    private onItemUpdate(id, val) {
-        this.update = {id, val}
-    }
     private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableBasicTreeCore) {
         const me = this
         item.onUpdate( (val: IValUpdates) => {
-            me.onItemUpdate(id, val)
+            me.update = {id, val}
             me.callCallbacks()
         })
     }
