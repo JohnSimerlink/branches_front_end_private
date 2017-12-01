@@ -3,21 +3,16 @@ import {myContainer} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
 import {IContentData} from '../contentItem/IContentData';
-import {ContentUserDataUtils, REGULAR_SIZE} from '../contentUserData/ContentUserDataUtils';
+import {ContentUserDataUtils } from '../contentUserData/ContentUserDataUtils';
 import {IContentUserData} from '../contentUserData/IContentUserData';
-import {IdMutationTypes} from '../id/IdMutationTypes';
-import {IDatedMutation, IMutation} from '../mutations/IMutation';
+import {ICoordinate} from '../point/IPoint';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
-import {IBasicTree} from '../tree/IBasicTree';
-import {IBasicTreeData, IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
+import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
 import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
-import {ISigmaNodeData} from './ISigmaNodeData';
-import {SigmaNode} from './SigmaNode';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
-import {ICoordinate} from '../point/IPoint';
 
 describe('sigmaNode', () => {
     it('receive new tree', () => {

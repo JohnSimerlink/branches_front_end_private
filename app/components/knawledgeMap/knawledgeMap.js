@@ -292,7 +292,7 @@ export function connectTreeToParent(tree,content){
 //         label: getLabelFromContent(content),
 //         size: getSizeFromContent(content),
 //         color: getTreeColor(content),
-//         type: NODE_TYPES.TREE,
+//         type: NODE_TYPES.TREE_DATA,
 //     }
 //
 //     s.graph.addNode(newTree);
