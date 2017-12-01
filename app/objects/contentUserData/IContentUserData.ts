@@ -4,6 +4,6 @@ interface IContentUserData {
     overdue: boolean;
     timer: number;
     proficiency: PROFICIENCIES;
-    lastRecordedStrength;
+    lastRecordedStrength; // TODO: this might actually be an object not a simple number
 }
 export {IContentUserData}
