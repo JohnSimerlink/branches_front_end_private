@@ -40,6 +40,12 @@ import {ISubscribableBasicTreeCore} from './app/objects/tree/ISubscribableBasicT
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
+import {ISigmaNodeHandler} from './app/objects/interfaces';
+import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
+import {
+    SigmaNodeHandlerSubscriber,
+    SigmaNodeHandlerSubscriberArgs
+} from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -61,6 +67,12 @@ myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
+myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
+myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
+myContainer.bind<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber).to(SigmaNodeHandlerSubscriber)
+myContainer.bind<SigmaNodeHandlerSubscriberArgs>(TYPES.SigmaNodeHandlerSubscriberArgs)
+    .to(SigmaNodeHandlerSubscriberArgs)
+myContainer.bind<SubscribableGlobalDataStore>(TYPES.SubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
 myContainer.bind<ISubscribableBasicTreeCore>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
 myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
 myContainer.bind<ISubscribableMutableIdArgs>(TYPES.ISubscribableMutableIdArgs).to(SubscribableMutableIdArgs)

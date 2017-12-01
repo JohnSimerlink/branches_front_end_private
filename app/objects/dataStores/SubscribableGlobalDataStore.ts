@@ -1,13 +1,17 @@
 // tslint:disable max-classes-per-file
+// tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
-import {IIdAndValUpdates, ITypeAndIdAndValUpdates} from '../interfaces';
+import {IIdAndValUpdates, ISubscribableGlobalDataStoreCore, ITypeAndIdAndValUpdates} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {ObjectDataTypes} from './ObjectTypes';
 
+interface ISubscribableGlobalDataStore extends SubscribableGlobalDataStore { }
+
 @injectable()
-class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates> {
+class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates>
+implements ISubscribableGlobalDataStoreCore {
     private update: ITypeAndIdAndValUpdates;
     protected callbackArguments(): ITypeAndIdAndValUpdates {
         // log('globaldatastore callback arguments called')
@@ -39,4 +43,4 @@ class GlobalDataStoreArgs {
     @inject(TYPES.ISubscribableTreeDataStore) public subscribableTreeDataStore
 }
 
-export {SubscribableGlobalDataStore, GlobalDataStoreArgs}
+export {SubscribableGlobalDataStore, GlobalDataStoreArgs, ISubscribableGlobalDataStore}

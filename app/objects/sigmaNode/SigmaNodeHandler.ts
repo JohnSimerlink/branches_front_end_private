@@ -76,4 +76,4 @@ class SigmaNodeHandlerArgs {
     @inject(TYPES.Object) public sigmaNodes;
 }
 
-export {SigmaNodeHandler}
+export {SigmaNodeHandler, SigmaNodeHandlerArgs}

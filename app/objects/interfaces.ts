@@ -1,11 +1,19 @@
 // tslint:disable no-empty-interface
+import {IContentData} from './contentItem/IContentData';
+import {IContentUserData} from './contentUserData/IContentUserData';
 import {ObjectDataTypes} from './dataStores/ObjectTypes';
+import {ICoordinate} from './point/IPoint';
 import {IBasicTreeDataWithoutId} from './tree/IBasicTreeData';
 import {ITreeUserData} from './treeUserData/ITreeUserData';
-import {IContentUserData} from './contentUserData/IContentUserData';
-import {ICoordinate} from './point/IPoint';
-import {IContentData} from './contentItem/IContentData';
 
+// dataStores
+interface ISubscribableGlobalDataStoreCore {
+    startBroadcasting()
+}
+
+
+
+////////
 type IValUpdates = any
 interface IIdAndValUpdates {
     id: any,
@@ -27,5 +35,6 @@ export {
     IValUpdates,
     ObjectDataDataTypes,
     // sigmaNode
-    ISigmaNodeHandler
+    ISigmaNodeHandler,
+    ISubscribableGlobalDataStoreCore
 }
