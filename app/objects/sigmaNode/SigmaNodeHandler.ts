@@ -6,43 +6,49 @@
 
 import {inject, injectable} from 'inversify';
 import {ObjectDataTypes} from '../dataStores/ObjectTypes';
-import {IContentIdSigmaIdMap, ISigmaNodeHandler, ITypeAndIdAndValUpdates, ObjectDataDataTypes} from '../interfaces';
+import {
+    fGetSigmaIdsForContentId, ISigmaNodeHandler, ITypeAndIdAndValUpdates,
+    ObjectDataDataTypes
+} from '../interfaces';
 import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 
 @injectable()
 class SigmaNodeHandler implements ISigmaNodeHandler {
-    private contentIdSigmaIdMap: IContentIdSigmaIdMap
+    private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
 
-    constructor(@inject(TYPES.SigmaNodeHandlerArgs){contentIdSigmaIdMap, sigmaNodes} ) {
+    constructor(@inject(TYPES.SigmaNodeHandlerArgs){getSigmaIdsForContentId, sigmaNodes} ) {
         this.sigmaNodes = sigmaNodes
-        this.contentIdSigmaIdMap = contentIdSigmaIdMap
+        this.getSigmaIdsForContentId = getSigmaIdsForContentId
     }
 
-    private getSigmaNodeId(update: ITypeAndIdAndValUpdates) {
-        let sigmaId
+    private getSigmaNodeIds(update: ITypeAndIdAndValUpdates) {
+        let sigmaIds = []
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA:
             case ObjectDataTypes.TREE_LOCATION_DATA:
             case ObjectDataTypes.TREE_USER_DATA:
-                sigmaId = update.id
+                const treeId = update.id
+                sigmaIds = [treeId]
                 break
             case ObjectDataTypes.CONTENT_DATA:
             case ObjectDataTypes.CONTENT_USER_DATA:
-                sigmaId = this.contentIdSigmaIdMap[update.id]
+                const contentId = update.id
+                sigmaIds = this.getSigmaIdsForContentId(contentId)
                 // TODO: what to do if contentId is not stored in sigmaId map yet?
                 break;
         }
-        return sigmaId
+        return sigmaIds
     }
     // TODO: refactor into a public method on another class
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
-        const sigmaId = this.getSigmaNodeId(update)
-        const sigmaNode: ISigmaNode = this.sigmaNodes[sigmaId]
-        this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val})
-
+        const sigmaIds: string[] = this.getSigmaNodeIds(update)
+        sigmaIds.forEach(id => {
+            const sigmaNode: ISigmaNode = this.sigmaNodes[id]
+            this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val})
+        })
     }
     private updateSigmaNode(
         {
@@ -68,11 +74,10 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
                 break;
         }
     }
-
 }
 @injectable()
 class SigmaNodeHandlerArgs {
-    @inject(TYPES.IContentIdSigmaIdMap) public contentIdSigmaIdMap;
+    @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
     @inject(TYPES.Object) public sigmaNodes;
 }
 

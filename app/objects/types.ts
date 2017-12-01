@@ -48,6 +48,7 @@ const TYPES = {
     SyncToDBArgs: Symbol('SyncToDBArgs'),
     SyncToFirebaseArgs: Symbol('SyncToDBArgs'),
     UIColor: Symbol('UIColor'),
+    fGetSigmaIdsForContentId: Symbol('fGetSigmaIdsForContentId'),
     radian: Symbol('radian'),
 }
 

@@ -28,12 +28,12 @@ interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
 type ObjectDataDataTypes = IBasicTreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
 
 // sigmaNode
+type fGetSigmaIdsForContentId = (id: string) => string[]
 interface ISigmaNodeHandler {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
 interface ISigmaNodeHandlerSubscriber extends ISubscriber<ITypeAndIdAndValUpdates> { }
 
-type IContentIdSigmaIdMap = object
 
 export {
     // app
@@ -45,7 +45,7 @@ export {
     IValUpdates,
     ObjectDataDataTypes,
     // sigmaNode
-    IContentIdSigmaIdMap,
+    fGetSigmaIdsForContentId,
     ISigmaNodeHandler,
     ISubscribableGlobalDataStoreCore,
 }
