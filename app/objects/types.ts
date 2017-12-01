@@ -30,6 +30,8 @@ const TYPES = {
     PROFICIENCIES: Symbol('PROFICIENCIES'),
     SaveUpdatesToDBFunction: Symbol('SaveUpdatesToDBFunction'),
     SigmaNodeArgs: Symbol('SigmaNodeArgs'),
+    SigmaNodeHandler: Symbol('SigmaNodeHandler'),
+    SigmaNodeHandlerArgs: Symbol('SigmaNodeHandlerArgs'),
     String: Symbol('String'),
     Subscribable: Symbol('Subscribable'),
     SubscribableArgs: Symbol('SubscribableArgs'),
