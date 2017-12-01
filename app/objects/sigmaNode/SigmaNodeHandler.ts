@@ -6,13 +6,13 @@
 
 import {inject, injectable} from 'inversify';
 import {ObjectDataTypes} from '../dataStores/ObjectTypes';
-import {ISigmaNodeHandler, ITypeAndIdAndValUpdates, ObjectDataDataTypes} from '../interfaces';
+import {IContentIdSigmaIdMap, ISigmaNodeHandler, ITypeAndIdAndValUpdates, ObjectDataDataTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 
 @injectable()
 class SigmaNodeHandler implements ISigmaNodeHandler {
-    private contentIdSigmaIdMap: object
+    private contentIdSigmaIdMap: IContentIdSigmaIdMap
     private sigmaNodes: object;
 
     constructor(@inject(TYPES.SigmaNodeHandlerArgs){contentIdSigmaIdMap, sigmaNodes} ) {
@@ -72,7 +72,7 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
 }
 @injectable()
 class SigmaNodeHandlerArgs {
-    @inject(TYPES.Object) public contentIdSigmaIdMap;
+    @inject(TYPES.IContentIdSigmaIdMap) public contentIdSigmaIdMap;
     @inject(TYPES.Object) public sigmaNodes;
 }
 

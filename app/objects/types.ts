@@ -13,6 +13,7 @@ const TYPES = {
     IApp: Symbol('IApp'),
     IBasicTree: Symbol('IBasicTree'),
     IColorSlice: Symbol('IColorSlice'),
+    IContentIdSigmaIdMap: Symbol('IContentIdSigmaIdMap'),
     IContentUserData: Symbol('IContentUserData'),
     IDatabaseSyncer: Symbol('IDatabaseSyncer'),
     IDatedMutation: Symbol('IDatedMutation'),

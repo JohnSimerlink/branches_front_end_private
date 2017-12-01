@@ -3,9 +3,9 @@ import {IContentData} from './contentItem/IContentData';
 import {IContentUserData} from './contentUserData/IContentUserData';
 import {ObjectDataTypes} from './dataStores/ObjectTypes';
 import {ICoordinate} from './point/IPoint';
+import {ISubscriber} from './subscribable/ISubscriber';
 import {IBasicTreeDataWithoutId} from './tree/IBasicTreeData';
 import {ITreeUserData} from './treeUserData/ITreeUserData';
-import {ISubscriber} from './subscribable/ISubscriber';
 
 // app
 interface IApp {
@@ -33,6 +33,8 @@ interface ISigmaNodeHandler {
 }
 interface ISigmaNodeHandlerSubscriber extends ISubscriber<ITypeAndIdAndValUpdates> { }
 
+type IContentIdSigmaIdMap = object
+
 export {
     // app
     IApp,
@@ -43,6 +45,7 @@ export {
     IValUpdates,
     ObjectDataDataTypes,
     // sigmaNode
+    IContentIdSigmaIdMap,
     ISigmaNodeHandler,
     ISubscribableGlobalDataStoreCore,
 }
