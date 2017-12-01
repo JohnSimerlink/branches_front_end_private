@@ -1,5 +1,6 @@
 const TYPES = {
     Any: Symbol('Any'),
+    AppArgs: Symbol('AppArgs'),
     Array: Symbol('Array'),
     Boolean: Symbol('Boolean'),
     ContentUserDataArgs: Symbol('ContentUserDataArgs'),
@@ -9,6 +10,7 @@ const TYPES = {
     GlobalDataStoreArgs: Symbol('GlobalDataStoreArgs'),
     IActivatableDatedMutation: Symbol('IActivatableDatedMutation'),
     IActivatableDatedMutationArr: Symbol('IActivatableDatedMutationArr'),
+    IApp: Symbol('IApp'),
     IBasicTree: Symbol('IBasicTree'),
     IColorSlice: Symbol('IColorSlice'),
     IContentUserData: Symbol('IContentUserData'),
@@ -21,6 +23,7 @@ const TYPES = {
     ISigmaNode: Symbol('ISigmaNode'),
     ISigmaNodeData: Symbol('ISigmaNodeData'),
     ISigmaNodeHandler: Symbol('ISigmaNodeHandler'),
+    ISigmaNodeHandlerSubscriber: Symbol('ISigmaNodeHandlerSubscriber'),
     ISubscribableBasicTree: Symbol('ISubscribableBasicTreeCore'),
     ISubscribableMutableId: Symbol('ISubscribableMutableId'),
     ISubscribableMutableIdArgs: Symbol('ISubscribableMutableIdArgs'),
