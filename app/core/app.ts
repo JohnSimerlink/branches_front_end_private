@@ -1,12 +1,10 @@
 import {inject, injectable} from 'inversify';
 import {ISubscribableGlobalDataStore} from '../objects/dataStores/SubscribableGlobalDataStore';
-import {IApp} from '../objects/interfaces';
-import {SigmaNodeHandlerSubscriber} from '../objects/sigmaNode/SigmaNodeHandlerSubscriber';
+import {IApp, ISigmaNodeHandlerSubscriber} from '../objects/interfaces';
 import {TYPES} from '../objects/types';
 @injectable()
 class App implements IApp {
-
-    private canvasUI: SigmaNodeHandlerSubscriber // TODO: replace with an interface and/or generic
+    private canvasUI: ISigmaNodeHandlerSubscriber // TODO: replace with an interface and/or generic
     private dataChangeEmitter: ISubscribableGlobalDataStore
     constructor(@inject(TYPES.AppArgs){sigmaNodeHandlerSubscriber, subscribableGlobalDataStore}) {
         this.canvasUI = sigmaNodeHandlerSubscriber

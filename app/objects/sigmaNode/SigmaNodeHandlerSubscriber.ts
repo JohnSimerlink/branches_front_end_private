@@ -6,13 +6,12 @@
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
 import {inject, injectable} from 'inversify';
-import {ISigmaNodeHandler, ITypeAndIdAndValUpdates} from '../interfaces';
+import {ISigmaNodeHandler, ISigmaNodeHandlerSubscriber, ITypeAndIdAndValUpdates} from '../interfaces';
 import {ISubscribable} from '../subscribable/ISubscribable';
-import {ISubscriber} from '../subscribable/ISubscriber';
 import {TYPES} from '../types';
 
 @injectable()
-class SigmaNodeHandlerSubscriber implements ISubscriber<ITypeAndIdAndValUpdates> {
+class SigmaNodeHandlerSubscriber implements ISigmaNodeHandlerSubscriber {
     private sigmaNodeHandler: ISigmaNodeHandler
 
     constructor(@inject(TYPES.SigmaNodeHandlerSubscriberArgs){sigmaNodeHandler}) {
