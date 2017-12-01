@@ -6,12 +6,14 @@ import {ICoordinate} from './point/IPoint';
 import {IBasicTreeDataWithoutId} from './tree/IBasicTreeData';
 import {ITreeUserData} from './treeUserData/ITreeUserData';
 
+// app
+interface IApp {
+    start()
+}
 // dataStores
 interface ISubscribableGlobalDataStoreCore {
     startBroadcasting()
 }
-
-
 
 ////////
 type IValUpdates = any
@@ -30,11 +32,14 @@ interface ISigmaNodeHandler {
 }
 
 export {
+    // app
+    IApp,
+    ///
     ITypeAndIdAndValUpdates,
     IIdAndValUpdates,
     IValUpdates,
     ObjectDataDataTypes,
     // sigmaNode
     ISigmaNodeHandler,
-    ISubscribableGlobalDataStoreCore
+    ISubscribableGlobalDataStoreCore,
 }
