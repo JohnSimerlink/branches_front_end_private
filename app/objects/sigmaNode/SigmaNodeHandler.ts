@@ -4,17 +4,18 @@
 // subscribe to store. on store update parse object type and id
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
+import {inject, injectable} from 'inversify';
 import {ObjectDataTypes} from '../dataStores/ObjectTypes';
-import {IIdSigmaNodeMap, ISigmaNodeHandler, ITypeAndIdAndValUpdates, ObjectDataDataTypes} from '../interfaces';
-import {ISubscribable} from '../subscribable/ISubscribable';
-import {ISubscriber} from '../subscribable/ISubscriber';
+import {ISigmaNodeHandler, ITypeAndIdAndValUpdates, ObjectDataDataTypes} from '../interfaces';
+import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 
+@injectable()
 class SigmaNodeHandler implements ISigmaNodeHandler {
-    private contentIdSigmaIdMap
-    private sigmaNodes: IIdSigmaNodeMap
+    private contentIdSigmaIdMap: object
+    private sigmaNodes: object;
 
-    constructor({contentIdSigmaIdMap, sigmaNodes} ) {
+    constructor(@inject(TYPES.SigmaNodeHandlerArgs){contentIdSigmaIdMap, sigmaNodes} ) {
         this.sigmaNodes = sigmaNodes
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
     }
@@ -68,6 +69,11 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
         }
     }
 
+}
+@injectable()
+class SigmaNodeHandlerArgs {
+    @inject(TYPES.Object) public contentIdSigmaIdMap;
+    @inject(TYPES.Object) public sigmaNodes;
 }
 
 export {SigmaNodeHandler}
