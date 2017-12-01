@@ -5,6 +5,7 @@ import {ObjectDataTypes} from './dataStores/ObjectTypes';
 import {ICoordinate} from './point/IPoint';
 import {IBasicTreeDataWithoutId} from './tree/IBasicTreeData';
 import {ITreeUserData} from './treeUserData/ITreeUserData';
+import {ISubscriber} from './subscribable/ISubscriber';
 
 // app
 interface IApp {
@@ -30,6 +31,7 @@ type ObjectDataDataTypes = IBasicTreeDataWithoutId & ITreeUserData & IContentDat
 interface ISigmaNodeHandler {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
+interface ISigmaNodeHandlerSubscriber extends ISubscriber<ITypeAndIdAndValUpdates> { }
 
 export {
     // app
@@ -37,6 +39,7 @@ export {
     ///
     ITypeAndIdAndValUpdates,
     IIdAndValUpdates,
+    ISigmaNodeHandlerSubscriber,
     IValUpdates,
     ObjectDataDataTypes,
     // sigmaNode
