@@ -15,7 +15,7 @@ import {TYPES} from '../types';
 class SigmaNodeHandlerSubscriber implements ISubscriber<ITypeAndIdAndValUpdates> {
     private sigmaNodeHandler: ISigmaNodeHandler
 
-    constructor(@inject(TYPES.SigmaNodeHandlerArgs){sigmaNodeHandler}) {
+    constructor(@inject(TYPES.SigmaNodeHandlerSubscriberArgs){sigmaNodeHandler}) {
         this.sigmaNodeHandler = sigmaNodeHandler
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
@@ -25,7 +25,7 @@ class SigmaNodeHandlerSubscriber implements ISubscriber<ITypeAndIdAndValUpdates>
 
 @injectable()
 class SigmaNodeHandlerSubscriberArgs {
-    @inject(TYPES.SigmaNodeHandler) public sigmaNodeHandler
+    @inject(TYPES.ISigmaNodeHandler) public sigmaNodeHandler
 }
 
-export {SigmaNodeHandlerSubscriber}
+export {SigmaNodeHandlerSubscriber, SigmaNodeHandlerSubscriberArgs}
