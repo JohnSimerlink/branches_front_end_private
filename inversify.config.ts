@@ -40,7 +40,7 @@ import {ISubscribableBasicTreeCore} from './app/objects/tree/ISubscribableBasicT
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
-import {ISigmaNodeHandler} from './app/objects/interfaces';
+import {IContentIdSigmaIdMap, ISigmaNodeHandler} from './app/objects/interfaces';
 import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
 import {
     SigmaNodeHandlerSubscriber,
@@ -57,6 +57,7 @@ myContainer.bind<SubscribableGlobalDataStore>(TYPES.GlobalDataStore).to(Subscrib
 myContainer.bind<GlobalDataStoreArgs>(TYPES.GlobalDataStoreArgs).to(GlobalDataStoreArgs)
 myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
+myContainer.bind<IContentIdSigmaIdMap>(TYPES.IContentIdSigmaIdMap).toConstantValue({})
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
     data: {id: '12345'},
