@@ -14,7 +14,6 @@ interface IIdAndValUpdates {
 interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
     type: ObjectDataTypes
 }
-interface IIdSigmaNodeMap extends Object {}
 type ObjectDataDataTypes = IBasicTreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
 
 // sigmaNode
@@ -25,7 +24,6 @@ interface ISigmaNodeHandler {
 export {
     ITypeAndIdAndValUpdates,
     IIdAndValUpdates,
-    IIdSigmaNodeMap,
     IValUpdates,
     ObjectDataDataTypes,
     // sigmaNode
