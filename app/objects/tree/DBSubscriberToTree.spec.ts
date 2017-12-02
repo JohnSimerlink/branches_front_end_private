@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatabaseSyncer, ISubscribableTreeCore} from '../interfaces';
+import {IDatabaseSyncer, IDBSubscriber, ISubscribableTreeCore} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToTree} from './DBSubscriberToTree';
 
@@ -11,7 +11,7 @@ describe('IDBSubscriber > DBSubscriberToTree', () => {
     let contentIdSyncer
     let parentIdSyncer
     let childrenSyncer
-    let dbSubscriberToTree: DBSubscriberToTree
+    let dbSubscriberToTree: IDBSubscriber
     beforeEach('constructor', () => {
         subscribableTree = myContainer.get<ISubscribableTreeCore>(TYPES.ISubscribableTree)
         contentIdSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
