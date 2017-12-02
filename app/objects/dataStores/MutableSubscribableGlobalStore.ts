@@ -1,10 +1,10 @@
 import {
-    AllObjectMutationTypes, IGlobalDatedMutation, IIdDatedMutation, IMutableSubscribableGlobalStore,
+    AllObjectMutationTypes, IGlobalDatedMutation, IIdDatedMutation, IMutableSubscribableGlobalDataStore,
     ObjectTypes, TreeMutationTypes
 } from '../interfaces';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 
-class MutableSubscribableGlobalStore extends SubscribableGlobalDataStore implements IMutableSubscribableGlobalStore {
+class MutableSubscribableGlobalStore extends SubscribableGlobalDataStore implements IMutableSubscribableGlobalDataStore {
     constructor({treeStore, updatesCallbacks}) {
         super({treeStore, updatesCallbacks})
     }
@@ -15,6 +15,7 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalDataStore impleme
                 if (! (type in TreeMutationTypes)) {
                     throw new TypeError(type + ' not in ' + TreeMutationTypes)
                 }
+                // ^^^ TODO: use better generics to avoid the above if statement
                 type = type as TreeMutationTypes
                 const treeStoreMutation: IIdDatedMutation<TreeMutationTypes> = {
                     data: mutation.data,

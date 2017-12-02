@@ -1,10 +1,9 @@
 import 'reflect-metadata'
 import {myContainer} from '../../inversify.config';
 import {
-    ISubscribableGlobalDataStore,
-    SubscribableGlobalDataStore
-} from '../objects/dataStores/SubscribableGlobalDataStore';
-import {IApp, ISigmaNode, ISigmaNodeHandler, ISigmaNodeHandlerSubscriber} from '../objects/interfaces';
+    IApp, IMutableSubscribableGlobalDataStore, ISigmaNode, ISigmaNodeHandler,
+    ISigmaNodeHandlerSubscriber
+} from '../objects/interfaces';
 import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
 import {SigmaNodeHandlerSubscriber} from '../objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {TYPES} from '../objects/types';
@@ -22,9 +21,9 @@ describe('App integration test 1', () => {
         const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
         const sigmaNodeHandlerSubscriber: ISigmaNodeHandlerSubscriber
             = new SigmaNodeHandlerSubscriber({sigmaNodeHandler})
-        const subscribableGlobalDataStore: ISubscribableGlobalDataStore
-            = myContainer.get<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore)
-        const app: IApp = new App({sigmaNodeHandlerSubscriber, subscribableGlobalDataStore})
+        const dataStore: IMutableSubscribableGlobalDataStore
+            = myContainer.get<IMutableSubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore)
+        const app: IApp = new App({sigmaNodeHandlerSubscriber, dataStore})
 
     })
 })

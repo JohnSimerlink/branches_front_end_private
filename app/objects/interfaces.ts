@@ -39,7 +39,7 @@ interface IContentUserData {
 
 // dataStores
 
-interface IMutableSubscribableGlobalStore
+interface IMutableSubscribableGlobalDataStore
     extends ISubscribableGlobalDataStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
 }
 interface ISubscribableGlobalDataStoreCore {
@@ -333,7 +333,7 @@ export {
     ISubscribableGlobalDataStoreCore,
     ISubscribableGlobalDataStore,
     ICoreSubscribableDataStore,
-    IMutableSubscribableGlobalStore,
+    IMutableSubscribableGlobalDataStore,
     IUndoableMutable,
     ISubscribableDataStore,
     IMutableSubscribableTreeDataStore,

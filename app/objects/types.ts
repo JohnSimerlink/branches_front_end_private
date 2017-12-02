@@ -18,6 +18,7 @@ const TYPES = {
     IFirebaseRef: Symbol('IFirebaseRef'),
     IMutableId: Symbol('IMutableId'),
     IMutableStringSet: Symbol('IMutableStringSet'),
+    IMutableSubscribableGlobalDataStore: Symbol('IMutableSubscribableGlobalDataStore'),
     IProficiencyStats: Symbol('IProficiencyStats'),
     IProppedDatedMutation: Symbol('IProppedDatedMutation'),
     ISaveUpdatesToDBFunction: Symbol('ISaveUpdatesToDBFunction'),
