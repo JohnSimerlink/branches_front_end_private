@@ -63,24 +63,25 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0)
     })
 
-    // it('A Tree Location Update should call the correct method on the sigma Node with the correct args', () => {
-    //     const val: ICoordinate = {
-    //         x: 5,
-    //         y: 9,
-    //     }
-    //     const update: ITypeAndIdAndValUpdates = {
-    //         id: TREE_ID,
-    //         type: ObjectDataTypes.TREE_LOCATION_DATA,
-    //         val,
-    //     }
-    //
-    //     const sigmaNode1ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeLocation')
-    //     const sigmaNode2ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeLocation')
-    //
-    //     sigmaNodeHandler.handleUpdate(update)
-    //     expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    //     // expect(sigmaNode2ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    // })
+    it('A Tree Location Update should call the correct method on the sigma Node with the correct args', () => {
+        const val: ICoordinate = {
+            x: 5,
+            y: 9,
+        }
+        const update: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_LOCATION_DATA,
+            val,
+        }
+
+        const sigmaNode1ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeLocationData')
+        const sigmaNode2ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeLocationData')
+
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1)
+        expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0)
+    })
 
     // it('A Tree User Data Update should call the correct method on the sigma Node with the correct args', () => {
     //     const val: ITreeUserData = {
