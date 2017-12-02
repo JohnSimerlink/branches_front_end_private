@@ -2,10 +2,9 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes, IProppedDatedMutation} from '../interfaces';
+import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
-import {TreePropertyNames} from '../tree/TreePropertyNames';
 import {TYPES} from '../types';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 

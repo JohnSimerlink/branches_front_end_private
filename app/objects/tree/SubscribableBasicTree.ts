@@ -9,7 +9,7 @@ import {
     ISubscribableMutableId,
     ISubscribableMutableStringSet,
     IValUpdates, SetMutationTypes,
-    TreeMutationTypes, TreePropertyMutationTypes
+    TreeMutationTypes, TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
@@ -57,24 +57,24 @@ class SubscribableBasicTree extends Subscribable<TreeMutationTypes, IValUpdates>
     ) {
         const propertyName: TreePropertyNames = mutation.propertyName
         switch (propertyName) {
-            case 'contentId':
+            case TreePropertyNames.CONTENT_ID:
                 this.contentId.addMutation(mutation as IDatedMutation<IdMutationTypes>)
                 break;
-            case 'parentId':
+            case TreePropertyNames.PARENT_ID:
                 this.parentId.addMutation(mutation as IDatedMutation<IdMutationTypes>)
                 break;
-            case 'children':
+            case TreePropertyNames.CHILDREN:
                 this.children.addMutation(mutation as IDatedMutation<SetMutationTypes>)
                 break;
             default:
                 throw new TypeError(
-                    propertyName
+                    propertyName + JSON.stringify(mutation)
                     + ' does not exist as a property ')
         }
     }
+    // TODO: have this class implement IMutable directly
 }
 
-type TreePropertyNames = 'contentId' | 'parentId' | 'children'
 @injectable()
 class SubscribableBasicTreeArgs {
     @inject(TYPES.Array) public updatesCallbacks

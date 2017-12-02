@@ -1,5 +1,6 @@
 const TREE_ID = '12334'
 const TREE_ID2 = '1252334'
+const TREE_ID3 = 'efa12345'
 const CONTENT_ID = '5982347'
 const SIGMA_ID1 = TREE_ID
 const SIGMA_ID2 = TREE_ID2
@@ -10,4 +11,4 @@ function getSigmaIdsForContentId(contentId) {
     }
 }
 
-export {TREE_ID, TREE_ID2, SIGMA_ID1, SIGMA_ID2, CONTENT_ID, getSigmaIdsForContentId}
+export {TREE_ID, TREE_ID2, TREE_ID3, SIGMA_ID1, SIGMA_ID2, CONTENT_ID, getSigmaIdsForContentId}
