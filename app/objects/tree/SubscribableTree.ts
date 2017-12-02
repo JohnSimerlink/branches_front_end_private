@@ -43,7 +43,7 @@ class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> impl
     protected callbackArguments(): IValUpdates {
         return this.val()
     }
-    public publishUponDescendantUpdates() {
+    public startPublishing() {
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.children.onUpdate(boundCallCallbacks)
         this.contentId.onUpdate(boundCallCallbacks)
