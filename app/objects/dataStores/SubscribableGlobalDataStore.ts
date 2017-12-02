@@ -11,7 +11,7 @@ import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {ObjectDataTypes} from './ObjectTypes';
 
-// interface ISubscribableGlobalDataStore extends SubscribableGlobalDataStore { }
+// interface ISubscribableGlobalDataStore extends ISubscribableGlobalDataStore { }
 
 @injectable()
 class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates>
@@ -23,7 +23,7 @@ implements ISubscribableGlobalDataStore {
     }
 
     private subscribableTreeDataStore;
-    constructor(@inject(TYPES.GlobalDataStoreArgs){subscribableTreeDataStore, updatesCallbacks = []}) {
+    constructor(@inject(TYPES.SubscribableGlobalDataStoreArgs){subscribableTreeDataStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.subscribableTreeDataStore = subscribableTreeDataStore
         // log('subscribableGlobalDataStore called')

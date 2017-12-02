@@ -20,7 +20,7 @@ import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
-import {fGetSigmaIdsForContentId, ISigmaNodeHandler} from './app/objects/interfaces';
+import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalDataStore} from './app/objects/interfaces';
 import {radian} from './app/objects/MathUtils/MathUtils';
 import {IDatedMutation} from './app/objects/mutations/IMutation';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -54,8 +54,7 @@ myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
-myContainer.bind<SubscribableGlobalDataStore>(TYPES.GlobalDataStore).to(SubscribableGlobalDataStore)
-myContainer.bind<GlobalDataStoreArgs>(TYPES.GlobalDataStoreArgs).to(GlobalDataStoreArgs)
+myContainer.bind<GlobalDataStoreArgs>(TYPES.SubscribableGlobalDataStoreArgs).to(GlobalDataStoreArgs)
 myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
@@ -66,27 +65,27 @@ myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConsta
 })
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
+myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
-myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
-myContainer.bind<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber).to(SigmaNodeHandlerSubscriber)
-myContainer.bind<SigmaNodeHandlerSubscriberArgs>(TYPES.SigmaNodeHandlerSubscriberArgs)
-    .to(SigmaNodeHandlerSubscriberArgs)
-myContainer.bind<SubscribableGlobalDataStore>(TYPES.SubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
+myContainer.bind<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
 myContainer.bind<ISubscribableBasicTreeCore>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
 myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
 myContainer.bind<ISubscribableMutableIdArgs>(TYPES.ISubscribableMutableIdArgs).to(SubscribableMutableIdArgs)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore).to(SubscribableTreeDataStore)
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
+myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
+myContainer.bind<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber).to(SigmaNodeHandlerSubscriber)
+myContainer.bind<SigmaNodeHandlerSubscriberArgs>(TYPES.SigmaNodeHandlerSubscriberArgs)
+    .to(SigmaNodeHandlerSubscriberArgs)
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
 myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableBasicTreeArgs).to(SubscribableBasicTreeArgs)
 // myContainer.bind<ISubscribable<IDetailedUpdates>>(TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
 
-myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
 // tslint:disable-next-line ban-types
 myContainer.bind<Number>(TYPES.Number).toConstantValue(0)
