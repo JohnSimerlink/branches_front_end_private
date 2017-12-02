@@ -1,6 +1,5 @@
 import {injectable} from 'inversify';
-import {IActivatableDatedMutation} from './IMutation';
-// import {MutationTypes} from '.fromrom/MutationTypes';
+import {IActivatableDatedMutation} from '../interfaces';
 
 @injectable()
 class ActivatableDatedMutation<MutationTypes> implements IActivatableDatedMutation<MutationTypes> {

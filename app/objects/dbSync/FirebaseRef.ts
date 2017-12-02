@@ -1,6 +1,5 @@
 import {injectable} from 'inversify';
-import {IFirebaseRef} from './IFirebaseRef';
-import {IPushable} from './IPushable';
+import {IFirebaseRef, IPushable} from '../interfaces'
 
 // stub for testing
 @injectable()

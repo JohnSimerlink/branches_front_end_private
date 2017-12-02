@@ -1,5 +1,6 @@
 import {expect} from 'chai'
-import {MathUtils, radian} from './MathUtils';
+import {radian} from '../interfaces';
+import {MathUtils} from './MathUtils';
 
 describe('MathUtils', () => {
     it('percentageToRadians should do 0 -> 0', () => {

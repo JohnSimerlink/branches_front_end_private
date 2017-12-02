@@ -1,8 +1,8 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
+import {IContentData} from '../interfaces';
 import {ContentItemUtils, QUESTION_ANSWER_LABEL_SEPARATOR} from './ContentItemUtils';
 import {CONTENT_TYPES} from './ContentTypes';
-import {IContentData} from './IContentData';
 
 describe('ContentItemUtils', () => {
     it('Should properly return title for Category', () => {

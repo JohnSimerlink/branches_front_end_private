@@ -1,9 +1,9 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
+import {IColorSlice, IProficiencyStats} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
-import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
-import {IColorSlice} from './IColorSlice';
+
 import {INITIAL_START_RADIANS, SigmaNodeUtils} from './SigmaNodeUtils';
 
 describe('Get Color Slices from Proficiency Stats', () => {

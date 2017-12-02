@@ -1,12 +1,11 @@
 /* tslint:disable variable-name */
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDetailedUpdates} from '../dbSync/IDetailedUpdates';
-import {IDatedMutation} from '../mutations/IMutation';
+import {IDetailedUpdates} from '../interfaces';
+import {IDatedMutation, IdMutationTypes, IMutableId} from '../interfaces';
+import {} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {IdMutationTypes} from './IdMutationTypes';
-import {IMutableId} from './IMutableId';
 
 @injectable()
 class SubscribableMutableId extends Subscribable<IdMutationTypes, IDetailedUpdates> implements IMutableId {

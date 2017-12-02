@@ -1,16 +1,15 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {ISubscribable} from '../subscribable/ISubscribable';
+import {IDetailedUpdates, ISaveUpdatesToDBFunction} from '../interfaces';
+import {ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
-import {IDetailedUpdates} from './IDetailedUpdates';
-import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
 import {SyncToDB} from './SyncToDB';
 
 describe('IDatabaseSyncer > SyncToDB', () => {
     // const firebaseRef = 'path/subpath/prop'
     // const
-    const saveUpdatesToDBFunction = myContainer.get<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction)
+    const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     const syncToDB = new SyncToDB({saveUpdatesToDBFunction})
     // var spy = sinon.spy(saveUpdatesToDBFunction)
     // TODO: test the constructor to ensure it takes into account the firebaseRef

@@ -2,16 +2,12 @@ import {expect} from 'chai'
 import {myContainer} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
-import {IContentData} from '../contentItem/IContentData';
 import {ContentUserDataUtils } from '../contentUserData/ContentUserDataUtils';
-import {IContentUserData} from '../contentUserData/IContentUserData';
-import {ICoordinate} from '../point/IPoint';
+import {IBasicTreeDataWithoutId, IContentData,
+    IContentUserData, ICoordinate, IProficiencyStats,
+    ISigmaNode, ITreeUserData} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
-import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
-import {ISigmaNode} from './ISigmaNode';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 describe('sigmaNode', () => {

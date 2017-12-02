@@ -1,16 +1,11 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
-import {IContentData} from '../contentItem/IContentData';
 import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
-import {IContentUserData} from '../contentUserData/IContentUserData';
-import {ICoordinate} from '../point/IPoint';
-import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
-import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
+import {IBasicTreeDataWithoutId, IColorSlice,
+    IContentData, IContentUserData, ICoordinate,
+    IProficiencyStats, ISigmaNode, ITreeUserData} from '../interfaces';
 import {TYPES} from '../types';
-import {IColorSlice} from './IColorSlice';
-import {ISigmaNode} from './ISigmaNode';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 @injectable()

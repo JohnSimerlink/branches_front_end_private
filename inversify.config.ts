@@ -1,7 +1,6 @@
 import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
-import {IContentUserData} from './app/objects/contentUserData/IContentUserData';
 import {GlobalDataStoreArgs, SubscribableGlobalDataStore} from './app/objects/dataStores/SubscribableGlobalDataStore';
 import {
     ISubscribableTreeDataStore, SubscribableDataStoreArgs,
@@ -9,31 +8,24 @@ import {
 } from './app/objects/dataStores/SubscribableTreeDataStore';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
-import {IDatabaseSyncer} from './app/objects/dbSync/IDatabaseSyncer';
-import {IDetailedUpdates} from './app/objects/dbSync/IDetailedUpdates';
-import {IFirebaseRef} from './app/objects/dbSync/IFirebaseRef';
-import {SaveUpdatesToDBFunction} from './app/objects/dbSync/ISaveUpdatesToDBFunction';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
-import {IdMutationTypes} from './app/objects/id/IdMutationTypes';
-import {ISubscribableMutableId} from './app/objects/id/ISubscribableMutableId';
 import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
+import {IBasicTree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, ISaveUpdatesToDBFunction,
+    ISigmaNode, ISubscribableBasicTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
+    radian } from './app/objects/interfaces';
 import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalDataStore} from './app/objects/interfaces';
-import {radian} from './app/objects/MathUtils/MathUtils';
-import {IDatedMutation} from './app/objects/mutations/IMutation';
+import {IDatedMutation} from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
-import {defaultProficiencyStats, IProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
-import {IMutableStringSet} from './app/objects/set/IMutableStringSet';
-import {ISubscribableMutableStringSet} from './app/objects/set/ISubscribableMutableStringSet';
+import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
     SubscribableMutableStringSet,
     SubscribableMutableStringSetArgs
 } from './app/objects/set/SubscribableMutableStringSet';
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
-import {ISigmaNode} from './app/objects/sigmaNode/ISigmaNode';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
 import {
@@ -41,8 +33,6 @@ import {
     SigmaNodeHandlerSubscriberArgs
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-import {IBasicTree} from './app/objects/tree/IBasicTree';
-import {ISubscribableBasicTreeCore} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
@@ -95,7 +85,7 @@ myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
 myContainer.bind<SubscribableDataStoreArgs>(TYPES.SubscribableDataStoreArgs).to(SubscribableDataStoreArgs)
-myContainer.bind<SaveUpdatesToDBFunction>(TYPES.SaveUpdatesToDBFunction)
+myContainer.bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     .toConstantValue((updates: IDetailedUpdates) => void 0)
 myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types

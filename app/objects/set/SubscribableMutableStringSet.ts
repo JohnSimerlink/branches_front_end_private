@@ -2,13 +2,12 @@
 /* tslint:disable variable-name */
 // import {log} from '../../core/log'
 import {inject, injectable} from 'inversify';
-import {IDetailedUpdates} from '../dbSync/IDetailedUpdates';
-import {ISubscribable, updatesCallback} from '../subscribable/ISubscribable';
-import {IMutable, IUndoableMutable} from '../mutations/IMutable';
-import {IActivatableDatedMutation, IDatedMutation} from '../mutations/IMutation';
+import {
+    IDatedMutation, IDetailedUpdates, IMutable,
+    ISet
+} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {ISet} from './ISet';
 import {SetMutationTypes} from './SetMutationTypes';
 
 /*
@@ -16,6 +15,7 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  as commutative as they seem . . . at least for the complicated specs I was setting for myself . . .
  See the commit history for the commit before this file was created to see what I mean.
  */
+
 @injectable()
 class SubscribableMutableStringSet extends Subscribable<SetMutationTypes, IDetailedUpdates>
     implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {

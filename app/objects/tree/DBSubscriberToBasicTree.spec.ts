@@ -1,10 +1,9 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatabaseSyncer} from '../dbSync/IDatabaseSyncer';
+import {IDatabaseSyncer, ISubscribableBasicTreeCore} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToTree} from './DBSubscriberToBasicTree';
-import {ISubscribableBasicTreeCore} from './ISubscribableBasicTree';
 
 describe('IDBSubscriber > DBSubscriberToTree', () => {
 

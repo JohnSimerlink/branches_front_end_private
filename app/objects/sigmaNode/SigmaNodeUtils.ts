@@ -1,10 +1,9 @@
 // tslint:disable object-literal-sort-keys
 import {start} from 'repl';
+import {IColorSlice, IProficiencyStats} from '../interfaces';
 import {MathUtils} from '../MathUtils/MathUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
-import {IProficiencyStats} from '../proficiencyStats/IProficiencyStats';
-import {IColorSlice} from './IColorSlice';
 
 const INITIAL_START_RADIANS = -Math.PI / 2 // north
 class SigmaNodeUtils {

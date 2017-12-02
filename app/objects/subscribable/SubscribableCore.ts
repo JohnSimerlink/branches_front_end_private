@@ -1,8 +1,8 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
+import {ISubscribable, updatesCallback} from '../interfaces';
 import {TYPES} from '../types';
-import {ISubscribable, updatesCallback} from './ISubscribable';
 
 @injectable()
 // TODO: make abstract?

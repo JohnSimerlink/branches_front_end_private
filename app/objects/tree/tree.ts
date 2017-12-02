@@ -2,9 +2,9 @@
 import {error, log} from '../../core/log';
 import md5 from '../../core/md5wrapper'
 import store from '../../core/store'
-import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
+import {IContentItem} from '../interfaces';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from '../proficiencyStats/proficiencyStatsUtils'
 // import {IMutable, } from '../mutations/IMutable'
 import {Trees} from '../trees.js'
