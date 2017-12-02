@@ -6,13 +6,12 @@ import {IContentData} from '../contentItem/IContentData';
 import {IContentUserData} from '../contentUserData/IContentUserData';
 import {ObjectDataTypes} from '../dataStores/ObjectTypes';
 import {ITypeAndIdAndValUpdates} from '../interfaces';
-import {ICoordinate} from '../point/IPoint';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 import {SigmaNodeHandler} from './SigmaNodeHandler';
+import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
+import {ICoordinate} from '../point/IPoint';
 
 const TREE_ID = '12334'
 const TREE_ID2 = '1252334'
@@ -39,33 +38,30 @@ describe('SigmaNodeHandler', () => {
         sigmaNodeHandler = new SigmaNodeHandler({sigmaNodes, getSigmaIdsForContentId})
     })
 
-    // it('A Tree Update should call the correct method on the sigma Node with the correct args', () => {
-    //     const newContentId = '4324234'
-    //     const newParentId = '4344324234'
-    //     const newChildren = ['45344324234', 'aabc321', 'abcd43132']
-    //     const val: IBasicTreeDataWithoutId = {
-    //         children: newChildren,
-    //         contentId: newContentId,
-    //         parentId: newParentId,
-    //     }
-    //     const update: ITypeAndIdAndValUpdates = {
-    //         id: TREE_ID,
-    //         type: ObjectDataTypes.TREE_DATA,
-    //         val,
-    //     }
-    //     const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeData')
-    //     const sigmaNode2ReceiveNewTreeDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeData')
-    //     const updateSigmaNodeSpy = sinon.spy(sigmaNodeHandler, 'updateSigmaNode')
-    //     // TODO: make one unit for testing that updateSigmaNode gets called correctly twice
-    //     // (and with the correct params ?). . .and make another unit for testing that updateSigmaNode behaves correctly
-    //
-    //
-    //
-    //     sigmaNodeHandler.handleUpdate(update)
-    //     expect(updateSigmaNodeSpy.callCount).to.equal(2)
-    //     // expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    //     // expect(sigmaNode2ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    // })
+    it('A Tree Update should call the correct method on the sigma Node with the correct args', () => {
+        const newContentId = '4324234'
+        const newParentId = '4344324234'
+        const newChildren = ['45344324234', 'aabc321', 'abcd43132']
+        const val: IBasicTreeDataWithoutId = {
+            children: newChildren,
+            contentId: newContentId,
+            parentId: newParentId,
+        }
+        const update: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_DATA,
+            val,
+        }
+        const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeData')
+        const sigmaNode2ReceiveNewTreeDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeData')
+        // TODO: make one unit for testing that updateSigmaNode gets called correctly twice
+        // (and with the correct params ?). . .and make another unit for testing that updateSigmaNode behaves correctly
+
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewTreeDataSpy.callCount).to.equal(1)
+        expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0)
+    })
 
     // it('A Tree Location Update should call the correct method on the sigma Node with the correct args', () => {
     //     const val: ICoordinate = {
