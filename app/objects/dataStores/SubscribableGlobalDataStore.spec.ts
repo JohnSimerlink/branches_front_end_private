@@ -13,7 +13,7 @@ import {ObjectDataTypes} from './ObjectTypes';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 
-describe('SubscribableGlobalDataStore', () => {
+describe('ISubscribableGlobalDataStore', () => {
     it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () => {
         const contentId = new SubscribableMutableId()
         const parentId = new SubscribableMutableId()

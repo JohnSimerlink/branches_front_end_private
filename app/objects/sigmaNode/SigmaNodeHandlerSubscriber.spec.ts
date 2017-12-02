@@ -8,7 +8,7 @@ describe('SigmaNodeHandlerSubscriber', () => {
     it('should subscribe to the onUpdate method of a subscribable obj passed to it', () => {
         const sigmaNodeHandlerSubscriber = myContainer.get<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber)
 
-        const subscribable = myContainer.get<SubscribableGlobalDataStore>(TYPES.SubscribableGlobalDataStore)
+        const subscribable = myContainer.get<SubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore)
 
         const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate')
 
