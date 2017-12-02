@@ -35,7 +35,7 @@ describe('FirebaseSyncableTree', () => {
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-        tree.publishUponDescendantUpdates()
+        tree.startPublishing()
 
         const callback = sinon.spy()
         tree.onUpdate(callback)

@@ -22,7 +22,7 @@ describe('SubscribableTreeDataStore > addAndSubscribeToItem', () => {
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-        tree.publishUponDescendantUpdates()
+        tree.startPublishing()
         const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
         const callback1 = sinon.spy()
         const callback2 = sinon.spy()
