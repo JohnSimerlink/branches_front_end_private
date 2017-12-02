@@ -3,14 +3,14 @@ import {inject, injectable} from 'inversify';
 import {IDatabaseSyncer} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableTree} from './SubscribableTree';
+import {ISubscribableTree, SubscribableTree} from './SubscribableTree';
 
 @injectable()
 class DBSubscriberToTree implements IDBSubscriber {
     private contentIdSyncer: IDatabaseSyncer;
     private parentIdSyncer: IDatabaseSyncer;
     private childrenSyncer: IDatabaseSyncer;
-    private subscribableTree: SubscribableTree;
+    private subscribableTree: ISubscribableTree;
 
     constructor(
         @inject(TYPES.ISubscribableTree) subscribableTree,

@@ -310,6 +310,8 @@ enum TreePropertyNames {
     CHILDREN
 }
 
+interface ISubscribableTree extends ISubscribable<IValUpdates>, ISubscribableTreeCore {}
+
 // treeUserData
 
 interface ITreeUserData {
@@ -414,6 +416,7 @@ export {
     ISubscribableTreeCore,
     TreeMutationType,
     TreePropertyNames,
+    ISubscribableTree,
 
     // treeUserData
     ITreeUserData,

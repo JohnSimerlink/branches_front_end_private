@@ -4,8 +4,8 @@ import {inject, injectable} from 'inversify';
 import {
     IDatedMutation,
     IdMutationTypes,
-    IProppedDatedMutation, ISubscribableMutableId,
-    ISubscribableMutableStringSet,
+    IProppedDatedMutation, ISubscribable, ISubscribableMutableId,
+    ISubscribableMutableStringSet, ISubscribableTree,
     ISubscribableTreeCore,
     ITreeDataWithoutId,
     IValUpdates, SetMutationTypes,
@@ -14,10 +14,8 @@ import {
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
-interface ISubscribableTree extends SubscribableTree {}
-
 @injectable()
-class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableTreeCore {
+class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableTree {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
@@ -84,4 +82,4 @@ class SubscribableTreeArgs {
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
-export {SubscribableTree, SubscribableTreeArgs}
+export {ISubscribableTree, SubscribableTree, SubscribableTreeArgs}

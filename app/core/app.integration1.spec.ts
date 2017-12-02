@@ -10,6 +10,7 @@ import {TYPES} from '../objects/types';
 import {getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
 
+// TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
     it('Adding a mutation into the global store for a content user data,' +
         ' should update the sigma node instance for all sigma nodes containing that content id', () => {
