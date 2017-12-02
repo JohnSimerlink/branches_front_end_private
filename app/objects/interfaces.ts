@@ -4,8 +4,8 @@
 import {CONTENT_TYPES} from './contentItem/ContentTypes';
 import {ObjectDataTypes} from './dataStores/ObjectTypes';
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
-import {SetMutationTypes} from './set/SetMutationTypes';
 import {UIColor} from './uiColor';
+import {ISubscribableTreeDataStore} from './dataStores/SubscribableTreeDataStore';
 
 interface IApp {
     start()
@@ -39,15 +39,16 @@ interface IContentUserData {
 }
 
 // dataStores
+
+interface IMutableSubscribableGlobalStore
+    extends ISubscribableGlobalDataStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
+}
 interface ISubscribableGlobalDataStoreCore {
     startBroadcasting()
 }
 
 interface ISubscribableGlobalDataStore extends ISubscribable<ITypeAndIdAndValUpdates>,
     ISubscribableGlobalDataStoreCore {
-}
-interface IMutableGlobalDataStore {
-    // addMutation(mutation: )
 }
 
 interface ICoreSubscribableDataStore<UpdatesType, ObjectType> {
@@ -56,6 +57,10 @@ interface ICoreSubscribableDataStore<UpdatesType, ObjectType> {
 }
 interface ISubscribableDataStore<UpdatesType, ObjectType>
     extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableDataStore<UpdatesType, ObjectType> {
+}
+
+interface IMutableSubscribableTreeDataStore
+    extends ISubscribableTreeDataStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
 }
 
 type IValUpdates = any
@@ -136,17 +141,57 @@ interface IMutation<MutationTypes> {
 interface IDatedMutation<MutationTypes> extends IMutation<MutationTypes> {
     timestamp: number // ISO 8601 POSIX Timestamp
 }
+interface IProppedDatedMutation<MutationTypes, PropertyNames> extends IDatedMutation<MutationTypes> {
+    propertyName: PropertyNames
+}
 interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
     id: string
 }
 interface IGlobalDatedMutation<MutationTypes> extends IIdDatedMutation<MutationTypes> {
-    objectType: ObjectDataTypes
+    objectType: ObjectTypes
 }
 interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
     active: boolean
 }
 interface IActivatableDatedMutation<MutationTypes>
     extends IDatedMutation<MutationTypes>, IActivatableMutation<MutationTypes> {
+}
+
+enum SetMutationTypes {
+    ADD,
+    REMOVE
+}
+
+enum PointMutationTypes {
+    SHIFT
+}
+
+enum TreeMutationTypes {
+    ADD_CHILD,
+    REMOVE_CHILD
+}
+
+enum TreeParentMutationTypes {
+    SET_ID
+}
+
+type TreePropertyMutationTypes = SetMutationTypes | IdMutationTypes
+type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
+    | IdMutationTypes | SetMutationTypes
+
+enum ObjectDataTypes {
+    TREE_DATA,
+    TREE_LOCATION_DATA,
+    TREE_USER_DATA,
+    CONTENT_DATA,
+    CONTENT_USER_DATA,
+}
+enum ObjectTypes {
+    TREE,
+    TREE_LOCATION,
+    TREE_USER,
+    CONTENT,
+    CONTENT_USER,
 }
 
 // point
@@ -257,9 +302,6 @@ interface ISubscribableBasicTreeCore extends IBasicTree {
     val(): IBasicTreeDataWithoutId
 }
 
-interface ITreeMutation {
-    type: TreeMutationType,
-}
 enum TreeMutationType {
     ADD_LEAF,
     REMOVE_LEAF,
@@ -288,9 +330,10 @@ export {
     ISubscribableGlobalDataStoreCore,
     ISubscribableGlobalDataStore,
     ICoreSubscribableDataStore,
-    IMutableGlobalDataStore,
+    IMutableSubscribableGlobalStore,
     IUndoableMutable,
     ISubscribableDataStore,
+    IMutableSubscribableTreeDataStore,
 
     // dbSync
     IFirebaseRef,
@@ -313,6 +356,7 @@ export {
     // mutations
     IMutation,
     IDatedMutation,
+    IProppedDatedMutation,
     IActivatableMutation,
     IActivatableDatedMutation,
     IIdDatedMutation,
@@ -324,6 +368,16 @@ export {
     ISigmaNodeHandlerSubscriber,
     IValUpdates,
     ObjectDataDataTypes,
+    ///
+    SetMutationTypes,
+    PointMutationTypes,
+    TreeMutationTypes,
+    TreeParentMutationTypes,
+    TreePropertyMutationTypes,
+    AllObjectMutationTypes,
+
+    ObjectDataTypes,
+    ObjectTypes,
 
     // point
     ICoordinate,
@@ -337,6 +391,7 @@ export {
     ISigmaNodeHandler,
     IColorSlice,
     ISigmaNodeData,
+
     // set
     IMutableStringSet,
     ISet,

@@ -19,7 +19,7 @@ implements ISubscribableGlobalDataStore {
         return this.update
     }
 
-    private subscribableTreeDataStore;
+    protected subscribableTreeDataStore;
     constructor(@inject(TYPES.SubscribableGlobalDataStoreArgs){subscribableTreeDataStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.subscribableTreeDataStore = subscribableTreeDataStore
