@@ -2,7 +2,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes } from '../interfaces';
+import {IDatedMutation, IdMutationTypes, IProppedDatedMutation} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
 import {TreePropertyNames} from '../tree/TreePropertyNames';
@@ -31,9 +31,16 @@ describe('SubscribableTreeDataStore > addAndSubscribeToItem', () => {
         treeStore.onUpdate(callback2)
         treeStore.onUpdate(callback1)
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
+
+        const sampleMutation = myContainer.get<
+            IProppedDatedMutation<
+                IdMutationTypes,
+                TreePropertyNames
+            >
+        >(TYPES.IProppedDatedMutation)
+
         // try {
-        tree.addMutation(TreePropertyNames.parentId, sampleMutation)
+        tree.addMutation(sampleMutation)
 
         const treeNewVal = tree.val()
         // } catch (err) {

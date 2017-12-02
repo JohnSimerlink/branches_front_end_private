@@ -5,10 +5,10 @@
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
 import {inject, injectable} from 'inversify';
-import {ObjectDataTypes} from '../dataStores/ObjectTypes';
 import {
     fGetSigmaIdsForContentId, ISigmaNodeHandler, ITypeAndIdAndValUpdates,
-    ObjectDataDataTypes
+    ObjectDataDataTypes,
+    ObjectDataTypes,
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';

@@ -4,11 +4,11 @@
 import {inject, injectable} from 'inversify';
 import {
     IDatedMutation, IDetailedUpdates, IMutable,
-    ISet
+    ISet,
+    SetMutationTypes
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {SetMutationTypes} from './SetMutationTypes';
 
 /*
 Decided to not implement IUndoable on this class, because undo/redo add/remove aren't

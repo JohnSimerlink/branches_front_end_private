@@ -3,7 +3,10 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes, ISubscribableMutableId, ISubscribableMutableStringSet } from '../interfaces';
+import {
+    IDatedMutation, IdMutationTypes, IProppedDatedMutation, ISubscribableMutableId,
+    ISubscribableMutableStringSet
+} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
@@ -73,8 +76,15 @@ describe('FirebaseSyncableBasicTree', () => {
         const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         const parentIdAddMutationSpy = sinon.spy(parentId, 'addMutation')
 
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
-        tree.addMutation(TreePropertyNames.parentId, sampleMutation)
+        const sampleMutation =
+        myContainer.get<
+            IProppedDatedMutation<
+                IdMutationTypes,
+                TreePropertyNames
+            >
+        >
+        (TYPES.IDatedMutation)
+        tree.addMutation(sampleMutation)
         expect(parentIdAddMutationSpy.callCount).to.equal(1)
     })
 })

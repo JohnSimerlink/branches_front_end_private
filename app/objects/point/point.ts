@@ -1,8 +1,11 @@
 /* tslint:disable variable-name */
 import {injectable} from 'inversify';
+import {
+    IActivatableDatedMutation, ICoordinate,
+    IDatedMutation, IPoint, IUndoableMutable,
+    PointMutationTypes
+} from '../interfaces';
 import {} from '../interfaces';
-import {IActivatableDatedMutation, ICoordinate, IDatedMutation, IPoint, IUndoableMutable} from '../interfaces';
-import {PointMutationTypes} from './PointMutationTypes';
 
 /* TODO: Maybe split into  Point and PointMutator classes?
 

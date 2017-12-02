@@ -19,6 +19,7 @@ const TYPES = {
     IMutableId: Symbol('IMutableId'),
     IMutableStringSet: Symbol('IMutableStringSet'),
     IProficiencyStats: Symbol('IProficiencyStats'),
+    IProppedDatedMutation: Symbol('IProppedDatedMutation'),
     ISaveUpdatesToDBFunction: Symbol('ISaveUpdatesToDBFunction'),
     ISigmaNode: Symbol('ISigmaNode'),
     ISigmaNodeData: Symbol('ISigmaNodeData'),

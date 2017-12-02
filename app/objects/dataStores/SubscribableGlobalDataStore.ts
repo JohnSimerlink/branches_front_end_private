@@ -3,12 +3,11 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, ISubscribableGlobalDataStore,
-    ITypeAndIdAndValUpdates
+    IIdAndValUpdates, IMutableSubscribableTreeDataStore,
+    ISubscribableGlobalDataStore, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
-import {ObjectDataTypes} from './ObjectTypes';
 
 @injectable()
 class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates>
@@ -19,15 +18,15 @@ implements ISubscribableGlobalDataStore {
         return this.update
     }
 
-    protected subscribableTreeDataStore;
-    constructor(@inject(TYPES.SubscribableGlobalDataStoreArgs){subscribableTreeDataStore, updatesCallbacks = []}) {
+    protected treeStore: IMutableSubscribableTreeDataStore;
+    constructor(@inject(TYPES.SubscribableGlobalDataStoreArgs){treeStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
-        this.subscribableTreeDataStore = subscribableTreeDataStore
+        this.treeStore = treeStore
         // log('subscribableGlobalDataStore called')
     }
     public startBroadcasting() {
         const me = this
-        this.subscribableTreeDataStore.onUpdate((update: IIdAndValUpdates) => {
+        this.treeStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: ObjectDataTypes.TREE_DATA,
                 ...update
@@ -41,7 +40,7 @@ implements ISubscribableGlobalDataStore {
 @injectable()
 class GlobalDataStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.ISubscribableTreeDataStore) public subscribableTreeDataStore
+    @inject(TYPES.ISubscribableTreeDataStore) public treeStore
 }
 
 export {SubscribableGlobalDataStore, GlobalDataStoreArgs, ISubscribableGlobalDataStore}

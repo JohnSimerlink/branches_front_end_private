@@ -1,8 +1,9 @@
+// tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
-import {ObjectDataTypes} from '../dataStores/ObjectTypes';
+import {ObjectDataTypes} from '../interfaces';
 import {IBasicTreeDataWithoutId, IContentData, IContentUserData,
     ICoordinate, ISigmaNode, ITreeUserData} from '../interfaces';
 import {ITypeAndIdAndValUpdates} from '../interfaces';

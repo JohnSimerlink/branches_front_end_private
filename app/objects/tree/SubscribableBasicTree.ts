@@ -8,17 +8,16 @@ import {
     ISubscribableBasicTreeCore,
     ISubscribableMutableId,
     ISubscribableMutableStringSet,
-    IValUpdates, TreePropertyMutationTypes
+    IValUpdates, SetMutationTypes,
+    TreeMutationTypes, TreePropertyMutationTypes
 } from '../interfaces';
-import {SetMutationTypes} from '../set/SetMutationTypes';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
-import {TreeMutationTypes} from './TreeMutationTypes';
 
 interface ISubscribableBasicTree extends SubscribableBasicTree {}
 
 @injectable()
-class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> implements ISubscribableBasicTreeCore {
+class SubscribableBasicTree extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableBasicTreeCore {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
@@ -56,7 +55,7 @@ class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> impleme
     public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
         // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ) {
-        const propertyName = mutation.propertyName
+        const propertyName: TreePropertyNames = mutation.propertyName
         switch (propertyName) {
             case 'contentId':
                 this.contentId.addMutation(mutation as IDatedMutation<IdMutationTypes>)
