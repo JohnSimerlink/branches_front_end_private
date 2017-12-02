@@ -278,7 +278,7 @@ interface ISubscriber<UpdateObjectType> {
 }
 
 // tree
-interface IBasicTree {
+interface ITree {
     getId(): string;
     contentId: IMutableId;
     parentId: IMutableId;
@@ -289,11 +289,11 @@ interface ITreeDataWithoutId {
     parentId: string;
     children: string[];
 }
-interface IBasicTreeData extends ITreeDataWithoutId {
+interface ITreeData extends ITreeDataWithoutId {
     id: string;
 }
 
-interface ISubscribableTreeCore extends IBasicTree {
+interface ISubscribableTreeCore extends ITree {
     contentId: ISubscribableMutableId
     parentId: ISubscribableMutableId
     children: ISubscribableMutableStringSet
@@ -408,9 +408,9 @@ export {
     ISubscriber,
 
     // tree
-    IBasicTree,
+    ITree,
     ITreeDataWithoutId,
-    IBasicTreeData,
+    ITreeData,
     ISubscribableTreeCore,
     TreeMutationType,
     TreePropertyNames,

@@ -14,7 +14,7 @@ import {
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
 import {
-    IBasicTree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    ITree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation,
     ISaveUpdatesToDBFunction,
     ISigmaNode, ISubscribableTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
@@ -37,7 +37,7 @@ import {
     SigmaNodeHandlerSubscriberArgs
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-import {SubscribableTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
+import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
@@ -50,7 +50,7 @@ myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserD
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
 myContainer.bind<GlobalDataStoreArgs>(TYPES.SubscribableGlobalDataStoreArgs).to(GlobalDataStoreArgs)
-myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableTree)
+myContainer.bind<ITree>(TYPES.ITree).to(SubscribableTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 // TODO: maybe only use this constant binding for a test container. . . Not production container
@@ -86,7 +86,7 @@ myContainer.bind<SigmaNodeHandlerSubscriberArgs>(TYPES.SigmaNodeHandlerSubscribe
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
-myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableBasicTreeArgs)
+myContainer.bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs)
 /* myContainer.bind<ISubscribable<IDetailedUpdates>>
 (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
 

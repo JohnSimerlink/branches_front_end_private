@@ -11,7 +11,7 @@ import {
 } from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
-import {SubscribableTree} from './SubscribableBasicTree';
+import {SubscribableTree} from './SubscribableTree';
 
 describe('FirebaseSyncableTree', () => {
     it('constructor should set all the subscribable properties', () => {

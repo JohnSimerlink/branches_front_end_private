@@ -3,7 +3,7 @@ import {inject, injectable} from 'inversify';
 import {IDatabaseSyncer} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableTree} from './SubscribableBasicTree';
+import {SubscribableTree} from './SubscribableTree';
 
 @injectable()
 class DBSubscriberToTree implements IDBSubscriber {
@@ -34,8 +34,5 @@ class DBSubscriberToTree implements IDBSubscriber {
          OR TODO: do this in a different class. Remember the Single Responsibility Principle
          */
     }
-}
-class FirebaseSyncableBasicTreeArgs {
-
 }
 export {DBSubscriberToTree}
