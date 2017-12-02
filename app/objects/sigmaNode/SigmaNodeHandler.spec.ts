@@ -12,6 +12,7 @@ import {ISigmaNode} from './ISigmaNode';
 import {SigmaNodeHandler} from './SigmaNodeHandler';
 import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
 import {ICoordinate} from '../point/IPoint';
+import {ITreeUserData} from '../treeUserData/ITreeUserData';
 
 const TREE_ID = '12334'
 const TREE_ID2 = '1252334'
@@ -83,30 +84,31 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0)
     })
 
-    // it('A Tree User Data Update should call the correct method on the sigma Node with the correct args', () => {
-    //     const val: ITreeUserData = {
-    //         aggregationTimer: 1230,
-    //         proficiencyStats: {
-    //             UNKNOWN: 8,
-    //             ONE: 3,
-    //             TWO: 4,
-    //             THREE: 5,
-    //             FOUR: 8,
-    //         },
-    //     }
-    //     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
-    //     const update: ITypeAndIdAndValUpdates = {
-    //         id: TREE_ID,
-    //         type: ObjectDataTypes.TREE_USER_DATA,
-    //         val,
-    //     }
-    //     const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData')
-    //     const sigmaNode2ReceiveNewTreeDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeUserData')
-    //
-    //     sigmaNodeHandler.handleUpdate(update)
-    //     expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    //     // expect(sigmaNode2ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    // })
+    it('A Tree User Data Update should call the correct method on the sigma Node with the correct args', () => {
+        const val: ITreeUserData = {
+            aggregationTimer: 1230,
+            proficiencyStats: {
+                UNKNOWN: 8,
+                ONE: 3,
+                TWO: 4,
+                THREE: 5,
+                FOUR: 8,
+            },
+        }
+        // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
+        const update: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_USER_DATA,
+            val,
+        }
+        const sigmaNode1ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData')
+        const sigmaNode2ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeUserData')
+
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1)
+        expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0)
+    })
 
     it('A Content Update should call the correct method on the sigma Node with the correct args', () => {
         const val: IContentData = {
