@@ -1,8 +1,8 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer} from '../dbSync/IDatabaseSyncer';
+import {IDatabaseSyncer} from '../interfaces';
+import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
-import {IDBSubscriber} from './IDBSubscriber';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
 
 @injectable()

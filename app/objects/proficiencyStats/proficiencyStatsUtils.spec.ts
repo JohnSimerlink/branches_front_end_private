@@ -3,7 +3,7 @@
 import {expect} from 'chai'
 import {} from 'mocha' // types
 
-import {IProficiencyStats} from './IProficiencyStats';
+import {IProficiencyStats} from '../interfaces';
 import {addObjToProficiencyStats} from './proficiencyStatsUtils';
 
 describe('addObjToProficiencyStats', () => {

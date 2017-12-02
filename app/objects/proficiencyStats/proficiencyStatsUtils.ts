@@ -1,5 +1,5 @@
+import {IProficiencyStats} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {IProficiencyStats} from './IProficiencyStats';
 
 export function addObjToProficiencyStats(proficiencyStats: IProficiencyStats, deltaObj: IProficiencyStats) {
     const newStats: IProficiencyStats = {...proficiencyStats}

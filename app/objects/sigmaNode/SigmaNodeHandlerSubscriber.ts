@@ -7,7 +7,7 @@
 
 import {inject, injectable} from 'inversify';
 import {ISigmaNodeHandler, ISigmaNodeHandlerSubscriber, ITypeAndIdAndValUpdates} from '../interfaces';
-import {ISubscribable} from '../subscribable/ISubscribable';
+import {ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()

@@ -3,15 +3,12 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, ISubscribableGlobalDataStore, ISubscribableGlobalDataStoreCore,
+    IIdAndValUpdates, ISubscribableGlobalDataStore,
     ITypeAndIdAndValUpdates
 } from '../interfaces';
-import {ISubscribable} from '../subscribable/ISubscribable';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {ObjectDataTypes} from './ObjectTypes';
-
-// interface ISubscribableGlobalDataStore extends ISubscribableGlobalDataStore { }
 
 @injectable()
 class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates>

@@ -1,16 +1,18 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {IdMutationTypes} from '../id/IdMutationTypes';
-import {ISubscribableMutableId} from '../id/ISubscribableMutableId';
-import {IValUpdates} from '../interfaces';
-import {IDatedMutation} from '../mutations/IMutation';
-import {ISubscribableMutableStringSet} from '../set/ISubscribableMutableStringSet';
+import {
+    IBasicTreeDataWithoutId,
+    IDatedMutation,
+    IdMutationTypes,
+    ISubscribableBasicTreeCore,
+    ISubscribableMutableId,
+    ISubscribableMutableStringSet,
+    IValUpdates
+} from '../interfaces';
 import {SetMutationTypes} from '../set/SetMutationTypes';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
-import {IBasicTreeDataWithoutId} from './IBasicTreeData';
-import {ISubscribableBasicTreeCore} from './ISubscribableBasicTree';
 import {TreeMutationTypes} from './TreeMutationTypes';
 
 interface ISubscribableBasicTree extends SubscribableBasicTree {}

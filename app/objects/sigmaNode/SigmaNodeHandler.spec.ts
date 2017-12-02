@@ -2,16 +2,12 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
-import {IContentData} from '../contentItem/IContentData';
-import {IContentUserData} from '../contentUserData/IContentUserData';
 import {ObjectDataTypes} from '../dataStores/ObjectTypes';
+import {IBasicTreeDataWithoutId, IContentData, IContentUserData,
+    ICoordinate, ISigmaNode, ITreeUserData} from '../interfaces';
 import {ITypeAndIdAndValUpdates} from '../interfaces';
-import {ICoordinate} from '../point/IPoint';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
-import {ISigmaNode} from './ISigmaNode';
 import {SigmaNodeHandler} from './SigmaNodeHandler';
 
 import {

@@ -10,8 +10,8 @@ import {
     fGetSigmaIdsForContentId, ISigmaNodeHandler, ITypeAndIdAndValUpdates,
     ObjectDataDataTypes
 } from '../interfaces';
+import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
-import {ISigmaNode} from './ISigmaNode';
 
 @injectable()
 class SigmaNodeHandler implements ISigmaNodeHandler {

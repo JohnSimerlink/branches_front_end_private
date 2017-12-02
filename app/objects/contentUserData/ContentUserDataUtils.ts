@@ -1,4 +1,4 @@
-import {IContentUserData} from './IContentUserData';
+import {IContentUserData} from '../interfaces';
 
 const REGULAR_SIZE = 10
 class ContentUserDataUtils {

@@ -1,5 +1,5 @@
+import {IContentData} from '../interfaces';
 import {CONTENT_TYPES} from './ContentTypes';
-import {IContentData} from './IContentData';
 
 const QUESTION_ANSWER_LABEL_SEPARATOR = ': '
 class ContentItemUtils {

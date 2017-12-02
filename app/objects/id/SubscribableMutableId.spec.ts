@@ -1,10 +1,9 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatedMutation} from '../mutations/IMutation';
+import {IDatedMutation, IdMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
-import {IdMutationTypes} from './IdMutationTypes';
-import {ISubscribableMutableId} from './ISubscribableMutableId';
+import {ISubscribableMutableId} from '../interfaces';
 import {SubscribableMutableId} from './SubscribableMutableId';
 
 describe('SubscribableMutableId > Subscribable', () => {

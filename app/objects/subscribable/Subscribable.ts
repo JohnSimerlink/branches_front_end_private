@@ -1,8 +1,7 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatedMutation} from '../mutations/IMutation';
+import {IDatedMutation, ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
-import {ISubscribable} from './ISubscribable';
 import {SubscribableCore} from './SubscribableCore';
 
 @injectable()

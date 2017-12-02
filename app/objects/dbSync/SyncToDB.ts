@@ -1,15 +1,12 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
-import {ISubscribable} from '../subscribable/ISubscribable';
+import {IDatabaseSyncer, IDetailedUpdates, ISaveUpdatesToDBFunction, ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
-import {IDatabaseSyncer} from './IDatabaseSyncer';
-import {IDetailedUpdates} from './IDetailedUpdates';
-import {SaveUpdatesToDBFunction} from './ISaveUpdatesToDBFunction';
 
 @injectable()
 class SyncToDB implements IDatabaseSyncer {
-    private saveUpdatesToDBFunction: SaveUpdatesToDBFunction
+    private saveUpdatesToDBFunction: ISaveUpdatesToDBFunction
     constructor(@inject(TYPES.SyncToDBArgs){saveUpdatesToDBFunction}) {
         this.saveUpdatesToDBFunction = saveUpdatesToDBFunction
     }
@@ -21,7 +18,7 @@ class SyncToDB implements IDatabaseSyncer {
 
 @injectable()
 class SyncToDBArgs {
-    @inject(TYPES.SaveUpdatesToDBFunction) public saveUpdatesToDBFunction
+    @inject(TYPES.ISaveUpdatesToDBFunction) public saveUpdatesToDBFunction
 }
 
 export {SyncToDB, SyncToDBArgs}
