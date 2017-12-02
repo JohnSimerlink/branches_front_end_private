@@ -2,9 +2,8 @@ import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatedMutation} from '../interfaces';
+import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
-import {SetMutationTypes} from './SetMutationTypes';
 import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
 
 describe('SubscribableMutableStringSet > IMutable, ISet :string', () => {

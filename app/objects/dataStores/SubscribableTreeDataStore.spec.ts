@@ -33,7 +33,7 @@ describe('SubscribableTreeDataStore > addAndSubscribeToItem', () => {
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
         const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
         // try {
-        tree.addDescendantMutation(TreePropertyNames.parentId, sampleMutation)
+        tree.addMutation(TreePropertyNames.parentId, sampleMutation)
 
         const treeNewVal = tree.val()
         // } catch (err) {

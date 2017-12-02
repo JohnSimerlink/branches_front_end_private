@@ -4,11 +4,11 @@ import {inject, injectable} from 'inversify';
 import {
     IBasicTreeDataWithoutId,
     IDatedMutation,
-    IdMutationTypes,
+    IdMutationTypes, IProppedDatedMutation,
     ISubscribableBasicTreeCore,
     ISubscribableMutableId,
     ISubscribableMutableStringSet,
-    IValUpdates
+    IValUpdates, TreePropertyMutationTypes
 } from '../interfaces';
 import {SetMutationTypes} from '../set/SetMutationTypes';
 import {Subscribable} from '../subscribable/Subscribable';
@@ -53,11 +53,10 @@ class SubscribableBasicTree extends Subscribable<TreeMutationTypes, any> impleme
         this.parentId.onUpdate(boundCallCallbacks)
     }
 
-    public addDescendantMutation(
-        propertyName: TreePropertyNames,
-        mutation: IDatedMutation<SetMutationTypes | IdMutationTypes>
+    public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
         // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ) {
+        const propertyName = mutation.propertyName
         switch (propertyName) {
             case 'contentId':
                 this.contentId.addMutation(mutation as IDatedMutation<IdMutationTypes>)

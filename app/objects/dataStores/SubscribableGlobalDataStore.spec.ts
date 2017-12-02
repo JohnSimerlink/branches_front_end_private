@@ -61,7 +61,7 @@ describe('ISubscribableGlobalDataStore', () => {
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
         const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
         globalStore.startBroadcasting()
-        tree.addDescendantMutation(TreePropertyNames.parentId, sampleMutation)
+        tree.addMutation(TreePropertyNames.parentId, sampleMutation)
 
         const treeNewVal = tree.val()
         expect(callback1.callCount).to.equal(1)
@@ -103,7 +103,7 @@ describe('ISubscribableGlobalDataStore', () => {
     treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
     const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
     // globalStore.startBroadcasting()
-    tree.addDescendantMutation(TreePropertyNames.parentId, sampleMutation)
+    tree.addMutation(TreePropertyNames.parentId, sampleMutation)
 
     const treeNewVal = tree.val()
     expect(callback1.callCount).to.equal(0)

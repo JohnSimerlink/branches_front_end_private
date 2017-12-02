@@ -13,11 +13,12 @@ if (!Object.entries) {
 }
 
 interface ISubscribableTreeDataStore extends SubscribableTreeDataStore {}
+// ^^ TODO: define this interface separate of the class, and have the class implement this interface
 @injectable()
 class SubscribableTreeDataStore
     extends SubscribableCore<IIdAndValUpdates>
     implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableBasicTreeCore> {
-    private store: object;
+    protected store: object;
     private update: IIdAndValUpdates;
     constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
         super({updatesCallbacks})

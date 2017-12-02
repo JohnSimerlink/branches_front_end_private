@@ -64,7 +64,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const newTreeDataValue = tree.val()
         expect(callback.callCount).to.equal(0)
     })
-    it('addDescendantMutation ' +
+    it('addMutation ' +
         ' should call addMutation on the appropriate descendant property', () => {
         const contentId = new SubscribableMutableId()
         const parentId = new SubscribableMutableId()
@@ -74,7 +74,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const parentIdAddMutationSpy = sinon.spy(parentId, 'addMutation')
 
         const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
-        tree.addDescendantMutation(TreePropertyNames.parentId, sampleMutation)
+        tree.addMutation(TreePropertyNames.parentId, sampleMutation)
         expect(parentIdAddMutationSpy.callCount).to.equal(1)
     })
 })
