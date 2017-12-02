@@ -6,7 +6,7 @@ import {SubscribableMutableId} from '../id/SubscribableMutableId';
 import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
-import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
+import {SubscribableTree} from '../tree/SubscribableBasicTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
@@ -17,8 +17,8 @@ describe('ISubscribableGlobalDataStore', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
-        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-        // const tree = myContainer.get<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree)
+        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
         tree.publishUponDescendantUpdates()
         const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
@@ -41,8 +41,8 @@ describe('ISubscribableGlobalDataStore', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
-        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-        // const tree = myContainer.get<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree)
+        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
         tree.publishUponDescendantUpdates()
         const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
@@ -86,8 +86,8 @@ describe('ISubscribableGlobalDataStore', () => {
     const parentId = new SubscribableMutableId()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
-    const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-    // const tree = myContainer.get<ISubscribableBasicTree>(TYPES.ISubscribableBasicTree)
+    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+    // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
     // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
     tree.publishUponDescendantUpdates()
     const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)

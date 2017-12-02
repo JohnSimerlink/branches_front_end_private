@@ -70,7 +70,7 @@ interface IIdAndValUpdates {
 interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
     type: ObjectDataTypes
 }
-type ObjectDataDataTypes = IBasicTreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
+type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
 
 // dbSync
 
@@ -243,7 +243,7 @@ interface IEditableSigmaNode {
     receiveNewContentUserData(contentUserData: IContentUserData)
     receiveNewTreeLocationData(treeLocationData: ICoordinate)
     receiveNewTreeUserData(treeUserData: ITreeUserData)
-    receiveNewTreeData(treeUserData: IBasicTreeDataWithoutId)
+    receiveNewTreeData(treeUserData: ITreeDataWithoutId)
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
@@ -284,20 +284,20 @@ interface IBasicTree {
     parentId: IMutableId;
     children: IMutableStringSet;
 }
-interface IBasicTreeDataWithoutId {
+interface ITreeDataWithoutId {
     contentId: string;
     parentId: string;
     children: string[];
 }
-interface IBasicTreeData extends IBasicTreeDataWithoutId {
+interface IBasicTreeData extends ITreeDataWithoutId {
     id: string;
 }
 
-interface ISubscribableBasicTreeCore extends IBasicTree {
+interface ISubscribableTreeCore extends IBasicTree {
     contentId: ISubscribableMutableId
     parentId: ISubscribableMutableId
     children: ISubscribableMutableStringSet
-    val(): IBasicTreeDataWithoutId
+    val(): ITreeDataWithoutId
 }
 
 enum TreeMutationType {
@@ -409,9 +409,9 @@ export {
 
     // tree
     IBasicTree,
-    IBasicTreeDataWithoutId,
+    ITreeDataWithoutId,
     IBasicTreeData,
-    ISubscribableBasicTreeCore,
+    ISubscribableTreeCore,
     TreeMutationType,
     TreePropertyNames,
 

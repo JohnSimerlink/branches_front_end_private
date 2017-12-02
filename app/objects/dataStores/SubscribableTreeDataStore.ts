@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
 import {IIdAndValUpdates} from '../interfaces';
 import {IValUpdates} from '../interfaces';
-import {ICoreSubscribableDataStore, ISubscribable, ISubscribableBasicTreeCore} from '../interfaces';
+import {ICoreSubscribableDataStore, ISubscribable, ISubscribableTreeCore} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
@@ -17,7 +17,7 @@ interface ISubscribableTreeDataStore extends SubscribableTreeDataStore {}
 @injectable()
 class SubscribableTreeDataStore
     extends SubscribableCore<IIdAndValUpdates>
-    implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableBasicTreeCore> {
+    implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableTreeCore> {
     protected store: object;
     private update: IIdAndValUpdates;
     constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
@@ -28,13 +28,13 @@ class SubscribableTreeDataStore
         return this.update
     }
     public addAndSubscribeToItem(
-        {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableBasicTreeCore }
+        {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore }
         ) {
         this.store[id] = item
         this.subscribeToItem(id, item)
         // throw new Error('Method not implemented.");
     }
-    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableBasicTreeCore) {
+    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore) {
         const me = this
         item.onUpdate( (val: IValUpdates) => {
             me.update = {id, val}

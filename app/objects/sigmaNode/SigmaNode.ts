@@ -2,7 +2,7 @@
 import {inject, injectable} from 'inversify';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
-import {IBasicTreeDataWithoutId, IColorSlice,
+import {ITreeDataWithoutId, IColorSlice,
     IContentData, IContentUserData, ICoordinate,
     IProficiencyStats, ISigmaNode, ITreeUserData} from '../interfaces';
 import {TYPES} from '../types';
@@ -10,7 +10,7 @@ import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 @injectable()
 class SigmaNode implements ISigmaNode {
-    public receiveNewTreeData(tree: IBasicTreeDataWithoutId) {
+    public receiveNewTreeData(tree: ITreeDataWithoutId) {
         this.parentId = tree.parentId
         this.contentId = tree.contentId
         this.children = tree.children

@@ -2,10 +2,10 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    IBasicTreeDataWithoutId,
+    ITreeDataWithoutId,
     IDatedMutation,
     IdMutationTypes, IProppedDatedMutation,
-    ISubscribableBasicTreeCore,
+    ISubscribableTreeCore,
     ISubscribableMutableId,
     ISubscribableMutableStringSet,
     IValUpdates, SetMutationTypes,
@@ -14,10 +14,10 @@ import {
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
-interface ISubscribableBasicTree extends SubscribableBasicTree {}
+interface ISubscribableTree extends SubscribableTree {}
 
 @injectable()
-class SubscribableBasicTree extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableBasicTreeCore {
+class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableTreeCore {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;
@@ -28,14 +28,14 @@ class SubscribableBasicTree extends Subscribable<TreeMutationTypes, IValUpdates>
     public getId() {
         return this.id
     }
-    public val(): IBasicTreeDataWithoutId {
+    public val(): ITreeDataWithoutId {
         return {
             children: this.children.val(),
             contentId: this.contentId.val(),
             parentId: this.parentId.val(),
         }
     }
-    constructor(@inject(TYPES.SubscribableBasicTreeArgs) {updatesCallbacks, id, contentId, parentId, children}) {
+    constructor(@inject(TYPES.SubscribableTreeArgs) {updatesCallbacks, id, contentId, parentId, children}) {
         super({updatesCallbacks})
         this.id = id
         this.contentId = contentId
@@ -84,4 +84,4 @@ class SubscribableBasicTreeArgs {
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
-export {SubscribableBasicTree, SubscribableBasicTreeArgs, ISubscribableBasicTree}
+export {SubscribableTree, SubscribableBasicTreeArgs, ISubscribableTree}
