@@ -13,10 +13,13 @@ import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
-import {IBasicTree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
-    IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, ISaveUpdatesToDBFunction,
+import {
+    IBasicTree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation,
+    ISaveUpdatesToDBFunction,
     ISigmaNode, ISubscribableBasicTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
-    radian } from './app/objects/interfaces';
+    radian
+} from './app/objects/interfaces';
 import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalDataStore} from './app/objects/interfaces';
 import {IDatedMutation} from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -34,6 +37,7 @@ import {
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
+import {TreePropertyNames} from './app/objects/tree/TreePropertyNames';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 
@@ -48,6 +52,7 @@ myContainer.bind<GlobalDataStoreArgs>(TYPES.SubscribableGlobalDataStoreArgs).to(
 myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
+// TODO: maybe only use this constant binding for a test container. . . Not production container
 myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
     data: {id: '12345'},
     timestamp: Date.now(),
@@ -57,6 +62,13 @@ myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
+myContainer.bind<IProppedDatedMutation<IdMutationTypes, TreePropertyNames>>
+(TYPES.IProppedDatedMutation).toConstantValue({
+    data: {id: '12345'},
+    propertyName: TreePropertyNames.contentId,
+    timestamp: Date.now(),
+    type: IdMutationTypes.SET,
+})
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
 myContainer.bind<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore).to(SubscribableGlobalDataStore)

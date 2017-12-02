@@ -3,12 +3,12 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes} from '../interfaces';
+import {IDatedMutation, IdMutationTypes, IProppedDatedMutation} from '../interfaces';
+import {ObjectDataTypes} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
 import {TreePropertyNames} from '../tree/TreePropertyNames';
 import {TYPES} from '../types';
-import {ObjectDataTypes} from './ObjectTypes';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 
@@ -25,7 +25,7 @@ describe('ISubscribableGlobalDataStore', () => {
         const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
         const globalStore = new SubscribableGlobalDataStore(
             {
-                subscribableTreeDataStore: treeStore,
+                treeStore,
                 updatesCallbacks: [],
             }
         )
@@ -49,7 +49,7 @@ describe('ISubscribableGlobalDataStore', () => {
         const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
         const globalStore = new SubscribableGlobalDataStore(
             {
-                subscribableTreeDataStore: treeStore,
+                treeStore,
                 updatesCallbacks: [],
             }
         )
@@ -59,9 +59,14 @@ describe('ISubscribableGlobalDataStore', () => {
         globalStore.onUpdate(callback2)
         globalStore.onUpdate(callback1)
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
+        const sampleMutation = myContainer.get<
+            IProppedDatedMutation<
+                IdMutationTypes,
+                TreePropertyNames
+            >
+        >(TYPES.IProppedDatedMutation)
         globalStore.startBroadcasting()
-        tree.addMutation(TreePropertyNames.parentId, sampleMutation)
+        tree.addMutation(sampleMutation)
 
         const treeNewVal = tree.val()
         expect(callback1.callCount).to.equal(1)
@@ -89,21 +94,24 @@ describe('ISubscribableGlobalDataStore', () => {
     const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
     const globalStore = new SubscribableGlobalDataStore(
         {
-            subscribableTreeDataStore: treeStore,
+            treeStore,
             updatesCallbacks: [],
         }
     )
-    // log('subscribableGlobalDataStore spec called. global store just created', globalStore)
     const callback1 = sinon.spy()
     const callback2 = sinon.spy()
 
-    // log('subscribableGlobalDataStore spec called. about to call onUpdate ', globalStore['onUpdate'])
     globalStore.onUpdate(callback2)
     globalStore.onUpdate(callback1)
     treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
-    const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
-    // globalStore.startBroadcasting()
-    tree.addMutation(TreePropertyNames.parentId, sampleMutation)
+
+    const sampleMutation = myContainer.get<
+        IProppedDatedMutation<
+            IdMutationTypes,
+            TreePropertyNames
+            >
+        >(TYPES.IProppedDatedMutation)
+    tree.addMutation(sampleMutation)
 
     const treeNewVal = tree.val()
     expect(callback1.callCount).to.equal(0)

@@ -1,11 +1,10 @@
 // tslint:disable no-empty-interface
-
-// app
 import {CONTENT_TYPES} from './contentItem/ContentTypes';
-import {ObjectDataTypes} from './dataStores/ObjectTypes';
+import {ISubscribableTreeDataStore} from './dataStores/SubscribableTreeDataStore';
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
-import {ISubscribableTreeDataStore} from './dataStores/SubscribableTreeDataStore';
+
+// app
 
 interface IApp {
     start()
@@ -177,7 +176,6 @@ enum TreeParentMutationTypes {
 
 type TreePropertyMutationTypes = SetMutationTypes | IdMutationTypes
 type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
-    | IdMutationTypes | SetMutationTypes
 
 enum ObjectDataTypes {
     TREE_DATA,
@@ -409,7 +407,6 @@ export {
     IBasicTreeDataWithoutId,
     IBasicTreeData,
     ISubscribableBasicTreeCore,
-    ITreeMutation,
     TreeMutationType,
 
     // treeUserData

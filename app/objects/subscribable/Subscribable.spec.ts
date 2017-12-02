@@ -1,8 +1,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {SyncToDB} from '../dbSync/SyncToDB';
-import {IDatedMutation, IDetailedUpdates} from '../interfaces';
-import {SetMutationTypes} from '../set/SetMutationTypes';
+import {IDatedMutation, IDetailedUpdates, SetMutationTypes } from '../interfaces';
+import {} from '../set/SetMutationTypes';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 
 describe('Subscribable:SubscribableMutableStringSet', () => {
