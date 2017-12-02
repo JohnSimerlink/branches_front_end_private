@@ -2,7 +2,7 @@ import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
 import {IContentUserData} from './app/objects/contentUserData/IContentUserData';
-import {SubscribableGlobalDataStore, GlobalDataStoreArgs} from './app/objects/dataStores/SubscribableGlobalDataStore';
+import {GlobalDataStoreArgs, SubscribableGlobalDataStore} from './app/objects/dataStores/SubscribableGlobalDataStore';
 import {
     ISubscribableTreeDataStore, SubscribableDataStoreArgs,
     SubscribableTreeDataStore
@@ -20,6 +20,7 @@ import {
     ISubscribableMutableIdArgs, SubscribableMutableId,
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
+import {fGetSigmaIdsForContentId, ISigmaNodeHandler} from './app/objects/interfaces';
 import {radian} from './app/objects/MathUtils/MathUtils';
 import {IDatedMutation} from './app/objects/mutations/IMutation';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -34,30 +35,29 @@ import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {IColorSlice} from './app/objects/sigmaNode/IColorSlice';
 import {ISigmaNode} from './app/objects/sigmaNode/ISigmaNode';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
+import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
+import {
+    SigmaNodeHandlerSubscriber,
+    SigmaNodeHandlerSubscriberArgs
+} from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {IBasicTree} from './app/objects/tree/IBasicTree';
 import {ISubscribableBasicTreeCore} from './app/objects/tree/ISubscribableBasicTree';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
-import {IContentIdSigmaIdMap, ISigmaNodeHandler} from './app/objects/interfaces';
-import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
-import {
-    SigmaNodeHandlerSubscriber,
-    SigmaNodeHandlerSubscriberArgs
-} from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
 myContainer.bind<any>(TYPES.Any).toConstantValue(false)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
+myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
 myContainer.bind<SubscribableGlobalDataStore>(TYPES.GlobalDataStore).to(SubscribableGlobalDataStore)
 myContainer.bind<GlobalDataStoreArgs>(TYPES.GlobalDataStoreArgs).to(GlobalDataStoreArgs)
 myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
-myContainer.bind<IContentIdSigmaIdMap>(TYPES.IContentIdSigmaIdMap).toConstantValue({})
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
     data: {id: '12345'},
