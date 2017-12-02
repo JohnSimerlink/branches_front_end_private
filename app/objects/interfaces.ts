@@ -6,6 +6,7 @@ import {ICoordinate} from './point/IPoint';
 import {ISubscriber} from './subscribable/ISubscriber';
 import {IBasicTreeDataWithoutId} from './tree/IBasicTreeData';
 import {ITreeUserData} from './treeUserData/ITreeUserData';
+import {ISubscribable} from './subscribable/ISubscribable';
 
 // app
 interface IApp {
@@ -14,6 +15,11 @@ interface IApp {
 // dataStores
 interface ISubscribableGlobalDataStoreCore {
     startBroadcasting()
+}
+
+interface ISubscribableGlobalDataStore extends ISubscribable<ITypeAndIdAndValUpdates>,
+    ISubscribableGlobalDataStoreCore {
+
 }
 
 ////////
@@ -48,4 +54,5 @@ export {
     fGetSigmaIdsForContentId,
     ISigmaNodeHandler,
     ISubscribableGlobalDataStoreCore,
+    ISubscribableGlobalDataStore,
 }

@@ -2,16 +2,20 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
-import {IIdAndValUpdates, ISubscribableGlobalDataStoreCore, ITypeAndIdAndValUpdates} from '../interfaces';
+import {
+    IIdAndValUpdates, ISubscribableGlobalDataStore, ISubscribableGlobalDataStoreCore,
+    ITypeAndIdAndValUpdates
+} from '../interfaces';
+import {ISubscribable} from '../subscribable/ISubscribable';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {ObjectDataTypes} from './ObjectTypes';
 
-interface ISubscribableGlobalDataStore extends SubscribableGlobalDataStore { }
+// interface ISubscribableGlobalDataStore extends SubscribableGlobalDataStore { }
 
 @injectable()
 class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates>
-implements ISubscribableGlobalDataStoreCore {
+implements ISubscribableGlobalDataStore {
     private update: ITypeAndIdAndValUpdates;
     protected callbackArguments(): ITypeAndIdAndValUpdates {
         // log('globaldatastore callback arguments called')
