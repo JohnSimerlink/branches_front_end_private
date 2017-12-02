@@ -17,7 +17,7 @@ import {
     IBasicTree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation,
     ISaveUpdatesToDBFunction,
-    ISigmaNode, ISubscribableBasicTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
+    ISigmaNode, ISubscribableTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
@@ -37,7 +37,7 @@ import {
     SigmaNodeHandlerSubscriberArgs
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
+import {SubscribableTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
@@ -50,7 +50,7 @@ myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserD
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
 myContainer.bind<GlobalDataStoreArgs>(TYPES.SubscribableGlobalDataStoreArgs).to(GlobalDataStoreArgs)
-myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableBasicTree)
+myContainer.bind<IBasicTree>(TYPES.IBasicTree).to(SubscribableTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 // TODO: maybe only use this constant binding for a test container. . . Not production container
@@ -73,7 +73,7 @@ myContainer.bind<IProppedDatedMutation<IdMutationTypes, TreePropertyNames>>
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
 myContainer.bind<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
-myContainer.bind<ISubscribableBasicTreeCore>(TYPES.ISubscribableBasicTree).to(SubscribableBasicTree)
+myContainer.bind<ISubscribableTreeCore>(TYPES.ISubscribableTree).to(SubscribableTree)
 myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
 myContainer.bind<ISubscribableMutableIdArgs>(TYPES.ISubscribableMutableIdArgs).to(SubscribableMutableIdArgs)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
@@ -86,7 +86,7 @@ myContainer.bind<SigmaNodeHandlerSubscriberArgs>(TYPES.SigmaNodeHandlerSubscribe
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
-myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableBasicTreeArgs).to(SubscribableBasicTreeArgs)
+myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableBasicTreeArgs)
 /* myContainer.bind<ISubscribable<IDetailedUpdates>>
 (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
 

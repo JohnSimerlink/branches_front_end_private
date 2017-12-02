@@ -3,7 +3,7 @@ import {myContainer} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
 import {ContentUserDataUtils } from '../contentUserData/ContentUserDataUtils';
-import {IBasicTreeDataWithoutId, IContentData,
+import {ITreeDataWithoutId, IContentData,
     IContentUserData, ICoordinate, IProficiencyStats,
     ISigmaNode, ITreeUserData} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -17,7 +17,7 @@ describe('sigmaNode', () => {
         const children = ['12312345', '123123123123123', '432493598342']
         const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
 
-        const treeData: IBasicTreeDataWithoutId = {
+        const treeData: ITreeDataWithoutId = {
             children,
             contentId,
             parentId,

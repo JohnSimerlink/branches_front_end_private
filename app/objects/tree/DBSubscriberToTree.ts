@@ -3,17 +3,17 @@ import {inject, injectable} from 'inversify';
 import {IDatabaseSyncer} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableBasicTree} from './SubscribableBasicTree';
+import {SubscribableTree} from './SubscribableBasicTree';
 
 @injectable()
 class DBSubscriberToTree implements IDBSubscriber {
     private contentIdSyncer: IDatabaseSyncer;
     private parentIdSyncer: IDatabaseSyncer;
     private childrenSyncer: IDatabaseSyncer;
-    private subscribableTree: SubscribableBasicTree;
+    private subscribableTree: SubscribableTree;
 
     constructor(
-        @inject(TYPES.ISubscribableBasicTree) subscribableTree,
+        @inject(TYPES.ISubscribableTree) subscribableTree,
         /* TODO: there's some inconsistency with having only 1 tree object, but 3 syncer objects */
         /* TODO: passing in the whole tree to just access an indeterminate number of variables is Stamp Coupling */
         @inject(TYPES.IDatabaseSyncer) contentIdSyncer: IDatabaseSyncer,

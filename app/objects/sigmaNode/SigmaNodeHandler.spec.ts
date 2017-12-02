@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {CONTENT_TYPES} from '../contentItem/ContentTypes';
 import {ObjectDataTypes} from '../interfaces';
-import {IBasicTreeDataWithoutId, IContentData, IContentUserData,
+import {ITreeDataWithoutId, IContentData, IContentUserData,
     ICoordinate, ISigmaNode, ITreeUserData} from '../interfaces';
 import {ITypeAndIdAndValUpdates} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -36,7 +36,7 @@ describe('SigmaNodeHandler', () => {
         const newContentId = '4324234'
         const newParentId = '4344324234'
         const newChildren = ['45344324234', 'aabc321', 'abcd43132']
-        const val: IBasicTreeDataWithoutId = {
+        const val: ITreeDataWithoutId = {
             children: newChildren,
             contentId: newContentId,
             parentId: newParentId,

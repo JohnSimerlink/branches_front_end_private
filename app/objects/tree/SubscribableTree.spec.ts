@@ -11,15 +11,15 @@ import {
 } from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
-import {SubscribableBasicTree} from './SubscribableBasicTree';
+import {SubscribableTree} from './SubscribableBasicTree';
 
-describe('FirebaseSyncableBasicTree', () => {
+describe('FirebaseSyncableTree', () => {
     it('constructor should set all the subscribable properties', () => {
         const contentId = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
         const parentId = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
         const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
         const TREE_ID = 'efa123'
-        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         expect(tree.contentId).to.deep.equal(contentId)
         expect(tree.parentId).to.deep.equal(parentId)
         expect(tree.children).to.deep.equal(children)
@@ -35,7 +35,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
-        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         tree.publishUponDescendantUpdates()
 
         const callback = sinon.spy()
@@ -58,7 +58,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
-        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
 
         const callback = sinon.spy()
         tree.onUpdate(callback)
@@ -74,7 +74,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = TREE_ID3
-        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         const parentIdAddMutationSpy = sinon.spy(parentId, 'addMutation')
 
         // tslint:disable variable-name
