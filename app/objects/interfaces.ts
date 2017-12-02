@@ -136,6 +136,12 @@ interface IMutation<MutationTypes> {
 interface IDatedMutation<MutationTypes> extends IMutation<MutationTypes> {
     timestamp: number // ISO 8601 POSIX Timestamp
 }
+interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
+    id: string
+}
+interface IGlobalDatedMutation<MutationTypes> extends IIdDatedMutation<MutationTypes> {
+    objectType: ObjectDataTypes
+}
 interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
     active: boolean
 }
@@ -216,7 +222,6 @@ interface ISigmaNodeData {
     proficiencyStats: IProficiencyStats;
     overdue: boolean;
 }
-
 
 // subscribable
 type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
@@ -310,6 +315,8 @@ export {
     IDatedMutation,
     IActivatableMutation,
     IActivatableDatedMutation,
+    IIdDatedMutation,
+    IGlobalDatedMutation,
     ///
     ITypeAndIdAndValUpdates,
     IIdAndValUpdates,
