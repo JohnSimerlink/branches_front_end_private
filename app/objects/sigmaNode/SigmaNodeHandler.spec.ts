@@ -6,23 +6,19 @@ import {IContentData} from '../contentItem/IContentData';
 import {IContentUserData} from '../contentUserData/IContentUserData';
 import {ObjectDataTypes} from '../dataStores/ObjectTypes';
 import {ITypeAndIdAndValUpdates} from '../interfaces';
+import {ICoordinate} from '../point/IPoint';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
+import {ITreeUserData} from '../treeUserData/ITreeUserData';
 import {TYPES} from '../types';
 import {ISigmaNode} from './ISigmaNode';
 import {SigmaNodeHandler} from './SigmaNodeHandler';
-import {IBasicTreeDataWithoutId} from '../tree/IBasicTreeData';
-import {ICoordinate} from '../point/IPoint';
-import {ITreeUserData} from '../treeUserData/ITreeUserData';
 
-const TREE_ID = '12334'
-const TREE_ID2 = '1252334'
-const CONTENT_ID = '5982347'
-function getSigmaIdsForContentId(contentId) {
-   switch (contentId) {
-       case CONTENT_ID:
-           return [TREE_ID, TREE_ID2]
-   }
-}
+import {
+    CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID,
+    TREE_ID2
+} from '../../testHelpers/testHelpers';
+
 let sigmaNodes
 let sigmaNode1
 let sigmaNode2
@@ -33,8 +29,8 @@ describe('SigmaNodeHandler', () => {
         sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         sigmaNode2 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         sigmaNodes = {}
-        sigmaNodes[TREE_ID] = sigmaNode1
-        sigmaNodes[TREE_ID2] = sigmaNode2
+        sigmaNodes[SIGMA_ID1] = sigmaNode1
+        sigmaNodes[SIGMA_ID2] = sigmaNode2
 
         sigmaNodeHandler = new SigmaNodeHandler({sigmaNodes, getSigmaIdsForContentId})
     })

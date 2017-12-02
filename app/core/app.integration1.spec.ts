@@ -4,6 +4,7 @@ import {ISigmaNode} from '../objects/sigmaNode/ISigmaNode';
 import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
 import {SigmaNodeHandlerSubscriber} from '../objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {App} from './app';
+import {getSigmaIdsForContentId} from '../testHelpers/testHelpers';
 
 describe('App integration test 1 - 12/1/2017', () => {
     it('Adding a mutation into the global store for a content user data,' +
@@ -17,7 +18,7 @@ describe('App integration test 1 - 12/1/2017', () => {
         //
         //
         // const sigmaNodes: ISigmaNode[] = []
-        // const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({contentIdSigmaIdMap, sigmaNodes})
+        // const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
         // const sigmaNodeHandlerSubscriber: ISigmaNodeHandlerSubscriber = new SigmaNodeHandlerSubscriber({})
         // const app: IApp = new App({})
 
