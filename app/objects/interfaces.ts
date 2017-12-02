@@ -304,6 +304,11 @@ enum TreeMutationType {
     ADD_LEAF,
     REMOVE_LEAF,
 }
+enum TreePropertyNames {
+    CONTENT_ID,
+    PARENT_ID,
+    CHILDREN
+}
 
 // treeUserData
 
@@ -408,6 +413,7 @@ export {
     IBasicTreeData,
     ISubscribableBasicTreeCore,
     TreeMutationType,
+    TreePropertyNames,
 
     // treeUserData
     ITreeUserData,

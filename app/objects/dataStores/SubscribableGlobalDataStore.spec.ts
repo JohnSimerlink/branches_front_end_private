@@ -3,11 +3,10 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes, IProppedDatedMutation} from '../interfaces';
+import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
-import {TreePropertyNames} from '../tree/TreePropertyNames';
 import {TYPES} from '../types';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';

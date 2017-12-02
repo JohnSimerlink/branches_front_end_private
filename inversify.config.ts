@@ -18,7 +18,8 @@ import {
     IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation,
     ISaveUpdatesToDBFunction,
     ISigmaNode, ISubscribableBasicTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
-    radian
+    radian,
+    TreePropertyNames
 } from './app/objects/interfaces';
 import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalDataStore} from './app/objects/interfaces';
 import {IDatedMutation} from './app/objects/interfaces';
@@ -37,9 +38,9 @@ import {
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {SubscribableBasicTree, SubscribableBasicTreeArgs} from './app/objects/tree/SubscribableBasicTree';
-import {TreePropertyNames} from './app/objects/tree/TreePropertyNames';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
+import {TREE_ID3} from './app/testHelpers/testHelpers';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -64,8 +65,8 @@ myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMuta
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 myContainer.bind<IProppedDatedMutation<IdMutationTypes, TreePropertyNames>>
 (TYPES.IProppedDatedMutation).toConstantValue({
-    data: {id: '12345'},
-    propertyName: TreePropertyNames.contentId,
+    data: {id: TREE_ID3},
+    propertyName: TreePropertyNames.PARENT_ID,
     timestamp: Date.now(),
     type: IdMutationTypes.SET,
 })
@@ -86,7 +87,10 @@ myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
 myContainer.bind<SubscribableBasicTreeArgs>(TYPES.SubscribableBasicTreeArgs).to(SubscribableBasicTreeArgs)
-// myContainer.bind<ISubscribable<IDetailedUpdates>>(TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
+/* myContainer.bind<ISubscribable<IDetailedUpdates>>
+(TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
+
+ */
 
 myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
 // tslint:disable-next-line ban-types

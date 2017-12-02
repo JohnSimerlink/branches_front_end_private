@@ -2,15 +2,16 @@ import * as assert from 'assert';
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
+import {TREE_ID3} from '../../testHelpers/testHelpers';
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
 import {
     IDatedMutation, IdMutationTypes, IProppedDatedMutation, ISubscribableMutableId,
-    ISubscribableMutableStringSet
+    ISubscribableMutableStringSet,
+    TreePropertyNames
 } from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {SubscribableBasicTree} from './SubscribableBasicTree';
-import {TreePropertyNames} from './TreePropertyNames';
 
 describe('FirebaseSyncableBasicTree', () => {
     it('constructor should set all the subscribable properties', () => {
@@ -40,7 +41,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const callback = sinon.spy()
         tree.onUpdate(callback)
 
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
+        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IProppedDatedMutation)
         contentId.addMutation(sampleMutation)
         const newTreeDataValue = tree.val()
         const calledWith = callback.getCall(0).args[0]
@@ -62,7 +63,7 @@ describe('FirebaseSyncableBasicTree', () => {
         const callback = sinon.spy()
         tree.onUpdate(callback)
 
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation)
+        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IProppedDatedMutation)
         contentId.addMutation(sampleMutation)
         const newTreeDataValue = tree.val()
         expect(callback.callCount).to.equal(0)
@@ -72,19 +73,20 @@ describe('FirebaseSyncableBasicTree', () => {
         const contentId = new SubscribableMutableId()
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
-        const TREE_ID = 'efa123'
+        const TREE_ID = TREE_ID3
         const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         const parentIdAddMutationSpy = sinon.spy(parentId, 'addMutation')
 
-        const sampleMutation =
+        // tslint:disable variable-name
+        const sampleSetParentMutationTREE_ID3 =
         myContainer.get<
             IProppedDatedMutation<
                 IdMutationTypes,
                 TreePropertyNames
             >
         >
-        (TYPES.IDatedMutation)
-        tree.addMutation(sampleMutation)
+        (TYPES.IProppedDatedMutation)
+        tree.addMutation(sampleSetParentMutationTREE_ID3)
         expect(parentIdAddMutationSpy.callCount).to.equal(1)
     })
 })
