@@ -4,7 +4,7 @@ import {myContainer} from '../../../inversify.config';
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
 import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
-import {SubscribableTree} from '../tree/SubscribableBasicTree';
+import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 

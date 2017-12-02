@@ -2,12 +2,12 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    ITreeDataWithoutId,
     IDatedMutation,
-    IdMutationTypes, IProppedDatedMutation,
-    ISubscribableTreeCore,
-    ISubscribableMutableId,
+    IdMutationTypes,
+    IProppedDatedMutation, ISubscribableMutableId,
     ISubscribableMutableStringSet,
+    ISubscribableTreeCore,
+    ITreeDataWithoutId,
     IValUpdates, SetMutationTypes,
     TreeMutationTypes, TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
@@ -76,7 +76,7 @@ class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> impl
 }
 
 @injectable()
-class SubscribableBasicTreeArgs {
+class SubscribableTreeArgs {
     @inject(TYPES.Array) public updatesCallbacks
     @inject(TYPES.String) public id
     @inject(TYPES.ISubscribableMutableId) public contentId
@@ -84,4 +84,4 @@ class SubscribableBasicTreeArgs {
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
-export {SubscribableTree, SubscribableBasicTreeArgs, ISubscribableTree}
+export {SubscribableTree, SubscribableTreeArgs}
