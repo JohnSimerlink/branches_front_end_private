@@ -13,7 +13,7 @@ import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 
 describe('ISubscribableGlobalDataStore', () => {
-    it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () => {
+    it(' calling startPublishing on GlobalStore, should call onUpdate on each of the component Stores', () => {
         const contentId = new SubscribableMutableField<string>()
         const parentId = new SubscribableMutableField<string>()
         const children = new SubscribableMutableStringSet()
@@ -32,11 +32,11 @@ describe('ISubscribableGlobalDataStore', () => {
         const treeStoreOnUpdateSpy = sinon.spy(treeStore, 'onUpdate')
 
         expect(treeStoreOnUpdateSpy.callCount).to.equal(0)
-        globalStore.startBroadcasting()
+        globalStore.startPublishing()
         expect(treeStoreOnUpdateSpy.callCount).to.equal(1)
     })
 
-    it('After calling startBroadcasting, globalStore should publish updates'
+    it('After calling startPublishing, globalStore should publish updates'
         + ' when one of its component stores publishes an update', () => {
         const contentId = new SubscribableMutableField<string>()
         const parentId = new SubscribableMutableField<string>()
@@ -58,6 +58,7 @@ describe('ISubscribableGlobalDataStore', () => {
 
         globalStore.onUpdate(callback2)
         globalStore.onUpdate(callback1)
+        treeStore.startPublishing()
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
         const sampleMutation = myContainer.get<
             IProppedDatedMutation<
@@ -65,7 +66,7 @@ describe('ISubscribableGlobalDataStore', () => {
                 TreePropertyNames
             >
         >(TYPES.IProppedDatedMutation)
-        globalStore.startBroadcasting()
+        globalStore.startPublishing()
         tree.addMutation(sampleMutation)
 
         const treeNewVal = tree.val()
@@ -80,7 +81,7 @@ describe('ISubscribableGlobalDataStore', () => {
 
     })
     //
-    it('Before calling startBroadcasting, globalStore should NOT publish updates ' +
+    it('Before calling startPublishing, globalStore should NOT publish updates ' +
         ' when one of its component stores publishes an update', () => {
 
     const contentId = new SubscribableMutableField<string>()
@@ -103,6 +104,7 @@ describe('ISubscribableGlobalDataStore', () => {
 
     globalStore.onUpdate(callback2)
     globalStore.onUpdate(callback1)
+    treeStore.startPublishing()
     treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
 
     const sampleMutation = myContainer.get<

@@ -20,6 +20,7 @@ class SubscribableTreeDataStore
     implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableTreeCore> {
     protected store: object;
     private update: IIdAndValUpdates;
+    private startedPublishing: boolean = false
     constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
         super({updatesCallbacks})
         this.store = store
@@ -30,6 +31,9 @@ class SubscribableTreeDataStore
     public addAndSubscribeToItem(
         {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore }
         ) {
+        if (!this.startedPublishing) {
+            throw new Error('Can\'t add item until started publishing!')
+        }
         this.store[id] = item
         this.subscribeToItem(id, item)
         // throw new Error('Method not implemented.");
@@ -41,10 +45,11 @@ class SubscribableTreeDataStore
             me.callCallbacks()
         })
     }
-    public subscribeToAllItems() {
+    public startPublishing() {
         for (const [id, item] of Object.entries(this.store) ) {
             this.subscribeToItem(id, item)
         }
+        this.startedPublishing = true
     }
 
 }
