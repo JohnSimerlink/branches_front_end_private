@@ -1,10 +1,11 @@
 // map from treeId to sigmaNodeId
 // map from contentId to sigmaNodeId
 // in the class that creates an instance of SigmaNodeHandlerSubscriber
-// subscribe to store. on store update parse object type and id
+// subscribe to stores. on stores update parse object type and id
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
 import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
 import {
     fGetSigmaIdsForContentId, ISigmaNodeHandler, ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
@@ -44,6 +45,7 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
     }
     // TODO: refactor into a public method on another class
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
+        log('handleUpdate is ' + update + this.getSigmaNodeIds + this)
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
         sigmaIds.forEach(id => {
             const sigmaNode: ISigmaNode = this.sigmaNodes[id]

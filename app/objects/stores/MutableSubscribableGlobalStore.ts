@@ -1,10 +1,10 @@
 import {
-    AllObjectMutationTypes, IGlobalDatedMutation, IIdDatedMutation, IMutableSubscribableGlobalDataStore,
+    AllObjectMutationTypes, IGlobalDatedMutation, IIdDatedMutation, IMutableSubscribableGlobalStore,
     ObjectTypes, TreeMutationTypes
 } from '../interfaces';
-import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
+import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 
-class MutableSubscribableGlobalStore extends SubscribableGlobalDataStore implements IMutableSubscribableGlobalDataStore {
+class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
     constructor({treeStore, updatesCallbacks}) {
         super({treeStore, updatesCallbacks})
     }

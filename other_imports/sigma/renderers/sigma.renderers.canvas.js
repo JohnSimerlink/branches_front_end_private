@@ -199,7 +199,7 @@ import {NODE_TYPES} from "../../../app/core/globals.ts";
       }
       window.previousMostCenteredNodeId = window.mostCenteredNodeId
     this.nodesOnScreen = nodesOnScreen; //this.camera.quadtree.area(
-      // store.commit('setMostCenteredTree', window.mostCenteredNodeId)
+      // stores.commit('setMostCenteredTree', window.mostCenteredNodeId)
       // this.camera.getRectangle(this.width, this.height)
     // );
 
@@ -364,7 +364,7 @@ import {NODE_TYPES} from "../../../app/core/globals.ts";
    * finally appends it to the container.
    *
    * @param  {string} tag The label tag.
-   * @param  {string} id  The id of the element (to store it in "domElements").
+   * @param  {string} id  The id of the element (to stores it in "domElements").
    */
   sigma.renderers.canvas.prototype.initDOM = function(tag, id) {
     var dom = document.createElement(tag);

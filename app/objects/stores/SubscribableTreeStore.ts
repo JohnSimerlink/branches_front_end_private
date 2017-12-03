@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
 import {IIdAndValUpdates} from '../interfaces';
 import {IValUpdates} from '../interfaces';
-import {ICoreSubscribableDataStore, ISubscribable, ISubscribableTreeCore} from '../interfaces';
+import {ICoreSubscribableStore, ISubscribable, ISubscribableTreeCore} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
@@ -12,12 +12,12 @@ if (!Object.entries) {
     entries.shim()
 }
 
-interface ISubscribableTreeDataStore extends SubscribableTreeDataStore {}
+interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
 @injectable()
-class SubscribableTreeDataStore
+class SubscribableTreeStore
     extends SubscribableCore<IIdAndValUpdates>
-    implements ICoreSubscribableDataStore<IIdAndValUpdates, ISubscribableTreeCore> {
+    implements ICoreSubscribableStore<IIdAndValUpdates, ISubscribableTreeCore> {
     protected store: object;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
@@ -60,4 +60,4 @@ class SubscribableDataStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
 }
 
-export {SubscribableDataStoreArgs, ISubscribableTreeDataStore, SubscribableTreeDataStore}
+export {SubscribableDataStoreArgs, ISubscribableTreeStore, SubscribableTreeStore}

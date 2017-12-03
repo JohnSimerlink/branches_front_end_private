@@ -177,7 +177,7 @@ export default class ContentItem {
                 duration: 10000,
                 onclick: (snack) => {
                     store.commit('openReview', this.id)
-                    // store.commit('openNode', this.getTreeId())
+                    // stores.commit('openNode', this.getTreeId())
                     snack.hide()
                 }
             }
@@ -462,16 +462,16 @@ export default class ContentItem {
 
         const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
         this.interactions.push(interaction)
-        //store user interactions under content
+        //stores user interactions under content
         this.userInteractionsMap[user.get()] = this.interactions
 
         //2. userInteractions
 
-        //store contentItem interaction under users
+        //stores contentItem interaction under users
         //3. user addInteraction
         user.addInteraction(this.id, interaction, addChangeToDB)
 
-        //store contentItem strength and timestamp under userStrengthMap
+        //stores contentItem strength and timestamp under userStrengthMap
         //4. userStrengthMap
         this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
         this.userStrengthMap[user.get()] = this.lastRecordedStrength
@@ -486,7 +486,7 @@ export default class ContentItem {
 
         this.resortTrees()
         // user.addMutation('itemStudied', this.id)
-        // store.commit('itemStudied', this.id)
+        // stores.commit('itemStudied', this.id)
 
         if (!addChangeToDB) {
             return

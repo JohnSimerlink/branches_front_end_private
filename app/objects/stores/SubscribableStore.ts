@@ -7,17 +7,17 @@
 // class SubscribableDataStore<UpdatesType, ObjectType, ObjectUpdateType>
 //     extends SubscribableCore<UpdatesType> {
 //
-//     private store: object;
-//     constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
+//     private stores: object;
+//     constructor(@inject(TYPES.SubscribableDataStoreArgs){stores = {}, updatesCallbacks}) {
 //         super({updatesCallbacks})
-//         this.store = store
+//         this.stores = stores
 //     }
 //     protected callbackArguments() {
 //         throw new Error('Method not implemented.')
 //     }
 //     /*
 //     public addAndSubscribeToItem(id: any, item: ISubscribable<ObjectUpdateType> & ObjectType) {
-//         this.store[id] = item
+//         this.stores[id] = item
 //         this.subscribeToItem(item)
 //     }
 //     private onItemUpdate(id, item) {
@@ -34,11 +34,11 @@
 //     */
 //
 // }
-// class SubscribableTreeDataStore {
+// class SubscribableTreeStore {
 //
 // }
 // class SubscribableDataStoreArgs {
-//     @inject(TYPES.Object) public store;
+//     @inject(TYPES.Object) public stores;
 //     @inject(TYPES.Array) public updatesCallbacks;
 // }
 //
