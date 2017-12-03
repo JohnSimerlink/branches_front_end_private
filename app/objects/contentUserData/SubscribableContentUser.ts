@@ -12,7 +12,7 @@
 // import {TYPES} from '../types'
 //
 // @injectable()
-// class SubscribableContentUser extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableTree {
+// class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableTree {
 //
 //     // TODO: should the below three objects be private?
 //     public contentId: ISubscribableMutableId;
