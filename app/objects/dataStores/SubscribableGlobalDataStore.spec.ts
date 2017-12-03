@@ -10,6 +10,7 @@ import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
+import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 
 describe('ISubscribableGlobalDataStore', () => {
     it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () => {
@@ -41,7 +42,7 @@ describe('ISubscribableGlobalDataStore', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
-        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
         tree.startPublishing()
@@ -86,7 +87,7 @@ describe('ISubscribableGlobalDataStore', () => {
     const parentId = new SubscribableMutableId()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
-    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+    const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
     // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
     // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
     tree.startPublishing()

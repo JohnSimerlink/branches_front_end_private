@@ -49,28 +49,6 @@ class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> impl
         this.contentId.onUpdate(boundCallCallbacks)
         this.parentId.onUpdate(boundCallCallbacks)
     }
-
-    public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
-        // TODO: this lack of typesafety between propertyName and MutationType is concerning
-    ) {
-        const propertyName: TreePropertyNames = mutation.propertyName
-        switch (propertyName) {
-            case TreePropertyNames.CONTENT_ID:
-                this.contentId.addMutation(mutation as IDatedMutation<IdMutationTypes>)
-                break;
-            case TreePropertyNames.PARENT_ID:
-                this.parentId.addMutation(mutation as IDatedMutation<IdMutationTypes>)
-                break;
-            case TreePropertyNames.CHILDREN:
-                this.children.addMutation(mutation as IDatedMutation<SetMutationTypes>)
-                break;
-            default:
-                throw new TypeError(
-                    propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property ')
-        }
-    }
-    // TODO: have this class implement IMutable directly
 }
 
 @injectable()
