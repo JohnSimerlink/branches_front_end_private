@@ -1,22 +1,16 @@
 import {expect} from 'chai'
-import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {TREE_ID3} from '../../testHelpers/testHelpers';
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
-    IDatedMutation, FieldMutationTypes, IProppedDatedMutation, ISubscribableMutableField,
+    ISubscribableMutableField,
     ISubscribableMutableStringSet,
-    TreePropertyNames
 } from '../interfaces';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
-import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
 
 describe('SubscribableTree', () => {
     it('constructor should set all the subscribable properties', () => {
-        const contentId = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableId)
-        const parentId = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableId)
+        const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
+        const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
         const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
         const TREE_ID = 'efa123'
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})

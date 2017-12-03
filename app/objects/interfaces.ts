@@ -30,25 +30,42 @@ interface IContentItem {
 
 // contentUserData
 
-interface IContentUserData {
-    overdue: boolean;
-    timer: number;
-    proficiency: PROFICIENCIES;
-    lastRecordedStrength; // TODO: this might actually be an object not a simple number
-}
 interface IContentUser {
-    overdue: ISubscribableMutableField<boolean>
+    overdue: IMutableField<boolean>
+    timer: IMutableField<number>
+    proficiency: IMutableField<PROFICIENCIES>
+    lastRecordedStrength: IMutableField<number>
+    // ^^ TODO: this might actually be an object not a simple number
 }
 
 interface ISubscribableContentUserCore extends IContentUser {
-    contentId: ISubscribableMutableField<string>
-    parentId: ISubscribableMutableField<string>
-    children: ISubscribableMutableStringSet
-    /* TODO: I wonder if we can make ISubscribableMutableStringSet
-    into ISubscribableMutableField<Set<string>>
-    */
-    val(): ITreeDataWithoutId
+    overdue: ISubscribableMutableField<boolean>
+    timer: ISubscribableMutableField<number>
+    proficiency: ISubscribableMutableField<PROFICIENCIES>
+    lastRecordedStrength: ISubscribableMutableField<number>
+    val(): IContentUserData
 }
+
+interface IContentUserData {
+    overdue: boolean,
+    timer: number,
+    proficiency: PROFICIENCIES,
+    lastRecordedStrength: number,
+}
+
+enum ContentUserPropertyNames {
+    OVERDUE,
+    TIMER,
+    PROFICIENCY,
+    LAST_RECORDED_STRENGTH,
+}
+
+interface ISubscribableContentUser extends
+ISubscribable<IValUpdates>, ISubscribableContentUserCore {}
+
+interface IMutableSubscribableContentUser
+    extends ISubscribableContentUser,
+        IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
 // dataStores
 
@@ -188,6 +205,7 @@ enum TreeParentMutationTypes {
 }
 
 type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
+type ContentUserPropertyMutationTypes = FieldMutationTypes
 type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
 
 enum ObjectDataTypes {
@@ -313,10 +331,6 @@ interface ISubscribableTreeCore extends ITree {
     val(): ITreeDataWithoutId
 }
 
-enum TreeMutationType {
-    ADD_LEAF,
-    REMOVE_LEAF,
-}
 enum TreePropertyNames {
     CONTENT_ID,
     PARENT_ID,
@@ -344,8 +358,13 @@ export {
     IContentItem,
 
     // contentUserData
+    ContentUserPropertyNames,
+    IContentUser,
     IContentUserData,
     IDetailedUpdates,
+    IMutableSubscribableContentUser,
+    ISubscribableContentUserCore,
+    ISubscribableContentUser,
 
     // dataStore
     ISubscribableGlobalDataStoreCore,
@@ -430,7 +449,6 @@ export {
     ITreeDataWithoutId,
     ITreeData,
     ISubscribableTreeCore,
-    TreeMutationType,
     TreePropertyNames,
     ISubscribableTree,
     IMutableSubscribableTree,

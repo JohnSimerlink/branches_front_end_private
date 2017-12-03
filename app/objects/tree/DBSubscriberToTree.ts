@@ -36,8 +36,8 @@ class DBSubscriberToTree implements IDBSubscriber {
 }
 @injectable()
 class DBSubscriberToTreeArgs {
-    @inject(TYPES.ISubscribableMutableId) public contentId
-    @inject(TYPES.ISubscribableMutableId) public parentId
+    @inject(TYPES.ISubscribableMutableField) public contentId
+    @inject(TYPES.ISubscribableMutableField) public parentId
     @inject(TYPES.ISubscribableMutableStringSet) public children
     @inject(TYPES.IDatabaseSyncer) public contentIdSyncer: IDatabaseSyncer
     @inject(TYPES.IDatabaseSyncer) public parentIdSyncer: IDatabaseSyncer
