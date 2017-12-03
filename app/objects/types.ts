@@ -4,6 +4,7 @@ const TYPES = {
     Array: Symbol('Array'),
     Boolean: Symbol('Boolean'),
     ContentUserDataArgs: Symbol('ContentUserDataArgs'),
+    DBSubscriberToTreeArgs: Symbol('DBSubscriberToTreeArgs'),
     FirebaseSaverArgs: Symbol('FirebaseSaverArgs'),
     FirebaseSyncerArgs: Symbol('SyncToDBArgs'),
     IActivatableDatedMutation: Symbol('IActivatableDatedMutation'),

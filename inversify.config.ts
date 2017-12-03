@@ -14,10 +14,10 @@ import {
     SubscribableMutableIdArgs
 } from './app/objects/id/SubscribableMutableId';
 import {
-    ITree, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
-    IdMutationTypes, IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation,
-    ISaveUpdatesToDBFunction,
-    ISigmaNode, ISubscribableTreeCore, ISubscribableMutableId, ISubscribableMutableStringSet,
+    IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates, IdMutationTypes,
+    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
+    ISigmaNode,
+    ISubscribableMutableId, ISubscribableMutableStringSet, ISubscribableTreeCore, ITree,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
@@ -37,6 +37,7 @@ import {
     SigmaNodeHandlerSubscriberArgs
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
+import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
@@ -47,6 +48,7 @@ const myContainer = new Container()
 myContainer.bind<any>(TYPES.Any).toConstantValue(false)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
+myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
 myContainer.bind<GlobalDataStoreArgs>(TYPES.SubscribableGlobalDataStoreArgs).to(GlobalDataStoreArgs)
