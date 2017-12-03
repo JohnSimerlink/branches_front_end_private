@@ -3,7 +3,7 @@
 import {inject, injectable} from 'inversify';
 import {
     IDatedMutation,
-    IdMutationTypes, IMutableSubscribableTree,
+    FieldMutationTypes, IMutableSubscribableTree,
     IProppedDatedMutation, ISubscribableTree,
     SetMutationTypes,
     TreePropertyMutationTypes, TreePropertyNames
@@ -31,7 +31,7 @@ class MutableSubscribableTree extends SubscribableTree implements IMutableSubscr
         switch (propertyName) {
             case TreePropertyNames.CONTENT_ID:
             case TreePropertyNames.PARENT_ID:
-                this.contentId.addMutation(propertyMutation as IDatedMutation<IdMutationTypes>)
+                this.contentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
             case TreePropertyNames.CHILDREN:
                 this.children.addMutation(propertyMutation as IDatedMutation<SetMutationTypes>)

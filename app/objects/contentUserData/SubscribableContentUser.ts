@@ -2,11 +2,10 @@
 // // tslint:disable no-empty-interface
 // import {inject, injectable} from 'inversify';
 // import {
-//     ISubscribableMutableId,
+//     ISubscribableMutableField,
 //     ISubscribableMutableStringSet, ISubscribableTree,
 //     ITreeDataWithoutId,
 //     IValUpdates,
-//     TreeMutationTypes,
 // } from '../interfaces';
 // import {Subscribable} from '../subscribable/Subscribable';
 // import {TYPES} from '../types'
@@ -15,8 +14,8 @@
 // class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableTree {
 //
 //     // TODO: should the below three objects be private?
-//     public contentId: ISubscribableMutableId;
-//     public parentId: ISubscribableMutableId;
+//     public contentId: ISubscribableMutableField;
+//     public parentId: ISubscribableMutableField;
 //     public children: ISubscribableMutableStringSet;
 //     private id: string;
 //
@@ -57,4 +56,4 @@
 //     @inject(TYPES.ISubscribableMutableStringSet) public children
 // }
 //
-// export {ISubscribableTree, SubscribableTree, SubscribableTreeArgs}
+// export {ISubscribableTree, SubscribableTreeArgs}

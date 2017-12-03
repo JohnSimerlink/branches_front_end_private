@@ -1,13 +1,13 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer, ISubscribableMutableId, ISubscribableMutableStringSet} from '../interfaces';
+import {IDatabaseSyncer, ISubscribableMutableField, ISubscribableMutableStringSet} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
 class DBSubscriberToTree implements IDBSubscriber {
-    private contentId: ISubscribableMutableId;
-    private parentId: ISubscribableMutableId;
+    private contentId: ISubscribableMutableField;
+    private parentId: ISubscribableMutableField;
     private children: ISubscribableMutableStringSet;
     private contentIdSyncer: IDatabaseSyncer;
     private parentIdSyncer: IDatabaseSyncer;

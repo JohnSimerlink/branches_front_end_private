@@ -10,14 +10,14 @@ import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
 import {
-    ISubscribableMutableIdArgs, SubscribableMutableId,
-    SubscribableMutableIdArgs
-} from './app/objects/id/SubscribableMutableId';
+    SubscribableMutableField,
+    SubscribableMutableFieldArgs
+} from './app/objects/field/SubscribableMutableField';
 import {
-    IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates, IdMutationTypes,
+    FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
     ISigmaNode,
-    ISubscribableMutableId, ISubscribableMutableStringSet, ISubscribableTreeCore, ITree,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ISubscribableTreeCore, ITree,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
@@ -56,28 +56,28 @@ myContainer.bind<ITree>(TYPES.ITree).to(SubscribableTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
 // TODO: maybe only use this constant binding for a test container. . . Not production container
-myContainer.bind<IDatedMutation<IdMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
+myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
     data: {id: '12345'},
     timestamp: Date.now(),
-    type: IdMutationTypes.SET,
+    type: FieldMutationTypes.SET,
 })
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
-myContainer.bind<IProppedDatedMutation<IdMutationTypes, TreePropertyNames>>
+myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
 (TYPES.IProppedDatedMutation).toConstantValue({
     data: {id: TREE_ID3},
     propertyName: TreePropertyNames.PARENT_ID,
     timestamp: Date.now(),
-    type: IdMutationTypes.SET,
+    type: FieldMutationTypes.SET,
 })
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
 myContainer.bind<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
 myContainer.bind<ISubscribableTreeCore>(TYPES.ISubscribableTree).to(SubscribableTree)
-myContainer.bind<ISubscribableMutableId>(TYPES.ISubscribableMutableId).to(SubscribableMutableId)
-myContainer.bind<ISubscribableMutableIdArgs>(TYPES.ISubscribableMutableIdArgs).to(SubscribableMutableIdArgs)
+myContainer.bind<ISubscribableMutableField>(TYPES.ISubscribableMutableId).to(SubscribableMutableField)
+myContainer.bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore).to(SubscribableTreeDataStore)
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)

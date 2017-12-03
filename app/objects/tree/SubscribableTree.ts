@@ -2,7 +2,7 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    ISubscribableMutableId,
+    ISubscribableMutableField,
     ISubscribableMutableStringSet, ISubscribableTree,
     ITreeDataWithoutId,
     IValUpdates,
@@ -14,8 +14,8 @@ import {TYPES} from '../types'
 class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
 
     // TODO: should the below three objects be private?
-    public contentId: ISubscribableMutableId;
-    public parentId: ISubscribableMutableId;
+    public contentId: ISubscribableMutableField;
+    public parentId: ISubscribableMutableField;
     public children: ISubscribableMutableStringSet;
     private id: string;
 
