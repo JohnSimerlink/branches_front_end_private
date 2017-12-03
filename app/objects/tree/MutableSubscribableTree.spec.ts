@@ -13,7 +13,7 @@ import {Tree} from './tree';
 describe('SubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
         ' should publish an update of the entire object\'s value '
-        + ' after startBroadcasting has been called', () => {
+        + ' after startPublishing has been called', () => {
         const contentId = new SubscribableMutableField<string>()
         /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
          // TODO: figure out why DI puts in a bad updatesCallback!
@@ -36,7 +36,7 @@ describe('SubscribableTree', () => {
     })
     it('a mutation in one of the subscribable properties' +
         ' should NOT publish an update of the entire object\'s value'
-        + ' before startBroadcasting has been called', () => {
+        + ' before startPublishing has been called', () => {
         const contentId = new SubscribableMutableField<string>()
         /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
          // TODO: figure out why DI puts in a bad updatesCallback!

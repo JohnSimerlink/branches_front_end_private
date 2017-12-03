@@ -61,7 +61,7 @@ enum ContentUserPropertyNames {
 }
 
 interface ISubscribableContentUser extends
-ISubscribable<IValUpdates>, ISubscribableContentUserCore {}
+ISubscribable<IValUpdates>, ISubscribableContentUserCore, IDescendantPublisher {}
 
 interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
@@ -72,17 +72,13 @@ interface IMutableSubscribableContentUser
 interface IMutableSubscribableGlobalDataStore
     extends ISubscribableGlobalDataStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
 }
-interface ISubscribableGlobalDataStoreCore {
-    startBroadcasting()
-}
 
 interface ISubscribableGlobalDataStore extends ISubscribable<ITypeAndIdAndValUpdates>,
-    ISubscribableGlobalDataStoreCore {
+    IDescendantPublisher {
 }
 
-interface ICoreSubscribableDataStore<UpdatesType, ObjectType> {
+interface ICoreSubscribableDataStore<UpdatesType, ObjectType> extends IDescendantPublisher {
     addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
-    subscribeToAllItems()
 }
 interface ISubscribableDataStore<UpdatesType, ObjectType>
     extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableDataStore<UpdatesType, ObjectType> {
@@ -308,6 +304,10 @@ interface ISubscriber<UpdateObjectType> {
     subscribe(obj: ISubscribable<UpdateObjectType>)
 }
 
+interface IDescendantPublisher {
+    startPublishing()
+}
+
 // tree
 interface ITree {
     getId(): string;
@@ -337,7 +337,7 @@ enum TreePropertyNames {
     CHILDREN
 }
 
-interface ISubscribableTree extends ISubscribable<IValUpdates>, ISubscribableTreeCore {}
+interface ISubscribableTree extends ISubscribable<IValUpdates>, ISubscribableTreeCore, IDescendantPublisher { }
 
 interface IMutableSubscribableTree
     extends ISubscribableTree, IMutable<IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {}
@@ -367,7 +367,6 @@ export {
     ISubscribableContentUser,
 
     // dataStore
-    ISubscribableGlobalDataStoreCore,
     ISubscribableGlobalDataStore,
     ICoreSubscribableDataStore,
     IMutableSubscribableGlobalDataStore,

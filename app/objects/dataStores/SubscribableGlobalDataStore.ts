@@ -24,7 +24,7 @@ implements ISubscribableGlobalDataStore {
         this.treeStore = treeStore
         // log('subscribableGlobalDataStore called')
     }
-    public startBroadcasting() {
+    public startPublishing() {
         const me = this
         this.treeStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {

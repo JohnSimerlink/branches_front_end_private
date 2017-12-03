@@ -29,6 +29,9 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
 
         treeStore.onUpdate(callback2)
         treeStore.onUpdate(callback1)
+        treeStore.startPublishing()
+        /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
+         */
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
 
         const sampleMutation = myContainer.get<
