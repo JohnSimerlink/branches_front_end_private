@@ -1,38 +1,46 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer} from '../interfaces';
+import {IDatabaseSyncer, ISubscribableMutableId, ISubscribableMutableStringSet} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
-import {ISubscribableTree, SubscribableTree} from './SubscribableTree';
 
 @injectable()
 class DBSubscriberToTree implements IDBSubscriber {
+    private contentId: ISubscribableMutableId;
+    private parentId: ISubscribableMutableId;
+    private children: ISubscribableMutableStringSet;
     private contentIdSyncer: IDatabaseSyncer;
     private parentIdSyncer: IDatabaseSyncer;
     private childrenSyncer: IDatabaseSyncer;
-    private subscribableTree: ISubscribableTree;
 
-    constructor(
-        @inject(TYPES.ISubscribableTree) subscribableTree,
-        /* TODO: there's some inconsistency with having only 1 tree object, but 3 syncer objects */
-        /* TODO: passing in the whole tree to just access an indeterminate number of variables is Stamp Coupling */
-        @inject(TYPES.IDatabaseSyncer) contentIdSyncer: IDatabaseSyncer,
-        @inject(TYPES.IDatabaseSyncer) parentIdSyncer: IDatabaseSyncer,
-        @inject(TYPES.IDatabaseSyncer) childrenSyncer: IDatabaseSyncer,
-    ) {
-        this.subscribableTree = subscribableTree
+    constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
+      contentId, parentId, children,
+      contentIdSyncer, parentIdSyncer, childrenSyncer
+    }) {
+        this.contentId = contentId
+        this.parentId = parentId
+        this.children = children
         this.contentIdSyncer = contentIdSyncer
         this.parentIdSyncer = parentIdSyncer
         this.childrenSyncer = childrenSyncer
     }
     public subscribe() {
         // subscribe the database to any local changes in the objects
-        this.contentIdSyncer.subscribe(this.subscribableTree.contentId)
-        this.parentIdSyncer.subscribe(this.subscribableTree.parentId)
-        this.childrenSyncer.subscribe(this.subscribableTree.children)
+        this.contentIdSyncer.subscribe(this.contentId)
+        this.parentIdSyncer.subscribe(this.parentId)
+        this.childrenSyncer.subscribe(this.children)
         /* TODO: subscribe the objects to any changes in the database <<<
          OR TODO: do this in a different class. Remember the Single Responsibility Principle
          */
     }
 }
-export {DBSubscriberToTree}
+@injectable()
+class DBSubscriberToTreeArgs {
+    @inject(TYPES.ISubscribableMutableId) public contentId
+    @inject(TYPES.ISubscribableMutableId) public parentId
+    @inject(TYPES.ISubscribableMutableStringSet) public children
+    @inject(TYPES.IDatabaseSyncer) public contentIdSyncer: IDatabaseSyncer
+    @inject(TYPES.IDatabaseSyncer) public parentIdSyncer: IDatabaseSyncer
+    @inject(TYPES.IDatabaseSyncer) public childrenSyncer: IDatabaseSyncer
+}
+export {DBSubscriberToTree, DBSubscriberToTreeArgs}

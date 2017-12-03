@@ -6,7 +6,6 @@ import {TYPES} from '../types';
 import {DBSubscriberToTree} from './DBSubscriberToTree';
 
 describe('IDBSubscriber > DBSubscriberToTree', () => {
-
     let subscribableTree
     let contentIdSyncer
     let parentIdSyncer
@@ -17,7 +16,16 @@ describe('IDBSubscriber > DBSubscriberToTree', () => {
         contentIdSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
         parentIdSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
         childrenSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-        dbSubscriberToTree = new DBSubscriberToTree(subscribableTree, contentIdSyncer, parentIdSyncer, childrenSyncer)
+        dbSubscriberToTree = new DBSubscriberToTree(
+            {
+                children: subscribableTree.children,
+                childrenSyncer,
+                contentId: subscribableTree.contentId,
+                contentIdSyncer,
+                parentId: subscribableTree.parentId,
+                parentIdSyncer,
+            }
+        )
     })
     it('subscribe should call subscribe on each of the database syncers', () => {
         const contentIdSyncerSubscribeSpy = sinon.spy(contentIdSyncer, 'subscribe')
