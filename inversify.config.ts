@@ -45,7 +45,7 @@ import {TREE_ID3} from './app/testHelpers/testHelpers';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
-myContainer.bind<any>(TYPES.Any).toConstantValue(false)
+myContainer.bind<any>(TYPES.Any).toConstantValue(null)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
 myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
