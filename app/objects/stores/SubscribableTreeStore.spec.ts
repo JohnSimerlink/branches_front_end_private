@@ -2,11 +2,14 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
-import {FieldMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {
+    FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeCore, ISubscribableTreeStore,
+    TreePropertyNames
+} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {TYPES} from '../types';
-import {ISubscribableTreeStore, SubscribableTreeStore} from './SubscribableTreeStore';
+import {SubscribableStore} from './SubscribableStore';
 
 describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
     it('An update in a member tree should be published to a subscriber of the tree data stores', () => {
@@ -22,7 +25,7 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
+        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>({
             store: {},
             updatesCallbacks: []
         })

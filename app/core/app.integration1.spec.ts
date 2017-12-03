@@ -22,9 +22,9 @@ describe('App integration test 1', () => {
         const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
         const sigmaNodeHandlerSubscriber: ISigmaNodeHandlerSubscriber
             = new SigmaNodeHandlerSubscriber({sigmaNodeHandler})
-        const store: IMutableSubscribableGlobalStore
-            = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)
-        const app: IApp = new App({sigmaNodeHandlerSubscriber, store})
+        // const store: IMutableSubscribableGlobalStore
+        //     = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)
+        // const app: IApp = new App({sigmaNodeHandlerSubscriber, store})
 
     })
 })

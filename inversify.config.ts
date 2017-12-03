@@ -12,16 +12,16 @@ import {
     SubscribableMutableField,
     SubscribableMutableFieldArgs
 } from './app/objects/field/SubscribableMutableField';
+import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalStore} from './app/objects/interfaces';
+import {IDatedMutation} from './app/objects/interfaces';
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ISubscribableTreeCore, ITree,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ISubscribableStore, ISubscribableTreeCore, ITree,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
-import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalStore} from './app/objects/interfaces';
-import {IDatedMutation} from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
@@ -36,10 +36,7 @@ import {
     SigmaNodeHandlerSubscriberArgs
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
 import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
-import {
-    ISubscribableTreeStore, SubscribableStoreArgs,
-    SubscribableTreeStore
-} from './app/objects/stores/SubscribableTreeStore';
+import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
@@ -89,7 +86,10 @@ myContainer.bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableSt
 myContainer.bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
-myContainer.bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
+myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
+(TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
+/* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
+
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
 myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
 myContainer.bind<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber).to(SigmaNodeHandlerSubscriber)
