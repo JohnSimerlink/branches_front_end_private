@@ -27,7 +27,7 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
             timer: this.timer.val(),
         }
     }
-    constructor(@inject(TYPES.SubscribableContentUser) {
+    constructor(@inject(TYPES.SubscribableContentUserArgs) {
         updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
     }) {
         super({updatesCallbacks})
@@ -51,10 +51,10 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
 @injectable()
 class SubscribableContentUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableMutableField) public lastRecordedStrength: number
-    @inject(TYPES.ISubscribableMutableField) public overdue: boolean
-    @inject(TYPES.ISubscribableMutableField) public proficiency: PROFICIENCIES
-    @inject(TYPES.ISubscribableMutableField) public timer: number
+    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
+    @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
+    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
+    @inject(TYPES.ISubscribableMutableNumber) public timer: number
 }
 
 export {SubscribableContentUser, SubscribableContentUserArgs}

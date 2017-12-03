@@ -14,7 +14,7 @@ describe('SubscribableMutableField > Subscribable', () => {
         * and places it into the updatesCallbacks array, which causes a type error because ISubscribable
         * tries to invoke one of the updates, and the update is just an object not a function . . . .
         * */
-        const subscribableMutableId: ISubscribableMutableField = new SubscribableMutableField()
+        const subscribableMutableId: ISubscribableMutableField<string> = new SubscribableMutableField<string>()
         const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
         expect(typeof callback).to.equal('function')
         const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation)
@@ -29,7 +29,7 @@ describe('SubscribableMutableField > MutableField', () => {
     const FIRST_SUCCESSFUL_MUTATION = {
         data: NEW_ID, timestamp: Date.now(), type: FieldMutationTypes.SET
     }
-    const id = new SubscribableMutableField({field: INIT_ID})
+    const id = new SubscribableMutableField<string>({field: INIT_ID})
 
     // TESTS with empty mutation history
     it(`INIT should setId

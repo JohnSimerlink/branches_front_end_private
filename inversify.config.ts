@@ -16,7 +16,7 @@ import {
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
-    ISigmaNode,
+    ISigmaNode, ISubscribableContentUser,
     ISubscribableMutableField, ISubscribableMutableStringSet, ISubscribableTreeCore, ITree,
     radian,
     TreePropertyNames
@@ -42,6 +42,10 @@ import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/Subscri
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
+import {
+    SubscribableContentUser,
+    SubscribableContentUserArgs
+} from './app/objects/contentUserData/SubscribableContentUser';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -74,12 +78,16 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
 })
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
+myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
 myContainer.bind<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
 myContainer.bind<ISubscribableTreeCore>(TYPES.ISubscribableTree).to(SubscribableTree)
 myContainer.bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
 myContainer.bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
+myContainer.bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
 myContainer.bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
+    .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore).to(SubscribableTreeDataStore)
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
