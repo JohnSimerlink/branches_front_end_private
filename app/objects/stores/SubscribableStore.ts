@@ -29,7 +29,7 @@ class SubscribableStore<SubscribableCoreInterface>
         return this.update
     }
     public addAndSubscribeToItem(
-        {id, item}: {id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface }
+        id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface
     ) {
         if (!this.startedPublishing) {
             throw new Error('Can\'t add item until started publishing!')
