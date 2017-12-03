@@ -21,7 +21,7 @@ class SubscribableContentUserStore
     protected store: object;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
-    constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableStoreArgs){store = {}, updatesCallbacks}) {
         super({updatesCallbacks})
         this.store = store
     }
@@ -55,9 +55,9 @@ class SubscribableContentUserStore
 }
 
 @injectable()
-class SubscribableDataStoreArgs {
+class SubscribableStoreArgs {
     @inject(TYPES.Object) public store;
     @inject(TYPES.Array) public updatesCallbacks;
 }
 
-export {SubscribableDataStoreArgs, ISubscribableContentUserStore, SubscribableContentUserStore}
+export {SubscribableStoreArgs, ISubscribableContentUserStore, SubscribableContentUserStore}

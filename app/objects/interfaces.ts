@@ -284,9 +284,10 @@ interface IMutableSubscribableTreeStore
 
 interface ISubscribableTreeStore
     extends ISubscribable<IIdAndValUpdates>,
-        ICoreSubscribableStore<IIdAndValUpdates, ISubscribableTreeCore> {
+        ICoreSubscribableStore<IIdAndValUpdates, ISubscribableTreeCore> {}
 
-}
+interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdates>,
+        ICoreSubscribableStore<IIdAndValUpdates, SubscribableCoreInterface> {}
 
 type IValUpdates = any
 interface IIdAndValUpdates {
@@ -449,6 +450,7 @@ export {
     ISubscribable,
     ISubscriber,
     ISubscribableTreeStore,
+    ISubscribableStore,
 
     // tree
     ITree,

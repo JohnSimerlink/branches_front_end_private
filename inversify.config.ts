@@ -1,11 +1,10 @@
 import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
-import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
 import {
-    ISubscribableTreeStore, SubscribableDataStoreArgs,
-    SubscribableTreeStore
-} from './app/objects/stores/SubscribableTreeStore';
+    SubscribableContentUser,
+    SubscribableContentUserArgs
+} from './app/objects/contentUserData/SubscribableContentUser';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
@@ -36,16 +35,17 @@ import {
     SigmaNodeHandlerSubscriber,
     SigmaNodeHandlerSubscriberArgs
 } from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
+import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
+import {
+    ISubscribableTreeStore, SubscribableStoreArgs,
+    SubscribableTreeStore
+} from './app/objects/stores/SubscribableTreeStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
-import {
-    SubscribableContentUser,
-    SubscribableContentUserArgs
-} from './app/objects/contentUserData/SubscribableContentUser';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -112,7 +112,7 @@ myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
-myContainer.bind<SubscribableDataStoreArgs>(TYPES.SubscribableDataStoreArgs).to(SubscribableDataStoreArgs)
+myContainer.bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
 myContainer.bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     .toConstantValue((updates: IDetailedUpdates) => void 0)
 myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
