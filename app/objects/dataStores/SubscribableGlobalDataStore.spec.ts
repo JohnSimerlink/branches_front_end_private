@@ -3,14 +3,14 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
-import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 
 describe('ISubscribableGlobalDataStore', () => {
     it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () => {
