@@ -282,12 +282,11 @@ interface IMutableSubscribableTreeStore
     extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
 }
 
-interface ISubscribableTreeStore
-    extends ISubscribable<IIdAndValUpdates>,
-        ICoreSubscribableStore<IIdAndValUpdates, ISubscribableTreeCore> {}
-
 interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdates>,
         ICoreSubscribableStore<IIdAndValUpdates, SubscribableCoreInterface> {}
+
+interface ISubscribableTreeStore
+    extends ISubscribableStore<ISubscribableTreeCore> {}
 
 type IValUpdates = any
 interface IIdAndValUpdates {

@@ -6,7 +6,7 @@ import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
     FieldMutationTypes, IMutableSubscribableTree, IProppedDatedMutation, ISubscribableGlobalStore,
     ISubscribableMutableField,
-    ISubscribableMutableStringSet,
+    ISubscribableMutableStringSet, ISubscribableStore, ISubscribableTreeCore, ISubscribableTreeStore,
     TreePropertyNames
 } from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
@@ -15,7 +15,8 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
-import {ISubscribableTreeStore, SubscribableTreeStore} from './SubscribableTreeStore';
+// import {ISubscribableTreeStore, SubscribableTreeStore} from './SubscribableTreeStore';
+import {SubscribableStore} from './SubscribableStore';
 
 describe('ISubscribableGlobalStore', () => {
     it(' calling startPublishing on GlobalStore, should call onUpdate on each of the component Stores', () => {
@@ -27,7 +28,14 @@ describe('ISubscribableGlobalStore', () => {
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
         tree.startPublishing()
-        const treeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
+        /* const treeStore = myContainer.get<ISubscribableStore<ISubscribableTreeCore>>
+        (TYPES.ISubscribableStore_ISubscribableTreeCore)
+        */
+        // TODO: ^^ The above dependency injection fails . . . So I am using constructor manually
+        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>({
+            store: {},
+            updatesCallbacks: []
+        })
         const globalStore = new SubscribableGlobalStore(
             {
                 treeStore,
@@ -60,7 +68,7 @@ describe('ISubscribableGlobalStore', () => {
         TODO: ^^^^ Using DI for treeStore causes some sort of error where
          a sigmaNodeHandlerSubscriber tries to subscribe to the tree store
          . . . how does that even happen?? how is there knowledge of a sigmaNodeHandlerSubscriber store? */
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
+        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>( {
             store: [],
             updatesCallbacks: []
         })
@@ -116,8 +124,8 @@ describe('ISubscribableGlobalStore', () => {
         parentId,
         updatesCallbacks: [],
     })
-    const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
-        store: [],
+    const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>( {
+        store: {},
         updatesCallbacks: []
     })
     const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(

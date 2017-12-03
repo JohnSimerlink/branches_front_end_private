@@ -34,6 +34,7 @@ const TYPES = {
     ISubscribableMutableProficiency: Symbol('ISubscribableMutableProficiency'),
     ISubscribableMutableString: Symbol('ISubscribableMutableString'),
     ISubscribableMutableStringSet: Symbol('ISubscribableMutableStringSet'),
+    ISubscribableStore_ISubscribableTreeCore: Symbol('ISubscribableStore_ISubscribableTreeCore'),
     ISubscribableTree: Symbol('ISubscribableTreeCore'),
     ISubscribableTreeStore: Symbol('ISubscribableTreeStore'),
     ITree: Symbol('ITree'),
