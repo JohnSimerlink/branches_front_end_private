@@ -1,9 +1,9 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer, ISubscribableMutableField, ISubscribableMutableStringSet} from '../interfaces';
+import {IDatabaseSyncer, ISubscribableMutableField} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
-import {TYPES} from '../types';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {TYPES} from '../types';
 
 @injectable()
 class DBSubscriberToContentUser implements IDBSubscriber {
