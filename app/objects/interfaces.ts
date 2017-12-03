@@ -312,6 +312,9 @@ enum TreePropertyNames {
 
 interface ISubscribableTree extends ISubscribable<IValUpdates>, ISubscribableTreeCore {}
 
+interface IMutableSubscribableTree
+    extends ISubscribableTree, IMutable<IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {}
+
 // treeUserData
 
 interface ITreeUserData {
@@ -417,6 +420,7 @@ export {
     TreeMutationType,
     TreePropertyNames,
     ISubscribableTree,
+    IMutableSubscribableTree,
 
     // treeUserData
     ITreeUserData,

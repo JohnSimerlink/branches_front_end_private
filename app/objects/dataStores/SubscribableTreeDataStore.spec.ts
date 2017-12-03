@@ -7,8 +7,9 @@ import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
+import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 
-describe('SubscribableTreeDataStore > addAndSubscribeToItem', () => {
+describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
     it('An update in a member tree should be published to a subscriber of the tree data store', () => {
         /* TODO: Note this is more of an integration test than a true unit test.
         It might be that some of these modules are designed poorly, being the reason
@@ -19,7 +20,7 @@ describe('SubscribableTreeDataStore > addAndSubscribeToItem', () => {
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
-        const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
         tree.startPublishing()
