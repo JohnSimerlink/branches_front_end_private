@@ -3,26 +3,26 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, IMutableSubscribableTreeDataStore,
-    ISubscribableGlobalDataStore, ITypeAndIdAndValUpdates, ObjectDataTypes
+    IIdAndValUpdates, IMutableSubscribableTreeStore,
+    ISubscribableGlobalStore, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
 @injectable()
-class SubscribableGlobalDataStore extends SubscribableCore<ITypeAndIdAndValUpdates>
-implements ISubscribableGlobalDataStore {
+class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUpdates>
+implements ISubscribableGlobalStore {
     private update: ITypeAndIdAndValUpdates;
     protected callbackArguments(): ITypeAndIdAndValUpdates {
         // log('globaldatastore callback arguments called')
         return this.update
     }
 
-    protected treeStore: IMutableSubscribableTreeDataStore;
-    constructor(@inject(TYPES.SubscribableGlobalDataStoreArgs){treeStore, updatesCallbacks = []}) {
+    protected treeStore: IMutableSubscribableTreeStore;
+    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){treeStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.treeStore = treeStore
-        // log('subscribableGlobalDataStore called')
+        // log('subscribableGlobalStore called')
     }
     public startPublishing() {
         const me = this
@@ -38,9 +38,9 @@ implements ISubscribableGlobalDataStore {
 }
 
 @injectable()
-class GlobalDataStoreArgs {
+class GlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.ISubscribableTreeDataStore) public treeStore
+    @inject(TYPES.ISubscribableTreeStore) public treeStore
 }
 
-export {SubscribableGlobalDataStore, GlobalDataStoreArgs, ISubscribableGlobalDataStore}
+export {SubscribableGlobalStore, GlobalStoreArgs, ISubscribableGlobalStore}

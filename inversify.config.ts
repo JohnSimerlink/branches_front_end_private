@@ -1,11 +1,11 @@
 import {Container} from 'inversify'
 import 'reflect-metadata'
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
-import {GlobalDataStoreArgs, SubscribableGlobalDataStore} from './app/objects/dataStores/SubscribableGlobalDataStore';
+import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
 import {
-    ISubscribableTreeDataStore, SubscribableDataStoreArgs,
-    SubscribableTreeDataStore
-} from './app/objects/dataStores/SubscribableTreeDataStore';
+    ISubscribableTreeStore, SubscribableDataStoreArgs,
+    SubscribableTreeStore
+} from './app/objects/stores/SubscribableTreeStore';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
@@ -21,7 +21,7 @@ import {
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
-import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalDataStore} from './app/objects/interfaces';
+import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalStore} from './app/objects/interfaces';
 import {IDatedMutation} from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
@@ -55,7 +55,7 @@ myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserD
 myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
-myContainer.bind<GlobalDataStoreArgs>(TYPES.SubscribableGlobalDataStoreArgs).to(GlobalDataStoreArgs)
+myContainer.bind<GlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(GlobalStoreArgs)
 myContainer.bind<ITree>(TYPES.ITree).to(SubscribableTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
@@ -79,7 +79,7 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
-myContainer.bind<ISubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore).to(SubscribableGlobalDataStore)
+myContainer.bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
 myContainer.bind<ISubscribableTreeCore>(TYPES.ISubscribableTree).to(SubscribableTree)
 myContainer.bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
 myContainer.bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
@@ -89,7 +89,7 @@ myContainer.bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableSt
 myContainer.bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
-myContainer.bind<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore).to(SubscribableTreeDataStore)
+myContainer.bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
 myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
 myContainer.bind<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber).to(SigmaNodeHandlerSubscriber)

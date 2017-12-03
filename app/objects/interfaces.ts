@@ -1,6 +1,6 @@
 // tslint:disable no-empty-interface
 import {CONTENT_TYPES} from './contentItem/ContentTypes';
-import {ISubscribableTreeDataStore} from './dataStores/SubscribableTreeDataStore';
+import {ISubscribableTreeStore} from './stores/SubscribableTreeStore';
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
 
@@ -67,25 +67,25 @@ interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
-// dataStores
+// stores
 
-interface IMutableSubscribableGlobalDataStore
-    extends ISubscribableGlobalDataStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
+interface IMutableSubscribableGlobalStore
+    extends ISubscribableGlobalStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
 }
 
-interface ISubscribableGlobalDataStore extends ISubscribable<ITypeAndIdAndValUpdates>,
+interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,
     IDescendantPublisher {
 }
 
-interface ICoreSubscribableDataStore<UpdatesType, ObjectType> extends IDescendantPublisher {
+interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescendantPublisher {
     addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
 }
 interface ISubscribableDataStore<UpdatesType, ObjectType>
-    extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableDataStore<UpdatesType, ObjectType> {
+    extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableStore<UpdatesType, ObjectType> {
 }
 
-interface IMutableSubscribableTreeDataStore
-    extends ISubscribableTreeDataStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
+interface IMutableSubscribableTreeStore
+    extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
 }
 
 type IValUpdates = any
@@ -366,13 +366,13 @@ export {
     ISubscribableContentUserCore,
     ISubscribableContentUser,
 
-    // dataStore
-    ISubscribableGlobalDataStore,
-    ICoreSubscribableDataStore,
-    IMutableSubscribableGlobalDataStore,
+    // stores
+    ISubscribableGlobalStore,
+    ICoreSubscribableStore,
+    IMutableSubscribableGlobalStore,
     IUndoableMutable,
     ISubscribableDataStore,
-    IMutableSubscribableTreeDataStore,
+    IMutableSubscribableTreeStore,
 
     // dbSync
     IFirebaseRef,

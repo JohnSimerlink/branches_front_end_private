@@ -6,10 +6,10 @@ import {FieldMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../i
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {TYPES} from '../types';
-import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
+import {ISubscribableTreeStore, SubscribableTreeStore} from './SubscribableTreeStore';
 
 describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
-    it('An update in a member tree should be published to a subscriber of the tree data store', () => {
+    it('An update in a member tree should be published to a subscriber of the tree data stores', () => {
         /* TODO: Note this is more of an integration test than a true unit test.
         It might be that some of these modules are designed poorly, being the reason
          why I couldn't find an easy way to do a pure unit test.
@@ -22,8 +22,11 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-        tree.startPublishing()
-        const treeStore = myContainer.get<ISubscribableTreeDataStore>(TYPES.ISubscribableTreeDataStore)
+        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
+            store: {},
+            updatesCallbacks: []
+        })
+        // const treeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
         const callback1 = sinon.spy()
         const callback2 = sinon.spy()
 
@@ -32,6 +35,7 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
         treeStore.startPublishing()
         /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
          */
+        tree.startPublishing()
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
 
         const sampleMutation = myContainer.get<
@@ -41,15 +45,9 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
             >
         >(TYPES.IProppedDatedMutation)
 
-        // try {
         tree.addMutation(sampleMutation)
 
         const treeNewVal = tree.val()
-        // } catch (err) {
-        //     expect(err).to.equal(5)
-        // }
-
-        // expect(true).to.equal(false)
         expect(callback1.callCount).to.equal(1)
         expect(callback1.getCall(0).args[0].id).to.equal(TREE_ID)
         expect(callback1.getCall(0).args[0].val).to.deep.equal(treeNewVal)

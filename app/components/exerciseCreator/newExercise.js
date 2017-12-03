@@ -29,7 +29,7 @@ export default {
             this.selectedItemIds.push(this.contentItemId)
         }
         this.tags = null
-        //TODO: replace with Vuex/redux store . . . or maybe a routing system
+        //TODO: replace with Vuex/redux stores . . . or maybe a routing system
         if (this.exerciseToReplaceId){
             const exercise = await Exercises.get(this.exerciseToReplaceId)
             me.question = exercise.question

@@ -19,7 +19,7 @@ export default {
 
 
         PubSub.subscribe('userId', () => {
-            //TODO: get user object through a Vuex or Redux store. rather than calling Users.get every time
+            //TODO: get user object through a Vuex or Redux stores. rather than calling Users.get every time
             Users.get(user.get()).then(user => {
                 //if (!user) return;
                 self.items = user.items
@@ -69,7 +69,7 @@ export default {
         treeId (){
             const id = this.$store.state.currentStudyingCategoryTreeId
             return id
-            // return this.$store.state.currentStudyingCategoryTreeId
+            // return this.$stores.state.currentStudyingCategoryTreeId
         },
         studying(){
             // return true

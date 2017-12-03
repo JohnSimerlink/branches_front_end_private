@@ -275,7 +275,7 @@
    * finally appends it to the container.
    *
    * @param  {string} tag The label tag.
-   * @param  {string} id  The id of the element (to store it in "domElements").
+   * @param  {string} id  The id of the element (to stores it in "domElements").
    */
   sigma.renderers.svg.prototype.initDOM = function(tag) {
     var dom = document.createElementNS(this.settings('xmlns'), tag),

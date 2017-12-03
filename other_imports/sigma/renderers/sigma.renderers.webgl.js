@@ -498,7 +498,7 @@
    * finally appends it to the container.
    *
    * @param  {string}   tag   The label tag.
-   * @param  {string}   id    The id of the element (to store it in
+   * @param  {string}   id    The id of the element (to stores it in
    *                          "domElements").
    * @param  {?boolean} webgl Will init the WebGL context if true.
    */

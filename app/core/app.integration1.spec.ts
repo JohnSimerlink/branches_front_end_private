@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import {myContainer} from '../../inversify.config';
 import {
-    IApp, IMutableSubscribableGlobalDataStore, ISigmaNode, ISigmaNodeHandler,
+    IApp, IMutableSubscribableGlobalStore, ISigmaNode, ISigmaNodeHandler,
     ISigmaNodeHandlerSubscriber
 } from '../objects/interfaces';
 import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
@@ -12,7 +12,7 @@ import {App} from './app';
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
-    it('Adding a mutation into the global store for a content user data,' +
+    it('Adding a mutation into the global stores for a content user data,' +
         ' should update the sigma node instance for all sigma nodes containing that content id', () => {
         const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         const sigmaNode2 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
@@ -22,9 +22,9 @@ describe('App integration test 1', () => {
         const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
         const sigmaNodeHandlerSubscriber: ISigmaNodeHandlerSubscriber
             = new SigmaNodeHandlerSubscriber({sigmaNodeHandler})
-        const dataStore: IMutableSubscribableGlobalDataStore
-            = myContainer.get<IMutableSubscribableGlobalDataStore>(TYPES.ISubscribableGlobalDataStore)
-        const app: IApp = new App({sigmaNodeHandlerSubscriber, dataStore})
+        const store: IMutableSubscribableGlobalStore
+            = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)
+        const app: IApp = new App({sigmaNodeHandlerSubscriber, store})
 
     })
 })

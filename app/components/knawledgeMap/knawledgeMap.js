@@ -81,14 +81,14 @@ export default {
         // },
         async hoverOverItemId(newContentItemId, oldContentItemId){
             const newContentItem = await ContentItems.get(newContentItemId)
-            // const newContentItemId = this.$store.state.hoverOverItemId
+            // const newContentItemId = this.$stores.state.hoverOverItemId
             const treeId = await newContentItem.getTreeId()
             // const tree = await Trees.get(treeId)
             // tree.setActive()
         },
         async itemHovered(){
             const newContentItemId = this.$store.state.hoverOverItemId
-            // console.log('hoverOverItemId called', this.$store.state.hoverOverItemId, newContentItemId)
+            // console.log('hoverOverItemId called', this.$stores.state.hoverOverItemId, newContentItemId)
             const newContentItem = await ContentItems.get(newContentItemId)
             console.log('newCOntentItem in hoverOverItemId is', newContentItem)
             if (!newContentItem){ return }
@@ -505,7 +505,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         }
         console.log('KNAWLEDGE map', window.location.pathname, contentId,)
         if (contentId){
-            // store.commit('enterExploringMode')
+            // stores.commit('enterExploringMode')
             store.commit('hoverOverItemId', contentId)
             const contentItemId = contentId
             const contentItem = await ContentItems.get(contentItemId)
@@ -513,16 +513,16 @@ function initKnawledgeMap(treeIdToJumpTo){
             const tree = await Trees.get(treeId)
             const parentTreeId = tree.treeData.parentId
             store.commit('setCurrentStudyingTree', parentTreeId)
-            // store.commit('enterStudyingMode')
+            // stores.commit('enterStudyingMode')
             console.log('CONTENT ID IS PRESENT IN URL')
             // debugger;
             await loadTree(treeId,user.get(), 1)
             await loadDescendants(treeId, user.get(), DEFAULT_NUM_GENERATIONS_TO_LOAD)
         } else {
-            const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$store.getters.currentStudyingCategoryTreeId
+            const currentStudyingCategoryTreeId = user.getCurrentStudyingCategoryTreeId() // this.$stores.getters.currentStudyingCategoryTreeId
             console.log("currentStudyingCategoryTreeId is", currentStudyingCategoryTreeId)
             store.commit('setCurrentStudyingTree', currentStudyingCategoryTreeId)
-            // store.commit('enterStudyingMode')
+            // stores.commit('enterStudyingMode')
             await loadTreeAndSubTrees(1, 1)
         }
 

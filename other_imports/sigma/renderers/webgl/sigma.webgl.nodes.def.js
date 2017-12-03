@@ -6,7 +6,7 @@
   /**
    * This node renderer will display nodes as discs, shaped in triangles with
    * the gl.TRIANGLES display mode. So, to be more precise, to draw one node,
-   * it will store three times the center of node, with the color and the size,
+   * it will stores three times the center of node, with the color and the size,
    * and an angle indicating which "corner" of the triangle to draw.
    *
    * The fragment shader does not deal with anti-aliasing, so make sure that
