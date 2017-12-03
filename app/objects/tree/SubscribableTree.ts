@@ -14,8 +14,8 @@ import {TYPES} from '../types'
 class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
 
     // TODO: should the below three objects be private?
-    public contentId: ISubscribableMutableField;
-    public parentId: ISubscribableMutableField;
+    public contentId: ISubscribableMutableField<string>;
+    public parentId: ISubscribableMutableField<string>;
     public children: ISubscribableMutableStringSet;
     private id: string;
 
@@ -51,8 +51,8 @@ class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribabl
 class SubscribableTreeArgs {
     @inject(TYPES.Array) public updatesCallbacks
     @inject(TYPES.String) public id
-    @inject(TYPES.ISubscribableMutableId) public contentId
-    @inject(TYPES.ISubscribableMutableId) public parentId
+    @inject(TYPES.ISubscribableMutableString) public contentId
+    @inject(TYPES.ISubscribableMutableString) public parentId
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 

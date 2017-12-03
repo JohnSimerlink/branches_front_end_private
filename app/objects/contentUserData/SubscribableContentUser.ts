@@ -1,59 +1,60 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-// import {inject, injectable} from 'inversify';
-// import {
-//     ISubscribableMutableField,
-//     ISubscribableMutableStringSet, ISubscribableTree,
-//     ITreeDataWithoutId,
-//     IValUpdates,
-// } from '../interfaces';
-// import {Subscribable} from '../subscribable/Subscribable';
-// import {TYPES} from '../types'
-//
-// @injectable()
-// class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableTree {
-//
-//     // TODO: should the below three objects be private?
-//     public contentId: ISubscribableMutableField;
-//     public parentId: ISubscribableMutableField;
-//     public children: ISubscribableMutableStringSet;
-//     private id: string;
-//
-//     public getId() {
-//         return this.id
-//     }
-//     public val(): ITreeDataWithoutId {
-//         return {
-//             children: this.children.val(),
-//             contentId: this.contentId.val(),
-//             parentId: this.parentId.val(),
-//         }
-//     }
-//     constructor(@inject(TYPES.SubscribableTreeArgs) {updatesCallbacks, id, contentId, parentId, children}) {
-//         super({updatesCallbacks})
-//         this.id = id
-//         this.contentId = contentId
-//         this.parentId = parentId
-//         this.children = children
-//     }
-//     protected callbackArguments(): IValUpdates {
-//         return this.val()
-//     }
-//     public startPublishing() {
-//         const boundCallCallbacks = this.callCallbacks.bind(this)
-//         this.children.onUpdate(boundCallCallbacks)
-//         this.contentId.onUpdate(boundCallCallbacks)
-//         this.parentId.onUpdate(boundCallCallbacks)
-//     }
-// }
-//
-// @injectable()
-// class SubscribableTreeArgs {
-//     @inject(TYPES.Array) public updatesCallbacks
-//     @inject(TYPES.String) public id
-//     @inject(TYPES.ISubscribableMutableId) public contentId
-//     @inject(TYPES.ISubscribableMutableId) public parentId
-//     @inject(TYPES.ISubscribableMutableStringSet) public children
-// }
-//
-// export {ISubscribableTree, SubscribableTreeArgs}
+import {inject, injectable} from 'inversify';
+import {
+    IContentUserData,
+    ISubscribableContentUser,
+    ISubscribableMutableField,
+    IValUpdates,
+} from '../interfaces';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {Subscribable} from '../subscribable/Subscribable';
+import {TYPES} from '../types'
+
+@injectable()
+class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
+    public overdue: ISubscribableMutableField<boolean>;
+    public timer: ISubscribableMutableField<number>;
+    public proficiency: ISubscribableMutableField<PROFICIENCIES>;
+    public lastRecordedStrength: ISubscribableMutableField<number>;
+
+    // TODO: should the below three objects be private?
+    public val(): IContentUserData {
+        return {
+            lastRecordedStrength: this.lastRecordedStrength.val(),
+            overdue: this.overdue.val(),
+            proficiency: this.proficiency.val(),
+            timer: this.timer.val(),
+        }
+    }
+    constructor(@inject(TYPES.SubscribableContentUser) {
+        updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
+    }) {
+        super({updatesCallbacks})
+        this.overdue = overdue
+        this.proficiency = proficiency
+        this.timer = timer
+        this.lastRecordedStrength = lastRecordedStrength
+    }
+    protected callbackArguments(): IValUpdates {
+        return this.val()
+    }
+    public startPublishing() {
+        const boundCallCallbacks = this.callCallbacks.bind(this)
+        this.overdue.onUpdate(boundCallCallbacks)
+        this.proficiency.onUpdate(boundCallCallbacks)
+        this.timer.onUpdate(boundCallCallbacks)
+        this.lastRecordedStrength.onUpdate(boundCallCallbacks)
+    }
+}
+
+@injectable()
+class SubscribableContentUserArgs {
+    @inject(TYPES.Array) public updatesCallbacks
+    @inject(TYPES.ISubscribableMutableField) public lastRecordedStrength: number
+    @inject(TYPES.ISubscribableMutableField) public overdue: boolean
+    @inject(TYPES.ISubscribableMutableField) public proficiency: PROFICIENCIES
+    @inject(TYPES.ISubscribableMutableField) public timer: number
+}
+
+export {SubscribableContentUser, SubscribableContentUserArgs}
