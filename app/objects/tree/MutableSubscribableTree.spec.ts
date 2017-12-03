@@ -1,13 +1,14 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {TREE_ID3} from '../../testHelpers/testHelpers';
+import {CONTENT_ID, CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
 import {SubscribableMutableId} from '../id/SubscribableMutableId';
 import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
+import {Tree} from './tree';
 
 describe('SubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
@@ -54,24 +55,33 @@ describe('SubscribableTree', () => {
         expect(callback.callCount).to.equal(0)
     })
     it('addMutation ' +
-        ' should call addMutation on the appropriate descendant property', () => {
+        ' should call addMutation on the appropriate descendant property' +
+        'and that mutation called on the descendant property should no longer have the propertyName on it', () => {
         const contentId = new SubscribableMutableId()
         const parentId = new SubscribableMutableId()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = TREE_ID3
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-        const parentIdAddMutationSpy = sinon.spy(parentId, 'addMutation')
+        const contentIdAddMutationSpy = sinon.spy(contentId, 'addMutation')
 
         // tslint:disable variable-name
-        const sampleSetParentMutationTREE_ID3 =
-            myContainer.get<
-                IProppedDatedMutation<
-                    IdMutationTypes,
-                    TreePropertyNames
-                    >
-                >
-            (TYPES.IProppedDatedMutation)
-        tree.addMutation(sampleSetParentMutationTREE_ID3)
-        expect(parentIdAddMutationSpy.callCount).to.equal(1)
+        // TODO: create that mu
+        const mutationWithoutPropName: IDatedMutation<IdMutationTypes> = {
+            data: {
+                id: CONTENT_ID3,
+            },
+            timestamp: Date.now(),
+            type: IdMutationTypes.SET
+        }
+        const mutation: IProppedDatedMutation<IdMutationTypes, TreePropertyNames> = {
+            ...mutationWithoutPropName,
+            propertyName: TreePropertyNames.CONTENT_ID,
+        }
+
+        tree.addMutation(mutation)
+        expect(contentIdAddMutationSpy.callCount).to.equal(1)
+        const calledWith = contentIdAddMutationSpy.getCall(0).args[0]
+        expect(calledWith).to.deep.equal(mutationWithoutPropName)
+
     })
 })
