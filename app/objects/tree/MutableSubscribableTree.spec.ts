@@ -3,14 +3,13 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
-import {IDatedMutation, FieldMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {FieldMutationTypes, IDatedMutation, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
-import {Tree} from './tree';
 
-describe('SubscribableTree', () => {
+describe('MutableSubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
         ' should publish an update of the entire object\'s value '
         + ' after startPublishing has been called', () => {
