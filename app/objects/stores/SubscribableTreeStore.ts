@@ -21,7 +21,7 @@ class SubscribableTreeStore
     protected store: object;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
-    constructor(@inject(TYPES.SubscribableDataStoreArgs){store = {}, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableStoreArgs){store = {}, updatesCallbacks}) {
         super({updatesCallbacks})
         this.store = store
     }
@@ -29,7 +29,7 @@ class SubscribableTreeStore
         return this.update
     }
     public addAndSubscribeToItem(
-        {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore }
+        id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore
         ) {
         if (!this.startedPublishing) {
             throw new Error('Can\'t add item until started publishing!')
@@ -55,9 +55,9 @@ class SubscribableTreeStore
 }
 
 @injectable()
-class SubscribableDataStoreArgs {
+class SubscribableStoreArgs {
     @inject(TYPES.Object) public store;
     @inject(TYPES.Array) public updatesCallbacks;
 }
 
-export {SubscribableDataStoreArgs, ISubscribableTreeStore, SubscribableTreeStore}
+export {SubscribableStoreArgs, ISubscribableTreeStore, SubscribableTreeStore}

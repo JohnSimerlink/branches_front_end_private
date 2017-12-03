@@ -48,7 +48,7 @@ const TYPES = {
     Subscribable: Symbol('Subscribable'),
     SubscribableArgs: Symbol('SubscribableArgs'),
     SubscribableContentUserArgs: Symbol('SubscribableContentUserArgs'),
-    SubscribableDataStoreArgs: Symbol('SubscribableDataStoreArgs'),
+    SubscribableStoreArgs: Symbol('SubscribableStoreArgs'),
     SubscribableGlobalStoreArgs: Symbol('SubscribableGlobalStoreArgs'),
     SubscribableMutableFieldArgs: Symbol('ISubscribableMutableFieldArgs'),
     SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),

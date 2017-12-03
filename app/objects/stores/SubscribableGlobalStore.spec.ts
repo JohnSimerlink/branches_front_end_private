@@ -80,7 +80,7 @@ describe('ISubscribableGlobalStore', () => {
         treeStore.startPublishing()
         tree.startPublishing()
 
-        treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
+        treeStore.addAndSubscribeToItem(TREE_ID, tree)
 
         const sampleMutation = myContainer.get<
             IProppedDatedMutation<
@@ -135,7 +135,7 @@ describe('ISubscribableGlobalStore', () => {
     treeStore.startPublishing()
     tree.startPublishing()
 
-    treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
+    treeStore.addAndSubscribeToItem(TREE_ID, tree)
 
     const sampleMutation = myContainer.get<
         IProppedDatedMutation<
