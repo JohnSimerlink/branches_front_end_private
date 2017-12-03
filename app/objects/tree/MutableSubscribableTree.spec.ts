@@ -14,11 +14,11 @@ describe('SubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
         ' should publish an update of the entire object\'s value '
         + ' after startBroadcasting has been called', () => {
-        const contentId = new SubscribableMutableField()
+        const contentId = new SubscribableMutableField<string>()
         /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
          // TODO: figure out why DI puts in a bad updatesCallback!
         */
-        const parentId = new SubscribableMutableField()
+        const parentId = new SubscribableMutableField<string>()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -37,11 +37,11 @@ describe('SubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
         ' should NOT publish an update of the entire object\'s value'
         + ' before startBroadcasting has been called', () => {
-        const contentId = new SubscribableMutableField()
+        const contentId = new SubscribableMutableField<string>()
         /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
          // TODO: figure out why DI puts in a bad updatesCallback!
         */
-        const parentId = new SubscribableMutableField()
+        const parentId = new SubscribableMutableField<string>()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -57,8 +57,8 @@ describe('SubscribableTree', () => {
     it('addMutation ' +
         ' should call addMutation on the appropriate descendant property' +
         'and that mutation called on the descendant property should no longer have the propertyName on it', () => {
-        const contentId = new SubscribableMutableField()
-        const parentId = new SubscribableMutableField()
+        const contentId = new SubscribableMutableField<string>()
+        const parentId = new SubscribableMutableField<string>()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = TREE_ID3
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})

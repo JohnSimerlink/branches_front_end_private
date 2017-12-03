@@ -8,8 +8,8 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 
 @injectable()
-class SubscribableMutableField extends Subscribable<IDetailedUpdates> implements IMutableField {
-    private field: any
+class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
+    private field: T
     private _mutations: Array<IDatedMutation<FieldMutationTypes>>
     constructor(@inject(TYPES.SubscribableMutableFieldArgs) {
         updatesCallbacks = [], field = null, mutations = []
@@ -22,13 +22,13 @@ class SubscribableMutableField extends Subscribable<IDetailedUpdates> implements
         this._mutations = mutations
     }
 
-    public val(): any {
+    public val(): T {
         return this.field
     }
     /* TODO: refactor this private method into another class,
      with it as a public method, and use that class internally via composition
      * That way we can test the set method in a unit test */
-    private set(field): void {
+    private set(field: T): void {
         this.field = field
         this.updates.val = field
     }
@@ -54,6 +54,7 @@ class SubscribableMutableField extends Subscribable<IDetailedUpdates> implements
 class SubscribableMutableFieldArgs {
     @inject(TYPES.Array) public updatesCallbacks = []
     @inject(TYPES.Any) public field = null
+    // TODO ^^ : Dependency inject the correct type into field dynamically
     @inject(TYPES.Array) public mutations = []
 }
 export {SubscribableMutableField, SubscribableMutableFieldArgs}
