@@ -8,7 +8,7 @@ import {SubscribableCore} from './SubscribableCore';
 class Subscribable<UpdatesType>
     extends SubscribableCore<UpdatesType>
     implements ISubscribable<UpdatesType> {
-    protected updates: {val?: object} = {}
+    protected updates: {val?: any} = {}
     protected pushes: {} = {}
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
         super({updatesCallbacks})

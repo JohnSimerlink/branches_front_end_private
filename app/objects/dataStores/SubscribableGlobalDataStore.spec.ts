@@ -14,8 +14,8 @@ import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 
 describe('ISubscribableGlobalDataStore', () => {
     it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () => {
-        const contentId = new SubscribableMutableField()
-        const parentId = new SubscribableMutableField()
+        const contentId = new SubscribableMutableField<string>()
+        const parentId = new SubscribableMutableField<string>()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -38,8 +38,8 @@ describe('ISubscribableGlobalDataStore', () => {
 
     it('After calling startBroadcasting, globalStore should publish updates'
         + ' when one of its component stores publishes an update', () => {
-        const contentId = new SubscribableMutableField()
-        const parentId = new SubscribableMutableField()
+        const contentId = new SubscribableMutableField<string>()
+        const parentId = new SubscribableMutableField<string>()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -83,8 +83,8 @@ describe('ISubscribableGlobalDataStore', () => {
     it('Before calling startBroadcasting, globalStore should NOT publish updates ' +
         ' when one of its component stores publishes an update', () => {
 
-    const contentId = new SubscribableMutableField()
-    const parentId = new SubscribableMutableField()
+    const contentId = new SubscribableMutableField<string>()
+    const parentId = new SubscribableMutableField<string>()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
     const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})

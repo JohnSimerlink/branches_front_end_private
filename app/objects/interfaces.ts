@@ -37,17 +37,18 @@ interface IContentUserData {
     lastRecordedStrength; // TODO: this might actually be an object not a simple number
 }
 interface IContentUser {
-    overdue: ISubscribableMutableField
+    overdue: ISubscribableMutableField<boolean>
 }
 
 interface ISubscribableContentUserCore extends IContentUser {
-    contentId: ISubscribableMutableField
-    parentId: ISubscribableMutableField
+    contentId: ISubscribableMutableField<string>
+    parentId: ISubscribableMutableField<string>
     children: ISubscribableMutableStringSet
+    /* TODO: I wonder if we can make ISubscribableMutableStringSet
+    into ISubscribableMutableField<Set<string>>
+    */
     val(): ITreeDataWithoutId
 }
-
-
 
 // dataStores
 
@@ -118,12 +119,12 @@ type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 enum FieldMutationTypes {
     SET
 }
-interface IField {
-    val(): any;
+interface IField<T> {
+    val(): T;
 }
-interface IMutableField extends IMutable<IDatedMutation<FieldMutationTypes>>, IField {}
+interface IMutableField<T> extends IMutable<IDatedMutation<FieldMutationTypes>>, IField<T> {}
 
-interface ISubscribableMutableField extends ISubscribable<IDetailedUpdates>, IMutableField {
+interface ISubscribableMutableField<T> extends ISubscribable<IDetailedUpdates>, IMutableField<T> {
 }
 
 // MathUtils
@@ -292,8 +293,8 @@ interface ISubscriber<UpdateObjectType> {
 // tree
 interface ITree {
     getId(): string;
-    contentId: IMutableField;
-    parentId: IMutableField;
+    contentId: IMutableField<string>;
+    parentId: IMutableField<string>;
     children: IMutableStringSet;
 }
 interface ITreeDataWithoutId {
@@ -306,8 +307,8 @@ interface ITreeData extends ITreeDataWithoutId {
 }
 
 interface ISubscribableTreeCore extends ITree {
-    contentId: ISubscribableMutableField
-    parentId: ISubscribableMutableField
+    contentId: ISubscribableMutableField<string>
+    parentId: ISubscribableMutableField<string>
     children: ISubscribableMutableStringSet
     val(): ITreeDataWithoutId
 }

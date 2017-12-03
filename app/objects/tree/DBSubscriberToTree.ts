@@ -6,8 +6,8 @@ import {TYPES} from '../types';
 
 @injectable()
 class DBSubscriberToTree implements IDBSubscriber {
-    private contentId: ISubscribableMutableField;
-    private parentId: ISubscribableMutableField;
+    private contentId: ISubscribableMutableField<string>;
+    private parentId: ISubscribableMutableField<string>;
     private children: ISubscribableMutableStringSet;
     private contentIdSyncer: IDatabaseSyncer;
     private parentIdSyncer: IDatabaseSyncer;
