@@ -2,8 +2,8 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
-import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {IDatedMutation, FieldMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
@@ -14,11 +14,11 @@ describe('SubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
         ' should publish an update of the entire object\'s value '
         + ' after startBroadcasting has been called', () => {
-        const contentId = new SubscribableMutableId()
-        /* = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
+        const contentId = new SubscribableMutableField()
+        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
          // TODO: figure out why DI puts in a bad updatesCallback!
         */
-        const parentId = new SubscribableMutableId()
+        const parentId = new SubscribableMutableField()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -27,7 +27,7 @@ describe('SubscribableTree', () => {
         const callback = sinon.spy()
         tree.onUpdate(callback)
 
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IProppedDatedMutation)
+        const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation)
         contentId.addMutation(sampleMutation)
         const newTreeDataValue = tree.val()
         const calledWith = callback.getCall(0).args[0]
@@ -37,11 +37,11 @@ describe('SubscribableTree', () => {
     it('a mutation in one of the subscribable properties' +
         ' should NOT publish an update of the entire object\'s value'
         + ' before startBroadcasting has been called', () => {
-        const contentId = new SubscribableMutableId()
-        /* = myContainer.get<ISubscribableMutableId>(TYPES.ISubscribableMutableId)
+        const contentId = new SubscribableMutableField()
+        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
          // TODO: figure out why DI puts in a bad updatesCallback!
         */
-        const parentId = new SubscribableMutableId()
+        const parentId = new SubscribableMutableField()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -49,7 +49,7 @@ describe('SubscribableTree', () => {
         const callback = sinon.spy()
         tree.onUpdate(callback)
 
-        const sampleMutation = myContainer.get<IDatedMutation<IdMutationTypes>>(TYPES.IProppedDatedMutation)
+        const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation)
         contentId.addMutation(sampleMutation)
         const newTreeDataValue = tree.val()
         expect(callback.callCount).to.equal(0)
@@ -57,8 +57,8 @@ describe('SubscribableTree', () => {
     it('addMutation ' +
         ' should call addMutation on the appropriate descendant property' +
         'and that mutation called on the descendant property should no longer have the propertyName on it', () => {
-        const contentId = new SubscribableMutableId()
-        const parentId = new SubscribableMutableId()
+        const contentId = new SubscribableMutableField()
+        const parentId = new SubscribableMutableField()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = TREE_ID3
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -66,14 +66,14 @@ describe('SubscribableTree', () => {
 
         // tslint:disable variable-name
         // TODO: create that mu
-        const mutationWithoutPropName: IDatedMutation<IdMutationTypes> = {
+        const mutationWithoutPropName: IDatedMutation<FieldMutationTypes> = {
             data: {
                 id: CONTENT_ID3,
             },
             timestamp: Date.now(),
-            type: IdMutationTypes.SET
+            type: FieldMutationTypes.SET
         }
-        const mutation: IProppedDatedMutation<IdMutationTypes, TreePropertyNames> = {
+        const mutation: IProppedDatedMutation<FieldMutationTypes, TreePropertyNames> = {
             ...mutationWithoutPropName,
             propertyName: TreePropertyNames.CONTENT_ID,
         }

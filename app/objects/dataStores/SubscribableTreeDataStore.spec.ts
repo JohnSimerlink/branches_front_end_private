@@ -1,8 +1,8 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IDatedMutation, IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {IDatedMutation, FieldMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
@@ -16,8 +16,8 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
          why I couldn't find an easy way to do a pure unit test.
          e.g. rather than just triggering an update directly on tree, I had to do it indirectly by adding a mutation
          */
-        const contentId = new SubscribableMutableId()
-        const parentId = new SubscribableMutableId()
+        const contentId = new SubscribableMutableField()
+        const parentId = new SubscribableMutableField()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -34,7 +34,7 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
 
         const sampleMutation = myContainer.get<
             IProppedDatedMutation<
-                IdMutationTypes,
+                FieldMutationTypes,
                 TreePropertyNames
             >
         >(TYPES.IProppedDatedMutation)

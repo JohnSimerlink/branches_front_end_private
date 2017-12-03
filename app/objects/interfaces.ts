@@ -36,6 +36,18 @@ interface IContentUserData {
     proficiency: PROFICIENCIES;
     lastRecordedStrength; // TODO: this might actually be an object not a simple number
 }
+interface IContentUser {
+    overdue: ISubscribableMutableField
+}
+
+interface ISubscribableContentUserCore extends IContentUser {
+    contentId: ISubscribableMutableField
+    parentId: ISubscribableMutableField
+    children: ISubscribableMutableStringSet
+    val(): ITreeDataWithoutId
+}
+
+
 
 // dataStores
 
@@ -101,17 +113,17 @@ interface IPushable {
 
 type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 
-// id
+// field
 
-enum IdMutationTypes {
+enum FieldMutationTypes {
     SET
 }
-interface IId {
-    val();
+interface IField {
+    val(): any;
 }
-interface IMutableId extends IMutable<IDatedMutation<IdMutationTypes>>, IId {}
+interface IMutableField extends IMutable<IDatedMutation<FieldMutationTypes>>, IField {}
 
-interface ISubscribableMutableId extends ISubscribable<IDetailedUpdates>, IMutableId {
+interface ISubscribableMutableField extends ISubscribable<IDetailedUpdates>, IMutableField {
 }
 
 // MathUtils
@@ -174,7 +186,7 @@ enum TreeParentMutationTypes {
     SET_ID
 }
 
-type TreePropertyMutationTypes = SetMutationTypes | IdMutationTypes
+type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
 
 enum ObjectDataTypes {
@@ -280,8 +292,8 @@ interface ISubscriber<UpdateObjectType> {
 // tree
 interface ITree {
     getId(): string;
-    contentId: IMutableId;
-    parentId: IMutableId;
+    contentId: IMutableField;
+    parentId: IMutableField;
     children: IMutableStringSet;
 }
 interface ITreeDataWithoutId {
@@ -294,8 +306,8 @@ interface ITreeData extends ITreeDataWithoutId {
 }
 
 interface ISubscribableTreeCore extends ITree {
-    contentId: ISubscribableMutableId
-    parentId: ISubscribableMutableId
+    contentId: ISubscribableMutableField
+    parentId: ISubscribableMutableField
     children: ISubscribableMutableStringSet
     val(): ITreeDataWithoutId
 }
@@ -351,11 +363,11 @@ export {
     IDBSubscriber,
     ISaveUpdatesToDBFunction,
 
-    // id
-    IdMutationTypes,
-    IId,
-    IMutableId,
-    ISubscribableMutableId,
+    // field
+    FieldMutationTypes,
+    IField,
+    IMutableField,
+    ISubscribableMutableField,
 
     // MathUtils
     radian,

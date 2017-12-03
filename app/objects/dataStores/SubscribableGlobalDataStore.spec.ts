@@ -2,8 +2,8 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
-import {SubscribableMutableId} from '../id/SubscribableMutableId';
-import {IdMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {FieldMutationTypes, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
@@ -14,8 +14,8 @@ import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
 
 describe('ISubscribableGlobalDataStore', () => {
     it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () => {
-        const contentId = new SubscribableMutableId()
-        const parentId = new SubscribableMutableId()
+        const contentId = new SubscribableMutableField()
+        const parentId = new SubscribableMutableField()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -38,8 +38,8 @@ describe('ISubscribableGlobalDataStore', () => {
 
     it('After calling startBroadcasting, globalStore should publish updates'
         + ' when one of its component stores publishes an update', () => {
-        const contentId = new SubscribableMutableId()
-        const parentId = new SubscribableMutableId()
+        const contentId = new SubscribableMutableField()
+        const parentId = new SubscribableMutableField()
         const children = new SubscribableMutableStringSet()
         const TREE_ID = 'efa123'
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -61,7 +61,7 @@ describe('ISubscribableGlobalDataStore', () => {
         treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})
         const sampleMutation = myContainer.get<
             IProppedDatedMutation<
-                IdMutationTypes,
+                FieldMutationTypes,
                 TreePropertyNames
             >
         >(TYPES.IProppedDatedMutation)
@@ -83,8 +83,8 @@ describe('ISubscribableGlobalDataStore', () => {
     it('Before calling startBroadcasting, globalStore should NOT publish updates ' +
         ' when one of its component stores publishes an update', () => {
 
-    const contentId = new SubscribableMutableId()
-    const parentId = new SubscribableMutableId()
+    const contentId = new SubscribableMutableField()
+    const parentId = new SubscribableMutableField()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
     const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -107,7 +107,7 @@ describe('ISubscribableGlobalDataStore', () => {
 
     const sampleMutation = myContainer.get<
         IProppedDatedMutation<
-            IdMutationTypes,
+            FieldMutationTypes,
             TreePropertyNames
             >
         >(TYPES.IProppedDatedMutation)
