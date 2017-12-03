@@ -2,8 +2,8 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    IDatedMutation,
-    FieldMutationTypes, IMutableSubscribableTree,
+    FieldMutationTypes,
+    IDatedMutation, IMutableSubscribableTree,
     IProppedDatedMutation, ISubscribableTree,
     SetMutationTypes,
     TreePropertyMutationTypes, TreePropertyNames
@@ -30,8 +30,9 @@ class MutableSubscribableTree extends SubscribableTree implements IMutableSubscr
         }
         switch (propertyName) {
             case TreePropertyNames.CONTENT_ID:
-            case TreePropertyNames.PARENT_ID:
                 this.contentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case TreePropertyNames.PARENT_ID:
+                this.parentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
             case TreePropertyNames.CHILDREN:
                 this.children.addMutation(propertyMutation as IDatedMutation<SetMutationTypes>)
@@ -58,4 +59,4 @@ class SubscribableTreeArgs {
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
-export {ISubscribableTree, MutableSubscribableTree, SubscribableTreeArgs}
+export {MutableSubscribableTree}

@@ -357,7 +357,7 @@ export {
     IContentData,
     IContentItem,
 
-    // contentUserData
+    // contentUser
     ContentUserPropertyNames,
     IContentUser,
     IContentUserData,
@@ -365,14 +365,7 @@ export {
     IMutableSubscribableContentUser,
     ISubscribableContentUserCore,
     ISubscribableContentUser,
-
-    // stores
-    ISubscribableGlobalStore,
-    ICoreSubscribableStore,
-    IMutableSubscribableGlobalStore,
-    IUndoableMutable,
-    ISubscribableDataStore,
-    IMutableSubscribableTreeStore,
+    ContentUserPropertyMutationTypes,
 
     // dbSync
     IFirebaseRef,
@@ -437,6 +430,14 @@ export {
     ISubscribableMutableStringSet,
     IEditableSigmaNode,
     ISigmaNode,
+
+    // stores
+    ISubscribableGlobalStore,
+    ICoreSubscribableStore,
+    IMutableSubscribableGlobalStore,
+    IUndoableMutable,
+    ISubscribableDataStore,
+    IMutableSubscribableTreeStore,
 
     // subscribable
     updatesCallback,
