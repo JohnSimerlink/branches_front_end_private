@@ -6,13 +6,12 @@ import {
     ISubscribableMutableStringSet, ISubscribableTree,
     ITreeDataWithoutId,
     IValUpdates,
-    TreeMutationTypes,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableTree extends Subscribable<TreeMutationTypes, IValUpdates> implements ISubscribableTree {
+class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
 
     // TODO: should the below three objects be private?
     public contentId: ISubscribableMutableId;

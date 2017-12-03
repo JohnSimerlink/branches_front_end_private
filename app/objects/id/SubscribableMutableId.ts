@@ -8,7 +8,7 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 
 @injectable()
-class SubscribableMutableId extends Subscribable<IdMutationTypes, IDetailedUpdates> implements IMutableId {
+class SubscribableMutableId extends Subscribable<IDetailedUpdates> implements IMutableId {
     private id: string
     private _mutations: Array<IDatedMutation<IdMutationTypes>>
     constructor(@inject(TYPES.ISubscribableMutableIdArgs) {

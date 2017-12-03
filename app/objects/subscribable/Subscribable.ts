@@ -5,11 +5,11 @@ import {TYPES} from '../types';
 import {SubscribableCore} from './SubscribableCore';
 
 @injectable()
-class Subscribable<MutationTypes, UpdatesType>
+class Subscribable<UpdatesType>
     extends SubscribableCore<UpdatesType>
     implements ISubscribable<UpdatesType> {
     protected updates: {val?: object} = {}
-    protected pushes: {mutations?: IDatedMutation<MutationTypes>} = {}
+    protected pushes: {} = {}
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
         super({updatesCallbacks})
     }
