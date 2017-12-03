@@ -2,9 +2,9 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
-import {IIdAndValUpdates, ISubscribableTreeStore} from '../interfaces';
+import {IIdAndValUpdates} from '../interfaces';
 import {IValUpdates} from '../interfaces';
-import {ICoreSubscribableStore, ISubscribable, ISubscribableTreeCore} from '../interfaces';
+import {ICoreSubscribableStore, ISubscribable, ISubscribableContentUserCore} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
@@ -12,12 +12,12 @@ if (!Object.entries) {
     entries.shim()
 }
 
-// interface ISubscribableTreeStore extends SubscribableTreeStore {}
+interface ISubscribableContentUserStore extends SubscribableContentUserStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
 @injectable()
-class SubscribableTreeStore
+class SubscribableContentUserStore
     extends SubscribableCore<IIdAndValUpdates>
-    implements ISubscribableTreeStore {
+    implements ICoreSubscribableStore<IIdAndValUpdates, ISubscribableContentUserCore> {
     protected store: object;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
@@ -29,7 +29,7 @@ class SubscribableTreeStore
         return this.update
     }
     public addAndSubscribeToItem(
-        {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore }
+        {id, item}: {id: any, item: ISubscribable<IValUpdates> & ISubscribableContentUserCore }
         ) {
         if (!this.startedPublishing) {
             throw new Error('Can\'t add item until started publishing!')
@@ -38,7 +38,7 @@ class SubscribableTreeStore
         this.subscribeToItem(id, item)
         // throw new Error('Method not implemented.");
     }
-    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableTreeCore) {
+    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & ISubscribableContentUserCore) {
         const me = this
         item.onUpdate( (val: IValUpdates) => {
             me.update = {id, val}
@@ -60,4 +60,4 @@ class SubscribableDataStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
 }
 
-export {SubscribableDataStoreArgs, ISubscribableTreeStore, SubscribableTreeStore}
+export {SubscribableDataStoreArgs, ISubscribableContentUserStore, SubscribableContentUserStore}

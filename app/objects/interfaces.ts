@@ -1,6 +1,5 @@
 // tslint:disable no-empty-interface
 import {CONTENT_TYPES} from './contentItem/ContentTypes';
-import {ISubscribableTreeStore} from './stores/SubscribableTreeStore';
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
 
@@ -66,37 +65,6 @@ ISubscribable<IValUpdates>, ISubscribableContentUserCore, IDescendantPublisher {
 interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
-
-// stores
-
-interface IMutableSubscribableGlobalStore
-    extends ISubscribableGlobalStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
-}
-
-interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,
-    IDescendantPublisher {
-}
-
-interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescendantPublisher {
-    addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
-}
-interface ISubscribableDataStore<UpdatesType, ObjectType>
-    extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableStore<UpdatesType, ObjectType> {
-}
-
-interface IMutableSubscribableTreeStore
-    extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
-}
-
-type IValUpdates = any
-interface IIdAndValUpdates {
-    id: any,
-    val: any
-}
-interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
-    type: ObjectDataTypes
-}
-type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
 
 // dbSync
 
@@ -293,6 +261,43 @@ interface ISigmaNodeData {
     overdue: boolean;
 }
 
+// stores
+
+interface IMutableSubscribableGlobalStore
+    extends ISubscribableGlobalStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
+}
+
+interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,
+    IDescendantPublisher {
+}
+
+interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescendantPublisher {
+    addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
+}
+interface ISubscribableDataStore<UpdatesType, ObjectType>
+    extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableStore<UpdatesType, ObjectType> {
+}
+
+interface IMutableSubscribableTreeStore
+    extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
+}
+
+interface ISubscribableTreeStore
+    extends ISubscribable<IIdAndValUpdates>,
+        ICoreSubscribableStore<IIdAndValUpdates, ISubscribableTreeCore> {
+
+}
+
+type IValUpdates = any
+interface IIdAndValUpdates {
+    id: any,
+    val: any
+}
+interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
+    type: ObjectDataTypes
+}
+type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
+
 // subscribable
 type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
 
@@ -443,6 +448,7 @@ export {
     updatesCallback,
     ISubscribable,
     ISubscriber,
+    ISubscribableTreeStore,
 
     // tree
     ITree,
