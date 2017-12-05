@@ -10,6 +10,7 @@ import {
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableStore} from './SubscribableStore';
+import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 
 describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
     it('An update in a member contentUser should be published to a subscriber of the contentUser data stores', () => {
@@ -27,7 +28,7 @@ describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
         const contentUser = new MutableSubscribableContentUser({
                 lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
             })
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableStore<ISubscribableContentUserCore>({
+        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
             store: {},
             updatesCallbacks: []
         })

@@ -1,19 +1,19 @@
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {
-    ISubscribable, ISubscribableGlobalStore, ISubscribableTreeCore, ISubscribableTreeStore,
+    ISubscribable, ISubscribableTreeStore,
     ITypeAndIdAndValUpdates
 } from '../interfaces';
 import {SubscribableGlobalStore} from '../stores/SubscribableGlobalStore';
+import {SubscribableTreeStore} from '../stores/SubscribableTreeStore';
 import {TYPES} from '../types';
 import {SigmaNodeHandlerSubscriber} from './SigmaNodeHandlerSubscriber';
-import {SubscribableStore} from '../stores/SubscribableStore';
 
 describe('SigmaNodeHandlerSubscriber', () => {
     it('should subscribe to the onUpdate method of a subscribable obj passed to it', () => {
         const sigmaNodeHandlerSubscriber = myContainer.get<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber)
 
-        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>({
+        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
             store: {},
             updatesCallbacks: []
         })
