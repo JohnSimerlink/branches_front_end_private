@@ -151,7 +151,7 @@ interface IIdProppedDatedMutation<MutationTypes, PropertyNames>
 interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
     id: string
 }
-interface IGlobalDatedMutation<MutationTypes> extends IIdDatedMutation<MutationTypes> {
+interface IGlobalDatedMutation<MutationTypes> extends IIdProppedDatedMutation<MutationTypes, AllPropertyNames> {
     objectType: ObjectTypes
 }
 interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
@@ -184,6 +184,7 @@ enum TreeParentMutationTypes {
 type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 type ContentUserPropertyMutationTypes = FieldMutationTypes
 type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
+type AllPropertyMutationTypes = TreePropertyMutationTypes | ContentUserPropertyMutationTypes
 
 enum ObjectDataTypes {
     TREE_DATA,
@@ -277,7 +278,7 @@ interface ISigmaNodeData {
 // stores
 
 interface IMutableSubscribableGlobalStore
-    extends ISubscribableGlobalStore, IMutable<IGlobalDatedMutation<AllObjectMutationTypes>> {
+    extends ISubscribableGlobalStore, IMutable<IGlobalDatedMutation<AllPropertyMutationTypes>> {
 }
 
 interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,
@@ -289,7 +290,8 @@ interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescendantPub
 }
 
 interface IMutableSubscribableTreeStore
-    extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
+    extends ISubscribableTreeStore,
+        IMutable<IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
 }
 
 interface IMutableSubscribableContentUserStore
@@ -330,6 +332,8 @@ interface ISubscriber<UpdateObjectType> {
 interface IDescendantPublisher {
     startPublishing()
 }
+
+type AllPropertyNames = TreePropertyNames | ContentUserPropertyNames
 
 // tree
 interface ITree {
@@ -431,7 +435,7 @@ export {
     TreeMutationTypes,
     TreeParentMutationTypes,
     TreePropertyMutationTypes,
-    AllObjectMutationTypes,
+    AllPropertyMutationTypes,
 
     ObjectDataTypes,
     ObjectTypes,

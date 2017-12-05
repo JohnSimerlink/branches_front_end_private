@@ -1,33 +1,31 @@
 import {
-    AllObjectMutationTypes, IGlobalDatedMutation, IIdDatedMutation, IMutableSubscribableGlobalStore,
-    ObjectTypes, TreeMutationTypes
+    AllPropertyMutationTypes, IGlobalDatedMutation, IIdDatedMutation, IIdProppedDatedMutation,
+    IMutableSubscribableGlobalStore,
+    ObjectTypes, TreeMutationTypes, TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 
 class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
-    constructor({treeStore, updatesCallbacks}) {
-        super({treeStore, updatesCallbacks})
+    constructor({treeStore, contentUserStore, updatesCallbacks}) {
+        super({treeStore, contentUserStore, updatesCallbacks})
     }
-    public addMutation(mutation: IGlobalDatedMutation<AllObjectMutationTypes>) {
+    public addMutation(mutation: IGlobalDatedMutation<AllPropertyMutationTypes>) {
         switch (mutation.objectType) {
             case ObjectTypes.TREE:
-                let type = mutation.type;
-                if (! (type in TreeMutationTypes)) {
-                    throw new TypeError(type + ' not in ' + TreeMutationTypes)
-                }
-                // ^^^ TODO: use better generics to avoid the above if statement
-                type = type as TreeMutationTypes
-                const treeStoreMutation: IIdDatedMutation<TreeMutationTypes> = {
+                const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const treeStoreMutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames> = {
                     data: mutation.data,
                     id: mutation.id,
+                    propertyName,
                     timestamp: mutation.timestamp,
-                    type,
+                    type: mutation.type,
                 }
                 this.treeStore.addMutation(treeStoreMutation)
         }
     }
 
-    public mutations(): Array<IGlobalDatedMutation<AllObjectMutationTypes>> {
+    public mutations(): Array<IGlobalDatedMutation<AllPropertyMutationTypes>> {
         throw new Error('Method not implemented.');
     }
 
