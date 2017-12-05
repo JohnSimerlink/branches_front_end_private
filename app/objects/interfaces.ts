@@ -66,6 +66,12 @@ interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
+enum ContentUserMutationTypes {
+    SET_PROFICIENCY,
+    SET_OVERDUE,
+    SET_STRENGTH,
+    INCREMENT_TIMER,
+}
 // dbSync
 
 interface IDatabaseSaver {
@@ -98,7 +104,8 @@ type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 // field
 
 enum FieldMutationTypes {
-    SET
+    SET,
+    INCREMENT
 }
 interface IField<T> {
     val(): T;
@@ -137,6 +144,10 @@ interface IDatedMutation<MutationTypes> extends IMutation<MutationTypes> {
 interface IProppedDatedMutation<MutationTypes, PropertyNames> extends IDatedMutation<MutationTypes> {
     propertyName: PropertyNames
 }
+interface IIdProppedDatedMutation<MutationTypes, PropertyNames>
+    extends IIdDatedMutation<MutationTypes> {
+    propertyName: PropertyNames
+}
 interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
     id: string
 }
@@ -161,7 +172,9 @@ enum PointMutationTypes {
 
 enum TreeMutationTypes {
     ADD_CHILD,
-    REMOVE_CHILD
+    REMOVE_CHILD,
+    CHANGE_PARENT,
+    CHANGE_CONTENT
 }
 
 enum TreeParentMutationTypes {
@@ -279,6 +292,11 @@ interface IMutableSubscribableTreeStore
     extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
 }
 
+interface IMutableSubscribableContentUserStore
+    extends ISubscribableContentUserStore,
+        IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+}
+
 interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdates>,
         ICoreSubscribableStore<IIdAndValUpdates, SubscribableCoreInterface> {}
 
@@ -371,6 +389,7 @@ export {
     ISubscribableContentUserCore,
     ISubscribableContentUser,
     ContentUserPropertyMutationTypes,
+    ContentUserMutationTypes,
 
     // dbSync
     IFirebaseRef,
@@ -397,6 +416,7 @@ export {
     IActivatableMutation,
     IActivatableDatedMutation,
     IIdDatedMutation,
+    IIdProppedDatedMutation,
     IGlobalDatedMutation,
     ///
     ITypeAndIdAndValUpdates,
@@ -444,6 +464,7 @@ export {
     ISubscribableStore,
     ISubscribableTreeStore,
     IMutableSubscribableTreeStore,
+    IMutableSubscribableContentUserStore,
     ISubscribableContentUserStore,
 
     // subscribable
