@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {
-    IApp, IMutableSubscribableGlobalStore, ISigmaNodeHandlerSubscriber, ISubscriber,
+    IApp, IMutableSubscribableGlobalStore, ICanvasUI, ISubscriber,
     ITypeAndIdAndValUpdates, IUI
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';

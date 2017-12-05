@@ -9,11 +9,11 @@ import {SubscribableContentUserStore} from '../stores/contentUser/SubscribableCo
 import {SubscribableGlobalStore} from '../stores/SubscribableGlobalStore';
 import {SubscribableTreeStore} from '../stores/tree/SubscribableTreeStore';
 import {TYPES} from '../types';
-import {SigmaNodeHandlerSubscriber} from './SigmaNodeHandlerSubscriber';
+import {CanvasUI} from './CanvasUI';
 
-describe('SigmaNodeHandlerSubscriber', () => {
+describe('CanvasUI', () => {
     it('should subscribe to the onUpdate method of a subscribable obj passed to it', () => {
-        const sigmaNodeHandlerSubscriber = myContainer.get<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber)
+        const canvasUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
 
         const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
             store: {},
@@ -32,7 +32,7 @@ describe('SigmaNodeHandlerSubscriber', () => {
 
         const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate')
 
-        sigmaNodeHandlerSubscriber.subscribe(subscribable)
+        canvasUI.subscribe(subscribable)
         expect(subscribableOnUpdateSpy.callCount).to.equal(1)
     })
 })
