@@ -3,7 +3,7 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, IMutableSubscribableTreeStore,
+    IIdAndValUpdates, IMutableSubscribableContentUserStore, IMutableSubscribableTreeStore,
     ISubscribableGlobalStore, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
@@ -19,9 +19,11 @@ implements ISubscribableGlobalStore {
     }
 
     protected treeStore: IMutableSubscribableTreeStore;
-    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){treeStore, updatesCallbacks = []}) {
+    protected contentUserStore: IMutableSubscribableContentUserStore;
+    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){treeStore, contentUserStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.treeStore = treeStore
+        this.contentUserStore = contentUserStore
         // log('subscribableGlobalStore called')
     }
     public startPublishing() {
@@ -33,7 +35,13 @@ implements ISubscribableGlobalStore {
             }
             me.callCallbacks()
         })
-
+        this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
+            me.update = {
+                type: ObjectDataTypes.CONTENT_USER_DATA,
+                ...update
+            }
+            me.callCallbacks()
+        })
     }
 }
 
