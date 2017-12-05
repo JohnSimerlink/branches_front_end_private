@@ -40,7 +40,6 @@ describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
         contentUserStore.startPublishing()
         /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
          */
-        contentUser.startPublishing()
         contentUserStore.addAndSubscribeToItem( contentId, contentUser)
 
         const sampleMutation: IProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {

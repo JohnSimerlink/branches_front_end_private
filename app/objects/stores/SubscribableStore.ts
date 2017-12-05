@@ -2,7 +2,8 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
-import {IIdAndValUpdates, ISubscribableStore, ISubscribableTreeCore, ISubscribableTreeStore} from '../interfaces';
+import {IDescendantPublisher, IIdAndValUpdates,
+ISubscribableStore} from '../interfaces';
 import {IValUpdates} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
@@ -29,13 +30,15 @@ class SubscribableStore<SubscribableCoreInterface>
         return this.update
     }
     public addAndSubscribeToItem(
-        id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface
+        id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher
     ) {
+        // TODO: make the arg type cleaner!
         if (!this.startedPublishing) {
             throw new Error('Can\'t add item until started publishing!')
         }
         this.store[id] = item
         this.subscribeToItem(id, item)
+        item.startPublishing()
         // throw new Error('Method not implemented.");
     }
     private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface) {
@@ -46,8 +49,10 @@ class SubscribableStore<SubscribableCoreInterface>
         })
     }
     public startPublishing() {
-        for (const [id, item] of Object.entries(this.store) ) {
+        for (let [id, item] of Object.entries(this.store) ) {
+            item = item as IDescendantPublisher
             this.subscribeToItem(id, item)
+            item.startPublishing()
         }
         this.startedPublishing = true
     }

@@ -12,8 +12,9 @@ import {TYPES} from '../types'
 
 @injectable()
 class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
-
+    // private publishing = false
     // TODO: should the below three objects be private?
+    private publishing = false ; // todo: inject this via dependency injection in constructor
     public contentId: ISubscribableMutableField<string>;
     public parentId: ISubscribableMutableField<string>;
     public children: ISubscribableMutableStringSet;
@@ -40,6 +41,10 @@ class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribabl
         return this.val()
     }
     public startPublishing() {
+        if (this.publishing) {
+            return
+        }
+        this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.children.onUpdate(boundCallCallbacks)
         this.contentId.onUpdate(boundCallCallbacks)

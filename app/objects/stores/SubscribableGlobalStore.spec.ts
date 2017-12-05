@@ -33,7 +33,6 @@ describe('ISubscribableGlobalStore', () => {
         const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-        tree.startPublishing()
         /* const treeStore = myContainer.get<ISubscribableStore<ISubscribableTreeCore>>
         (TYPES.ISubscribableStore_ISubscribableTreeCore)
         */

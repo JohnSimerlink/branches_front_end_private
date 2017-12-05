@@ -38,7 +38,6 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
         treeStore.startPublishing()
         /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
          */
-        tree.startPublishing()
         treeStore.addAndSubscribeToItem( TREE_ID, tree)
 
         const sampleMutation = myContainer.get<
