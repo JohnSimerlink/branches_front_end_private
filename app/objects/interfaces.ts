@@ -376,6 +376,9 @@ interface ITreeUserData {
     aggregationTimer: number,
 }
 
+// ui
+interface IUI extends ISubscriber<ITypeAndIdAndValUpdates> {}
+
 export {
     // app
     IApp,
@@ -487,4 +490,7 @@ export {
 
     // treeUserData
     ITreeUserData,
+
+    // ui
+    IUI,
 }

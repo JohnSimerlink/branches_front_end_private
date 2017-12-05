@@ -1,21 +1,27 @@
 import {inject, injectable} from 'inversify';
-import {IApp, IMutableSubscribableGlobalStore, ISigmaNodeHandlerSubscriber} from '../objects/interfaces';
+import {
+    IApp, IMutableSubscribableGlobalStore, ISigmaNodeHandlerSubscriber, ISubscriber,
+    ITypeAndIdAndValUpdates, IUI
+} from '../objects/interfaces';
 import {TYPES} from '../objects/types';
 @injectable()
 class App implements IApp {
-    private canvasUI: ISigmaNodeHandlerSubscriber // TODO: replace with an interface and/or generic
+    private UIs: IUI[] // TODO: replace with an interface and/or generic
     /* TODO: rather than hardcoding all the types of UIs that subscribe to the app,
      let the app invocation or inversify object graph dynamically choose which UIs should be part of the app
      */
     private store: IMutableSubscribableGlobalStore
-    constructor(@inject(TYPES.AppArgs){sigmaNodeHandlerSubscriber, store}) {
-        this.canvasUI = sigmaNodeHandlerSubscriber
+    constructor(@inject(TYPES.AppArgs){UIs, store}) {
+        this.UIs = UIs
         this.store = store
     }
     public start() {
         // this.stores.loadFromCache() // or // stores.init() or     something
         // ^^^ TODO: << figure out how / when / what data we will load
-        this.canvasUI.subscribe(this.store)
+        const me = this
+        this.UIs.forEach(ui => {
+            ui.subscribe(me.store)
+        })
         // this.shellUI.subscribe(this.stores)
         this.store.startPublishing()
     }
@@ -23,7 +29,7 @@ class App implements IApp {
 
 @injectable()
 class AppArgs {
-    @inject(TYPES.ISigmaNodeHandlerSubscriber) public sigmaNodeHandlerSubscriber
+    @inject(TYPES.ISubscriber_ITypeAndIdAndValUpdates_Array) public UIs
     @inject(TYPES.IMutableSubscribableGlobalStore) public store
 }
 export {App, AppArgs}
