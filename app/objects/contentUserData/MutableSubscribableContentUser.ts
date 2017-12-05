@@ -36,10 +36,13 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
         switch (propertyName) {
             case ContentUserPropertyNames.LAST_RECORDED_STRENGTH:
                 this.lastRecordedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break
             case ContentUserPropertyNames.OVERDUE:
                 this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break
             case ContentUserPropertyNames.PROFICIENCY:
                 this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break
             case ContentUserPropertyNames.TIMER:
                 this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;

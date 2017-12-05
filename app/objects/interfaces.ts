@@ -274,9 +274,6 @@ interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates
 interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescendantPublisher {
     addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
 }
-interface ISubscribableDataStore<UpdatesType, ObjectType>
-    extends ISubscribable<IIdAndValUpdates>, ICoreSubscribableStore<UpdatesType, ObjectType> {
-}
 
 interface IMutableSubscribableTreeStore
     extends ISubscribableTreeStore, IMutable<IIdDatedMutation<TreeMutationTypes>> {
@@ -287,6 +284,9 @@ interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<II
 
 interface ISubscribableTreeStore
     extends ISubscribableStore<ISubscribableTreeCore> {}
+
+interface ISubscribableContentUserStore
+    extends ISubscribableStore<ISubscribableContentUserCore> {}
 
 type IValUpdates = any
 interface IIdAndValUpdates {
@@ -441,15 +441,15 @@ export {
     ICoreSubscribableStore,
     IMutableSubscribableGlobalStore,
     IUndoableMutable,
-    ISubscribableDataStore,
+    ISubscribableStore,
+    ISubscribableTreeStore,
     IMutableSubscribableTreeStore,
+    ISubscribableContentUserStore,
 
     // subscribable
     updatesCallback,
     ISubscribable,
     ISubscriber,
-    ISubscribableTreeStore,
-    ISubscribableStore,
 
     // tree
     ITree,
