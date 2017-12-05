@@ -50,36 +50,30 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
         const calledWith = treeAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    // it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
-    //     ' it either, should throw a RangeError', () => {
-    //     const contentId = CONTENT_ID2
-    //     const nonExistentId = 'abdf1295'
-    //     const overdue = new SubscribableMutableField<boolean>({field: false})
-    //     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
-    //     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    //     const timer = new SubscribableMutableField<number>({field: 30})
-    //     const tree = new MutableSubscribableTree({
-    //         lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
-    //     })
-    //     const store = {}
-    //     store[contentId] = tree
-    //     const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
-    //         store,
-    //         updatesCallbacks: []
-    //     })
-    //
-    //     const proppedMutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames> = {
-    //         data: PROFICIENCIES.TWO,
-    //         propertyName: TreePropertyNames.PROFICIENCY,
-    //         timestamp: Date.now(),
-    //         type: FieldMutationTypes.SET,
-    //     }
-    //
-    //     const sampleMutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames> = {
-    //         ...proppedMutation,
-    //         id: nonExistentId,
-    //     }
-    //     expect(() => treeStore.addMutation(sampleMutation)).to.throw(RangeError)
-    // })
-})
+    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+        ' it either, should throw a RangeError', () => {
 
+        const nonExistentId = 'abdf1295'
+        const store = {}
+        const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
+            store,
+            updatesCallbacks: []
+        })
+
+        const NEW_CONTENT_ID = CONTENT_ID2
+        const proppedMutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames> = {
+            data: NEW_CONTENT_ID,
+            propertyName: TreePropertyNames.CONTENT_ID,
+            timestamp: Date.now(),
+            type: FieldMutationTypes.SET,
+        }
+
+        const sampleMutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames> = {
+            ...proppedMutation,
+            id: nonExistentId,
+        }
+
+        expect(() => treeStore.addMutation(sampleMutation)).to.throw(RangeError)
+
+    })
+})
