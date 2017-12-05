@@ -5,7 +5,7 @@ import {
     ITypeAndIdAndValUpdates
 } from '../interfaces';
 import {SubscribableGlobalStore} from '../stores/SubscribableGlobalStore';
-import {SubscribableTreeStore} from '../stores/SubscribableTreeStore';
+import {SubscribableTreeStore} from '../stores/tree/SubscribableTreeStore';
 import {TYPES} from '../types';
 import {SigmaNodeHandlerSubscriber} from './SigmaNodeHandlerSubscriber';
 

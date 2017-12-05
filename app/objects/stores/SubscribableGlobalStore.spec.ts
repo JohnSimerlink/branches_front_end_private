@@ -15,7 +15,7 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
-import {SubscribableTreeStore} from './SubscribableTreeStore';
+import {SubscribableTreeStore} from './tree/SubscribableTreeStore';
 
 describe('ISubscribableGlobalStore', () => {
     it(' calling startPublishing on GlobalStore, should call onUpdate on each of the component Stores', () => {

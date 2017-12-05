@@ -1,15 +1,14 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {log} from '../../../app/core/log'
-import {CONTENT_ID2} from '../../testHelpers/testHelpers';
-import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
+import {MutableSubscribableContentUser} from '../../contentUserData/MutableSubscribableContentUser';
+import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     ContentUserPropertyNames, FieldMutationTypes, IProppedDatedMutation, ISubscribableContentUserCore,
     ISubscribableContentUserStore
-} from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SubscribableStore} from './SubscribableStore';
+} from '../../interfaces';
+import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
+import {SubscribableStore} from '../SubscribableStore';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 
 describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
@@ -58,7 +57,6 @@ describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
         // expect(callback1.getCall(0).args[0].id).to.equal(contentId)
         // expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
         // expect(callback2.callCount).to.equal(1)
-        log('contentUser val is', contentUserNewVal)
         expect(callback2.getCall(0).args[0].id).to.equal(contentId)
         expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
     })

@@ -1,14 +1,14 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {myContainer} from '../../../../inversify.config';
+import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeCore, ISubscribableTreeStore,
     TreePropertyNames
-} from '../interfaces';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
-import {TYPES} from '../types';
+} from '../../interfaces';
+import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
+import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
+import {TYPES} from '../../types';
 import {SubscribableTreeStore} from './SubscribableTreeStore';
 
 describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
