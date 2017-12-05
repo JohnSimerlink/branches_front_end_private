@@ -6,12 +6,12 @@
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
 import {inject, injectable} from 'inversify';
-import {ICanvasUI, ISigmaNodeHandler, ITypeAndIdAndValUpdates} from '../interfaces';
-import {ISubscribable} from '../interfaces';
+import {ISigmaNodeHandler, ITypeAndIdAndValUpdates} from '../interfaces';
+import {ISubscribable, IUI} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-class CanvasUI implements ICanvasUI {
+class CanvasUI implements IUI  {
     private sigmaNodeHandler: ISigmaNodeHandler
 
     constructor(@inject(TYPES.CanvasUIArgs){sigmaNodeHandler}) {

@@ -1,12 +1,16 @@
+// tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {myContainer} from '../../inversify.config';
 import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
 import {
-    IApp, ICanvasUI, IMutableSubscribableContentUserStore, IMutableSubscribableGlobalStore,
-    IMutableSubscribableTreeStore, ISigmaNode,
-    ISigmaNodeHandler
+    ContentUserPropertyMutationTypes,
+    ContentUserPropertyNames, FieldMutationTypes,
+    IApp, IGlobalDatedMutation, IMutableSubscribableContentUserStore, IMutableSubscribableGlobalStore,
+    IMutableSubscribableTreeStore,
+    ISigmaNode, ISigmaNodeHandler,
+    IUI, ObjectTypes
 } from '../objects/interfaces';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
@@ -29,8 +33,6 @@ describe('App integration test 1', () => {
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
         const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
-        const canvasUI: ICanvasUI
-            = new CanvasUI({sigmaNodeHandler})
 
         // contentUserStore
         const contentId = CONTENT_ID2
@@ -60,8 +62,27 @@ describe('App integration test 1', () => {
 
         const store: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore})
-        // create app
-        // const app: IApp = new App({canvasUI, store})
 
+        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const UIs = [canvasUI]
+
+        // create app
+        const app: IApp = new App({UIs, store})
+
+        app.start()
+        const mutation: IGlobalDatedMutation<ContentUserPropertyMutationTypes> = {
+            objectType: ObjectTypes.CONTENT_USER,
+            id: contentId,
+            propertyName: ContentUserPropertyNames.OVERDUE,
+            type: FieldMutationTypes.SET,
+            data: true,
+            timestamp: Date.now(),
+        }
+        expect(sigmaNode1.overdue).to.not.equal(true)
+        expect(sigmaNode2.overdue).to.not.equal(true)
+        store.addMutation(mutation)
+        expect(sigmaNode1.overdue).to.equal(true)
+        expect(sigmaNode2.overdue).to.equal(true)
+        // store
     })
 })
