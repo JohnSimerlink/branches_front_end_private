@@ -15,8 +15,7 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
-// import {ISubscribableTreeStore, SubscribableTreeStore} from './SubscribableTreeStore';
-import {SubscribableStore} from './SubscribableStore';
+import {SubscribableTreeStore} from './SubscribableTreeStore';
 
 describe('ISubscribableGlobalStore', () => {
     it(' calling startPublishing on GlobalStore, should call onUpdate on each of the component Stores', () => {
@@ -32,7 +31,7 @@ describe('ISubscribableGlobalStore', () => {
         (TYPES.ISubscribableStore_ISubscribableTreeCore)
         */
         // TODO: ^^ The above dependency injection fails . . . So I am using constructor manually
-        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>({
+        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
             store: {},
             updatesCallbacks: []
         })
@@ -68,7 +67,7 @@ describe('ISubscribableGlobalStore', () => {
         TODO: ^^^^ Using DI for treeStore causes some sort of error where
          a sigmaNodeHandlerSubscriber tries to subscribe to the tree store
          . . . how does that even happen?? how is there knowledge of a sigmaNodeHandlerSubscriber store? */
-        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>( {
+        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
             store: [],
             updatesCallbacks: []
         })
@@ -124,7 +123,7 @@ describe('ISubscribableGlobalStore', () => {
         parentId,
         updatesCallbacks: [],
     })
-    const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>( {
+    const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
         store: {},
         updatesCallbacks: []
     })

@@ -9,7 +9,7 @@ import {
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {TYPES} from '../types';
-import {SubscribableStore} from './SubscribableStore';
+import {SubscribableTreeStore} from './SubscribableTreeStore';
 
 describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
     it('An update in a member tree should be published to a subscriber of the tree data stores', () => {
@@ -25,7 +25,7 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-        const treeStore: ISubscribableTreeStore = new SubscribableStore<ISubscribableTreeCore>({
+        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
             store: {},
             updatesCallbacks: []
         })
