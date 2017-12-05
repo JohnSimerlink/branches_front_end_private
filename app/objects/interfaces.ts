@@ -239,7 +239,6 @@ type fGetSigmaIdsForContentId = (id: string) => string[]
 interface ISigmaNodeHandler {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
-interface ICanvasUI extends ISubscriber<ITypeAndIdAndValUpdates> { }
 
 interface IColorSlice {
     color: UIColor
@@ -429,7 +428,6 @@ export {
     ITypeAndIdAndValUpdates,
     IIdAndValUpdates,
     IMutable,
-    ICanvasUI,
     IValUpdates,
     ObjectDataDataTypes,
     ///
