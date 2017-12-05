@@ -19,8 +19,9 @@ import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {TYPES} from '../objects/types';
-import {CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
+import {CONTENT_ID, CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
+import * as sinon from 'sinon'
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
@@ -35,7 +36,7 @@ describe('App integration test 1', () => {
         const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
 
         // contentUserStore
-        const contentId = CONTENT_ID2
+        const contentId = CONTENT_ID
         const overdue = new SubscribableMutableField<boolean>({field: false})
         const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
         const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
@@ -78,11 +79,26 @@ describe('App integration test 1', () => {
             data: true,
             timestamp: Date.now(),
         }
+        const contentUserStoreAddMutationSpy = sinon.spy(contentUserStore, 'addMutation')
+        const contentUserAddMutationSpy = sinon.spy(contentUser, 'addMutation')
+        const overdueAddMutationSpy = sinon.spy(overdue, 'addMutation')
+        const contentUserStoreCallCallbacksSpy = sinon.spy(contentUserStore, 'callCallbacks')
+        const contentUserCallCallbacksSpy = sinon.spy(contentUser, 'callCallbacks')
+        const overdueCallCallbacksSpy = sinon.spy(overdue, 'callCallbacks')
+        const storeCallCallbacksSpy = sinon.spy(store, 'callCallbacks')
+        const sigmaNodeHandlerHandleUpdateSpy = sinon.spy(sigmaNodeHandler, 'handleUpdate')
         expect(sigmaNode1.overdue).to.not.equal(true)
         expect(sigmaNode2.overdue).to.not.equal(true)
         store.addMutation(mutation)
-        expect(sigmaNode1.overdue).to.equal(true)
-        expect(sigmaNode2.overdue).to.equal(true)
+        expect(contentUserStoreAddMutationSpy.callCount).to.equal(1)
+        expect(contentUserAddMutationSpy.callCount).to.equal(1)
+        expect(overdueAddMutationSpy.callCount).to.equal(1)
+        expect(overdueCallCallbacksSpy.callCount).to.equal(1)
+        // expect(contentUserCallCallbacksSpy.callCount).to.equal(1)
+        // expect(contentUserStoreCallCallbacksSpy.callCount).to.equal(1)
+        // expect(sigmaNodeHandlerHandleUpdateSpy.callCount).to.equal(1)
+        // expect(sigmaNode1.overdue).to.equal(true)
+        // expect(sigmaNode2.overdue).to.equal(true)
         // store
     })
 })

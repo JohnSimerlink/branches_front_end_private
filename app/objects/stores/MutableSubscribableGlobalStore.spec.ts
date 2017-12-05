@@ -1,18 +1,20 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {CONTENT_ID2, TREE_ID} from '../../testHelpers/testHelpers';
+import {CONTENT_ID, CONTENT_ID2, TREE_ID} from '../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
+    ContentUserPropertyNames,
     FieldMutationTypes,
-    IGlobalDatedMutation, IIdProppedDatedMutation,
+    IGlobalDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, ISubscribableContentUserStore,
     ObjectTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
+import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
 import {SubscribableContentUserStore} from './contentUser/SubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
@@ -64,6 +66,62 @@ describe('MutableSubscribableGlobalStore', () => {
             ...storeMutation
         }
         const storeAddMutationSpy = sinon.spy(treeStore, 'addMutation')
+
+        globalStore.addMutation(globalMutation)
+
+        const calledWith = storeAddMutationSpy.getCall(0).args[0]
+        expect(calledWith).to.deep.equal(storeMutation)
+        expect(storeAddMutationSpy.callCount).to.deep.equal(1)
+
+    })
+    it('adding a contentUser mutation should call contentUserStore.addMutation(mutationObj)'
+        + ' but without the objectType in mutationObj', () => {
+
+        // contentUserStore
+        const contentId = CONTENT_ID
+        const overdue = new SubscribableMutableField<boolean>({field: false})
+        const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
+        const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+        const timer = new SubscribableMutableField<number>({field: 30})
+        const contentUser = new MutableSubscribableContentUser({
+            lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        })
+        const store = {}
+        store[contentId] = contentUser
+
+        const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
+            store,
+            updatesCallbacks: []
+        })
+
+        const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
+        const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
+            {
+                contentUserStore,
+                treeStore,
+                updatesCallbacks: [],
+            }
+        )
+        const newProficiencyVal = PROFICIENCIES.THREE
+        const objectType = ObjectTypes.CONTENT_USER
+        const propertyName = ContentUserPropertyNames.PROFICIENCY;
+        const type = FieldMutationTypes.SET;
+        const data = newProficiencyVal
+        const timestamp = Date.now()
+
+        const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
+            data, id: contentId, propertyName, timestamp, type
+        }
+
+        const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+            objectType,
+            ...storeMutation
+        }
+        const storeAddMutationSpy = sinon.spy(contentUserStore, 'addMutation')
 
         globalStore.addMutation(globalMutation)
 

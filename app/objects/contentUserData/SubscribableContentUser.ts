@@ -13,6 +13,7 @@ import {TYPES} from '../types'
 
 @injectable()
 class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
+    private publishing = false
     public overdue: ISubscribableMutableField<boolean>;
     public timer: ISubscribableMutableField<number>;
     public proficiency: ISubscribableMutableField<PROFICIENCIES>;
@@ -40,6 +41,10 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
         return this.val()
     }
     public startPublishing() {
+        if (this.publishing) {
+            return
+        }
+        this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.overdue.onUpdate(boundCallCallbacks)
         this.proficiency.onUpdate(boundCallCallbacks)

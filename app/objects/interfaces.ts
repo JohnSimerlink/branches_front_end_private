@@ -476,6 +476,7 @@ export {
     updatesCallback,
     ISubscribable,
     ISubscriber,
+    IDescendantPublisher,
 
     // tree
     ITree,
