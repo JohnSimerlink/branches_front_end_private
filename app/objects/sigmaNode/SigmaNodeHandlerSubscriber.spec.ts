@@ -1,9 +1,11 @@
+import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {
-    ISubscribable, ISubscribableTreeStore,
+    ISubscribable, ISubscribableContentUserStore, ISubscribableTreeStore,
     ITypeAndIdAndValUpdates
 } from '../interfaces';
+import {SubscribableContentUserStore} from '../stores/contentUser/SubscribableContentUserStore';
 import {SubscribableGlobalStore} from '../stores/SubscribableGlobalStore';
 import {SubscribableTreeStore} from '../stores/tree/SubscribableTreeStore';
 import {TYPES} from '../types';
@@ -17,7 +19,12 @@ describe('SigmaNodeHandlerSubscriber', () => {
             store: {},
             updatesCallbacks: []
         })
+        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
+            store: {},
+            updatesCallbacks: []
+        })
         const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = new SubscribableGlobalStore({
+            contentUserStore,
             treeStore,
             updatesCallbacks: []
         })
@@ -26,5 +33,6 @@ describe('SigmaNodeHandlerSubscriber', () => {
         const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate')
 
         sigmaNodeHandlerSubscriber.subscribe(subscribable)
+        expect(subscribableOnUpdateSpy.callCount).to.equal(1)
     })
 })
