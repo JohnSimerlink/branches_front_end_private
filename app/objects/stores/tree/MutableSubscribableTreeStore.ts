@@ -21,7 +21,7 @@ class MutableSubscribableTreeStore
         const tree: IMutableSubscribableTree
             = this.store[id]
         if (!tree) {
-            throw new RangeError('Couldn\'t find contentUser for contentId' + id)
+            throw new RangeError('Couldn\'t find tree for treeId: ' + id)
         }
 
         const proppedDatedMutation:

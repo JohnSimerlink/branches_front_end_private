@@ -49,7 +49,7 @@ describe('MutableSubscribableContentUserStore > addMutation', () => {
         const calledWith = contentUserAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load' +
+    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
         ' it either, should throw a RangeError', () => {
         const contentId = CONTENT_ID2
         const nonExistentId = 'abdf1295'
