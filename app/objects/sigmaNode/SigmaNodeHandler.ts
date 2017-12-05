@@ -1,6 +1,6 @@
 // map from treeId to sigmaNodeId
 // map from contentId to sigmaNodeId
-// in the class that creates an instance of SigmaNodeHandlerSubscriber
+// in the class that creates an instance of CanvasUI
 // subscribe to stores. on stores update parse object type and id
 // and get the correct tree id from either those two properties or from the result of a map lookup
 

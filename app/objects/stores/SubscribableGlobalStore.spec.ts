@@ -80,8 +80,8 @@ describe('ISubscribableGlobalStore', () => {
         /* const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>
         (TYPES.ISubscribableTreeStore)
         TODO: ^^^^ Using DI for treeStore causes some sort of error where
-         a sigmaNodeHandlerSubscriber tries to subscribe to the tree store
-         . . . how does that even happen?? how is there knowledge of a sigmaNodeHandlerSubscriber store? */
+         a canvasUI tries to subscribe to the tree store
+         . . . how does that even happen?? how is there knowledge of a canvasUI store? */
         const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
             store: [],
             updatesCallbacks: []

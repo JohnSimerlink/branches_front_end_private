@@ -32,9 +32,9 @@ import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
 import {
-    SigmaNodeHandlerSubscriber,
-    SigmaNodeHandlerSubscriberArgs
-} from './app/objects/sigmaNode/SigmaNodeHandlerSubscriber';
+    CanvasUI,
+    CanvasUIArgs
+} from './app/objects/sigmaNode/CanvasUI';
 import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
 import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
@@ -92,9 +92,9 @@ myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
 
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
 myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
-myContainer.bind<SigmaNodeHandlerSubscriber>(TYPES.SigmaNodeHandlerSubscriber).to(SigmaNodeHandlerSubscriber)
-myContainer.bind<SigmaNodeHandlerSubscriberArgs>(TYPES.SigmaNodeHandlerSubscriberArgs)
-    .to(SigmaNodeHandlerSubscriberArgs)
+myContainer.bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI)
+myContainer.bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
+    .to(CanvasUIArgs)
 myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
