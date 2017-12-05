@@ -1,4 +1,4 @@
-import {IIdDatedMutation, IMutableSubscribableTreeStore, TreeMutationTypes} from '../interfaces';
+import {IIdDatedMutation, IMutableSubscribableTreeStore, TreeMutationTypes} from '../../interfaces';
 import {SubscribableTreeStore} from './SubscribableTreeStore';
 
 class MutableSubscribableTreeStore
