@@ -23,8 +23,8 @@ describe('MutableSubscribableTreeUser', () => {
             FOUR: 2,
         }
         const aggregationTimerVal = 54
-        const proficiencyStats = new SubscribableMutableField<IProficiencyStats>()
-        const aggregationTimer = new SubscribableMutableField<number>()
+        const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
+        const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
         const expectedTreeUserData: ITreeUserData = {
             proficiencyStats: proficiencyStatsVal,
@@ -45,8 +45,8 @@ describe('MutableSubscribableTreeUser', () => {
             FOUR: 2,
         }
         const aggregationTimerVal = 54
-        const proficiencyStats = new SubscribableMutableField<IProficiencyStats>()
-        const aggregationTimer = new SubscribableMutableField<number>()
+        const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
+        const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
         const expectedTreeUserData: ITreeUserData = {
             proficiencyStats: proficiencyStatsVal,
@@ -74,9 +74,10 @@ describe('MutableSubscribableTreeUser', () => {
             THREE: 4,
             FOUR: 2,
         }
+        const aggregationTimerVal = 53
         const newAggregationTimerVal = 54
         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
-        const aggregationTimer = new SubscribableMutableField<number>()
+        const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
         const mutation: IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames> = {
             data: newAggregationTimerVal,
@@ -116,7 +117,7 @@ describe('MutableSubscribableTreeUser', () => {
         }
         const aggregationTimerVal = 54
         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
-        const aggregationTimer = new SubscribableMutableField<number>()
+        const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
         treeUser.startPublishing()
 
