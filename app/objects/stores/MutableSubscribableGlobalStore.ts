@@ -16,13 +16,14 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
         switch (mutation.objectType) {
             case ObjectTypes.TREE: {
                 const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
+                const type: TreePropertyMutationTypes = mutation.type as TreePropertyMutationTypes
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const treeStoreMutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames> = {
                     data: mutation.data,
                     id: mutation.id,
                     propertyName,
                     timestamp: mutation.timestamp,
-                    type: mutation.type,
+                    type,
                 }
                 this.treeStore.addMutation(treeStoreMutation)
                 break
@@ -30,14 +31,16 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
             case ObjectTypes.TREE_USER: {
                 const propertyName: TreeUserPropertyNames = mutation.propertyName as TreeUserPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const type: TreeUserPropertyMutationTypes = mutation.type as TreeUserPropertyMutationTypes
                 const treeUserStoreMutation:
                     IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames> = {
                     data: mutation.data,
                     id: mutation.id,
                     propertyName,
                     timestamp: mutation.timestamp,
-                    type: mutation.type,
-                } as IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
+                    type,
+                }
+                // } as IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
                 // ^^ TODO: figure out why I need this cast but not in the other cases on the switch . . .
                 this.treeUserStore.addMutation(treeUserStoreMutation)
                 break
