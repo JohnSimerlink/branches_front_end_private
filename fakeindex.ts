@@ -6,7 +6,7 @@ import {TYPES} from './app/objects/types';
 
 // const ActivatableDatedMutation = myContainer.val<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation)
 // const ActivatableDatedMutationArr = myContainer.getAll<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation)
-import {Point} from './app/objects/point/point';
+import {Point} from './app/objects/point/SubscribableMutablePoint';
 
 const p = new Point({x: 8, y: 6})
 // log(JSON.stringify(ActivatableDatedMutation))
