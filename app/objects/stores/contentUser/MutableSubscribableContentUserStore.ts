@@ -22,7 +22,7 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
         const contentUser: IMutableSubscribableContentUser
             = this.store[id]
         if (!contentUser) {
-            throw new RangeError('Couldn\'t find contentUser for contentId' + id)
+            throw new RangeError('Couldn\'t find content for contentId' + id)
         }
 
         const proppedDatedMutation:
@@ -32,9 +32,9 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
             timestamp: mutation.timestamp,
             type: mutation.type,
         }
-        log('contentUser addMutation about to be called')
+        log('content addMutation about to be called')
         contentUser.addMutation(proppedDatedMutation)
-        log('contentUser addMutation was called')
+        log('content addMutation was called')
         // throw new Error("Method not implemented.");
     }
 }

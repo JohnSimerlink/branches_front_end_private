@@ -12,11 +12,11 @@ import {SubscribableStore} from '../SubscribableStore';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 
 describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
-    it('An update in a member contentUser should be published to a subscriber of the contentUser data stores', () => {
+    it('An update in a member content should be published to a subscriber of the content data stores', () => {
         /* TODO: Note this is more of an integration test than a true unit test.
         It might be that some of these modules are designed poorly, being the reason
          why I couldn't find an easy way to do a pure unit test.
-         e.g. rather than just triggering an update directly on contentUser,
+         e.g. rather than just triggering an update directly on content,
          I had to do it indirectly by adding a mutation
          */
         const contentId = CONTENT_ID2
