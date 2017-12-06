@@ -1,8 +1,9 @@
 // tslint:disable object-literal-sort-keys
+import * as sinon from 'sinon'
 import {expect} from 'chai'
 import 'reflect-metadata'
-import * as sinon from 'sinon'
 import {myContainer} from '../../inversify.config';
+import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
 import {
@@ -11,22 +12,22 @@ import {
     ContentUserPropertyNames, FieldMutationTypes,
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore,
-    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
     ISigmaNode, ISigmaNodeHandler,
-    IUI, ObjectTypes
+    IUI, ObjectTypes, TreeUserPropertyMutationTypes, TreeUserPropertyNames
 } from '../objects/interfaces';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
+import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
-import {TYPES} from '../objects/types';
-import {CONTENT_ID, CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
-import {App} from './app';
-import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
-import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
+import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribableTreeUser';
+import {TYPES} from '../objects/types';
+import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
+import {App} from './app';
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
@@ -80,7 +81,8 @@ describe('App integration test 1', () => {
         })()
 
         const store: IMutableSubscribableGlobalStore =
-            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
+            new MutableSubscribableGlobalStore(
+                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]
@@ -178,4 +180,110 @@ describe('App integration test 1', () => {
         expect(sigmaNode1.content.answer).to.equal(newAnswer)
         expect(sigmaNode2.content.answer).to.equal(newAnswer)
     })
+
+    it('Adding a mutation into the global stores for a tree user data,' +
+        ' should update the sigma node instance for the sigma node for that tree Id', () => {
+        // canvasUI
+        const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const sigmaNodes = {}
+        const TREE_ID = 'babababa'
+        const SIGMA_ID = TREE_ID
+        sigmaNodes[SIGMA_ID] = sigmaNode1
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+
+        // contentStore
+        const proficiencyStatsVal: IProficiencyStats = {
+            UNKNOWN: 3,
+            ONE: 2,
+            TWO: 3,
+            THREE: 4,
+            FOUR: 2,
+        }
+        const newProficiencyStatsVal: IProficiencyStats = {
+            UNKNOWN: 7,
+            ONE: 2,
+            TWO: 5,
+            THREE: 4,
+            FOUR: 2,
+        }
+        const aggregationTimerVal = 54
+        const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
+        const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
+        const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
+        const contentUserStore: IMutableSubscribableContentUserStore = (() => {
+            return new MutableSubscribableContentUserStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const treeStore: IMutableSubscribableTreeStore = (() => {
+            return new MutableSubscribableTreeStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
+            const source = {}
+            source[TREE_ID] = treeUser
+            return new MutableSubscribableTreeUserStore({
+                store: source,
+                updatesCallbacks: []
+            })
+        })()
+
+        const contentStore: IMutableSubscribableContentStore = (() => {
+            return new MutableSubscribableContentStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const store: IMutableSubscribableGlobalStore =
+            new MutableSubscribableGlobalStore(
+                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
+
+        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const UIs = [canvasUI]
+
+        // create app
+        const app: IApp = new App({UIs, store})
+
+        app.start()
+        const newAnswer = 'Columbus!!'
+        const mutation: IGlobalDatedMutation<TreeUserPropertyMutationTypes> = {
+            objectType: ObjectTypes.TREE_USER,
+            id: TREE_ID,
+            propertyName: TreeUserPropertyNames.PROFICIENCY_STATS,
+            type: FieldMutationTypes.SET,
+            data: newProficiencyStatsVal,
+            timestamp: Date.now(),
+        }
+        expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
+        store.addMutation(mutation)
+        expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
+    })
+
 })
+
+/*
+        const treeUserStoreAddMutationSpy = sinon.spy(treeUserStore, 'addMutation')
+        const treeUserAddMutationSpy = sinon.spy(treeUser, 'addMutation')
+        const proficiencyStatsAddMutationSpy = sinon.spy(proficiencyStats, 'addMutation')
+        const treeUserStoreCallCallbacksSpy = sinon.spy(treeUserStore, 'callCallbacks')
+        const treeUserCallCallbacksSpy = sinon.spy(treeUser, 'callCallbacks')
+        const proficiencyStatsCallCallbacksSpy = sinon.spy(proficiencyStats, 'callCallbacks')
+        expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
+        expect(sigmaNode2.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
+        store.addMutation(mutation)
+        expect(treeUserStoreAddMutationSpy.callCount).to.equal(1)
+        expect(treeUserAddMutationSpy.callCount).to.equal(1)
+        expect(proficiencyStatsAddMutationSpy.callCount).to.equal(1)
+        expect(proficiencyStatsCallCallbacksSpy.callCount).to.equal(1)
+        expect(treeUserCallCallbacksSpy.callCount).to.equal(1)
+        expect(treeUserStoreCallCallbacksSpy.callCount).to.equal(1)
+        expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
+        expect(sigmaNode2.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
+
+ */

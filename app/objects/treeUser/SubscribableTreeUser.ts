@@ -1,6 +1,7 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
 import {
     IProficiencyStats,
     ISubscribableMutableField,
@@ -36,6 +37,7 @@ class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscri
         return this.val()
     }
     public startPublishing() {
+        log('treeUser startPublishing called')
         if (this.publishing) {
             return
         }
