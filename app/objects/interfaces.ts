@@ -299,7 +299,7 @@ interface ISigmaNodeData {
     y: number;
     aggregationTimer: number;
     contentUserData: IContentUserData;
-    content: object;
+    content: IContentData;
     label: string;
     size: number;
     colorSlices: IColorSlice[];
