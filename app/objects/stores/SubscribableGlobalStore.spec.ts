@@ -105,7 +105,6 @@ describe('ISubscribableGlobalStore', () => {
 
         globalStore.startPublishing()
         treeStore.startPublishing()
-        tree.startPublishing()
 
         treeStore.addAndSubscribeToItem(TREE_ID, tree)
 
@@ -193,7 +192,6 @@ describe('ISubscribableGlobalStore', () => {
 
     })
 
-
     //
     it('Before calling startPublishing, globalStore should NOT publish updates ' +
         ' when one of its component stores publishes an update', () => {
@@ -232,7 +230,6 @@ describe('ISubscribableGlobalStore', () => {
     globalStore.onUpdate(callback1)
 
     treeStore.startPublishing()
-    tree.startPublishing()
 
     treeStore.addAndSubscribeToItem(TREE_ID, tree)
 
