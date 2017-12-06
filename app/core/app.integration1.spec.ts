@@ -6,6 +6,7 @@ import {myContainer} from '../../inversify.config';
 import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
 import {
+    CONTENT_TYPES, ContentPropertyMutationTypes, ContentPropertyNames,
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes,
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
@@ -24,6 +25,7 @@ import {TYPES} from '../objects/types';
 import {CONTENT_ID, CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
+import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
@@ -92,5 +94,72 @@ describe('App integration test 1', () => {
         store.addMutation(mutation)
         expect(sigmaNode1.overdue).to.equal(true)
         expect(sigmaNode2.overdue).to.equal(true)
+    })
+    it('Adding a mutation into the global stores for a content data,' +
+        ' should update the sigma node instance for all sigma nodes containing that content id', () => {
+        // canvasUI
+        const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const sigmaNode2 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const sigmaNodes = {}
+        sigmaNodes[SIGMA_ID1] = sigmaNode1
+        sigmaNodes[SIGMA_ID2] = sigmaNode2
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+
+        // contentStore
+        const contentId = CONTENT_ID
+        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+        const title = new SubscribableMutableField<string>({field: ''})
+        const content = new MutableSubscribableContent({
+            type, question, answer, title, updatesCallbacks: [],
+        })
+        const contentUserStore: IMutableSubscribableContentUserStore = (() => {
+            return new MutableSubscribableContentUserStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const treeStore: IMutableSubscribableTreeStore = (() => {
+            return new MutableSubscribableTreeStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const contentStore: IMutableSubscribableContentStore = (() => {
+            const source = {}
+            source[contentId] = content
+            return new MutableSubscribableContentStore({
+                store: source,
+                updatesCallbacks: []
+            })
+        })()
+
+        const store: IMutableSubscribableGlobalStore =
+            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore, contentStore})
+
+        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const UIs = [canvasUI]
+
+        // create app
+        const app: IApp = new App({UIs, store})
+
+        app.start()
+        const newAnswer = 'Columbus!!'
+        const mutation: IGlobalDatedMutation<ContentPropertyMutationTypes> = {
+            objectType: ObjectTypes.CONTENT,
+            id: contentId,
+            propertyName: ContentPropertyNames.ANSWER,
+            type: FieldMutationTypes.SET,
+            data: newAnswer,
+            timestamp: Date.now(),
+        }
+        expect(sigmaNode1.content.answer).to.not.equal(newAnswer)
+        expect(sigmaNode2.content.answer).to.not.equal(newAnswer)
+        store.addMutation(mutation)
+        expect(sigmaNode1.content.answer).to.equal(newAnswer)
+        expect(sigmaNode2.content.answer).to.equal(newAnswer)
     })
 })
