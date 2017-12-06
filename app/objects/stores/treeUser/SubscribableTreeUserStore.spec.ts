@@ -6,10 +6,11 @@ import {
     FieldMutationTypes, IProficiencyStats, IProppedDatedMutation, ISubscribableTreeUserCore, ISubscribableTreeUserStore,
     TreeUserPropertyNames
 } from '../../interfaces';
+import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
-import {SubscribableTreeUserStore} from './SubscribableTreeUserUserStore';
+import {SubscribableTreeUserStore} from './SubscribableTreeUserStore';
 
 describe('SubscribableTreeUserStore > addAndSubscribeToItem', () => {
     it('An update in a member treeUser should be published to a subscriber of the treeUser data stores', () => {
@@ -33,7 +34,7 @@ describe('SubscribableTreeUserStore > addAndSubscribeToItem', () => {
 
         const sampleMutation: IProppedDatedMutation<FieldMutationTypes, TreeUserPropertyNames> = {
             data: PROFICIENCIES.TWO,
-            propertyName: TreeUserPropertyNames.PROFICIENCY,
+            propertyName: TreeUserPropertyNames.PROFICIENCY_STATS,
             timestamp: Date.now(),
             type: FieldMutationTypes.SET,
         }
