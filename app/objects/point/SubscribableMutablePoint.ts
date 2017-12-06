@@ -2,10 +2,11 @@
 import {injectable} from 'inversify';
 import {
     IActivatableDatedMutation, ICoordinate,
-    IDatedMutation, IPoint, IUndoableMutable,
+    IDatedMutation, IDetailedUpdates, IPoint, ISubscribableUndoableMutablePoint, IUndoableMutable,
     PointMutationTypes
 } from '../interfaces';
 import {} from '../interfaces';
+import {Subscribable} from '../subscribable/Subscribable';
 
 /* TODO: Maybe split into  Point and PointMutator classes?
 
@@ -17,7 +18,9 @@ import {} from '../interfaces';
  Will do that after I have 1 to 2 modules using Mutations
 */
 @injectable()
-class Point implements IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPoint {
+class SubscribableMutablePoint
+    extends Subscribable<IDetailedUpdates>
+    implements ISubscribableUndoableMutablePoint {
     private x = 0;
     private y = 0;
     private _mutations: Array<IActivatableDatedMutation<PointMutationTypes>>;
@@ -27,7 +30,8 @@ class Point implements IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPo
     because I am doing some processing in the constructor,
     rather than just assignment . . .
     */
-    constructor({x, y, mutations = []}) {
+    constructor({updatesCallbacks, x, y, mutations = []}) {
+        super({updatesCallbacks})
         this._mutations = mutations
         const mutation = {
             data: {delta: {x, y}},
@@ -59,6 +63,9 @@ class Point implements IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPo
             active: true
         }
         this._mutations.push(activatedMutation)
+        this.pushes = {mutations: mutation}
+        this.updates.val = this.val()
+        this.callCallbacks()
     }
 
     /* NOTE: if we had a non-commutative mutation type (SHIFT is commutative),
@@ -146,4 +153,4 @@ class Point implements IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPo
     }
 }
 
-export {Point}
+export {SubscribableMutablePoint}
