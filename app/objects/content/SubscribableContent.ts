@@ -55,11 +55,11 @@ class SubscribableContent extends Subscribable<IValUpdates> implements ISubscrib
 
 @injectable()
 class SubscribableContentArgs {
-    @inject(TYPES.Array) public updatesCallbacks: Array<any>
+    @inject(TYPES.Array) public updatesCallbacks: any[]
     @inject(TYPES.ISubscribableMutableContentType) public type
-    @inject(TYPES.ISubscribableMutableString) public question: ISubscribableMutableField<String>
-    @inject(TYPES.ISubscribableMutableString) public answer: ISubscribableMutableField<String>
-    @inject(TYPES.ISubscribableMutableString) public title: ISubscribableMutableField<String>
+    @inject(TYPES.ISubscribableMutableString) public question: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public answer: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public title: ISubscribableMutableField<string>
 }
 
 export {SubscribableContent, SubscribableContentArgs}
