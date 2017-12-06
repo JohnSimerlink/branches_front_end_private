@@ -26,6 +26,10 @@ implements ISubscribableGlobalStore {
         this.contentUserStore = contentUserStore
         // log('subscribableGlobalStore called')
     }
+    protected callCallbacks() {
+        log('subscribableGlobalStore call callbacks just called', this['callbacks'])
+        super.callCallbacks()
+    }
     public startPublishing() {
         const me = this
         this.treeStore.onUpdate((update: IIdAndValUpdates) => {
@@ -35,6 +39,7 @@ implements ISubscribableGlobalStore {
             }
             me.callCallbacks()
         })
+        this.treeStore.startPublishing()
         this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: ObjectDataTypes.CONTENT_USER_DATA,
@@ -42,6 +47,7 @@ implements ISubscribableGlobalStore {
             }
             me.callCallbacks()
         })
+        this.contentUserStore.startPublishing()
     }
 }
 

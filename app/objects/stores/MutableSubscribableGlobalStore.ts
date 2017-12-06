@@ -5,6 +5,7 @@ import {
     ObjectTypes, TreeMutationTypes, TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
+import {log} from '../../../app/core/log'
 
 class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
     constructor({treeStore, contentUserStore, updatesCallbacks}) {
@@ -37,6 +38,7 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 }
                 this.contentUserStore.addMutation(contentUserStoreMutation)
+
                 break
             }
         }
