@@ -8,7 +8,7 @@ import {
     IDatedMutation, IMutableSubscribableTreeLocation, IMutableSubscribableTree,
     IProppedDatedMutation, ISubscribableTree,
     SetMutationTypes,
-    TreePropertyMutationTypes, TreePropertyNames
+    TreePropertyMutationTypes, TreePropertyNames, PointMutationTypes
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types'
@@ -19,9 +19,9 @@ class MutableSubscribableTreeLocation extends SubscribableTreeLocation implement
 
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
-        updatesCallbacks, proficiencyStats, aggregationTimer
+        updatesCallbacks, point
     }) {
-        super({updatesCallbacks, proficiencyStats, aggregationTimer})
+        super({updatesCallbacks, point})
     }
 
     public addMutation(mutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>
@@ -34,11 +34,8 @@ class MutableSubscribableTreeLocation extends SubscribableTreeLocation implement
             type: mutation.type,
         }
         switch (propertyName) {
-            case TreeLocationPropertyNames.PROFICIENCY_STATS:
-                this.proficiencyStats.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
-            case TreeLocationPropertyNames.AGGREGATION_TIMER:
-                this.aggregationTimer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case TreeLocationPropertyNames.POINT:
+                this.point.addMutation(propertyMutation as IDatedMutation<PointMutationTypes>)
                 break
             default:
                 throw new TypeError(

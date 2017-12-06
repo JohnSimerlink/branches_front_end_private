@@ -1,48 +1,50 @@
-// import {expect} from 'chai'
-// import * as sinon from 'sinon'
-// import {myContainer} from '../../../inversify.config';
-// import {SubscribableMutableField} from '../field/SubscribableMutableField';
-// import {
-//     IProficiencyStats,
-//     ISubscribableMutableField,
-//     ISubscribableMutableStringSet,
-// } from '../interfaces';
-// import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-// import {TYPES} from '../types';
-// import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
-// import {SubscribableTreeLocation} from './SubscribableTreeLocation';
-//
-// describe('SubscribableTreeLocation', () => {
-//     it('constructor should set all the subscribable properties', () => {
-//         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>()
-//         const aggregationTimer = new SubscribableMutableField<number>()
-//         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], proficiencyStats, aggregationTimer})
-//         expect(treeLocation.proficiencyStats).to.deep.equal(proficiencyStats)
-//         expect(treeLocation.aggregationTimer).to.deep.equal(aggregationTimer)
-//     })
-//     it('.val() should display the value of the object', () => {
-//         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>()
-//         const aggregationTimer = new SubscribableMutableField<number>()
-//         const TREE_ID = 'efa123'
-//         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], proficiencyStats, aggregationTimer})
-//
-//         const expectedVal = {
-//             proficiencyStats: proficiencyStats.val(),
-//             aggregationTimer: aggregationTimer.val(),
-//         }
-//
-//         expect(treeLocation.val()).to.deep.equal(expectedVal)
-//     })
-//     it('startPublishing() should call the onUpdate methods of all member Subscribable properties', () => {
-//         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>()
-//         const aggregationTimer = new SubscribableMutableField<number>()
-//         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], proficiencyStats, aggregationTimer})
-//
-//         const proficiencyStatsOnUpdateSpy = sinon.spy(proficiencyStats, 'onUpdate')
-//         const aggregationTimeOnUpdateSpy = sinon.spy(aggregationTimer, 'onUpdate')
-//
-//         treeLocation.startPublishing()
-//         expect(aggregationTimeOnUpdateSpy.callCount).to.deep.equal(1)
-//         expect(proficiencyStatsOnUpdateSpy.callCount).to.deep.equal(1)
-//     })
-// })
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {
+    IProficiencyStats,
+    ISubscribableMutableField,
+    ISubscribableMutableStringSet, ISubscribableUndoableMutablePoint,
+} from '../interfaces';
+import {SubscribableMutablePoint} from '../point/SubscribableMutablePoint';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {TYPES} from '../types';
+import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
+import {SubscribableTreeLocation} from './SubscribableTreeLocation';
+
+describe('SubscribableTreeLocation', () => {
+    it('constructor should set all the subscribable properties', () => {
+
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const point: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+
+        const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+        expect(treeLocation.point).to.deep.equal(point)
+    })
+    it('.val() should display the value of the object', () => {
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const point: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+
+        const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+
+        const expectedVal = {
+            point: point.val(),
+        }
+
+        expect(treeLocation.val()).to.deep.equal(expectedVal)
+    })
+    it('startPublishing() should call the onUpdate methods of all member Subscribable properties', () => {
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const point: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+        const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+
+        const pointOnUpdateSpy = sinon.spy(point, 'onUpdate')
+
+        treeLocation.startPublishing()
+        expect(pointOnUpdateSpy.callCount).to.deep.equal(1)
+    })
+})
