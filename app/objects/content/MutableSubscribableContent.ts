@@ -2,49 +2,44 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames,
-    FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
-    IProppedDatedMutation, ISubscribableTree,
-    SetMutationTypes,
-    TreePropertyMutationTypes, TreePropertyNames
+    ContentPropertyMutationTypes,
+    ContentPropertyNames, FieldMutationTypes,
+    IDatedMutation, IMutableSubscribableContent,
+    IProppedDatedMutation,
+    ISubscribableContent, SetMutationTypes
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types'
-import {SubscribableContentUser} from './SubscribableContent';
+import {SubscribableContent} from './SubscribableContent';
 
 @injectable()
-class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
+class MutableSubscribableContent extends SubscribableContent implements IMutableSubscribableContent {
 
     // TODO: should the below three objects be private?
-    constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
-    }) {
-        super({updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength})
+    constructor(@inject(TYPES.SubscribableContentArgs) {updatesCallbacks, type, title, question, answer}) {
+        super({updatesCallbacks, type, title, question, answer})
     }
 
-    public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
-    // TODO: this lack of typesafety between propertyName and MutationType is concerning
+    public addMutation(mutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>
+                       // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: ContentUserPropertyNames = mutation.propertyName
-        const propertyMutation: IDatedMutation<ContentUserPropertyMutationTypes> = {
+        const propertyName: ContentPropertyNames = mutation.propertyName
+        const propertyMutation: IDatedMutation<ContentPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
         }
         switch (propertyName) {
-            case ContentUserPropertyNames.LAST_RECORDED_STRENGTH:
-                this.lastRecordedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
-            case ContentUserPropertyNames.OVERDUE:
-                this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
-            case ContentUserPropertyNames.PROFICIENCY:
-                this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
-            case ContentUserPropertyNames.TIMER:
-                this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case ContentPropertyNames.TYPE:
+                this.type.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case ContentPropertyNames.TITLE:
+                this.title.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
+            case ContentPropertyNames.QUESTION:
+                this.question.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
+            case ContentPropertyNames.ANSWER:
+                this.answer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                // ^^ TODO: figure out a better typesafety solution. casting is kind of scary.
                 break;
             default:
                 throw new TypeError(
@@ -53,18 +48,9 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
         }
     }
 
-    public mutations(): Array<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+    public mutations(): Array<IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {
         throw new Error('Not Implemented!')
     }
 }
 
-@injectable()
-class SubscribableContentUserArgs {
-    @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
-    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
-    @inject(TYPES.ISubscribableMutableNumber) public timer: number
-}
-
-export {MutableSubscribableContentUser}
+export {MutableSubscribableContent}

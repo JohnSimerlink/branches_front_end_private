@@ -63,13 +63,6 @@ interface IMutableSubscribableContent
     extends ISubscribableContent,
         IMutable<IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {}
 
-enum ContentMutationTypes {
-    SET_TYPE,
-    SET_QUESTION,
-    SET_ANSWER,
-    SET_TITLE,
-}
-
 // contentUserData
 
 interface IContentUser {
@@ -109,12 +102,6 @@ interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
-enum ContentUserMutationTypes {
-    SET_PROFICIENCY,
-    SET_OVERDUE,
-    SET_STRENGTH,
-    INCREMENT_TIMER,
-}
 // dbSync
 
 interface IDatabaseSaver {
@@ -429,21 +416,27 @@ export {
     IApp,
 
     // contentItem
-    IContentData,
     IContentItem,
 
     // content
+    CONTENT_TYPES,
+    IContent,
+    ISubscribableContentCore,
+    IContentData,
+    ContentPropertyNames,
+    ISubscribableContent,
+    IMutableSubscribableContent,
+    ContentPropertyMutationTypes,
+
+    // contentUser
     ContentUserPropertyNames,
     IContentUser,
     IContentUserData,
     IDetailedUpdates,
     IMutableSubscribableContentUser,
     ISubscribableContentUserCore,
-    ISubscribableContent,
     ISubscribableContentUser,
     ContentUserPropertyMutationTypes,
-    ContentUserMutationTypes,
-    CONTENT_TYPES,
 
     // dbSync
     IFirebaseRef,
