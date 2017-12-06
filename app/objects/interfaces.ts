@@ -331,6 +331,11 @@ interface IMutableSubscribableContentUserStore
         IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
 }
 
+interface IMutableSubscribableContentStore
+    extends ISubscribableContentStore,
+        IMutable<IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {
+}
+
 interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdates>,
         ICoreSubscribableStore<IIdAndValUpdates, SubscribableCoreInterface> {}
 
@@ -339,6 +344,9 @@ interface ISubscribableTreeStore
 
 interface ISubscribableContentUserStore
     extends ISubscribableStore<ISubscribableContentUserCore> {}
+
+interface ISubscribableContentStore
+    extends ISubscribableStore<ISubscribableContentCore> {}
 
 type IValUpdates = any
 interface IIdAndValUpdates {
@@ -509,9 +517,11 @@ export {
     IUndoableMutable,
     ISubscribableStore,
     ISubscribableTreeStore,
+    ISubscribableContentUserStore,
+    ISubscribableContentStore,
     IMutableSubscribableTreeStore,
     IMutableSubscribableContentUserStore,
-    ISubscribableContentUserStore,
+    IMutableSubscribableContentStore,
 
     // subscribable
     updatesCallback,
