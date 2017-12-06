@@ -18,7 +18,7 @@ class CanvasUI implements IUI  {
         this.sigmaNodeHandler = sigmaNodeHandler
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        obj.onUpdate(this.sigmaNodeHandler.handleUpdate.bind(this))
+        obj.onUpdate(this.sigmaNodeHandler.handleUpdate.bind(this.sigmaNodeHandler))
     }
 }
 

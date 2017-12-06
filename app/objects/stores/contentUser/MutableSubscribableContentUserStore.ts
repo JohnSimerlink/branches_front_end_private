@@ -32,7 +32,9 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
             timestamp: mutation.timestamp,
             type: mutation.type,
         }
+        log('contentUser addMutation about to be called')
         contentUser.addMutation(proppedDatedMutation)
+        log('contentUser addMutation was called')
         // throw new Error("Method not implemented.");
     }
 }

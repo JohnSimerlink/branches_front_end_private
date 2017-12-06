@@ -1,7 +1,7 @@
 import {inject, injectable} from 'inversify';
 import {
-    IApp, IMutableSubscribableGlobalStore, ICanvasUI, ISubscriber,
-    ITypeAndIdAndValUpdates, IUI
+    IApp, IMutableSubscribableGlobalStore,
+    IUI
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';
 @injectable()

@@ -1,6 +1,7 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
 import 'reflect-metadata'
+import * as sinon from 'sinon'
 import {myContainer} from '../../inversify.config';
 import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
@@ -21,7 +22,6 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
-import * as sinon from 'sinon'
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
@@ -45,18 +45,17 @@ describe('App integration test 1', () => {
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
         const contentUserStore: IMutableSubscribableContentUserStore = (() => {
-            const store = {}
-            store[contentId] = contentUser
+            const source = {}
+            source[contentId] = contentUser
             return new MutableSubscribableContentUserStore({
-                store,
+                store: source,
                 updatesCallbacks: []
             })
         })()
 
         const treeStore: IMutableSubscribableTreeStore = (() => {
-            const store = {}
             return new MutableSubscribableTreeStore({
-                store,
+                store: {},
                 updatesCallbacks: []
             })
         })()
@@ -79,26 +78,10 @@ describe('App integration test 1', () => {
             data: true,
             timestamp: Date.now(),
         }
-        const contentUserStoreAddMutationSpy = sinon.spy(contentUserStore, 'addMutation')
-        const contentUserAddMutationSpy = sinon.spy(contentUser, 'addMutation')
-        const overdueAddMutationSpy = sinon.spy(overdue, 'addMutation')
-        const contentUserStoreCallCallbacksSpy = sinon.spy(contentUserStore, 'callCallbacks')
-        const contentUserCallCallbacksSpy = sinon.spy(contentUser, 'callCallbacks')
-        const overdueCallCallbacksSpy = sinon.spy(overdue, 'callCallbacks')
-        const storeCallCallbacksSpy = sinon.spy(store, 'callCallbacks')
-        const sigmaNodeHandlerHandleUpdateSpy = sinon.spy(sigmaNodeHandler, 'handleUpdate')
         expect(sigmaNode1.overdue).to.not.equal(true)
         expect(sigmaNode2.overdue).to.not.equal(true)
         store.addMutation(mutation)
-        expect(contentUserStoreAddMutationSpy.callCount).to.equal(1)
-        expect(contentUserAddMutationSpy.callCount).to.equal(1)
-        expect(overdueAddMutationSpy.callCount).to.equal(1)
-        expect(overdueCallCallbacksSpy.callCount).to.equal(1)
-        // expect(contentUserCallCallbacksSpy.callCount).to.equal(1)
-        // expect(contentUserStoreCallCallbacksSpy.callCount).to.equal(1)
-        // expect(sigmaNodeHandlerHandleUpdateSpy.callCount).to.equal(1)
-        // expect(sigmaNode1.overdue).to.equal(true)
-        // expect(sigmaNode2.overdue).to.equal(true)
-        // store
+        expect(sigmaNode1.overdue).to.equal(true)
+        expect(sigmaNode2.overdue).to.equal(true)
     })
 })
