@@ -63,7 +63,7 @@ interface IMutableSubscribableContent
     extends ISubscribableContent,
         IMutable<IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {}
 
-// contentUserData
+// contentUser
 
 interface IContentUser {
     overdue: IMutableField<boolean>
@@ -81,13 +81,6 @@ interface ISubscribableContentUserCore extends IContentUser {
     val(): IContentUserData
 }
 
-interface IContentUserData {
-    overdue: boolean,
-    timer: number,
-    proficiency: PROFICIENCIES,
-    lastRecordedStrength: number,
-}
-
 enum ContentUserPropertyNames {
     OVERDUE,
     TIMER,
@@ -101,6 +94,13 @@ ISubscribable<IValUpdates>, ISubscribableContentUserCore, IDescendantPublisher {
 interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
+
+interface IContentUserData {
+    overdue: boolean,
+    timer: number,
+    proficiency: PROFICIENCIES,
+    lastRecordedStrength: number,
+}
 
 // dbSync
 
@@ -200,22 +200,12 @@ enum PointMutationTypes {
     SHIFT
 }
 
-enum TreeMutationTypes {
-    ADD_CHILD,
-    REMOVE_CHILD,
-    CHANGE_PARENT,
-    CHANGE_CONTENT
-}
-
-enum TreeParentMutationTypes {
-    SET_ID
-}
-
 type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
+type TreeUserPropertyMutationTypes = FieldMutationTypes
 type ContentUserPropertyMutationTypes = FieldMutationTypes
 type ContentPropertyMutationTypes = FieldMutationTypes
-type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
 type AllPropertyMutationTypes = TreePropertyMutationTypes
+    | TreeUserPropertyMutationTypes
     | ContentUserPropertyMutationTypes
     | ContentPropertyMutationTypes
 
@@ -326,6 +316,11 @@ interface IMutableSubscribableTreeStore
         IMutable<IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
 }
 
+interface IMutableSubscribableTreeUserStore
+    extends ISubscribableTreeUserStore,
+        IMutable<IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>> {
+}
+
 interface IMutableSubscribableContentUserStore
     extends ISubscribableContentUserStore,
         IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
@@ -341,6 +336,9 @@ interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<II
 
 interface ISubscribableTreeStore
     extends ISubscribableStore<ISubscribableTreeCore> {}
+
+interface ISubscribableTreeUserStore
+    extends ISubscribableStore<ISubscribableTreeUserCore> {}
 
 interface ISubscribableContentUserStore
     extends ISubscribableStore<ISubscribableContentUserCore> {}
@@ -409,7 +407,30 @@ interface ISubscribableTree extends ISubscribable<IValUpdates>, ISubscribableTre
 interface IMutableSubscribableTree
     extends ISubscribableTree, IMutable<IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {}
 
-// treeUserData
+// treeUser
+
+interface ITreeUser {
+    proficiencyStats: IMutableField<IProficiencyStats>,
+    aggregationTimer: IMutableField<number>,
+}
+
+interface ISubscribableTreeUserCore extends ITreeUser {
+    proficiencyStats: ISubscribableMutableField<IProficiencyStats>,
+    aggregationTimer: ISubscribableMutableField<number>,
+    val(): ITreeUserData
+}
+
+enum TreeUserPropertyNames {
+    PROFICIENCY_STATS,
+    AGGREGATION_TIMER,
+}
+
+interface ISubscribableTreeUser extends
+    ISubscribable<IValUpdates>, ISubscribableTreeUserCore, IDescendantPublisher {}
+
+interface IMutableSubscribableTreeUser
+    extends ISubscribableTreeUser,
+        IMutable<IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>> {}
 
 interface ITreeUserData {
     proficiencyStats: IProficiencyStats,
@@ -482,9 +503,6 @@ export {
     ///
     SetMutationTypes,
     PointMutationTypes,
-    TreeMutationTypes,
-    TreeParentMutationTypes,
-    TreePropertyMutationTypes,
     AllPropertyMutationTypes,
 
     ObjectDataTypes,
@@ -517,9 +535,11 @@ export {
     IUndoableMutable,
     ISubscribableStore,
     ISubscribableTreeStore,
+    ISubscribableTreeUserStore,
     ISubscribableContentUserStore,
     ISubscribableContentStore,
     IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUserStore,
     IMutableSubscribableContentUserStore,
     IMutableSubscribableContentStore,
 
@@ -537,9 +557,14 @@ export {
     TreePropertyNames,
     ISubscribableTree,
     IMutableSubscribableTree,
+    TreePropertyMutationTypes,
 
     // treeUserData
     ITreeUserData,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames,
+    IMutableSubscribableTreeUser,
+    ISubscribableTreeUserCore,
 
     // ui
     IUI,
