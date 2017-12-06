@@ -2,6 +2,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {CONTENT_ID, CONTENT_ID2, TREE_ID} from '../../testHelpers/testHelpers';
+import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
@@ -9,20 +10,20 @@ import {
     ContentUserPropertyNames,
     FieldMutationTypes,
     IGlobalDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, ISubscribableContentStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
+    ISubscribableContentStore,
     ISubscribableContentUserStore,
     ObjectTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
+import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
 import {SubscribableContentUserStore} from './contentUser/SubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
-import {SubscribableContentStore} from './content/SubscribableContentStore';
-import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
-import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
+import {MutableSubscribableTreeUserStore} from './treeUser/MutableSubscribableTreeUserStore';
 
 describe('MutableSubscribableGlobalStore', () => {
     it('adding a tree mutation should call treeStore.addMutation(mutationObj)'
@@ -43,6 +44,11 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore( {
+            store,
+            updatesCallbacks: []
+        })
+
         const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
             store: {},
             updatesCallbacks: []
@@ -58,6 +64,7 @@ describe('MutableSubscribableGlobalStore', () => {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeUserStore,
                 updatesCallbacks: [],
             }
         )
@@ -115,11 +122,17 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
             {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeUserStore,
                 updatesCallbacks: [],
             }
         )
@@ -177,12 +190,17 @@ describe('MutableSubscribableGlobalStore', () => {
             store: {},
             updatesCallbacks: []
         })
+        const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore( {
+            store: {},
+            updatesCallbacks: []
+        })
 
         const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
             {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeUserStore,
                 updatesCallbacks: [],
             }
         )

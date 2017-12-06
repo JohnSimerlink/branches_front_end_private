@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
     IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
-    IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
     ISubscribableGlobalStore, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
@@ -20,12 +20,14 @@ implements ISubscribableGlobalStore {
     }
 
     protected treeStore: IMutableSubscribableTreeStore;
+    protected treeUserStore: IMutableSubscribableTreeUserStore;
     protected contentStore: IMutableSubscribableContentStore;
     protected contentUserStore: IMutableSubscribableContentUserStore;
     constructor(@inject(TYPES.GlobalStoreArgs){
-        treeStore, contentStore, contentUserStore, updatesCallbacks = []}) {
+        treeStore, treeUserStore, contentStore, contentUserStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.treeStore = treeStore
+        this.treeUserStore = treeUserStore
         this.contentStore = contentStore
         this.contentUserStore = contentUserStore
         // log('subscribableGlobalStore called')
@@ -43,14 +45,14 @@ implements ISubscribableGlobalStore {
             me.callCallbacks()
         })
         this.treeStore.startPublishing()
-        this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
+        this.treeUserStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectDataTypes.CONTENT_USER_DATA,
+                type: ObjectDataTypes.TREE_USER_DATA,
                 ...update
             }
             me.callCallbacks()
         })
-        this.contentUserStore.startPublishing()
+        this.treeUserStore.startPublishing()
         this.contentStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: ObjectDataTypes.CONTENT_DATA,
@@ -59,6 +61,14 @@ implements ISubscribableGlobalStore {
             me.callCallbacks()
         })
         this.contentStore.startPublishing()
+        this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
+            me.update = {
+                type: ObjectDataTypes.CONTENT_USER_DATA,
+                ...update
+            }
+            me.callCallbacks()
+        })
+        this.contentUserStore.startPublishing()
     }
 }
 
@@ -66,6 +76,7 @@ implements ISubscribableGlobalStore {
 class GlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.ISubscribableTreeStore) public treeStore
+    @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore
     @inject(TYPES.ISubscribableContentUserStore) public contentUserStore
     @inject(TYPES.ISubscribableContentStore) public contentStore
 }
