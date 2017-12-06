@@ -2,14 +2,15 @@ import {
     AllPropertyMutationTypes, ContentUserPropertyMutationTypes, ContentUserPropertyNames, IGlobalDatedMutation,
     IIdDatedMutation, IIdProppedDatedMutation,
     IMutableSubscribableGlobalStore,
-    ObjectTypes, TreeMutationTypes, TreePropertyMutationTypes, TreePropertyNames
+    ObjectTypes, TreeMutationTypes, TreePropertyMutationTypes, TreePropertyNames, ContentPropertyNames,
+    ContentPropertyMutationTypes
 } from '../interfaces';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 import {log} from '../../../app/core/log'
 
 class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
-    constructor({treeStore, contentUserStore, updatesCallbacks}) {
-        super({treeStore, contentUserStore, updatesCallbacks})
+    constructor({treeStore, contentUserStore, contentStore, updatesCallbacks}) {
+        super({treeStore, contentUserStore, contentStore, updatesCallbacks})
     }
     public addMutation(mutation: IGlobalDatedMutation<AllPropertyMutationTypes>) {
         switch (mutation.objectType) {
@@ -38,7 +39,20 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 }
                 this.contentUserStore.addMutation(contentUserStoreMutation)
-
+                break
+            }
+            case ObjectTypes.CONTENT: {
+                let propertyName: ContentPropertyNames = mutation.propertyName as ContentPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const contentStoreMutation:
+                    IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
+                }
+                this.contentStore.addMutation(contentStoreMutation)
                 break
             }
         }

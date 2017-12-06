@@ -8,7 +8,8 @@ import {SubscribableMutableField} from '../objects/field/SubscribableMutableFiel
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes,
-    IApp, IGlobalDatedMutation, IMutableSubscribableContentUserStore, IMutableSubscribableGlobalStore,
+    IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore,
     IMutableSubscribableTreeStore,
     ISigmaNode, ISigmaNodeHandler,
     IUI, ObjectTypes
@@ -22,6 +23,7 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
+import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
@@ -60,8 +62,15 @@ describe('App integration test 1', () => {
             })
         })()
 
+        const contentStore: IMutableSubscribableContentStore = (() => {
+            return new MutableSubscribableContentStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
         const store: IMutableSubscribableGlobalStore =
-            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore})
+            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]

@@ -373,7 +373,7 @@ interface IDescendantPublisher {
     startPublishing()
 }
 
-type AllPropertyNames = TreePropertyNames | ContentUserPropertyNames
+type AllPropertyNames = TreePropertyNames | ContentUserPropertyNames | ContentPropertyNames
 
 // tree
 interface ITree {

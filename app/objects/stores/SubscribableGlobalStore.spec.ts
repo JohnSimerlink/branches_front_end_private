@@ -6,11 +6,11 @@ import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
     ContentUserPropertyMutationTypes, ContentUserPropertyNames,
     FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
-    IProppedDatedMutation,
+    IProppedDatedMutation, ISubscribableContentStore,
     ISubscribableContentUserStore,
     ISubscribableGlobalStore,
     ISubscribableMutableField,
-    ISubscribableMutableStringSet, ISubscribableStore, ISubscribableTreeCore, ISubscribableTreeStore,
+    ISubscribableMutableStringSet, ISubscribableTreeStore,
     TreePropertyNames
 } from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
@@ -23,6 +23,7 @@ import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 import {SubscribableTreeStore} from './tree/SubscribableTreeStore';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
+import {SubscribableContentStore} from './content/SubscribableContentStore';
 
 describe('ISubscribableGlobalStore', () => {
     it(' calling startPublishing on GlobalStore, should call onUpdate on each of the component Stores', () => {
@@ -45,8 +46,13 @@ describe('ISubscribableGlobalStore', () => {
             store: {},
             updatesCallbacks: []
         })
+        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
+            store: {},
+            updatesCallbacks: []
+        })
         const globalStore = new SubscribableGlobalStore(
             {
+                contentStore,
                 contentUserStore,
                 treeStore,
                 updatesCallbacks: [],
@@ -90,8 +96,14 @@ describe('ISubscribableGlobalStore', () => {
             store: {},
             updatesCallbacks: []
         })
+        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
+            store: {},
+            updatesCallbacks: []
+        })
+        // TODO FINISH UPDATING THIS FILE
         const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
             {
+                contentStore,
                 contentUserStore,
                 treeStore,
                 updatesCallbacks: [],
@@ -152,8 +164,14 @@ describe('ISubscribableGlobalStore', () => {
             store: {},
             updatesCallbacks: []
         })
+
+        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
+            store: {},
+            updatesCallbacks: []
+        })
         const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
             {
+                contentStore,
                 contentUserStore,
                 treeStore,
                 updatesCallbacks: [],
@@ -216,8 +234,13 @@ describe('ISubscribableGlobalStore', () => {
         store: {},
         updatesCallbacks: []
     })
+    const contentStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
+        store: {},
+        updatesCallbacks: []
+    })
     const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
         {
+            contentStore,
             contentUserStore,
             treeStore,
             updatesCallbacks: [],
