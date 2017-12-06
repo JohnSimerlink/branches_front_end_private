@@ -202,10 +202,12 @@ enum PointMutationTypes {
 
 type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 type TreeUserPropertyMutationTypes = FieldMutationTypes
+type TreeLocationPropertyMutationTypes = PointMutationTypes
 type ContentUserPropertyMutationTypes = FieldMutationTypes
 type ContentPropertyMutationTypes = FieldMutationTypes
 type AllPropertyMutationTypes = TreePropertyMutationTypes
     | TreeUserPropertyMutationTypes
+    | TreeLocationPropertyMutationTypes
     | ContentUserPropertyMutationTypes
     | ContentPropertyMutationTypes
 
@@ -234,6 +236,9 @@ interface IPoint {
     val(): ICoordinate,
     // Points can have their coordinate shifted by another coordinate
 }
+interface IUndoableMutablePoint extends IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPoint { }
+
+interface ISubscribableUndoableMutablePoint extends ISubscribable<IDetailedUpdates>, IUndoableMutablePoint { }
 
 // proficiencyStats
 
@@ -321,6 +326,11 @@ interface IMutableSubscribableTreeUserStore
         IMutable<IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>> {
 }
 
+interface IMutableSubscribableTreeLocationStore
+    extends ISubscribableTreeLocationStore,
+        IMutable<IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {
+}
+
 interface IMutableSubscribableContentUserStore
     extends ISubscribableContentUserStore,
         IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
@@ -340,6 +350,9 @@ interface ISubscribableTreeStore
 interface ISubscribableTreeUserStore
     extends ISubscribableStore<ISubscribableTreeUserCore> {}
 
+interface ISubscribableTreeLocationStore
+    extends ISubscribableStore<ISubscribableTreeLocationCore> {}
+
 interface ISubscribableContentUserStore
     extends ISubscribableStore<ISubscribableContentUserCore> {}
 
@@ -354,7 +367,7 @@ interface IIdAndValUpdates {
 interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
     type: ObjectDataTypes
 }
-type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData & IContentData & IContentUserData & ICoordinate
+type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData & ITreeLocationData & IContentData & IContentUserData & ICoordinate
 
 // subscribable
 type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
@@ -371,7 +384,7 @@ interface IDescendantPublisher {
     startPublishing()
 }
 
-type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames | ContentUserPropertyNames | ContentPropertyNames
+type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames | TreeLocationPropertyNames | ContentUserPropertyNames | ContentPropertyNames
 
 // tree
 interface ITree {
@@ -435,6 +448,31 @@ interface IMutableSubscribableTreeUser
 interface ITreeUserData {
     proficiencyStats: IProficiencyStats,
     aggregationTimer: number,
+}
+
+// treeLocation
+interface ITreeLocation {
+    point: IUndoableMutablePoint,
+}
+
+interface ISubscribableTreeLocationCore extends ITreeLocation {
+    point: ISubscribableUndoableMutablePoint,
+    val(): ITreeLocationData
+}
+
+enum TreeLocationPropertyNames {
+    POINT,
+}
+
+interface ISubscribableTreeLocation extends
+    ISubscribable<IValUpdates>, ISubscribableTreeLocationCore, IDescendantPublisher {}
+
+interface IMutableSubscribableTreeLocation
+    extends ISubscribableTreeLocation,
+        IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
+
+interface ITreeLocationData {
+    point: ICoordinate,
 }
 
 // ui
@@ -511,9 +549,13 @@ export {
     // point
     ICoordinate,
     IPoint,
+    IUndoableMutablePoint,
+    ISubscribableUndoableMutablePoint,
 
     // proficiencyStats
     IProficiencyStats,
+
+    // point
 
     // sigmaNode
     fGetSigmaIdsForContentId,
@@ -566,6 +608,13 @@ export {
     IMutableSubscribableTreeUser,
     ISubscribableTreeUserCore,
     ITreeUserData,
+    // treeLocation
+    ISubscribableTreeLocation,
+    TreeLocationPropertyMutationTypes,
+    TreeLocationPropertyNames,
+    IMutableSubscribableTreeLocation,
+    ISubscribableTreeLocationCore,
+    ITreeLocationData,
 
     // ui
     IUI,

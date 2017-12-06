@@ -6,13 +6,13 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 
 @injectable()
-class DBSubscriberToTreeUser implements IDBSubscriber {
+class DBSubscriberToTreeLocation implements IDBSubscriber {
     private proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
     private aggregationTimer: ISubscribableMutableField<number>;
     private proficiencyStatsSyncer: IDatabaseSyncer;
     private aggregationTimerSyncer: IDatabaseSyncer;
 
-    constructor(@inject(TYPES.DBSubscriberToTreeUserArgs) {
+    constructor(@inject(TYPES.DBSubscriberToTreeLocationArgs) {
       proficiencyStats, aggregationTimer,
       proficiencyStatsSyncer, aggregationTimerSyncer,
     }) {
@@ -28,10 +28,10 @@ class DBSubscriberToTreeUser implements IDBSubscriber {
     }
 }
 @injectable()
-class DBSubscriberToTreeUserArgs {
+class DBSubscriberToTreeLocationArgs {
     @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats
     @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer
     @inject(TYPES.IDatabaseSyncer) private proficiencyStatsSyncer: IDatabaseSyncer;
     @inject(TYPES.IDatabaseSyncer) private aggregationTimerSyncer: IDatabaseSyncer;
 }
-export {DBSubscriberToTreeUser, DBSubscriberToTreeUserArgs}
+export {DBSubscriberToTreeLocation, DBSubscriberToTreeLocationArgs}
