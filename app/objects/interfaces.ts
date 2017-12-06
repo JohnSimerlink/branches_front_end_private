@@ -1,5 +1,4 @@
 // tslint:disable no-empty-interface
-import {CONTENT_TYPES} from './contentItem/ContentTypes';
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
 
@@ -25,6 +24,14 @@ interface IContentItem {
     lastRecordedStrength,
     overdue,
     isNew(),
+}
+
+// content
+
+enum CONTENT_TYPES {
+    SKILL = 'skill',
+    CATEGORY = 'heading', // heading, bc of backwards compatability
+    FACT = 'fact',
 }
 
 // contentUserData
@@ -386,7 +393,7 @@ export {
     IContentData,
     IContentItem,
 
-    // contentUser
+    // content
     ContentUserPropertyNames,
     IContentUser,
     IContentUserData,
@@ -396,6 +403,7 @@ export {
     ISubscribableContentUser,
     ContentUserPropertyMutationTypes,
     ContentUserMutationTypes,
+    CONTENT_TYPES,
 
     // dbSync
     IFirebaseRef,

@@ -2,7 +2,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {CONTENT_TYPES} from '../contentItem/ContentTypes';
+import {CONTENT_TYPES} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {ITreeDataWithoutId, IContentData, IContentUserData,
     ICoordinate, ISigmaNode, ITreeUserData} from '../interfaces';

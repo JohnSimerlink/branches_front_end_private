@@ -74,7 +74,7 @@ describe('MutableSubscribableGlobalStore', () => {
         expect(storeAddMutationSpy.callCount).to.deep.equal(1)
 
     })
-    it('adding a contentUser mutation should call contentUserStore.addMutation(mutationObj)'
+    it('adding a content mutation should call contentUserStore.addMutation(mutationObj)'
         + ' but without the objectType in mutationObj', () => {
 
         // contentUserStore

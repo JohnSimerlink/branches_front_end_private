@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import {myContainer} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
-import {CONTENT_TYPES} from '../contentItem/ContentTypes';
+import {CONTENT_TYPES} from '../interfaces';
 import {ContentUserDataUtils } from '../contentUserData/ContentUserDataUtils';
 import {ITreeDataWithoutId, IContentData,
     IContentUserData, ICoordinate, IProficiencyStats,
