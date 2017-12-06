@@ -2,50 +2,44 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames,
     FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
+    IDatedMutation, IMutableSubscribableTreeUser, IMutableSubscribableTree,
     IProppedDatedMutation, ISubscribableTree,
     SetMutationTypes,
     TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types'
-import {SubscribableContentUser} from './SubscribableTreeUser';
+import {SubscribableTreeUser} from './SubscribableTreeUser';
 
 @injectable()
-class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
+class MutableSubscribableTreeUser extends SubscribableTreeUser implements IMutableSubscribableTreeUser {
 
     // TODO: should the below three objects be private?
-    constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
+    constructor(@inject(TYPES.SubscribableTreeUserArgs) {
+        updatesCallbacks, proficiencyStats, aggregationTimer
     }) {
-        super({updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength})
+        super({updatesCallbacks, proficiencyStats, aggregationTimer})
     }
 
-    public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
+    public addMutation(mutation: IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
     // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: ContentUserPropertyNames = mutation.propertyName
-        const propertyMutation: IDatedMutation<ContentUserPropertyMutationTypes> = {
+        const propertyName: TreeUserPropertyNames = mutation.propertyName
+        const propertyMutation: IDatedMutation<TreeUserPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
         }
         switch (propertyName) {
-            case ContentUserPropertyNames.LAST_RECORDED_STRENGTH:
-                this.lastRecordedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case TreeUserPropertyNames.PROFICIENCY_STATS:
+                this.proficiencyStats.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
-            case ContentUserPropertyNames.OVERDUE:
-                this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case TreeUserPropertyNames.AGGREGATION_TIMER:
+                this.aggregationTimer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
-            case ContentUserPropertyNames.PROFICIENCY:
-                this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
-            case ContentUserPropertyNames.TIMER:
-                this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
@@ -53,18 +47,9 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
         }
     }
 
-    public mutations(): Array<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+    public mutations(): Array<IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>> {
         throw new Error('Not Implemented!')
     }
 }
 
-@injectable()
-class SubscribableContentUserArgs {
-    @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
-    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
-    @inject(TYPES.ISubscribableMutableNumber) public timer: number
-}
-
-export {MutableSubscribableContentUser}
+export {MutableSubscribableTreeUser}

@@ -2,41 +2,36 @@
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    IContentUserData,
-    ISubscribableContentUser,
+    IProficiencyStats,
     ISubscribableMutableField,
+    ISubscribableTreeUser,
+    ITreeUserData,
     IValUpdates,
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
+class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscribableTreeUser {
     private publishing = false
-    public overdue: ISubscribableMutableField<boolean>;
-    public timer: ISubscribableMutableField<number>;
-    public proficiency: ISubscribableMutableField<PROFICIENCIES>;
-    public lastRecordedStrength: ISubscribableMutableField<number>;
+    public proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
+    public aggregationTimer: ISubscribableMutableField<number>;
 
     // TODO: should the below three objects be private?
-    public val(): IContentUserData {
+    public val(): ITreeUserData {
         return {
-            lastRecordedStrength: this.lastRecordedStrength.val(),
-            overdue: this.overdue.val(),
-            proficiency: this.proficiency.val(),
-            timer: this.timer.val(),
+            proficiencyStats: this.proficiencyStats.val(),
+            aggregationTimer: this.aggregationTimer.val(),
         }
     }
-    constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
+    constructor(@inject(TYPES.SubscribableTreeUserArgs) {
+        updatesCallbacks, proficiencyStats, aggregationTimer
     }) {
         super({updatesCallbacks})
-        this.overdue = overdue
-        this.proficiency = proficiency
-        this.timer = timer
-        this.lastRecordedStrength = lastRecordedStrength
+        this.proficiencyStats = proficiencyStats
+        this.aggregationTimer = aggregationTimer
     }
+    // TODO: make IValUpdates a generic that takes for example ITreeUserData
     protected callbackArguments(): IValUpdates {
         return this.val()
     }
@@ -46,20 +41,16 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
         }
         this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
-        this.overdue.onUpdate(boundCallCallbacks)
-        this.proficiency.onUpdate(boundCallCallbacks)
-        this.timer.onUpdate(boundCallCallbacks)
-        this.lastRecordedStrength.onUpdate(boundCallCallbacks)
+        this.proficiencyStats.onUpdate(boundCallCallbacks)
+        this.aggregationTimer.onUpdate(boundCallCallbacks)
     }
 }
 
 @injectable()
-class SubscribableContentUserArgs {
+class SubscribableTreeUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
-    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
-    @inject(TYPES.ISubscribableMutableNumber) public timer: number
+    @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats: IProficiencyStats
+    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer: number
 }
 
-export {SubscribableContentUser, SubscribableContentUserArgs}
+export {SubscribableTreeUser, SubscribableTreeUserArgs}

@@ -559,12 +559,13 @@ export {
     IMutableSubscribableTree,
     TreePropertyMutationTypes,
 
-    // treeUserData
-    ITreeUserData,
+    // treeUser
+    ISubscribableTreeUser,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames,
     IMutableSubscribableTreeUser,
     ISubscribableTreeUserCore,
+    ITreeUserData,
 
     // ui
     IUI,
