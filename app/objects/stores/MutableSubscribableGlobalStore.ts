@@ -28,16 +28,18 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                 break
             }
             case ObjectTypes.TREE_USER: {
-                // const propertyName: TreeUserPropertyNames = mutation.propertyName as TreeUserPropertyNames
-                // // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
-                // const treeUserStoreMutation: IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames> = {
-                //     data: mutation.data,
-                //     id: mutation.id,
-                //     propertyName,
-                //     timestamp: mutation.timestamp,
-                //     type: mutation.type,
-                // }
-                // this.treeUserStore.addMutation(treeUserStoreMutation)
+                const propertyName: TreeUserPropertyNames = mutation.propertyName as TreeUserPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const treeUserStoreMutation:
+                    IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames> = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type: mutation.type,
+                } as IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
+                // ^^ TODO: figure out why I need this cast but not in the other cases on the switch . . .
+                this.treeUserStore.addMutation(treeUserStoreMutation)
                 break
             }
             case ObjectTypes.CONTENT_USER: {
