@@ -1,6 +1,8 @@
 import {expect} from 'chai'
 import 'reflect-metadata'
-import {PointMutationTypes} from '../interfaces';
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {IDatedMutation, ISubscribableUndoableMutablePoint, PointMutationTypes} from '../interfaces';
 import {SubscribableMutablePoint} from './SubscribableMutablePoint'
 
 // import {Point} from '../app/objects/point/point'
@@ -21,7 +23,7 @@ TODO: For MY Mutation tests, for performance reasons,
  - Being able to get the current coordinate value
  - Having those 3 specs appropriately adjust the coordinate value
   */
-describe('Point', () => {
+describe('Point > Mutable', () => {
     // FIRST_MUTATION_VALUE is {x: 5, y: 7}
     // const po = new SubscribableMutablePoint({x:5, y:6})
     const FIRST_POINT_VALUE = {x: 5, y: 7}
@@ -135,5 +137,43 @@ describe('Point', () => {
      been undone (or that has been redone),
      and point val should still be the same`, () => {
         expect(() => point.redo(FOURTH_MUTATION_INDEX)).to.throw(RangeError)
+    })
+})
+
+describe('Point > Subscribable', () => {
+    it('Adding a mutation, should trigger an update for one of the subscribers ', () => {
+
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const MUTATION_VALUE = {x: 3, y: 4}
+        const subscribableMutablePoint: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+        const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
+        const mutation: IDatedMutation<PointMutationTypes> = {
+            timestamp: Date.now(),
+            type: PointMutationTypes.SHIFT,
+            data: {delta: {...MUTATION_VALUE}},
+        }
+
+        subscribableMutablePoint.onUpdate(callback)
+        subscribableMutablePoint.addMutation(mutation)
+        expect(callback.callCount).to.equal(1)
+    })
+    it('Adding a mutation, should trigger an update for multiple subscribers ', () => {
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const MUTATION_VALUE = {x: 3, y: 4}
+        const subscribableMutablePoint: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+        const callback1 = sinon.spy() // (updates: IDetailedUpdates) => void 0
+        const callback2 = sinon.spy() // (updates: IDetailedUpdates) => void 0
+        const mutation: IDatedMutation<PointMutationTypes> = {
+            timestamp: Date.now(),
+            type: PointMutationTypes.SHIFT,
+            data: {delta: {...MUTATION_VALUE}},
+        }
+        subscribableMutablePoint.onUpdate(callback1)
+        subscribableMutablePoint.onUpdate(callback2)
+        subscribableMutablePoint.addMutation(mutation)
+        expect(callback1.callCount).to.equal(1)
+        expect(callback2.callCount).to.equal(1)
     })
 })
