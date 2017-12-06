@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {PointMutationTypes} from '../interfaces';
-import {Point} from './SubscribableMutablePoint'
+import {SubscribableMutablePoint} from './SubscribableMutablePoint'
 
 // import {Point} from '../app/objects/point/point'
 /*
@@ -23,7 +23,7 @@ TODO: For MY Mutation tests, for performance reasons,
   */
 describe('Point', () => {
     // FIRST_MUTATION_VALUE is {x: 5, y: 7}
-    // const po = new Point({x:5, y:6})
+    // const po = new SubscribableMutablePoint({x:5, y:6})
     const FIRST_POINT_VALUE = {x: 5, y: 7}
     const SECOND_MUTATION_VALUE = {x: 3, y: 4}
     const SECOND_POINT_VALUE = {
@@ -49,8 +49,8 @@ describe('Point', () => {
         x: FIFTH_POINT_VALUE.x - SECOND_MUTATION_VALUE.x,
         y: FIFTH_POINT_VALUE.y - SECOND_MUTATION_VALUE.y
     }
-    // const point = new Point(FIRST_POINT_VALUE.x, FIRST_POINT_VALUE.y)
-    const point = new Point(FIRST_POINT_VALUE)
+    // const point = new SubscribableMutablePoint(FIRST_POINT_VALUE.x, FIRST_POINT_VALUE.y)
+    const point = new SubscribableMutablePoint({...FIRST_POINT_VALUE, updatesCallbacks: []})
     const FIRST_MUTATION_INDEX = 0
     const SECOND_MUTATION_INDEX = 1
     const THIRD_MUTATION_INDEX = 2
