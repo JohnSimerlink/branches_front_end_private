@@ -10,13 +10,6 @@ interface IApp {
 
 // contentItem
 
-interface IContentData {
-    type: CONTENT_TYPES;
-    question?: string;
-    answer?: string;
-    title?: string;
-}
-
 // TODO: this is a really pathological interface. This should really be for IContentUserData or something
 interface IContentItem {
     interactions,
@@ -32,6 +25,49 @@ enum CONTENT_TYPES {
     SKILL = 'skill',
     CATEGORY = 'heading', // heading, bc of backwards compatability
     FACT = 'fact',
+}
+
+interface IContent {
+    type: IMutableField<CONTENT_TYPES>;
+    question: IMutableField<string>;
+    answer: IMutableField<string>;
+    title: IMutableField<string>;
+}
+
+interface ISubscribableContentCore extends IContent {
+    type: ISubscribableMutableField<CONTENT_TYPES>;
+    question: ISubscribableMutableField<string>;
+    answer: ISubscribableMutableField<string>;
+    title: ISubscribableMutableField<string>;
+    val(): IContentData
+}
+
+interface IContentData {
+    type: CONTENT_TYPES;
+    question?: string;
+    answer?: string;
+    title?: string;
+}
+
+enum ContentPropertyNames {
+    TYPE,
+    QUESTION,
+    ANSWER,
+    TITLE,
+}
+
+interface ISubscribableContent extends
+    ISubscribable<IValUpdates>, ISubscribableContentCore, IDescendantPublisher {}
+
+interface IMutableSubscribableContent
+    extends ISubscribableContent,
+        IMutable<IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {}
+
+enum ContentMutationTypes {
+    SET_TYPE,
+    SET_QUESTION,
+    SET_ANSWER,
+    SET_TITLE,
 }
 
 // contentUserData
@@ -190,8 +226,11 @@ enum TreeParentMutationTypes {
 
 type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 type ContentUserPropertyMutationTypes = FieldMutationTypes
+type ContentPropertyMutationTypes = FieldMutationTypes
 type AllObjectMutationTypes =  PointMutationTypes | TreeMutationTypes | TreeParentMutationTypes
-type AllPropertyMutationTypes = TreePropertyMutationTypes | ContentUserPropertyMutationTypes
+type AllPropertyMutationTypes = TreePropertyMutationTypes
+    | ContentUserPropertyMutationTypes
+    | ContentPropertyMutationTypes
 
 enum ObjectDataTypes {
     TREE_DATA,
@@ -400,6 +439,7 @@ export {
     IDetailedUpdates,
     IMutableSubscribableContentUser,
     ISubscribableContentUserCore,
+    ISubscribableContent,
     ISubscribableContentUser,
     ContentUserPropertyMutationTypes,
     ContentUserMutationTypes,
