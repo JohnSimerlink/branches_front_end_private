@@ -43,6 +43,7 @@ const TYPES = {
     ISubscribableStore_ISubscribableTreeCore: Symbol('ISubscribableStore_ISubscribableTreeCore'),
     ISubscribableTree: Symbol('ISubscribableTreeCore'),
     ISubscribableTreeUser: Symbol('ISubscribableTreeUser'),
+    ISubscribableTreeUserStore: Symbol('ISubscribableTreeUserStore'),
     ISubscribableTreeStore: Symbol('ISubscribableTreeStore'),
     ISubscriber_ITypeAndIdAndValUpdates_Array: Symbol('ISubscriber_ITypeAndIdAndValUpdates_Array'),
     ITree: Symbol('ITree'),

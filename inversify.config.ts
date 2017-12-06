@@ -16,7 +16,7 @@ import {
 import {
     CONTENT_TYPES,
     fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableContent,
-    ISubscribableGlobalStore
+    ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeUser
 } from './app/objects/interfaces';
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
@@ -48,6 +48,7 @@ import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/Subscri
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
+import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -83,7 +84,8 @@ myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler
 myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
 myContainer.bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
-myContainer.bind<ISubscribableTreeCore>(TYPES.ISubscribableTree).to(SubscribableTree)
+myContainer.bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
+myContainer.bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
 myContainer.bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
 myContainer.bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
 myContainer.bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
@@ -92,6 +94,8 @@ myContainer.bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableSt
 myContainer.bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMutableContentType)
+    .to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
@@ -121,6 +125,7 @@ myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
 myContainer.bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
+myContainer.bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
 myContainer.bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     .toConstantValue((updates: IDetailedUpdates) => void 0)
 myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);

@@ -29,6 +29,11 @@ describe('App', () => {
             updatesCallbacks: []
         })
 
+        const treeUserStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
             store: {},
             updatesCallbacks: []
@@ -44,6 +49,7 @@ describe('App', () => {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeUserStore,
                 updatesCallbacks: [],
             }
         )

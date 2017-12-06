@@ -11,7 +11,7 @@ import {
     ContentUserPropertyNames, FieldMutationTypes,
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore,
-    IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
     ISigmaNode, ISigmaNodeHandler,
     IUI, ObjectTypes
 } from '../objects/interfaces';
@@ -26,6 +26,7 @@ import {CONTENT_ID, CONTENT_ID2, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} 
 import {App} from './app';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
+import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 describe('App integration test 1', () => {
@@ -64,6 +65,13 @@ describe('App integration test 1', () => {
             })
         })()
 
+        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
+            return new MutableSubscribableTreeUserStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
         const contentStore: IMutableSubscribableContentStore = (() => {
             return new MutableSubscribableContentStore({
                 store: {},
@@ -72,7 +80,7 @@ describe('App integration test 1', () => {
         })()
 
         const store: IMutableSubscribableGlobalStore =
-            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore, contentStore})
+            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]
@@ -128,6 +136,13 @@ describe('App integration test 1', () => {
             })
         })()
 
+        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
+            return new MutableSubscribableTreeUserStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
         const contentStore: IMutableSubscribableContentStore = (() => {
             const source = {}
             source[contentId] = content
@@ -138,7 +153,8 @@ describe('App integration test 1', () => {
         })()
 
         const store: IMutableSubscribableGlobalStore =
-            new MutableSubscribableGlobalStore({updatesCallbacks: [], contentUserStore, treeStore, contentStore})
+            new MutableSubscribableGlobalStore(
+                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]
