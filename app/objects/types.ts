@@ -26,6 +26,7 @@ const TYPES = {
     ISigmaNodeData: Symbol('ISigmaNodeData'),
     ISigmaNodeHandler: Symbol('ISigmaNodeHandler'),
     ICanvasUI: Symbol('ICanvasUI'),
+    ISubscribableContent: Symbol('ISubscribableContent'),
     ISubscribableContentUser: Symbol('ISubscribableContentUser'),
     ISubscribableGlobalStore: Symbol('ISubscribableGlobalStore'),
     ISubscribableMutableBoolean: Symbol('ISubscribableMutableBoolean'),

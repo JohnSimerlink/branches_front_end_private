@@ -1,51 +1,51 @@
-// import {expect} from 'chai'
-// import * as sinon from 'sinon'
-// import {myContainer} from '../../../inversify.config';
-// import {IDatabaseSyncer, IDBSubscriber, ISubscribableContentUser} from '../interfaces';
-// import {TYPES} from '../types';
-// import {DBSubscriberToContentUser} from './DBSubscriberToContent';
-//
-// describe('IDBSubscriber > DBSubscriberToContentUser', () => {
-//     let subscribableContentUser
-//     let overdueSyncer: IDatabaseSyncer
-//     let proficiencySyncer: IDatabaseSyncer
-//     let lastRecordedStrengthSyncer: IDatabaseSyncer
-//     let timerSyncer: IDatabaseSyncer
-//     let dbSubscriberToContentUser: IDBSubscriber
-//     beforeEach('constructor', () => {
-//         subscribableContentUser = myContainer.get<ISubscribableContentUser>(TYPES.ISubscribableContentUser)
-//         overdueSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-//         proficiencySyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-//         lastRecordedStrengthSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-//         timerSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-//         dbSubscriberToContentUser = new DBSubscriberToContentUser(
-//             {
-//                 lastRecordedStrength: subscribableContentUser.lastRecordedStrength,
-//                 lastRecordedStrengthSyncer,
-//                 overdue: subscribableContentUser.overdue,
-//                 overdueSyncer,
-//                 proficiency: subscribableContentUser.proficiency,
-//                 proficiencySyncer,
-//                 timer: subscribableContentUser.timer,
-//                 timerSyncer,
-//             }
-//         )
-//     })
-//     it('subscribe should call subscribe on each of the database syncers', () => {
-//         const overdueSyncerSubscribeSpy = sinon.spy(overdueSyncer, 'subscribe')
-//         const proficiencySyncerSubscribeSpy = sinon.spy(proficiencySyncer, 'subscribe')
-//         const lastRecordedStrengthSyncerSubscribeSpy = sinon.spy(lastRecordedStrengthSyncer, 'subscribe')
-//         const timerSyncerSubscribeSpy = sinon.spy(timerSyncer, 'subscribe')
-//         expect(overdueSyncerSubscribeSpy.callCount).to.equal(0)
-//         expect(proficiencySyncerSubscribeSpy.callCount).to.equal(0)
-//         expect(lastRecordedStrengthSyncerSubscribeSpy.callCount).to.equal(0)
-//         expect(timerSyncerSubscribeSpy.callCount).to.equal(0)
-//
-//         dbSubscriberToContentUser.subscribe()
-//
-//         expect(overdueSyncerSubscribeSpy.callCount).to.equal(1)
-//         expect(proficiencySyncerSubscribeSpy.callCount).to.equal(1)
-//         expect(lastRecordedStrengthSyncerSubscribeSpy.callCount).to.equal(1)
-//         expect(timerSyncerSubscribeSpy.callCount).to.equal(1)
-//      })
-// })
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {IDatabaseSyncer, IDBSubscriber, ISubscribableContent} from '../interfaces';
+import {TYPES} from '../types';
+import {DBSubscriberToContent} from './DBSubscriberToContent';
+
+describe('IDBSubscriber > DBSubscriberToContent', () => {
+    let subscribableContent
+    let typeSyncer: IDatabaseSyncer
+    let titleSyncer: IDatabaseSyncer
+    let questionSyncer: IDatabaseSyncer
+    let answerSyncer: IDatabaseSyncer
+    let dbSubscriberToContent: IDBSubscriber
+    beforeEach('constructor', () => {
+        subscribableContent = myContainer.get<ISubscribableContent>(TYPES.ISubscribableContent)
+        typeSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+        titleSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+        questionSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+        answerSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+        dbSubscriberToContent = new DBSubscriberToContent(
+            {
+                question: subscribableContent.question,
+                questionSyncer,
+                type: subscribableContent.type,
+                typeSyncer,
+                title: subscribableContent.title,
+                titleSyncer,
+                answer: subscribableContent.answer,
+                answerSyncer,
+            }
+        )
+    })
+    it('subscribe should call subscribe on each of the database syncers', () => {
+        const typeSyncerSubscribeSpy = sinon.spy(typeSyncer, 'subscribe')
+        const titleSyncerSubscribeSpy = sinon.spy(titleSyncer, 'subscribe')
+        const questionSyncerSubscribeSpy = sinon.spy(questionSyncer, 'subscribe')
+        const answerSyncerSubscribeSpy = sinon.spy(answerSyncer, 'subscribe')
+        expect(typeSyncerSubscribeSpy.callCount).to.equal(0)
+        expect(titleSyncerSubscribeSpy.callCount).to.equal(0)
+        expect(questionSyncerSubscribeSpy.callCount).to.equal(0)
+        expect(answerSyncerSubscribeSpy.callCount).to.equal(0)
+
+        dbSubscriberToContent.subscribe()
+
+        expect(typeSyncerSubscribeSpy.callCount).to.equal(1)
+        expect(titleSyncerSubscribeSpy.callCount).to.equal(1)
+        expect(questionSyncerSubscribeSpy.callCount).to.equal(1)
+        expect(answerSyncerSubscribeSpy.callCount).to.equal(1)
+     })
+})

@@ -1,5 +1,6 @@
 import {Container} from 'inversify'
 import 'reflect-metadata'
+import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
 import {
     SubscribableContentUser,
@@ -12,8 +13,11 @@ import {
     SubscribableMutableField,
     SubscribableMutableFieldArgs
 } from './app/objects/field/SubscribableMutableField';
-import {fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableGlobalStore} from './app/objects/interfaces';
-import {IDatedMutation} from './app/objects/interfaces';
+import {
+    CONTENT_TYPES,
+    fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableContent,
+    ISubscribableGlobalStore
+} from './app/objects/interfaces';
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
@@ -22,19 +26,20 @@ import {
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
+import {IDatedMutation} from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
     SubscribableMutableStringSet,
     SubscribableMutableStringSetArgs
 } from './app/objects/set/SubscribableMutableStringSet';
-import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
-import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
 import {
     CanvasUI,
     CanvasUIArgs
 } from './app/objects/sigmaNode/CanvasUI';
+import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
+import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
+import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
 import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
 import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
@@ -75,6 +80,7 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
 })
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
+myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
 myContainer.bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
 myContainer.bind<ISubscribableTreeCore>(TYPES.ISubscribableTree).to(SubscribableTree)
@@ -84,6 +90,8 @@ myContainer.bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs)
 myContainer.bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
+    .to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMutableContentType)
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
@@ -103,7 +111,7 @@ myContainer.bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(Subscribab
 (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
 
  */
-
+myContainer.bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
 myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
 // tslint:disable-next-line ban-types
 myContainer.bind<Number>(TYPES.Number).toConstantValue(0)
