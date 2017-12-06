@@ -1,60 +1,60 @@
-// // // tslint:disable max-classes-per-file
-// // // tslint:disable no-empty-interface
-// import {inject, injectable} from 'inversify';
-// import {
-//     IContentUserData,
-//     ISubscribableContentUser,
-//     ISubscribableMutableField,
-//     IValUpdates,
-// } from '../interfaces';
-// import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-// import {Subscribable} from '../subscribable/Subscribable';
-// import {TYPES} from '../types'
-//
-// @injectable()
-// class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
-//     public overdue: ISubscribableMutableField<boolean>;
-//     public timer: ISubscribableMutableField<number>;
-//     public proficiency: ISubscribableMutableField<PROFICIENCIES>;
-//     public lastRecordedStrength: ISubscribableMutableField<number>;
-//
-//     // TODO: should the below three objects be private?
-//     public val(): IContentUserData {
-//         return {
-//             lastRecordedStrength: this.lastRecordedStrength.val(),
-//             overdue: this.overdue.val(),
-//             proficiency: this.proficiency.val(),
-//             timer: this.timer.val(),
-//         }
-//     }
-//     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-//         updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
-//     }) {
-//         super({updatesCallbacks})
-//         this.overdue = overdue
-//         this.proficiency = proficiency
-//         this.timer = timer
-//         this.lastRecordedStrength = lastRecordedStrength
-//     }
-//     protected callbackArguments(): IValUpdates {
-//         return this.val()
-//     }
-//     public startPublishing() {
-//         const boundCallCallbacks = this.callCallbacks.bind(this)
-//         this.overdue.onUpdate(boundCallCallbacks)
-//         this.proficiency.onUpdate(boundCallCallbacks)
-//         this.timer.onUpdate(boundCallCallbacks)
-//         this.lastRecordedStrength.onUpdate(boundCallCallbacks)
-//     }
-// }
-//
-// @injectable()
-// class SubscribableContentUserArgs {
-//     @inject(TYPES.Array) public updatesCallbacks
-//     @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
-//     @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
-//     @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
-//     @inject(TYPES.ISubscribableMutableNumber) public timer: number
-// }
-//
-// export {SubscribableContentUser, SubscribableContentUserArgs}
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {
+    CONTENT_TYPES,
+} from '../interfaces';
+import {SubscribableContent} from './SubscribableContent';
+
+describe('SubscribableContent', () => {
+    it('constructor should set all the subscribable properties', () => {
+        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+        const title = new SubscribableMutableField<string>({field: ''})
+        const content = new SubscribableContent({
+            type, question, answer, title, updatesCallbacks: [],
+        })
+        expect(content.type).to.deep.equal(type)
+        expect(content.question).to.deep.equal(question)
+        expect(content.answer).to.deep.equal(answer)
+        expect(content.title).to.deep.equal(title)
+    })
+    it('.val() should display the value of the object', () => {
+        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+        const title = new SubscribableMutableField<string>({field: ''})
+        const content = new SubscribableContent({
+            title, question, answer, type, updatesCallbacks: [],
+        })
+
+        const expectedVal = {
+            title: title.val(),
+            type: type.val(),
+            answer: answer.val(),
+            question: question.val(),
+        }
+
+        expect(content.val()).to.deep.equal(expectedVal)
+    })
+    it('startPublishing() should call the onUpdate methods of all member Subscribable properties', () => {
+        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+        const title = new SubscribableMutableField<string>({field: ''})
+        const content = new SubscribableContent({
+            title, question, answer, type, updatesCallbacks: [],
+        })
+        const titleOnUpdateSpy = sinon.spy(title, 'onUpdate')
+        const typeOnUpdateSpy = sinon.spy(type, 'onUpdate')
+        const answerOnUpdateSpy = sinon.spy(answer, 'onUpdate')
+        const questionOnUpdateSpy = sinon.spy(question, 'onUpdate')
+
+        content.startPublishing()
+        expect(questionOnUpdateSpy.callCount).to.deep.equal(1)
+        expect(titleOnUpdateSpy.callCount).to.deep.equal(1)
+        expect(typeOnUpdateSpy.callCount).to.deep.equal(1)
+        expect(answerOnUpdateSpy.callCount).to.deep.equal(1)
+    })
+})
