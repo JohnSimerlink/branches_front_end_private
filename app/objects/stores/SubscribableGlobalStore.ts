@@ -3,7 +3,8 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, IMutableSubscribableContentUserStore, IMutableSubscribableTreeStore,
+    IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
+    IMutableSubscribableTreeStore,
     ISubscribableGlobalStore, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
@@ -19,15 +20,17 @@ implements ISubscribableGlobalStore {
     }
 
     protected treeStore: IMutableSubscribableTreeStore;
+    protected contentStore: IMutableSubscribableContentStore;
     protected contentUserStore: IMutableSubscribableContentUserStore;
-    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){treeStore, contentUserStore, updatesCallbacks = []}) {
+    constructor(@inject(TYPES.GlobalStoreArgs){
+        treeStore, contentStore, contentUserStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.treeStore = treeStore
+        this.contentStore = contentStore
         this.contentUserStore = contentUserStore
         // log('subscribableGlobalStore called')
     }
     protected callCallbacks() {
-        log('subscribableGlobalStore call callbacks just called', this['callbacks'])
         super.callCallbacks()
     }
     public startPublishing() {
@@ -48,6 +51,14 @@ implements ISubscribableGlobalStore {
             me.callCallbacks()
         })
         this.contentUserStore.startPublishing()
+        this.contentStore.onUpdate((update: IIdAndValUpdates) => {
+            me.update = {
+                type: ObjectDataTypes.CONTENT_DATA,
+                ...update
+            }
+            me.callCallbacks()
+        })
+        this.contentStore.startPublishing()
     }
 }
 
@@ -55,6 +66,8 @@ implements ISubscribableGlobalStore {
 class GlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.ISubscribableTreeStore) public treeStore
+    @inject(TYPES.ISubscribableContentUserStore) public contentUserStore
+    @inject(TYPES.ISubscribableContentStore) public contentStore
 }
 
 export {SubscribableGlobalStore, GlobalStoreArgs, ISubscribableGlobalStore}

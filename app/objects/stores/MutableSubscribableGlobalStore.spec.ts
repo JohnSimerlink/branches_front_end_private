@@ -5,10 +5,12 @@ import {CONTENT_ID, CONTENT_ID2, TREE_ID} from '../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
+    CONTENT_TYPES, ContentPropertyNames,
     ContentUserPropertyNames,
     FieldMutationTypes,
     IGlobalDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, ISubscribableContentUserStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, ISubscribableContentStore,
+    ISubscribableContentUserStore,
     ObjectTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -18,6 +20,9 @@ import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscrib
 import {SubscribableContentUserStore} from './contentUser/SubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
+import {SubscribableContentStore} from './content/SubscribableContentStore';
+import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
+import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 
 describe('MutableSubscribableGlobalStore', () => {
     it('adding a tree mutation should call treeStore.addMutation(mutationObj)'
@@ -43,8 +48,14 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const contentStore: ISubscribableContentStore = new MutableSubscribableContentStore({
+            store: {},
+            updatesCallbacks: []
+        })
+
         const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
             {
+                contentStore,
                 contentUserStore,
                 treeStore,
                 updatesCallbacks: [],
@@ -74,7 +85,7 @@ describe('MutableSubscribableGlobalStore', () => {
         expect(storeAddMutationSpy.callCount).to.deep.equal(1)
 
     })
-    it('adding a content mutation should call contentUserStore.addMutation(mutationObj)'
+    it('adding a contentUser mutation should call contentUserStore.addMutation(mutationObj)'
         + ' but without the objectType in mutationObj', () => {
 
         // contentUserStore
@@ -94,6 +105,11 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const contentStore: ISubscribableContentStore = new MutableSubscribableContentStore({
+            store: {},
+            updatesCallbacks: []
+        })
+
         const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
             store: {},
             updatesCallbacks: []
@@ -101,6 +117,7 @@ describe('MutableSubscribableGlobalStore', () => {
 
         const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
             {
+                contentStore,
                 contentUserStore,
                 treeStore,
                 updatesCallbacks: [],
@@ -122,6 +139,69 @@ describe('MutableSubscribableGlobalStore', () => {
             ...storeMutation
         }
         const storeAddMutationSpy = sinon.spy(contentUserStore, 'addMutation')
+
+        globalStore.addMutation(globalMutation)
+
+        const calledWith = storeAddMutationSpy.getCall(0).args[0]
+        expect(calledWith).to.deep.equal(storeMutation)
+        expect(storeAddMutationSpy.callCount).to.deep.equal(1)
+
+    })
+
+    it('adding a content mutation should call contentStore.addMutation(mutationObj)'
+        + ' but without the objectType in mutationObj', () => {
+
+        // contentStore
+        const contentId = CONTENT_ID
+        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+        const title = new SubscribableMutableField<string>({field: ''})
+        const content = new MutableSubscribableContent({
+            type, question, answer, title, updatesCallbacks: [],
+        })
+        const store = {}
+        store[contentId] = content
+
+        const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
+            store: {},
+            updatesCallbacks: []
+        })
+
+        const contentStore: ISubscribableContentStore = new MutableSubscribableContentStore({
+            store,
+            updatesCallbacks: []
+        })
+
+        const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
+        const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
+            {
+                contentStore,
+                contentUserStore,
+                treeStore,
+                updatesCallbacks: [],
+            }
+        )
+        const newQuestionVal = 'What is the capital of Iowa?'
+        const objectType = ObjectTypes.CONTENT
+        const propertyName = ContentPropertyNames.QUESTION;
+        const mutationType = FieldMutationTypes.SET;
+        const data = newQuestionVal
+        const timestamp = Date.now()
+
+        const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentPropertyNames> = {
+            data, id: contentId, propertyName, timestamp, type: mutationType,
+        }
+
+        const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+            objectType,
+            ...storeMutation
+        }
+        const storeAddMutationSpy = sinon.spy(contentStore, 'addMutation')
 
         globalStore.addMutation(globalMutation)
 
