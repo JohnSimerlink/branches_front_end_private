@@ -5,11 +5,9 @@ import {MutableSubscribableContent} from '../../content/MutableSubscribableConte
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
-    ContentPropertyNames, FieldMutationTypes, IProppedDatedMutation, ISubscribableContentCore,
+    ContentPropertyNames, FieldMutationTypes, IProppedDatedMutation,
     ISubscribableContentStore
 } from '../../interfaces';
-import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
-import {SubscribableStore} from '../SubscribableStore';
 import {SubscribableContentStore} from './SubscribableContentStore';
 
 describe('SubscribableContentStore > addAndSubscribeToItem', () => {
