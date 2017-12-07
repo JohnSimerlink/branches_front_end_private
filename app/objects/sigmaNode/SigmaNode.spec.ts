@@ -1,11 +1,11 @@
 import {expect} from 'chai'
 import {myContainer} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
-import {CONTENT_TYPES} from '../interfaces';
 import {ContentUserDataUtils } from '../contentUserData/ContentUserDataUtils';
-import {ITreeDataWithoutId, IContentData,
-    IContentUserData, ICoordinate, IProficiencyStats,
-    ISigmaNode, ITreeUserData} from '../interfaces';
+import {CONTENT_TYPES, ITreeLocationData} from '../interfaces';
+import {IContentData, IContentUserData,
+    ICoordinate, IProficiencyStats, ISigmaNode,
+    ITreeDataWithoutId, ITreeUserData} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
@@ -85,9 +85,11 @@ describe('sigmaNode', () => {
         const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         const x = 5
         const y = 7
-        const location: ICoordinate = {
-            x,
-            y
+        const location: ITreeLocationData = {
+            point: {
+                x,
+                y
+            },
         }
         /* QUESTION / TODO: Doesn't this entire test seem useless?
          e.g. a redundant implementation of the implementation? */

@@ -12,6 +12,7 @@ import {
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
+import {log} from '../../../app/core/log'
 
 @injectable()
 class SigmaNodeHandler implements ISigmaNodeHandler {
@@ -44,6 +45,7 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
     }
     // TODO: refactor into a public method on another class
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
+        log('sigmaNodeHandler handleUpdate called', update)
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
         sigmaIds.forEach(id => {
             const sigmaNode: ISigmaNode = this.sigmaNodes[id]
@@ -56,11 +58,13 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
         }: {
             sigmaNode: ISigmaNode, updateType: ObjectDataTypes, data: ObjectDataDataTypes
         }) {
+        log('sigmaNodeHandler updateSigmaNode called' + JSON.stringify(sigmaNode) + 'update Type is ' + JSON.stringify(updateType) + ' data is ' + JSON.stringify(data))
         switch (updateType) {
             case ObjectDataTypes.TREE_DATA:
                 sigmaNode.receiveNewTreeData(data)
                 break
             case ObjectDataTypes.TREE_LOCATION_DATA:
+                log('updateSigmaNode objectDataType is TREE_LOCATION_DATA')
                 sigmaNode.receiveNewTreeLocationData(data)
                 break
             case ObjectDataTypes.TREE_USER_DATA:
@@ -72,6 +76,8 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
             case ObjectDataTypes.CONTENT_USER_DATA:
                 sigmaNode.receiveNewContentUserData(data)
                 break;
+            default:
+                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(ObjectDataTypes))
         }
     }
 }

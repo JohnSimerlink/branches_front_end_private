@@ -13,9 +13,12 @@ import {
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
-    ISigmaNode, ISigmaNodeHandler,
-    IUI, ObjectTypes, TreeUserPropertyMutationTypes, TreeUserPropertyNames
+    ISigmaNode, ISigmaNodeHandler, ISubscribableUndoableMutablePoint,
+    IUI, ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames,
 } from '../objects/interfaces';
+import {SubscribableMutablePoint} from '../objects/point/SubscribableMutablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
@@ -25,6 +28,7 @@ import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscriba
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
+import {MutableSubscribableTreeLocation} from '../objects/treeLocation/MutableSubscribableTreeLocation';
 import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
@@ -185,9 +189,11 @@ describe('App integration test 1', () => {
             data: newAnswer,
             timestamp: Date.now(),
         }
+        const contentStoreAddMutationSpy = sinon.spy(contentStore, 'addMutation')
         expect(sigmaNode1.content.answer).to.not.equal(newAnswer)
         expect(sigmaNode2.content.answer).to.not.equal(newAnswer)
         store.addMutation(mutation)
+        expect(contentStoreAddMutationSpy.callCount).to.equal(1)
         expect(sigmaNode1.content.answer).to.equal(newAnswer)
         expect(sigmaNode2.content.answer).to.equal(newAnswer)
     })
@@ -281,24 +287,112 @@ describe('App integration test 1', () => {
         expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
     })
 
+    it('Adding a mutation into the global stores for a tree location data,' +
+        ' should update the sigma node instance for the sigma node for that tree Id', () => {
+        // canvasUI
+        const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+        const sigmaNodes = {}
+        const TREE_ID = 'babababa'
+        const SIGMA_ID = TREE_ID
+        sigmaNodes[SIGMA_ID] = sigmaNode1
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+
+        const treeId = TREE_ID
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const MUTATION_VALUE = {delta: {x: 3, y: 4}}
+        const SECOND_POINT_VALUE = {
+            x: FIRST_POINT_VALUE.x + MUTATION_VALUE.delta.x,
+            y: FIRST_POINT_VALUE.y + MUTATION_VALUE.delta.y
+        }
+        const point: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+
+        const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+        const contentUserStore: IMutableSubscribableContentUserStore = (() => {
+            return new MutableSubscribableContentUserStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const treeStore: IMutableSubscribableTreeStore = (() => {
+            return new MutableSubscribableTreeStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
+            const source = {}
+            return new MutableSubscribableTreeUserStore({
+                store: source,
+                updatesCallbacks: []
+            })
+        })()
+
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = (() => {
+            const source = {}
+            source[treeId] = treeLocation
+            return new MutableSubscribableTreeLocationStore( {
+                store: source,
+                updatesCallbacks: []
+            })
+        })()
+
+        const contentStore: IMutableSubscribableContentStore = (() => {
+            return new MutableSubscribableContentStore({
+                store: {},
+                updatesCallbacks: []
+            })
+        })()
+
+        const store: IMutableSubscribableGlobalStore =
+            new MutableSubscribableGlobalStore(
+                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
+
+        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const UIs = [canvasUI]
+
+        // create app
+        const app: IApp = new App({UIs, store})
+
+        app.start()
+        const newAnswer = 'Columbus!!'
+        const mutation: IGlobalDatedMutation<TreeLocationPropertyMutationTypes> = {
+            objectType: ObjectTypes.TREE_LOCATION,
+            id: TREE_ID,
+            propertyName: TreeLocationPropertyNames.POINT,
+            type: PointMutationTypes.SHIFT,
+            data: MUTATION_VALUE,
+            timestamp: Date.now(),
+        }
+        expect(sigmaNode1.x).to.not.deep.equal(SECOND_POINT_VALUE.x)
+        expect(sigmaNode1.y).to.not.deep.equal(SECOND_POINT_VALUE.y)
+
+        store.addMutation(mutation)
+
+        expect(sigmaNode1.x).to.deep.equal(SECOND_POINT_VALUE.x)
+        expect(sigmaNode1.y).to.deep.equal(SECOND_POINT_VALUE.y)
+    })
+
 })
 
 /*
-        const treeUserStoreAddMutationSpy = sinon.spy(treeUserStore, 'addMutation')
-        const treeUserAddMutationSpy = sinon.spy(treeUser, 'addMutation')
+        const treeLocationStoreAddMutationSpy = sinon.spy(treeLocationStore, 'addMutation')
+        const treeLocationAddMutationSpy = sinon.spy(treeLocation, 'addMutation')
         const proficiencyStatsAddMutationSpy = sinon.spy(proficiencyStats, 'addMutation')
-        const treeUserStoreCallCallbacksSpy = sinon.spy(treeUserStore, 'callCallbacks')
-        const treeUserCallCallbacksSpy = sinon.spy(treeUser, 'callCallbacks')
+        const treeLocationStoreCallCallbacksSpy = sinon.spy(treeLocationStore, 'callCallbacks')
+        const treeLocationCallCallbacksSpy = sinon.spy(treeLocation, 'callCallbacks')
         const proficiencyStatsCallCallbacksSpy = sinon.spy(proficiencyStats, 'callCallbacks')
         expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
         expect(sigmaNode2.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
         store.addMutation(mutation)
-        expect(treeUserStoreAddMutationSpy.callCount).to.equal(1)
-        expect(treeUserAddMutationSpy.callCount).to.equal(1)
+        expect(treeLocationStoreAddMutationSpy.callCount).to.equal(1)
+        expect(treeLocationAddMutationSpy.callCount).to.equal(1)
         expect(proficiencyStatsAddMutationSpy.callCount).to.equal(1)
         expect(proficiencyStatsCallCallbacksSpy.callCount).to.equal(1)
-        expect(treeUserCallCallbacksSpy.callCount).to.equal(1)
-        expect(treeUserStoreCallCallbacksSpy.callCount).to.equal(1)
+        expect(treeLocationCallCallbacksSpy.callCount).to.equal(1)
+        expect(treeLocationStoreCallCallbacksSpy.callCount).to.equal(1)
         expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
         expect(sigmaNode2.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
 

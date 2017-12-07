@@ -1,15 +1,34 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
-import {ITreeDataWithoutId, IColorSlice,
-    IContentData, IContentUserData, ICoordinate,
-    IProficiencyStats, ISigmaNode, ITreeUserData} from '../interfaces';
+import {
+    IColorSlice, IContentData,
+    IContentUserData, ICoordinate, IProficiencyStats,
+    ISigmaNode, ITreeDataWithoutId, ITreeLocationData, ITreeUserData
+} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 
 @injectable()
 class SigmaNode implements ISigmaNode {
+
+    public id: string;
+    public parentId: string;
+    public contentId: string;
+    public children: string[];
+    public x: number;
+    public y: number;
+    public aggregationTimer: number;
+    public content: IContentData;
+    public contentUserData: IContentUserData;
+    public label: string;
+    public size: number;
+    public colorSlices: IColorSlice[];
+    public proficiencyStats: IProficiencyStats;
+    public overdue: boolean;
+
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
         this.parentId = tree.parentId
         this.contentId = tree.contentId
@@ -31,29 +50,15 @@ class SigmaNode implements ISigmaNode {
         this.contentUserData = contentUserData
     }
 
-    public receiveNewTreeLocationData(treeLocationData: ICoordinate) {
-        this.x = treeLocationData.x
-        this.y = treeLocationData.y
+    public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
+        log('sigmaNode receiveNewTreeLocationData called' + JSON.stringify(treeLocationData))
+        this.x = treeLocationData.point.x
+        this.y = treeLocationData.point.y
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance
       of this class should call sigmaInstance.refresh() after an update is called on this class
       */
-
-    public id: string;
-    public parentId: string;
-    public contentId: string;
-    public children: string[];
-    public x: number;
-    public y: number;
-    public aggregationTimer: number;
-    public content: IContentData;
-    public contentUserData: IContentUserData;
-    public label: string;
-    public size: number;
-    public colorSlices: IColorSlice[];
-    public proficiencyStats: IProficiencyStats;
-    public overdue: boolean;
 
     constructor(@inject(TYPES.SigmaNodeArgs)
         {
