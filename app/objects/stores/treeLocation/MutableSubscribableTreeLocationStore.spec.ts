@@ -50,30 +50,37 @@ describe('MutableSubscribableTreeLocationStore > addMutation', () => {
         const calledWith = treeLocationAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    // it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
-    //     ' it either, should throw a RangeError', () => {
-    //
-    //     const nonExistentId = 'abdf1295'
-    //     const store = {}
-    //     const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
-    //         store,
-    //         updatesCallbacks: []
-    //     })
-    //
-    //     const NEW_CONTENT_ID = CONTENT_ID2
-    //     const proppedMutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
-    //         data: 1234,
-    //         propertyName: TreeLocationPropertyNames.AGGREGATION_TIMER,
-    //         timestamp: Date.now(),
-    //         type: FieldMutationTypes.SET,
-    //     }
-    //
-    //     const sampleMutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
-    //         ...proppedMutation,
-    //         id: nonExistentId,
-    //     }
-    //
-    //     expect(() => treeLocationStore.addMutation(sampleMutation)).to.throw(RangeError)
-    //
-    // })
+    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+        ' it either, should throw a RangeError', () => {
+
+        const treeId = TREE_ID
+        const FIRST_POINT_VALUE = {x: 5, y: 7}
+        const MUTATION_VALUE = {delta: {x: 3, y: 4}}
+        const point: ISubscribableUndoableMutablePoint
+            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+
+        const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+        const store = {}
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
+            store,
+            updatesCallbacks: []
+        })
+        const treeLocationAddMutationSpy = sinon.spy(treeLocation, 'addMutation')
+
+        const id = TREE_ID
+        const proppedMutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
+            data: MUTATION_VALUE,
+            propertyName: TreeLocationPropertyNames.POINT,
+            timestamp: Date.now(),
+            type: PointMutationTypes.SHIFT,
+        }
+
+        const sampleMutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
+            ...proppedMutation,
+            id, //
+        }
+
+        expect(() => treeLocationStore.addMutation(sampleMutation)).to.throw(RangeError)
+
+    })
 })
