@@ -1,3 +1,4 @@
+import {log} from '../../../../app/core/log'
 import {
     IIdDatedMutation, IIdProppedDatedMutation,
      IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
@@ -11,6 +12,7 @@ class MutableSubscribableTreeLocationStore
     implements IMutableSubscribableTreeLocationStore {
     public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes,
         TreeLocationPropertyNames>) {
+        log('treeLocationStore addMutation just called', mutation)
         // const treeLocationId = mutation.id
         // treeLocationId && this.stores[treeLocationId].addMutation
         // mutation.id
@@ -31,6 +33,10 @@ class MutableSubscribableTreeLocationStore
         }
         treeLocation.addMutation(proppedDatedMutation)
         // throw new Error("Method not implemented.");
+    }
+    public callCallbacks() {
+        log('mutable subscribabletreelocationstore CALL CALLBACKS called')
+        super.callCallbacks()
     }
 
     public mutations(): Array<IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {

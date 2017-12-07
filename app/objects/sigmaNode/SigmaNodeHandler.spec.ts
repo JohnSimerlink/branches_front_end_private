@@ -2,7 +2,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {CONTENT_TYPES} from '../interfaces';
+import {CONTENT_TYPES, ITreeLocationData} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {ITreeDataWithoutId, IContentData, IContentUserData,
     ICoordinate, ISigmaNode, ITreeUserData} from '../interfaces';
@@ -58,9 +58,11 @@ describe('SigmaNodeHandler', () => {
     })
 
     it('A Tree Location Update should call the correct method on the sigma Node with the correct args', () => {
-        const val: ICoordinate = {
-            x: 5,
-            y: 9,
+        const val: ITreeLocationData = {
+            point: {
+                x: 5,
+                y: 9,
+            },
         }
         const update: ITypeAndIdAndValUpdates = {
             id: TREE_ID,

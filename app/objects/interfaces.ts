@@ -277,7 +277,7 @@ interface IColorSlice {
 interface IEditableSigmaNode {
     receiveNewContentData(contentData: IContentData)
     receiveNewContentUserData(contentUserData: IContentUserData)
-    receiveNewTreeLocationData(treeLocationData: ICoordinate)
+    receiveNewTreeLocationData(treeLocationData: ITreeLocationData)
     receiveNewTreeUserData(treeUserData: ITreeUserData)
     receiveNewTreeData(treeUserData: ITreeDataWithoutId)
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
@@ -367,7 +367,8 @@ interface IIdAndValUpdates {
 interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
     type: ObjectDataTypes
 }
-type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData & ITreeLocationData & IContentData & IContentUserData & ICoordinate
+type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
+    ITreeLocationData & IContentData & IContentUserData & ICoordinate
 
 // subscribable
 type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
