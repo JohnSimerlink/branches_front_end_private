@@ -4,6 +4,7 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
     IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
+    IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
     ISubscribableGlobalStore, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
@@ -21,13 +22,15 @@ implements ISubscribableGlobalStore {
 
     protected treeStore: IMutableSubscribableTreeStore;
     protected treeUserStore: IMutableSubscribableTreeUserStore;
+    protected treeLocationStore: IMutableSubscribableTreeLocationStore;
     protected contentStore: IMutableSubscribableContentStore;
     protected contentUserStore: IMutableSubscribableContentUserStore;
     constructor(@inject(TYPES.GlobalStoreArgs){
-        treeStore, treeUserStore, contentStore, contentUserStore, updatesCallbacks = []}) {
+        treeStore, treeUserStore, treeLocationStore, contentStore, contentUserStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.treeStore = treeStore
         this.treeUserStore = treeUserStore
+        this.treeLocationStore = treeLocationStore
         this.contentStore = contentStore
         this.contentUserStore = contentUserStore
         // log('subscribableGlobalStore called')
@@ -53,6 +56,14 @@ implements ISubscribableGlobalStore {
             me.callCallbacks()
         })
         this.treeUserStore.startPublishing()
+        this.treeLocationStore.onUpdate((update: IIdAndValUpdates) => {
+            me.update = {
+                type: ObjectDataTypes.TREE_LOCATION_DATA,
+                ...update
+            }
+            me.callCallbacks()
+        })
+        this.treeLocationStore.startPublishing()
         this.contentStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: ObjectDataTypes.CONTENT_DATA,
@@ -77,6 +88,7 @@ class GlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.ISubscribableTreeStore) public treeStore
     @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore
+    @inject(TYPES.ISubscribableTreeLocationStore) public treeLocationStore
     @inject(TYPES.ISubscribableContentUserStore) public contentUserStore
     @inject(TYPES.ISubscribableContentStore) public contentStore
 }

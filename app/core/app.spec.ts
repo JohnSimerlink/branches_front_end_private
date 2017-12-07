@@ -2,7 +2,8 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {
     IApp,
-    IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, ISubscribableContentStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
+    ISubscribableContentStore,
     ISubscribableContentUserStore,
     IUI
 } from '../objects/interfaces';
@@ -11,6 +12,7 @@ import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscriba
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {App} from './app';
 import {SubscribableContentStore} from '../objects/stores/content/SubscribableContentStore';
+import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 
 describe('App', () => {
     it('Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', () => {
@@ -34,6 +36,10 @@ describe('App', () => {
             updatesCallbacks: []
         })
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
+            store: {},
+            updatesCallbacks: []
+        })
         const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
             store: {},
             updatesCallbacks: []
@@ -49,6 +55,7 @@ describe('App', () => {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeLocationStore,
                 treeUserStore,
                 updatesCallbacks: [],
             }

@@ -44,6 +44,7 @@ const TYPES = {
     ISubscribableMutableStringSet: Symbol('ISubscribableMutableStringSet'),
     ISubscribableStore_ISubscribableTreeCore: Symbol('ISubscribableStore_ISubscribableTreeCore'),
     ISubscribableTree: Symbol('ISubscribableTreeCore'),
+    ISubscribableTreeLocationStore: Symbol('ISubscribableTreeLocationStore'),
     ISubscribableTreeUser: Symbol('ISubscribableTreeUser'),
     ISubscribableTreeUserStore: Symbol('ISubscribableTreeUserStore'),
     ISubscribableTreeStore: Symbol('ISubscribableTreeStore'),

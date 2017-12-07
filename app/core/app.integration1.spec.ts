@@ -1,7 +1,7 @@
 // tslint:disable object-literal-sort-keys
-import * as sinon from 'sinon'
 import {expect} from 'chai'
 import 'reflect-metadata'
+import * as sinon from 'sinon'
 import {myContainer} from '../../inversify.config';
 import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
@@ -11,7 +11,7 @@ import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes,
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
     ISigmaNode, ISigmaNodeHandler,
     IUI, ObjectTypes, TreeUserPropertyMutationTypes, TreeUserPropertyNames
@@ -23,6 +23,7 @@ import {MutableSubscribableContentStore} from '../objects/stores/content/Mutable
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
+import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../objects/types';
@@ -73,6 +74,11 @@ describe('App integration test 1', () => {
             })
         })()
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const contentStore: IMutableSubscribableContentStore = (() => {
             return new MutableSubscribableContentStore({
                 store: {},
@@ -82,7 +88,7 @@ describe('App integration test 1', () => {
 
         const store: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
-                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
+                {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]
@@ -138,6 +144,11 @@ describe('App integration test 1', () => {
             })
         })()
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
             return new MutableSubscribableTreeUserStore({
                 store: {},
@@ -156,7 +167,7 @@ describe('App integration test 1', () => {
 
         const store: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
-                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
+                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]
@@ -233,6 +244,11 @@ describe('App integration test 1', () => {
             })
         })()
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const contentStore: IMutableSubscribableContentStore = (() => {
             return new MutableSubscribableContentStore({
                 store: {},
@@ -242,7 +258,7 @@ describe('App integration test 1', () => {
 
         const store: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
-                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, contentStore})
+                {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
 
         const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
         const UIs = [canvasUI]
