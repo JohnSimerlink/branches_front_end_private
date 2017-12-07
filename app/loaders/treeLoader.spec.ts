@@ -44,6 +44,17 @@ describe('treeLoader', () => {
         expect(isLoaded).to.deep.equal(false)
     })
     it('Should mark an id as loaded after being loaded', () => {
+        const store = {}
+
+        const treeId = '1234'
+        const nonExistentTreeId = '01234'
+        const tree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
+        const firebaseRef: IFirebaseRef =  new FirebaseRef()
+        store[treeId] = tree
+
+        const treeLoader = new TreeLoader({store, firebaseRef})
+        const isLoaded = treeLoader.isLoaded(nonExistentTreeId)
+        expect(isLoaded).to.deep.equal(false)
 
     })
     it('Should mark an id as loaded after being loaded', () => {
