@@ -4,13 +4,14 @@ import {
     ContentUserPropertyNames, IGlobalDatedMutation,
     IIdDatedMutation,
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreePropertyMutationTypes,
-    TreePropertyNames, TreeUserPropertyMutationTypes, TreeUserPropertyNames
+    TreePropertyNames, TreeUserPropertyMutationTypes, TreeUserPropertyNames, TreeLocationPropertyNames,
+    TreeLocationPropertyMutationTypes
 } from '../interfaces';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 
 class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
-    constructor({treeStore, treeUserStore, contentUserStore, contentStore, updatesCallbacks}) {
-        super({treeStore, treeUserStore, contentUserStore, contentStore, updatesCallbacks})
+    constructor({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks}) {
+        super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
     }
     public addMutation(mutation: IGlobalDatedMutation<AllPropertyMutationTypes>) {
         switch (mutation.objectType) {
@@ -43,6 +44,21 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                 // } as IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
                 // ^^ TODO: figure out why I need this cast but not in the other cases on the switch . . .
                 this.treeUserStore.addMutation(treeUserStoreMutation)
+                break
+            }
+            case ObjectTypes.TREE_LOCATION: {
+                const propertyName: TreeLocationPropertyNames = mutation.propertyName as TreeLocationPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const type: TreeLocationPropertyMutationTypes = mutation.type as TreeLocationPropertyMutationTypes
+                const treeLocationStoreMutation:
+                    IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type,
+                }
+                this.treeLocationStore.addMutation(treeLocationStoreMutation)
                 break
             }
             case ObjectTypes.CONTENT_USER: {

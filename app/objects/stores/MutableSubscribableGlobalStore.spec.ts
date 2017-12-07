@@ -10,7 +10,8 @@ import {
     ContentUserPropertyNames,
     FieldMutationTypes,
     IGlobalDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore, IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUserStore,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
     ObjectTypes, TreePropertyNames
@@ -24,6 +25,7 @@ import {SubscribableContentUserStore} from './contentUser/SubscribableContentUse
 import {MutableSubscribableGlobalStore} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
 import {MutableSubscribableTreeUserStore} from './treeUser/MutableSubscribableTreeUserStore';
+import {MutableSubscribableTreeLocationStore} from './treeLocation/MutableSubscribableTreeLocationStore';
 
 describe('MutableSubscribableGlobalStore', () => {
     it('adding a tree mutation should call treeStore.addMutation(mutationObj)'
@@ -49,6 +51,11 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
             store: {},
             updatesCallbacks: []
@@ -64,6 +71,7 @@ describe('MutableSubscribableGlobalStore', () => {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeLocationStore,
                 treeUserStore,
                 updatesCallbacks: [],
             }
@@ -122,6 +130,11 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
+            store: {},
+            updatesCallbacks: []
+        })
+
         const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore( {
             store: {},
             updatesCallbacks: []
@@ -133,6 +146,7 @@ describe('MutableSubscribableGlobalStore', () => {
                 contentUserStore,
                 treeStore,
                 treeUserStore,
+                treeLocationStore,
                 updatesCallbacks: [],
             }
         )
@@ -195,11 +209,17 @@ describe('MutableSubscribableGlobalStore', () => {
             updatesCallbacks: []
         })
 
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
+            store: {},
+            updatesCallbacks: []
+        })
+
         const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
             {
                 contentStore,
                 contentUserStore,
                 treeStore,
+                treeLocationStore,
                 treeUserStore,
                 updatesCallbacks: [],
             }
