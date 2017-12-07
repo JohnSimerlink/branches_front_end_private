@@ -1,8 +1,6 @@
 import {
-    ContentLocationPropertyMutationTypes, ContentLocationPropertyNames,
-    IIdDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentLocation, IMutableSubscribableTreeLocation,
-    IMutableSubscribableTreeLocationStore,
-    IProppedDatedMutation,
+    IIdDatedMutation, IIdProppedDatedMutation,
+     IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
     TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames
 } from '../../interfaces';
@@ -11,7 +9,8 @@ import {SubscribableTreeLocationStore} from './SubscribableTreeLocationStore';
 class MutableSubscribableTreeLocationStore
     extends SubscribableTreeLocationStore
     implements IMutableSubscribableTreeLocationStore {
-    public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>) {
+    public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes,
+        TreeLocationPropertyNames>) {
         // const treeLocationId = mutation.id
         // treeLocationId && this.stores[treeLocationId].addMutation
         // mutation.id
