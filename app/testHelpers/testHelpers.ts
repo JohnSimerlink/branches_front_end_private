@@ -13,4 +13,8 @@ function getSigmaIdsForContentId(contentId) {
     }
 }
 
-export {TREE_ID, TREE_ID2, TREE_ID3, SIGMA_ID1, SIGMA_ID2, CONTENT_ID, CONTENT_ID2, CONTENT_ID3, getSigmaIdsForContentId}
+export {
+    TREE_ID, TREE_ID2, TREE_ID3,
+    SIGMA_ID1, SIGMA_ID2,
+    CONTENT_ID, CONTENT_ID2, CONTENT_ID3, getSigmaIdsForContentId
+}

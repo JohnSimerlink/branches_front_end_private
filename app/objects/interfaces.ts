@@ -134,6 +134,11 @@ interface IDetailedUpdates {
 interface IFirebaseRef {
     update(updates: object),
     child(path: string): IPushable,
+    on(eventName: string, callback: (ISnapshot) => {})
+}
+
+interface ISnapshot {
+    val(): any
 }
 
 interface IPushable {
@@ -534,6 +539,7 @@ export {
     // loaders
     ITreeLoader,
     ITreeLoaderCore,
+    ISnapshot,
 
     // MathUtils
     radian,
