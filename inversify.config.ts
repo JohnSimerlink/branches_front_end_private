@@ -15,7 +15,7 @@ import {
 } from './app/objects/field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
-    fGetSigmaIdsForContentId, ISigmaNodeHandler, ISubscribableContent,
+    fGetSigmaIdsForContentId, IMutableSubscribableTree, ISigmaNodeHandler, ISubscribableContent,
     ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeUser
 } from './app/objects/interfaces';
 import {
@@ -49,6 +49,7 @@ import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
+import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -70,6 +71,7 @@ myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toCon
 })
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
+myContainer.bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>

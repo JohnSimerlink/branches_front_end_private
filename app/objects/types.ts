@@ -21,6 +21,7 @@ const TYPES = {
     IFirebaseRef: Symbol('IFirebaseRef'),
     IMutableId: Symbol('IMutableField'),
     IMutableStringSet: Symbol('IMutableStringSet'),
+    IMutableSubscribableTree: Symbol('IMutableSubscribableTree'),
     IMutableSubscribableGlobalStore: Symbol('IMutableSubscribableGlobalStore'),
     IProficiencyStats: Symbol('IProficiencyStats'),
     IProppedDatedMutation: Symbol('IProppedDatedMutation'),

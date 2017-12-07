@@ -2,7 +2,8 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {
-    ISubscribable, ISubscribableContentStore, ISubscribableContentUserStore, ISubscribableTreeStore,
+    ISubscribable, ISubscribableContentStore, ISubscribableContentUserStore, ISubscribableTreeLocationStore,
+    ISubscribableTreeStore,
     ISubscribableTreeUserStore,
     ITypeAndIdAndValUpdates
 } from '../interfaces';
@@ -13,6 +14,7 @@ import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
 import {SubscribableTreeUserStore} from '../stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableContentStore} from '../stores/content/SubscribableContentStore';
+import {SubscribableTreeLocationStore} from '../stores/treeLocation/SubscribableTreeLocationStore';
 
 describe('CanvasUI', () => {
     it('should subscribe to the onUpdate method of a subscribable obj passed to it', () => {
@@ -23,6 +25,10 @@ describe('CanvasUI', () => {
             updatesCallbacks: []
         })
         const treeUserStore: ISubscribableTreeUserStore = new SubscribableTreeUserStore({
+            store: {},
+            updatesCallbacks: []
+        })
+        const treeLocationStore: ISubscribableTreeLocationStore = new SubscribableTreeLocationStore({
             store: {},
             updatesCallbacks: []
         })
@@ -39,6 +45,7 @@ describe('CanvasUI', () => {
             contentStore,
             treeStore,
             treeUserStore,
+            treeLocationStore,
             updatesCallbacks: []
         })
         // const subscribable = myContainer.get<SubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)

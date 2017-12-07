@@ -19,6 +19,17 @@ interface IContentItem {
     isNew(),
 }
 
+// loaders
+interface ITreeLoaderCore {
+    download(treeId): Promise<ITreeDataWithoutId>
+    deserialize(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
+}
+interface ITreeLoader {
+    getData(treeId): ITreeDataWithoutId
+    downloadData(treeId): ITreeDataWithoutId
+    isLoaded(treeId): boolean
+}
+
 // content
 
 enum CONTENT_TYPES {
@@ -519,6 +530,10 @@ export {
     IField,
     IMutableField,
     ISubscribableMutableField,
+
+    // loaders
+    ITreeLoader,
+    ITreeLoaderCore,
 
     // MathUtils
     radian,
