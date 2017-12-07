@@ -6,10 +6,7 @@ import {
 import {TYPES} from '../objects/types';
 @injectable()
 class App implements IApp {
-    private UIs: IUI[] // TODO: replace with an interface and/or generic
-    /* TODO: rather than hardcoding all the types of UIs that subscribe to the app,
-     let the app invocation or inversify object graph dynamically choose which UIs should be part of the app
-     */
+    private UIs: IUI[]
     private store: IMutableSubscribableGlobalStore
     constructor(@inject(TYPES.AppArgs){UIs, store}) {
         this.UIs = UIs
