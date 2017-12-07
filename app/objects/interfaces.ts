@@ -578,10 +578,12 @@ export {
     ISubscribableStore,
     ISubscribableTreeStore,
     ISubscribableTreeUserStore,
+    ISubscribableTreeLocationStore,
     ISubscribableContentUserStore,
     ISubscribableContentStore,
     IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore,
+    IMutableSubscribableTreeLocationStore,
     IMutableSubscribableContentUserStore,
     IMutableSubscribableContentStore,
 
