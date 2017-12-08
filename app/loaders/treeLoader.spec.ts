@@ -83,12 +83,54 @@ describe('treeLoader', () => {
         firebaseRef.fakeEvent('value', undefined, sampleTreeData)
         treeLoader.downloadData(treeId)
         firebaseRef.flush()
-
+        /* TODO: if you put a console log inside treeLoader.downloadData
+        you'll see that the on value callback actually gets called twice.
+        First time with the actual value. Second time with null
+        */
 
         const isLoaded = treeLoader.isLoaded(treeId)
         expect(isLoaded).to.equal(true)
 
     })
-    it('', () => {
+    it('DownloadData should return the data', async () => {
+        const treeId = '1234'
+        const firebaseRef = new MockFirebase().child(treeId)
+
+        const sampleTreeData: ITreeDataWithoutId = {
+            contentId: '12345532',
+            parentId: '493284',
+            children: ['2948, 2947']
+        }
+        const store = {}
+        const treeLoader = new TreeLoader({store, firebaseRef})
+        firebaseRef.fakeEvent('value', undefined, sampleTreeData)
+        const treeDataPromise = treeLoader.downloadData(treeId)
+        firebaseRef.flush()
+        const treeData = await treeDataPromise
+
+        expect(treeData).to.deep.equal(sampleTreeData)
+        // const isLoaded = treeLoader.isLoaded(treeId)
+        // expect(isLoaded).to.equal(true)
+    })
+    it('DownloadData should have the side effect of storing the data in the store', async () => {
+        const treeId = '1234'
+        const firebaseRef = new MockFirebase().child(treeId)
+
+        const sampleTreeData: ITreeDataWithoutId = {
+            contentId: '12345532',
+            parentId: '493284',
+            children: ['2948, 2947']
+        }
+        const store = {}
+        const treeLoader = new TreeLoader({store, firebaseRef})
+        firebaseRef.fakeEvent('value', undefined, sampleTreeData)
+        const treeDataPromise = treeLoader.downloadData(treeId)
+        firebaseRef.flush()
+        const treeData = await treeDataPromise
+
+        expect(store[treeId]).to.deep.equal(sampleTreeData)
+        // const isLoaded = treeLoader.isLoaded(treeId)
+        // expect(isLoaded).to.equal(true)
+
     })
 })
