@@ -37,6 +37,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.50",
+    "@types/vue": "^2.0.0",
     "angular": "^1.4.9",
     "angular-mocks": "^1.4.9",
     "awesome-typescript-loader": "^3.2.3",
