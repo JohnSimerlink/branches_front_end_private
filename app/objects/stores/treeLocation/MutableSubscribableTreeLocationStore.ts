@@ -12,7 +12,6 @@ class MutableSubscribableTreeLocationStore
     implements IMutableSubscribableTreeLocationStore {
     public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes,
         TreeLocationPropertyNames>) {
-        log('treeLocationStore addMutation just called', mutation)
         // const treeLocationId = mutation.id
         // treeLocationId && this.stores[treeLocationId].addMutation
         // mutation.id
@@ -35,7 +34,6 @@ class MutableSubscribableTreeLocationStore
         // throw new Error("Method not implemented.");
     }
     public callCallbacks() {
-        log('mutable subscribabletreelocationstore CALL CALLBACKS called')
         super.callCallbacks()
     }
 

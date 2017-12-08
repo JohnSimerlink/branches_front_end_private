@@ -37,7 +37,6 @@ class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscri
         return this.val()
     }
     public startPublishing() {
-        log('treeUser startPublishing called')
         if (this.publishing) {
             return
         }

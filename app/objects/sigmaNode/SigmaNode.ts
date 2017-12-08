@@ -51,7 +51,6 @@ class SigmaNode implements ISigmaNode {
     }
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
-        log('sigmaNode receiveNewTreeLocationData called' + JSON.stringify(treeLocationData))
         this.x = treeLocationData.point.x
         this.y = treeLocationData.point.y
     }

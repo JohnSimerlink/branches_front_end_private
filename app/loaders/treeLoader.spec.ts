@@ -1,9 +1,21 @@
-import {myContainer} from '../../inversify.config';
-import {IFirebaseRef, IMutableSubscribableTree} from '../objects/interfaces';
-import {TYPES} from '../objects/types';
-import {FirebaseRef} from '../objects/dbSync/FirebaseRef';
-import {TreeLoader} from './treeLoader';
 import {expect} from 'chai'
+import {MockFirebase} from 'firebase-mock'
+import * as FirebaseServer from 'firebase-server'
+import * as sinon from 'sinon'
+import {log} from '../../app/core/log'
+import {myContainer} from '../../inversify.config';
+import {FirebaseRef} from '../objects/dbSync/FirebaseRef';
+import {IFirebaseRef, IMutableSubscribableTree, ITreeDataWithoutId} from '../objects/interfaces';
+import {TYPES} from '../objects/types';
+import {TreeLoader} from './treeLoader';
+let firebase
+// new FirebaseServer(5000, 'test.firebase.localhost', {
+//     name: 'john'
+// })
+beforeEach('Init FB server', () => {
+    firebase = require('firebase')
+
+})
 
 describe('treeLoader', () => {
     it('Should set the firebaseRef and store for the loader', () => {
@@ -57,7 +69,26 @@ describe('treeLoader', () => {
         expect(isLoaded).to.deep.equal(false)
 
     })
-    it('Should mark an id as loaded after being loaded', () => {
+    it('Should mark an id as loaded after being loaded', async () => {
+        const treeId = '1234'
+        const firebaseRef = new MockFirebase().child(treeId)
 
+        const sampleTreeData: ITreeDataWithoutId = {
+            contentId: '12345532',
+            parentId: '493284',
+            children: ['2948, 2947']
+        }
+        const store = {}
+        const treeLoader = new TreeLoader({store, firebaseRef})
+        firebaseRef.fakeEvent('value', undefined, sampleTreeData)
+        treeLoader.downloadData(treeId)
+        firebaseRef.flush()
+
+
+        const isLoaded = treeLoader.isLoaded(treeId)
+        expect(isLoaded).to.equal(true)
+
+    })
+    it('', () => {
     })
 })

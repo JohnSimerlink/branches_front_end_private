@@ -26,7 +26,7 @@ interface ITreeLoaderCore {
 }
 interface ITreeLoader {
     getData(treeId): ITreeDataWithoutId
-    downloadData(treeId): ITreeDataWithoutId
+    downloadData(treeId): Promise<ITreeDataWithoutId>
     isLoaded(treeId): boolean
 }
 

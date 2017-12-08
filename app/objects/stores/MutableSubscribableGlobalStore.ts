@@ -47,7 +47,6 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                 break
             }
             case ObjectTypes.TREE_LOCATION: {
-                log('mutableSubscribableGlobalstore . addMutation called')
                 const propertyName: TreeLocationPropertyNames = mutation.propertyName as TreeLocationPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const type: TreeLocationPropertyMutationTypes = mutation.type as TreeLocationPropertyMutationTypes
@@ -60,7 +59,6 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                     type,
                 }
                 this.treeLocationStore.addMutation(treeLocationStoreMutation)
-                log('mutableSubscribableGlobalstore  treeLocationStore just called', treeLocationStoreMutation)
                 break
             }
             case ObjectTypes.CONTENT_USER: {
@@ -94,9 +92,6 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
         }
     }
     public callCallbacks() {
-        log(
-            'MutableSubscribableGlobalStore callCallbacks called'
-        )
         super.callCallbacks()
     }
 

@@ -8,11 +8,13 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "deploy": "sh .deploy.sh",
     "test": "echo run `gulp coverage`. Do not insert `gulp coverage` into an npm command. That causes errors",
-    "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
+    "publish-coverage": "nyc report --reporter=text-lcov | coveralls",
+    "firebase-test-server": "node ./firebase-test-server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/firebase": "^2.4.32",
     "angular-route": "^1.6.5",
     "angularjs": "0.0.1",
     "babel": "^6.23.0",
@@ -64,6 +66,8 @@
     "del": "^3.0.0",
     "exec": "^0.2.1",
     "file-loader": "^0.9.0",
+    "firebase-mock": "^1.1.13",
+    "firebase-server": "^0.12.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-batch": "^1.0.5",
