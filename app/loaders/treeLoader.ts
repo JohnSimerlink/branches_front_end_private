@@ -11,7 +11,10 @@ class TreeLoader implements ITreeLoader {
     }
 
     public getData(treeId): ITreeDataWithoutId {
-        return undefined;
+        if (!this.store[treeId]) {
+            throw new RangeError(treeId + ' does not exist in TreeLoader store. Use isLoaded(treeId) to check.')
+        }
+        return this.store[treeId]
     }
 
     public async downloadData(treeId): Promise<ITreeDataWithoutId> {
