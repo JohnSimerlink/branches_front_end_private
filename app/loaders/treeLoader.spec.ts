@@ -1,22 +1,11 @@
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
-import * as FirebaseServer from 'firebase-server'
-import * as sinon from 'sinon'
 import {log} from '../../app/core/log'
 import {myContainer} from '../../inversify.config';
 import {FirebaseRef} from '../objects/dbSync/FirebaseRef';
 import {IFirebaseRef, IMutableSubscribableTree, ITreeDataWithoutId} from '../objects/interfaces';
 import {TYPES} from '../objects/types';
 import {TreeLoader} from './treeLoader';
-let firebase
-// new FirebaseServer(5000, 'test.firebase.localhost', {
-//     name: 'john'
-// })
-beforeEach('Init FB server', () => {
-    firebase = require('firebase')
-
-})
-
 describe('treeLoader', () => {
     it('Should set the firebaseRef and store for the loader', () => {
         const store = {}
@@ -109,8 +98,6 @@ describe('treeLoader', () => {
         const treeData = await treeDataPromise
 
         expect(treeData).to.deep.equal(sampleTreeData)
-        // const isLoaded = treeLoader.isLoaded(treeId)
-        // expect(isLoaded).to.equal(true)
     })
     it('DownloadData should have the side effect of storing the data in the store', async () => {
         const treeId = '1234'
@@ -129,8 +116,32 @@ describe('treeLoader', () => {
         const treeData = await treeDataPromise
 
         expect(store[treeId]).to.deep.equal(sampleTreeData)
-        // const isLoaded = treeLoader.isLoaded(treeId)
-        // expect(isLoaded).to.equal(true)
+    })
+    it('GetData on an existing tree should return the tree', async () => {
+        const treeId = '1234'
+        const firebaseRef = new MockFirebase().child(treeId)
 
+        const sampleTreeData: ITreeDataWithoutId = {
+            contentId: '12345532',
+            parentId: '493284',
+            children: ['2948, 2947']
+        }
+        const store = {}
+        store[treeId] = sampleTreeData
+
+        const treeLoader = new TreeLoader({store, firebaseRef})
+        const treeData = treeLoader.getData(treeId)
+
+        expect(treeData).to.deep.equal(sampleTreeData)
+    })
+    it('GetData on a non existing tree should throw a RangeError', async () => {
+        const treeId = '1234'
+        const firebaseRef = new MockFirebase().child(treeId)
+
+        const store = {}
+
+        const treeLoader = new TreeLoader({store, firebaseRef})
+
+        expect(() => treeLoader.getData(treeId)).to.throw(RangeError)
     })
 })
