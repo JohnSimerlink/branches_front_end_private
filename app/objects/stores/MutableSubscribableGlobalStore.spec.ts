@@ -13,7 +13,7 @@ import {
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore,
     ISubscribableContentStore,
-    ISubscribableContentUserStore, ISubscribableGlobalStore,
+    ISubscribableContentUserStore,
     ObjectTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';

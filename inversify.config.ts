@@ -15,7 +15,12 @@ import {
 } from './app/objects/field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
-    fGetSigmaIdsForContentId, IMutableSubscribableGlobalStore, IMutableSubscribableTree, ISigmaNodeHandler,
+    fGetSigmaIdsForContentId, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore,
+    IMutableSubscribableTree,
+    IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUserStore,
+    ISigmaNodeHandler,
     ISigmaRenderManager, ISubscribableContent,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
@@ -62,6 +67,11 @@ import {SubscribableTreeLocationStore} from './app/objects/stores/treeLocation/S
 import {SubscribableContentUserStore} from './app/objects/stores/contentUser/SubscribableContentUserStore';
 import {SubscribableContentStore} from './app/objects/stores/content/SubscribableContentStore';
 import {MutableSubscribableGlobalStore} from './app/objects/stores/MutableSubscribableGlobalStore';
+import {MutableSubscribableTreeStore} from './app/objects/stores/tree/MutableSubscribableTreeStore';
+import {MutableSubscribableTreeUserStore} from './app/objects/stores/treeUser/MutableSubscribableTreeUserStore';
+import {MutableSubscribableTreeLocationStore} from './app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
+import {MutableSubscribableContentUserStore} from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -85,6 +95,16 @@ myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toCon
 })
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
+myContainer.bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
+myContainer.bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+    .to(MutableSubscribableTreeUserStore)
+myContainer.bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
+    .to(MutableSubscribableTreeLocationStore)
+myContainer.bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+    .to(MutableSubscribableContentStore)
+myContainer.bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
+    .to(MutableSubscribableContentUserStore)
+
 myContainer.bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
