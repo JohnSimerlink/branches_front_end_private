@@ -13,7 +13,7 @@ import {
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
-    ISigmaNode, ISigmaNodeHandler, ISubscribableUndoableMutablePoint,
+    ISigmaNode, ISigmaNodeHandler, ISigmaRenderManager, ISubscribableUndoableMutablePoint,
     IUI, ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames,
@@ -44,7 +44,12 @@ describe('App integration test 1', () => {
         const sigmaNodes = {}
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+            {
+                getSigmaIdsForContentId, sigmaNodes,
+                renderedSigmaNodes: {}, sigmaRenderManager
+            })
 
         // contentUserStore
         const contentId = CONTENT_ID
@@ -123,7 +128,12 @@ describe('App integration test 1', () => {
         const sigmaNodes = {}
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+            {
+                getSigmaIdsForContentId, sigmaNodes,
+                renderedSigmaNodes: {}, sigmaRenderManager
+            })
 
         // contentStore
         const contentId = CONTENT_ID
@@ -197,7 +207,7 @@ describe('App integration test 1', () => {
         expect(sigmaNode1.content.answer).to.equal(newAnswer)
         expect(sigmaNode2.content.answer).to.equal(newAnswer)
     })
-
+//
     it('Adding a mutation into the global stores for a tree user data,' +
         ' should update the sigma node instance for the sigma node for that tree Id', () => {
         // canvasUI
@@ -206,7 +216,12 @@ describe('App integration test 1', () => {
         const TREE_ID = 'babababa'
         const SIGMA_ID = TREE_ID
         sigmaNodes[SIGMA_ID] = sigmaNode1
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+            {
+                getSigmaIdsForContentId, sigmaNodes,
+                renderedSigmaNodes: {}, sigmaRenderManager
+            })
 
         // contentStore
         const proficiencyStatsVal: IProficiencyStats = {
@@ -295,7 +310,12 @@ describe('App integration test 1', () => {
         const TREE_ID = 'babababa'
         const SIGMA_ID = TREE_ID
         sigmaNodes[SIGMA_ID] = sigmaNode1
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({getSigmaIdsForContentId, sigmaNodes})
+        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+            {
+                getSigmaIdsForContentId, sigmaNodes,
+                renderedSigmaNodes: {}, sigmaRenderManager
+            })
 
         const treeId = TREE_ID
         const FIRST_POINT_VALUE = {x: 5, y: 7}

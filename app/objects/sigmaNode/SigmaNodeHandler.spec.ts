@@ -2,7 +2,7 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {CONTENT_TYPES, ITreeLocationData} from '../interfaces';
+import {CONTENT_TYPES, ISigmaNodeHandler, ISigmaRenderManager, ITreeLocationData} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {ITreeDataWithoutId, IContentData, IContentUserData,
     ICoordinate, ISigmaNode, ITreeUserData} from '../interfaces';
@@ -20,7 +20,8 @@ let sigmaNodes
 let sigmaNode1
 let sigmaNode2
 
-let sigmaNodeHandler
+let sigmaNodeHandler: ISigmaNodeHandler
+let sigmaRenderManager: ISigmaRenderManager
 describe('SigmaNodeHandler', () => {
     beforeEach('init sigmaNodes', () => {
         sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
@@ -28,10 +29,13 @@ describe('SigmaNodeHandler', () => {
         sigmaNodes = {}
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
+        sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
-        sigmaNodeHandler = new SigmaNodeHandler({sigmaNodes, getSigmaIdsForContentId})
+        sigmaNodeHandler = new SigmaNodeHandler(
+            {sigmaNodes, getSigmaIdsForContentId, renderedSigmaNodes: {}, sigmaRenderManager}
+            )
     })
-
+//
     it('A Tree Update should call the correct method on the sigma Node with the correct args', () => {
         const newContentId = '4324234'
         const newParentId = '4344324234'
@@ -56,7 +60,7 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0)
     })
-
+//
     it('A Tree Location Update should call the correct method on the sigma Node with the correct args', () => {
         const val: ITreeLocationData = {
             point: {
@@ -78,7 +82,7 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1)
         expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0)
     })
-
+//
     it('A Tree User Data Update should call the correct method on the sigma Node with the correct args', () => {
         const val: ITreeUserData = {
             aggregationTimer: 1230,
@@ -104,7 +108,7 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1)
         expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0)
     })
-
+//
     it('A Content Update should call the correct method on the sigma Node with the correct args', () => {
         const val: IContentData = {
             answer: 'Sacramento',
@@ -124,7 +128,7 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
     })
-
+//
     it('A Content User Update should call the correct method on the sigma Node with the correct args', () => {
         const val: IContentUserData = {
             lastRecordedStrength: 54, // TODO: this mig
