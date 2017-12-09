@@ -25,7 +25,6 @@ import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
-import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocation} from '../objects/treeLocation/MutableSubscribableTreeLocation';
@@ -136,7 +135,6 @@ describe('App integration test 1', () => {
                 updatesCallbacks: []
             })
         })()
-
 
         const treeStore: IMutableSubscribableTreeStore =
             myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)

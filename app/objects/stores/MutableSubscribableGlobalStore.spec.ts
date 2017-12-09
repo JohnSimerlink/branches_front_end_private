@@ -1,7 +1,8 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {CONTENT_ID, CONTENT_ID2, TREE_ID} from '../../testHelpers/testHelpers';
+import {myContainer} from '../../../inversify.config';
+import {CONTENT_ID, CONTENT_ID2, injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
@@ -19,26 +20,23 @@ import {
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
+import {TYPES} from '../types';
 import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
 import {SubscribableContentUserStore} from './contentUser/SubscribableContentUserStore';
 import {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
-import {MutableSubscribableTreeUserStore} from './treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocationStore} from './treeLocation/MutableSubscribableTreeLocationStore';
-import {myContainer} from '../../../inversify.config';
-import {SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
-import {TYPES} from '../types';
+import {MutableSubscribableTreeUserStore} from './treeUser/MutableSubscribableTreeUserStore';
 
 describe('MutableSubscribableGlobalStore', () => {
     it('Dependency injection should set all properties in constructor', () => {
-        const expectedProperties = Object.getOwnPropertyNames
-        (myContainer.get<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs))
-        const store: IMutableSubscribableGlobalStore =
-            myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
-        expectedProperties.forEach(property => {
-            expect(store[property]).to.not.equal(undefined)
+        const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
+            container: myContainer,
+            argsType: TYPES.MutableSubscribableGlobalStoreArgs,
+            classType: TYPES.IMutableSubscribableGlobalStore
         })
+        expect(injects).to.equal(true)
     })
     it('adding a tree mutation should call treeStore.addMutation(mutationObj)'
         + ' but without the objectType in mutationObj', () => {
