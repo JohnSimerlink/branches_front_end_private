@@ -165,7 +165,7 @@ myContainer.bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(Subscribab
 
  */
 myContainer.bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
-myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
+myContainer.bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => { return[]} )
 // tslint:disable-next-line ban-types
 myContainer.bind<Number>(TYPES.Number).toConstantValue(0)
 myContainer.bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
