@@ -153,51 +153,50 @@ describe('SigmaNodeHandler', () => {
         expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
     })
 
-    // it('A receive tree data and receive tree location data should place the node into the rendered nodes list', () => {
-    //     const newContentId = '4324234'
-    //     const newParentId = '4344324234'
-    //     const newChildren = ['45344324234', 'aabc321', 'abcd43132']
-    //     const val1: ITreeDataWithoutId = {
-    //         children: newChildren,
-    //         contentId: newContentId,
-    //         parentId: newParentId,
-    //     }
-    //     const update1: ITypeAndIdAndValUpdates = {
-    //         id: TREE_ID,
-    //         type: ObjectDataTypes.TREE_DATA,
-    //         val: val1,
-    //     }
-    //
-    //     const val2: ITreeLocationData = {
-    //         point: {
-    //             x: 5,
-    //             y: 9,
-    //         },
-    //     }
-    //     const update2: ITypeAndIdAndValUpdates = {
-    //         id: TREE_ID,
-    //         type: ObjectDataTypes.TREE_LOCATION_DATA,
-    //         val: val2,
-    //     }
-    //
-    //     const sigmaRenderManagerMarkTreeDataLoadedSpy = sinon.spy(sigmaRenderManager, 'markTreeDataLoaded')
-    //
-    //     log('renderedSigmaNodes are ', renderedSigmaNodes)
-    //     let isNotRendered = !renderedSigmaNodes[TREE_ID]
-    //     expect(isNotRendered).to.equal(true)
-    //     log('renderedSigmaNodes are ', renderedSigmaNodes)
-    //     sigmaNodeHandler.handleUpdate(update1)
-    //     expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1)
-    //     isNotRendered = !renderedSigmaNodes[TREE_ID]
-    //     expect(isNotRendered).to.equal(true)
-    //     // isNotRendered = !renderedSigmaNodes[TREE_ID]
-    //     // log('renderedSigmaNodes are ', renderedSigmaNodes)
-    //     // expect(isNotRendered).to.equal(true)
-    //     // sigmaNodeHandler.handleUpdate(update2)
-    //     // isNotRendered = !renderedSigmaNodes[TREE_ID]
-    //     // expect(isNotRendered).to.equal(false)
-    //     // /* TODO: rather than just adding an object to a hashmap, have a renderedNodeList.add() method,
-    //     //  which will also call sigmaInstance.addNode() */
-    // })
+    it('A receive tree data and receive tree location data should place the node into the rendered nodes list', () => {
+        const newContentId = '4324234'
+        const newParentId = '4344324234'
+        const newChildren = ['45344324234', 'aabc321', 'abcd43132']
+        const val1: ITreeDataWithoutId = {
+            children: newChildren,
+            contentId: newContentId,
+            parentId: newParentId,
+        }
+        const update1: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_DATA,
+            val: val1,
+        }
+
+        const val2: ITreeLocationData = {
+            point: {
+                x: 5,
+                y: 9,
+            },
+        }
+        const update2: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_LOCATION_DATA,
+            val: val2,
+        }
+
+        const sigmaRenderManagerMarkTreeDataLoadedSpy = sinon.spy(sigmaRenderManager, 'markTreeDataLoaded')
+
+        log('renderedSigmaNodes are ', renderedSigmaNodes)
+        let isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(true)
+        log('renderedSigmaNodes are ', renderedSigmaNodes)
+        sigmaNodeHandler.handleUpdate(update1)
+        expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1)
+        isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(true)
+        isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(true)
+        sigmaNodeHandler.handleUpdate(update2)
+        isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(false)
+        // /* TODO: rather than just adding an object to a hashmap, have a renderedNodeList.add() method,
+        //  which will also call sigmaInstance.addNode() */
+    })
 
 })
