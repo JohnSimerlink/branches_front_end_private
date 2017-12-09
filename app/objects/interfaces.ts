@@ -414,8 +414,16 @@ export interface IDescendantPublisher {
 export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
     TreeLocationPropertyNames | ContentUserPropertyNames | ContentPropertyNames
 
+export interface IHash<T> {
+    [id: string]: T
+}
+interface IMap<T> {
+    get(id: string): T
+    set(id: string, item: T)
+}
+
 // IStoreSource
-interface IStoreSource {}
+export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<IIdAndValUpdates> {}
 
 // tree
 export interface ITree {
