@@ -7,7 +7,7 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    fGetSigmaIdsForContentId, ISigmaNodeHandler, ITypeAndIdAndValUpdates,
+    fGetSigmaIdsForContentId, ISigmaNodeHandler, ISigmaRenderManager, ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
     ObjectDataTypes,
 } from '../interfaces';
@@ -19,11 +19,15 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
     private renderedSigmaNodes: object;
+    private sigmaRenderManager: ISigmaRenderManager
 
-
-    constructor(@inject(TYPES.SigmaNodeHandlerArgs){getSigmaIdsForContentId, sigmaNodes} ) {
+    constructor(@inject(TYPES.SigmaNodeHandlerArgs){
+        getSigmaIdsForContentId, sigmaNodes,
+        renderedSigmaNodes, sigmaRenderManager} ) {
         this.sigmaNodes = sigmaNodes
         this.getSigmaIdsForContentId = getSigmaIdsForContentId
+        this.renderedSigmaNodes = renderedSigmaNodes
+        this.sigmaRenderManager = sigmaRenderManager
     }
 
     private getSigmaNodeIds(update: ITypeAndIdAndValUpdates) {
@@ -47,23 +51,29 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
     }
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
-        sigmaIds.forEach(id => {
-            const sigmaNode: ISigmaNode = this.sigmaNodes[id]
-            this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val})
+        const me = this
+        sigmaIds.forEach(sigmaId => {
+            const sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId]
+            this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId})
+            if (this.sigmaRenderManager.canRender(sigmaId)) {
+                this.renderedSigmaNodes[sigmaId] = sigmaNode
+            }
         })
     }
     private updateSigmaNode(
         {
-            sigmaNode, updateType, data
+            sigmaNode, updateType, data, sigmaId,
         }: {
-            sigmaNode: ISigmaNode, updateType: ObjectDataTypes, data: ObjectDataDataTypes
+            sigmaNode: ISigmaNode, updateType: ObjectDataTypes, data: ObjectDataDataTypes, sigmaId: string
         }) {
         switch (updateType) {
             case ObjectDataTypes.TREE_DATA:
                 sigmaNode.receiveNewTreeData(data)
+                this.sigmaRenderManager.markTreeDataLoaded(sigmaId)
                 break
             case ObjectDataTypes.TREE_LOCATION_DATA:
                 sigmaNode.receiveNewTreeLocationData(data)
+                this.sigmaRenderManager.markTreeLocationDataLoaded(sigmaId)
                 break
             case ObjectDataTypes.TREE_USER_DATA:
                 sigmaNode.receiveNewTreeUserData(data)
@@ -83,6 +93,8 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
 class SigmaNodeHandlerArgs {
     @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
     @inject(TYPES.Object) public sigmaNodes;
+    @inject(TYPES.Object) public renderedSigmaNodes;
+    @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
 }
 
 export {SigmaNodeHandler, SigmaNodeHandlerArgs}

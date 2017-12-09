@@ -13,6 +13,7 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {App} from './app';
 import {SubscribableContentStore} from '../objects/stores/content/SubscribableContentStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+import 'reflect-metadata'
 
 describe('App', () => {
     it('Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', () => {

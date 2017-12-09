@@ -83,6 +83,7 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
     type: FieldMutationTypes.SET,
 })
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
+myContainer.bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
 myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
 myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)

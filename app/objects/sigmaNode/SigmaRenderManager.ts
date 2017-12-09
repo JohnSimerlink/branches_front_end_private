@@ -4,6 +4,7 @@ import {TYPES} from '../types';
 
 @injectable()
 class SigmaRenderManager implements ISigmaRenderManager {
+
     public markTreeDataLoaded(treeId) {
         this.treeDataLoadedIdsSet[treeId] = true
     }
@@ -16,8 +17,8 @@ class SigmaRenderManager implements ISigmaRenderManager {
         return this.treeLocationDataLoadedIdsSet[treeId]  && this.treeDataLoadedIdsSet[treeId]
     }
 
-    public treeDataLoadedIdsSet
-    public treeLocationDataLoadedIdsSet
+    private treeDataLoadedIdsSet
+    private treeLocationDataLoadedIdsSet
     constructor(@inject(TYPES.SigmaRenderManagerArgs) {treeDataLoadedIdsSet, treeLocationDataLoadedIdsSet}) {
         this.treeDataLoadedIdsSet = treeDataLoadedIdsSet
         this.treeLocationDataLoadedIdsSet = treeLocationDataLoadedIdsSet
@@ -26,7 +27,7 @@ class SigmaRenderManager implements ISigmaRenderManager {
 
 @injectable()
 class SigmaRenderManagerArgs {
-    @inject(TYPES.Object) public treeDataLoadedIdSet
+    @inject(TYPES.Object) public treeDataLoadedIdsSet
     @inject(TYPES.Object) public treeLocationDataLoadedIdsSet
 }
 
