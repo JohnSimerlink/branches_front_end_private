@@ -1,4 +1,4 @@
-import {AppContainer} from './appContainer';
+// import {AppContainer} from './appContainer';
 
-const appContainer = new AppContainer()
-appContainer.start()
+// const appContainer = new AppContainer()
+// appContainer.start()

@@ -20,6 +20,7 @@ import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocati
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {App} from './app';
 import store from './store2'
+import firebase from 'firebase'
 
 class AppContainer {
     constructor() {
