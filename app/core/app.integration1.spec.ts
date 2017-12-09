@@ -69,32 +69,17 @@ describe('App integration test 1', () => {
             })
         })()
 
-        const treeStore: IMutableSubscribableTreeStore = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
-        // (() => {
-        //     return new MutableSubscribableTreeStore({
-        //         store: {},
-        //         updatesCallbacks: []
-        //     })
-        // })()
+        const treeStore: IMutableSubscribableTreeStore =
+            myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
 
-        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
-            return new MutableSubscribableTreeUserStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const treeUserStore: IMutableSubscribableTreeUserStore =
+           myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
 
-        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
-            store: {},
-            updatesCallbacks: []
-        })
+        const treeLocationStore: IMutableSubscribableTreeLocationStore =
+            myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
-        const contentStore: IMutableSubscribableContentStore = (() => {
-            return new MutableSubscribableContentStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const contentStore: IMutableSubscribableContentStore =
+            myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const store: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
@@ -152,24 +137,15 @@ describe('App integration test 1', () => {
             })
         })()
 
-        const treeStore: IMutableSubscribableTreeStore = (() => {
-            return new MutableSubscribableTreeStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
 
-        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
-            store: {},
-            updatesCallbacks: []
-        })
+        const treeStore: IMutableSubscribableTreeStore =
+            myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
 
-        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
-            return new MutableSubscribableTreeUserStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const treeUserStore: IMutableSubscribableTreeUserStore =
+            myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+
+        const treeLocationStore: IMutableSubscribableTreeLocationStore =
+            myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const contentStore: IMutableSubscribableContentStore = (() => {
             const source = {}
@@ -243,19 +219,15 @@ describe('App integration test 1', () => {
         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
         const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
-        const contentUserStore: IMutableSubscribableContentUserStore = (() => {
-            return new MutableSubscribableContentUserStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
 
-        const treeStore: IMutableSubscribableTreeStore = (() => {
-            return new MutableSubscribableTreeStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const contentUserStore: IMutableSubscribableContentUserStore =
+            myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
+
+        const treeStore: IMutableSubscribableTreeStore =
+            myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
+
+        const treeLocationStore: IMutableSubscribableTreeLocationStore =
+            myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
             const source = {}
@@ -266,17 +238,8 @@ describe('App integration test 1', () => {
             })
         })()
 
-        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const contentStore: IMutableSubscribableContentStore = (() => {
-            return new MutableSubscribableContentStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const contentStore: IMutableSubscribableContentStore =
+            myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const store: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
@@ -329,40 +292,24 @@ describe('App integration test 1', () => {
             = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
-        const contentUserStore: IMutableSubscribableContentUserStore = (() => {
-            return new MutableSubscribableContentUserStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
 
-        const treeStore: IMutableSubscribableTreeStore = (() => {
-            return new MutableSubscribableTreeStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const contentUserStore: IMutableSubscribableContentUserStore =
+            myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
 
-        const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
-            const source = {}
-            return new MutableSubscribableTreeUserStore({
-                store: source,
-                updatesCallbacks: []
-            })
-        })()
+        const treeStore: IMutableSubscribableTreeStore =
+            myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
+
+        const treeUserStore: IMutableSubscribableTreeUserStore =
+            myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+
+        const contentStore: IMutableSubscribableContentStore =
+            myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore = (() => {
             const source = {}
             source[treeId] = treeLocation
             return new MutableSubscribableTreeLocationStore( {
                 store: source,
-                updatesCallbacks: []
-            })
-        })()
-
-        const contentStore: IMutableSubscribableContentStore = (() => {
-            return new MutableSubscribableContentStore({
-                store: {},
                 updatesCallbacks: []
             })
         })()
