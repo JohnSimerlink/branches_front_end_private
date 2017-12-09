@@ -57,6 +57,7 @@ const TYPES = {
     ISubscribableUndoableMutablePoint: Symbol('ISubscribableUndoableMutablePoint'),
     ISubscriber_ITypeAndIdAndValUpdates_Array: Symbol('ISubscriber_ITypeAndIdAndValUpdates_Array'),
     ITree: Symbol('ITree'),
+    MutableSubscribableGlobalStoreArgs: Symbol('MutableSubscribableGlobalStoreArgs'),
     Number: Symbol('Number'),
     Object: Symbol('Object'),
     PROFICIENCIES: Symbol('PROFICIENCIES'),
