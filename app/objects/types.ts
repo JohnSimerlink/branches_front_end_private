@@ -9,7 +9,6 @@ const TYPES = {
     DBSubscriberToTreeLocationArgs: Symbol('DBSubscriberToTreeLocationArgs'),
     FirebaseSaverArgs: Symbol('FirebaseSaverArgs'),
     FirebaseSyncerArgs: Symbol('SyncToDBArgs'),
-    GlobalStoreArgs: Symbol('GlobalStoreArgs'),
     IActivatableDatedMutation: Symbol('IActivatableDatedMutation'),
     IActivatableDatedMutationArr: Symbol('IActivatableDatedMutationArr'),
     IApp: Symbol('IApp'),

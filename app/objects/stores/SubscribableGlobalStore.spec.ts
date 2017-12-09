@@ -19,7 +19,7 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableContentUserStore} from './contentUser/SubscribableContentUserStore';
-import {SubscribableGlobalStore} from './SubscribableGlobalStore';
+import {SubscribableGlobalStoreArgs, SubscribableGlobalStore} from './SubscribableGlobalStore';
 import {SubscribableTreeStore} from './tree/SubscribableTreeStore';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
@@ -28,6 +28,15 @@ import {SubscribableTreeUserStore} from './treeUser/SubscribableTreeUserStore';
 import {SubscribableTreeLocationStore} from './treeLocation/SubscribableTreeLocationStore';
 
 describe('ISubscribableGlobalStore', () => {
+    it('Dependency injection should set all properties in constructor', () => {
+        const expectedProperties = Object.getOwnPropertyNames
+        (myContainer.get<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs))
+        const store: ISubscribableGlobalStore =
+            myContainer.get<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)
+        expectedProperties.forEach(property => {
+            expect(store[property]).to.not.equal(undefined)
+        })
+    })
     it(' calling startPublishing on GlobalStore, should call onUpdate on each of the component Stores', () => {
         const contentId = new SubscribableMutableField<string>()
         const parentId = new SubscribableMutableField<string>()

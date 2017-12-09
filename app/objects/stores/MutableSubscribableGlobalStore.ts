@@ -1,16 +1,21 @@
+import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     AllPropertyMutationTypes, ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, IGlobalDatedMutation,
-    IIdDatedMutation,
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
     TreeUserPropertyNames
 } from '../interfaces';
+import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 
+@injectable()
 class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
-    constructor({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
+        treeStore, treeUserStore, treeLocationStore,
+        contentUserStore, contentStore, updatesCallbacks
+    }) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
     }
     public addMutation(mutation: IGlobalDatedMutation<AllPropertyMutationTypes>) {

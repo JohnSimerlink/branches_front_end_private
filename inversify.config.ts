@@ -16,7 +16,11 @@ import {
 import {
     CONTENT_TYPES,
     fGetSigmaIdsForContentId, IMutableSubscribableTree, ISigmaNodeHandler, ISigmaRenderManager, ISubscribableContent,
-    ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeUser
+    ISubscribableContentStore,
+    ISubscribableContentUserStore,
+    ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeLocationStore, ISubscribableTreeStore,
+    ISubscribableTreeUser,
+    ISubscribableTreeUserStore
 } from './app/objects/interfaces';
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
@@ -40,7 +44,7 @@ import {
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
-import {GlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
+import {SubscribableGlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
 import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
@@ -51,6 +55,11 @@ import {TREE_ID3} from './app/testHelpers/testHelpers';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
+import {SubscribableTreeStore} from './app/objects/stores/tree/SubscribableTreeStore';
+import {SubscribableTreeUserStore} from './app/objects/stores/treeUser/SubscribableTreeUserStore';
+import {SubscribableTreeLocationStore} from './app/objects/stores/treeLocation/SubscribableTreeLocationStore';
+import {SubscribableContentUserStore} from './app/objects/stores/contentUser/SubscribableContentUserStore';
+import {SubscribableContentStore} from './app/objects/stores/content/SubscribableContentStore';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -60,7 +69,7 @@ myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserD
 myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
-myContainer.bind<GlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(GlobalStoreArgs)
+myContainer.bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
 myContainer.bind<ITree>(TYPES.ITree).to(SubscribableTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
@@ -105,6 +114,11 @@ myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableString
 myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
 (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
 /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
+myContainer.bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
+myContainer.bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore)
+myContainer.bind<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore)
+myContainer.bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore)
+myContainer.bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore)
 
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
 myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
