@@ -1,4 +1,4 @@
-import {Container} from 'inversify'
+import {Container, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
@@ -57,7 +57,7 @@ import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 import {TYPES} from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
-import {TREE_ID3} from './app/testHelpers/testHelpers';
+import {ObjectFactory, TREE_ID3} from './app/testHelpers/testHelpers';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
@@ -181,7 +181,7 @@ myContainer.bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     .toConstantValue((updates: IDetailedUpdates) => void 0)
 myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
-myContainer.bind<Object>(TYPES.Object).toConstantValue({})
+myContainer.bind<Object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => { return {}})
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutationArr).to()
 
 export {myContainer}
