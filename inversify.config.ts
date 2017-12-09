@@ -15,7 +15,7 @@ import {
 } from './app/objects/field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
-    fGetSigmaIdsForContentId, IMutableSubscribableTree, ISigmaNodeHandler, ISubscribableContent,
+    fGetSigmaIdsForContentId, IMutableSubscribableTree, ISigmaNodeHandler, ISigmaRenderManager, ISubscribableContent,
     ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeUser
 } from './app/objects/interfaces';
 import {
@@ -50,6 +50,7 @@ import {UIColor} from './app/objects/uiColor';
 import {TREE_ID3} from './app/testHelpers/testHelpers';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
+import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -123,6 +124,8 @@ myContainer.bind<any[]>(TYPES.Array).toConstantValue([])
 myContainer.bind<Number>(TYPES.Number).toConstantValue(0)
 myContainer.bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
 myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
+myContainer.bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
+myContainer.bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)

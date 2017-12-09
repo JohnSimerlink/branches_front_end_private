@@ -5,6 +5,7 @@
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
 import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
 import {
     fGetSigmaIdsForContentId, ISigmaNodeHandler, ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
@@ -12,12 +13,13 @@ import {
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
-import {log} from '../../../app/core/log'
 
 @injectable()
 class SigmaNodeHandler implements ISigmaNodeHandler {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
+    private renderedSigmaNodes: object;
+
 
     constructor(@inject(TYPES.SigmaNodeHandlerArgs){getSigmaIdsForContentId, sigmaNodes} ) {
         this.sigmaNodes = sigmaNodes
@@ -43,7 +45,6 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
         }
         return sigmaIds
     }
-    // TODO: refactor into a public method on another class
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
         sigmaIds.forEach(id => {
