@@ -246,7 +246,6 @@ describe('MutableSubscribableGlobalStore', () => {
         const calledWith = storeAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(storeMutation)
         expect(storeAddMutationSpy.callCount).to.deep.equal(1)
-
     })
 
 })

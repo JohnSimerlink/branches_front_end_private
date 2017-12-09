@@ -25,7 +25,7 @@ implements ISubscribableGlobalStore {
     protected treeLocationStore: IMutableSubscribableTreeLocationStore;
     protected contentStore: IMutableSubscribableContentStore;
     protected contentUserStore: IMutableSubscribableContentUserStore;
-    constructor(@inject(TYPES.GlobalStoreArgs){
+    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
         treeStore, treeUserStore, treeLocationStore, contentStore, contentUserStore, updatesCallbacks = []}) {
         super({updatesCallbacks})
         this.treeStore = treeStore
@@ -84,7 +84,7 @@ implements ISubscribableGlobalStore {
 }
 
 @injectable()
-class GlobalStoreArgs {
+class SubscribableGlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.ISubscribableTreeStore) public treeStore
     @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore
@@ -93,4 +93,4 @@ class GlobalStoreArgs {
     @inject(TYPES.ISubscribableContentStore) public contentStore
 }
 
-export {SubscribableGlobalStore, GlobalStoreArgs, ISubscribableGlobalStore}
+export {SubscribableGlobalStore, SubscribableGlobalStoreArgs, ISubscribableGlobalStore}
