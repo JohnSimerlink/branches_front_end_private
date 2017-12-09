@@ -1,6 +1,5 @@
 import {
-    ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    IIdDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTreeUser,
+    IIdProppedDatedMutation, IMutableSubscribableTreeUser,
     IMutableSubscribableTreeUserStore,
     IProppedDatedMutation,
     TreeUserPropertyMutationTypes,

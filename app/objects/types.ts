@@ -60,6 +60,8 @@ const TYPES = {
     CanvasUI: Symbol('CanvasUI'),
     CanvasUIArgs: Symbol('CanvasUIArgs'),
     String: Symbol('String'),
+    SigmaRenderManager: Symbol('SigmaRenderManager'),
+    SigmaRenderManagerArgs: Symbol('SigmaRenderManagerArgs'),
     Subscribable: Symbol('Subscribable'),
     SubscribableArgs: Symbol('SubscribableArgs'),
     SubscribableContentArgs: Symbol('SubscribableContentArgs'),

@@ -318,6 +318,13 @@ interface ISigmaNodeData {
     overdue: boolean;
 }
 
+// SigmaRendererManager
+interface ISigmaRenderManager {
+    markTreeDataLoaded(treeId)
+    markTreeLocationDataLoaded(treeId)
+    canRender(treeId)
+}
+
 // stores
 
 interface IMutableSubscribableGlobalStore
@@ -584,6 +591,7 @@ export {
     ISigmaNodeHandler,
     IColorSlice,
     ISigmaNodeData,
+    ISigmaRenderManager,
 
     // set
     IMutableStringSet,

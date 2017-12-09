@@ -47,7 +47,7 @@ describe('MutableSubscribableGlobalStore', () => {
         })
 
         const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore( {
-            store,
+            store: {},
             updatesCallbacks: []
         })
 
