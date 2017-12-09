@@ -66,7 +66,10 @@ import {SubscribableTreeUserStore} from './app/objects/stores/treeUser/Subscriba
 import {SubscribableTreeLocationStore} from './app/objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {SubscribableContentUserStore} from './app/objects/stores/contentUser/SubscribableContentUserStore';
 import {SubscribableContentStore} from './app/objects/stores/content/SubscribableContentStore';
-import {MutableSubscribableGlobalStore} from './app/objects/stores/MutableSubscribableGlobalStore';
+import {
+    MutableSubscribableGlobalStore,
+    MutableSubscribableGlobalStoreArgs
+} from './app/objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './app/objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableTreeUserStore} from './app/objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocationStore} from './app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
@@ -93,6 +96,7 @@ myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toCon
     timestamp: Date.now(),
     type: FieldMutationTypes.SET,
 })
+
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
@@ -104,6 +108,9 @@ myContainer.bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableCon
     .to(MutableSubscribableContentStore)
 myContainer.bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
     .to(MutableSubscribableContentUserStore)
+
+myContainer.bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
+    .to(MutableSubscribableGlobalStoreArgs)
 
 myContainer.bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
 myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)

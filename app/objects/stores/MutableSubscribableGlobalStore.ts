@@ -115,4 +115,4 @@ class MutableSubscribableGlobalStoreArgs {
     @inject(TYPES.IMutableSubscribableContentStore) public contentStore
     @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore
 }
-export {MutableSubscribableGlobalStore}
+export {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs}

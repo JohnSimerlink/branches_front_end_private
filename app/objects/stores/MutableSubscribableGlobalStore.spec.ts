@@ -22,7 +22,7 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
 import {SubscribableContentUserStore} from './contentUser/SubscribableContentUserStore';
-import {MutableSubscribableGlobalStore} from './MutableSubscribableGlobalStore';
+import {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
 import {MutableSubscribableTreeUserStore} from './treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocationStore} from './treeLocation/MutableSubscribableTreeLocationStore';
@@ -33,7 +33,7 @@ import {TYPES} from '../types';
 describe('MutableSubscribableGlobalStore', () => {
     it('Dependency injection should set all properties in constructor', () => {
         const expectedProperties = Object.getOwnPropertyNames
-        (myContainer.get<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs))
+        (myContainer.get<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs))
         const store: IMutableSubscribableGlobalStore =
             myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         expectedProperties.forEach(property => {
