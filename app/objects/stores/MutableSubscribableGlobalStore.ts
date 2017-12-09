@@ -106,4 +106,13 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
 
 }
 
+@injectable()
+class MutableSubscribableGlobalStoreArgs {
+    @inject(TYPES.Array) public updatesCallbacks;
+    @inject(TYPES.IMutableSubscribableTreeStore) public treeStore
+    @inject(TYPES.IMutableSubscribableTreeUserStore) public treeUserStore
+    @inject(TYPES.IMutableSubscribableTreeLocationStore) public treeLocationStore
+    @inject(TYPES.IMutableSubscribableContentStore) public contentStore
+    @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore
+}
 export {MutableSubscribableGlobalStore}

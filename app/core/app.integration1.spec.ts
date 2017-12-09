@@ -69,12 +69,13 @@ describe('App integration test 1', () => {
             })
         })()
 
-        const treeStore: IMutableSubscribableTreeStore = (() => {
-            return new MutableSubscribableTreeStore({
-                store: {},
-                updatesCallbacks: []
-            })
-        })()
+        const treeStore: IMutableSubscribableTreeStore = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
+        // (() => {
+        //     return new MutableSubscribableTreeStore({
+        //         store: {},
+        //         updatesCallbacks: []
+        //     })
+        // })()
 
         const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
             return new MutableSubscribableTreeUserStore({
