@@ -15,7 +15,8 @@ import {
 } from './app/objects/field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
-    fGetSigmaIdsForContentId, IMutableSubscribableTree, ISigmaNodeHandler, ISigmaRenderManager, ISubscribableContent,
+    fGetSigmaIdsForContentId, IMutableSubscribableGlobalStore, IMutableSubscribableTree, ISigmaNodeHandler,
+    ISigmaRenderManager, ISubscribableContent,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
     ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeLocationStore, ISubscribableTreeStore,
@@ -60,6 +61,7 @@ import {SubscribableTreeUserStore} from './app/objects/stores/treeUser/Subscriba
 import {SubscribableTreeLocationStore} from './app/objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {SubscribableContentUserStore} from './app/objects/stores/contentUser/SubscribableContentUserStore';
 import {SubscribableContentStore} from './app/objects/stores/content/SubscribableContentStore';
+import {MutableSubscribableGlobalStore} from './app/objects/stores/MutableSubscribableGlobalStore';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -70,6 +72,8 @@ myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubs
 myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
 myContainer.bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
+myContainer.bind<IMutableSubscribableGlobalStore>
+(TYPES.IMutableSubscribableGlobalStore).to(MutableSubscribableGlobalStore)
 myContainer.bind<ITree>(TYPES.ITree).to(SubscribableTree)
 myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)

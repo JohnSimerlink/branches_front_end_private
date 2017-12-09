@@ -13,7 +13,7 @@ import {
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore,
     ISubscribableContentStore,
-    ISubscribableContentUserStore,
+    ISubscribableContentUserStore, ISubscribableGlobalStore,
     ObjectTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -26,8 +26,20 @@ import {MutableSubscribableGlobalStore} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
 import {MutableSubscribableTreeUserStore} from './treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocationStore} from './treeLocation/MutableSubscribableTreeLocationStore';
+import {myContainer} from '../../../inversify.config';
+import {SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
+import {TYPES} from '../types';
 
 describe('MutableSubscribableGlobalStore', () => {
+    it('Dependency injection should set all properties in constructor', () => {
+        const expectedProperties = Object.getOwnPropertyNames
+        (myContainer.get<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs))
+        const store: IMutableSubscribableGlobalStore =
+            myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
+        expectedProperties.forEach(property => {
+            expect(store[property]).to.not.equal(undefined)
+        })
+    })
     it('adding a tree mutation should call treeStore.addMutation(mutationObj)'
         + ' but without the objectType in mutationObj', () => {
 
