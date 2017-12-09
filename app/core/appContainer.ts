@@ -5,13 +5,13 @@ import {ISubscribableContentStore} from '../objects/interfaces';
 import {
     fGetSigmaIdsForContentId, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore,
-    ISigmaNodeHandler,
+    ISigmaNodesUpdater,
     IUI,
 } from '../objects/interfaces';
 import {ISubscribableContentUserStore} from '../objects/interfaces';
 import {IMutableSubscribableGlobalStore} from '../objects/interfaces';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
-import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
+import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableContentUserStore} from '../objects/stores/contentUser/SubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
@@ -38,8 +38,8 @@ class AppContainer {
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler({sigmaNodes, getSigmaIdsForContentId})
-        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater({sigmaNodes, getSigmaIdsForContentId})
+        const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         // const
         // DataLoader.start()
 

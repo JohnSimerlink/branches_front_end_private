@@ -20,7 +20,7 @@ import {
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore,
-    ISigmaNodeHandler,
+    ISigmaNodesUpdater,
     ISigmaRenderManager, ISubscribableContent,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
@@ -49,7 +49,7 @@ import {
 } from './app/objects/sigmaNode/CanvasUI';
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
-import {SigmaNodeHandler, SigmaNodeHandlerArgs} from './app/objects/sigmaNode/SigmaNodeHandler';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
 import {SubscribableGlobalStoreArgs, SubscribableGlobalStore} from './app/objects/stores/SubscribableGlobalStore';
 import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
@@ -124,7 +124,7 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
 })
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
-myContainer.bind<ISigmaNodeHandler>(TYPES.ISigmaNodeHandler).to(SigmaNodeHandler)
+myContainer.bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
 myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
 myContainer.bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
@@ -152,7 +152,7 @@ myContainer.bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserSt
 myContainer.bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore)
 
 myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
-myContainer.bind<SigmaNodeHandlerArgs>(TYPES.SigmaNodeHandlerArgs).to(SigmaNodeHandlerArgs)
+myContainer.bind<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
 myContainer.bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI)
 myContainer.bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
     .to(CanvasUIArgs)

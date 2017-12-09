@@ -3,14 +3,14 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
-import {CONTENT_TYPES, ISigmaNodeHandler, ISigmaRenderManager, ITreeLocationData} from '../interfaces';
+import {CONTENT_TYPES, ISigmaNodesUpdater, ISigmaRenderManager, ITreeLocationData} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {ITypeAndIdAndValUpdates} from '../interfaces';
 import {IContentData, IContentUserData, ICoordinate,
     ISigmaNode, ITreeDataWithoutId, ITreeUserData} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
-import {SigmaNodeHandler} from './SigmaNodeHandler';
+import {SigmaNodesUpdater} from './SigmaNodesUpdater';
 
 import {
     CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID,
@@ -22,9 +22,9 @@ let sigmaNode1
 let sigmaNode2
 let renderedSigmaNodes
 
-let sigmaNodeHandler: ISigmaNodeHandler
+let sigmaNodesUpdater: ISigmaNodesUpdater
 let sigmaRenderManager: ISigmaRenderManager
-describe('SigmaNodeHandler', () => {
+describe('SigmaNodesUpdater', () => {
     beforeEach('init sigmaNodes', () => {
         sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         sigmaNode2 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
@@ -34,7 +34,7 @@ describe('SigmaNodeHandler', () => {
         sigmaNodes[SIGMA_ID2] = sigmaNode2
         sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
-        sigmaNodeHandler = new SigmaNodeHandler(
+        sigmaNodesUpdater = new SigmaNodesUpdater(
             {sigmaNodes, getSigmaIdsForContentId, renderedSigmaNodes, sigmaRenderManager}
             )
     })
@@ -58,7 +58,7 @@ describe('SigmaNodeHandler', () => {
         // TODO: make one unit for testing that updateSigmaNode gets called correctly twice
         // (and with the correct params ?). . .and make another unit for testing that updateSigmaNode behaves correctly
 
-        sigmaNodeHandler.handleUpdate(update)
+        sigmaNodesUpdater.handleUpdate(update)
         expect(sigmaNode1ReceiveNewTreeDataSpy.callCount).to.equal(1)
         expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0)
@@ -80,7 +80,7 @@ describe('SigmaNodeHandler', () => {
         const sigmaNode1ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeLocationData')
         const sigmaNode2ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeLocationData')
 
-        sigmaNodeHandler.handleUpdate(update)
+        sigmaNodesUpdater.handleUpdate(update)
         expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1)
         expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0)
@@ -106,7 +106,7 @@ describe('SigmaNodeHandler', () => {
         const sigmaNode1ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData')
         const sigmaNode2ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeUserData')
 
-        sigmaNodeHandler.handleUpdate(update)
+        sigmaNodesUpdater.handleUpdate(update)
         expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1)
         expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0)
@@ -127,7 +127,7 @@ describe('SigmaNodeHandler', () => {
         const sigmaNode1ReceiveNewContentDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentData')
         const sigmaNode2ReceiveNewContentDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentData')
 
-        sigmaNodeHandler.handleUpdate(update)
+        sigmaNodesUpdater.handleUpdate(update)
         expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
     })
@@ -148,7 +148,7 @@ describe('SigmaNodeHandler', () => {
         const sigmaNode1ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentUserData')
         const sigmaNode2ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentUserData')
 
-        sigmaNodeHandler.handleUpdate(update)
+        sigmaNodesUpdater.handleUpdate(update)
         expect(sigmaNode1ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
         expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
     })
@@ -186,13 +186,13 @@ describe('SigmaNodeHandler', () => {
         let isNotRendered = !renderedSigmaNodes[TREE_ID]
         expect(isNotRendered).to.equal(true)
         log('renderedSigmaNodes are ', renderedSigmaNodes)
-        sigmaNodeHandler.handleUpdate(update1)
+        sigmaNodesUpdater.handleUpdate(update1)
         expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1)
         isNotRendered = !renderedSigmaNodes[TREE_ID]
         expect(isNotRendered).to.equal(true)
         isNotRendered = !renderedSigmaNodes[TREE_ID]
         expect(isNotRendered).to.equal(true)
-        sigmaNodeHandler.handleUpdate(update2)
+        sigmaNodesUpdater.handleUpdate(update2)
         isNotRendered = !renderedSigmaNodes[TREE_ID]
         expect(isNotRendered).to.equal(false)
         // /* TODO: rather than just adding an object to a hashmap, have a renderedNodeList.add() method,

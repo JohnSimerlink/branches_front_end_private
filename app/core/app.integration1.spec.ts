@@ -13,7 +13,7 @@ import {
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
-    ISigmaNode, ISigmaNodeHandler, ISigmaRenderManager, ISubscribableUndoableMutablePoint,
+    ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, ISubscribableUndoableMutablePoint,
     IUI, ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames,
@@ -21,7 +21,7 @@ import {
 import {SubscribableMutablePoint} from '../objects/point/SubscribableMutablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
-import {SigmaNodeHandler} from '../objects/sigmaNode/SigmaNodeHandler';
+import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
@@ -44,7 +44,7 @@ describe('App integration test 1', () => {
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+        const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
                 renderedSigmaNodes: {}, sigmaRenderManager
@@ -84,7 +84,7 @@ describe('App integration test 1', () => {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
-        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         const UIs = [canvasUI]
 
         // create app
@@ -114,7 +114,7 @@ describe('App integration test 1', () => {
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+        const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
                 renderedSigmaNodes: {}, sigmaRenderManager
@@ -158,7 +158,7 @@ describe('App integration test 1', () => {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
 
-        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         const UIs = [canvasUI]
 
         // create app
@@ -192,7 +192,7 @@ describe('App integration test 1', () => {
         const SIGMA_ID = TREE_ID
         sigmaNodes[SIGMA_ID] = sigmaNode1
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+        const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
                 renderedSigmaNodes: {}, sigmaRenderManager
@@ -243,7 +243,7 @@ describe('App integration test 1', () => {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
 
-        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         const UIs = [canvasUI]
 
         // create app
@@ -273,7 +273,7 @@ describe('App integration test 1', () => {
         const SIGMA_ID = TREE_ID
         sigmaNodes[SIGMA_ID] = sigmaNode1
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        const sigmaNodeHandler: ISigmaNodeHandler = new SigmaNodeHandler(
+        const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
                 renderedSigmaNodes: {}, sigmaRenderManager
@@ -316,7 +316,7 @@ describe('App integration test 1', () => {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
 
-        const canvasUI: IUI = new CanvasUI({sigmaNodeHandler})
+        const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         const UIs = [canvasUI]
 
         // create app
