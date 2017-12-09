@@ -283,7 +283,7 @@ export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUp
 
 // sigmaNode
 export type fGetSigmaIdsForContentId = (id: string) => string[]
-export interface ISigmaNodeHandler {
+export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
 
@@ -413,6 +413,9 @@ export interface IDescendantPublisher {
 
 export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
     TreeLocationPropertyNames | ContentUserPropertyNames | ContentPropertyNames
+
+// IStoreSource
+interface IStoreSource {}
 
 // tree
 export interface ITree {

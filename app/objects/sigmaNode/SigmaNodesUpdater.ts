@@ -7,7 +7,7 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    fGetSigmaIdsForContentId, ISigmaNodeHandler, ISigmaRenderManager, ITypeAndIdAndValUpdates,
+    fGetSigmaIdsForContentId, ISigmaNodesUpdater, ISigmaRenderManager, ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
     ObjectDataTypes,
 } from '../interfaces';
@@ -15,13 +15,13 @@ import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-class SigmaNodeHandler implements ISigmaNodeHandler {
+class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
     private renderedSigmaNodes: object;
     private sigmaRenderManager: ISigmaRenderManager
 
-    constructor(@inject(TYPES.SigmaNodeHandlerArgs){
+    constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId, sigmaNodes,
         renderedSigmaNodes, sigmaRenderManager} ) {
         this.sigmaNodes = sigmaNodes
@@ -90,11 +90,11 @@ class SigmaNodeHandler implements ISigmaNodeHandler {
     }
 }
 @injectable()
-class SigmaNodeHandlerArgs {
+class SigmaNodesUpdaterArgs {
     @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
     @inject(TYPES.Object) public sigmaNodes;
     @inject(TYPES.Object) public renderedSigmaNodes;
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
 }
 
-export {SigmaNodeHandler, SigmaNodeHandlerArgs}
+export {SigmaNodesUpdater, SigmaNodesUpdaterArgs}

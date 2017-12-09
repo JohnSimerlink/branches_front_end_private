@@ -9,7 +9,6 @@ import {
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames
 } from '../../interfaces';
-import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
 
