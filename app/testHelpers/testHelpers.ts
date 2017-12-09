@@ -26,9 +26,14 @@ function injectionWorks<argsInterface, classInterface>(
     )
     return propertiesExist
 }
+function ObjectFactory() {
+    return {}
+}
 
 export {
+    ObjectFactory,
     TREE_ID, TREE_ID2, TREE_ID3,
     SIGMA_ID1, SIGMA_ID2,
     CONTENT_ID, CONTENT_ID2, CONTENT_ID3, getSigmaIdsForContentId, injectionWorks
 }
+

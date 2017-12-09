@@ -36,10 +36,7 @@ describe('SigmaRenderManager', () => {
 
         const treeDataLoadedIdsSet = {}
         const treeLocationDataLoadedIdsSet = {}
-        const sigmaRenderManager: ISigmaRenderManager = new SigmaRenderManager(
-            {
-                treeDataLoadedIdsSet, treeLocationDataLoadedIdsSet
-            })
+        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         const treeId = '12354'
         let cannotRender = !sigmaRenderManager.canRender(treeId)
         expect(cannotRender).to.equal(true)

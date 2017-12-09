@@ -325,7 +325,7 @@ export interface ISigmaNodeData {
 export interface ISigmaRenderManager {
     markTreeDataLoaded(treeId)
     markTreeLocationDataLoaded(treeId)
-    canRender(treeId)
+    canRender(treeId): boolean
 }
 
 // stores
