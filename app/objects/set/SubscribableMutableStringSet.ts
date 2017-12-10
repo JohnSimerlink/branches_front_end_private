@@ -24,7 +24,7 @@ class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
     private set: object;
     constructor(@inject(TYPES.SubscribableMutableStringSetArgs)
-        {set = {}, mutations = [], updatesCallbacks = []} = {set: [], mutations: [], updatesCallbacks: []} ) {
+        {set = {}, mutations = [], updatesCallbacks = []} = {set: {}, mutations: [], updatesCallbacks: []} ) {
         super({updatesCallbacks})
         this.set = set
         this._mutations = mutations

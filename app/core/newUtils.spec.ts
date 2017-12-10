@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import {stripTrailingSlash} from './newUtils';
+import {stringArrayToSet, stripTrailingSlash} from './newUtils';
 
 describe('stripTrailingSlash', () => {
     it('should return falsey for blank inputs', () => {
@@ -23,5 +23,16 @@ describe('stripTrailingSlash', () => {
         expect(result).to.equal('people/tai')
         result = stripTrailingSlash('books/goodbooks/thethirdwave')
         expect(result).to.equal('books/goodbooks/thethirdwave')
+    })
+})
+
+describe('stringArrayToSet', () => {
+    it('should return {} for []', () => {
+        const set = stringArrayToSet([])
+        expect(set).to.deep.equal({})
+    })
+    it('should return {a: true, b: true} for ["a",b"]', () => {
+        const set = stringArrayToSet(['a', 'b'])
+        expect(set).to.deep.equal({a: true, b: true})
     })
 })

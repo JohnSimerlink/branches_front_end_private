@@ -1,5 +1,5 @@
 // for now, this is where we will inject all the dependencies
-import {TreeLoader} from '../loaders/treeLoader';
+import {TreeLoader} from '../loaders/TreeLoader';
 import {IApp} from '../objects/interfaces';
 import {ISubscribableContentStore} from '../objects/interfaces';
 import {
