@@ -1,9 +1,12 @@
 import {log} from '../../app/core/log'
-import {IFirebaseRef, ITreeDataWithoutId, ITreeLoader} from '../objects/interfaces';
+import {
+    IMutableSubscribableTree, ISubscribableStoreSource, ITreeDataWithoutId,
+    ITreeLoader
+} from '../objects/interfaces';
 import {isValidTree} from '../objects/tree/treeValidator';
 
 class TreeLoader implements ITreeLoader {
-    private store: object
+    private store: ISubscribableStoreSource<IMutableSubscribableTree>
     private firebaseRef: Firebase
     constructor({firebaseRef, store}) {
         this.store = store
@@ -11,7 +14,7 @@ class TreeLoader implements ITreeLoader {
     }
 
     public getData(treeId): ITreeDataWithoutId {
-        if (!this.store[treeId]) {
+        if (!this.store.get(treeId)) {
             throw new RangeError(treeId + ' does not exist in TreeLoader store. Use isLoaded(treeId) to check.')
         }
         return this.store[treeId]
@@ -24,7 +27,7 @@ class TreeLoader implements ITreeLoader {
                 const treeData: ITreeDataWithoutId = snapshot.val()
                 log('FIREBASE REF VALUE CALLED!!!!1' + JSON.stringify(treeData))
                 if (isValidTree(treeData)) {
-                    me.store[treeId] = treeData
+                    me.store.set(treeId, treeData)
                     resolve(treeData)
                 } else {
                     reject(treeData)
