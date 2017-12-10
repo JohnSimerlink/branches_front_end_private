@@ -27,6 +27,7 @@ class TreeLoader implements ITreeLoader {
                 const treeData: ITreeDataWithoutId = snapshot.val()
                 log('FIREBASE REF VALUE CALLED!!!!1' + JSON.stringify(treeData))
                 if (isValidTree(treeData)) {
+                    const tree: IMutableSubscribableTree = TreeDe
                     me.store.set(treeId, treeData)
                     resolve(treeData)
                 } else {
