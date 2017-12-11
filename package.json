@@ -7,6 +7,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "deploy": "sh .deploy.sh",
+    "test2": "mocha || exit 0",
     "test": "echo run `gulp coverage`. Do not insert `gulp coverage` into an npm command. That causes errors",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
   },
