@@ -19,7 +19,7 @@ import {
     IMutableSubscribableGlobalStore,
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUserStore,
+    IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore,
     ISigmaNodesUpdater,
     ISigmaRenderManager, ISubscribableContent,
     ISubscribableContentStore,
@@ -77,6 +77,8 @@ import {MutableSubscribableTreeLocationStore} from './app/objects/stores/treeLoc
 import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './app/objects/stores/SubscribableStoreSource';
+import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderedNodesManager';
+import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderedNodesManagerCore';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -130,8 +132,14 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
     timestamp: Date.now(),
     type: FieldMutationTypes.SET,
 })
+
+myContainer.bind<IRenderedNodesManager>(TYPES.IRenderedNodesManager).to(RenderedNodesManager)
+myContainer.bind<IRenderedNodesManagerCore>(TYPES.IRenderedNodesManagerCore).to(RenderedNodesManagerCore)
+myContainer.bind<RenderedNodesManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderedNodesManagerArgs)
+myContainer.bind<RenderedNodesManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderedNodesManagerCoreArgs)
 myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
 myContainer.bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
+
 myContainer.bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
 myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
