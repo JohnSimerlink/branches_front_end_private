@@ -4,6 +4,7 @@ import {
     ITreeLoader
 } from '../objects/interfaces';
 import {isValidTree} from '../objects/tree/treeValidator';
+import {TreeDeserializer} from './TreeDeserializer';
 
 class TreeLoader implements ITreeLoader {
     private store: ISubscribableStoreSource<IMutableSubscribableTree>
@@ -27,8 +28,8 @@ class TreeLoader implements ITreeLoader {
                 const treeData: ITreeDataWithoutId = snapshot.val()
                 log('FIREBASE REF VALUE CALLED!!!!1' + JSON.stringify(treeData))
                 if (isValidTree(treeData)) {
-                    const tree: IMutableSubscribableTree = TreeDe
-                    me.store.set(treeId, treeData)
+                    const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
+                    me.store.set(treeId, tree)
                     resolve(treeData)
                 } else {
                     reject(treeData)
@@ -39,7 +40,7 @@ class TreeLoader implements ITreeLoader {
     }
 
     public isLoaded(treeId): boolean {
-        return !!this.store[treeId]
+        return !!this.store.get(treeId)
     }
 
 }

@@ -24,7 +24,8 @@ import {
     ISigmaRenderManager, ISubscribableContent,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
-    ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeLocationStore, ISubscribableTreeStore,
+    ISubscribableGlobalStore, ISubscribableStoreSource, ISubscribableTree, ISubscribableTreeLocationStore,
+    ISubscribableTreeStore,
     ISubscribableTreeUser,
     ISubscribableTreeUserStore
 } from './app/objects/interfaces';
@@ -75,6 +76,7 @@ import {MutableSubscribableTreeUserStore} from './app/objects/stores/treeUser/Mu
 import {MutableSubscribableTreeLocationStore} from './app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
+import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './app/objects/stores/SubscribableStoreSource';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -108,6 +110,12 @@ myContainer.bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableCon
     .to(MutableSubscribableContentStore)
 myContainer.bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
     .to(MutableSubscribableContentUserStore)
+
+myContainer.bind<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
+    .to(SubscribableStoreSource)
+
+myContainer.bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
+    .to(SubscribableStoreSourceArgs)
 
 myContainer.bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
     .to(MutableSubscribableGlobalStoreArgs)
