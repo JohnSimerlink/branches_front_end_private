@@ -3,11 +3,14 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
-     ISigmaNodeCreator, ISigmaNodeCreatorCaller, ISigmaNodeCreatorCore,
-    ITreeDataWithoutId, ObjectDataTypes
+    ISigmaNodeCreator, ISigmaNodeCreatorCaller, ISigmaNodeCreatorCore, ISubscribable,
+    ITreeDataWithoutId, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SigmaNodeCreator, SigmaNodeCreatorArgs, SigmaNodeCreatorCallerArgs} from './SigmaNodeCreator';
+import {
+    SigmaNodeCreator, SigmaNodeCreatorArgs, SigmaNodeCreatorCaller,
+    SigmaNodeCreatorCallerArgs
+} from './SigmaNodeCreator';
 
 describe('SigmaNodeCreator', () => {
     it('DI constructor should work', () => {
@@ -37,7 +40,6 @@ describe('SigmaNodeCreator', () => {
         expect(sigmaNodeCreatorCoreReceiveNewTreeDataSpy.callCount).to.equal(1)
         const calledWith = sigmaNodeCreatorCoreReceiveNewTreeDataSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(expectedCalledWith)
-
     })
 })
 describe('SigmaNodeCreatorCaller', () => {
@@ -48,5 +50,22 @@ describe('SigmaNodeCreatorCaller', () => {
             classType: TYPES.ISigmaNodeCreatorCaller,
         })
         expect(injects).to.equal(true)
+    })
+    it('subscribe', () => {
+        const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = {
+            onUpdate() {}
+        }
+        const subscribableUpdateSpy = sinon.spy(subscribable, 'onUpdate')
+        const sigmaNodeCreator: ISigmaNodeCreator = myContainer.get<ISigmaNodeCreator>(TYPES.ISigmaNodeCreator)
+        const sigmaNodeCreatorCaller: ISigmaNodeCreatorCaller =
+            new SigmaNodeCreatorCaller({sigmaNodeCreator})
+        const sigmaNodeCreatorReceiveUpdateBound = sigmaNodeCreator.receiveUpdate.bind(sigmaNodeCreator)
+        const expectedCalledWith = sigmaNodeCreatorReceiveUpdateBound
+
+        expect(subscribableUpdateSpy.callCount).to.equal(0)
+        sigmaNodeCreatorCaller.subscribe(subscribable)
+        expect(subscribableUpdateSpy.callCount).to.equal(1)
+        // const calledWith = subscribableUpdateSpy.getCall(0).args[0]
+        // expect((calledWith).to.deep.equal(expectedCalledWith)
     })
 })
