@@ -19,7 +19,8 @@ import {
     IMutableSubscribableGlobalStore,
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore,
+    IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore, ISigmaNodeCreator,
+    ISigmaNodeCreatorCaller, ISigmaNodeCreatorCore,
     ISigmaNodesUpdater,
     ISigmaRenderManager, ISubscribableContent,
     ISubscribableContentStore,
@@ -79,6 +80,11 @@ import {MutableSubscribableContentUserStore} from './app/objects/stores/contentU
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './app/objects/stores/SubscribableStoreSource';
 import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderedNodesManagerCore';
+import {
+    SigmaNodeCreator, SigmaNodeCreatorArgs, SigmaNodeCreatorCaller,
+    SigmaNodeCreatorCallerArgs
+} from './app/objects/sigmaNode/SigmaNodeCreator';
+import {SigmaNodeCreatorCore, SigmaNodeCreatorCoreArgs} from './app/objects/sigmaNode/SigmaNodeCreatorCore';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -188,6 +194,14 @@ myContainer.bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCI
 myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 myContainer.bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
 myContainer.bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
+myContainer.bind<SigmaNodeCreatorArgs>(TYPES.SigmaNodeCreatorArgs).to(SigmaNodeCreatorArgs)
+myContainer.bind<ISigmaNodeCreator>(TYPES.ISigmaNodeCreator).to(SigmaNodeCreator)
+
+myContainer.bind<SigmaNodeCreatorCallerArgs>(TYPES.SigmaNodeCreatorCallerArgs).to(SigmaNodeCreatorCallerArgs)
+myContainer.bind<ISigmaNodeCreatorCaller>(TYPES.ISigmaNodeCreatorCaller).to(SigmaNodeCreatorCaller)
+myContainer.bind<ISigmaNodeCreatorCore>(TYPES.ISigmaNodeCreatorCore).to(SigmaNodeCreatorCore)
+myContainer.bind<SigmaNodeCreatorCoreArgs>(TYPES.SigmaNodeCreatorCoreArgs).to(SigmaNodeCreatorCoreArgs)
+
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
 myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
