@@ -73,7 +73,21 @@ class SigmaNode implements ISigmaNode {
             size,
             aggregationTimer,
             colorSlices,
-            overdue
+            overdue,
+        } =  {
+            id: undefined,
+            parentId: undefined,
+            contentId: undefined,
+            children: undefined,
+            x: undefined,
+            y: undefined,
+            content: undefined,
+            contentUserData: undefined,
+            label: undefined,
+            size: undefined,
+            aggregationTimer: undefined,
+            colorSlices: undefined,
+            overdue: undefined,
         }) {
         this.id = id
         this.parentId = parentId

@@ -11,7 +11,7 @@ class SubscribableStoreSource<T> extends SubscribableCore<IIdAndValUpdates> impl
         super({updatesCallbacks})
         this.hashmap = hashmap
     }
-    protected callbackArguments() {
+    protected callbackArguments(): IIdAndValUpdates {
         return this.update
     }
     public get(id: string): T {
