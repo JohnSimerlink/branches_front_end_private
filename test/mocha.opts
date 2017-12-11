@@ -2,7 +2,6 @@
 --require core-js/library
 --require source-map-support/register
 --full-trace
---bail
 -c
 app/*.spec.ts
 app/**/*.spec.ts
