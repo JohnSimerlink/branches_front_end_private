@@ -1,17 +1,23 @@
 import {inject, injectable} from 'inversify';
-import {IHash, IIdAndValUpdates, ISubscribableStoreSource} from '../interfaces';
+import {
+    IHash, IIdAndValUpdates, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
+    ObjectDataTypes
+} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
 @injectable()
-class SubscribableStoreSource<T> extends SubscribableCore<IIdAndValUpdates> implements ISubscribableStoreSource<T> {
-    private update
+class SubscribableStoreSource<T> extends
+    SubscribableCore<ITypeAndIdAndValUpdates> implements ISubscribableStoreSource<T> {
+    private update: ITypeAndIdAndValUpdates
+    private type: ObjectDataTypes
     private hashmap: IHash<T>
-    constructor(@inject(TYPES.SubscribableStoreSourceArgs){hashmap, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableStoreSourceArgs){hashmap, type, updatesCallbacks}) {
         super({updatesCallbacks})
+        this.type = type
         this.hashmap = hashmap
     }
-    protected callbackArguments(): IIdAndValUpdates {
+    protected callbackArguments(): ITypeAndIdAndValUpdates {
         return this.update
     }
     public get(id: string): T {
@@ -20,7 +26,7 @@ class SubscribableStoreSource<T> extends SubscribableCore<IIdAndValUpdates> impl
 
     public set(id: string, val: T) {
         this.hashmap[id] = val
-        this.update = {id, val}
+        this.update = {id, val, type: this.type}
         this.callCallbacks()
     }
 }
@@ -29,5 +35,6 @@ class SubscribableStoreSource<T> extends SubscribableCore<IIdAndValUpdates> impl
 class SubscribableStoreSourceArgs {
     @inject(TYPES.Object) public hashmap
     @inject(TYPES.Array) public updatesCalbacks: any[]
+    @inject(TYPES.String) private type: ObjectDataTypes
 }
 export {SubscribableStoreSource, SubscribableStoreSourceArgs}
