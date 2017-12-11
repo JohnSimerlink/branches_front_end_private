@@ -1,7 +1,6 @@
 // tslint:disable no-var-requires
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
-import {} from 'mocha' // types
 
 import {IProficiencyStats} from '../interfaces';
 import {addObjToProficiencyStats} from './proficiencyStatsUtils';
