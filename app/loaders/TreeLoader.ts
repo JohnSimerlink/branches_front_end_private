@@ -18,9 +18,12 @@ class TreeLoader implements ITreeLoader {
         if (!this.store.get(treeId)) {
             throw new RangeError(treeId + ' does not exist in TreeLoader store. Use isLoaded(treeId) to check.')
         }
-        return this.store[treeId]
+        return this.store.get(treeId).val()
+        // TODO: fix violoation of law of demeter
     }
 
+    // TODO: this method violates SRP.
+    // it returns data AND has the side effect of storing the data in the store
     public async downloadData(treeId): Promise<ITreeDataWithoutId> {
         const me = this
         return new Promise((resolve, reject) => {
