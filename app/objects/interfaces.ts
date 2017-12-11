@@ -326,6 +326,10 @@ export interface ISigmaRenderManager extends ISubscribable<ISigmaIdToRender> {
     markTreeDataLoaded(treeId)
     markTreeLocationDataLoaded(treeId)
 }
+export interface IRenderedNodesManagerCore {
+    addToRenderList(sigmaId: string)
+}
+export interface IRenderedNodesManager extends ISubscriber<ISigmaIdToRender> {}
 
 // stores
 
