@@ -322,10 +322,9 @@ export interface ISigmaNodeData {
 }
 
 // SigmaRendererManager
-export interface ISigmaRenderManager {
+export interface ISigmaRenderManager extends ISubscribable<ISigmaIdToRender> {
     markTreeDataLoaded(treeId)
     markTreeLocationDataLoaded(treeId)
-    canRender(treeId): boolean
 }
 
 // stores
@@ -409,6 +408,9 @@ export interface ISubscriber<UpdateObjectType> {
 
 export interface IDescendantPublisher {
     startPublishing()
+}
+export interface ISigmaIdToRender {
+    sigmaIdToRender: string
 }
 
 export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |

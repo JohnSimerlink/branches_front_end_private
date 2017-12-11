@@ -47,7 +47,7 @@ describe('App integration test 1', () => {
         const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
-                renderedSigmaNodes: {}, sigmaRenderManager
+                 sigmaRenderManager
             })
 
         // contentUserStore
@@ -117,7 +117,7 @@ describe('App integration test 1', () => {
         const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
-                renderedSigmaNodes: {}, sigmaRenderManager
+                sigmaRenderManager
             })
 
         // contentStore
@@ -195,7 +195,7 @@ describe('App integration test 1', () => {
         const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
-                renderedSigmaNodes: {}, sigmaRenderManager
+                 sigmaRenderManager
             })
 
         // contentStore
@@ -276,7 +276,7 @@ describe('App integration test 1', () => {
         const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
-                renderedSigmaNodes: {}, sigmaRenderManager
+                 sigmaRenderManager
             })
 
         const treeId = TREE_ID

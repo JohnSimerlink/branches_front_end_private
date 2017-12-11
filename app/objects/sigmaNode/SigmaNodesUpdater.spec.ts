@@ -20,7 +20,6 @@ import {
 let sigmaNodes
 let sigmaNode1
 let sigmaNode2
-let renderedSigmaNodes
 
 let sigmaNodesUpdater: ISigmaNodesUpdater
 let sigmaRenderManager: ISigmaRenderManager
@@ -29,13 +28,12 @@ describe('SigmaNodesUpdater', () => {
         sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         sigmaNode2 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
         sigmaNodes = {}
-        renderedSigmaNodes = {}
         sigmaNodes[SIGMA_ID1] = sigmaNode1
         sigmaNodes[SIGMA_ID2] = sigmaNode2
         sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
         sigmaNodesUpdater = new SigmaNodesUpdater(
-            {sigmaNodes, getSigmaIdsForContentId, renderedSigmaNodes, sigmaRenderManager}
+            {sigmaNodes, getSigmaIdsForContentId,  sigmaRenderManager}
             )
     })
 //
@@ -153,50 +151,46 @@ describe('SigmaNodesUpdater', () => {
         expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
     })
 
-    it('A receive tree data and receive tree location data should place the node into the rendered nodes list', () => {
+    it('A receive tree data and receive tree location data should call the appropriate methods' +
+        ' on sigmaRenderManager place the node into the rendered nodes list', () => {
         const newContentId = '4324234'
         const newParentId = '4344324234'
         const newChildren = ['45344324234', 'aabc321', 'abcd43132']
-        const val1: ITreeDataWithoutId = {
+        const treeData: ITreeDataWithoutId = {
             children: newChildren,
             contentId: newContentId,
             parentId: newParentId,
         }
-        const update1: ITypeAndIdAndValUpdates = {
+        const treeDataUpdate: ITypeAndIdAndValUpdates = {
             id: TREE_ID,
             type: ObjectDataTypes.TREE_DATA,
-            val: val1,
+            val: treeData,
         }
 
-        const val2: ITreeLocationData = {
+        const treeLocationData: ITreeLocationData = {
             point: {
                 x: 5,
                 y: 9,
             },
         }
-        const update2: ITypeAndIdAndValUpdates = {
+        const treeLocationDataUpdate: ITypeAndIdAndValUpdates = {
             id: TREE_ID,
             type: ObjectDataTypes.TREE_LOCATION_DATA,
-            val: val2,
+            val: treeLocationData,
         }
 
         const sigmaRenderManagerMarkTreeDataLoadedSpy = sinon.spy(sigmaRenderManager, 'markTreeDataLoaded')
+        const sigmaRenderManagerMarkTreeLocationDataLoadedSpy = sinon.spy
+        (sigmaRenderManager, 'markTreeLocationDataLoaded')
 
-        log('renderedSigmaNodes are ', renderedSigmaNodes)
-        let isNotRendered = !renderedSigmaNodes[TREE_ID]
-        expect(isNotRendered).to.equal(true)
-        log('renderedSigmaNodes are ', renderedSigmaNodes)
-        sigmaNodesUpdater.handleUpdate(update1)
+        expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(0)
+        expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(0)
+        sigmaNodesUpdater.handleUpdate(treeDataUpdate)
         expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1)
-        isNotRendered = !renderedSigmaNodes[TREE_ID]
-        expect(isNotRendered).to.equal(true)
-        isNotRendered = !renderedSigmaNodes[TREE_ID]
-        expect(isNotRendered).to.equal(true)
-        sigmaNodesUpdater.handleUpdate(update2)
-        isNotRendered = !renderedSigmaNodes[TREE_ID]
-        expect(isNotRendered).to.equal(false)
-        // /* TODO: rather than just adding an object to a hashmap, have a renderedNodeList.add() method,
-        //  which will also call sigmaInstance.addNode() */
+        expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(0)
+        sigmaNodesUpdater.handleUpdate(treeLocationDataUpdate)
+        expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(1)
+        expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1)
     })
 
 })
