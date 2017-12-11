@@ -35,7 +35,7 @@ export class SigmaNodeCreatorCaller implements ISigmaNodeCreatorCaller {
         this.sigmaNodeCreator = sigmaNodeCreator
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        obj.onUpdate(this.sigmaNodeCreator.receiveUpdate.bind(this))
+        obj.onUpdate(this.sigmaNodeCreator.receiveUpdate.bind(this.sigmaNodeCreator))
     }
 }
 @injectable()
