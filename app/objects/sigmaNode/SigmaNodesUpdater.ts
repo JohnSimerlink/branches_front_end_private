@@ -18,15 +18,13 @@ import {TYPES} from '../types';
 class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
-    private renderedSigmaNodes: object;
     private sigmaRenderManager: ISigmaRenderManager
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId, sigmaNodes,
-        renderedSigmaNodes, sigmaRenderManager} ) {
+        sigmaRenderManager} ) {
         this.sigmaNodes = sigmaNodes
         this.getSigmaIdsForContentId = getSigmaIdsForContentId
-        this.renderedSigmaNodes = renderedSigmaNodes
         this.sigmaRenderManager = sigmaRenderManager
     }
 
@@ -55,9 +53,6 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
         sigmaIds.forEach(sigmaId => {
             const sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId]
             this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId})
-            if (this.sigmaRenderManager.canRender(sigmaId)) {
-                this.renderedSigmaNodes[sigmaId] = sigmaNode
-            }
         })
     }
     private updateSigmaNode(
@@ -93,7 +88,6 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
 class SigmaNodesUpdaterArgs {
     @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
     @inject(TYPES.Object) public sigmaNodes;
-    @inject(TYPES.Object) public renderedSigmaNodes;
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
 }
 

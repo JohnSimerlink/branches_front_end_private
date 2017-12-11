@@ -20,7 +20,7 @@ abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesTyp
     public onUpdate(func: updatesCallback<UpdatesType>) {
         this.updatesCallbacks.push(func)
     }
-    protected abstract callbackArguments()
+    protected abstract callbackArguments(): UpdatesType
 
     protected callCallbacks() {
         const me = this
