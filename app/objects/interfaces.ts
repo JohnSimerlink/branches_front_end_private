@@ -321,6 +321,14 @@ export interface ISigmaNodeData {
     overdue: boolean;
 }
 
+// SigmaNodeCreator
+export interface ISigmaNodeCreatorCore {
+    receiveNewTreeData({treeId, treeData}: {treeId: string, treeData: ITreeDataWithoutId})
+    receiveNewTreeLocationData({treeId, treeLocationData}: {treeId: string, treeLocationData: ITreeLocationData} )
+    receiveNewTreeUserData({treeId, treeUserData}: {treeId: string, treeUserData: ITreeUserData})
+    receiveNewContentData({contentId, contentData}: {contentId: string, contentData: IContentData})
+    receiveNewContentUserData({contentId, contentUserData}: {contentId: string, contentUserData: IContentUserData})
+}
 // SigmaRendererManager
 export interface ISigmaRenderManager extends ISubscribable<ISigmaIdToRender> {
     markTreeDataLoaded(treeId)
