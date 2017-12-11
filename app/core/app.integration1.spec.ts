@@ -34,7 +34,7 @@ import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../test
 import {App} from './app';
 
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
-describe('App integration test 1', () => {
+describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
     it('Adding a mutation into the global stores for a content user data,' +
         ' should update the sigma node instance for all sigma nodes containing that content id', () => {
         // canvasUI
