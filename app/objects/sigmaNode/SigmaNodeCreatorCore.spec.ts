@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import {TREE_ID} from '../../testHelpers/testHelpers';
-import {IHash, ISigmaNode, ISigmaNodeCreatorCore, ITreeData, ITreeDataWithoutId} from '../interfaces';
+import {IHash, ISigmaNode, ISigmaNodeCreatorCore, ITreeDataWithoutId} from '../interfaces';
 import {SigmaNode} from './SigmaNode';
 import {SigmaNodeCreatorCore} from './SigmaNodeCreatorCore';
 
@@ -22,4 +22,19 @@ describe('SigmaNodeCreatorCore', () => {
         const createdSigmaNode = sigmaNodes[sigmaId]
         expect(expectedSigmaNode).to.deep.equal(createdSigmaNode)
     })
+    it('.receiveNewTreeData should error on creating a new sigmaNode if that node already exists'
+        , () => {
+            const sigmaId = TREE_ID
+            const treeData: ITreeDataWithoutId = {
+                contentId: '543534',
+                parentId: '4234325',
+                children: ['234', '5435']
+            }
+            const existingSigmaNode: ISigmaNode = new SigmaNode()
+            existingSigmaNode.receiveNewTreeData(treeData)
+            const sigmaNodes: IHash<ISigmaNode> = {}
+            sigmaNodes[sigmaId] = existingSigmaNode
+            const sigmaNodeCreatorCore: ISigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
+            expect(() => sigmaNodeCreatorCore.receiveNewTreeData({treeId: sigmaId, treeData})).to.throw(RangeError)
+        })
 })

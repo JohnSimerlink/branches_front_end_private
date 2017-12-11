@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {
-    IHash, IIdAndValUpdates, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
+    IHash, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
     ObjectDataTypes
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
