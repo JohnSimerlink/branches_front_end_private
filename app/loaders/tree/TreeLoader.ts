@@ -2,8 +2,8 @@ import {log} from '../../app/core/log'
 import {
     IMutableSubscribableTree, ISubscribableStoreSource, ITreeDataWithoutId,
     ITreeLoader
-} from '../objects/interfaces';
-import {isValidTree} from '../objects/tree/treeValidator';
+} from '../../objects/interfaces';
+import {isValidTree} from '../../objects/tree/treeValidator';
 import {TreeDeserializer} from './TreeDeserializer';
 
 class TreeLoader implements ITreeLoader {

@@ -1,13 +1,13 @@
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../app/core/log'
-import {myContainer} from '../../inversify.config';
-import {FirebaseRef} from '../objects/dbSync/FirebaseRef';
+import {myContainer} from '../../../inversify.config';
+import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IMutableSubscribableTree, ISubscribableStoreSource,
     ITreeDataWithoutId
-} from '../objects/interfaces';
-import {TYPES} from '../objects/types';
+} from '../../objects/interfaces';
+import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader} from './TreeLoader';
 describe('treeLoader', () => {

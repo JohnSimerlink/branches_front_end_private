@@ -1,9 +1,9 @@
 import {expect} from 'chai'
-import {stringArrayToSet} from '../core/newUtils';
-import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
-import {IHash, IMutableSubscribableTree, ITreeData, ITreeDataWithoutId} from '../objects/interfaces';
-import {SubscribableMutableStringSet} from '../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../objects/tree/MutableSubscribableTree';
+import {stringArrayToSet} from '../../core/newUtils';
+import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
+import {IHash, IMutableSubscribableTree, ITreeData, ITreeDataWithoutId} from '../../objects/interfaces';
+import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
+import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 
 describe('TreeDeserializer', () => {
