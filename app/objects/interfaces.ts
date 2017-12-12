@@ -265,8 +265,7 @@ export interface IPoint {
 }
 export interface IUndoableMutablePoint extends IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPoint { }
 
-export interface ISubscribableUndoableMutablePoint
-    extends ISubscribable<IDetailedUpdates>, IUndoableMutablePoint { }
+export interface IMutableSubscribablePoint  extends ISubscribable<IDetailedUpdates>, IUndoableMutablePoint { }
 
 // proficiencyStats
 
@@ -523,7 +522,7 @@ export interface ITreeLocation {
 }
 
 export interface ISubscribableTreeLocationCore extends ITreeLocation {
-    point: ISubscribableUndoableMutablePoint,
+    point: IMutableSubscribablePoint,
     val(): ITreeLocationData
 }
 

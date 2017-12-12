@@ -13,7 +13,7 @@ import {
     IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
-    ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, ISubscribableUndoableMutablePoint,
+    ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, IMutableSubscribablePoint,
     IUI, ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames,
@@ -286,7 +286,7 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             x: FIRST_POINT_VALUE.x + MUTATION_VALUE.delta.x,
             y: FIRST_POINT_VALUE.y + MUTATION_VALUE.delta.y
         }
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})

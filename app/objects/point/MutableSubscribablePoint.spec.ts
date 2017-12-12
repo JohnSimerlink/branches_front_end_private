@@ -2,7 +2,7 @@ import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatedMutation, ISubscribableUndoableMutablePoint, PointMutationTypes} from '../interfaces';
+import {IDatedMutation, IMutableSubscribablePoint, PointMutationTypes} from '../interfaces';
 import {MutableSubscribablePoint} from './MutableSubscribablePoint'
 
 // import {Point} from '../app/objects/point/point'
@@ -135,7 +135,7 @@ describe('Point > Subscribable', () => {
 
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {x: 3, y: 4}
-        const subscribableMutablePoint: ISubscribableUndoableMutablePoint
+        const subscribableMutablePoint: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
         const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const mutation: IDatedMutation<PointMutationTypes> = {
@@ -151,7 +151,7 @@ describe('Point > Subscribable', () => {
     it('Adding a mutation, should trigger an update for multiple subscribers ', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {x: 3, y: 4}
-        const subscribableMutablePoint: ISubscribableUndoableMutablePoint
+        const subscribableMutablePoint: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
         const callback1 = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const callback2 = sinon.spy() // (updates: IDetailedUpdates) => void 0

@@ -5,7 +5,7 @@ import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
     FieldMutationTypes,
     IDatedMutation, IProficiencyStats,
-    IProppedDatedMutation, ISubscribableMutableField, ISubscribableUndoableMutablePoint, ITreeLocationData,
+    IProppedDatedMutation, ISubscribableMutableField, IMutableSubscribablePoint, ITreeLocationData,
     PointMutationTypes,
     TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
 } from '../interfaces';
@@ -16,7 +16,7 @@ import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation
 describe('MutableSubscribableTreeLocation', () => {
     it('.val() should work after constructor', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -34,7 +34,7 @@ describe('MutableSubscribableTreeLocation', () => {
             x: FIRST_POINT_VALUE.x + MUTATION_VALUE.x,
             y: FIRST_POINT_VALUE.y + MUTATION_VALUE.y
         }
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -64,7 +64,7 @@ describe('MutableSubscribableTreeLocation', () => {
             x: FIRST_POINT_VALUE.x + MUTATION_VALUE.x,
             y: FIRST_POINT_VALUE.y + MUTATION_VALUE.y
         }
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -96,7 +96,7 @@ describe('MutableSubscribableTreeLocation', () => {
             x: FIRST_POINT_VALUE.x + MUTATION_VALUE.x,
             y: FIRST_POINT_VALUE.y + MUTATION_VALUE.y
         }
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -116,7 +116,7 @@ describe('MutableSubscribableTreeLocation', () => {
         'and that mutation called on the descendant property should no longer have the propertyName on it', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})

@@ -4,7 +4,7 @@ import {myContainer} from '../../../../inversify.config';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     FieldMutationTypes, IProficiencyStats, IProppedDatedMutation, ISubscribableTreeLocationCore,
-    ISubscribableTreeLocationStore, ISubscribableUndoableMutablePoint, PointMutationTypes,
+    ISubscribableTreeLocationStore, IMutableSubscribablePoint, PointMutationTypes,
     TreeLocationPropertyNames
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
@@ -20,7 +20,7 @@ describe('SubscribableTreeLocationStore > addAndSubscribeToItem', () => {
         const treeId = TREE_ID
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})

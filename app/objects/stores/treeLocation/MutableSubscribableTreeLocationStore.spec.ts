@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
     IIdProppedDatedMutation, IMutableSubscribableTreeLocationStore,  IProppedDatedMutation,
-    ISubscribableUndoableMutablePoint, PointMutationTypes,
+    IMutableSubscribablePoint, PointMutationTypes,
     TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames
 } from '../../interfaces';
@@ -19,7 +19,7 @@ describe('MutableSubscribableTreeLocationStore > addMutation', () => {
         const treeId = TREE_ID
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -56,7 +56,7 @@ describe('MutableSubscribableTreeLocationStore > addMutation', () => {
         const treeId = TREE_ID
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})

@@ -2,7 +2,7 @@
 import {inject, injectable} from 'inversify';
 import {
     IActivatableDatedMutation, ICoordinate,
-    IDatedMutation, IDetailedUpdates, IPoint, ISubscribableUndoableMutablePoint, IUndoableMutable,
+    IDatedMutation, IDetailedUpdates, IPoint, IMutableSubscribablePoint, IUndoableMutable,
     PointMutationTypes
 } from '../interfaces';
 import {} from '../interfaces';
@@ -21,7 +21,7 @@ import {TYPES} from '../types';
 @injectable()
 export class MutableSubscribablePoint
     extends Subscribable<IDetailedUpdates>
-    implements ISubscribableUndoableMutablePoint {
+    implements IMutableSubscribablePoint {
     private x = 0;
     private y = 0;
     private _mutations: Array<IActivatableDatedMutation<PointMutationTypes>>;
