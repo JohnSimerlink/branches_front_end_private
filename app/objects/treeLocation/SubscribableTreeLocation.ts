@@ -44,7 +44,7 @@ class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISub
 @injectable()
 class SubscribableTreeLocationArgs {
     @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableUndoableMutablePoint) public point: ISubscribableUndoableMutablePoint
+    @inject(TYPES.IMutableSubscribablePoint) public point: ISubscribableUndoableMutablePoint
 }
 
 export {SubscribableTreeLocation, SubscribableTreeLocationArgs}

@@ -50,12 +50,8 @@ export class MutableSubscribablePoint
     }) {
         super({updatesCallbacks})
         this._mutations = mutations
-        const mutation = {
-            data: {delta: {x, y}},
-            timestamp: Date.now(),
-            type: PointMutationTypes.SHIFT,
-        }
-        this.addMutation(mutation)
+        this.x = x
+        this.y = y
     }
     public val(): ICoordinate {
         return {x: this.x, y: this.y}
@@ -129,12 +125,12 @@ export class MutableSubscribablePoint
     public undo(mutationListIndex: number) {
         const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex]
 
-        if (!mutation.active || mutationListIndex === 0) {
+        if (!mutation.active) {
             const activeMutations = this.getActiveMutations()
             throw new RangeError('Mutation ' + JSON.stringify(mutation)
                 + ` is already not active and thus cannot be undone.
              The current mutations that are active are `
-                + JSON.stringify(activeMutations) + '. Also the first mutation can\'t be undone.')
+                + JSON.stringify(activeMutations))
         }
 
         this.undoMutation(mutation)
