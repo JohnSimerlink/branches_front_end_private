@@ -3,7 +3,7 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    ISubscribableTreeLocation, ISubscribableUndoableMutablePoint,
+    ISubscribableTreeLocation, IMutableSubscribablePoint,
     ITreeLocationData,
     IValUpdates,
 } from '../interfaces';
@@ -13,7 +13,7 @@ import {TYPES} from '../types'
 @injectable()
 class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISubscribableTreeLocation {
     private publishing = false
-    public point: ISubscribableUndoableMutablePoint
+    public point: IMutableSubscribablePoint
 
     // TODO: should the below three objects be private?
     public val(): ITreeLocationData {
@@ -44,7 +44,7 @@ class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISub
 @injectable()
 class SubscribableTreeLocationArgs {
     @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.IMutableSubscribablePoint) public point: ISubscribableUndoableMutablePoint
+    @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint
 }
 
 export {SubscribableTreeLocation, SubscribableTreeLocationArgs}

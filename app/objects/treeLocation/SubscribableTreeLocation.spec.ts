@@ -5,7 +5,7 @@ import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
     IProficiencyStats,
     ISubscribableMutableField,
-    ISubscribableMutableStringSet, ISubscribableUndoableMutablePoint,
+    ISubscribableMutableStringSet, IMutableSubscribablePoint,
 } from '../interfaces';
 import {MutableSubscribablePoint} from '../point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -17,7 +17,7 @@ describe('SubscribableTreeLocation', () => {
     it('constructor should set all the subscribable properties', () => {
 
         const FIRST_POINT_VALUE = {x: 5, y: 7}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -25,7 +25,7 @@ describe('SubscribableTreeLocation', () => {
     })
     it('.val() should display the value of the object', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -38,7 +38,7 @@ describe('SubscribableTreeLocation', () => {
     })
     it('startPublishing() should call the onUpdate methods of all member Subscribable properties', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
-        const point: ISubscribableUndoableMutablePoint
+        const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
