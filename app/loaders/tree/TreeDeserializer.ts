@@ -1,6 +1,6 @@
 import {stringArrayToSet} from '../../core/newUtils';
 import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
-import {IHash, IMutableSubscribableTree, ITree, ITreeDataWithoutId} from '../../objects/interfaces';
+import {IHash, IMutableSubscribableTree, ITreeDataWithoutId} from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 

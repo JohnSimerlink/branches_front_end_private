@@ -17,7 +17,7 @@ import {
     CONTENT_TYPES,
     fGetSigmaIdsForContentId, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore,
-    IMutableSubscribableTree,
+    IMutableSubscribableTree, IMutableSubscribableTreeLocation,
     IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore, ISigmaNodeCreator,
     ISigmaNodeCreatorCaller, ISigmaNodeCreatorCore,
@@ -85,6 +85,8 @@ import {
     SigmaNodeCreatorCallerArgs
 } from './app/objects/sigmaNode/SigmaNodeCreator';
 import {SigmaNodeCreatorCore, SigmaNodeCreatorCoreArgs} from './app/objects/sigmaNode/SigmaNodeCreatorCore';
+import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
+import {SubscribableTreeLocationArgs} from './app/objects/treeLocation/SubscribableTreeLocation';
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
@@ -114,6 +116,8 @@ myContainer.bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTr
     .to(MutableSubscribableTreeUserStore)
 myContainer.bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
     .to(MutableSubscribableTreeLocationStore)
+myContainer.bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
+    .to(MutableSubscribableTreeLocation)
 myContainer.bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
     .to(MutableSubscribableContentStore)
 myContainer.bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
@@ -182,6 +186,8 @@ myContainer.bind<SubscribableMutableStringSetArgs>
 (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
 myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
 myContainer.bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs)
+myContainer.bind<SubscribableTreeLocationArgs>(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs)
+
 /* myContainer.bind<ISubscribable<IDetailedUpdates>>
 (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
 
