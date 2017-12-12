@@ -1,42 +1,41 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
-import {IDescendantPublisher, IIdAndValUpdates,
-ISubscribableStore} from '../interfaces';
+import {
+    IDescendantPublisher, IIdAndValUpdates,
+    ISubscribableStore, ISubscribableStoreSource
+} from '../interfaces';
 import {IValUpdates} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
-if (!Object.entries) {
-    entries.shim()
-}
-
 // interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
 @injectable()
-class SubscribableStore<SubscribableCoreInterface>
+class SubscribableStore<SubscribableCoreInterface, ObjectInterface>
     extends SubscribableCore<IIdAndValUpdates>
     implements ISubscribableStore<SubscribableCoreInterface> {
-    protected store: object;
+    protected storeSource: ISubscribableStoreSource<
+        ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
+        >;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
-    constructor(@inject(TYPES.SubscribableStoreArgs){store = {}, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableStoreArgs){ storeSource, updatesCallbacks}) {
         super({updatesCallbacks})
-        this.store = store
+        this.storeSource = storeSource
     }
     protected callbackArguments(): IIdAndValUpdates {
         return this.update
     }
     public addAndSubscribeToItem(
-        id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher
+        id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
     ) {
         // TODO: make the arg type cleaner!
         if (!this.startedPublishing) {
             throw new Error('Can\'t add item until started publishing!')
         }
-        this.store[id] = item
+        this.storeSource.set(id, item)
         this.subscribeToItem(id, item)
         item.startPublishing()
         // throw new Error('Method not implemented.");
@@ -49,8 +48,8 @@ class SubscribableStore<SubscribableCoreInterface>
         })
     }
     public startPublishing() {
-        for (let [id, item] of Object.entries(this.store) ) {
-            item = item as IDescendantPublisher
+        for (let [id, item] of this.storeSource.entries()) {
+            item = item
             this.subscribeToItem(id, item)
             item.startPublishing()
         }
@@ -61,7 +60,7 @@ class SubscribableStore<SubscribableCoreInterface>
 
 @injectable()
 class SubscribableStoreArgs {
-    @inject(TYPES.Object) public store;
+    @inject(TYPES.ISubscribableStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
 }
 

@@ -5,15 +5,20 @@ import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     FieldMutationTypes,
-    IIdProppedDatedMutation, IMutableSubscribableTreeUserStore, IProficiencyStats, IProppedDatedMutation,
+    IIdProppedDatedMutation, IMutableSubscribableTreeLocation, IMutableSubscribableTreeUser,
+    IMutableSubscribableTreeUserStore, IProficiencyStats,
+    IProppedDatedMutation,
+    ISubscribableStoreSource,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames
 } from '../../interfaces';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
+import {myContainer} from '../../../../inversify.config';
+import {TYPES} from '../../types';
 
 describe('MutableSubscribableTreeUserStore > addMutation', () => {
-    it('addMutation to store should call addMutation on the appropriate item,' +
+    it('addMutation to storeSource should call addMutation on the appropriate item,' +
         ' and with a modified mutation argument that no longer has the id', () => {
         const proficiencyStatsVal: IProficiencyStats = {
             UNKNOWN: 3,
@@ -33,10 +38,14 @@ describe('MutableSubscribableTreeUserStore > addMutation', () => {
         const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
         const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
-        const store = {}
-        store[TREE_ID] = treeUser
+
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeUser>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeUser>>
+        (TYPES.ISubscribableStoreSource)
+        storeSource.set(TREE_ID, treeUser)
+
         const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
         const treeUserAddMutationSpy = sinon.spy(treeUser, 'addMutation')
@@ -60,17 +69,20 @@ describe('MutableSubscribableTreeUserStore > addMutation', () => {
         const calledWith = treeUserAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+    it('addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
         ' it either, should throw a RangeError', () => {
 
         const nonExistentId = 'abdf1295'
-        const store = {}
+
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeUser>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeUser>>
+        (TYPES.ISubscribableStoreSource)
+
         const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
 
-        const NEW_CONTENT_ID = CONTENT_ID2
         const proppedMutation: IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames> = {
             data: 1234,
             propertyName: TreeUserPropertyNames.AGGREGATION_TIMER,

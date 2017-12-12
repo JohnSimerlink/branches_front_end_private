@@ -49,36 +49,27 @@ describe('ISubscribableGlobalStore', () => {
         (TYPES.ISubscribableStore_ISubscribableTreeCore)
         */
         // TODO: ^^ The above dependency injection fails . . . So I am using constructor manually
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
-            store: {},
-            updatesCallbacks: []
+        const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
+
+        const treeUserStore: ISubscribableTreeUserStore
+            = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
+
+        const treeLocationStore: ISubscribableTreeLocationStore
+            = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
+
+        const contentStore: ISubscribableContentStore
+            = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
+
+        const contentUserStore: ISubscribableContentUserStore
+            = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
+
+        const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore({
+            treeStore,
+            treeUserStore,
+            treeLocationStore,
+            contentUserStore,
+            contentStore,
         })
-        const treeUserStore: ISubscribableTreeUserStore = new SubscribableTreeUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const treeLocationStore: ISubscribableTreeLocationStore = new SubscribableTreeLocationStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const globalStore = new SubscribableGlobalStore(
-            {
-                contentStore,
-                contentUserStore,
-                treeStore,
-                treeLocationStore,
-                treeUserStore,
-                updatesCallbacks: [],
-            }
-        )
         const treeStoreOnUpdateSpy = sinon.spy(treeStore, 'onUpdate')
         const contentUserStoreOnUpdateSpy = sinon.spy(contentUserStore, 'onUpdate')
 
@@ -106,29 +97,23 @@ describe('ISubscribableGlobalStore', () => {
         /* const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>
         (TYPES.ISubscribableTreeStore)
         TODO: ^^^^ Using DI for treeStore causes some sort of error where
-         a canvasUI tries to subscribe to the tree store
-         . . . how does that even happen?? how is there knowledge of a canvasUI store? */
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
-            store: [],
-            updatesCallbacks: []
-        })
-        const treeUserStore: ISubscribableTreeStore = new SubscribableTreeStore( {
-            store: [],
-            updatesCallbacks: []
-        })
-        const treeLocationStore: ISubscribableTreeLocationStore = new SubscribableTreeLocationStore( {
-            store: [],
-            updatesCallbacks: []
-        })
+         a canvasUI tries to subscribe to the tree storeSource
+         . . . how does that even happen?? how is there knowledge of a canvasUI storeSource? */
 
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
-            store: {},
-            updatesCallbacks: []
-        })
+        const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
+
+        const treeUserStore: ISubscribableTreeUserStore
+            = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
+
+        const treeLocationStore: ISubscribableTreeLocationStore
+            = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
+
+        const contentStore: ISubscribableContentStore
+            = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
+
+        const contentUserStore: ISubscribableContentUserStore
+            = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
+
         // TODO FINISH UPDATING THIS FILE
         const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
             {
@@ -186,28 +171,21 @@ describe('ISubscribableGlobalStore', () => {
             timer,
             updatesCallbacks: [],
         })
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
-            store: [],
-            updatesCallbacks: []
-        })
-        const treeUserStore: ISubscribableTreeStore = new SubscribableTreeStore( {
-            store: [],
-            updatesCallbacks: []
-        })
-        const treeLocationStore: ISubscribableTreeLocationStore = new SubscribableTreeLocationStore( {
-            store: [],
-            updatesCallbacks: []
-        })
 
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
+        const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
 
-        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
-            store: {},
-            updatesCallbacks: []
-        })
+        const treeUserStore: ISubscribableTreeUserStore
+            = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
+
+        const treeLocationStore: ISubscribableTreeLocationStore
+            = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
+
+        const contentStore: ISubscribableContentStore
+            = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
+
+        const contentUserStore: ISubscribableContentUserStore
+            = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
+
         const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
             {
                 contentStore,
@@ -266,27 +244,20 @@ describe('ISubscribableGlobalStore', () => {
         parentId,
         updatesCallbacks: [],
     })
-    const treeStore: ISubscribableTreeStore = new SubscribableTreeStore( {
-        store: {},
-        updatesCallbacks: []
-    })
-    const treeUserStore: ISubscribableTreeUserStore = new SubscribableTreeUserStore( {
-        store: {},
-        updatesCallbacks: []
-    })
-    const treeLocationStore: ISubscribableTreeLocationStore = new SubscribableTreeLocationStore( {
-        store: {},
-        updatesCallbacks: []
-    })
 
-    const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-        store: {},
-        updatesCallbacks: []
-    })
-    const contentStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-        store: {},
-        updatesCallbacks: []
-    })
+    const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
+
+    const treeUserStore: ISubscribableTreeUserStore
+        = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
+
+    const treeLocationStore: ISubscribableTreeLocationStore
+        = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
+
+    const contentStore: ISubscribableContentStore
+        = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
+
+    const contentUserStore: ISubscribableContentUserStore
+        = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
     const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
         {
             contentStore,

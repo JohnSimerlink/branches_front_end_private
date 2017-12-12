@@ -17,10 +17,10 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     public addMutation(
         mutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
     ) {
-        // TODO: what to do if object does not exist in store
+        // TODO: what to do if object does not exist in storeSource
         const id = mutation.id
         const contentUser: IMutableSubscribableContentUser
-            = this.store[id]
+            = this.storeSource.get(id)
         if (!contentUser) {
             throw new RangeError('Couldn\'t find content for contentId' + id)
         }

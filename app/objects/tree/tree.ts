@@ -1,7 +1,7 @@
 /* tslint:disable object-literal-sort-keys */
 import {error, log} from '../../core/log';
 import md5 from '../../core/md5wrapper'
-import store from '../../core/store'
+import store from '../../core/storeSource'
 import ContentItems from '../contentItems'
 import firebase from '../firebaseService.js';
 import {IContentItem} from '../interfaces';

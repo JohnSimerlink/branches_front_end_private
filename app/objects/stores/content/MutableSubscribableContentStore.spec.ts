@@ -1,20 +1,21 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai'
 import * as sinon from 'sinon'
+import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../../content/MutableSubscribableContent';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
     ContentPropertyMutationTypes,
-    ContentPropertyNames, FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentStore,
-    IProppedDatedMutation
+    ContentPropertyNames, FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContent,
+    IMutableSubscribableContentStore, IProppedDatedMutation, ISubscribableStoreSource
 } from '../../interfaces';
-import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
+import {TYPES} from '../../types';
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
 
 describe('MutableSubscribableContentStore > addMutation', () => {
-    it('addMutation to store should call addMutation on the appropriate item,' +
+    it('addMutation to storeSource should call addMutation on the appropriate item,' +
         ' and with a modified mutation argument that no longer has the id', () => {
         const contentId = CONTENT_ID2
         const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
@@ -24,10 +25,13 @@ describe('MutableSubscribableContentStore > addMutation', () => {
         const content = new MutableSubscribableContent({
             type, question, answer, title, updatesCallbacks: [],
         })
-        const store = {}
-        store[contentId] = content
+
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
+        (TYPES.ISubscribableStoreSource)
+        storeSource.set(contentId, content)
         const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
         const contentAddMutationSpy = sinon.spy(content, 'addMutation')
@@ -50,7 +54,7 @@ describe('MutableSubscribableContentStore > addMutation', () => {
         const calledWith = contentAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+    it('addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
         ' it either, should throw a RangeError', () => {
         const contentId = CONTENT_ID2
         const nonExistentId = 'abdf1295'
@@ -61,10 +65,14 @@ describe('MutableSubscribableContentStore > addMutation', () => {
         const content = new MutableSubscribableContent({
             type, question, answer, title, updatesCallbacks: [],
         })
-        const store = {}
-        store[contentId] = content
+
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
+        (TYPES.ISubscribableStoreSource)
+        storeSource.set(contentId, content)
+
         const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
 

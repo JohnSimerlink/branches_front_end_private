@@ -1,6 +1,6 @@
 import {log} from '../../../../app/core/log'
 import {
-    IIdDatedMutation, IIdProppedDatedMutation,
+    IIdProppedDatedMutation,
      IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
     TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames
@@ -18,7 +18,7 @@ class MutableSubscribableTreeLocationStore
 
         const id = mutation.id
         const treeLocation: IMutableSubscribableTreeLocation
-            = this.store[id]
+            = this.storeSource.get(id)
         if (!treeLocation) {
             throw new RangeError('Couldn\'t find treeLocation for treeLocationId: ' + id)
         }

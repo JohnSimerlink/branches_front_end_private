@@ -11,7 +11,7 @@ import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader} from './TreeLoader';
 describe('treeLoader', () => {
-    it('Should set the firebaseRef and store for the loader', () => {
+    it('Should set the firebaseRef and storeSource for the loader', () => {
         const store: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
 
@@ -21,7 +21,7 @@ describe('treeLoader', () => {
         expect(treeLoader['store']).to.deep.equal(store)
         expect(treeLoader['firebaseRef']).to.deep.equal(firebaseRef) // TODO: why am I testing private properties
     })
-    it('Should mark an id as loaded if it exists in the injected store', () => {
+    it('Should mark an id as loaded if it exists in the injected storeSource', () => {
         const store: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
 
@@ -34,7 +34,7 @@ describe('treeLoader', () => {
         const isLoaded = treeLoader.isLoaded(treeId)
         expect(isLoaded).to.deep.equal(true)
     })
-    it('Should mark an id as not loaded if it does not exist in the injected store', () => {
+    it('Should mark an id as not loaded if it does not exist in the injected storeSource', () => {
         const store: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
 
@@ -106,7 +106,7 @@ describe('treeLoader', () => {
 
         expect(treeData).to.deep.equal(sampleTreeData)
     })
-    it('DownloadData should have the side effect of storing the data in the store', async () => {
+    it('DownloadData should have the side effect of storing the data in the storeSource', async () => {
         const treeId = '1234'
         const firebaseRef = new MockFirebase().child(treeId)
 

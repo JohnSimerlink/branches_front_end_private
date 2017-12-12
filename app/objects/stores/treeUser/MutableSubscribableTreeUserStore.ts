@@ -17,7 +17,7 @@ class MutableSubscribableTreeUserStore
 
         const id = mutation.id
         const treeUser: IMutableSubscribableTreeUser
-            = this.store[id]
+            = this.storeSource.get(id)
         if (!treeUser) {
             throw new RangeError('Couldn\'t find treeUser for treeUserId: ' + id)
         }

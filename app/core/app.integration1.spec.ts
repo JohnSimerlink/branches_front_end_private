@@ -10,13 +10,15 @@ import {
     CONTENT_TYPES, ContentPropertyMutationTypes, ContentPropertyNames,
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes,
-    IApp, IGlobalDatedMutation, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IProficiencyStats,
-    ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, IMutableSubscribablePoint,
-    IUI, ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
-    TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames,
+    IApp, IGlobalDatedMutation, IMutableSubscribableContent, IMutableSubscribableContentStore,
+    IMutableSubscribableContentUser, IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
+    IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUser, IMutableSubscribableTreeUserStore,
+    IProficiencyStats, ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, ISubscribableStoreSource,
+    IUI,
+    ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
+    TreeUserPropertyMutationTypes, TreeUserPropertyNames,
 } from '../objects/interfaces';
 import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
@@ -60,10 +62,12 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
         const contentUserStore: IMutableSubscribableContentUserStore = (() => {
-            const source = {}
-            source[contentId] = contentUser
+            const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
+                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
+            (TYPES.ISubscribableStoreSource)
+            storeSource.set(contentId, contentUser)
             return new MutableSubscribableContentUserStore({
-                store: source,
+                storeSource,
                 updatesCallbacks: []
             })
         })()
@@ -130,8 +134,12 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             type, question, answer, title, updatesCallbacks: [],
         })
         const contentUserStore: IMutableSubscribableContentUserStore = (() => {
+
+            const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
+                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
+            (TYPES.ISubscribableStoreSource)
             return new MutableSubscribableContentUserStore({
-                store: {},
+                storeSource,
                 updatesCallbacks: []
             })
         })()
@@ -146,10 +154,12 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const contentStore: IMutableSubscribableContentStore = (() => {
-            const source = {}
-            source[contentId] = content
+            const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
+                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
+            (TYPES.ISubscribableStoreSource)
+            storeSource.set(contentId, content)
             return new MutableSubscribableContentStore({
-                store: source,
+                storeSource,
                 updatesCallbacks: []
             })
         })()
@@ -195,7 +205,7 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
         const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
             {
                 getSigmaIdsForContentId, sigmaNodes,
-                 sigmaRenderManager
+                sigmaRenderManager
             })
 
         // contentStore
@@ -228,10 +238,13 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
-            const source = {}
-            source[TREE_ID] = treeUser
+
+            const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeUser>
+                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeUser>>
+            (TYPES.ISubscribableStoreSource)
+            storeSource.set(TREE_ID, treeUser)
             return new MutableSubscribableTreeUserStore({
-                store: source,
+                storeSource,
                 updatesCallbacks: []
             })
         })()
@@ -304,10 +317,13 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore = (() => {
-            const source = {}
-            source[treeId] = treeLocation
+            const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
+                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
+            (TYPES.ISubscribableStoreSource)
+            storeSource.set(treeId, treeLocation)
+
             return new MutableSubscribableTreeLocationStore( {
-                store: source,
+                storeSource,
                 updatesCallbacks: []
             })
         })()
@@ -352,7 +368,7 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
         const proficiencyStatsCallCallbacksSpy = sinon.spy(proficiencyStats, 'callCallbacks')
         expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
         expect(sigmaNode2.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
-        store.addMutation(mutation)
+        storeSource.addMutation(mutation)
         expect(treeLocationStoreAddMutationSpy.callCount).to.equal(1)
         expect(treeLocationAddMutationSpy.callCount).to.equal(1)
         expect(proficiencyStatsAddMutationSpy.callCount).to.equal(1)

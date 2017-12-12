@@ -7,13 +7,15 @@ import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentUserStore,
-    IProppedDatedMutation
+    IProppedDatedMutation, ISubscribableStoreSource, IMutableSubscribableContentUser
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
+import {myContainer} from '../../../../inversify.config';
+import {TYPES} from '../../types';
 
 describe('MutableSubscribableContentUserStore > addMutation', () => {
-    it('addMutation to store should call addMutation on the appropriate item,' +
+    it('addMutation to storeSource should call addMutation on the appropriate item,' +
         ' and with a modified mutation argument that no longer has the id', () => {
         const contentId = CONTENT_ID2
         const overdue = new SubscribableMutableField<boolean>({field: false})
@@ -23,10 +25,12 @@ describe('MutableSubscribableContentUserStore > addMutation', () => {
         const contentUser = new MutableSubscribableContentUser({
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
-        const store = {}
-        store[contentId] = contentUser
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
+        (TYPES.ISubscribableStoreSource)
+        storeSource.set(contentId, contentUser)
         const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
         const contentUserAddMutationSpy = sinon.spy(contentUser, 'addMutation')
@@ -49,7 +53,7 @@ describe('MutableSubscribableContentUserStore > addMutation', () => {
         const calledWith = contentUserAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+    it('addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
         ' it either, should throw a RangeError', () => {
         const contentId = CONTENT_ID2
         const nonExistentId = 'abdf1295'
@@ -60,10 +64,12 @@ describe('MutableSubscribableContentUserStore > addMutation', () => {
         const contentUser = new MutableSubscribableContentUser({
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
-        const store = {}
-        store[contentId] = contentUser
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
+        (TYPES.ISubscribableStoreSource)
+        storeSource.set(contentId, contentUser)
         const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
 
