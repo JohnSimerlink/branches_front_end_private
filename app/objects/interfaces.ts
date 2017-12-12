@@ -443,10 +443,12 @@ export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
 export interface IHash<T> {
     [id: string]: T
 }
-interface IMap<T> {
+export interface IMap<T> {
     get(id: string): T
     set(id: string, item: T)
+    entries(): Array<entry<T>>
 }
+export type entry<T> = [string, T]
 
 // IStoreSource
 export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<IIdAndValUpdates> {}

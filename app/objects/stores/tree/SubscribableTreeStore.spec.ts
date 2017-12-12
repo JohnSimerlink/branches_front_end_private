@@ -25,10 +25,7 @@ describe('SubscribableTreeStore > addAndSubscribeToItem', () => {
         const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
         // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
-            store: {},
-            updatesCallbacks: []
-        })
+        const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
         // const treeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
         const callback1 = sinon.spy()
         const callback2 = sinon.spy()

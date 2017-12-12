@@ -1,6 +1,5 @@
 import {
-    ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    IIdDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
+ IIdProppedDatedMutation, IMutableSubscribableTree,
     IMutableSubscribableTreeStore,
     IProppedDatedMutation,
     TreePropertyMutationTypes,
@@ -18,7 +17,7 @@ class MutableSubscribableTreeStore
 
         const id = mutation.id
         const tree: IMutableSubscribableTree
-            = this.store[id]
+            = this.storeSource.get(id)
         if (!tree) {
             throw new RangeError('Couldn\'t find tree for treeId: ' + id)
         }

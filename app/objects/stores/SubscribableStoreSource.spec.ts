@@ -10,14 +10,15 @@ import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
 
 describe('SubscribableStoreSource', () => {
-    // it('Dependency injection should set all properties in constructor', () => {
-    //     const injects: boolean = injectionWorks<SubscribableStoreSourceArgs, ISubscribableStoreSource>({
-    //         container: myContainer,
-    //         argsType: TYPES.MutableSubscribableGlobalStoreArgs,
-    //         classType: TYPES.IMutableSubscribableGlobalStore
-    //     })
-    //     expect(injects).to.equal(true)
-    // })
+    it(' - IMutableSubscribableTree - Dependency injection should set all properties in constructor', () => {
+        const injects: boolean = injectionWorks<SubscribableStoreSourceArgs,
+            ISubscribableStoreSource<IMutableSubscribableTree>>({
+            container: myContainer,
+            argsType: TYPES.MutableSubscribableGlobalStoreArgs,
+            classType: TYPES.IMutableSubscribableGlobalStore
+        })
+        expect(injects).to.equal(true)
+    })
     it('get should work', () => {
         const tree: IMutableSubscribableTree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
         const hashmap = {}

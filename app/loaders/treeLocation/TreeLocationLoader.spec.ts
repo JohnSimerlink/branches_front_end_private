@@ -10,7 +10,7 @@ import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {TreeLocationLoader} from './TreeLocationLoader';
 describe('treeLocationLoader', () => {
-    it('Should set the firebaseRef and store for the loader', () => {
+    it('Should set the firebaseRef and storeSource for the loader', () => {
         const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
@@ -21,7 +21,7 @@ describe('treeLocationLoader', () => {
         expect(treeLoader['firebaseRef']).to.deep.equal(firebaseRef) // TODO: why am I testing private properties
     })
     // TODO: DI test
-    it('Should mark an id as loaded if it exists in the injected store', () => {
+    it('Should mark an id as loaded if it exists in the injected storeSource', () => {
         const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
@@ -34,7 +34,7 @@ describe('treeLocationLoader', () => {
         const isLoaded = treeLoader.isLoaded(treeId)
         expect(isLoaded).to.deep.equal(true)
     })
-    it('Should mark an id as not loaded if it does not exist in the injected store', () => {
+    it('Should mark an id as not loaded if it does not exist in the injected storeSource', () => {
         const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
@@ -106,7 +106,7 @@ describe('treeLocationLoader', () => {
 
         expect(treeData).to.deep.equal(sampleTreeLocationData)
     })
-    it('DownloadData should have the side effect of storing the data in the store', async () => {
+    it('DownloadData should have the side effect of storing the data in the storeSource', async () => {
         const treeId = '1234'
         const firebaseRef = new MockFirebase().child(treeId)
 

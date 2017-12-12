@@ -1,7 +1,12 @@
-import {ISubscribableTreeLocationCore, ISubscribableTreeLocationStore} from '../../interfaces';
+import {
+    IMutableSubscribableTreeLocation,
+    ISubscribableTreeLocationCore,
+    ISubscribableTreeLocationStore
+} from '../../interfaces';
 import {SubscribableStore} from '../SubscribableStore';
 
 class SubscribableTreeLocationStore
-    extends SubscribableStore<ISubscribableTreeLocationCore> implements ISubscribableTreeLocationStore {}
+    extends SubscribableStore<ISubscribableTreeLocationCore, IMutableSubscribableTreeLocation>
+    implements ISubscribableTreeLocationStore {}
 
 export {SubscribableTreeLocationStore}

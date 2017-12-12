@@ -1,5 +1,6 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
+import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUserData/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
@@ -8,6 +9,7 @@ import {
     ISubscribableContentUserStore
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
+import {TYPES} from '../../types';
 import {SubscribableStore} from '../SubscribableStore';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 
@@ -27,10 +29,8 @@ describe('SubscribableContentUserStore > addAndSubscribeToItem', () => {
         const contentUser = new MutableSubscribableContentUser({
                 lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
             })
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
+        const contentUserStore: ISubscribableContentUserStore
+            = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
         // const contentUserStore = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
         const callback1 = sinon.spy()
         const callback2 = sinon.spy()

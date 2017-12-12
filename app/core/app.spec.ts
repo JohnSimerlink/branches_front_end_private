@@ -1,19 +1,21 @@
 import {expect} from 'chai'
+import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {
-    IApp,
+    IApp, IMutable,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
     IUI
 } from '../objects/interfaces';
+import {SubscribableContentStore} from '../objects/stores/content/SubscribableContentStore';
 import {SubscribableContentUserStore} from '../objects/stores/contentUser/SubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
-import {App} from './app';
-import {SubscribableContentStore} from '../objects/stores/content/SubscribableContentStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
-import 'reflect-metadata'
+import {App} from './app';
+import {myContainer} from '../../inversify.config';
+import {TYPES} from '../objects/types';
 
 describe('App', () => {
     it('Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', () => {
@@ -27,40 +29,8 @@ describe('App', () => {
         const UI1SubscribeSpy = sinon.spy(UI1mock, 'subscribe')
         const UI2SubscribeSpy = sinon.spy(UI2mock, 'subscribe')
 
-        const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const treeUserStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
-            store: {},
-            updatesCallbacks: []
-        })
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const store: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
-            {
-                contentStore,
-                contentUserStore,
-                treeStore,
-                treeLocationStore,
-                treeUserStore,
-                updatesCallbacks: [],
-            }
-        )
+        const store: IMutableSubscribableGlobalStore
+            = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
 
         const app: IApp = new App({store, UIs})
         app.start()
@@ -73,7 +43,7 @@ describe('App', () => {
         expect(UI2SubscribeSpy.callCount).to.deep.equal(1)
 
     })
-    it('Should subscribe the uis to the updates in the store (DI for subcomponents)', () => {
+    it('Should subscribe the uis to the updates in the storeSource (DI for subcomponents)', () => {
         // const UI1mock: IUI = {
         //     subscribe() {}
         // }
@@ -81,7 +51,7 @@ describe('App', () => {
         //     subscribe() {}
         // }
         // const UIs = [UI1mock, UI2mock]
-        // const store: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore({contentUserStore})
+        // const storeSource: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore({contentUserStore})
         // const app: IApp = new App()
     })
 })

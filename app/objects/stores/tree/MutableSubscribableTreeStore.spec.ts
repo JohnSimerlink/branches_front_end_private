@@ -5,15 +5,19 @@ import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     FieldMutationTypes,
-    IIdProppedDatedMutation, IMutableSubscribableTreeStore, IProppedDatedMutation, TreePropertyMutationTypes,
+    IIdProppedDatedMutation, IMutableSubscribableTree, IMutableSubscribableTreeStore, IProppedDatedMutation,
+    ISubscribableStoreSource,
+    TreePropertyMutationTypes,
     TreePropertyNames
 } from '../../interfaces';
 import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
+import {myContainer} from '../../../../inversify.config';
+import {TYPES} from '../../types';
 
 describe('MutableSubscribableTreeStore > addMutation', () => {
-    it('addMutation to store should call addMutation on the appropriate item,' +
+    it('addMutation to storeSource should call addMutation on the appropriate item,' +
         ' and with a modified mutation argument that no longer has the id', () => {
         const contentIdVal = CONTENT_ID2
         const contentId = new SubscribableMutableField<string>({field: contentIdVal })
@@ -23,10 +27,14 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
         const tree = new MutableSubscribableTree({
             id, contentId, parentId, children, updatesCallbacks: [],
         })
-        const store = {}
-        store[TREE_ID] = tree
+
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>
+        (TYPES.ISubscribableStoreSource)
+        storeSource.set(TREE_ID, tree)
+
         const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
         const treeAddMutationSpy = sinon.spy(tree, 'addMutation')
@@ -50,13 +58,17 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
         const calledWith = treeAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
     })
-    it('addMutation to store that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+    it('addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
         ' it either, should throw a RangeError', () => {
 
         const nonExistentId = 'abdf1295'
-        const store = {}
+
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
+            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>
+        (TYPES.ISubscribableStoreSource)
+
         const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
-            store,
+            storeSource,
             updatesCallbacks: []
         })
 
