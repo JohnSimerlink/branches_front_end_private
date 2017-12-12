@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {IDatedMutation, ISubscribableUndoableMutablePoint, PointMutationTypes} from '../interfaces';
-import {SubscribableMutablePoint} from './SubscribableMutablePoint'
+import {MutableSubscribablePoint} from './MutableSubscribablePoint'
 
 // import {Point} from '../app/objects/point/point'
 /*
@@ -25,7 +25,7 @@ TODO: For MY Mutation tests, for performance reasons,
   */
 describe('Point > Mutable', () => {
     // FIRST_MUTATION_VALUE is {x: 5, y: 7}
-    // const po = new SubscribableMutablePoint({x:5, y:6})
+    // const po = new MutableSubscribablePoint({x:5, y:6})
     const FIRST_POINT_VALUE = {x: 5, y: 7}
     const SECOND_MUTATION_VALUE = {x: 3, y: 4}
     const SECOND_POINT_VALUE = {
@@ -51,8 +51,8 @@ describe('Point > Mutable', () => {
         x: FIFTH_POINT_VALUE.x - SECOND_MUTATION_VALUE.x,
         y: FIFTH_POINT_VALUE.y - SECOND_MUTATION_VALUE.y
     }
-    // const point = new SubscribableMutablePoint(FIRST_POINT_VALUE.x, FIRST_POINT_VALUE.y)
-    const point = new SubscribableMutablePoint({...FIRST_POINT_VALUE, updatesCallbacks: []})
+    // const point = new MutableSubscribablePoint(FIRST_POINT_VALUE.x, FIRST_POINT_VALUE.y)
+    const point = new MutableSubscribablePoint({...FIRST_POINT_VALUE, updatesCallbacks: []})
     const FIRST_MUTATION_INDEX = 0
     const SECOND_MUTATION_INDEX = 1
     const THIRD_MUTATION_INDEX = 2
@@ -146,7 +146,7 @@ describe('Point > Subscribable', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {x: 3, y: 4}
         const subscribableMutablePoint: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
         const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const mutation: IDatedMutation<PointMutationTypes> = {
             timestamp: Date.now(),
@@ -162,7 +162,7 @@ describe('Point > Subscribable', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {x: 3, y: 4}
         const subscribableMutablePoint: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
         const callback1 = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const callback2 = sinon.spy() // (updates: IDetailedUpdates) => void 0
         const mutation: IDatedMutation<PointMutationTypes> = {

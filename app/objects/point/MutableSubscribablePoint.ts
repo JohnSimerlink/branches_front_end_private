@@ -1,5 +1,5 @@
 /* tslint:disable variable-name */
-import {injectable} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {
     IActivatableDatedMutation, ICoordinate,
     IDatedMutation, IDetailedUpdates, IPoint, ISubscribableUndoableMutablePoint, IUndoableMutable,
@@ -7,6 +7,7 @@ import {
 } from '../interfaces';
 import {} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
+import {TYPES} from '../types';
 
 /* TODO: Maybe split into  Point and PointMutator classes?
 
@@ -18,7 +19,7 @@ import {Subscribable} from '../subscribable/Subscribable';
  Will do that after I have 1 to 2 modules using Mutations
 */
 @injectable()
-class SubscribableMutablePoint
+export class MutableSubscribablePoint
     extends Subscribable<IDetailedUpdates>
     implements ISubscribableUndoableMutablePoint {
     private x = 0;
@@ -30,7 +31,23 @@ class SubscribableMutablePoint
     because I am doing some processing in the constructor,
     rather than just assignment . . .
     */
-    constructor({updatesCallbacks, x, y, mutations = []}) {
+    constructor(@inject(TYPES.SubscribableMutablePointArgs){
+        updatesCallbacks = [],
+        x = null,
+        y = null,
+        mutations = [],
+    }: {
+        updatesCallbacks?: any[],
+        x?: number,
+        y?: number,
+        mutations?: Array<IActivatableDatedMutation<PointMutationTypes>>
+    }
+    = {
+        updatesCallbacks: [],
+        x: null,
+        y: null,
+        mutations: [],
+    }) {
         super({updatesCallbacks})
         this._mutations = mutations
         const mutation = {
@@ -153,4 +170,10 @@ class SubscribableMutablePoint
     }
 }
 
-export {SubscribableMutablePoint}
+@injectable()
+export class SubscribableMutablePointArgs {
+    @inject(TYPES.Array) public updatesCallbacks = []
+    @inject(TYPES.Number) public x: number
+    @inject(TYPES.Number) public y: number
+    @inject(TYPES.Array) public mutations = []
+}

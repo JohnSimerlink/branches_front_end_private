@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
-import {log} from '../../app/core/log'
+import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {

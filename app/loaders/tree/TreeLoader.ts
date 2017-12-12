@@ -1,4 +1,4 @@
-import {log} from '../../app/core/log'
+import {log} from '../../../app/core/log'
 import {
     IMutableSubscribableTree, ISubscribableStoreSource, ITreeDataWithoutId,
     ITreeLoader
