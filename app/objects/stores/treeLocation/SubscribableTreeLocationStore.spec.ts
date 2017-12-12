@@ -12,7 +12,7 @@ import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringS
 import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscribableTreeLocation';
 import {TYPES} from '../../types';
 import {SubscribableTreeLocationStore} from './SubscribableTreeLocationStore';
-import {SubscribableMutablePoint} from '../../point/SubscribableMutablePoint';
+import {MutableSubscribablePoint} from '../../point/MutableSubscribablePoint';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 
 describe('SubscribableTreeLocationStore > addAndSubscribeToItem', () => {
@@ -21,7 +21,7 @@ describe('SubscribableTreeLocationStore > addAndSubscribeToItem', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const MUTATION_VALUE = {delta: {x: 3, y: 4}}
         const point: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
         // const treeLocation = myContainer.get<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation)

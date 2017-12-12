@@ -6,7 +6,7 @@ import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutabl
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 
-describe('TreeDeserializer', () => {
+describe('TreeLocationDeserializer', () => {
     it('Should deserialize properly', () => {
         const contentIdVal = '1234'
         const parentIdVal = '041234'

@@ -18,7 +18,7 @@ import {
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames,
 } from '../objects/interfaces';
-import {SubscribableMutablePoint} from '../objects/point/SubscribableMutablePoint';
+import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
@@ -287,7 +287,7 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             y: FIRST_POINT_VALUE.y + MUTATION_VALUE.delta.y
         }
         const point: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 

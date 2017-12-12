@@ -88,6 +88,7 @@ const TYPES = {
     SubscribableGlobalStoreArgs: Symbol('SubscribableGlobalStoreArgs'),
     SubscribableMutableFieldArgs: Symbol('ISubscribableMutableFieldArgs'),
     SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),
+    SubscribableMutablePointArgs: Symbol('SubscribableMutablePointArgs'),
     SubscribableTreeArgs: Symbol('SubscribableTreeArgs'),
     SubscribableTreeUserArgs: Symbol('SubscribableTreeUserArgs'),
     SubscribableTreeLocationArgs: Symbol('SubscribableTreeLocationArgs'),

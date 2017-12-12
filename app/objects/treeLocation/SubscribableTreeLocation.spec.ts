@@ -7,7 +7,7 @@ import {
     ISubscribableMutableField,
     ISubscribableMutableStringSet, ISubscribableUndoableMutablePoint,
 } from '../interfaces';
-import {SubscribableMutablePoint} from '../point/SubscribableMutablePoint';
+import {MutableSubscribablePoint} from '../point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
@@ -18,7 +18,7 @@ describe('SubscribableTreeLocation', () => {
 
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const point: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
         expect(treeLocation.point).to.deep.equal(point)
@@ -26,7 +26,7 @@ describe('SubscribableTreeLocation', () => {
     it('.val() should display the value of the object', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const point: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
@@ -39,7 +39,7 @@ describe('SubscribableTreeLocation', () => {
     it('startPublishing() should call the onUpdate methods of all member Subscribable properties', () => {
         const FIRST_POINT_VALUE = {x: 5, y: 7}
         const point: ISubscribableUndoableMutablePoint
-            = new SubscribableMutablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
+            = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
         const pointOnUpdateSpy = sinon.spy(point, 'onUpdate')
