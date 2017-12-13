@@ -7,18 +7,18 @@ import {isValidTree} from '../../objects/tree/treeValidator';
 import {TreeDeserializer} from './TreeDeserializer';
 
 class TreeLoader implements ITreeLoader {
-    private store: ISubscribableStoreSource<IMutableSubscribableTree>
+    private storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
     private firebaseRef: Firebase
-    constructor({firebaseRef, store}) {
-        this.store = store
+    constructor({firebaseRef, storeSource}) {
+        this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }
 
     public getData(treeId): ITreeDataWithoutId {
-        if (!this.store.get(treeId)) {
+        if (!this.storeSource.get(treeId)) {
             throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
         }
-        return this.store.get(treeId).val()
+        return this.storeSource.get(treeId).val()
         // TODO: fix violoation of law of demeter
     }
 
@@ -32,7 +32,7 @@ class TreeLoader implements ITreeLoader {
                 log('FIREBASE REF VALUE CALLED!!!!1' + JSON.stringify(treeData))
                 if (isValidTree(treeData)) {
                     const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
-                    me.store.set(treeId, tree)
+                    me.storeSource.set(treeId, tree)
                     resolve(treeData)
                 } else {
                     reject(treeData)
@@ -43,7 +43,7 @@ class TreeLoader implements ITreeLoader {
     }
 
     public isLoaded(treeId): boolean {
-        return !!this.store.get(treeId)
+        return !!this.storeSource.get(treeId)
     }
 
 }

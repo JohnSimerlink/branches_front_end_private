@@ -11,51 +11,51 @@ import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {TreeLocationLoader} from './TreeLocationLoader';
 describe('treeLocationLoader', () => {
     it('Should set the firebaseRef and storeSource for the loader', () => {
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
         const firebaseRef: IFirebaseRef =  new FirebaseRef()
 
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
-        expect(treeLoader['store']).to.deep.equal(store)
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
+        expect(treeLoader['storeSource']).to.deep.equal(storeSource)
         expect(treeLoader['firebaseRef']).to.deep.equal(firebaseRef) // TODO: why am I testing private properties
     })
     // TODO: DI test
     it('Should mark an id as loaded if it exists in the injected storeSource', () => {
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
         const treeId = '1234'
         const treeLocation = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
         const firebaseRef: IFirebaseRef =  new FirebaseRef()
-        store.set(treeId, treeLocation)
+        storeSource.set(treeId, treeLocation)
 
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         const isLoaded = treeLoader.isLoaded(treeId)
         expect(isLoaded).to.deep.equal(true)
     })
     it('Should mark an id as not loaded if it does not exist in the injected storeSource', () => {
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
         const nonExistentTreeLocationId = '01234'
         const firebaseRef: IFirebaseRef =  new FirebaseRef()
 
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         const isLoaded = treeLoader.isLoaded(nonExistentTreeLocationId)
         expect(isLoaded).to.deep.equal(false)
     })
     it('Should mark an id as loaded after being loaded', () => {
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
         const treeId = '1234'
         const nonExistentTreeLocationId = '01234'
         const tree = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
         const firebaseRef: IFirebaseRef =  new FirebaseRef()
-        store[treeId] = tree
+        storeSource[treeId] = tree
 
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         const isLoaded = treeLoader.isLoaded(nonExistentTreeLocationId)
         expect(isLoaded).to.deep.equal(false)
 
@@ -71,9 +71,9 @@ describe('treeLocationLoader', () => {
             }
         }
 
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         firebaseRef.fakeEvent('value', undefined, sampleTreeLocationData)
         treeLoader.downloadData(treeId)
         firebaseRef.flush()
@@ -96,9 +96,9 @@ describe('treeLocationLoader', () => {
                 y: 8,
             }
         }
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         firebaseRef.fakeEvent('value', undefined, sampleTreeLocationData)
         const treeDataPromise = treeLoader.downloadData(treeId)
         firebaseRef.flush()
@@ -118,14 +118,14 @@ describe('treeLocationLoader', () => {
         }
         const sampleTreeLocation: IMutableSubscribableTreeLocation =
             TreeLocationDeserializer.deserialize({treeLocationData: sampleTreeLocationData})
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         firebaseRef.fakeEvent('value', undefined, sampleTreeLocationData)
         treeLoader.downloadData(treeId)
         firebaseRef.flush()
 
-        expect(store.get(treeId)).to.deep.equal(sampleTreeLocation)
+        expect(storeSource.get(treeId)).to.deep.equal(sampleTreeLocation)
     })
     it('GetData on an existing tree should return the tree', async () => {
         const treeId = '1234'
@@ -139,11 +139,11 @@ describe('treeLocationLoader', () => {
         }
         const sampleTreeLocation: IMutableSubscribableTreeLocation =
             TreeLocationDeserializer.deserialize({treeLocationData: sampleTreeLocationData})
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
-        store.set(treeId, sampleTreeLocation)
+        storeSource.set(treeId, sampleTreeLocation)
 
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
         const treeData = treeLoader.getData(treeId)
 
         expect(treeData).to.deep.equal(sampleTreeLocationData)
@@ -152,10 +152,10 @@ describe('treeLocationLoader', () => {
         const treeId = '1234'
         const firebaseRef = new MockFirebase().child(treeId)
 
-        const store: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
+        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
 
-        const treeLoader = new TreeLocationLoader({store, firebaseRef})
+        const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
 
         expect(() => treeLoader.getData(treeId)).to.throw(RangeError)
     })
