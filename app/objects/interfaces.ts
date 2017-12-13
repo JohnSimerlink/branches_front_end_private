@@ -451,7 +451,7 @@ export interface IMap<T> {
 export type entry<T> = [string, T]
 
 // IStoreSource
-export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<IIdAndValUpdates> {}
+export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<ITypeAndIdAndValUpdates> {}
 
 // tree
 export interface ITree {
