@@ -16,7 +16,7 @@ import {
     IManagedSigmaNodeCreatorCore, IRenderedNodesManager, ISigmaNodeCreator,
     ISigmaNodeCreatorCaller
 } from '../objects/interfaces';
-import {ISigmaRenderManager} from '../objects/interfaces';
+import {ISigmaRenderManager, ISubscribableTreeStoreSource, ISubscribableTreeLocationStoreSource} from '../objects/interfaces';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {SigmaNodeCreator, SigmaNodeCreatorCaller} from '../objects/sigmaNode/SigmaNodeCreator';
@@ -48,11 +48,11 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
         const firebaseTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
         const treeLocationRef = firebaseTreeLocationsRef.child(treeIdToDownload)
 
-        const treeStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
-        const treeLocationStoreSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
-        (TYPES.ISubscribableStoreSource)
+        const treeStoreSource: ISubscribableTreeStoreSource
+            = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
+            = myContainer.get<ISubscribableTreeLocationStoreSource>
+        (TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader = new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
         const treeLocationLoader
             = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})

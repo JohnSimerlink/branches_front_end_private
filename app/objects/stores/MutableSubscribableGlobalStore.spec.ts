@@ -16,8 +16,8 @@ import {
     IMutableSubscribableGlobalStore, IMutableSubscribableTree,
     IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUserStore,
-    ISubscribableStoreSource,
+    IMutableSubscribableTreeUserStore, ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
+    ISubscribableStoreSource, ISubscribableTreeStoreSource,
     ObjectTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -49,9 +49,9 @@ describe('MutableSubscribableGlobalStore', () => {
             id, contentId, parentId, children, updatesCallbacks: [],
         })
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeStoreSource
+            = myContainer.get<ISubscribableTreeStoreSource>
+        (TYPES.ISubscribableTreeStoreSource)
         storeSource.set(TREE_ID, tree)
         const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
             storeSource,
@@ -116,9 +116,9 @@ describe('MutableSubscribableGlobalStore', () => {
         const contentUser = new MutableSubscribableContentUser({
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentUserStoreSource
+            = myContainer.get<ISubscribableContentUserStoreSource>
+        (TYPES.ISubscribableContentUserStoreSource)
         storeSource.set(contentId, contentUser)
         const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
             storeSource,
@@ -185,9 +185,9 @@ describe('MutableSubscribableGlobalStore', () => {
             type, question, answer, title, updatesCallbacks: [],
         })
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentStoreSource
+            = myContainer.get<ISubscribableContentStoreSource>
+        (TYPES.ISubscribableContentStoreSource)
         storeSource.set(contentId, content)
         const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
             storeSource,

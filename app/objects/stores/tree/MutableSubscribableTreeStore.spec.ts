@@ -6,7 +6,7 @@ import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     FieldMutationTypes,
     IIdProppedDatedMutation, IMutableSubscribableTree, IMutableSubscribableTreeStore, IProppedDatedMutation,
-    ISubscribableStoreSource,
+    ISubscribableStoreSource, ISubscribableTreeStoreSource,
     TreePropertyMutationTypes,
     TreePropertyNames
 } from '../../interfaces';
@@ -28,9 +28,9 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
             id, contentId, parentId, children, updatesCallbacks: [],
         })
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeStoreSource
+            = myContainer.get<ISubscribableTreeStoreSource>
+        (TYPES.ISubscribableTreeStoreSource)
         storeSource.set(TREE_ID, tree)
 
         const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
@@ -63,9 +63,9 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
 
         const nonExistentId = 'abdf1295'
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeStoreSource
+            = myContainer.get<ISubscribableTreeStoreSource>
+        (TYPES.ISubscribableTreeStoreSource)
 
         const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
             storeSource,

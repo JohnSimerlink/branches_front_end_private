@@ -7,7 +7,8 @@ import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentUserStore,
-    IProppedDatedMutation, ISubscribableStoreSource, IMutableSubscribableContentUser
+    IProppedDatedMutation, ISubscribableStoreSource, IMutableSubscribableContentUser, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
@@ -25,9 +26,9 @@ describe('MutableSubscribableContentUserStore > addMutation', () => {
         const contentUser = new MutableSubscribableContentUser({
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentUserStoreSource
+            = myContainer.get<ISubscribableContentUserStoreSource>
+        (TYPES.ISubscribableContentUserStoreSource)
         storeSource.set(contentId, contentUser)
         const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
             storeSource,
@@ -64,9 +65,9 @@ describe('MutableSubscribableContentUserStore > addMutation', () => {
         const contentUser = new MutableSubscribableContentUser({
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentUserStoreSource
+            = myContainer.get<ISubscribableContentUserStoreSource>
+        (TYPES.ISubscribableContentUserStoreSource)
         storeSource.set(contentId, contentUser)
         const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
             storeSource,
