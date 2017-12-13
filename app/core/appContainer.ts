@@ -33,6 +33,7 @@ import {SigmaRenderManager} from '../objects/sigmaNode/SigmaRenderManager';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
+import {FIREBASE_PATHS} from '../loaders/paths';
 
 class AppContainer {
     constructor() {
@@ -43,7 +44,7 @@ class AppContainer {
     // and one start statement that starts off the initialization/download / logic process
     public async start() {
         const firebaseTreesRef = firebase.database().ref('trees')
-        const firebaseTreeLocationsRef = firebase.database().ref('treeLocations')
+        const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
         const treeStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
         const treeLocationStoreSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>

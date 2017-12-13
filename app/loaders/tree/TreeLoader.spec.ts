@@ -10,6 +10,7 @@ import {
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader} from './TreeLoader';
+import {FIREBASE_PATHS} from '../paths';
 describe('treeLoader', () => {
     it('Should set the firebaseRef and storeSource for the loader', () => {
         const storeSource: ISubscribableStoreSource<IMutableSubscribableTree> =
@@ -64,7 +65,8 @@ describe('treeLoader', () => {
     })
     it('Should mark an id as loaded after being loaded', async () => {
         const treeId = '1234'
-        const firebaseRef = new MockFirebase().child(treeId)
+        const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
+        const childFirebaseRef = firebaseRef.child(treeId)
 
         const sampleTreeData: ITreeDataWithoutId = {
             contentId: '12345532',
@@ -75,9 +77,9 @@ describe('treeLoader', () => {
         const storeSource: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
         const treeLoader = new TreeLoader({storeSource, firebaseRef})
-        firebaseRef.fakeEvent('value', undefined, sampleTreeData)
+        childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
         treeLoader.downloadData(treeId)
-        firebaseRef.flush()
+        childFirebaseRef.flush()
         /* TODO: if you put a console log inside treeLoader.downloadData
         you'll see that the on value callback actually gets called twice.
         First time with the actual value. Second time with null
@@ -89,7 +91,8 @@ describe('treeLoader', () => {
     })
     it('DownloadData should return the data', async () => {
         const treeId = '1234'
-        const firebaseRef = new MockFirebase().child(treeId)
+        const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
+        const childFirebaseRef = firebaseRef.child(treeId)
 
         const sampleTreeData: ITreeDataWithoutId = {
             contentId: '12345532',
@@ -99,16 +102,17 @@ describe('treeLoader', () => {
         const storeSource: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
         const treeLoader = new TreeLoader({ storeSource, firebaseRef})
-        firebaseRef.fakeEvent('value', undefined, sampleTreeData)
+        childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
         const treeDataPromise = treeLoader.downloadData(treeId)
-        firebaseRef.flush()
+        childFirebaseRef.flush()
         const treeData = await treeDataPromise
 
         expect(treeData).to.deep.equal(sampleTreeData)
     })
     it('DownloadData should have the side effect of storing the data in the storeSource', async () => {
         const treeId = '1234'
-        const firebaseRef = new MockFirebase().child(treeId)
+        const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
+        const childFirebaseRef = firebaseRef.child(treeId)
 
         const sampleTreeData: ITreeDataWithoutId = {
             contentId: '12345532',
@@ -119,15 +123,15 @@ describe('treeLoader', () => {
         const storeSource: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
         const treeLoader = new TreeLoader({storeSource, firebaseRef})
-        firebaseRef.fakeEvent('value', undefined, sampleTreeData)
+        childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
         treeLoader.downloadData(treeId)
-        firebaseRef.flush()
+        childFirebaseRef.flush()
 
         expect(storeSource.get(treeId)).to.deep.equal(sampleTree)
     })
     it('GetData on an existing tree should return the tree', async () => {
         const treeId = '1234'
-        const firebaseRef = new MockFirebase().child(treeId)
+        const firebaseRef: Firebase = new MockFirebase().child(treeId)
 
         const sampleTreeData: ITreeDataWithoutId = {
             contentId: '12345532',
@@ -146,7 +150,7 @@ describe('treeLoader', () => {
     })
     it('GetData on a non existing tree should throw a RangeError', async () => {
         const treeId = '1234'
-        const firebaseRef = new MockFirebase().child(treeId)
+        const firebaseRef: Firebase = new MockFirebase(FIREBASE_PATHS.TREES)
 
         const storeSource: ISubscribableStoreSource<IMutableSubscribableTree> =
             myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
