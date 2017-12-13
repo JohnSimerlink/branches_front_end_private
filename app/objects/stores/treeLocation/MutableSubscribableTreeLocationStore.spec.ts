@@ -6,7 +6,8 @@ import {
     IIdProppedDatedMutation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
     IMutableSubscribablePoint, PointMutationTypes,
     TreeLocationPropertyMutationTypes,
-    TreeLocationPropertyNames, ISubscribableStoreSource, IMutableSubscribableTreeLocation, IMutableSubscribableTreeStore
+    TreeLocationPropertyNames, ISubscribableStoreSource, IMutableSubscribableTreeLocation,
+    IMutableSubscribableTreeStore, ISubscribableTreeLocationStoreSource
 } from '../../interfaces';
 import {MutableSubscribablePoint} from '../../point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscribableTreeLocation';
@@ -27,9 +28,9 @@ describe('MutableSubscribableTreeLocationStore > addMutation', () => {
 
         const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource
+            = myContainer.get<ISubscribableTreeLocationStoreSource>
+        (TYPES.ISubscribableTreeLocationStoreSource)
         storeSource.set(TREE_ID, treeLocation)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
@@ -66,9 +67,9 @@ describe('MutableSubscribableTreeLocationStore > addMutation', () => {
         const point: IMutableSubscribablePoint
             = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource
+            = myContainer.get<ISubscribableTreeLocationStoreSource>
+        (TYPES.ISubscribableTreeLocationStoreSource)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
             storeSource,

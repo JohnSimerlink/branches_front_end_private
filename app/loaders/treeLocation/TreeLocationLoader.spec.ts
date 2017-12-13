@@ -4,7 +4,8 @@ import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
-    IFirebaseRef, IMutableSubscribableTreeLocation, ISubscribableStoreSource, ITreeLocationData,
+    IFirebaseRef, IMutableSubscribableTreeLocation, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
+    ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
@@ -12,8 +13,8 @@ import {TreeLocationLoader} from './TreeLocationLoader';
 import {FIREBASE_PATHS} from '../paths';
 describe('treeLocationLoader', () => {
     it('Should set the firebaseRef and storeSource for the loader', () => {
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
         const firebaseRef: IFirebaseRef =  new FirebaseRef()
 
@@ -23,8 +24,8 @@ describe('treeLocationLoader', () => {
     })
     // TODO: DI test
     it('Should mark an id as loaded if it exists in the injected storeSource', () => {
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
         const treeId = '1234'
         const treeLocation = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
@@ -36,8 +37,8 @@ describe('treeLocationLoader', () => {
         expect(isLoaded).to.deep.equal(true)
     })
     it('Should mark an id as not loaded if it does not exist in the injected storeSource', () => {
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
         const nonExistentTreeLocationId = '01234'
         const firebaseRef: IFirebaseRef =  new FirebaseRef()
@@ -47,8 +48,8 @@ describe('treeLocationLoader', () => {
         expect(isLoaded).to.deep.equal(false)
     })
     it('Should mark an id as loaded after being loaded', () => {
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
         const treeId = '1234'
         const nonExistentTreeLocationId = '01234'
@@ -73,8 +74,8 @@ describe('treeLocationLoader', () => {
             }
         }
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef})
         treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationData)
         treeLoader.downloadData(treeId)
@@ -100,8 +101,8 @@ describe('treeLocationLoader', () => {
                 y: 8,
             }
         }
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef})
         treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationData)
         const treeDataPromise = treeLoader.downloadData(treeId)
@@ -123,8 +124,8 @@ describe('treeLocationLoader', () => {
         }
         const sampleTreeLocation: IMutableSubscribableTreeLocation =
             TreeLocationDeserializer.deserialize({treeLocationData: sampleTreeLocationData})
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef})
         treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationData)
         treeLoader.downloadData(treeId)
@@ -144,8 +145,8 @@ describe('treeLocationLoader', () => {
         }
         const sampleTreeLocation: IMutableSubscribableTreeLocation =
             TreeLocationDeserializer.deserialize({treeLocationData: sampleTreeLocationData})
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
         storeSource.set(treeId, sampleTreeLocation)
 
         const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef})
@@ -157,8 +158,8 @@ describe('treeLocationLoader', () => {
         const treeId = '1234'
         const treeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation> =
-            myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>(TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeLocationStoreSource =
+            myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
         const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef})
 

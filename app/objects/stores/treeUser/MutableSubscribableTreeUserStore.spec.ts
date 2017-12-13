@@ -8,7 +8,7 @@ import {
     IIdProppedDatedMutation, IMutableSubscribableTreeLocation, IMutableSubscribableTreeUser,
     IMutableSubscribableTreeUserStore, IProficiencyStats,
     IProppedDatedMutation,
-    ISubscribableStoreSource,
+    ISubscribableStoreSource, ISubscribableTreeUserStoreSource,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames
 } from '../../interfaces';
@@ -39,9 +39,9 @@ describe('MutableSubscribableTreeUserStore > addMutation', () => {
         const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeUser>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeUser>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeUserStoreSource
+            = myContainer.get<ISubscribableTreeUserStoreSource>
+        (TYPES.ISubscribableTreeUserStoreSource)
         storeSource.set(TREE_ID, treeUser)
 
         const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore({
@@ -74,9 +74,9 @@ describe('MutableSubscribableTreeUserStore > addMutation', () => {
 
         const nonExistentId = 'abdf1295'
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeUser>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeUser>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableTreeUserStoreSource
+            = myContainer.get<ISubscribableTreeUserStoreSource>
+        (TYPES.ISubscribableTreeUserStoreSource)
 
         const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore({
             storeSource,

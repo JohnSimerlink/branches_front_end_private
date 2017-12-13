@@ -9,7 +9,7 @@ import {
     CONTENT_TYPES,
     ContentPropertyMutationTypes,
     ContentPropertyNames, FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContent,
-    IMutableSubscribableContentStore, IProppedDatedMutation, ISubscribableStoreSource
+    IMutableSubscribableContentStore, IProppedDatedMutation, ISubscribableContentStoreSource, ISubscribableStoreSource
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
@@ -26,9 +26,9 @@ describe('MutableSubscribableContentStore > addMutation', () => {
             type, question, answer, title, updatesCallbacks: [],
         })
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentStoreSource
+            = myContainer.get<ISubscribableContentStoreSource>
+        (TYPES.ISubscribableContentStoreSource)
         storeSource.set(contentId, content)
         const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
             storeSource,
@@ -66,9 +66,9 @@ describe('MutableSubscribableContentStore > addMutation', () => {
             type, question, answer, title, updatesCallbacks: [],
         })
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentStoreSource
+            = myContainer.get<ISubscribableContentStoreSource>
+        (TYPES.ISubscribableContentStoreSource)
         storeSource.set(contentId, content)
 
         const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({

@@ -6,7 +6,7 @@ import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     CONTENT_TYPES,
     ContentPropertyNames, FieldMutationTypes, IMutableSubscribableContent, IProppedDatedMutation,
-    ISubscribableContentStore, ISubscribableStoreSource
+    ISubscribableContentStore, ISubscribableContentStoreSource, ISubscribableStoreSource
 } from '../../interfaces';
 import {SubscribableContentStore} from './SubscribableContentStore';
 import {myContainer} from '../../../../inversify.config';
@@ -29,9 +29,9 @@ describe('SubscribableContentStore > addAndSubscribeToItem', () => {
             type, question, answer, title, updatesCallbacks: [],
         })
 
-        const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
-            = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
-        (TYPES.ISubscribableStoreSource)
+        const storeSource: ISubscribableContentStoreSource
+            = myContainer.get<ISubscribableContentStoreSource>
+        (TYPES.ISubscribableContentStoreSource)
         const contentStore: ISubscribableContentStore = new SubscribableContentStore({
             storeSource,
             updatesCallbacks: []
