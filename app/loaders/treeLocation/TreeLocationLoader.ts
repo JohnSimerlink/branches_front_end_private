@@ -31,7 +31,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
     public async downloadData(treeId): Promise<ITreeLocationData> {
         const me = this
         return new Promise((resolve, reject) => {
-            this.firebaseRef.on('value', (snapshot) => {
+            this.firebaseRef.child(treeId).on('value', (snapshot) => {
                 const treeLocationData: ITreeLocationData = snapshot.val()
                 if (isValidTreeLocation(treeLocationData)) {
                     const tree: IMutableSubscribableTreeLocation =

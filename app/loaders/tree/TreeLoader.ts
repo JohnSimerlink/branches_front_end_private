@@ -27,7 +27,7 @@ class TreeLoader implements ITreeLoader {
     public async downloadData(treeId): Promise<ITreeDataWithoutId> {
         const me = this
         return new Promise((resolve, reject) => {
-            this.firebaseRef.on('value', (snapshot) => {
+            this.firebaseRef.child(treeId).on('value', (snapshot) => {
                 const treeData: ITreeDataWithoutId = snapshot.val()
                 log('FIREBASE REF VALUE CALLED!!!!1' + JSON.stringify(treeData))
                 if (isValidTree(treeData)) {
