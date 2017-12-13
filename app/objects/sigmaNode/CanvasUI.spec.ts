@@ -2,7 +2,8 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {
-    ISubscribable, ISubscribableContentStore, ISubscribableContentUserStore, ISubscribableTreeLocationStore,
+    ISubscribable, ISubscribableContentStore, ISubscribableContentUserStore, ISubscribableGlobalStore,
+    ISubscribableTreeLocationStore,
     ISubscribableTreeStore,
     ISubscribableTreeUserStore,
     ITypeAndIdAndValUpdates
@@ -20,34 +21,7 @@ describe('CanvasUI', () => {
     it('should subscribe to the onUpdate method of a subscribable obj passed to it', () => {
         const canvasUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
 
-        const treeStore: ISubscribableTreeStore = new SubscribableTreeStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const treeUserStore: ISubscribableTreeUserStore = new SubscribableTreeUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const treeLocationStore: ISubscribableTreeLocationStore = new SubscribableTreeLocationStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const contentStore: ISubscribableContentStore = new SubscribableContentStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-        const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = new SubscribableGlobalStore({
-            contentUserStore,
-            contentStore,
-            treeStore,
-            treeUserStore,
-            treeLocationStore,
-            updatesCallbacks: []
-        })
+        const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = myContainer.get<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)
         // const subscribable = myContainer.get<SubscribableGlobalStore>(TYPES.ISubscribableGlobalStore)
 
         const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate')

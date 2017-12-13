@@ -172,8 +172,9 @@ myContainer.bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMu
 myContainer.bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
-myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
-(TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
+
+// myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
+// (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
 /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
 myContainer.bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
 myContainer.bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore)
