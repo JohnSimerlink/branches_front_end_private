@@ -1,18 +1,26 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {TREE_ID} from '../../testHelpers/testHelpers';
+import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
-    IHash, ISigmaNode, ISigmaNodeCreatorCore, ISigmaRenderManager, ITreeDataWithoutId,
+    IHash, ISigmaNode, IManagedSigmaNodeCreatorCore, ISigmaRenderManager, ITreeDataWithoutId,
     ITreeLocationData
 } from '../interfaces';
 import {TYPES} from '../types';
-import {ManagedSigmaNodeCreatorCore} from './ManagedSigmaNodeCreatorCore';
+import {ManagedSigmaNodeCreatorCore, ManagedSigmaNodeCreatorCoreArgs} from './ManagedSigmaNodeCreatorCore';
 import {SigmaNode} from './SigmaNode';
-import {SigmaNodeCreatorCore} from './SigmaNodeCreatorCore';
+import {SigmaNodeCreatorCore, SigmaNodeCreatorCoreArgs} from './SigmaNodeCreatorCore';
 import {SigmaRenderManager} from './SigmaRenderManager';
 
-describe('SigmaNodeCreatorCore', () => {
+describe('ManagedSigmaNodeCreatorCore', () => {
+    it('DI constructor works', () => {
+        const injects = injectionWorks<ManagedSigmaNodeCreatorCoreArgs, IManagedSigmaNodeCreatorCore>({
+            container: myContainer,
+            argsType: TYPES.ManagedSigmaNodeCreatorCoreArgs,
+            classType: TYPES.IManagedSigmaNodeCreatorCore,
+        })
+        expect(injects).to.equal(true)
+    })
     it('.receiveNewTreeData should call sigmaRenderManager.markTreeDataLoaded'
         , () => {
             const sigmaId = TREE_ID
@@ -25,7 +33,7 @@ describe('SigmaNodeCreatorCore', () => {
             const sigmaRenderManager: ISigmaRenderManager
                 = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
             const sigmaRenderManagerMarkTreeDataLoaded = sinon.spy(sigmaRenderManager, 'markTreeDataLoaded')
-            const managedSigmaNodeCreatorCore: ISigmaNodeCreatorCore
+            const managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore
                 = new ManagedSigmaNodeCreatorCore({sigmaNodes, sigmaRenderManager})
             managedSigmaNodeCreatorCore.receiveNewTreeData({treeId: sigmaId, treeData})
             expect(sigmaRenderManagerMarkTreeDataLoaded.callCount).to.equal(1)
@@ -48,7 +56,7 @@ describe('SigmaNodeCreatorCore', () => {
                 = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
             const sigmaRenderManagerMarkTreeLocationDataLoaded
                 = sinon.spy(sigmaRenderManager, 'markTreeLocationDataLoaded')
-            const managedSigmaNodeCreatorCore: ISigmaNodeCreatorCore
+            const managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore
                 = new ManagedSigmaNodeCreatorCore({sigmaNodes, sigmaRenderManager})
             managedSigmaNodeCreatorCore.receiveNewTreeLocationData({treeId: sigmaId, treeLocationData})
             expect(sigmaRenderManagerMarkTreeLocationDataLoaded.callCount).to.equal(1)

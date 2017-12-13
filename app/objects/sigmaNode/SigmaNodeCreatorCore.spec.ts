@@ -1,10 +1,25 @@
 import {expect} from 'chai'
-import {TREE_ID} from '../../testHelpers/testHelpers';
-import {IHash, ISigmaNode, ISigmaNodeCreatorCore, ITreeDataWithoutId} from '../interfaces';
+import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
+import {
+    IHash, IManagedSigmaNodeCreatorCore, ISigmaNode, ISigmaNodeCreatorCore, ISigmaRenderManager,
+    ITreeDataWithoutId
+} from '../interfaces';
 import {SigmaNode} from './SigmaNode';
-import {SigmaNodeCreatorCore} from './SigmaNodeCreatorCore';
+import {SigmaNodeCreatorCore, SigmaNodeCreatorCoreArgs} from './SigmaNodeCreatorCore';
+import {SigmaRenderManagerArgs} from './SigmaRenderManager';
+import {myContainer} from '../../../inversify.config';
+import {TYPES} from '../types';
+import {ManagedSigmaNodeCreatorCoreArgs} from './ManagedSigmaNodeCreatorCore';
 
 describe('SigmaNodeCreatorCore', () => {
+    it('DI constructor works', () => {
+        const injects = injectionWorks<SigmaNodeCreatorCoreArgs, ISigmaNodeCreatorCore>({
+            container: myContainer,
+            argsType: TYPES.SigmaNodeCreatorCoreArgs,
+            classType: TYPES.ISigmaNodeCreatorCore,
+        })
+        expect(injects).to.equal(true)
+    })
     it('.receiveNewTreeData should create a new sigma node '
     + 'and call sigmaNode.receiveNewTreeData and add that node to sigmaNodes'
         , () => {
@@ -17,7 +32,7 @@ describe('SigmaNodeCreatorCore', () => {
         const sigmaNodes: IHash<ISigmaNode> = {}
         const expectedSigmaNode: ISigmaNode = new SigmaNode()
         expectedSigmaNode.receiveNewTreeData(treeData)
-        const sigmaNodeCreatorCore: ISigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
+        const sigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
         sigmaNodeCreatorCore.receiveNewTreeData({treeId: sigmaId, treeData})
         const createdSigmaNode = sigmaNodes[sigmaId]
         expect(expectedSigmaNode).to.deep.equal(createdSigmaNode)
@@ -34,7 +49,7 @@ describe('SigmaNodeCreatorCore', () => {
             existingSigmaNode.receiveNewTreeData(treeData)
             const sigmaNodes: IHash<ISigmaNode> = {}
             sigmaNodes[sigmaId] = existingSigmaNode
-            const sigmaNodeCreatorCore: ISigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
+            const sigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
             expect(() => sigmaNodeCreatorCore.receiveNewTreeData({treeId: sigmaId, treeData})).to.throw(RangeError)
         })
 })

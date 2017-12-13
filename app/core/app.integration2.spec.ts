@@ -6,7 +6,7 @@ import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {
     IRenderedNodesManager, ISigmaNodeCreator, ISigmaNodeCreatorCaller,
-    ISigmaNodeCreatorCore
+    IManagedSigmaNodeCreatorCore
 } from '../objects/interfaces';
 import {ISigmaRenderManager} from '../objects/interfaces';
 import {
@@ -60,12 +60,9 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
             = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
 
         const sigmaNodes = {}
-        const sigmaNodeCreatorCore: ISigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
+        const sigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
         const sigmaNodeCreator: ISigmaNodeCreator = new SigmaNodeCreator({sigmaNodeCreatorCore})
         const sigmaNodeCreatorCaller: ISigmaNodeCreatorCaller = new SigmaNodeCreatorCaller({sigmaNodeCreator})
-        const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
-            return []
-        }
         const renderedNodes: IHash<ISigmaNode> = {}
         const allSigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
@@ -74,8 +71,6 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
         const sigmaRenderManager: ISigmaRenderManager
             = new SigmaRenderManager({treeLocationDataLoadedIdsSet: {}, treeDataLoadedIdsSet: {}, updatesCallbacks: []})
         renderedNodesManager.subscribe(sigmaRenderManager)
-        const sigmaNodesUpdater: ISigmaNodesUpdater
-            = new SigmaNodesUpdater({sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId})
 
         sigmaNodeCreatorCaller.subscribe(treeStoreSource)
         sigmaNodeCreatorCaller.subscribe(treeLocationStoreSource)

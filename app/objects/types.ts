@@ -22,6 +22,7 @@ const TYPES = {
     IDatabaseSyncer: Symbol('IDatabaseSyncer'),
     IDatedMutation: Symbol('IDatedMutation'),
     IFirebaseRef: Symbol('IFirebaseRef'),
+    IManagedSigmaNodeCreatorCore: Symbol('IManagedSigmaNodeCreatorCore'),
     IMutableId: Symbol('IMutableField'),
     IMutableStringSet: Symbol('IMutableStringSet'),
     IMutableSubscribableTree: Symbol('IMutableSubscribableTree'),
