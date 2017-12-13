@@ -10,18 +10,19 @@ import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 
 @injectable()
 export class TreeLocationLoader implements ITreeLocationLoader {
-    private store: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
+    private storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
     private firebaseRef
-    constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, store}) {
-        this.store = store
+    constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, storeSource}) {
+        this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }
 
     public getData(treeId): ITreeLocationData {
-        if (!this.store.get(treeId)) {
-            throw new RangeError(treeId + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
+        if (!this.storeSource.get(treeId)) {
+            throw new RangeError(treeId
+                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
         }
-        return this.store.get(treeId).val()
+        return this.storeSource.get(treeId).val()
         // TODO: fix violoation of law of demeter
     }
 
@@ -35,7 +36,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                 if (isValidTreeLocation(treeLocationData)) {
                     const tree: IMutableSubscribableTreeLocation =
                         TreeLocationDeserializer.deserialize({treeLocationData})
-                    me.store.set(treeId, tree)
+                    me.storeSource.set(treeId, tree)
                     resolve(treeLocationData)
                 } else {
                     reject(treeLocationData)
@@ -45,7 +46,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
     }
 
     public isLoaded(treeId): boolean {
-        return !!this.store.get(treeId)
+        return !!this.storeSource.get(treeId)
     }
 
 }
