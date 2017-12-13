@@ -1,32 +1,34 @@
 import {inject, injectable} from 'inversify';
 import {
-    ISigmaNodeCreator, ISigmaNodeCreatorCaller,
-    ISigmaNodeCreatorCore, ISubscribable, ISubscriber, ITypeAndIdAndValUpdates,
+    IManagedSigmaNodeCreatorCore, ISigmaNodeCreator,
+    ISigmaNodeCreatorCaller, ISubscribable, ISubscriber, ITypeAndIdAndValUpdates,
     ObjectDataTypes
 } from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
 export class SigmaNodeCreator implements ISigmaNodeCreator {
-    private sigmaNodeCreatorCore: ISigmaNodeCreatorCore
-    constructor(@inject(TYPES.SigmaNodeCreatorArgs){sigmaNodeCreatorCore}) {
-        this.sigmaNodeCreatorCore = sigmaNodeCreatorCore
+    private managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore
+    constructor(@inject(TYPES.SigmaNodeCreatorArgs){managedSigmaNodeCreatorCore}) {
+        this.managedSigmaNodeCreatorCore = managedSigmaNodeCreatorCore
     }
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA:
-                this.sigmaNodeCreatorCore.receiveNewTreeData({treeId: update.id, treeData: update.val})
+                this.managedSigmaNodeCreatorCore.receiveNewTreeData({treeId: update.id, treeData: update.val})
                 break;
             case ObjectDataTypes.TREE_LOCATION_DATA:
-                this.sigmaNodeCreatorCore.receiveNewTreeLocationData({treeId: update.id, treeLocationData: update.val})
+                this.managedSigmaNodeCreatorCore.receiveNewTreeLocationData(
+                    {treeId: update.id, treeLocationData: update.val}
+                    )
                 break;
         }
     }
 }
 @injectable()
 export class SigmaNodeCreatorArgs {
-    @inject(TYPES.ISigmaNodeCreatorCore) public sigmaNodeCreatorCore: ISigmaNodeCreatorCore
+    @inject(TYPES.IManagedSigmaNodeCreatorCore) public managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore
 }
 @injectable()
 export class SigmaNodeCreatorCaller implements ISigmaNodeCreatorCaller {

@@ -3,7 +3,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
-    ISigmaNodeCreator, ISigmaNodeCreatorCaller, ISigmaNodeCreatorCore, ISubscribable,
+    IManagedSigmaNodeCreatorCore, ISigmaNodeCreator, ISigmaNodeCreatorCaller, ISubscribable,
     ITreeDataWithoutId, ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {TYPES} from '../types';
@@ -28,11 +28,12 @@ describe('SigmaNodeCreator', () => {
             parentId: '4234325',
             children: ['234', '5435']
         }
-        const sigmaNodeCreatorCore: ISigmaNodeCreatorCore
-            = myContainer.get<ISigmaNodeCreatorCore>(TYPES.ISigmaNodeCreatorCore)
-        const sigmaNodeCreator: ISigmaNodeCreator = new SigmaNodeCreator({sigmaNodeCreatorCore})
+        const managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore
+            = myContainer.get<IManagedSigmaNodeCreatorCore>(TYPES.IManagedSigmaNodeCreatorCore)
+        const sigmaNodeCreator: ISigmaNodeCreator =
+            new SigmaNodeCreator({managedSigmaNodeCreatorCore})
 
-        const sigmaNodeCreatorCoreReceiveNewTreeDataSpy = sinon.spy(sigmaNodeCreatorCore, 'receiveNewTreeData')
+        const sigmaNodeCreatorCoreReceiveNewTreeDataSpy = sinon.spy(managedSigmaNodeCreatorCore, 'receiveNewTreeData')
         const expectedCalledWith = {treeId: sigmaId, treeData}
 
         expect(sigmaNodeCreatorCoreReceiveNewTreeDataSpy.callCount).to.equal(0)

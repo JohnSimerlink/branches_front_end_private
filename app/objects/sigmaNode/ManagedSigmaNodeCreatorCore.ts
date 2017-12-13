@@ -1,10 +1,10 @@
 import {inject, injectable} from 'inversify';
-import {ISigmaRenderManager, ITreeDataWithoutId, ITreeLocationData} from '../interfaces';
+import {IManagedSigmaNodeCreatorCore, ISigmaRenderManager, ITreeDataWithoutId, ITreeLocationData} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeCreatorCore} from './SigmaNodeCreatorCore';
 
 @injectable()
-export class ManagedSigmaNodeCreatorCore extends SigmaNodeCreatorCore {
+export class ManagedSigmaNodeCreatorCore extends SigmaNodeCreatorCore implements IManagedSigmaNodeCreatorCore {
     private sigmaRenderManager: ISigmaRenderManager
     constructor(@inject(TYPES.ManagedSigmaNodeCreatorCoreArgs){sigmaNodes, sigmaRenderManager}) {
         super({sigmaNodes})
@@ -25,4 +25,5 @@ export class ManagedSigmaNodeCreatorCore extends SigmaNodeCreatorCore {
 @injectable()
 export class ManagedSigmaNodeCreatorCoreArgs {
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager
+    @inject(TYPES.Object) public sigmaNodes
 }

@@ -337,6 +337,8 @@ export interface ISigmaNodeCreatorCore {
     receiveNewContentData({contentId, contentData}: {contentId: string, contentData: IContentData})
     receiveNewContentUserData({contentId, contentUserData}: {contentId: string, contentUserData: IContentUserData})
 }
+export interface IManagedSigmaNodeCreatorCore extends ISigmaNodeCreatorCore {
+}
 export interface ISigmaNodeCreator {
     receiveUpdate(update: ITypeAndIdAndValUpdates)
 }
