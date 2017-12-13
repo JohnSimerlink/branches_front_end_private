@@ -15,7 +15,11 @@ import {
     IMutableSubscribableGlobalStore, IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
     IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUser, IMutableSubscribableTreeUserStore,
-    IProficiencyStats, ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, ISubscribableStoreSource,
+    IProficiencyStats, ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource,
+    ISubscribableStoreSource,
+    ISubscribableTreeLocationStoreSource,
+    ISubscribableTreeStoreSource, ISubscribableTreeUserStoreSource,
     IUI,
     ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
     TreeUserPropertyMutationTypes, TreeUserPropertyNames,
@@ -62,9 +66,9 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
         })
         const contentUserStore: IMutableSubscribableContentUserStore = (() => {
-            const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
-                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
-            (TYPES.ISubscribableStoreSource)
+            const storeSource: ISubscribableContentUserStoreSource
+                = myContainer.get<ISubscribableContentUserStoreSource>
+            (TYPES.ISubscribableContentStoreSource)
             storeSource.set(contentId, contentUser)
             return new MutableSubscribableContentUserStore({
                 storeSource,
@@ -135,9 +139,9 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
         })
         const contentUserStore: IMutableSubscribableContentUserStore = (() => {
 
-            const storeSource: ISubscribableStoreSource<IMutableSubscribableContentUser>
-                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContentUser>>
-            (TYPES.ISubscribableStoreSource)
+            const storeSource: ISubscribableContentUserStoreSource
+                = myContainer.get<ISubscribableContentUserStoreSource>
+            (TYPES.ISubscribableContentUserStoreSource)
             return new MutableSubscribableContentUserStore({
                 storeSource,
                 updatesCallbacks: []
@@ -154,9 +158,9 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const contentStore: IMutableSubscribableContentStore = (() => {
-            const storeSource: ISubscribableStoreSource<IMutableSubscribableContent>
-                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableContent>>
-            (TYPES.ISubscribableStoreSource)
+            const storeSource: ISubscribableContentStoreSource
+                = myContainer.get<ISubscribableContentStoreSource>
+            (TYPES.ISubscribableContentStoreSource)
             storeSource.set(contentId, content)
             return new MutableSubscribableContentStore({
                 storeSource,
@@ -239,9 +243,9 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
 
         const treeUserStore: IMutableSubscribableTreeUserStore = (() => {
 
-            const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeUser>
-                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeUser>>
-            (TYPES.ISubscribableStoreSource)
+            const storeSource: ISubscribableTreeUserStoreSource
+                = myContainer.get<ISubscribableTreeUserStoreSource>
+            (TYPES.ISubscribableTreeUserStoreSource)
             storeSource.set(TREE_ID, treeUser)
             return new MutableSubscribableTreeUserStore({
                 storeSource,
@@ -317,9 +321,9 @@ describe('App integration test 1 - mutations -> modifying sigmaNode', () => {
             myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore = (() => {
-            const storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
-                = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
-            (TYPES.ISubscribableStoreSource)
+            const storeSource: ISubscribableTreeLocationStoreSource
+                = myContainer.get<ISubscribableTreeLocationStoreSource>
+            (TYPES.ISubscribableTreeLocationStoreSource)
             storeSource.set(treeId, treeLocation)
 
             return new MutableSubscribableTreeLocationStore( {

@@ -1,12 +1,23 @@
+import {inject, injectable} from 'inversify';
 import {
     IMutableSubscribableTreeLocation,
     ISubscribableTreeLocationCore,
     ISubscribableTreeLocationStore
 } from '../../interfaces';
+import {TYPES} from '../../types';
 import {SubscribableStore} from '../SubscribableStore';
 
-class SubscribableTreeLocationStore
+@injectable()
+export class SubscribableTreeLocationStore
     extends SubscribableStore<ISubscribableTreeLocationCore, IMutableSubscribableTreeLocation>
-    implements ISubscribableTreeLocationStore {}
+    implements ISubscribableTreeLocationStore {
+    constructor(@inject(TYPES.SubscribableTreeLocationStoreArgs){ storeSource, updatesCallbacks}) {
+        super({updatesCallbacks, storeSource})
+    }
+}
 
-export {SubscribableTreeLocationStore}
+@injectable()
+export class SubscribableTreeLocationStoreArgs {
+    @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource;
+    @inject(TYPES.Array) public updatesCallbacks;
+}

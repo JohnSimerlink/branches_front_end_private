@@ -2,9 +2,16 @@ import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
 import {
     entry,
-    IHash, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
-    ObjectDataTypes
+    IHash, IMutableSubscribableContent, IMutableSubscribableContentUser, IMutableSubscribableTree,
+    IMutableSubscribableTreeLocation, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource,
+    ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
+    ISubscribableTreeStoreSource,
+    ITypeAndIdAndValUpdates,
+    ObjectDataTypes,
 } from '../interfaces';
+import {IMutableSubscribableTreeUser} from '../interfaces';
+import {ISubscribableTreeUserStoreSource} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 if (!Object.entries) {
@@ -12,7 +19,7 @@ if (!Object.entries) {
 }
 
 @injectable()
-class SubscribableStoreSource<T> extends
+export class SubscribableStoreSource<T> extends
     SubscribableCore<ITypeAndIdAndValUpdates> implements ISubscribableStoreSource<T> {
     private update: ITypeAndIdAndValUpdates
     private type: ObjectDataTypes
@@ -40,9 +47,73 @@ class SubscribableStoreSource<T> extends
 }
 
 @injectable()
-class SubscribableStoreSourceArgs {
+export class SubscribableStoreSourceArgs {
     @inject(TYPES.Object) public hashmap
     @inject(TYPES.Array) public updatesCalbacks: any[]
     @inject(TYPES.String) private type: ObjectDataTypes
 }
-export {SubscribableStoreSource, SubscribableStoreSourceArgs}
+@injectable()
+export class SubscribableTreeStoreSource extends SubscribableStoreSource<IMutableSubscribableTree>
+    implements ISubscribableTreeStoreSource {
+    constructor(@inject(TYPES.SubscribableTreeStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+        super({hashmap, updatesCallbacks, type})
+    }
+}
+@injectable()
+export class SubscribableTreeLocationStoreSource
+    extends SubscribableStoreSource<IMutableSubscribableTreeLocation> implements ISubscribableTreeLocationStoreSource {
+    constructor(@inject(TYPES.SubscribableTreeLocationStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+        super({hashmap, updatesCallbacks, type})
+    }
+}
+@injectable()
+export class SubscribableTreeUserStoreSource
+    extends SubscribableStoreSource<IMutableSubscribableTreeUser> implements ISubscribableTreeUserStoreSource {
+    constructor(@inject(TYPES.SubscribableTreeUserStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+        super({hashmap, updatesCallbacks, type})
+    }
+}
+@injectable()
+export class SubscribableContentStoreSource
+    extends SubscribableStoreSource<IMutableSubscribableContent> implements ISubscribableContentStoreSource {
+    constructor(@inject(TYPES.SubscribableContentStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+        super({hashmap, updatesCallbacks, type})
+    }
+}
+@injectable()
+export class SubscribableContentUserStoreSource
+    extends SubscribableStoreSource<IMutableSubscribableContentUser> implements ISubscribableContentUserStoreSource {
+    constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+        super({hashmap, updatesCallbacks, type})
+    }
+}
+@injectable()
+export class SubscribableTreeStoreSourceArgs {
+    @inject(TYPES.Object) public hashmap
+    @inject(TYPES.Array) public updatesCalbacks: any[]
+    @inject(TYPES.ObjectDataTypes) private type: ObjectDataTypes
+}
+@injectable()
+export class SubscribableTreeLocationStoreSourceArgs {
+    @inject(TYPES.Object) public hashmap
+    @inject(TYPES.Array) public updatesCalbacks: any[]
+    @inject(TYPES.ObjectDataTypes) private type: ObjectDataTypes
+}
+@injectable()
+export class SubscribableTreeUserStoreSourceArgs {
+    @inject(TYPES.Object) public hashmap
+    @inject(TYPES.Array) public updatesCalbacks: any[]
+    @inject(TYPES.ObjectDataTypes) private type: ObjectDataTypes
+}
+@injectable()
+export class SubscribableContentStoreSourceArgs {
+    @inject(TYPES.Object) public hashmap
+    @inject(TYPES.Array) public updatesCalbacks: any[]
+    @inject(TYPES.ObjectDataTypes) private type: ObjectDataTypes
+}
+@injectable()
+export class SubscribableContentUserStoreSourceArgs {
+    @inject(TYPES.Object) public hashmap
+    @inject(TYPES.Array) public updatesCalbacks: any[]
+    @inject(TYPES.ObjectDataTypes) private type: ObjectDataTypes
+}

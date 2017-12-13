@@ -13,7 +13,12 @@ import {
     SubscribableMutableField,
     SubscribableMutableFieldArgs
 } from './app/objects/field/SubscribableMutableField';
-import {IDatedMutation, IMutableSubscribablePoint, ISigmaNodeCreatorCore} from './app/objects/interfaces';
+import {
+    IDatedMutation, IMutableSubscribablePoint, ISigmaNodeCreatorCore, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
+    ISubscribableTreeUserStoreSource,
+    ObjectDataTypes
+} from './app/objects/interfaces';
 import {
     CONTENT_TYPES,
     fGetSigmaIdsForContentId, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
@@ -61,22 +66,41 @@ import {SigmaNodeCreatorCore, SigmaNodeCreatorCoreArgs} from './app/objects/sigm
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
 import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
-import {SubscribableContentStore} from './app/objects/stores/content/SubscribableContentStore';
+import {
+    SubscribableContentStore,
+    SubscribableContentStoreArgs
+} from './app/objects/stores/content/SubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
-import {SubscribableContentUserStore} from './app/objects/stores/contentUser/SubscribableContentUserStore';
+import {
+    SubscribableContentUserStore,
+    SubscribableContentUserStoreArgs
+} from './app/objects/stores/contentUser/SubscribableContentUserStore';
 import {
     MutableSubscribableGlobalStore,
     MutableSubscribableGlobalStoreArgs
 } from './app/objects/stores/MutableSubscribableGlobalStore';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './app/objects/stores/SubscribableGlobalStore';
 import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
-import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './app/objects/stores/SubscribableStoreSource';
+import {
+    SubscribableContentStoreSource, SubscribableContentStoreSourceArgs,
+    SubscribableContentUserStoreSource, SubscribableContentUserStoreSourceArgs,
+    SubscribableStoreSource, SubscribableStoreSourceArgs, SubscribableTreeLocationStoreSource,
+    SubscribableTreeLocationStoreSourceArgs,
+    SubscribableTreeStoreSource,
+    SubscribableTreeStoreSourceArgs, SubscribableTreeUserStoreSource, SubscribableTreeUserStoreSourceArgs
+} from './app/objects/stores/SubscribableStoreSource';
 import {MutableSubscribableTreeStore} from './app/objects/stores/tree/MutableSubscribableTreeStore';
-import {SubscribableTreeStore} from './app/objects/stores/tree/SubscribableTreeStore';
+import {SubscribableTreeStore, SubscribableTreeStoreArgs} from './app/objects/stores/tree/SubscribableTreeStore';
 import {MutableSubscribableTreeLocationStore} from './app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
-import {SubscribableTreeLocationStore} from './app/objects/stores/treeLocation/SubscribableTreeLocationStore';
+import {
+    SubscribableTreeLocationStore,
+    SubscribableTreeLocationStoreArgs
+} from './app/objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeUserStore} from './app/objects/stores/treeUser/MutableSubscribableTreeUserStore';
-import {SubscribableTreeUserStore} from './app/objects/stores/treeUser/SubscribableTreeUserStore';
+import {
+    SubscribableTreeUserStore,
+    SubscribableTreeUserStoreArgs
+} from './app/objects/stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
@@ -84,7 +108,7 @@ import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/Subscri
 import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
 import {SubscribableTreeLocationArgs} from './app/objects/treeLocation/SubscribableTreeLocation';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
-import {TYPES} from './app/objects/types'
+import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import {ObjectFactory, TREE_ID3} from './app/testHelpers/testHelpers';
 import {MutableSubscribablePoint, SubscribableMutablePointArgs} from './app/objects/point/MutableSubscribablePoint';
@@ -95,6 +119,18 @@ import {
 
 const myContainer = new Container()
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
+
+myContainer.bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource).
+to(SubscribableTreeLocationStoreSource)
+myContainer.bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource).
+to(SubscribableTreeStoreSource)
+myContainer.bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource).
+to(SubscribableTreeUserStoreSource)
+myContainer.bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource).
+to(SubscribableContentStoreSource)
+myContainer.bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource).
+to(SubscribableContentUserStoreSource)
+
 myContainer.bind<any>(TYPES.Any).toConstantValue(null)
 myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
@@ -114,6 +150,14 @@ myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toCon
     type: FieldMutationTypes.SET,
 })
 
+myContainer.bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
+    .to(SubscribableContentUserStoreArgs)
+myContainer.bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)
+myContainer.bind<SubscribableTreeStoreArgs>(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs)
+myContainer.bind<SubscribableTreeUserStoreArgs>(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs)
+myContainer.bind<SubscribableTreeLocationStoreArgs>(TYPES.SubscribableTreeLocationStoreArgs)
+    .to(SubscribableTreeLocationStoreArgs)
+
 myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
 myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 myContainer.bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
@@ -127,9 +171,6 @@ myContainer.bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableCon
     .to(MutableSubscribableContentStore)
 myContainer.bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
     .to(MutableSubscribableContentUserStore)
-
-myContainer.bind<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
-    .to(SubscribableStoreSource)
 
 myContainer.bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
     .to(SubscribableStoreSourceArgs)
@@ -177,6 +218,12 @@ myContainer.bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribab
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 
+myContainer.bind<SubscribableContentStoreSourceArgs>(TYPES.SubscribableContentStoreSourceArgs).to(SubscribableContentStoreSourceArgs)
+
+myContainer.bind<SubscribableContentUserStoreSourceArgs>(TYPES.SubscribableContentUserStoreSourceArgs).to(SubscribableContentUserStoreSourceArgs)
+myContainer.bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs).to(SubscribableTreeStoreSourceArgs)
+myContainer.bind<SubscribableTreeLocationStoreSourceArgs>(TYPES.SubscribableTreeLocationStoreSourceArgs).to(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind<SubscribableTreeUserStoreSourceArgs>(TYPES.SubscribableTreeUserStoreSourceArgs).to(SubscribableTreeUserStoreSourceArgs)
 // myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
 // (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
 /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
@@ -232,5 +279,15 @@ myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 myContainer.bind<Object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutationArr).to()
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_DATA)
+    .whenInjectedInto(SubscribableTreeStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_LOCATION_DATA)
+    .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_USER_DATA)
+    .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_DATA)
+    .whenInjectedInto(SubscribableContentStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)
+    .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
 
 export {myContainer}

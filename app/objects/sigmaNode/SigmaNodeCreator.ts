@@ -1,7 +1,8 @@
 import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
 import {
     IManagedSigmaNodeCreatorCore, ISigmaNodeCreator,
-    ISigmaNodeCreatorCaller, ISubscribable, ISubscriber, ITypeAndIdAndValUpdates,
+    ISigmaNodeCreatorCaller, ISubscribable, ITypeAndIdAndValUpdates,
     ObjectDataTypes
 } from '../interfaces';
 import {TYPES} from '../types';
@@ -13,6 +14,7 @@ export class SigmaNodeCreator implements ISigmaNodeCreator {
         this.managedSigmaNodeCreatorCore = managedSigmaNodeCreatorCore
     }
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
+        log('SigmaNodeCreator receiveUpdate . . .' + JSON.stringify(update))
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA:
@@ -23,6 +25,8 @@ export class SigmaNodeCreator implements ISigmaNodeCreator {
                     {treeId: update.id, treeLocationData: update.val}
                     )
                 break;
+            default:
+                throw new RangeError(JSON.stringify(type) + ' is not a valid update type')
         }
     }
 }
@@ -37,7 +41,7 @@ export class SigmaNodeCreatorCaller implements ISigmaNodeCreatorCaller {
         this.sigmaNodeCreator = sigmaNodeCreator
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        obj.onUpdate(this.sigmaNodeCreator.receiveUpdate.bind(this.sigmaNodeCreator))
+        obj.onUpdate(this.sigmaNodeCreator.receiveUpdate)
     }
 }
 @injectable()

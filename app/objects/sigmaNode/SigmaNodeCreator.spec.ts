@@ -60,8 +60,8 @@ describe('SigmaNodeCreatorCaller', () => {
         const sigmaNodeCreator: ISigmaNodeCreator = myContainer.get<ISigmaNodeCreator>(TYPES.ISigmaNodeCreator)
         const sigmaNodeCreatorCaller: ISigmaNodeCreatorCaller =
             new SigmaNodeCreatorCaller({sigmaNodeCreator})
-        const sigmaNodeCreatorReceiveUpdateBound = sigmaNodeCreator.receiveUpdate.bind(sigmaNodeCreator)
-        const expectedCalledWith = sigmaNodeCreatorReceiveUpdateBound
+        const sigmaNodeCreatorReceiveUpdate = sigmaNodeCreator.receiveUpdate
+        const expectedCalledWith = sigmaNodeCreatorReceiveUpdate
 
         expect(subscribableUpdateSpy.callCount).to.equal(0)
         sigmaNodeCreatorCaller.subscribe(subscribable)

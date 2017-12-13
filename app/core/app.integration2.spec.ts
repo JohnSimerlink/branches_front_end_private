@@ -1,31 +1,29 @@
-import firebase from 'firebase'
+import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
+import * as sinon from 'sinon'
 import {myContainer} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {
-    IRenderedNodesManager, ISigmaNodeCreator, ISigmaNodeCreatorCaller,
-    IManagedSigmaNodeCreatorCore
-} from '../objects/interfaces';
-import {ISigmaRenderManager} from '../objects/interfaces';
-import {
-    fGetSigmaIdsForContentId, IHash,
+    IHash,
     IMutableSubscribableTree, IMutableSubscribableTreeLocation, IRenderedNodesManagerCore,
     ISigmaNode,
     ISubscribableStoreSource,
 } from '../objects/interfaces';
-import {ISigmaNodesUpdater} from '../objects/interfaces';
 import {ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
+import {
+    IManagedSigmaNodeCreatorCore, IRenderedNodesManager, ISigmaNodeCreator,
+    ISigmaNodeCreatorCaller
+} from '../objects/interfaces';
+import {ISigmaRenderManager} from '../objects/interfaces';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
-import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
+import {SigmaNodeCreator, SigmaNodeCreatorCaller} from '../objects/sigmaNode/SigmaNodeCreator';
+import {SigmaNodeCreatorCore} from '../objects/sigmaNode/SigmaNodeCreatorCore';
+import {SigmaRenderManager} from '../objects/sigmaNode/SigmaRenderManager';
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
-import {App} from './app';
-import {SigmaNodeCreatorCore} from '../objects/sigmaNode/SigmaNodeCreatorCore';
-import {SigmaNodeCreator, SigmaNodeCreatorCaller} from '../objects/sigmaNode/SigmaNodeCreator';
-import {SigmaRenderManager} from '../objects/sigmaNode/SigmaRenderManager';
 
 describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes', () => {
     it('once a tree/treeLocation is loaded,' +
@@ -60,8 +58,8 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
             = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
 
         const sigmaNodes = {}
-        const sigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
-        const sigmaNodeCreator: ISigmaNodeCreator = new SigmaNodeCreator({sigmaNodeCreatorCore})
+        const managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
+        const sigmaNodeCreator: ISigmaNodeCreator = new SigmaNodeCreator({managedSigmaNodeCreatorCore})
         const sigmaNodeCreatorCaller: ISigmaNodeCreatorCaller = new SigmaNodeCreatorCaller({sigmaNodeCreator})
         const renderedNodes: IHash<ISigmaNode> = {}
         const allSigmaNodes: IHash<ISigmaNode> = {}
@@ -75,13 +73,26 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
         sigmaNodeCreatorCaller.subscribe(treeStoreSource)
         sigmaNodeCreatorCaller.subscribe(treeLocationStoreSource)
 
+        const sigmaNodeCreatorReceiveUpdateSpy = sinon.spy(sigmaNodeCreator, 'receiveUpdate')
+        const treeStoreSourceCallCallbacks = sinon.spy(treeStoreSource, 'callCallbacks')
+
+        let inRenderedSet: boolean = !!renderedNodes[treeIdToDownload]
+        expect(inRenderedSet).to.equal(false)
         treeRef.fakeEvent('value', undefined, sampleTreeData)
         treeLoader.downloadData(treeIdToDownload)
         treeRef.flush()
+        inRenderedSet = !!renderedNodes[treeIdToDownload]
+        expect(treeStoreSourceCallCallbacks.callCount).to.equal(1)
+        expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
+        // expect(inRenderedSet).to.equal(false)
 
         treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationData)
         treeLocationLoader.downloadData(treeIdToDownload)
         treeLocationRef.flush()
+        // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(2)
+
+        inRenderedSet = !!renderedNodes[treeIdToDownload]
+        // expect(inRenderedSet).to.equal(true)
 
     })
 })
