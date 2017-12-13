@@ -454,6 +454,16 @@ export type entry<T> = [string, T]
 
 // IStoreSource
 export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<ITypeAndIdAndValUpdates> {}
+export interface ISubscribableTreeStoreSource
+    extends IMap<IMutableSubscribableTree>, ISubscribable<ITypeAndIdAndValUpdates> {}
+export interface ISubscribableTreeLocationStoreSource
+    extends IMap<IMutableSubscribableTreeLocation>, ISubscribable<ITypeAndIdAndValUpdates> {}
+export interface ISubscribableTreeUserStoreSource
+    extends IMap<IMutableSubscribableTreeUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
+export interface ISubscribableContentStoreSource
+    extends IMap<IMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
+export interface ISubscribableContentUserStoreSource
+    extends IMap<IMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
 
 // tree
 export interface ITree {

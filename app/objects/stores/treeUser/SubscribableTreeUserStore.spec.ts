@@ -3,14 +3,12 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
-    FieldMutationTypes, IProficiencyStats, IProppedDatedMutation, ISubscribableTreeUserCore, ISubscribableTreeUserStore,
+    FieldMutationTypes, IProficiencyStats, IProppedDatedMutation, ISubscribableTreeUserStore,
     TreeUserPropertyNames
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
-import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
-import {SubscribableTreeUserStore} from './SubscribableTreeUserStore';
 
 describe('SubscribableTreeUserStore > addAndSubscribeToItem', () => {
     it('An update in a member treeUser should be published to a subscriber of the treeUser data stores', () => {
@@ -18,7 +16,6 @@ describe('SubscribableTreeUserStore > addAndSubscribeToItem', () => {
         const aggregationTimer = new SubscribableMutableField<number>()
         const TREE_ID = 'efa123'
         const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
-        // const treeUser = myContainer.get<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser)
         // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
         const treeUserStore: ISubscribableTreeUserStore
             = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
