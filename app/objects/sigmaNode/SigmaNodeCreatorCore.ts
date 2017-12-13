@@ -1,6 +1,7 @@
 import {inject, injectable} from 'inversify';
 import {
-    IContentData, IContentUserData, IHash, ISigmaNode, ISigmaNodeCreatorCore, ITreeDataWithoutId, ITreeLocationData,
+    IContentData, IContentUserData, IHash, ISigmaNode, ISigmaNodeCreatorCore, ISigmaRenderManager, ITreeDataWithoutId,
+    ITreeLocationData,
     ITreeUserData
 } from '../interfaces';
 import {TYPES} from '../types';

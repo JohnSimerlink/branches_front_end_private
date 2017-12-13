@@ -16,7 +16,8 @@ describe('SigmaRenderManager', () => {
         })
         expect(injects).to.equal(true)
     })
-    it('should broadcast an update listing the id as renderable after marking tree and treelocation data added[Regular Constructor]', () => {
+    it('should broadcast an update listing the id as renderable after marking tree' +
+        ' and treelocation data added[Regular Constructor]', () => {
         const treeDataLoadedIdsSet = {}
         const treeLocationDataLoadedIdsSet = {}
         const callback = sinon.spy()
@@ -36,7 +37,8 @@ describe('SigmaRenderManager', () => {
         const calledWith = callback.getCall(0).args[0]
         expect(calledWith).to.deep.equal(expectedCalledWith)
     })
-    it('should broadcast an update listing the id as renderable after marking tree and treelocation data added [DI constructor]', () => {
+    it('should broadcast an update listing the id as renderable after marking tree' +
+        ' and treelocation data added [DI constructor]', () => {
 
         const callback = sinon.spy()
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)

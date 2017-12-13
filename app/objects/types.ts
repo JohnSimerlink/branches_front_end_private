@@ -67,6 +67,7 @@ const TYPES = {
     IMutableSubscribablePoint: Symbol('IMutableSubscribablePoint'),
     ISubscriber_ITypeAndIdAndValUpdates_Array: Symbol('ISubscriber_ITypeAndIdAndValUpdates_Array'),
     ITree: Symbol('ITree'),
+    ManagedSigmaNodeCreatorCoreArgs: Symbol('ManagedSigmaNodeCreatorCoreArgs'),
     MutableSubscribableGlobalStoreArgs: Symbol('MutableSubscribableGlobalStoreArgs'),
     Number: Symbol('Number'),
     Object: Symbol('Object'),
