@@ -56,50 +56,31 @@ class AppContainer {
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
-        const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater({sigmaNodes, getSigmaIdsForContentId})
+        const renderedNodes: IHash<ISigmaNode> = {}
+        const allSigmaNodes: IHash<ISigmaNode> = {}
+        const renderedNodesManagerCore: IRenderedNodesManagerCore
+        = new RenderedNodesManagerCore({allSigmaNodes, renderedNodes})
+        const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
+        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        renderedNodesManager.subscribe(sigmaRenderManager)
+        const sigmaNodesUpdater: ISigmaNodesUpdater
+        = new SigmaNodesUpdater({sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId})
+
         const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         // const
         // DataLoader.start()
 
-        const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore( {
-            store: treeStoreSource,
-            updatesCallbacks: []
-        })
-
-        const treeUserStore: IMutableSubscribableTreeUserStore = new MutableSubscribableTreeUserStore( {
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore( {
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const contentUserStore: ISubscribableContentUserStore = new SubscribableContentUserStore({
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const contentStore: ISubscribableContentStore = new MutableSubscribableContentStore({
-            store: {},
-            updatesCallbacks: []
-        })
-
-        const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
-            {
-                contentStore,
-                contentUserStore,
-                treeStore,
-                treeLocationStore,
-                treeUserStore,
-                updatesCallbacks: [],
-            }
-        )
+        const globalStore: IMutableSubscribableGlobalStore
+        = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
 
         const treeData = await treeLoader.downloadData(store.state.centeredTreeId)
-        await Promise.all( treeData.children.map(treeLoader.downloadData))
+
+        const treeLocationData = await treeLocationLoader.downloadData(store.state.centeredTreeId)
+        const childDataPromises = treeData.children.map(treeLoader.downloadData)
+        const childLocationPromises = treeData.children.map(treeLocationLoader.downloadData)
+        await Promise.all(childDataPromises)
+        await Promise.all(childLocationPromises)
 
         app.start()
 
