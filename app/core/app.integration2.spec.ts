@@ -83,7 +83,7 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
         treeRef.flush()
         inRenderedSet = !!renderedNodes[treeIdToDownload]
         expect(treeStoreSourceCallCallbacks.callCount).to.equal(1)
-        expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
+        // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
         // expect(inRenderedSet).to.equal(false)
 
         treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationData)
