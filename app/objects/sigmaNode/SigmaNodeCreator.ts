@@ -18,6 +18,7 @@ export class SigmaNodeCreator implements ISigmaNodeCreator {
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA:
+                log('SigmaNodeCreator this and this.managedSigmaNodeCreator is ' +  JSON.stringify(this.managedSigmaNodeCreatorCore))
                 this.managedSigmaNodeCreatorCore.receiveNewTreeData({treeId: update.id, treeData: update.val})
                 break;
             case ObjectDataTypes.TREE_LOCATION_DATA:
@@ -41,7 +42,7 @@ export class SigmaNodeCreatorCaller implements ISigmaNodeCreatorCaller {
         this.sigmaNodeCreator = sigmaNodeCreator
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        obj.onUpdate(this.sigmaNodeCreator.receiveUpdate)
+        obj.onUpdate(this.sigmaNodeCreator.receiveUpdate.bind(this.sigmaNodeCreator))
     }
 }
 @injectable()
