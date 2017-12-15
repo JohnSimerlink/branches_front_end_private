@@ -11,7 +11,10 @@ export class RenderedNodesManager implements IRenderedNodesManager {
         this.renderedNodesManagerCore =  renderedNodesManagerCore
     }
     public subscribe(obj: ISubscribable<ISigmaIdToRender>) {
-        obj.onUpdate(this.renderedNodesManagerCore.addToRenderList.bind(this))
+        const me = this
+        obj.onUpdate(update => {
+            me.renderedNodesManagerCore.addToRenderList(update.sigmaIdToRender)
+        })
     }
 }
 @injectable()

@@ -1,52 +1,52 @@
 import {inject, injectable} from 'inversify'
-import {ISigmaIdToRender, ISigmaRenderManager} from '../interfaces';
-import {TYPES} from '../types';
+import {IHash, ISigmaIdToRender, ISigmaRenderManager} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
+import {TYPES} from '../types';
 
 @injectable()
 class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> implements ISigmaRenderManager {
-    protected callbackArguments(): ISigmaIdToRender {
-        return {sigmaIdToRender: this.treeIdToBroadcast}
-    }
-
-    public markTreeDataLoaded(treeId) {
-        this.treeDataLoadedIdsSet[treeId] = true
-        this.broadcastIfRenderable(treeId)
-    }
-
-    public markTreeLocationDataLoaded(treeId) {
-        this.treeLocationDataLoadedIdsSet[treeId] = true
-        this.broadcastIfRenderable(treeId)
-    }
-
-    private broadcastIfRenderable(treeId) {
-        if (this.canRender(treeId)) {
-            this.broadcastUpdate(treeId)
-        }
-    }
-    private canRender(treeId) {
-        return this.treeLocationDataLoadedIdsSet[treeId]  && this.treeDataLoadedIdsSet[treeId]
-    }
-    private broadcastUpdate(treeId) {
-        this.treeIdToBroadcast = treeId
-        this.callCallbacks()
-    }
-
-    private treeDataLoadedIdsSet
-    private treeLocationDataLoadedIdsSet
-    private treeIdToBroadcast
+    private treeDataLoadedIdsSet: IHash<boolean>
+    private treeLocationDataLoadedIdsSet: IHash<boolean>
+    private treeIdToBroadcast: string
     constructor(@inject(TYPES.SigmaRenderManagerArgs) {treeDataLoadedIdsSet,
-        treeLocationDataLoadedIdsSet, updatesCallbacks}) {
+                                                          treeLocationDataLoadedIdsSet, updatesCallbacks}) {
         super({updatesCallbacks})
         this.treeDataLoadedIdsSet = treeDataLoadedIdsSet
         this.treeLocationDataLoadedIdsSet = treeLocationDataLoadedIdsSet
     }
+    protected callbackArguments(): ISigmaIdToRender {
+        return {sigmaIdToRender: this.treeIdToBroadcast}
+    }
+
+    public markTreeDataLoaded(treeId: string) {
+        this.treeDataLoadedIdsSet[treeId] = true
+        this.broadcastIfRenderable(treeId)
+    }
+
+    public markTreeLocationDataLoaded(treeId: string) {
+        this.treeLocationDataLoadedIdsSet[treeId] = true
+        this.broadcastIfRenderable(treeId)
+    }
+
+    private broadcastIfRenderable(treeId: string) {
+        if (this.canRender(treeId)) {
+            this.broadcastUpdate(treeId)
+        }
+    }
+    private canRender(treeId: string) {
+        return this.treeLocationDataLoadedIdsSet[treeId]  && this.treeDataLoadedIdsSet[treeId]
+    }
+    private broadcastUpdate(treeId: string) {
+        this.treeIdToBroadcast = treeId
+        this.callCallbacks()
+    }
+
 }
 
 @injectable()
 class SigmaRenderManagerArgs {
-    @inject(TYPES.Object) public treeDataLoadedIdsSet
-    @inject(TYPES.Object) public treeLocationDataLoadedIdsSet
+    @inject(TYPES.Object) public treeDataLoadedIdsSet: IHash<boolean>
+    @inject(TYPES.Object) public treeLocationDataLoadedIdsSet: IHash<boolean>
 }
 
 export {SigmaRenderManager, SigmaRenderManagerArgs}

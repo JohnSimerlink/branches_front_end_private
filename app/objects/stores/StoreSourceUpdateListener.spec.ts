@@ -27,12 +27,9 @@ describe('StoreSourceUpdateListener', () => {
             = myContainer.get<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore)
         const storeSourceUpdateListener: IStoreSourceUpdateListener =
             new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
-        const expectedCalledWith = storeSourceUpdateListenerCore.receiveUpdate
 
         expect(subscribableUpdateSpy.callCount).to.equal(0)
         storeSourceUpdateListener.subscribe(subscribable)
         expect(subscribableUpdateSpy.callCount).to.equal(1)
-        const calledWith = subscribableUpdateSpy.getCall(0).args[0]
-        expect(calledWith).to.deep.equal(expectedCalledWith)
     })
 })

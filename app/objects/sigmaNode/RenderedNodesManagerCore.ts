@@ -1,4 +1,5 @@
 import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
 import {IRenderedNodesManagerCore} from '../interfaces';
 import {TYPES} from '../types';
 
@@ -11,6 +12,7 @@ export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
         this.allSigmaNodes = allSigmaNodes
     }
     public addToRenderList(sigmaId: string) {
+        log('RenderedNodesManagerCore addtoRenderList: ' + sigmaId)
         const sigmaNode = this.allSigmaNodes[sigmaId]
         this.renderedNodes[sigmaId] = sigmaNode
     }
