@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 // /* tslint:disable object-literal-sort-keys */
 // import {error, log} from '../../core/log';
 // import md5 from '../../core/md5wrapper'
