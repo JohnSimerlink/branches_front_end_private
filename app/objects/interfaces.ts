@@ -306,7 +306,7 @@ export interface IEditableSigmaNode {
     receiveNewContentUserData(contentUserData: IContentUserData)
     receiveNewTreeLocationData(treeLocationData: ITreeLocationData)
     receiveNewTreeUserData(treeUserData: ITreeUserData)
-    receiveNewTreeData(treeUserData: ITreeDataWithoutId)
+    receiveNewTreeData(treeData: ITreeDataWithoutId)
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
@@ -342,8 +342,11 @@ export interface IManagedSigmaNodeCreatorCore extends ISigmaNodeCreatorCore {
 export interface ISigmaNodeCreator {
     receiveUpdate(update: ITypeAndIdAndValUpdates)
 }
-export interface ISigmaNodeCreatorCaller extends ISubscriber<ITypeAndIdAndValUpdates> {}
+export interface IStoreSourceUpdateListener extends ISubscriber<ITypeAndIdAndValUpdates> {}
 // SigmaRendererManager
+export interface IStoreSourceUpdateListenerCore {
+    receiveUpdate(update: ITypeAndIdAndValUpdates)
+}
 export interface ISigmaRenderManager extends ISubscribable<ISigmaIdToRender> {
     markTreeDataLoaded(treeId)
     markTreeLocationDataLoaded(treeId)
