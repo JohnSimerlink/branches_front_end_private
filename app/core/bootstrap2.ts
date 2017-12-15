@@ -2,13 +2,10 @@
 import Vue from 'vue';
 // import AsyncComputed from 'vue-async-computed'
 import VueRouter from 'vue-router'
-import Vuex from 'vuex'
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap2'
 import './components2'
 import {log} from './log'
 import store from './store2'
-log(VueRouter, Vuex)
-Vue.use(Vuex);
 Vue.use(VueRouter);
 // Vue.use(AsyncComputed);
 
@@ -41,7 +38,6 @@ const router = new VueRouter({
 const vm = new Vue({
     el: '#branches-app',
     created() {
-        alert('vue created')
         return void 0
     },
     data() {
