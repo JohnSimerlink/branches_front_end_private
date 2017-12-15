@@ -42,6 +42,12 @@ class AppContainer {
     // this should be the only place where I have new statements
     // and I should only have new statements here . . .
     // and one start statement that starts off the initialization/download / logic process
+    /* TODO: have an appContainerContainer that does
+    const myAppContainer = myContainer.get<IAppContainerContainer>(TYPES.IAppContainerContainer).
+     Have that file be put as the root in webpack
+     And then have AppContainer have all its objects injected in its args
+
+    */
     public async start() {
         const firebaseTreesRef = firebase.database().ref('trees')
         const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)

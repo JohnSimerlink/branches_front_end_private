@@ -1,8 +1,4 @@
 import './studyMenu.less'
-import {Trees} from "../../objects/trees";
-import {user} from '../../objects/user'
-import ContentItems from "../../objects/contentItems";
-import {error, log} from "../../core/log"
 let defaultStudySettings = {
     itemTypes: {
         old: true,
@@ -17,9 +13,9 @@ export default {
     template: require('./studyMenu.html'), // '<div> {{movie}} this is the tree template</div>',
     props: [],
     async created() {
-        PubSub.subscribe('login', async () => {
-            this.studySettings = await user.getStudySettings() || defaultStudySettings
-        })
+        // PubSub.subscribe('login', async () => {
+        //     // this.studySettings = await user.getStudySettings() || defaultStudySettings
+        // })
     },
     data(){
         return {
@@ -28,45 +24,45 @@ export default {
     },
     methods: {
         async saveStudySettings(){
-             return await user.applyUpdates({studySettings: this.studySettings})
+             // return await user.applyUpdates({studySettings: this.studySettings})
         },
         selectNew(){
-            this.studySettings.itemTypes._new = true
-            this.studySettings.itemTypes.old = false
-            this.saveStudySettings()
+            // this.studySettings.itemTypes._new = true
+            // this.studySettings.itemTypes.old = false
+            // this.saveStudySettings()
         },
         selectOld(){
-            this.studySettings.itemTypes._new = false
-            this.studySettings.itemTypes.old = true
-            this.saveStudySettings()
+            // this.studySettings.itemTypes._new = false
+            // this.studySettings.itemTypes.old = true
+            // this.saveStudySettings()
         },
         selectBothNewAndOld(){
-            this.studySettings.itemTypes._new = true
-            this.studySettings.itemTypes.old = true
-            this.saveStudySettings()
+            // this.studySettings.itemTypes._new = true
+            // this.studySettings.itemTypes.old = true
+            // this.saveStudySettings()
         },
         selectOverdue(){
-            this.studySettings.oldTypes.overdue = true
-            this.studySettings.oldTypes.notOverdue = false
-            this.saveStudySettings()
+            // this.studySettings.oldTypes.overdue = true
+            // this.studySettings.oldTypes.notOverdue = false
+            // this.saveStudySettings()
         },
         selectNotOverdue(){
-            this.studySettings.oldTypes.overdue = false
-            this.studySettings.oldTypes.notOverdue = true
-            this.saveStudySettings()
+            // this.studySettings.oldTypes.overdue = false
+            // this.studySettings.oldTypes.notOverdue = true
+            // this.saveStudySettings()
         },
         selectBothOverdueAndNotOverdue(){
-            this.studySettings.oldTypes.overdue = true
-            this.studySettings.oldTypes.notOverdue = true
-            this.saveStudySettings()
+            // this.studySettings.oldTypes.overdue = true
+            // this.studySettings.oldTypes.notOverdue = true
+            // this.saveStudySettings()
         },
         toggleStudying(){
-            console.log("toggleStudying called!")
-            if (this.$store.getters.studying){
-                this.$store.commit('enterExploringMode')
-            } else {
-                this.$store.commit('enterStudyingMode')
-            }
+            // console.log("toggleStudying called!")
+            // if (this.$store.getters.studying){
+            //     this.$store.commit('enterExploringMode')
+            // } else {
+            //     this.$store.commit('enterStudyingMode')
+            // }
         }
     },
     computed:{
@@ -121,21 +117,21 @@ export default {
             // return tree.userData.numOverdue
         },
         async title(){
-            console.log("studyMenu - asyncComputed TITLE() called")
-            try {
-                log("studyMenu.js this.treeId", this.treeId )
-                const tree = await Trees.get(this.treeId,user.get())
-                log("studyMenu.js title()", tree, )
-                const item = await ContentItems.get(tree.treeData.contentId)
-                log("studyMenu.js title()", item, )
-                const title = item.getLastNBreadcrumbsString(4)
-                log('studyMenu title is', tree, item)
-                return title
-            } catch (err){
-                error('studyMenu.js', err)
-                return "Sample Title"
-            }
-            // return item.title
+            // console.log("studyMenu - asyncComputed TITLE() called")
+            // try {
+            //     log("studyMenu.js this.treeId", this.treeId )
+            //     const tree = await Trees.get(this.treeId,user.get())
+            //     log("studyMenu.js title()", tree, )
+            //     const item = await ContentItems.get(tree.treeData.contentId)
+            //     log("studyMenu.js title()", item, )
+            //     const title = item.getLastNBreadcrumbsString(4)
+            //     log('studyMenu title is', tree, item)
+            //     return title
+            // } catch (err){
+            //     error('studyMenu.js', err)
+            //     return "Sample Title"
+            // }
+            // // return item.title
         },
     },
 }
