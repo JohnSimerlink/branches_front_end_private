@@ -15,7 +15,7 @@ var typescript = require('gulp-typescript')
 var webpack = require('webpack-stream')
 var runSequence = require('run-sequence')
 var sourcemaps = require('gulp-sourcemaps')
-var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
+var CodeAndTestConfig = require('./webpack.config.productionandtest.rules.js')
 var tslint = require("gulp-tslint");
 
 var sourcemaps = require('gulp-sourcemaps');

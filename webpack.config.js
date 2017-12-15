@@ -2,11 +2,11 @@ var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
 var LessHintPlugin = require('lesshint-webpack-plugin');
-var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
+var ProductionAndTestConfig = require('./webpack.config.productionandtest.rules.js')
 module.exports = {
   entry: {
     regenerator: 'babel-regenerator-runtime',
-    build: './app/core/bootstrap.js',
+    build: './app/core/bootstrap2.ts',
     vendor: './vendor.js',
   },
   output: {
@@ -20,7 +20,7 @@ module.exports = {
   // },
   module: {
     rules: [
-      ...CodeAndTestConfig.rules,
+      ...ProductionAndTestConfig.rules,
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -63,7 +63,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     },
-    extensions: CodeAndTestConfig.extensions
+    extensions: ProductionAndTestConfig.extensions
   },
   devServer: {
     historyApiFallback: true,

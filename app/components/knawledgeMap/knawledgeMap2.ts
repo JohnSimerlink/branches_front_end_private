@@ -9,7 +9,8 @@ export default {
         $route: 'init',
     },
     methods: {
-        init(){
+        init() {
+            alert('hm init')
         }
     }
 }
