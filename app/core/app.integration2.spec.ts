@@ -7,21 +7,19 @@ import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {
     IHash,
-    IMutableSubscribableTree, IMutableSubscribableTreeLocation, IRenderedNodesManagerCore,
-    ISigmaNode,
-    ISubscribableStoreSource,
+    IRenderedNodesManagerCore,
+    ISigmaNode, IStoreSourceUpdateListenerCore,
 } from '../objects/interfaces';
 import {ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
 import {
     IManagedSigmaNodeCreatorCore, IRenderedNodesManager, ISigmaNodeCreator,
-    ISigmaNodeCreatorCaller
+    IStoreSourceUpdateListener
 } from '../objects/interfaces';
-import {ISigmaRenderManager, ISubscribableTreeStoreSource, ISubscribableTreeLocationStoreSource} from '../objects/interfaces';
+import {ISigmaRenderManager, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource} from '../objects/interfaces';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
-import {SigmaNodeCreator, SigmaNodeCreatorCaller} from '../objects/sigmaNode/SigmaNodeCreator';
-import {SigmaNodeCreatorCore} from '../objects/sigmaNode/SigmaNodeCreatorCore';
 import {SigmaRenderManager} from '../objects/sigmaNode/SigmaRenderManager';
+import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
 
@@ -58,9 +56,10 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
             = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
 
         const sigmaNodes = {}
-        const managedSigmaNodeCreatorCore: IManagedSigmaNodeCreatorCore = new SigmaNodeCreatorCore({sigmaNodes})
-        const sigmaNodeCreator: ISigmaNodeCreator = new SigmaNodeCreator({managedSigmaNodeCreatorCore})
-        const sigmaNodeCreatorCaller: ISigmaNodeCreatorCaller = new SigmaNodeCreatorCaller({sigmaNodeCreator})
+        const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
+            = myContainer.get<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore)
+        const storeSourceUpdateListener: IStoreSourceUpdateListener
+            = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
         const renderedNodes: IHash<ISigmaNode> = {}
         const allSigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
@@ -70,10 +69,9 @@ describe('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNod
             = new SigmaRenderManager({treeLocationDataLoadedIdsSet: {}, treeDataLoadedIdsSet: {}, updatesCallbacks: []})
         renderedNodesManager.subscribe(sigmaRenderManager)
 
-        sigmaNodeCreatorCaller.subscribe(treeStoreSource)
-        sigmaNodeCreatorCaller.subscribe(treeLocationStoreSource)
+        storeSourceUpdateListener.subscribe(treeStoreSource)
+        storeSourceUpdateListener.subscribe(treeLocationStoreSource)
 
-        const sigmaNodeCreatorReceiveUpdateSpy = sinon.spy(sigmaNodeCreator, 'receiveUpdate')
         const treeStoreSourceCallCallbacks = sinon.spy(treeStoreSource, 'callCallbacks')
 
         let inRenderedSet: boolean = !!renderedNodes[treeIdToDownload]

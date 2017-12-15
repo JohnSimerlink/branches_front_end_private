@@ -14,36 +14,37 @@ import {
     SubscribableMutableFieldArgs
 } from './app/objects/field/SubscribableMutableField';
 import {
-    IDatedMutation, IMutableSubscribablePoint, ISigmaNodeCreatorCore, ISubscribableContentStoreSource,
+    IDatedMutation, IMutableSubscribablePoint, IStoreSourceUpdateListenerCore, ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
     ISubscribableTreeUserStoreSource,
     ObjectDataTypes
 } from './app/objects/interfaces';
 import {
+    FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
+    ISigmaNode, ISubscribableContentUser,
+    ISubscribableMutableField, ISubscribableMutableStringSet,  ITree,
+    radian,
+    TreePropertyNames
+} from './app/objects/interfaces';
+import {
     CONTENT_TYPES,
-    fGetSigmaIdsForContentId, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore,
-    IMutableSubscribableTree, IMutableSubscribableTreeLocation,
-    IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore, ISigmaNodeCreator,
-    ISigmaNodeCreatorCaller, IManagedSigmaNodeCreatorCore,
+    fGetSigmaIdsForContentId, IMutableSubscribableContentStore,
+    IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTree,
+    IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore,
     ISigmaNodesUpdater,
-    ISigmaRenderManager, ISubscribableContent,
+    ISigmaRenderManager,
+    IStoreSourceUpdateListener, ISubscribableContent,
     ISubscribableContentStore,
     ISubscribableContentUserStore,
-    ISubscribableGlobalStore, ISubscribableStoreSource, ISubscribableTree, ISubscribableTreeLocationStore,
+    ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeLocationStore,
     ISubscribableTreeStore,
     ISubscribableTreeUser,
     ISubscribableTreeUserStore
 } from './app/objects/interfaces';
-import {
-    FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
-    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
-    ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ISubscribableStore, ISubscribableTreeCore, ITree,
-    radian,
-    TreePropertyNames
-} from './app/objects/interfaces';
+import {MutableSubscribablePoint, SubscribableMutablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
@@ -58,11 +59,6 @@ import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderedNodesManagerCore';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
-import {
-    SigmaNodeCreator, SigmaNodeCreatorArgs, SigmaNodeCreatorCaller,
-    SigmaNodeCreatorCallerArgs
-} from './app/objects/sigmaNode/SigmaNodeCreator';
-import {SigmaNodeCreatorCore, SigmaNodeCreatorCoreArgs} from './app/objects/sigmaNode/SigmaNodeCreatorCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
 import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
@@ -79,12 +75,13 @@ import {
     MutableSubscribableGlobalStore,
     MutableSubscribableGlobalStoreArgs
 } from './app/objects/stores/MutableSubscribableGlobalStore';
+import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './app/objects/stores/StoreSourceUpdateListener';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './app/objects/stores/SubscribableGlobalStore';
-import {SubscribableStore, SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
+import {SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
 import {
     SubscribableContentStoreSource, SubscribableContentStoreSourceArgs,
     SubscribableContentUserStoreSource, SubscribableContentUserStoreSourceArgs,
-    SubscribableStoreSource, SubscribableStoreSourceArgs, SubscribableTreeLocationStoreSource,
+    SubscribableStoreSourceArgs, SubscribableTreeLocationStoreSource,
     SubscribableTreeLocationStoreSourceArgs,
     SubscribableTreeStoreSource,
     SubscribableTreeStoreSourceArgs, SubscribableTreeUserStoreSource, SubscribableTreeUserStoreSourceArgs
@@ -110,15 +107,13 @@ import {SubscribableTreeLocationArgs} from './app/objects/treeLocation/Subscriba
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
-import {ObjectFactory, TREE_ID3} from './app/testHelpers/testHelpers';
-import {MutableSubscribablePoint, SubscribableMutablePointArgs} from './app/objects/point/MutableSubscribablePoint';
+import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {
-    ManagedSigmaNodeCreatorCore,
-    ManagedSigmaNodeCreatorCoreArgs
-} from './app/objects/sigmaNode/ManagedSigmaNodeCreatorCore';
+    StoreSourceUpdateListenerCore,
+    StoreSourceUpdateListenerCoreArgs
+} from './app/objects/stores/StoreSourceUpdateListenerCore';
 
 const myContainer = new Container()
-// myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutation).to(ActivatableDatedMutation)
 
 myContainer.bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource).
 to(SubscribableTreeLocationStoreSource)
@@ -218,12 +213,17 @@ myContainer.bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribab
     .to(SubscribableMutableField)
 myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 
-myContainer.bind<SubscribableContentStoreSourceArgs>(TYPES.SubscribableContentStoreSourceArgs).to(SubscribableContentStoreSourceArgs)
+myContainer.bind<SubscribableContentStoreSourceArgs>(TYPES.SubscribableContentStoreSourceArgs)
+    .to(SubscribableContentStoreSourceArgs)
 
-myContainer.bind<SubscribableContentUserStoreSourceArgs>(TYPES.SubscribableContentUserStoreSourceArgs).to(SubscribableContentUserStoreSourceArgs)
-myContainer.bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs).to(SubscribableTreeStoreSourceArgs)
-myContainer.bind<SubscribableTreeLocationStoreSourceArgs>(TYPES.SubscribableTreeLocationStoreSourceArgs).to(SubscribableTreeLocationStoreSourceArgs)
-myContainer.bind<SubscribableTreeUserStoreSourceArgs>(TYPES.SubscribableTreeUserStoreSourceArgs).to(SubscribableTreeUserStoreSourceArgs)
+myContainer.bind<SubscribableContentUserStoreSourceArgs>(TYPES.SubscribableContentUserStoreSourceArgs)
+    .to(SubscribableContentUserStoreSourceArgs)
+myContainer.bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
+    .to(SubscribableTreeStoreSourceArgs)
+myContainer.bind<SubscribableTreeLocationStoreSourceArgs>(TYPES.SubscribableTreeLocationStoreSourceArgs)
+    .to(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind<SubscribableTreeUserStoreSourceArgs>(TYPES.SubscribableTreeUserStoreSourceArgs)
+    .to(SubscribableTreeUserStoreSourceArgs)
 // myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
 // (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
 /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
@@ -256,17 +256,13 @@ myContainer.bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCI
 myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
 myContainer.bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
 myContainer.bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
-myContainer.bind<SigmaNodeCreatorArgs>(TYPES.SigmaNodeCreatorArgs).to(SigmaNodeCreatorArgs)
-myContainer.bind<ISigmaNodeCreator>(TYPES.ISigmaNodeCreator).to(SigmaNodeCreator)
 
-myContainer.bind<SigmaNodeCreatorCallerArgs>(TYPES.SigmaNodeCreatorCallerArgs).to(SigmaNodeCreatorCallerArgs)
-myContainer.bind<ISigmaNodeCreatorCaller>(TYPES.ISigmaNodeCreatorCaller).to(SigmaNodeCreatorCaller)
-myContainer.bind<IManagedSigmaNodeCreatorCore>(TYPES.IManagedSigmaNodeCreatorCore).to(ManagedSigmaNodeCreatorCore)
-myContainer.bind<SigmaNodeCreatorCoreArgs>(TYPES.SigmaNodeCreatorCoreArgs).to(SigmaNodeCreatorCoreArgs)
-myContainer.bind<ManagedSigmaNodeCreatorCoreArgs>(TYPES.ManagedSigmaNodeCreatorCoreArgs)
-    .to(ManagedSigmaNodeCreatorCoreArgs)
+myContainer.bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
+myContainer.bind<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener)
 
-myContainer.bind<ISigmaNodeCreatorCore>(TYPES.ISigmaNodeCreatorCore).to(SigmaNodeCreatorCore)
+myContainer.bind<StoreSourceUpdateListenerCoreArgs>(TYPES.StoreSourceUpdateListenerCoreArgs)
+    .to(StoreSourceUpdateListenerCoreArgs)
+myContainer.bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore)
 
 // tslint:disable-next-line ban-types
 myContainer.bind<String>(TYPES.String).toConstantValue('')
@@ -279,6 +275,8 @@ myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 myContainer.bind<Object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
 // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutationArr).to()
+
+
 myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_DATA)
     .whenInjectedInto(SubscribableTreeStoreSourceArgs)
 myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_LOCATION_DATA)

@@ -52,6 +52,7 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
         const me = this
         sigmaIds.forEach(sigmaId => {
             const sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId]
+            log('sigmaNodesUpdate.handleUpdate the sigmaNode is' + sigmaNode)
             this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId})
         })
     }
