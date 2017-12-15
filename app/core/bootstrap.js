@@ -3,7 +3,6 @@ console.log("1: bootstrap.js", Date.now(), calculateLoadTimeSoFar(Date.now()))
 import './components'
 import './filters'
 import './utils'
-import TreeReview from '../components/treeReview/treeReview'
 import ContentList from '../components/contentList/contentList'
 import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import ExerciseCreatorContainer from '../components/exerciseCreatorContainer/exerciseCreatorContainer'

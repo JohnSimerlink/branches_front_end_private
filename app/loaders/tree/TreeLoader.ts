@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 import {log} from '../../../app/core/log'
 import {
     IMutableSubscribableTree, ISubscribableStoreSource, ITreeDataWithoutId,
@@ -5,10 +6,11 @@ import {
 } from '../../objects/interfaces';
 import {isValidTree} from '../../objects/tree/treeValidator';
 import {TreeDeserializer} from './TreeDeserializer';
+import Reference = firebase.database.Reference;
 
 class TreeLoader implements ITreeLoader {
     private storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
-    private firebaseRef: Firebase
+    private firebaseRef: Reference
     constructor({firebaseRef, storeSource}) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef

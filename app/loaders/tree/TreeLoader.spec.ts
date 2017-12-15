@@ -1,4 +1,5 @@
 import {expect} from 'chai'
+import * as firebase from 'firebase'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
@@ -8,9 +9,10 @@ import {
     ITreeDataWithoutId
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
+import {FIREBASE_PATHS} from '../paths';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader} from './TreeLoader';
-import {FIREBASE_PATHS} from '../paths';
+import Reference = firebase.database.Reference;
 describe('treeLoader', () => {
     it('Should set the firebaseRef and storeSource for the loader', () => {
         const storeSource: ISubscribableTreeStoreSource =
@@ -131,7 +133,7 @@ describe('treeLoader', () => {
     })
     it('GetData on an existing tree should return the tree', async () => {
         const treeId = '1234'
-        const firebaseRef: Firebase = new MockFirebase().child(treeId)
+        const firebaseRef: Reference = new MockFirebase().child(treeId)
 
         const sampleTreeData: ITreeDataWithoutId = {
             contentId: '12345532',
@@ -150,7 +152,7 @@ describe('treeLoader', () => {
     })
     it('GetData on a non existing tree should throw a RangeError', async () => {
         const treeId = '1234'
-        const firebaseRef: Firebase = new MockFirebase(FIREBASE_PATHS.TREES)
+        const firebaseRef: Reference = new MockFirebase(FIREBASE_PATHS.TREES)
 
         const storeSource: ISubscribableTreeStoreSource =
             myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
