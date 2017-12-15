@@ -14,12 +14,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/firebase": "^2.4.32",
     "angular-route": "^1.6.5",
     "angularjs": "0.0.1",
     "babel": "^6.23.0",
     "crypto-js": "^3.1.9-1",
-    "firebase": "^4.1.2",
+    "firebase": "^4.8.0",
     "inversify": "^4.5.1",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
@@ -38,7 +37,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.50",
-    "@types/vue": "^2.0.0",
+    "@types/sigmajs": "^1.0.27",
     "angular": "^1.4.9",
     "angular-mocks": "^1.4.9",
     "awesome-typescript-loader": "^3.2.3",
