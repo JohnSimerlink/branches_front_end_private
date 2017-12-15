@@ -1,17 +1,20 @@
 // import {AppContainer} from './appContainer';
 import Vue from 'vue';
-import AsyncComputed from 'vue-async-computed'
+// import AsyncComputed from 'vue-async-computed'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import KnawledgeMap from '../components/knawledgeMap/knawledgeMap2'
+import './components2'
+import {log} from './log'
+import store from './store2'
+log(VueRouter, Vuex)
 Vue.use(Vuex);
 Vue.use(VueRouter);
-Vue.use(AsyncComputed);
+// Vue.use(AsyncComputed);
 
 // const appContainer = new AppContainer()
 // appContainer.start()
 
-import store from './store2'
 // 1. Define route components.
 // These can be imported from other files
 const Foo = { template: '<div>foo</div>' }
@@ -24,7 +27,7 @@ const Buy = { template: '<div> Give us ur monee</div>'}
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
 const routes = [
-    { path: '/', component: Foo, props: true }
+    { path: '/', component: KnawledgeMap, props: true }
 ]
 
 // 3. Create the router instance and pass the `routes` option
