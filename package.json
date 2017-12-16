@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "test": "mocha",
+    "test": "ava-ts *.spec.ts --verbose --color",
+    "test:watch": "ava-ts *.spec.ts --verbose --color --watch",
     "coverage": "echo 'You must manually type \"./node_modules/.bin/gulp coverage\" in the command line. At least on windows/git bash. Otherwise processing through npm gives a typescript compilation error, having to do something with the @injectable() inversify tags",
     "deploy": "sh .deploy.sh",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
@@ -41,6 +42,8 @@
     "@types/sigmajs": "^1.0.27",
     "angular": "^1.4.9",
     "angular-mocks": "^1.4.9",
+    "ava": "^0.24.0",
+    "ava-ts": "^0.23.0",
     "awesome-typescript-loader": "^3.2.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

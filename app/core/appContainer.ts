@@ -23,6 +23,7 @@ import BranchesStore from './store2'
 
 import Vue = require('vue');
 import VueRouter = require('vue-router');
+import {Store} from 'vuex';
 import {myContainer} from '../../inversify.config';
 import {KnawledgeMapCreator} from '../components/knawledgeMap/knawledgeMap2';
 import {FIREBASE_PATHS} from '../loaders/paths';
@@ -31,7 +32,6 @@ import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
 import {INITIAL_ID_TO_DOWNLOAD} from './globals';
-import {Store} from 'vuex';
 
 class AppContainer {
     constructor() {
