@@ -328,16 +328,205 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 // myContainer.bind<Reference>(TYPES.Reference).to
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 })
+
+// =============================================
+// loaders
+myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
+myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
+myContainer.bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
+
+// stores
+myContainer.bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
+    .to(SubscribableTreeLocationStoreSource)
+myContainer.bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+    .to(SubscribableTreeStoreSource)
+myContainer.bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
+    .to(SubscribableTreeUserStoreSource)
+myContainer.bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+    .to(SubscribableContentStoreSource)
+myContainer.bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
+    .to(SubscribableContentUserStoreSource)
+
+myContainer.bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
+myContainer.bind<IMutableSubscribableGlobalStore>
+(TYPES.IMutableSubscribableGlobalStore).to(MutableSubscribableGlobalStore)
+
+myContainer.bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
+    .to(SubscribableContentUserStoreArgs)
+myContainer.bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)
+myContainer.bind<SubscribableTreeStoreArgs>(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs)
+myContainer.bind<SubscribableTreeUserStoreArgs>(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs)
+myContainer.bind<SubscribableTreeLocationStoreArgs>(TYPES.SubscribableTreeLocationStoreArgs)
+    .to(SubscribableTreeLocationStoreArgs)
+
+myContainer.bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
+myContainer.bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+    .to(MutableSubscribableTreeUserStore)
+myContainer.bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
+    .to(MutableSubscribableTreeLocationStore)
+myContainer.bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
+    .to(MutableSubscribableTreeLocation)
+myContainer.bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+    .to(MutableSubscribableContentStore)
+myContainer.bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
+    .to(MutableSubscribableContentUserStore)
+
+myContainer.bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
+    .to(SubscribableStoreSourceArgs)
+
+myContainer.bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
+    .to(MutableSubscribableGlobalStoreArgs)
+
+myContainer.bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
+
+myContainer.bind<SubscribableContentStoreSourceArgs>(TYPES.SubscribableContentStoreSourceArgs)
+    .to(SubscribableContentStoreSourceArgs)
+
+myContainer.bind<SubscribableContentUserStoreSourceArgs>(TYPES.SubscribableContentUserStoreSourceArgs)
+    .to(SubscribableContentUserStoreSourceArgs)
+myContainer.bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
+    .to(SubscribableTreeStoreSourceArgs)
+myContainer.bind<SubscribableTreeLocationStoreSourceArgs>(TYPES.SubscribableTreeLocationStoreSourceArgs)
+    .to(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind<SubscribableTreeUserStoreSourceArgs>(TYPES.SubscribableTreeUserStoreSourceArgs)
+    .to(SubscribableTreeUserStoreSourceArgs)
+// myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
+// (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
+/* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
+myContainer.bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
+myContainer.bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore)
+myContainer.bind<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore)
+myContainer.bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore)
+myContainer.bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore)
+
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_DATA)
+    .whenInjectedInto(SubscribableTreeStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_LOCATION_DATA)
+    .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_USER_DATA)
+    .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_DATA)
+    .whenInjectedInto(SubscribableContentStoreSourceArgs)
+myContainer.bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)
+    .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
+
+// rendering
+
+myContainer.bind<radian>(TYPES.radian).toConstantValue(0)
+myContainer.bind<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
+myContainer.bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI)
+myContainer.bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
+    .to(CanvasUIArgs)
+
+myContainer.bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
+myContainer.bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
+myContainer.bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
+
+myContainer.bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
+myContainer.bind<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener)
+
+myContainer.bind<StoreSourceUpdateListenerCoreArgs>(TYPES.StoreSourceUpdateListenerCoreArgs)
+    .to(StoreSourceUpdateListenerCoreArgs)
+myContainer.bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore)
+
+myContainer.bind<IRenderedNodesManager>(TYPES.IRenderedNodesManager).to(RenderedNodesManager)
+myContainer.bind<IRenderedNodesManagerCore>(TYPES.IRenderedNodesManagerCore).to(RenderedNodesManagerCore)
+myContainer.bind<RenderedNodesManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderedNodesManagerArgs)
+myContainer.bind<RenderedNodesManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderedNodesManagerCoreArgs)
+myContainer.bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
+myContainer.bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
+myContainer.bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
+
+myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
+myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
+//  dataObjects
+
+myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
+    data: {id: '12345'},
+    timestamp: Date.now(),
+    type: FieldMutationTypes.SET,
+})
+myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
+(TYPES.IProppedDatedMutation).toConstantValue({
+    data: {id: TREE_ID3},
+    propertyName: TreePropertyNames.PARENT_ID,
+    timestamp: Date.now(),
+    type: FieldMutationTypes.SET,
+})
+myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
+myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
+
+myContainer.bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
+myContainer.bind<SubscribableMutablePointArgs>(TYPES.SubscribableMutablePointArgs).to(SubscribableMutablePointArgs)
+
+myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
+myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
+myContainer.bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
+myContainer.bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
+myContainer.bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
+myContainer.bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
+myContainer.bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
+myContainer.bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
+    .to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMutableContentType)
+    .to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
+    .to(SubscribableMutableField)
+myContainer.bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
+//
+myContainer.bind<SubscribableMutableStringSetArgs>
+(TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
+myContainer.bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
+myContainer.bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs)
+myContainer.bind<SubscribableTreeLocationArgs>(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs)
+
+myContainer.bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
+myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
+
+myContainer.bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
+myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
+myContainer.bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
+
+myContainer.bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
+// tslint:disable-next-line ban-types
+myContainer.bind<Number>(TYPES.Number).toConstantValue(0)
+myContainer.bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
+
+// tslint:disable-next-line ban-types
+myContainer.bind<String>(TYPES.String).toConstantValue('')
+myContainer.bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
+myContainer.bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
+    .toConstantValue((updates: IDetailedUpdates) => void 0)
+myContainer.bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
+// tslint:disable-next-line ban-types
+myContainer.bind<Object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
+
+myContainer.bind<any>(TYPES.Any).toConstantValue(null)
+myContainer.bind<boolean>(TYPES.Boolean).toConstantValue(false)
+myContainer.bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
+myContainer.bind<ITree>(TYPES.ITree).to(SubscribableTree)
+// TODO: maybe only use this constant binding for a test container. . . Not production container
+
+myContainer.bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
+myContainer.bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
+
+// myContainer.bind<Reference>(TYPES.Reference).to
+myContainer.bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
+
+// ====================================================
+
 //
 // myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
 //     data: {id: '12345'},
 //     timestamp: Date.now(),
 //     type: FieldMutationTypes.SET,
 // })
-myContainer.load(stores)
-myContainer.load(loaders)
-myContainer.load(rendering)
-myContainer.load(dataObjects)
+// myContainer.load(stores)
+// myContainer.load(loaders)
+// myContainer.load(rendering)
+// myContainer.load(dataObjects)
 //
 // /* myContainer.bind<ISubscribable<IDetailedUpdates>>
 // (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
