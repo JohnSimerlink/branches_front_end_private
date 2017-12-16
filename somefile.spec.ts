@@ -14,7 +14,9 @@ test('Somefile3', t  => {
     const somefile = new Somefile(3, 4)
     t.is(3, 3)
 })
-test('Somefile4', t  => {
+test.failing('Somefile4', t  => {
     const somefile = new Somefile(3, 4)
     t.is(4, 4)
+    expect(3).to.equal(4)
+    t.pass()
 })
