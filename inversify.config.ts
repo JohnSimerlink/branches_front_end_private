@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
+import {log} from './app/core/log'
 import {FIREBASE_PATHS} from './app/loaders/paths';
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
 import {TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
@@ -17,8 +18,15 @@ import {
     SubscribableMutableField,
     SubscribableMutableFieldArgs
 } from './app/objects/field/SubscribableMutableField';
+import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
+import {
+    IDatedMutation, IMutableSubscribablePoint, IStoreSourceUpdateListenerCore, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
+    ISubscribableTreeUserStoreSource, ITreeLoader,
+    ObjectDataTypes
+} from './app/objects/interfaces';
 import Reference = firebase.database.Reference;
-import firebaseApp from './app/objects/firebaseService.js'
+// import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
@@ -43,12 +51,6 @@ import {
     ISubscribableTreeStore,
     ISubscribableTreeUser,
     ISubscribableTreeUserStore
-} from './app/objects/interfaces';
-import {
-    IDatedMutation, IMutableSubscribablePoint, IStoreSourceUpdateListenerCore, ISubscribableContentStoreSource,
-    ISubscribableContentUserStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
-    ISubscribableTreeUserStoreSource, ITreeLoader,
-    ObjectDataTypes
 } from './app/objects/interfaces';
 import {MutableSubscribablePoint, SubscribableMutablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -119,26 +121,42 @@ import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 
+const firebaseConfig = firebaseDevConfig
+log('firebaseDevConfig is' + JSON.stringify(firebaseDevConfig))
+const myContainer = new Container()
+// throw new Error('inversify error error error')
+
+// const firebaseConfig = {
+//     apiKey: 'AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A',
+//     authDomain: 'branches-dev.firebaseapp.com',
+//     databaseURL: 'https://branches-dev.firebaseio.com',
+//     projectId: 'branches-dev',
+//     storageBucket: 'branches-dev.appspot.com',
+//     messagingSenderId: '354929800016'
+// }
+firebase.initializeApp(firebaseConfig)
+const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
+log('firebase trees ref is' + treesRef)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
     bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
-    // bind<Reference>(TYPES.Reference).toConstantValue(firebaseApp.database().ref(FIREBASE_PATHS.TREES))
-    //     .whenInjectedInto(TreeLoaderArgs)
+    bind<Reference>(TYPES.Reference).toConstantValue(treesRef)
+        .whenInjectedInto(TreeLoaderArgs)
     // bind<Reference>(TYPES.Reference).toConstantValue(firebaseApp.database().ref(FIREBASE_PATHS.TREE_LOCATIONS))
     //     .whenInjectedInto(TreeLocationLoaderArgs)
 })
 const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource).
-    to(SubscribableTreeLocationStoreSource)
-    bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource).
-    to(SubscribableTreeStoreSource)
-    bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource).
-    to(SubscribableTreeUserStoreSource)
-    bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource).
-    to(SubscribableContentStoreSource)
-    bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource).
-    to(SubscribableContentUserStoreSource)
+    bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
+        .to(SubscribableTreeLocationStoreSource)
+    bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        .to(SubscribableTreeStoreSource)
+    bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
+        .to(SubscribableTreeUserStoreSource)
+    bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+        .to(SubscribableContentStoreSource)
+    bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
+        .to(SubscribableContentUserStoreSource)
 
     bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
     bind<IMutableSubscribableGlobalStore>
@@ -204,7 +222,7 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
 
 })
-
+//
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<radian>(TYPES.radian).toConstantValue(0)
     bind<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
@@ -234,7 +252,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     myContainer.bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
     myContainer.bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 })
-
+//
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
         data: {id: '12345'},
@@ -263,7 +281,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
         .to(SubscribableMutableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
-
+//
     bind<SubscribableMutableStringSetArgs>
     (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
     bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
@@ -310,17 +328,16 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         type: FieldMutationTypes.SET,
     })
 })
-
-const myContainer = new Container()
+//
 myContainer.load(stores)
 myContainer.load(loaders)
 myContainer.load(rendering)
 myContainer.load(dataObjects)
-
-/* myContainer.bind<ISubscribable<IDetailedUpdates>>
-(TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
-
- */
-// myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutationArr).to()
+//
+// /* myContainer.bind<ISubscribable<IDetailedUpdates>>
+// (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
+//
+//  */
+// // myContainer.bind<IActivatableDatedMutation>(TYPES.IActivatableDatedMutationArr).to()
 
 export {myContainer}

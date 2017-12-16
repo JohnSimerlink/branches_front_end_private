@@ -4,13 +4,13 @@ import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
-    IFirebaseRef, IMutableSubscribableTreeLocation, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
+    IFirebaseRef, IMutableSubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
+import {FIREBASE_PATHS} from '../paths';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {TreeLocationLoader} from './TreeLocationLoader';
-import {FIREBASE_PATHS} from '../paths';
 describe('treeLocationLoader', () => {
     it('Should set the firebaseRef and storeSource for the loader', () => {
         const storeSource: ISubscribableTreeLocationStoreSource =
