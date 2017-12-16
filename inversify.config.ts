@@ -136,6 +136,7 @@ const myContainer = new Container()
 // }
 firebase.initializeApp(firebaseConfig)
 const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
+const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
 log('firebase trees ref is' + treesRef)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
@@ -334,7 +335,10 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
 myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
 myContainer.bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
-
+myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treesRef)
+    .whenInjectedInto(TreeLoaderArgs)
+myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treeLocationsRef)
+    .whenInjectedInto(TreeLocationLoaderArgs)
 // stores
 myContainer.bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
     .to(SubscribableTreeLocationStoreSource)
