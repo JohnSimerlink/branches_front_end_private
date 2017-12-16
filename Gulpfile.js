@@ -126,6 +126,7 @@ gulp.task('build-and-test', function(done) {
 function coverage() {
     console.log('compute test coverage called')
     exec('nyc mocha', function(err, stdout, stderr){
+        err && console.error(err)
         console.log(stdout)
         stderr && console.error(stderr)
     })

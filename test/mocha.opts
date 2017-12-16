@@ -5,3 +5,4 @@
 -c
 app/*.spec.ts
 app/objects/content/SubscribableContent.spec.ts
+app/objects/content/MutableSubscribableContent.spec.ts

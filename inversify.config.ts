@@ -136,13 +136,13 @@ const myContainer = new Container()
 // }
 firebase.initializeApp(firebaseConfig)
 const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
-log('firebase trees ref is' + treesRef)
+// log('firebase trees ref is' + treesRef)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
     bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
-    bind<Reference>(TYPES.Reference).toConstantValue(treesRef)
-        .whenInjectedInto(TreeLoaderArgs)
+    // bind<Reference>(TYPES.Reference).toConstantValue(treesRef)
+    //     .whenInjectedInto(TreeLoaderArgs)
     // bind<Reference>(TYPES.Reference).toConstantValue(firebaseApp.database().ref(FIREBASE_PATHS.TREE_LOCATIONS))
     //     .whenInjectedInto(TreeLocationLoaderArgs)
 })
@@ -259,6 +259,13 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
     })
+    bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
+    (TYPES.IProppedDatedMutation).toConstantValue({
+        data: {id: TREE_ID3},
+        propertyName: TreePropertyNames.PARENT_ID,
+        timestamp: Date.now(),
+        type: FieldMutationTypes.SET,
+    })
     bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
     bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
 
@@ -320,15 +327,13 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
 // myContainer.bind<Reference>(TYPES.Reference).to
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
-    bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
-    (TYPES.IProppedDatedMutation).toConstantValue({
-        data: {id: TREE_ID3},
-        propertyName: TreePropertyNames.PARENT_ID,
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    })
 })
 //
+// myContainer.bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
+//     data: {id: '12345'},
+//     timestamp: Date.now(),
+//     type: FieldMutationTypes.SET,
+// })
 myContainer.load(stores)
 myContainer.load(loaders)
 myContainer.load(rendering)
