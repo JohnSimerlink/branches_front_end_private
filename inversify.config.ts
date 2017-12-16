@@ -136,7 +136,7 @@ const myContainer = new Container()
 // }
 firebase.initializeApp(firebaseConfig)
 const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
-// log('firebase trees ref is' + treesRef)
+log('firebase trees ref is' + treesRef)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
