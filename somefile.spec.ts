@@ -1,4 +1,5 @@
 import test from 'ava'
+import {expect} from 'chai'
 import {Somefile} from './somefile';
 
 test('Somefile', t  => {
@@ -16,8 +17,4 @@ test('Somefile3', t  => {
 test('Somefile4', t  => {
     const somefile = new Somefile(3, 4)
     t.is(4, 4)
-})
-test('Somefile5', t  => {
-    const somefile = new Somefile(3, 4)
-    t.is(5, 5)
 })
