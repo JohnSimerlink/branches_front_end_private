@@ -8,6 +8,12 @@ import {UIColor} from './uiColor';
 export interface IApp {
     start()
 }
+// components
+export interface IKnawledgeMapCreator {
+    create()
+}
+export interface IVuexStore {
+}
 
 // contentItem
 

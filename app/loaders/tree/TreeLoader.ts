@@ -1,17 +1,20 @@
 import * as firebase from 'firebase';
+import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTree, ISubscribableStoreSource, ITreeDataWithoutId,
+    IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource, ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
 import {isValidTree} from '../../objects/tree/treeValidator';
-import {TreeDeserializer} from './TreeDeserializer';
 import Reference = firebase.database.Reference;
+import {TYPES} from '../../objects/types';
+import {TreeDeserializer} from './TreeDeserializer';
 
-class TreeLoader implements ITreeLoader {
-    private storeSource: ISubscribableStoreSource<IMutableSubscribableTree>
+@injectable()
+export class TreeLoader implements ITreeLoader {
+    private storeSource: ISubscribableTreeStoreSource
     private firebaseRef: Reference
-    constructor({firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.TreeLoaderArgs){firebaseRef, storeSource}) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }
@@ -50,4 +53,8 @@ class TreeLoader implements ITreeLoader {
 
 }
 
-export {TreeLoader}
+@injectable()
+export class TreeLoaderArgs {
+    @inject(TYPES.Reference) public firebaseRef: Reference
+    @inject(TYPES.ISubscribableTreeStoreSource) public storeSource: ISubscribableTreeStoreSource
+}
