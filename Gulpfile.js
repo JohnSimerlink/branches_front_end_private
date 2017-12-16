@@ -86,13 +86,14 @@ function handleError(err) {
     this.emit('end')
 }
 
-const paths = {
-    scripts: './app/**/*.ts',
-    tests: './test/*.ts',
+const paths = ['./*.ts', './**/*.ts', './**/**/*.ts', './**/**/**/*.ts', './**/**/**/**/*.ts']
+// const paths = {
+//     scripts: './app/**/*.ts',
+//     tests: './test/*.ts',
 }
 gulp.task('coverage', function() {
     coverage()
-    watch([paths.scripts, paths.tests], function(){
+    watch(paths, function(){
         console.log('file change detected!')
         coverage()
     })
@@ -100,18 +101,6 @@ gulp.task('coverage', function() {
 gulp.task('test', function() {
     test()
 })
-function publishCoverageIfConfigExists(){
-    fs.open('.coveralls.yml', 'r', function (err, fd) {
-        if (!err){
-            console.log('Sending coverage report to coveralls.io')
-            exec('npm run publish-coverage', function (err, stdout, stderr){
-                console.log(stdout)
-                console.log('Coverage report sent')
-            })
-        }
-    })
-}
-
 
 gulp.task('build', function() {
     build()
@@ -125,25 +114,12 @@ gulp.task('build-and-test', function(done) {
 // NOTE: the below cannot be run through npm. npm makes it use a local version of mocha or something which causes the typescript to not be compiled without errors
 function coverage() {
     console.log('compute test coverage called')
-    exec('nyc mocha', function(err, stdout, stderr){
+    exec('nyc npm t', function(err, stdout, stderr){
         err && console.error(err)
         console.log(stdout)
         stderr && console.error(stderr)
     })
 }
-function test() {
-    console.log('compute test coverage called')
-    exec('mocha', function(err, stdout, stderr){
-        console.log(stdout)
-        console.error(err)
-        console.error(stderr)
-    })
-}
-// function test(){
-//     console.log('rerunning tests! . . .');
-//     run("mocha --compilers js:babel-register --require babel-polyfill").exec() //, function(err, out, code){
-// }
-
 function build() {
     var tsProject = typescript.createProject('./tsconfig.json')
     console.log('building!')
@@ -189,30 +165,3 @@ gulp.task('build', ['build:clean'], function() {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./transpiled'));
 })
-
-gulp.task('test:instrument', ['build'], function() {
-    return gulp.src('./transpiled/src/**/*.js')
-        .pipe(istanbul())
-        .pipe(istanbul.hookRequire()); //this forces any call to 'require' to return our instrumented files
-});
-
-gulp.task('test:cover', ['test:instrument'], function() {
-    return gulp.src('./transpiled/**/*Tests.js')
-        .pipe(mocha({ui:'bdd'})) //runs tests
-        .pipe(istanbul.writeReports({
-            reporters: [ 'json' ] //this yields a basic non-sourcemapped coverage.json file
-        })).on('end', remapCoverageFiles); //remap
-});
-
-//using remap-istanbul we can point our coverage data back to the original ts files
-function remapCoverageFiles() {
-    return gulp.src('./coverage/coverage-final.json')
-        .pipe(remapIstanbul({
-            basePath: '.',
-            reports: {
-                'html': './coverage',
-                'text-summary': null,
-                'lcovonly': './coverage/lcov.info'
-            }
-        }));
-}
