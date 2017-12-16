@@ -1,4 +1,5 @@
-const ROOT_ID = 1
+export const ROOT_ID = 1
+export const INITIAL_ID_TO_DOWNLOAD = ROOT_ID
 export const Globals = {
     colors: {
         proficiency_1: 'red',
@@ -11,7 +12,6 @@ export const Globals = {
     overdueSize: 14,
     regularSize: 10,
 }
-export {ROOT_ID}
 export const NODE_TYPES = {
     SHADOW_NODE: 9100,
     TREE: 'tree',

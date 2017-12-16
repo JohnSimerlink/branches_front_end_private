@@ -32,7 +32,8 @@
     "reflect-metadata": "^0.1.10",
     "vue": "^2.3.4",
     "vue-async-computed": "^3.2.1",
-    "vuefire": "^1.4.3"
+    "vuefire": "^1.4.3",
+    "vuex-typescript": "^2.0.1"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.44",

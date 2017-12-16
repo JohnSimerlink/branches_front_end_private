@@ -1,39 +1,37 @@
 // for now, this is where we will inject all the dependencies
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
-    IApp, IHash, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation, IRenderedNodesManager,
+    IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation,
+    IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigmaNode,
     ISigmaRenderManager, ISubscribableStoreSource
 } from '../objects/interfaces';
 
+import firebase from 'firebase'
 import {ISubscribableContentStore} from '../objects/interfaces';
+import {ISubscribableContentUserStore} from '../objects/interfaces';
+import {IMutableSubscribableGlobalStore} from '../objects/interfaces';
 import {
     fGetSigmaIdsForContentId, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUserStore,
     ISigmaNodesUpdater,
     IUI,
 } from '../objects/interfaces';
-import {ISubscribableContentUserStore} from '../objects/interfaces';
-import {IMutableSubscribableGlobalStore} from '../objects/interfaces';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
-import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
-import {SubscribableContentUserStore} from '../objects/stores/contentUser/SubscribableContentUserStore';
-import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
-import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
-import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
-import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {App} from './app';
-import store from './store2'
-import firebase from 'firebase'
+import BranchesStore from './store2'
 
+import Vue = require('vue');
+import VueRouter = require('vue-router');
 import {myContainer} from '../../inversify.config';
-import {TYPES} from '../objects/types';
-import {SigmaRenderManager} from '../objects/sigmaNode/SigmaRenderManager';
+import {KnawledgeMapCreator} from '../components/knawledgeMap/knawledgeMap2';
+import {FIREBASE_PATHS} from '../loaders/paths';
+import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
-import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
-import {FIREBASE_PATHS} from '../loaders/paths';
+import {TYPES} from '../objects/types';
+import {INITIAL_ID_TO_DOWNLOAD} from './globals';
+import {Store} from 'vuex';
 
 class AppContainer {
     constructor() {
@@ -81,13 +79,45 @@ class AppContainer {
         = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
 
-        const treeData = await treeLoader.downloadData(store.state.centeredTreeId)
+        const treeData = await treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
 
-        const treeLocationData = await treeLocationLoader.downloadData(store.state.centeredTreeId)
+        const treeLocationData = await treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
         const childDataPromises = treeData.children.map(treeLoader.downloadData)
         const childLocationPromises = treeData.children.map(treeLocationLoader.downloadData)
         await Promise.all(childDataPromises)
         await Promise.all(childLocationPromises)
+
+        const store: Store<any> = new BranchesStore() as Store<any>
+        const knawledgeMapCreator: IKnawledgeMapCreator = new KnawledgeMapCreator({store, treeLoader})
+        const knawledgeMap = knawledgeMapCreator.create()
+        const routes = [
+            { path: '/', component: knawledgeMap, props: true }
+        ]
+
+// 3. Create the router instance and pass the `routes` option
+// You can pass in additional options here, but let's
+// keep it simple for now.
+        const router = new VueRouter({
+            routes, // short for `routes: routes`
+            mode: 'history',
+        })
+
+        const vm = new Vue({
+            el: '#branches-app',
+            created() {
+                return void 0
+            },
+            data() {
+                return {
+                }
+            },
+            computed: {
+            },
+            methods: {
+            },
+            store,
+            router
+        })
 
         app.start()
 

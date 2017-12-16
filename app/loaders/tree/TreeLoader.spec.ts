@@ -6,14 +6,23 @@ import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
-    ITreeDataWithoutId
+    ITreeDataWithoutId, ITreeLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
+import Reference = firebase.database.Reference;
+import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {TreeDeserializer} from './TreeDeserializer';
-import {TreeLoader} from './TreeLoader';
-import Reference = firebase.database.Reference;
+import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 describe('treeLoader', () => {
+    it('DI constructor should work', () => {
+        const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
+            container: myContainer,
+            argsType: TYPES.TreeLoaderArgs,
+            classType: TYPES.ITreeLoader,
+        })
+        expect(injects).to.equal(true)
+    })
     it('Should set the firebaseRef and storeSource for the loader', () => {
         const storeSource: ISubscribableTreeStoreSource =
             myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
