@@ -4,6 +4,7 @@ import {IDatedMutation, ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableCore} from './SubscribableCore';
 
+
 @injectable()
 class Subscribable<UpdatesType>
     extends SubscribableCore<UpdatesType>

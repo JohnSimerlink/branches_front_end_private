@@ -4,6 +4,4 @@
 --full-trace
 -c
 app/*.spec.ts
-app/**/*.spec.ts
-app/**/**/*.spec.ts
-app/**/**/**/*.spec.ts
+app/objects/content/SubscribableContent.spec.ts

@@ -1,4 +1,5 @@
 import {expect} from 'chai'
+import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
