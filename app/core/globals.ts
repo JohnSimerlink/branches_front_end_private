@@ -1,5 +1,5 @@
-export const ROOT_ID = 1
-export const INITIAL_ID_TO_DOWNLOAD = ROOT_ID
+export const ROOT_ID: string = '1'
+export const INITIAL_ID_TO_DOWNLOAD: string = ROOT_ID
 export const Globals = {
     colors: {
         proficiency_1: 'red',

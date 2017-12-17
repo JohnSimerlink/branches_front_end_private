@@ -122,7 +122,6 @@ import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 
 const firebaseConfig = firebaseDevConfig
-log('firebaseDevConfig is' + JSON.stringify(firebaseDevConfig))
 const myContainer = new Container()
 // throw new Error('inversify error error error')
 
@@ -137,7 +136,6 @@ const myContainer = new Container()
 firebase.initializeApp(firebaseConfig)
 const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
 const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
-log('firebase trees ref is' + treesRef)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
