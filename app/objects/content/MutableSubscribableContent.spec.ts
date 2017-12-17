@@ -1,3 +1,4 @@
+import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
@@ -9,83 +10,83 @@ import {
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
+test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
+    ' should publish an update of the entire object\'s value '
+    + ' after startPublishing has been called', (t) => {
+    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+     // TODO: figure out why DI puts in a bad updatesCallback!
+    */
 
-describe('MutableSubscribableContent', () => {
-    it('a mutation in one of the subscribable properties' +
-        ' should publish an update of the entire object\'s value '
-        + ' after startPublishing has been called', () => {
-        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-         // TODO: figure out why DI puts in a bad updatesCallback!
-        */
-
-        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-        const title = new SubscribableMutableField<string>({field: ''})
-        const content = new MutableSubscribableContent({
-            type, question, answer, title, updatesCallbacks: [],
-        })
-
-        content.startPublishing()
-
-        const callback = sinon.spy()
-        content.onUpdate(callback)
-
-        const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation)
-        // question.addMutation(sampleMutation)
-        // const newContentDataValue = content.val()
-        // const calledWith = callback.getCall(0).args[0]
-        // expect(callback.callCount).to.equal(1)
-        // expect(calledWith).to.deep.equal(newContentDataValue)
+    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+    const title = new SubscribableMutableField<string>({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
     })
-    it('a mutation in one of the subscribable properties' +
-        ' should NOT publish an update of the entire object\'s value'
-        + ' before startPublishing has been called', () => {
 
-        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-         // TODO: figure out why DI puts in a bad updatesCallback!
-        */
+    content.startPublishing()
 
-        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-        const title = new SubscribableMutableField<string>({field: ''})
-        const content = new MutableSubscribableContent({
-            type, question, answer, title, updatesCallbacks: [],
-        })
+    const callback = sinon.spy()
+    content.onUpdate(callback)
 
-        const callback = sinon.spy()
-        content.onUpdate(callback)
+    const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation)
+    // question.addMutation(sampleMutation)
+    // const newContentDataValue = content.val()
+    // const calledWith = callback.getCall(0).args[0]
+    // expect(callback.callCount).to.equal(1)
+    // expect(calledWith).to.deep.equal(newContentDataValue)
+    t.pass()
+})
+test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
+    ' should NOT publish an update of the entire object\'s value'
+    + ' before startPublishing has been called', (t) => {
 
-        expect(callback.callCount).to.equal(0)
+    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+     // TODO: figure out why DI puts in a bad updatesCallback!
+    */
+
+    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+    const title = new SubscribableMutableField<string>({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
     })
-    it('addMutation ' +
-        ' should call addMutation on the appropriate descendant property' +
-        'and that mutation called on the descendant property should no longer have the propertyName on it', () => {
-        const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-        const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-        const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-        const title = new SubscribableMutableField<string>({field: ''})
-        const content = new MutableSubscribableContent({
-            type, question, answer, title, updatesCallbacks: [],
-        })
-        const questionAddMutationSpy = sinon.spy(question, 'addMutation')
 
-        // tslint:disable variable-name
-        const mutationWithoutPropName: IDatedMutation<FieldMutationTypes> = {
-            data: 'What is the capital of California?',
-            timestamp: Date.now(),
-            type: FieldMutationTypes.SET
-        }
-        const mutation: IProppedDatedMutation<FieldMutationTypes, ContentPropertyNames> = {
-            ...mutationWithoutPropName,
-            propertyName: ContentPropertyNames.QUESTION,
-        }
+    const callback = sinon.spy()
+    content.onUpdate(callback)
 
-        content.addMutation(mutation)
-        expect(questionAddMutationSpy.callCount).to.equal(1)
-        const calledWith = questionAddMutationSpy.getCall(0).args[0]
-        expect(calledWith).to.deep.equal(mutationWithoutPropName)
-
+    expect(callback.callCount).to.equal(0)
+    t.pass()
+})
+test('MutableSubscribableContent:::addMutation ' +
+    ' should call addMutation on the appropriate descendant property' +
+    'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
+    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
+    const title = new SubscribableMutableField<string>({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
     })
+    const questionAddMutationSpy = sinon.spy(question, 'addMutation')
+
+    // tslint:disable variable-name
+    const mutationWithoutPropName: IDatedMutation<FieldMutationTypes> = {
+        data: 'What is the capital of California?',
+        timestamp: Date.now(),
+        type: FieldMutationTypes.SET
+    }
+    const mutation: IProppedDatedMutation<FieldMutationTypes, ContentPropertyNames> = {
+        ...mutationWithoutPropName,
+        propertyName: ContentPropertyNames.QUESTION,
+    }
+
+    content.addMutation(mutation)
+    expect(questionAddMutationSpy.callCount).to.equal(1)
+    const calledWith = questionAddMutationSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal(mutationWithoutPropName)
+    t.pass()
+
 })

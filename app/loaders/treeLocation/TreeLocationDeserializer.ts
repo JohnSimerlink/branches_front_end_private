@@ -1,5 +1,5 @@
 import {
-     IMutableSubscribableTreeLocation, IMutableSubscribablePoint,
+     IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
     ITreeLocationData
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
