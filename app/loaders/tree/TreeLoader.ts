@@ -29,12 +29,11 @@ export class TreeLoader implements ITreeLoader {
 
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
-    public async downloadData(treeId): Promise<ITreeDataWithoutId> {
+    public async downloadData(treeId: string): Promise<ITreeDataWithoutId> {
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).on('value', (snapshot) => {
                 const treeData: ITreeDataWithoutId = snapshot.val()
-                log('FIREBASE REF VALUE CALLED!!!!1' + JSON.stringify(treeData))
                 if (isValidTree(treeData)) {
                     const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
                     me.storeSource.set(treeId, tree)
