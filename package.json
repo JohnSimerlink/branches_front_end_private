@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "test": "ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/loaders/**/*.spec.ts app/objects/content/*.spec.ts app/objects/contentItem/*.spec.ts app/objects/contentUserData/*.spec.ts app/objects/dbSync/*.spec.ts app/objects/field/*.spec.ts app/objects/MathUtils/*.spec.ts app/objects/point/*.spec.ts app/objects/proficiencyStats/*.spec.ts app/objects/set/*.spec.ts --verbose --color",
-    "test:watch": "ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/loaders/**/*.spec.ts app/objects/content/*.spec.ts app/objects/contentItem/*.spec.ts app/objects/contentUserData/*.spec.ts app/objects/dbSync/*.spec.ts app/objects/field/*.spec.ts app/objects/MathUtils/*.spec.ts app/objects/point/*.spec.ts app/objects/proficiencyStats/*.spec.ts app/objects/set/*.spec.ts --verbose --color --watch",
+    "test": "ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/loaders/**/*.spec.ts app/objects/content/*.spec.ts app/objects/contentItem/*.spec.ts app/objects/contentUserData/*.spec.ts app/objects/dbSync/*.spec.ts app/objects/field/*.spec.ts app/objects/MathUtils/*.spec.ts app/objects/point/*.spec.ts app/objects/proficiencyStats/*.spec.ts app/objects/set/*.spec.ts app/objects/sigmaNode/*.spec.ts app/objects/stores/*.spec.ts --verbose --color",
+    "test:watch": "ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/loaders/**/*.spec.ts app/objects/content/*.spec.ts app/objects/contentItem/*.spec.ts app/objects/contentUserData/*.spec.ts app/objects/dbSync/*.spec.ts app/objects/field/*.spec.ts app/objects/MathUtils/*.spec.ts app/objects/point/*.spec.ts app/objects/proficiencyStats/*.spec.ts app/objects/set/*.spec.ts app/objects/sigmaNode/*.spec.ts app/objects/stores/*.spec.ts --verbose --color --watch",
     "coverage": "gulp coverage",
     "deploy": "sh .deploy.sh",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
