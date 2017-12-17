@@ -29,4 +29,3 @@ export default class BranchesStore {
         } ) as Store<any>
     }
 }
-
