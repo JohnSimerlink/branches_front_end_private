@@ -18,10 +18,10 @@ function getSigmaIdsForContentId(contentId) {
 }
 
 function injectionWorks<argsInterface, classInterface>(
-    {container, argsType, classType}: {container: Container, argsType: symbol, classType: symbol }) {
+    {container, argsType, interfaceType}: {container: Container, argsType: symbol, interfaceType: symbol }) {
     const expectedProperties = Object.getOwnPropertyNames
     (container.get<argsInterface>(argsType))
-    const obj: classInterface = myContainer.get<classInterface>(classType)
+    const obj: classInterface = myContainer.get<classInterface>(interfaceType)
     const propertiesExist = expectedProperties.every(property =>  obj[property] !== undefined
     )
     return propertiesExist

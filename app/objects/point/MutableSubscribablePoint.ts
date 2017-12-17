@@ -31,7 +31,7 @@ export class MutableSubscribablePoint
     because I am doing some processing in the constructor,
     rather than just assignment . . .
     */
-    constructor(@inject(TYPES.SubscribableMutablePointArgs){
+    constructor(@inject(TYPES.MutableSubscribablePointArgs){
         updatesCallbacks = [],
         x = null,
         y = null,
@@ -167,7 +167,7 @@ export class MutableSubscribablePoint
 }
 
 @injectable()
-export class SubscribableMutablePointArgs {
+export class MutableSubscribablePointArgs {
     @inject(TYPES.Array) public updatesCallbacks = []
     @inject(TYPES.Number) public x: number
     @inject(TYPES.Number) public y: number

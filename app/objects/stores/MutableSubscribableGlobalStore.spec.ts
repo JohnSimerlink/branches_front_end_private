@@ -34,7 +34,7 @@ test('MutableSubscribableGlobalStore:::Dependency injection should set all prope
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
         container: myContainer,
         argsType: TYPES.MutableSubscribableGlobalStoreArgs,
-        classType: TYPES.IMutableSubscribableGlobalStore
+        interfaceType: TYPES.IMutableSubscribableGlobalStore
     })
     expect(injects).to.equal(true)
     t.pass()

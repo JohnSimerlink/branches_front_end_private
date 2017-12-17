@@ -17,7 +17,7 @@ test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
     const injects = injectionWorks<StoreSourceUpdateListenerCoreArgs, IStoreSourceUpdateListenerCore>({
         container: myContainer,
         argsType: TYPES.StoreSourceUpdateListenerCoreArgs,
-        classType: TYPES.IStoreSourceUpdateListenerCore,
+        interfaceType: TYPES.IStoreSourceUpdateListenerCore,
     })
     expect(injects).to.equal(true)
     t.pass()

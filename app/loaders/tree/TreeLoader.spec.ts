@@ -19,7 +19,7 @@ test('TreeLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
         container: myContainer,
         argsType: TYPES.TreeLoaderArgs,
-        classType: TYPES.ITreeLoader,
+        interfaceType: TYPES.ITreeLoader,
     })
     expect(injects).to.equal(true)
     t.pass()
