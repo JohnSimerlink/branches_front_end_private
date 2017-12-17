@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "test": "ava-ts *.spec.ts app/core/*.spec.ts --verbose --color",
-    "test:watch": "ava-ts *.spec.ts app/core/*.spec.ts --verbose --color --watch",
+    "test": "ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts --verbose --color",
+    "test:watch": "ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts --verbose --color --watch",
     "coverage": "gulp coverage",
     "deploy": "sh .deploy.sh",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
@@ -44,6 +44,7 @@
     "angular-mocks": "^1.4.9",
     "ava": "^0.24.0",
     "ava-ts": "^0.23.0",
+    "ava-webpack": "^1.1.2",
     "awesome-typescript-loader": "^3.2.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -89,6 +90,7 @@
     "gulp-watch": "^4.3.11",
     "html-loader": "^0.5.1",
     "html2js": "^0.2.0",
+    "ignore-styles": "^5.0.1",
     "invert-object": "0.0.0",
     "istanbul": "^0.4.5",
     "jasmine": "^2.8.0",
@@ -175,6 +177,12 @@
     ],
     "sourceMap": true,
     "instrument": true
+  },
+  "ava": {
+    "require": [
+      "ignore-styles",
+      "ts-node/register"
+    ]
   },
   "directories": {
     "doc": "docs",

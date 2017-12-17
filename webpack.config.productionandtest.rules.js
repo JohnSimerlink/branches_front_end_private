@@ -22,5 +22,5 @@ module.exports = {
             //     exclude: /node_modules/
             // },
         ],
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json', '.html']
 }
