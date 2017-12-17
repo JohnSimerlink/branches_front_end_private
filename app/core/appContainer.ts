@@ -4,7 +4,7 @@ import {
     IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigmaNode,
-    ISigmaRenderManager, ISubscribableStoreSource
+    ISigmaRenderManager, ISubscribableStoreSource, ITreeLoader, ITreeLocationLoader
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -54,9 +54,8 @@ class AppContainer {
         const treeLocationStoreSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
         = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
             (TYPES.ISubscribableStoreSource)
-        const treeLoader = new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
-        const treeLocationLoader
-            = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+        const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+        const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
         const sigmaNodes = {}
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
@@ -78,14 +77,6 @@ class AppContainer {
         const globalStore: IMutableSubscribableGlobalStore
         = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
-
-        const treeData = await treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
-
-        const treeLocationData = await treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
-        const childDataPromises = treeData.children.map(treeLoader.downloadData)
-        const childLocationPromises = treeData.children.map(treeLocationLoader.downloadData)
-        await Promise.all(childDataPromises)
-        await Promise.all(childLocationPromises)
 
         const store: Store<any> = new BranchesStore() as Store<any>
         const knawledgeMapCreator: IKnawledgeMapCreator = new KnawledgeMapCreator({store, treeLoader})

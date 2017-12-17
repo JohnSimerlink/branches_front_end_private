@@ -80,6 +80,8 @@ const TYPES = {
     ISubscriber_ITypeAndIdAndValUpdates_Array: Symbol('ISubscriber_ITypeAndIdAndValUpdates_Array'),
     ITree: Symbol('ITree'),
     ITreeLoader: Symbol('ITreeLoader'),
+    ITreeLocation: Symbol('ITreeLocation'),
+    ITreeLocationLoader: Symbol('ITreeLocationLoader'),
     IVuexStore: Symbol('IVuexStore'),
     KnawledgeMapCreatorArgs: Symbol('KnawledgeMapCreatorArgs'),
     ManagedSigmaNodeCreatorCoreArgs: Symbol('ManagedSigmaNodeCreatorCoreArgs'),

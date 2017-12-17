@@ -13,6 +13,17 @@ import {FIREBASE_PATHS} from '../paths';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {TreeLocationLoader} from './TreeLocationLoader';
 
+test('treeLocationLoader:::DI Constructor should work', (t) => {
+    const storeSource: ISubscribableTreeLocationStoreSource =
+        myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
+
+    const firebaseRef: IFirebaseRef = new FirebaseRef()
+
+    const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
+    expect(treeLoader['storeSource']).to.deep.equal(storeSource)
+    expect(treeLoader['firebaseRef']).to.deep.equal(firebaseRef) // TODO: why am I testing private properties
+    t.pass()
+})
 test('treeLocationLoader:::Should set the firebaseRef and storeSource for the loader', (t) => {
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)

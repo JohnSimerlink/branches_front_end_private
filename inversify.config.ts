@@ -4,7 +4,7 @@ import 'reflect-metadata'
 import {log} from './app/core/log'
 import {FIREBASE_PATHS} from './app/loaders/paths';
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
-import {TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
+import {TreeLocationLoader, TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
 import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
 import {
@@ -25,7 +25,7 @@ import {
     ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
-    ISubscribableTreeUserStoreSource, ITreeLoader,
+    ISubscribableTreeUserStoreSource, ITreeLoader, ITreeLocationLoader,
     ObjectDataTypes
 } from './app/objects/interfaces';
 import {
@@ -148,6 +148,8 @@ const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
 const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
+    myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
+    myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
     myContainer.bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
     myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treesRef)
