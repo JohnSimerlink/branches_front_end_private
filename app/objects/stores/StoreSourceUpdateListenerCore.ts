@@ -27,7 +27,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 if (!this.sigmaNodes[sigmaId]) {
                     this.sigmaNodes[sigmaId] = new SigmaNode()
                 }
-                log('the created sigmaNode is', this.sigmaNodes[sigmaId])
                 this.sigmaNodesUpdater.handleUpdate(update)
                 break;
             default:
