@@ -1,35 +1,28 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer, IProficiencyStats, ISubscribableMutableField} from '../interfaces';
-import {IDBSubscriber} from '../interfaces';
+import {log} from '../../core/log'
+import {
+    IDatabaseSyncer, IDBSubscriberToTreeLocation, IMutableSubscribablePoint
+} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-export class DBSubscriberToTreeLocation implements IDBSubscriber {
-    private proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
-    private aggregationTimer: ISubscribableMutableField<number>;
-    private proficiencyStatsSyncer: IDatabaseSyncer;
-    private aggregationTimerSyncer: IDatabaseSyncer;
+export class DBSubscriberToTreeLocation implements IDBSubscriberToTreeLocation {
+    private point: IMutableSubscribablePoint;
+    private pointSyncer: IDatabaseSyncer
 
     constructor(@inject(TYPES.DBSubscriberToTreeLocationArgs) {
-      proficiencyStats, aggregationTimer,
-      proficiencyStatsSyncer, aggregationTimerSyncer,
+      point, pointSyncer,
     }) {
-        this.proficiencyStats = proficiencyStats
-        this.aggregationTimer = aggregationTimer
-        this.proficiencyStatsSyncer = proficiencyStatsSyncer
-        this.aggregationTimerSyncer = aggregationTimerSyncer
+        this.pointSyncer = pointSyncer
+        this.point = point
     }
     public subscribe() {
-        // subscribe the database to any local changes in the objects
-        this.proficiencyStatsSyncer.subscribe(this.proficiencyStats)
-        this.aggregationTimerSyncer.subscribe(this.aggregationTimer)
+        this.pointSyncer.subscribe(this.point)
     }
 }
 @injectable()
 export class DBSubscriberToTreeLocationArgs {
-    @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats
-    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer
-    @inject(TYPES.IDatabaseSyncer) private proficiencyStatsSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private aggregationTimerSyncer: IDatabaseSyncer;
+    @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint;
+    @inject(TYPES.IDatabaseSyncer) private pointSyncer: IDatabaseSyncer;
 }
