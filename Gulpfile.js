@@ -90,7 +90,6 @@ const paths = ['./*.ts', './**/*.ts', './**/**/*.ts', './**/**/**/*.ts', './**/*
 // const paths = {
 //     scripts: './app/**/*.ts',
 //     tests: './test/*.ts',
-}
 gulp.task('coverage', function() {
     coverage()
     watch(paths, function(){

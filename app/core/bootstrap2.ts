@@ -9,7 +9,7 @@ log('Vue is ' + Vue)
 import Vuex from 'vuex'
 Vue.use(Vuex)
 Vue.use(VueRouter);
-import store from './store2'
+// import store from './store2'
 // Vue.use(AsyncComputed);
 
 // const appContainer = new AppContainer()
@@ -26,4 +26,3 @@ const Buy = { template: '<div> Give us ur monee</div>'}
 // either be an actual component constructor created via
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
-
