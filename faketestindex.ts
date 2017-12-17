@@ -1,8 +1,12 @@
 import * as firebase from 'firebase'
+import register from 'ignore-styles'
 import {log} from './app/core/log'
-import {myContainer} from './inversify.config';
 import {FieldMutationTypes, IDatedMutation} from './app/objects/interfaces';
 import {TYPES} from './app/objects/types';
+import {myContainer} from './inversify.config';
+register(['.html', '.png'])
+const template = require('./app/components/knawledgeMap/views/knawledgeMap.html')
+const img = require('./app/components/knawledgeMap/views/img.png')
 //
 // const firebaseConfig = {
 //     apiKey: 'AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A',
@@ -16,4 +20,5 @@ import {TYPES} from './app/objects/types';
 // const ref = firebase.database().ref('trees')
 // log('ref is ' + ref)
 const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation)
-log('sampleMutation is' + sampleMutation)
+log('require.extensions ' + JSON.stringify(require.extensions))
+log( ' imgh' + img + JSON.stringify(template))
