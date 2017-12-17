@@ -6,7 +6,7 @@ import {IRenderedNodesManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {RenderedNodesManagerCore} from './RenderedNodesManagerCore';
 
-it('RenderedNodesManagerCore::::addToRenderList should add to RenderList', (t) => {
+test('RenderedNodesManagerCore::::addToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const allSigmaNodes = {}

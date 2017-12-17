@@ -1,6 +1,8 @@
 // tslint:disable object-literal-sort-keys
+import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
+import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
@@ -12,13 +14,13 @@ import {
 } from '../../interfaces';
 import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
-import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
-import {myContainer} from '../../../../inversify.config';
 import {TYPES} from '../../types';
+import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 
 describe('MutableSubscribableTreeStore > addMutation', () => {
-    it('addMutation to storeSource should call addMutation on the appropriate item,' +
-        ' and with a modified mutation argument that no longer has the id', () => {
+    test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' +
+        ' should call addMutation on the appropriate item,' +
+        ' and with a modified mutation argument that no longer has the id', (t) => {
         const contentIdVal = CONTENT_ID2
         const contentId = new SubscribableMutableField<string>({field: contentIdVal })
         const parentId = new SubscribableMutableField<string>({field: 'adf12356' })
@@ -57,9 +59,11 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
         expect(treeAddMutationSpy.callCount).to.equal(1)
         const calledWith = treeAddMutationSpy.getCall(0).args[0]
         expect(calledWith).to.deep.equal(proppedMutation)
+        t.pass()
     })
-    it('addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
-        ' it either, should throw a RangeError', () => {
+    test('MutableSubscribableTreeStore > addMutation::::addMutation' +
+        ' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+        ' it either, should throw a RangeError', (t) => {
 
         const nonExistentId = 'abdf1295'
 
@@ -86,6 +90,6 @@ describe('MutableSubscribableTreeStore > addMutation', () => {
         }
 
         expect(() => treeStore.addMutation(sampleMutation)).to.throw(RangeError)
-
+        t.pass()
     })
 })
