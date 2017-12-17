@@ -141,6 +141,8 @@ export interface IDatabaseSyncer extends ISubscriber<IDetailedUpdates> {
 export interface IDBSubscriber {
     subscribe()
 }
+export interface IDBSubscriberToTreeLocation extends IDBSubscriber {}
+export interface IDBSubscriberToTree extends IDBSubscriber {}
 
 export interface IDetailedUpdates {
     updates?: object,

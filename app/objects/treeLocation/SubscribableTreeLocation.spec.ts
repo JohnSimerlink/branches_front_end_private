@@ -2,12 +2,25 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {injectionWorks} from '../../testHelpers/testHelpers';
 import {
-     IMutableSubscribablePoint,
+    IMutableSubscribablePoint, ISubscribableTreeLocation,
 } from '../interfaces';
 import {MutableSubscribablePoint} from '../point/MutableSubscribablePoint';
+import {TYPES} from '../types';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
+import {SubscribableTreeLocationArgs} from './SubscribableTreeLocation';
 
+test('SubscribableTreeLocation:::DI constructor works', (t) => {
+    const injects = injectionWorks<SubscribableTreeLocationArgs, ISubscribableTreeLocation>({
+        container: myContainer,
+        argsType: TYPES.SubscribableTreeLocationArgs,
+        interfaceType: TYPES.ISubscribableTreeLocation,
+    })
+    expect(injects).to.equal(true)
+    t.pass()
+})
 test('SubscribableTreeLocation:::constructor should set all the subscribable properties', (t) => {
     const FIRST_POINT_VALUE = {x: 5, y: 7}
     const point: IMutableSubscribablePoint

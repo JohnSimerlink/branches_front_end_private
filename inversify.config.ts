@@ -20,7 +20,9 @@ import {
 } from './app/objects/field/SubscribableMutableField';
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
 import {
-    IDatedMutation, IMutableSubscribablePoint, IStoreSourceUpdateListenerCore, ISubscribableContentStoreSource,
+    IDatedMutation, IDBSubscriberToTree, IDBSubscriberToTreeLocation, IMutableSubscribablePoint,
+    IStoreSourceUpdateListenerCore,
+    ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
     ISubscribableTreeUserStoreSource, ITreeLoader,
@@ -112,8 +114,11 @@ import {
     SubscribableTreeUserStoreArgs
 } from './app/objects/stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
-import {DBSubscriberToTreeLocationArgs} from './app/objects/treeLocation/DBSubscriberToTreeLocation';
+import {DBSubscriberToTreeArgs, DBSubscriberToTree} from './app/objects/tree/DBSubscriberToTree';
+import {
+    DBSubscriberToTreeLocation,
+    DBSubscriberToTreeLocationArgs
+} from './app/objects/treeLocation/DBSubscriberToTreeLocation';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
@@ -499,6 +504,8 @@ myContainer.bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMuta
 
 myContainer.bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
 myContainer.bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
+myContainer.bind<IDBSubscriberToTree>(TYPES.IDBSubscriberToTree).to(DBSubscriberToTree)
+myContainer.bind<IDBSubscriberToTreeLocation>(TYPES.IDBSubscriberToTreeLocation).to(DBSubscriberToTreeLocation)
 myContainer.bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
 
 myContainer.bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )

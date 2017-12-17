@@ -54,8 +54,8 @@ class MutableSubscribableTree extends SubscribableTree implements IMutableSubscr
 class SubscribableTreeArgs {
     @inject(TYPES.Array) public updatesCallbacks
     @inject(TYPES.String) public id
-    @inject(TYPES.ISubscribableMutableField) public contentId
-    @inject(TYPES.ISubscribableMutableField) public parentId
+    @inject(TYPES.ISubscribableMutableString) public contentId
+    @inject(TYPES.ISubscribableMutableString) public parentId
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
 
