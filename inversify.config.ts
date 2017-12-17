@@ -21,7 +21,8 @@ import {
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
 import {
     IDatedMutation, IMutableSubscribablePoint, IStoreSourceUpdateListenerCore, ISubscribableContentStoreSource,
-    ISubscribableContentUserStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
+    ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
+    ISubscribableTreeStoreSource,
     ISubscribableTreeUserStoreSource, ITreeLoader,
     ObjectDataTypes
 } from './app/objects/interfaces';
@@ -52,7 +53,7 @@ import {
     ISubscribableTreeUser,
     ISubscribableTreeUserStore
 } from './app/objects/interfaces';
-import {MutableSubscribablePoint, SubscribableMutablePointArgs} from './app/objects/point/MutableSubscribablePoint';
+import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
@@ -112,10 +113,14 @@ import {
 } from './app/objects/stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
 import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
+import {DBSubscriberToTreeLocationArgs} from './app/objects/treeLocation/DBSubscriberToTreeLocation';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
-import {SubscribableTreeLocationArgs} from './app/objects/treeLocation/SubscribableTreeLocation';
+import {
+    SubscribableTreeLocation,
+    SubscribableTreeLocationArgs
+} from './app/objects/treeLocation/SubscribableTreeLocation';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
@@ -267,13 +272,15 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     })
     bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
     bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
+    bind<DBSubscriberToTreeLocationArgs>(TYPES.DBSubscriberToTreeLocationArgs).to(DBSubscriberToTreeLocationArgs)
 
     bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
-    bind<SubscribableMutablePointArgs>(TYPES.SubscribableMutablePointArgs).to(SubscribableMutablePointArgs)
+    bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs)
 
     bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
     bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
     bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
+    bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
     bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
     bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
     bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
@@ -335,8 +342,8 @@ myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
 myContainer.bind<SubscribableStoreArgs>(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
 myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treesRef)
     .whenInjectedInto(TreeLoaderArgs)
-// myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treeLocationsRef)
-//     .whenInjectedInto(TreeLocationLoaderArgs)
+myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treeLocationsRef)
+    .whenInjectedInto(TreeLocationLoaderArgs)
 // stores
 myContainer.bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
     .to(SubscribableTreeLocationStoreSource)
@@ -457,13 +464,16 @@ myContainer.bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
 })
 myContainer.bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
 myContainer.bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
+myContainer.bind<DBSubscriberToTreeLocationArgs>(TYPES.DBSubscriberToTreeLocationArgs)
+    .to(DBSubscriberToTreeLocationArgs)
 
 myContainer.bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
-myContainer.bind<SubscribableMutablePointArgs>(TYPES.SubscribableMutablePointArgs).to(SubscribableMutablePointArgs)
+myContainer.bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs)
 
 myContainer.bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
 myContainer.bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
 myContainer.bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
+myContainer.bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
 myContainer.bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
 myContainer.bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
 myContainer.bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)

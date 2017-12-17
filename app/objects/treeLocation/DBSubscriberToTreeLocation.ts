@@ -2,11 +2,10 @@
 import {inject, injectable} from 'inversify';
 import {IDatabaseSyncer, IProficiencyStats, ISubscribableMutableField} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 
 @injectable()
-class DBSubscriberToTreeLocation implements IDBSubscriber {
+export class DBSubscriberToTreeLocation implements IDBSubscriber {
     private proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
     private aggregationTimer: ISubscribableMutableField<number>;
     private proficiencyStatsSyncer: IDatabaseSyncer;
@@ -28,10 +27,9 @@ class DBSubscriberToTreeLocation implements IDBSubscriber {
     }
 }
 @injectable()
-class DBSubscriberToTreeLocationArgs {
+export class DBSubscriberToTreeLocationArgs {
     @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats
     @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer
     @inject(TYPES.IDatabaseSyncer) private proficiencyStatsSyncer: IDatabaseSyncer;
     @inject(TYPES.IDatabaseSyncer) private aggregationTimerSyncer: IDatabaseSyncer;
 }
-export {DBSubscriberToTreeLocation, DBSubscriberToTreeLocationArgs}

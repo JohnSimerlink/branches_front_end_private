@@ -4,7 +4,9 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {IDatedMutation, IMutableSubscribablePoint, PointMutationTypes} from '../interfaces';
-import {MutableSubscribablePoint} from './MutableSubscribablePoint'
+import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './MutableSubscribablePoint'
+import {injectionWorks} from '../../testHelpers/testHelpers';
+import {TYPES} from '../types';
 
 // import {Point} from '../app/objects/point/point'
 /*
@@ -57,6 +59,16 @@ const FIRST_MUTATION_INDEX = 0
 const SECOND_MUTATION_INDEX = 1
 const THIRD_MUTATION_INDEX = 2
 const FOURTH_MUTATION_INDEX = 3
+test('Point DI constructor works', (t) => {
+
+    const injects = injectionWorks<MutableSubscribablePointArgs, IMutableSubscribablePoint>({
+        container: myContainer,
+        argsType: TYPES.MutableSubscribablePointArgs,
+        interfaceType: TYPES.IMutableSubscribablePoint,
+    })
+    expect(injects).to.equal(true)
+    t.pass()
+})
 test('Point > Mutable:::should set x and y from constructor', (t) => {
     expect(point.val()).to.deep.equal(FIRST_POINT_VALUE)
     t.pass()

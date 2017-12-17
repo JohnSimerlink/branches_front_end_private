@@ -12,7 +12,7 @@ test('SigmaRenderManager::::DI constructor works', (t) => {
     const injects = injectionWorks<SigmaRenderManagerArgs, ISigmaRenderManager>({
         container: myContainer,
         argsType: TYPES.SigmaRenderManagerArgs,
-        classType: TYPES.ISigmaRenderManager,
+        interfaceType: TYPES.ISigmaRenderManager,
     })
     expect(injects).to.equal(true)
     t.pass()

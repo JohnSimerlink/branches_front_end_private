@@ -5,7 +5,7 @@ import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-class DBSubscriberToTree implements IDBSubscriber {
+export class DBSubscriberToTree implements IDBSubscriber {
     private contentId: ISubscribableMutableField<string>;
     private parentId: ISubscribableMutableField<string>;
     private children: ISubscribableMutableStringSet;
@@ -35,7 +35,7 @@ class DBSubscriberToTree implements IDBSubscriber {
     }
 }
 @injectable()
-class DBSubscriberToTreeArgs {
+export class DBSubscriberToTreeArgs {
     @inject(TYPES.ISubscribableMutableField) public contentId
     @inject(TYPES.ISubscribableMutableField) public parentId
     @inject(TYPES.ISubscribableMutableStringSet) public children
@@ -43,4 +43,3 @@ class DBSubscriberToTreeArgs {
     @inject(TYPES.IDatabaseSyncer) public parentIdSyncer: IDatabaseSyncer
     @inject(TYPES.IDatabaseSyncer) public childrenSyncer: IDatabaseSyncer
 }
-export {DBSubscriberToTree, DBSubscriberToTreeArgs}

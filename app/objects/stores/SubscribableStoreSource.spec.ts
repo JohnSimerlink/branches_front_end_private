@@ -16,7 +16,7 @@ test('SubscribableStoreSource - IMutableSubscribableTree -' +
         ISubscribableStoreSource<IMutableSubscribableTree>>({
         container: myContainer,
         argsType: TYPES.MutableSubscribableGlobalStoreArgs,
-        classType: TYPES.IMutableSubscribableGlobalStore
+        interfaceType: TYPES.IMutableSubscribableGlobalStore
     })
     expect(injects).to.equal(true)
     t.pass()

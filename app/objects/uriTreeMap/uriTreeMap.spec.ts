@@ -1,9 +1,9 @@
+import test from 'ava'
 import {expect} from 'chai'
 import {ROOT_ID} from '../../core/globals';
 import {getTreeIdFromUri} from './uriTreeMap';
 
-describe('uriTreeMap', () => {
-    it('empty uri should return treeId ROOT_ID', () => {
-        expect(getTreeIdFromUri('')).to.equal(ROOT_ID)
-    })
+test('uriTreeMap:::empty uri should return treeId ROOT_ID', (t) => {
+    expect(getTreeIdFromUri('')).to.equal(ROOT_ID)
+    t.pass()
 })
