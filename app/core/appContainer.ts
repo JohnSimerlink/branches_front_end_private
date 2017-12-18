@@ -76,6 +76,7 @@ class AppContainer {
 
         const globalStore: IMutableSubscribableGlobalStore
         = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
+        // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
 
         const store: Store<any> = new BranchesStore() as Store<any>
@@ -112,6 +113,9 @@ class AppContainer {
 
         app.start()
 
+        // TODO: don't make the app container container be fetched thorugh dependency injection until we have the UI
+        // manually wired and up
+        // and running with db saves and everything. Then define the dependency graph inside of the inversify config
     }
 
 }

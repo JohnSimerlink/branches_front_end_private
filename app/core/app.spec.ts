@@ -6,13 +6,21 @@ import {myContainer} from '../../inversify.config';
 import {
     IApp, IMutable,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    ISubscribableContentStore,
-    ISubscribableContentUserStore,
     IUI
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';
-import {App} from './app';
+import {injectionWorks} from '../testHelpers/testHelpers';
+import {App, AppArgs} from './app';
 
+test('App:::: DI Constructor works', (t) => {
+    const injects = injectionWorks<AppArgs, IApp>({
+        container: myContainer,
+        argsType: TYPES.AppArgs,
+        interfaceType: TYPES.IApp,
+    })
+    expect(injects).to.equal(true)
+    t.pass()
+})
 test('App:::::Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', (t) => {
     const UI1mock: IUI = {
         subscribe() {}

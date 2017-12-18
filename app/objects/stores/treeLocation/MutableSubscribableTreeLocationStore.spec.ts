@@ -3,6 +3,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
+import {log} from '../../../core/log'
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
     IIdProppedDatedMutation, IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
@@ -73,12 +74,13 @@ test('MutableSubscribableTreeLocationStore > addMutation::::' +
         = myContainer.get<ISubscribableTreeLocationStoreSource>
     (TYPES.ISubscribableTreeLocationStoreSource)
 
+    log('Tree Location store Source item is is ' + storeSource)
     const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
         storeSource,
         updatesCallbacks: []
     })
 
-    const id = TREE_ID
+    const id = '90843204987432'
     const proppedMutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
         data: MUTATION_VALUE,
         propertyName: TreeLocationPropertyNames.POINT,

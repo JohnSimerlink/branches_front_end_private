@@ -1,3 +1,4 @@
+///<reference path="app/core/app.ts"/>
 import * as firebase from 'firebase';
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
@@ -20,6 +21,7 @@ import {
 } from './app/objects/field/SubscribableMutableField';
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
 import {
+    IApp,
     IDatedMutation, IDBSubscriberToTree, IDBSubscriberToTreeLocation, IMutableSubscribablePoint,
     IStoreSourceUpdateListenerCore,
     ISubscribableContentStoreSource,
@@ -130,6 +132,7 @@ import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/tree
 import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
+import {App, AppArgs} from './app/core/app';
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
@@ -157,17 +160,30 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<Reference>(TYPES.Reference).toConstantValue(treeLocationsRef)
         .whenInjectedInto(TreeLocationLoaderArgs)
 })
+const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
+    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
+const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
+    = new SubscribableTreeLocationStoreSource(
+        {hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_LOCATION_DATA})
+const subscribableTreeUserStoreSourceSingleton: ISubscribableTreeUserStoreSource
+    = new SubscribableTreeUserStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_LOCATION_DATA})
+const subscribableContentStoreSourceSingleton: ISubscribableContentStoreSource
+    = new SubscribableContentStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.CONTENT_DATA})
+const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStoreSource
+    = new SubscribableContentUserStoreSource
+({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.CONTENT_USER_DATA})
+
 const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
-        .to(SubscribableTreeLocationStoreSource)
+        .toConstantValue(subscribableTreeLocationStoreSourceSingleton)
     bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
-        .to(SubscribableTreeStoreSource)
+        .toConstantValue(subscribableTreeStoreSourceSingleton)
     bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
-        .to(SubscribableTreeUserStoreSource)
+        .toConstantValue(subscribableTreeUserStoreSourceSingleton)
     bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
-        .to(SubscribableContentStoreSource)
+        .toConstantValue(subscribableContentStoreSourceSingleton)
     bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
-        .to(SubscribableContentUserStoreSource)
+        .toConstantValue(subscribableContentUserStoreSourceSingleton)
 
     bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
     bind<IMutableSubscribableGlobalStore>
@@ -343,6 +359,12 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 // myContainer.bind<Reference>(TYPES.Reference).to
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 })
+// app
+
+const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<IApp>(TYPES.IApp).to(App)
+    bind<AppArgs>(TYPES.AppArgs).to(AppArgs)
+})
 
 // =============================================
 // loaders
@@ -364,6 +386,7 @@ myContainer.load(stores)
 myContainer.load(loaders)
 myContainer.load(rendering)
 myContainer.load(dataObjects)
+myContainer.load(app)
 //
 // /* myContainer.bind<ISubscribable<IDetailedUpdates>>
 // (TYPES.Subscribable_IDetailedUpdates).to(Subscribable<IDetailedUpdates>);
