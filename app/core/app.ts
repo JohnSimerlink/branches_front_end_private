@@ -5,7 +5,7 @@ import {
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';
 @injectable()
-class App implements IApp {
+export class App implements IApp {
     private UIs: IUI[]
     private store: IMutableSubscribableGlobalStore
     constructor(@inject(TYPES.AppArgs){UIs, store}) {
@@ -25,8 +25,7 @@ class App implements IApp {
 }
 
 @injectable()
-class AppArgs {
-    @inject(TYPES.ISubscriber_ITypeAndIdAndValUpdates_Array) public UIs
+export class AppArgs {
+    @inject(TYPES.Array) public UIs
     @inject(TYPES.IMutableSubscribableGlobalStore) public store
 }
-export {App, AppArgs}

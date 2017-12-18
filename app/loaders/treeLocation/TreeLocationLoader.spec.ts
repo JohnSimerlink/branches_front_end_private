@@ -176,7 +176,7 @@ test('treeLocationLoader:::GetData on an existing tree should return the tree', 
     t.pass()
 })
 test('treeLocationLoader:::GetData on a non existing tree should throw a RangeError', async (t) => {
-    const treeId = '1234'
+    const treeId = '12345abcde1235'
     const treeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
 
     const storeSource: ISubscribableTreeLocationStoreSource =
