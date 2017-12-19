@@ -8,12 +8,11 @@ import {
 import {IValUpdates} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
-import {TYPES} from '../types';
 
 // interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
 @injectable()
-class SubscribableStore<SubscribableCoreInterface, ObjectInterface>
+export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterface>
     extends SubscribableCore<IIdAndValUpdates>
     implements ISubscribableStore<SubscribableCoreInterface> {
     protected storeSource: ISubscribableStoreSource<
@@ -21,7 +20,7 @@ class SubscribableStore<SubscribableCoreInterface, ObjectInterface>
         >;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
-    constructor(@inject(TYPES.SubscribableStoreArgs){ storeSource, updatesCallbacks}) {
+    constructor({ storeSource, updatesCallbacks}) {
         super({updatesCallbacks})
         this.storeSource = storeSource
     }
@@ -57,11 +56,3 @@ class SubscribableStore<SubscribableCoreInterface, ObjectInterface>
     }
 
 }
-
-@injectable()
-class SubscribableStoreArgs {
-    @inject(TYPES.ISubscribableStoreSource) public storeSource;
-    @inject(TYPES.Array) public updatesCallbacks;
-}
-
-export {SubscribableStoreArgs, SubscribableStore}

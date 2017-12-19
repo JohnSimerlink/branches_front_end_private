@@ -1,3 +1,5 @@
+
+import 'reflect-metadata'
 // import {AppContainer} from './appContainer';
 import Vue from 'vue';
 // import AsyncComputed from 'vue-async-computed'
@@ -7,8 +9,18 @@ import './components2'
 import {log} from './log'
 log('Vue is ' + Vue)
 import Vuex from 'vuex'
+import {AppContainer} from './appContainer';
+
+if (process.env.NODE_ENV === 'production') {
+   log('NODE ENV IS PROD')
+} else {
+    log('NODE ENV IS ' + process.env.NODE_ENV)
+}
 Vue.use(Vuex)
 Vue.use(VueRouter);
+const appContainer = new AppContainer()
+appContainer.start()
+
 // import store from './store2'
 // Vue.use(AsyncComputed);
 
@@ -17,10 +29,10 @@ Vue.use(VueRouter);
 
 // 1. Define route components.
 // These can be imported from other files
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
-
-const Buy = { template: '<div> Give us ur monee</div>'}
+// const Foo = { template: '<div>foo</div>' }
+// const Bar = { template: '<div>bar</div>' }
+//
+// const Buy = { template: '<div> Give us ur monee</div>'}
 // 2. Define some routes
 // Each route should map to a component. The "component" can
 // either be an actual component constructor created via

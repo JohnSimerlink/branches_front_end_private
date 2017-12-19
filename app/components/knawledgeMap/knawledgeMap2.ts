@@ -1,5 +1,5 @@
 // import template from './views/knawledgeMap.html'
-import register from 'ignore-styles'
+// import register from 'ignore-styles'
 import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
@@ -8,8 +8,15 @@ import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
 import {IKnawledgeMapCreator, ITree, ITreeLoader, IVuexStore} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-register(['.html'])
-const template = require('./views/knawledgeMap.html')
+const env = process.env.NODE_ENV || 'development'
+if (env === 'test') {
+    const register = require('ignore-styles')
+    log('register is ', register)
+    register(['.html'])
+}
+// tslint:disable-next-line no-var-requires
+const template = require('./views/knawledgeMap.html').default
+log('template is ' + template + JSON.stringify(template))
 // import {Store} from 'vuex';
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {

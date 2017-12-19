@@ -54,6 +54,6 @@ export class TreeLoader implements ITreeLoader {
 
 @injectable()
 export class TreeLoaderArgs {
-    @inject(TYPES.Reference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
     @inject(TYPES.ISubscribableTreeStoreSource) public storeSource: ISubscribableTreeStoreSource
 }

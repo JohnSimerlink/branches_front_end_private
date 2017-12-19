@@ -40,7 +40,7 @@ module.exports = {
       },
       {
           test: /\.html$/,
-          loader: 'html-loader',
+          loader: 'html-loader?exportAsEs6Default',
           exclude: /node_modules/
       },
       {
@@ -69,10 +69,12 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     inline: true,
-    overlay: true,
+    overlay: {
+      errors: true,
+    }
   },
   performance: {
-    hints: false
+    hints: 'warning'
   },
   devtool: '#eval-source-map',
 // plugins: [new webpack.]

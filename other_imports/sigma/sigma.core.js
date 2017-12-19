@@ -347,7 +347,7 @@
     if (typeof o.container === 'string')
       o.container = document.getElementById(o.container);
 
-    // Reference the new renderer:
+    // FirebaseReference the new renderer:
     if (!('id' in o)) {
       id = 0;
       while (this.renderers['' + id])
@@ -423,7 +423,7 @@
         this._handler
       );
 
-    // Reference the renderer by its camera:
+    // FirebaseReference the renderer by its camera:
     this.renderersPerCamera[camera.id].push(renderer);
 
     return renderer;

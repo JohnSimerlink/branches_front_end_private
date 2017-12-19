@@ -14,14 +14,14 @@ import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {IKnawledgeMapCreator, ITreeLoader} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {KnawledgeMapCreator} from './knawledgeMap2';
-import register from 'ignore-styles'
-register(['.html'])
+// import register from 'ignore-styles'
+// process.env.node_ENV = 'test' && register(['.html'])
 
 test.beforeEach((t) => {
     myContainer.snapshot()
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
-    myContainer.unbind(TYPES.Reference)
-    myContainer.bind<Reference>(TYPES.Reference).toConstantValue(firebaseRef)
+    myContainer.unbind(TYPES.FirebaseReference)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(firebaseRef)
         .whenInjectedInto(TreeLoaderArgs)
 })
 test.afterEach(t => {
