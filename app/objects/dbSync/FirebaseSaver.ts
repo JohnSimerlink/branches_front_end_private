@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
-import {log} from  '../../core/log'
+import {log} from '../../core/log'
 import {IDatabaseSaver, IDetailedUpdates, IFirebaseRef} from '../interfaces';
 import {TYPES} from '../types';
 if (!Object.entries) {

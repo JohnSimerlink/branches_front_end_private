@@ -1,7 +1,7 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTreeLocation, ISubscribableStoreSource, ITreeLocationData,
+    IMutableSubscribableTreeLocation, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource, ITreeLocationData,
     ITreeLocationLoader
 } from '../../objects/interfaces';
 import {isValidTreeLocation} from '../../objects/tree/treeValidator';
@@ -52,6 +52,6 @@ export class TreeLocationLoader implements ITreeLocationLoader {
 }
 @injectable()
 export class TreeLocationLoaderArgs {
-    @inject(TYPES.Firebase) public firebaseRef
-    @inject(TYPES.ISubscribableStoreSource) public store: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
+    @inject(TYPES.FirebaseReference) public firebaseRef
+    @inject(TYPES.ISubscribableTreeLocationStoreSource) public store: ISubscribableTreeLocationStoreSource
 }

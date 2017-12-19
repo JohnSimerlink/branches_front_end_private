@@ -4,7 +4,8 @@ import {
     IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigmaNode,
-    ISigmaRenderManager, ISubscribableStoreSource, ITreeLoader, ITreeLocationLoader
+    ISigmaRenderManager, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
+    ITreeLoader, ITreeLocationLoader
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -21,8 +22,8 @@ import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {App} from './app';
 import BranchesStore from './store2'
 
-import Vue = require('vue');
-import VueRouter = require('vue-router');
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 import {Store} from 'vuex';
 import {myContainer} from '../../inversify.config';
 import {KnawledgeMapCreator} from '../components/knawledgeMap/knawledgeMap2';
@@ -32,7 +33,11 @@ import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
 import {INITIAL_ID_TO_DOWNLOAD} from './globals';
+import {log} from './log'
+import studyMenu from '../components/studyMenu/studyMenu'
+import BranchesFooter from '../components/footer/branchesFooter'
 
+Vue.component('branchesFooter', BranchesFooter)
 class AppContainer {
     constructor() {
 
@@ -49,11 +54,11 @@ class AppContainer {
     public async start() {
         const firebaseTreesRef = firebase.database().ref('trees')
         const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
-        const treeStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
-        = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTree>>(TYPES.ISubscribableStoreSource)
-        const treeLocationStoreSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
-        = myContainer.get<ISubscribableStoreSource<IMutableSubscribableTreeLocation>>
-            (TYPES.ISubscribableStoreSource)
+        const treeStoreSource: ISubscribableTreeStoreSource
+        = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
+        = myContainer.get<ISubscribableTreeLocationStoreSource>
+            (TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
         const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
         const sigmaNodes = {}
@@ -67,6 +72,7 @@ class AppContainer {
         const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         renderedNodesManager.subscribe(sigmaRenderManager)
+        // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
         const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater({sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId})
 
@@ -97,6 +103,7 @@ class AppContainer {
         const vm = new Vue({
             el: '#branches-app',
             created() {
+                log('Vue instance created')
                 return void 0
             },
             data() {
