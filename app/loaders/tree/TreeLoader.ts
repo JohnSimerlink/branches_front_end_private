@@ -9,6 +9,7 @@ import {isValidTree} from '../../objects/tree/treeValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
+import {setToStringArray} from '../../core/newUtils';
 
 @injectable()
 export class TreeLoader implements ITreeLoader {
@@ -34,12 +35,16 @@ export class TreeLoader implements ITreeLoader {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).on('value', (snapshot) => {
                 const treeData: ITreeDataWithoutId = snapshot.val()
+                let children = treeData.children || {}
+                children = setToStringArray(children)
+                treeData.children = children as string[]
+
                 if (isValidTree(treeData)) {
                     const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
                     me.storeSource.set(treeId, tree)
                     resolve(treeData)
                 } else {
-                    reject('treeData is invalid! ! ' + treeData)
+                    reject('treeData is invalid! ! ' + JSON.stringify(treeData))
                 }
             })
         }) as Promise<ITreeDataWithoutId>

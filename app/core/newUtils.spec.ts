@@ -1,6 +1,6 @@
 import test from 'ava'
 import {expect} from 'chai'
-import {stringArrayToSet, stripTrailingSlash} from './newUtils';
+import {setToStringArray, stringArrayToSet, stripTrailingSlash} from './newUtils';
 
 test('stripTrailingSlash::::should return falsey for blank inputs', (t) => {
     let falsey = !stripTrailingSlash('')
@@ -37,5 +37,20 @@ test('stringArrayToSet::::should return {} for []', (t) => {
 test('stringArrayToSet::::should return {a: true, b: true} for ["a",b"]', (t) => {
     const set = stringArrayToSet(['a', 'b'])
     expect(set).to.deep.equal({a: true, b: true})
+    t.pass()
+})
+test('set to string array::::should return ["a",b"] for {a: true, b: true} ', (t) => {
+    const array: string[] = setToStringArray({a: true, b: true})
+    expect(array).to.deep.equal(['a', 'b'])
+    t.pass()
+})
+test('set to string array::::should return [] for {} ', (t) => {
+    const array: string[] = setToStringArray({})
+    expect(array).to.deep.equal([])
+    t.pass()
+})
+test('set to string array::::should return ["a"] for {a: true, b: false} ', (t) => {
+    const array: string[] = setToStringArray({a: true, b: false})
+    expect(array).to.deep.equal(['a'])
     t.pass()
 })
