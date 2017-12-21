@@ -202,7 +202,6 @@
 
     // Initialize renderers:
     a = _conf.renderers || [];
-    console.log('sigma constructor initialize renderers - the renderers are ', a)
     for (i = 0, l = a.length; i < l; i++)
       this.addRenderer(a[i]);
 
@@ -365,7 +364,6 @@
     // Find the good constructor:
     fn = typeof o.type === 'function' ? o.type : sigma.renderers[o.type];
     fn = fn || sigma.renderers.def;
-    console.log('constructor for renderer chosen is ' + fn)
 
     // Find the good camera:
     camera = 'camera' in o ?

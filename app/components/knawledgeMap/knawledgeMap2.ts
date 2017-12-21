@@ -11,12 +11,10 @@ import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
     const register = require('ignore-styles').default
-    log('register is ', register)
     register(['.html'])
 }
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default
-log('template is ' + template + JSON.stringify(template))
 // import {Store} from 'vuex';
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
