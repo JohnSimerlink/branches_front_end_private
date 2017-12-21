@@ -35,9 +35,8 @@ export class TreeLoader implements ITreeLoader {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).on('value', (snapshot) => {
                 const treeData: ITreeDataWithoutId = snapshot.val()
-                log('treeData inside of TreeLoader downloadData is' + JSON.stringify(treeData))
                 if (!treeData) {
-                    reject('treeData for ' + treeId + ' does not exist')
+                    return
                 }
                 let children = treeData.children || {}
                 children = setToStringArray(children)
