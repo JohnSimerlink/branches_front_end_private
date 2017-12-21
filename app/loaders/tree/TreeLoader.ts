@@ -39,7 +39,7 @@ export class TreeLoader implements ITreeLoader {
                     me.storeSource.set(treeId, tree)
                     resolve(treeData)
                 } else {
-                    reject(treeData)
+                    reject('treeData is invalid! ! ' + treeData)
                 }
             })
         }) as Promise<ITreeDataWithoutId>

@@ -6,7 +6,7 @@ import {TYPES} from './app/objects/types';
 import {myContainer} from './inversify.config';
 register(['.html', '.png'])
 process.env.NODE_ENV = 'test' && register(['.html'])
-const template = require('./app/components/knawledgeMap/views/knawledgeMap.html')
+const template = require('./app/components/knawledgeMap/knawledgeMap.html')
 const img = require('./app/components/knawledgeMap/views/img.png')
 //
 // const firebaseConfig = {

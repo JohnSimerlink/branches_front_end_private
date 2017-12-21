@@ -298,6 +298,13 @@ export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUp
 }
 
 // sigmaNode
+
+export interface ISigmaUpdater {
+    refresh()
+    addNode(node: SigmaJs.Node): void
+    initialize(): void
+
+}
 export type fGetSigmaIdsForContentId = (id: string) => string[]
 export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdates)
