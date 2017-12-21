@@ -48,7 +48,6 @@ export class SigmaUpdater implements ISigmaUpdater {
             glyphThreshold: 3,
             // renderers: [sigma.renderers.canvas]
         } as SigmaConfigs);
-        log('sigmaInstance renderers is ', this.sigmaInstance, this.sigmaInstance.renderers)
 
         // this.sigmaInstance.settings.font = 'Fredoka One'
         // this.sigmaInstance.renderers = [sigma.renderers.canvas]
