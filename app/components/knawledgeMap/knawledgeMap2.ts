@@ -34,13 +34,15 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
         return {
             props: [],
             template,
-            created() {
+            mounted() {
                 me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 // TreeLoader.downLoadData(1)
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()
                 log('kn created')
+                log('container is ' + document.querySelector('#graph-container'))
                 me.initializeSigma()
+                log('sigma just initialized')
             },
             computed: {
             },

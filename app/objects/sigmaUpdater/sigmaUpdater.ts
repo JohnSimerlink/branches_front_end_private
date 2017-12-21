@@ -6,6 +6,7 @@ import SigmaConfigs = SigmaJs.SigmaConfigs;
 import Sigma = SigmaJs.Sigma;
 import Graph = SigmaJs.Graph;
 import Node = SigmaJs.Node
+import {log} from '../../core/log'
 
 @injectable()
 export class SigmaUpdater implements ISigmaUpdater {
@@ -44,8 +45,14 @@ export class SigmaUpdater implements ISigmaUpdater {
             glyphFont: 'FontAwesome',
             glyphFontStyle: 'normal',
             glyphTextThreshold: 6,
-            glyphThreshold: 3
+            glyphThreshold: 3,
+            // renderers: [sigma.renderers.canvas]
         } as SigmaConfigs);
+        log('sigmaInstance renderers is ', this.sigmaInstance, this.sigmaInstance.renderers)
+
+        // this.sigmaInstance.settings.font = 'Fredoka One'
+        // this.sigmaInstance.renderers = [sigma.renderers.canvas]
+        sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
         this.graph = this.sigmaInstance.graph
     }
 }

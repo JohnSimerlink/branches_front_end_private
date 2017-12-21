@@ -202,6 +202,7 @@
 
     // Initialize renderers:
     a = _conf.renderers || [];
+    console.log('sigma constructor initialize renderers - the renderers are ', a)
     for (i = 0, l = a.length; i < l; i++)
       this.addRenderer(a[i]);
 
@@ -333,6 +334,8 @@
         renderer,
         o = options || {};
 
+    console.log('sigma core addRenderer called with ', options)
+      console.log("at start of sigma prototype addRenderer renderers are ", this.renderers)
     // Polymorphism:
     if (typeof o === 'string')
       o = {
@@ -347,7 +350,7 @@
     if (typeof o.container === 'string')
       o.container = document.getElementById(o.container);
 
-    // FirebaseReference the new renderer:
+    // reference the new renderer:
     if (!('id' in o)) {
       id = 0;
       while (this.renderers['' + id])
@@ -362,6 +365,7 @@
     // Find the good constructor:
     fn = typeof o.type === 'function' ? o.type : sigma.renderers[o.type];
     fn = fn || sigma.renderers.def;
+    console.log('constructor for renderer chosen is ' + fn)
 
     // Find the good camera:
     camera = 'camera' in o ?
@@ -423,7 +427,7 @@
         this._handler
       );
 
-    // FirebaseReference the renderer by its camera:
+    // Reference the renderer by its camera:
     this.renderersPerCamera[camera.id].push(renderer);
 
     return renderer;
@@ -488,6 +492,7 @@
         prefix = 0;
 
     options = options || {};
+    console.log('sigma prototype refresh called')
 
     // Call each middleware:
     a = this.middlewares || [];
@@ -594,19 +599,24 @@
         prefix = 0;
 
     // Call each renderer:
+      console.log('sigmaCore renderers are ', this.renderers)
     a = Object.keys(this.renderers);
-    for (i = 0, l = a.length; i < l; i++)
-      if (this.settings('skipErrors'))
-        try {
+    for (i = 0, l = a.length; i < l; i++) {
+
+      if (this.settings('skipErrors')) {
+          try {
+              this.renderers[a[i]].render();
+          } catch (e) {
+              if (this.settings('verbose'))
+                  console.log(
+                      'Warning: The renderer "' + a[i] + '" crashed on ".render()"'
+                  );
+          }
+      }
+      else {
           this.renderers[a[i]].render();
-        } catch (e) {
-          if (this.settings('verbose'))
-            console.log(
-              'Warning: The renderer "' + a[i] + '" crashed on ".render()"'
-            );
-        }
-      else
-        this.renderers[a[i]].render();
+      }
+    }
 
     return this;
   };

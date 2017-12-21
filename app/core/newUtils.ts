@@ -17,3 +17,11 @@ export function stringArrayToSet(array: string[]): IHash<boolean> {
         return set
     }, {})
 }
+export function setToStringArray(set: IHash<boolean>): string[] {
+    return Object.keys(set).reduce( (arr, id) => {
+        if (set[id]) {
+            arr.push(id)
+        }
+        return arr
+    }, [])
+}

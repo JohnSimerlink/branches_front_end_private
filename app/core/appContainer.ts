@@ -39,6 +39,7 @@ import studyMenu from '../components/studyMenu/studyMenu'
 import BranchesFooter from '../components/footer/branchesFooter'
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import GraphData = SigmaJs.GraphData;
+import {configureSigma} from '../objects/sigmaNode/configureSigma';
 
 Vue.component('branchesFooter', BranchesFooter)
 class AppContainer {
@@ -110,6 +111,9 @@ class AppContainer {
             mode: 'history',
         })
 
+        configureSigma()
+        app.start()
+        // For now, new Vue must be called after app.start()
         const vm = new Vue({
             el: '#branches-app',
             created() {
@@ -127,8 +131,6 @@ class AppContainer {
             store,
             router
         })
-
-        app.start()
 
         // TODO: don't make the app container container be fetched thorugh dependency injection until we have the UI
         // manually wired and up

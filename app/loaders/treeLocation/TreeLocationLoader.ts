@@ -4,7 +4,7 @@ import {
     IMutableSubscribableTreeLocation, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource, ITreeLocationData,
     ITreeLocationLoader
 } from '../../objects/interfaces';
-import {isValidTreeLocation} from '../../objects/tree/treeValidator';
+import {isValidTreeLocation} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 
