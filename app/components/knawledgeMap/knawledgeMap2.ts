@@ -10,22 +10,24 @@ import {IKnawledgeMapCreator, ITree, ITreeLoader, IVuexStore} from '../../object
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
-    const register = require('ignore-styles')
+    const register = require('ignore-styles').default
     log('register is ', register)
     register(['.html'])
 }
 // tslint:disable-next-line no-var-requires
-const template = require('./views/knawledgeMap.html').default
+const template = require('./knawledgeMap.html').default
 log('template is ' + template + JSON.stringify(template))
 // import {Store} from 'vuex';
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private treeLoader: ITreeLoader
     private store: Store<any>
+    private initializeSigma: () => void
 
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, store}) {
+    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, store, initializeSigma}) {
         this.store = store
         this.treeLoader = treeLoader
+        this.initializeSigma = initializeSigma
     }
     public create() {
         const me = this
@@ -38,6 +40,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()
                 log('kn created')
+                me.initializeSigma()
             },
             computed: {
             },
@@ -55,4 +58,5 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
     @inject(TYPES.IVuexStore) public store: IVuexStore
+    @inject(TYPES.Function) public initializeSigma: () => void
 }

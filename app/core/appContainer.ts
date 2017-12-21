@@ -4,7 +4,8 @@ import {
     IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigmaNode,
-    ISigmaRenderManager, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource, ISubscribableTreeStoreSource,
+    ISigmaRenderManager, ISigmaUpdater, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
+    ISubscribableTreeStoreSource,
     ITreeLoader, ITreeLocationLoader
 } from '../objects/interfaces';
 
@@ -36,6 +37,8 @@ import {INITIAL_ID_TO_DOWNLOAD} from './globals';
 import {log} from './log'
 import studyMenu from '../components/studyMenu/studyMenu'
 import BranchesFooter from '../components/footer/branchesFooter'
+import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
+import GraphData = SigmaJs.GraphData;
 
 Vue.component('branchesFooter', BranchesFooter)
 class AppContainer {
@@ -85,8 +88,15 @@ class AppContainer {
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
 
+        const graphData: GraphData = {
+            nodes: [],
+            edges: [],
+        }
+        const sigmaUpdater: ISigmaUpdater =
+            new SigmaUpdater({graph: null, sigmaInstance: null, graphData, initialized: false})
         const store: Store<any> = new BranchesStore() as Store<any>
-        const knawledgeMapCreator: IKnawledgeMapCreator = new KnawledgeMapCreator({store, treeLoader})
+        const knawledgeMapCreator: IKnawledgeMapCreator =
+            new KnawledgeMapCreator({store, treeLoader, initializeSigma: sigmaUpdater.initialize.bind(sigmaUpdater)})
         const knawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: knawledgeMap, props: true }

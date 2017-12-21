@@ -49,7 +49,7 @@ const DEFAULT_NUM_GENERATIONS_TO_LOAD = 2
 
 export default {
     props: ['treeId','contentUri', 'path1','path2', 'path3', 'path4', 'path5' ],
-    template: typeof document !== 'undefined' ? require('./views/knawledgeMap.html') : '',
+    template: typeof document !== 'undefined' ? require('./knawledgeMap.html') : '',
     async created () {
         this.init()
         router = this.$router

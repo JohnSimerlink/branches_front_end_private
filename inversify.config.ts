@@ -55,7 +55,8 @@ import {
     ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeLocationStore,
     ISubscribableTreeStore,
     ISubscribableTreeUser,
-    ISubscribableTreeUserStore
+    ISubscribableTreeUserStore,
+    ISigmaUpdater,
 } from './app/objects/interfaces';
 import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -135,6 +136,7 @@ import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/tree
 import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
+import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
@@ -260,6 +262,9 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
+    bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
+
+    bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
 
     bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
     bind<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener)
@@ -334,22 +339,15 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<IDBSubscriberToTreeLocation>(TYPES.IDBSubscriberToTreeLocation).to(DBSubscriberToTreeLocation)
     bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
 
-    bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
-// tslint:disable-next-line ban-types
-    bind<Number>(TYPES.Number).toConstantValue(0)
     bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
 
 // tslint:disable-next-line ban-types
-    bind<String>(TYPES.String).toConstantValue('')
     bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
     bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
         .toConstantValue((updates: IDetailedUpdates) => void 0)
     bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
-    bind<Object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
 
-    bind<any>(TYPES.Any).toConstantValue(null)
-    bind<boolean>(TYPES.Boolean).toConstantValue(false)
     bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
     bind<ITree>(TYPES.ITree).to(SubscribableTree)
 // TODO: maybe only use this constant binding for a test container. . . Not production container
@@ -365,11 +363,22 @@ const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbin
     bind<IApp>(TYPES.IApp).to(App)
     bind<AppArgs>(TYPES.AppArgs).to(AppArgs)
 })
+const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<() => void>(TYPES.Function).toConstantValue(() => void 0)
+    bind<any>(TYPES.Any).toConstantValue(null)
+    bind<boolean>(TYPES.Boolean).toConstantValue(false)
+    bind<string>(TYPES.String).toConstantValue('')
+    bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
+// tslint:disable-next-line ban-types
+    bind<Number>(TYPES.Number).toConstantValue(0)
+    bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
+})
 
 myContainer.load(stores)
 myContainer.load(loaders)
 myContainer.load(rendering)
 myContainer.load(dataObjects)
 myContainer.load(app)
+myContainer.load(misc)
 
 export {myContainer}
