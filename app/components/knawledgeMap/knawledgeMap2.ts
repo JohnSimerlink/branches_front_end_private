@@ -11,8 +11,9 @@ import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
     const register = require('ignore-styles').default
-    register(['.html'])
+    register(['.html', '.less'])
 }
+import './knawledgeMap.less'
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';

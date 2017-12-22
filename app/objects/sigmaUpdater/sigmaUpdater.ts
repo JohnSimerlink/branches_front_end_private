@@ -6,7 +6,7 @@ import SigmaConfigs = SigmaJs.SigmaConfigs;
 import Sigma = SigmaJs.Sigma;
 import Graph = SigmaJs.Graph;
 import Node = SigmaJs.Node
-import {log} from '../../core/log'
+import {log, error} from '../../core/log'
 
 @injectable()
 export class SigmaUpdater implements ISigmaUpdater {
@@ -54,6 +54,13 @@ export class SigmaUpdater implements ISigmaUpdater {
         sigma.canvas.labels.def = sigma.canvas.labels.prioritizable
         this.graph = this.sigmaInstance.graph
     }
+    private jumpToTreeId(treeId) {
+        const node = this.graph.nodes(treeId)
+        if (!node) {
+            error(node, ' does not exist')
+        }
+        focusNode(this.sigmaInstance.cameras[0], node);
+    }
 }
 
 @injectable()
@@ -62,4 +69,13 @@ export class SigmaUpdaterArgs {
     @inject(TYPES.Object) public graphData: GraphData
     @inject(TYPES.Object) public graph: Graph
     @inject(TYPES.Boolean) public initialized: boolean
+}
+
+function focusNode(camera, node) {
+    const cameraCoord = {
+        x: node['read_cam0:x'],
+        y: node['read_cam0:y'],
+        ratio: 0.20
+    };
+    camera.goTo(cameraCoord);
 }
