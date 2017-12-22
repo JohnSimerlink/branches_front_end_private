@@ -1,6 +1,6 @@
-import {ITreeDataWithoutId, ITreeLocationData} from '../interfaces';
+import {ITreeDataFromFirebase, ITreeDataWithoutId, ITreeLocationData} from '../interfaces';
 
-function isValidTree(tree: ITreeDataWithoutId) {
+function isValidTree(tree: ITreeDataFromFirebase) {
     return tree && tree.contentId && tree.contentId.length > 0
     && tree.parentId && tree.parentId.length > 0
     // && tree.children instanceof Array
