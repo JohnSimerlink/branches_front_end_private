@@ -38,7 +38,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()
                 log('kn created')
-                log('container is ' + document.querySelector('#graph-container'))
+                // log('container is ' + document.querySelector('#graph-container'))
                 me.initializeSigma()
                 log('sigma just initialized')
             },

@@ -2,7 +2,8 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource, ITreeDataWithoutId,
+    IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource, ITreeDataFromFirebase,
+    ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
 import {isValidTree} from '../../objects/tree/treeValidator';
@@ -34,18 +35,26 @@ export class TreeLoader implements ITreeLoader {
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).on('value', (snapshot) => {
-                const treeData: ITreeDataWithoutId = snapshot.val()
+                const treeData: ITreeDataFromFirebase = snapshot.val()
                 if (!treeData) {
                     return
+                    /* return without resolving promise. The .on('value') triggers an event which
+                     resolves with a snapshot right away.
+                     Often this first snapshot is null, if firebase hasn't called the network yet,
+                      or if the FirebaseMock hasn't flushed a mocked a fake event yet
+                      Therefore we just return without resolving,
+                       as the promise will actually get resolved in ideally a few more (dozen) milliseconds
+                       */
                 }
-                let children = treeData.children || {}
-                children = setToStringArray(children)
-                treeData.children = children as string[]
+                // let children = treeData.children || {}
+                // children = setToStringArray(children)
+                // treeData.children = children as string[]
 
                 if (isValidTree(treeData)) {
                     const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
                     me.storeSource.set(treeId, tree)
-                    resolve(treeData)
+                    const convertedData = TreeDeserializer.convertSetsToArrays({treeData})
+                    resolve(convertedData)
                 } else {
                     reject('treeData is invalid! ! ' + JSON.stringify(treeData))
                 }

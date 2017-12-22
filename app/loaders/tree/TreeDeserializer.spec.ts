@@ -3,19 +3,24 @@ import {expect} from 'chai'
 import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
-import {IHash, IMutableSubscribableTree, ITreeData, ITreeDataWithoutId} from '../../objects/interfaces';
+import {
+    IHash, IMutableSubscribableTree, ITree, ITreeData, ITreeDataFromFirebase,
+    ITreeDataWithoutId
+} from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 
-test('TreeDeserializer:::Should deserialize properly', (t) => {
+test('TreeDeserializer::: deserialize Should deserialize properly', (t) => {
     const contentIdVal = '1234'
     const parentIdVal = '041234'
     const childrenVal = ['041234', 'abd123']
-    const treeData: ITreeDataWithoutId = {
+    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
+
+    const treeData: ITreeDataFromFirebase = {
         contentId: contentIdVal,
         parentId: parentIdVal,
-        children: childrenVal,
+        children: childrenSet,
     }
     const treeId = '092384'
 
@@ -24,12 +29,31 @@ test('TreeDeserializer:::Should deserialize properly', (t) => {
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const parentId = new SubscribableMutableField<string>({field: parentIdVal})
-    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
     const children = new SubscribableMutableStringSet({set: childrenSet})
     const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
         {updatesCallbacks: [], id: treeId, contentId, parentId, children}
     )
     const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeData, treeId})
     expect(deserializedTree).to.deep.equal(expectedTree)
+    t.pass()
+})
+test('TreeDeserializer::: convert sets to arrays should work', (t) => {
+    const contentIdVal = '1234'
+    const parentIdVal = '041234'
+    const childrenVal = ['041234', 'abd123']
+    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
+
+    const treeData: ITreeDataFromFirebase = {
+        contentId: contentIdVal,
+        parentId: parentIdVal,
+        children: childrenSet,
+    }
+    const expectedConvertedTreeData: ITreeDataWithoutId = {
+        contentId: contentIdVal,
+        parentId: parentIdVal,
+        children: childrenVal,
+    }
+    const convertedTreeData: ITreeDataWithoutId = TreeDeserializer.convertSetsToArrays({treeData})
+    expect(convertedTreeData).to.deep.equal(expectedConvertedTreeData)
     t.pass()
 })

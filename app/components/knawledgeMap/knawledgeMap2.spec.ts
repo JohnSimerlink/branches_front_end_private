@@ -40,7 +40,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     const knawledgeMap = knawledgeMapCreator.create()
 
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
-    knawledgeMap.created()
+    knawledgeMap.mounted()
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(1)
     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
