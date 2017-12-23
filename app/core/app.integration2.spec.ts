@@ -6,7 +6,7 @@ import {myContainer} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
-import {ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
+import {ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
 import {
     IRenderedNodesManager,
     IStoreSourceUpdateListener
@@ -24,10 +24,17 @@ import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateList
 import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdateListenerCore';
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
+import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
+import GraphData = SigmaJs.GraphData;
+import {configureSigma} from '../objects/sigmaNode/configureSigma.js'
+import Graph = SigmaJs.Graph;
+import Edge = SigmaJs.Edge;
+import Sigma = SigmaJs.Sigma;
 
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
+    configureSigma()
     const treeIdToDownload = TREE_ID
 
     const sampleTreeData: ITreeDataWithoutId = {
@@ -63,13 +70,17 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
 
+    const sigmaInstance: SigmaJs.Sigma = myContainer.get<Sigma>(TYPES.Sigma)
+
+    const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
+        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(this.sigmaInstance)}
+    )
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})
     const storeSourceUpdateListener: IStoreSourceUpdateListener
         = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
-    const renderedNodes: IHash<ISigmaNode> = {}
     const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({allSigmaNodes: sigmaNodes, renderedNodes})
+        = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
     const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
     renderedNodesManager.subscribe(sigmaRenderManager)
 
@@ -78,12 +89,12 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     const treeStoreSourceCallCallbacks = sinon.spy(treeStoreSource, 'callCallbacks')
 
-    let inRenderedSet: boolean = !!renderedNodes[treeIdToDownload]
+    let inRenderedSet: boolean = !!sigmaInstance.graph.nodes(treeIdToDownload)
     expect(inRenderedSet).to.equal(false)
     treeRef.fakeEvent('value', undefined, sampleTreeData)
     treeLoader.downloadData(treeIdToDownload)
     treeRef.flush()
-    inRenderedSet = !!renderedNodes[treeIdToDownload]
+    inRenderedSet = !!sigmaInstance.graph.nodes(treeIdToDownload)
     expect(treeStoreSourceCallCallbacks.callCount).to.equal(1)
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
     expect(inRenderedSet).to.equal(false)
@@ -93,7 +104,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     treeLocationRef.flush()
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(2)
 
-    inRenderedSet = !!renderedNodes[treeIdToDownload]
+    inRenderedSet = !!sigmaInstance.graph.nodes(treeIdToDownload)
     expect(inRenderedSet).to.equal(true)
     t.pass()
 

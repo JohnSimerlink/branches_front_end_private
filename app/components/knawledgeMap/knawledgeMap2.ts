@@ -21,12 +21,10 @@ const template = require('./knawledgeMap.html').default
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private treeLoader: ITreeLoader
     private store: Store<any>
-    private initializeSigma: () => void
 
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, store, initializeSigma}) {
+    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, store}) {
         this.store = store
         this.treeLoader = treeLoader
-        this.initializeSigma = initializeSigma
     }
     public create() {
         const me = this
@@ -40,8 +38,9 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 // sigmaInstance.initialize()
                 log('kn created')
                 // log('container is ' + document.querySelector('#graph-container'))
-                me.initializeSigma()
+                // me.initializeSigma()
                 log('sigma just initialized')
+                me.store.commit(MUTATION_NAMES.JUMP_TO, INITIAL_ID_TO_DOWNLOAD)
             },
             computed: {
             },
@@ -59,5 +58,4 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
     @inject(TYPES.IVuexStore) public store: IVuexStore
-    @inject(TYPES.Function) public initializeSigma: () => void
 }

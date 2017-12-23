@@ -40,6 +40,7 @@ import BranchesFooter from '../components/footer/branchesFooter'
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
+import Sigma = SigmaJs.Sigma;
 
 Vue.component('branchesFooter', BranchesFooter)
 class AppContainer {
@@ -65,14 +66,15 @@ class AppContainer {
             (TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
         const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
-        const sigmaNodes = {}
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
-        const renderedNodes: IHash<ISigmaNode> = {}
-        const allSigmaNodes: IHash<ISigmaNode> = {}
+        const sigmaInstance: SigmaJs.Sigma = myContainer.get<Sigma>(TYPES.Sigma)
+        const sigmaUpdater: ISigmaUpdater =
+            new SigmaUpdater({graph: sigmaInstance.graph, refresh: sigmaInstance.refresh})
+        const sigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({allSigmaNodes, renderedNodes})
+        = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
         const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         renderedNodesManager.subscribe(sigmaRenderManager)
@@ -89,15 +91,9 @@ class AppContainer {
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
 
-        const graphData: GraphData = {
-            nodes: [],
-            edges: [],
-        }
-        const sigmaUpdater: ISigmaUpdater =
-            new SigmaUpdater({graph: null, sigmaInstance: null, graphData, initialized: false})
         const store: Store<any> = new BranchesStore() as Store<any>
         const knawledgeMapCreator: IKnawledgeMapCreator =
-            new KnawledgeMapCreator({store, treeLoader, initializeSigma: sigmaUpdater.initialize.bind(sigmaUpdater)})
+            new KnawledgeMapCreator({store, treeLoader})
         const knawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: knawledgeMap, props: true }

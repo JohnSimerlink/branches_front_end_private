@@ -1,24 +1,24 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
-import {IRenderedNodesManagerCore} from '../interfaces';
+import {IRenderedNodesManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
 export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
-    private renderedNodes
-    private allSigmaNodes
-    constructor(@inject(TYPES.RenderedNodesManagerCoreArgs){renderedNodes, allSigmaNodes}) {
-        this.renderedNodes = renderedNodes
-        this.allSigmaNodes = allSigmaNodes
+    private sigmaNodes
+    private addNodeToSigma: (node: SigmaJs.Node & ISigmaNode) => void
+    constructor(@inject(TYPES.RenderedNodesManagerCoreArgs){sigmaNodes, addNodeToSigma}) {
+        this.sigmaNodes = sigmaNodes
+        this.addNodeToSigma = addNodeToSigma
     }
     public addToRenderList(sigmaId: string) {
         log('RenderedNodesManagerCore addtoRenderList: ' + sigmaId)
-        const sigmaNode = this.allSigmaNodes[sigmaId]
-        this.renderedNodes[sigmaId] = sigmaNode
+        const sigmaNode = this.sigmaNodes[sigmaId]
+        this.addNodeToSigma(sigmaNode)
     }
 }
 @injectable()
 export class RenderedNodesManagerCoreArgs {
-    @inject(TYPES.Object) public renderedNodes
-    @inject(TYPES.Object) public allSigmaNodes
+    @inject(TYPES.Object) public sigmaNodes
+    @inject(TYPES.Function) public addNodeToSigma
 }

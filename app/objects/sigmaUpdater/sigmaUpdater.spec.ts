@@ -20,23 +20,8 @@ test('DI constructor should work', (t) => {
     t.pass()
 
 })
-test('AddNode Should add to graphData, if sigma not yet initialized', (t) => {
-    const graphData: SigmaJs.GraphData = {
-        nodes: [],
-        edges: [],
-    }
-    const node: SigmaJs.Node = {id: '53234'} as SigmaJs.Node
-    const sigmaUpdater = new SigmaUpdater({graphData, sigmaInstance: null, graph: null, initialized: false})
-    const expectedGraphData = {
-        nodes: [node],
-        edges: []
-    }
-    sigmaUpdater.addNode(node)
-    expect(graphData).to.deep.equal(expectedGraphData)
-    t.pass()
-})
 
-test('AddNode Should call sigmaInstance.addNode and sigmaInstance.refresh(), if sigma is initialized', (t) => {
+test('AddNode Should call sigmaInstance.addNode and sigmaInstance.refresh()', (t) => {
     const node: SigmaJs.Node = {id: '53234'} as SigmaJs.Node
     const graph: SigmaJs.Graph = {
         addNode(node: SigmaJs.Node) { return {} as Graph},
@@ -46,13 +31,9 @@ test('AddNode Should call sigmaInstance.addNode and sigmaInstance.refresh(), if 
         refresh() {},
         graph,
     } as SigmaJs.Sigma
-    const sigmaUpdater = new SigmaUpdater(
-        {graphData: null, sigmaInstance, graph: sigmaInstance.graph, initialized: true}
+    const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
+        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(this.sigmaInstance)}
         )
-    const expectedGraphData = {
-        nodes: [node],
-        edges: []
-    }
     const addNodeSpy = sinon.spy(graph, 'addNode')
     const refreshSpy = sinon.spy(sigmaInstance, 'refresh')
     sigmaUpdater.addNode(node)

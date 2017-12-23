@@ -137,6 +137,8 @@ import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
+import SigmaConfigs = SigmaJs.SigmaConfigs;
+import Sigma = SigmaJs.Sigma;
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
@@ -263,6 +265,22 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
     bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
+
+    bind<Sigma>(TYPES.Sigma).toConstantValue(new sigma({
+        graph: {
+            nodes: [],
+            edges: []
+        },
+        container: 'graph-container',
+        glyphScale: 0.7,
+        glyphFillColor: '#666',
+        glyphTextColor: 'white',
+        glyphStrokeColor: 'transparent',
+        glyphFont: 'FontAwesome',
+        glyphFontStyle: 'normal',
+        glyphTextThreshold: 6,
+        glyphThreshold: 3,
+    } as SigmaConfigs))
 
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
 
