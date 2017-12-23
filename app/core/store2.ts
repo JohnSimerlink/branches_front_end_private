@@ -3,7 +3,8 @@ import {ROOT_ID} from './globals';
 import {log} from './log'
 
 export const MUTATION_NAMES = {
-    INITIALIZE_SIGMA_INSTANCE: 'initializeSigmaInstance'
+    INITIALIZE_SIGMA_INSTANCE: 'initializeSigmaInstance',
+    JUMP_TO: 'jump_to'
 }
 const state = {
     uri: null,
@@ -16,6 +17,10 @@ const mutations = {
     initializeSigmaInstance() {
 
     }
+}
+mutations[MUTATION_NAMES.JUMP_TO] = (state, treeId) => {
+    state.jumpToId = treeId
+
 }
 const actions = {}
 

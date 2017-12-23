@@ -94,6 +94,8 @@ const TYPES = {
     FirebaseReference: Symbol('Reference'),
     RenderedNodesManagerArgs: Symbol('RenderedNodesManagerArgs'),
     RenderedNodesManagerCoreArgs: Symbol('RenderedNodesManagerCoreArgs'),
+    Sigma: Symbol('Sigma'),
+    SigmaConfigs: Symbol('SigmaConfigs'),
     SigmaNodeArgs: Symbol('SigmaNodeArgs'),
     SigmaNodeCreatorCoreArgs: Symbol('SigmaNodeCreatorCoreArgs'),
     SigmaNodeCreatorArgs: Symbol('SigmaNodeCreatorArgs'),
