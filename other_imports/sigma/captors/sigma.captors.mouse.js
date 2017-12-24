@@ -1,23 +1,19 @@
-;(function(undefined) {
-  'use strict';
+import sigma from '../sigma.core'
+// Initialize packages:
+sigma.utils.pkg('sigma.captors');
 
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
-  // Initialize packages:
-  sigma.utils.pkg('sigma.captors');
-
-  /**
-   * The user inputs default captor. It deals with mouse events, keyboards
-   * events and touch events.
-   *
-   * @param  {DOMElement}   target   The DOM element where the listeners will be
-   *                                 bound.
-   * @param  {camera}       camera   The camera related to the target.
-   * @param  {configurable} settings The settings function.
-   * @return {sigma.captor}          The fresh new captor instance.
-   */
-  sigma.captors.mouse = function(target, camera, settings) {
+/**
+ * The user inputs default captor. It deals with mouse events, keyboards
+ * events and touch events.
+ *
+ * @param  {DOMElement}   target   The DOM element where the listeners will be
+ *                                 bound.
+ * @param  {camera}       camera   The camera related to the target.
+ * @param  {configurable} settings The settings function.
+ * @return {sigma.captor}          The fresh new captor instance.
+ */
+sigma.captors = sigma.captors || {}
+sigma.captors.mouse = function (target, camera, settings) {
     var _self = this,
         _target = target,
         _camera = camera,
@@ -60,23 +56,19 @@
     document.addEventListener('mouseup', _upHandler, false);
 
 
-
-
     /**
      * This method unbinds every handlers that makes the captor work.
      */
-    this.kill = function() {
-      sigma.utils.unbindDoubleClick(_target, 'click');
-      _target.removeEventListener('DOMMouseScroll', _wheelHandler);
-      _target.removeEventListener('mousewheel', _wheelHandler);
-      _target.removeEventListener('mousemove', _moveHandler);
-      _target.removeEventListener('mousedown', _downHandler);
-      _target.removeEventListener('click', _clickHandler);
-      _target.removeEventListener('mouseout', _outHandler);
-      document.removeEventListener('mouseup', _upHandler);
+    this.kill = function () {
+        sigma.utils.unbindDoubleClick(_target, 'click');
+        _target.removeEventListener('DOMMouseScroll', _wheelHandler);
+        _target.removeEventListener('mousewheel', _wheelHandler);
+        _target.removeEventListener('mousemove', _moveHandler);
+        _target.removeEventListener('mousedown', _downHandler);
+        _target.removeEventListener('click', _clickHandler);
+        _target.removeEventListener('mouseout', _outHandler);
+        document.removeEventListener('mouseup', _upHandler);
     };
-
-
 
 
     // MOUSE EVENTS:
@@ -89,58 +81,58 @@
      * @param {event} e A mouse event.
      */
     function _moveHandler(e) {
-      var x,
-          y,
-          pos;
+        var x,
+            y,
+            pos;
 
-      // Dispatch event:
-      if (_settings('mouseEnabled')) {
-        _self.dispatchEvent('mousemove',
-          sigma.utils.mouseCoords(e));
+        // Dispatch event:
+        if (_settings('mouseEnabled')) {
+            _self.dispatchEvent('mousemove',
+                sigma.utils.mouseCoords(e));
 
-        if (_isMouseDown) {
-          PubSub.publish('canvas.dragStart')
-          _isMoving = true;
-          _hasDragged = true;
+            if (_isMouseDown) {
+                // PubSub.publish('canvas.dragStart')
+                _isMoving = true;
+                _hasDragged = true;
 
-          if (_movingTimeoutId)
-            clearTimeout(_movingTimeoutId);
+                if (_movingTimeoutId)
+                    clearTimeout(_movingTimeoutId);
 
-          _movingTimeoutId = setTimeout(function() {
-            _isMoving = false;
-          }, _settings('dragTimeout'));
+                _movingTimeoutId = setTimeout(function () {
+                    _isMoving = false;
+                }, _settings('dragTimeout'));
 
-          sigma.misc.animation.killAll(_camera);
+                sigma.misc.animation.killAll(_camera);
 
-          _camera.isMoving = true;
-          pos = _camera.cameraPosition(
-            sigma.utils.getX(e) - _startMouseX,
-            sigma.utils.getY(e) - _startMouseY,
-            true
-          );
+                _camera.isMoving = true;
+                pos = _camera.cameraPosition(
+                    sigma.utils.getX(e) - _startMouseX,
+                    sigma.utils.getY(e) - _startMouseY,
+                    true
+                );
 
-          x = _startCameraX - pos.x;
-          y = _startCameraY - pos.y;
+                x = _startCameraX - pos.x;
+                y = _startCameraY - pos.y;
 
-          if (x !== _camera.x || y !== _camera.y) {
-            _lastCameraX = _camera.x;
-            _lastCameraY = _camera.y;
+                if (x !== _camera.x || y !== _camera.y) {
+                    _lastCameraX = _camera.x;
+                    _lastCameraY = _camera.y;
 
-            _camera.goTo({
-              x: x,
-              y: y
-            });
-          }
+                    _camera.goTo({
+                        x: x,
+                        y: y
+                    });
+                }
 
-          if (e.preventDefault)
-            e.preventDefault();
-          else
-            e.returnValue = false;
+                if (e.preventDefault)
+                    e.preventDefault();
+                else
+                    e.returnValue = false;
 
-          e.stopPropagation();
-          return false;
+                e.stopPropagation();
+                return false;
+            }
         }
-      }
     }
 
     /**
@@ -150,47 +142,47 @@
      * @param {event} e A mouse event.
      */
     function _upHandler(e) {
-      if (_settings('mouseEnabled') && _isMouseDown) {
-        _isMouseDown = false;
-        PubSub.publish('canvas.dragStop')
-        if (_movingTimeoutId)
-          clearTimeout(_movingTimeoutId);
+        if (_settings('mouseEnabled') && _isMouseDown) {
+            _isMouseDown = false;
+            // PubSub.publish('canvas.dragStop')
+            if (_movingTimeoutId)
+                clearTimeout(_movingTimeoutId);
 
-        _camera.isMoving = false;
+            _camera.isMoving = false;
 
-        var x = sigma.utils.getX(e),
-            y = sigma.utils.getY(e);
+            var x = sigma.utils.getX(e),
+                y = sigma.utils.getY(e);
 
-        if (_isMoving) {
-          sigma.misc.animation.killAll(_camera);
-          sigma.misc.animation.camera(
-            _camera,
-            {
-              x: _camera.x +
-                _settings('mouseInertiaRatio') * (_camera.x - _lastCameraX),
-              y: _camera.y +
-                _settings('mouseInertiaRatio') * (_camera.y - _lastCameraY)
-            },
-            {
-              easing: 'quadraticOut',
-              duration: _settings('mouseInertiaDuration')
-            }
-          );
-        } else if (
-          _startMouseX !== x ||
-          _startMouseY !== y
-        )
-          _camera.goTo({
-            x: _camera.x,
-            y: _camera.y
-          });
+            if (_isMoving) {
+                sigma.misc.animation.killAll(_camera);
+                sigma.misc.animation.camera(
+                    _camera,
+                    {
+                        x: _camera.x +
+                        _settings('mouseInertiaRatio') * (_camera.x - _lastCameraX),
+                        y: _camera.y +
+                        _settings('mouseInertiaRatio') * (_camera.y - _lastCameraY)
+                    },
+                    {
+                        easing: 'quadraticOut',
+                        duration: _settings('mouseInertiaDuration')
+                    }
+                );
+            } else if (
+                _startMouseX !== x ||
+                _startMouseY !== y
+            )
+                _camera.goTo({
+                    x: _camera.x,
+                    y: _camera.y
+                });
 
-        _self.dispatchEvent('mouseup',
-          sigma.utils.mouseCoords(e));
+            _self.dispatchEvent('mouseup',
+                sigma.utils.mouseCoords(e));
 
-        // Update _isMoving flag:
-        _isMoving = false;
-      }
+            // Update _isMoving flag:
+            _isMoving = false;
+        }
     }
 
     /**
@@ -200,38 +192,38 @@
      * @param {event} e A mouse event.
      */
     function _downHandler(e) {
-      if (_settings('mouseEnabled')) {
-        _startCameraX = _camera.x;
-        _startCameraY = _camera.y;
+        if (_settings('mouseEnabled')) {
+            _startCameraX = _camera.x;
+            _startCameraY = _camera.y;
 
-        _lastCameraX = _camera.x;
-        _lastCameraY = _camera.y;
+            _lastCameraX = _camera.x;
+            _lastCameraY = _camera.y;
 
-        _startMouseX = sigma.utils.getX(e);
-        _startMouseY = sigma.utils.getY(e);
+            _startMouseX = sigma.utils.getX(e);
+            _startMouseY = sigma.utils.getY(e);
 
-        _hasDragged = false;
-        _downStartTime = (new Date()).getTime();
+            _hasDragged = false;
+            _downStartTime = (new Date()).getTime();
 
-        switch (e.which) {
-          case 2:
-            // Middle mouse button pressed
-            // Do nothing.
-            break;
-          case 3:
-            // Right mouse button pressed
-            _self.dispatchEvent('rightclick',
-              sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
-            break;
-          // case 1:
-          default:
-            // Left mouse button pressed
-            _isMouseDown = true;
+            switch (e.which) {
+                case 2:
+                    // Middle mouse button pressed
+                    // Do nothing.
+                    break;
+                case 3:
+                    // Right mouse button pressed
+                    _self.dispatchEvent('rightclick',
+                        sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+                    break;
+                // case 1:
+                default:
+                    // Left mouse button pressed
+                    _isMouseDown = true;
 
-            _self.dispatchEvent('mousedown',
-              sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+                    _self.dispatchEvent('mousedown',
+                        sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+            }
         }
-      }
     }
 
     /**
@@ -241,8 +233,8 @@
      * @param {event} e A mouse event.
      */
     function _outHandler(e) {
-      if (_settings('mouseEnabled'))
-        _self.dispatchEvent('mouseout');
+        if (_settings('mouseEnabled'))
+            _self.dispatchEvent('mouseout');
     }
 
     /**
@@ -252,20 +244,20 @@
      * @param {event} e A mouse event.
      */
     function _clickHandler(e) {
-      if (_settings('mouseEnabled')) {
-        var event = sigma.utils.mouseCoords(e);
-        event.isDragging =
-          (((new Date()).getTime() - _downStartTime) > 100) && _hasDragged;
-        _self.dispatchEvent('click', event);
-      }
+        if (_settings('mouseEnabled')) {
+            var event = sigma.utils.mouseCoords(e);
+            event.isDragging =
+                (((new Date()).getTime() - _downStartTime) > 100) && _hasDragged;
+            _self.dispatchEvent('click', event);
+        }
 
-      if (e.preventDefault)
-        e.preventDefault();
-      else
-        e.returnValue = false;
+        if (e.preventDefault)
+            e.preventDefault();
+        else
+            e.returnValue = false;
 
-      e.stopPropagation();
-      return false;
+        e.stopPropagation();
+        return false;
     }
 
     /**
@@ -275,39 +267,39 @@
      * @param {event} e A mouse event.
      */
     function _doubleClickHandler(e) {
-      var pos,
-          ratio,
-          animation;
+        var pos,
+            ratio,
+            animation;
 
-      PubSub.publish('canvas.zoom')
-      if (_settings('mouseEnabled')) {
-        ratio = 1 / _settings('doubleClickZoomingRatio');
+        // PubSub.publish('canvas.zoom')
+        if (_settings('mouseEnabled')) {
+            ratio = 1 / _settings('doubleClickZoomingRatio');
 
-        _self.dispatchEvent('doubleclick',
-            sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+            _self.dispatchEvent('doubleclick',
+                sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
 
-        if (_settings('doubleClickEnabled')) {
-          pos = _camera.cameraPosition(
-            sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
-            sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
-            true
-          );
+            if (_settings('doubleClickEnabled')) {
+                pos = _camera.cameraPosition(
+                    sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
+                    sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
+                    true
+                );
 
-          animation = {
-            duration: _settings('doubleClickZoomDuration')
-          };
+                animation = {
+                    duration: _settings('doubleClickZoomDuration')
+                };
 
-          sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
+                sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
+            }
+
+            if (e.preventDefault)
+                e.preventDefault();
+            else
+                e.returnValue = false;
+
+            e.stopPropagation();
+            return false;
         }
-
-        if (e.preventDefault)
-          e.preventDefault();
-        else
-          e.returnValue = false;
-
-        e.stopPropagation();
-        return false;
-      }
     }
 
     /**
@@ -317,37 +309,36 @@
      * @param {event} e A mouse event.
      */
     function _wheelHandler(e) {
-      var pos,
-          ratio,
-          animation,
-          wheelDelta = sigma.utils.getDelta(e);
+        var pos,
+            ratio,
+            animation,
+            wheelDelta = sigma.utils.getDelta(e);
 
-      if (_settings('mouseEnabled') && _settings('mouseWheelEnabled') && wheelDelta !== 0) {
-        ratio = wheelDelta > 0 ?
-          1 / _settings('zoomingRatio') :
-          _settings('zoomingRatio');
+        if (_settings('mouseEnabled') && _settings('mouseWheelEnabled') && wheelDelta !== 0) {
+            ratio = wheelDelta > 0 ?
+                1 / _settings('zoomingRatio') :
+                _settings('zoomingRatio');
 
-        pos = _camera.cameraPosition(
-          sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
-          sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
-          true
-        );
+            pos = _camera.cameraPosition(
+                sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
+                sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
+                true
+            );
 
-        animation = {
-          duration: _settings('mouseZoomDuration')
-        };
+            animation = {
+                duration: _settings('mouseZoomDuration')
+            };
 
-        sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
+            sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
 
-        if (e.preventDefault)
-          e.preventDefault();
-        else
-          e.returnValue = false;
+            if (e.preventDefault)
+                e.preventDefault();
+            else
+                e.returnValue = false;
 
-        PubSub.publish('canvas.zoom')
-        e.stopPropagation();
-        return false;
-      }
+            // PubSub.publish('canvas.zoom')
+            e.stopPropagation();
+            return false;
+        }
     }
-  };
-}).call(window);
+};

@@ -1,3 +1,4 @@
+import sigma from 'sigma.core'
 var PROFICIENCIES = {
     UNKNOWN: 0,
     ONE: 12.5,
@@ -29,9 +30,6 @@ function proficiencyToColor(proficiency){
     if (proficiency > PROFICIENCIES.UNKNOWN) return Globals.colors.proficiency_1;
     return Globals.colors.proficiency_unknown;
 }
-;(function() {
-  'use strict';
-
   sigma.utils.pkg('sigma.canvas.nodes');
 
   /**
@@ -45,9 +43,9 @@ function proficiencyToColor(proficiency){
       if (node.type === NODE_TYPES.SHADOW_NODE){
           return
       }
-      if (node.trailingDots){
-          renderTrailingDots(node, context, settings)
-      }
+      // if (node.trailingDots){
+      //     renderTrailingDots(node, context, settings)
+      // }
       if (node.content.type === 'heading') {
           renderHeading(node, context, settings)
           return
@@ -59,23 +57,23 @@ function proficiencyToColor(proficiency){
       context.fillStyle = node.color || settings('defaultNodeColor');
       var x = node[prefix + 'x']
       var y = node[prefix + 'y']
-      if (window.awaitingEdgeConnection){
-        if (node.content.type !== 'heading' && node.state !== 'awaitingEdgeConnection'){
-            context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), 0)
-            // size = size * 1.5
-        }
-      }
+      // if (window.awaitingEdgeConnection){
+      //   if (node.content.type !== 'heading' && node.state !== 'awaitingEdgeConnection'){
+      //       context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), 0)
+      //       // size = size * 1.5
+      //   }
+      // }
       context.font="Fredoka One"
-      if (node.state == 'awaitingEdgeConnection'){
-           // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-           var haloSize = size * window.haloSizeScalingFactor
-
-           context.beginPath()
-           // context.fillStyle = 'black'
-           context.strokeStyle = 'black'
-           context.arc(x, y,haloSize,0,Math.PI * 2,true );
-           context.stroke()
-      }
+      // if (node.state == 'awaitingEdgeConnection'){
+      //      // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
+      //      var haloSize = size * window.haloSizeScalingFactor
+      //
+      //      context.beginPath()
+      //      // context.fillStyle = 'black'
+      //      context.strokeStyle = 'black'
+      //      context.arc(x, y,haloSize,0,Math.PI * 2,true );
+      //      context.stroke()
+      // }
 
       context.beginPath();
       context.arc(
@@ -121,7 +119,6 @@ function proficiencyToColor(proficiency){
       context.lineWidth = lineWidth
 
   };
-})();
 
 function renderHeading(node,context,settings){
     var prefix = settings('prefix') || '';
@@ -137,15 +134,15 @@ function renderHeading(node,context,settings){
 
     var proficiencyStats = node.proficiencyStats
 
-    if(window.awaitingEdgeConnection){
-        var haloSize = size * window.haloSizeScalingFactor
-
-        var center = context.beginPath()
-        // context.fillStyle = 'black'
-        context.strokeStyle = 'white'
-        context.arc(x, y, haloSize, 0, Math.PI * 2, true);
-        context.stroke()
-    }
+    // if(window.awaitingEdgeConnection){
+    //     var haloSize = size * window.haloSizeScalingFactor
+    //
+    //     var center = context.beginPath()
+    //     // context.fillStyle = 'black'
+    //     context.strokeStyle = 'white'
+    //     context.arc(x, y, haloSize, 0, Math.PI * 2, true);
+    //     context.stroke()
+    // }
 
     if (! (proficiencyStats instanceof Object)){
 
@@ -265,19 +262,19 @@ function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color)
 }
 
 //in radians
-function getAngleFromCenter(x, y){
-    let width = x - window.xCenter
-    let height = y - window.yCenter
-
-    let reflect = false
-    if (width < 0){
-        width = width * -1
-        reflect = true
-    }
-    let angle = Math.atan(height / width)
-    if (reflect){
-        angle = Math.PI - angle
-    }
-    console.log('angleFromCenter', width, height, '->', angle)
-    return angle
-}
+// function getAngleFromCenter(x, y){
+//     let width = x - window.xCenter
+//     let height = y - window.yCenter
+//
+//     let reflect = false
+//     if (width < 0){
+//         width = width * -1
+//         reflect = true
+//     }
+//     let angle = Math.atan(height / width)
+//     if (reflect){
+//         angle = Math.PI - angle
+//     }
+//     console.log('angleFromCenter', width, height, '->', angle)
+//     return angle
+// }
