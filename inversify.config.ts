@@ -1,4 +1,6 @@
 import * as firebase from 'firebase';
+import './other_imports/sigmaConfigurations'
+import sigma from './other_imports/sigma/sigma.core.js'
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {App, AppArgs} from './app/core/app';

@@ -4,7 +4,7 @@ import "./other_imports/sigma/sigma.core.js"
 import "./other_imports/sigma/conrad.js"
 import "./other_imports/sigma/utils/sigma.utils.js"
 import "./other_imports/sigma/utils/sigma.utils.branches.js"
-import "./other_imports/sigma/utils/sigma.polyfills.js"
+import "./other_imports/sigma/utils/sigma.polyfills.js" // << didn't refactor
 import "./other_imports/sigma/sigma.settings.js"
 import "./other_imports/sigma/classes/sigma.classes.dispatcher.js"
 import "./other_imports/sigma/classes/sigma.classes.configurable.js"

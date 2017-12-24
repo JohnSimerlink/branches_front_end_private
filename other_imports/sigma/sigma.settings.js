@@ -1,13 +1,8 @@
-;(function(undefined) {
-  'use strict';
+import sigma from './sigma.core'
+// Packages initialization:
+sigma.utils.pkg('sigma.settings');
 
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
-  // Packages initialization:
-  sigma.utils.pkg('sigma.settings');
-
-  var settings = {
+var settings = {
     /**
      * GRAPH SETTINGS:
      * ***************
@@ -121,8 +116,6 @@
     webglEdgesBatchSize: 1000,
 
 
-
-
     /**
      * RESCALE SETTINGS:
      * *****************
@@ -143,8 +136,6 @@
     maxEdgeSize: 0, //1
     minNodeSize: 0, //1
     maxNodeSize: 0, //8
-
-
 
 
     /**
@@ -235,8 +226,7 @@
      */
     // {number} The default animation time.
     animationsTime: 200
-  };
+};
 
-  // Export the previously designed settings:
-  sigma.settings = sigma.utils.extend(sigma.settings || {}, settings);
-}).call(window);
+// Export the previously designed settings:
+sigma.settings = sigma.utils.extend(sigma.settings || {}, settings);

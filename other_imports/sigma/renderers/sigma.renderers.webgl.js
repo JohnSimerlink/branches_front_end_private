@@ -1,9 +1,5 @@
-;(function(undefined) {
-  'use strict';
-
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
+import sigma from '../sigma.core'
+import conrad from '../conrad'
   // Initialize packages:
   sigma.utils.pkg('sigma.renderers');
 
@@ -714,4 +710,3 @@
    * node, the renderer and a settings function.
    */
   sigma.utils.pkg('sigma.canvas.labels');
-}).call(window);

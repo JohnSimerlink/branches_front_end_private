@@ -1,6 +1,4 @@
-;(function() {
-  'use strict';
-
+import sigma from '../../sigma.core'
   const EDGE_TYPES = {
      SUGGESTED_CONNECTION: 9001,
      HIERARCHICAL: 9002,
@@ -18,10 +16,10 @@
    */
   sigma.canvas.edgehovers.def =
     function(edge, source, target, context, settings) {
-    if (window.awaitingEdgeConnection && edge.type !== EDGE_TYPES.SUGGESTED_CONNECTION){
-      return
-    } else {
-    }
+    // if (window.awaitingEdgeConnection && edge.type !== EDGE_TYPES.SUGGESTED_CONNECTION){
+    //   return
+    // } else {
+    // }
       var color = edge.color,
         prefix = settings('prefix') || '',
         size = edge[prefix + 'size'] || 1,
@@ -66,4 +64,3 @@
     context.lineWidth = lineWidth
     context.color = colorSave
   };
-})();

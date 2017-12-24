@@ -1,9 +1,4 @@
-
-;(function(undefined) {
-    'use strict';
-
-    if (typeof sigma === 'undefined')
-        throw 'sigma is not declared';
+import sigma from '../../sigma.core'
 
     var labelLevels = {}
     var packageData = {
@@ -16,7 +11,7 @@
         labelLevels: labelLevels,
     }
 
-    window.packageData = packageData
+    // window.packageData = packageData
 
     var xOffset = 50
         var rowHeight = sigma.settings.defaultLabelSize * 1.75
@@ -56,7 +51,7 @@
         packageData.recentHistory =[]
         packageData.justReset = true
     }
-    window.resetLabelData = resetLabelData
+    // window.resetLabelData = resetLabelData
     //assumes fixed label size
     function determineSection(node){
         var x = node['renderer1:x']
@@ -73,7 +68,7 @@
     }
     function getHeightFromNodeLevel(level){
         // var height = window.s.settings('defaultLabelSize') + 2.5 * 8 / level
-        return window.s && window.s.settings('defaultLabelSize') + 2.5 * 8 / level || 14
+        // return window.s && window.s.settings('defaultLabelSize') + 2.5 * 8 / level || 14
     }
     // Initialize packages:
     sigma.utils.pkg('sigma.canvas.labels');
@@ -147,9 +142,8 @@
             y
         );
     };
-}).call(window);
 
-window.getLabelFontSizeFromNode = function(node, settings){
-    var fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
-    return fontSize
-}
+// window.getLabelFontSizeFromNode = function(node, settings){
+//     var fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+//     return fontSize
+// }
