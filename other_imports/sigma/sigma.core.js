@@ -1,5 +1,4 @@
 var __instances = {};
-
 /**
  * This is the sigma instances constructor. One instance of sigma represent
  * one graph. It is possible to represent this grapĥ with several renderers
@@ -328,12 +327,10 @@ sigma.prototype.addRenderer = function (options) {
         renderer,
         o = options || {};
 
-    console.log('sigma core addRenderer called with ', options)
-    console.log("at start of sigma prototype addRenderer renderers are ", this.renderers)
     // Polymorphism:
     if (typeof o === 'string')
         o = {
-            container: document.getElementById(o)
+            container: document.getElementById(o) /*** ==>>> */ || new HTMLElement() /** <<=== added for testing purposes only to avoid a container element not found error in sigma.renderers.canvas **/
         };
     else if (o instanceof HTMLElement)
         o = {
@@ -373,6 +370,7 @@ sigma.prototype.addRenderer = function (options) {
         throw 'sigma.addRenderer: The camera is not properly referenced.';
 
     // Instantiate:
+    console.log('o being passed into the renderer function is', o)
     renderer = new fn(this.graph, camera, this.settings, o);
     this.renderers[id] = renderer;
     Object.defineProperty(renderer, 'id', {
@@ -583,7 +581,7 @@ sigma.prototype.refresh = function (options) {
  * @return {sigma} Returns the instance itself.
  */
 sigma.prototype.render = function (publishEvents) {
-    !publishEvents && PubSub.publish('canvas.nodesRendering')
+    // !publishEvents && PubSub.publish('canvas.nodesRendering')
     var i,
         l,
         a,

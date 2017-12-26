@@ -1,6 +1,7 @@
 import sigma from '../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.middlewares');
+sigma.middlewares = sigma.middlewares || {}
 
 /**
  * This middleware will just copy the graphic properties.

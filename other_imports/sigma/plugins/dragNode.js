@@ -6,6 +6,7 @@ import sigma from '../sigma.core'
  * examples/api-candy.html code samples to know more.
  */
 sigma.utils.pkg('sigma.plugins');
+sigma.plugins = sigma.plugins || {}
 
 
 /**
@@ -160,7 +161,7 @@ function DragNodes(s, renderer) {
 
     function nodeMouseDown(event) {
         //console.log("MOUSEDOWN ", event);
-        if (_node) PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
+        // if (_node) PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
         _isMouseDown = true;
         var size = _s.graph.nodes().length;
 
@@ -196,11 +197,11 @@ function DragNodes(s, renderer) {
     };
 
     function nodeMouseUp(event) {
-        if (_wasJustBeingDragged) {
-            PubSub.publish('canvas.stopDraggingNode', _node)
-        } else {
-            PubSub.publish('canvas.nodeMouseUp', _node)
-        }
+        // if (_wasJustBeingDragged) {
+        //     PubSub.publish('canvas.stopDraggingNode', _node)
+        // } else {
+        //     PubSub.publish('canvas.nodeMouseUp', _node)
+        // }
         _isMouseDown = false;
         _mouse.addEventListener('mousedown', nodeMouseDown);
         _body.removeEventListener('mousemove', nodeMouseMove);
@@ -247,8 +248,8 @@ function DragNodes(s, renderer) {
 
         function executeNodeMouseMove() {
             clearTimeout(_wasJustBeingDraggedTimeout)
-            window.nodeBeingDragged = true
-            PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
+            // window.nodeBeingDragged = true
+            // PubSub.publish('canvas.startDraggingNode', _node, _node.x, _node.y)
             var offset = calculateOffset(_renderer.container),
                 x = event.clientX - offset.left,
                 y = event.clientY - offset.top,

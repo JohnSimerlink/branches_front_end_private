@@ -1,10 +1,10 @@
 import * as firebase from 'firebase';
+import {log} from './app/core/log'
 import './other_imports/sigmaConfigurations'
 import sigma from './other_imports/sigma/sigma.core.js'
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {App, AppArgs} from './app/core/app';
-import {log} from './app/core/log'
 import {FIREBASE_PATHS} from './app/loaders/paths';
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
 import {TreeLocationLoader, TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
@@ -141,9 +141,11 @@ import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
 import SigmaConfigs = SigmaJs.SigmaConfigs;
 import Sigma = SigmaJs.Sigma;
+import {GRAPH_CONTAINER_ID} from './app/core/globals';
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
+
 // throw new Error('inversify error error error')
 
 // const firebaseConfig = {
@@ -273,7 +275,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
             nodes: [],
             edges: []
         },
-        container: 'graph-container',
+        container: GRAPH_CONTAINER_ID,
         glyphScale: 0.7,
         glyphFillColor: '#666',
         glyphTextColor: 'white',

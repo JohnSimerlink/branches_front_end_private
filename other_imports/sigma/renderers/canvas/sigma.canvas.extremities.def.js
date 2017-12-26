@@ -1,6 +1,7 @@
 import sigma from '../../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.extremities');
+sigma.canvas.extremities = sigma.canvas.extremities || {}
 
 /**
  * The default renderer for hovered edge extremities. It renders the edge

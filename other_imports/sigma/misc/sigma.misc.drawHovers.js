@@ -1,6 +1,7 @@
 import sigma from '../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.misc');
+sigma.misc = sigma.misc || {}
 
 /**
  * This method listens to "overNode", "outNode", "overEdge" and "outEdge"

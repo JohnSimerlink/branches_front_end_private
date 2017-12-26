@@ -1,33 +1,31 @@
-;(function() {
-  'use strict';
+import sigma from '../../sigma.core'
+import {EDGE_TYPES} from "../../../../app/core/globals";
 
-  const EDGE_TYPES = {
-      SUGGESTED_CONNECTION: 9001,
-      HIERARCHICAL: 9002,
-  }
-  sigma.utils.pkg('sigma.canvas.edges');
+sigma.utils.pkg('sigma.canvas.edges');
+sigma.canvas.edges = sigma.canvas.edges || {}
 
-  /**
-   * The default edge renderer. It renders the edge as a simple line.
-   *
-   * @param  {object}                   edge         The edge object.
-   * @param  {object}                   source node  The edge source node.
-   * @param  {object}                   target node  The edge target node.
-   * @param  {CanvasRenderingContext2D} context      The canvas context.
-   * @param  {configurable}             settings     The settings function.
-   */
-  function renderSeveredEdge(edge, source, target, context, settings){
-     return;
-  }
-  function renderPreSeveredEdge(edge, source, target, context, settings) {
+/**
+ * The default edge renderer. It renders the edge as a simple line.
+ *
+ * @param  {object}                   edge         The edge object.
+ * @param  {object}                   source node  The edge source node.
+ * @param  {object}                   target node  The edge target node.
+ * @param  {CanvasRenderingContext2D} context      The canvas context.
+ * @param  {configurable}             settings     The settings function.
+ */
+function renderSeveredEdge(edge, source, target, context, settings) {
+    return;
+}
 
-  }
+function renderPreSeveredEdge(edge, source, target, context, settings) {
 
-  sigma.canvas.edges.def = function(edge, source, target, context, settings) {
-      if (edge.state == 'severed') {
-          return
-      }
-    if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION && !window.awaitingEdgeConnection){
+}
+
+sigma.canvas.edges.def = function (edge, source, target, context, settings) {
+    if (edge.state == 'severed') {
+        return
+    }
+    if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION /*&& !window.awaitingEdgeConnection*/) {
         return
     }
     var color = edge.color,
@@ -38,48 +36,48 @@
         defaultEdgeColor = settings('defaultEdgeColor');
 
     if (!color)
-      switch (edgeColor) {
-        case 'source':
-          color = source.color || defaultNodeColor;
-          break;
-        case 'target':
-          color = target.color || defaultNodeColor;
-          break;
-        default:
-          color = defaultEdgeColor;
-          break;
-      }
-      if (window.awaitingEdgeConnection){
-        if(edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
-          color = setOpacityOfRgbString(colorToRgbString(color), .8)
-        } else {
-          color = setOpacityOfRgbString(colorToRgbString(color), .1)
+        switch (edgeColor) {
+            case 'source':
+                color = source.color || defaultNodeColor;
+                break;
+            case 'target':
+                color = target.color || defaultNodeColor;
+                break;
+            default:
+                color = defaultEdgeColor;
+                break;
         }
-      }
+    // if (window.awaitingEdgeConnection){
+    //   if(edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+    //     color = setOpacityOfRgbString(colorToRgbString(color), .8)
+    //   } else {
+    //     color = setOpacityOfRgbString(colorToRgbString(color), .1)
+    //   }
+    // }
 
     context.strokeStyle = color;
-      if (edge.state == 'pre-severed' || edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
-          size = size * 3 * window.haloEdgeSizeScalingFactor
-      } else {
-          size = size * 3
-      }
+    if (edge.state == 'pre-severed' || edge.type == EDGE_TYPES.SUGGESTED_CONNECTION) {
+        size = size * 3 * 1 //window.haloEdgeSizeScalingFactor
+    } else {
+        size = size * 3
+    }
 
-      context.lineWidth = size
+    context.lineWidth = size
     context.beginPath();
     context.moveTo(
-      source[prefix + 'x'],
-      source[prefix + 'y']
+        source[prefix + 'x'],
+        source[prefix + 'y']
     );
     context.lineTo(
-      target[prefix + 'x'],
-      target[prefix + 'y']
+        target[prefix + 'x'],
+        target[prefix + 'y']
     );
     context.stroke();
 
     if (edge.state == "pre-severed") {
 
         var x1 = source[prefix + 'x'],
-            x2= target[prefix + 'x'],
+            x2 = target[prefix + 'x'],
             y1 = source[prefix + 'y'],
             y2 = target[prefix + 'y']
         var midX = (x1 + x2) / 2,
@@ -97,5 +95,4 @@
         context.lineTo(midX - X_LEG_SIZE, midY + X_LEG_SIZE)
         context.stroke()
     }
-  };
-})();
+};

@@ -7,6 +7,7 @@
 import sigma from '../../sigma.core'
 // Initialize package:
 sigma.utils.pkg('sigma.plugins');
+sigma.plugins = sigma.plugins || {}
 
 /**
  * Sigma tooltip

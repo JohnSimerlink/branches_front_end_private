@@ -1,5 +1,8 @@
 import sigma from '../sigma.core'
 // Initialize packages:
+sigma.misc = sigma.misc || {}
+sigma.misc.animation = sigma.misc.animation || {}
+sigma.misc.animation.running = sigma.misc.animation.running || {}
 sigma.utils.pkg('sigma.misc.animation.running');
 
 /**
