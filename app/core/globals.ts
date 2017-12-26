@@ -12,7 +12,13 @@ export const Globals = {
     overdueSize: 14,
     regularSize: 10,
 }
+export const GRAPH_CONTAINER_ID = 'graph-container'
 export const NODE_TYPES = {
     SHADOW_NODE: 9100,
     TREE: 'tree',
+}
+
+export const EDGE_TYPES = {
+    SUGGESTED_CONNECTION: 9001,
+    HIERARCHICAL: 9002,
 }

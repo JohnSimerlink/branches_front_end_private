@@ -1,7 +1,9 @@
 import sigma from '../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.middlewares');
+sigma.middlewares = sigma.middlewares || {}
 sigma.utils.pkg('sigma.utils');
+sigma.utils = sigma.utils || {}
 
 /**
  * This middleware will rescale the graph such that it takes an optimal space

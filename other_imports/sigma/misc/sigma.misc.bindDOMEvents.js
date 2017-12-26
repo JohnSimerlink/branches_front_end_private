@@ -1,7 +1,7 @@
-// import sigma from '../sig
 import sigma from '../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.misc');
+sigma.misc = sigma.misc || {}
 
 /**
  * This helper will bind any DOM renderer (for instance svg)

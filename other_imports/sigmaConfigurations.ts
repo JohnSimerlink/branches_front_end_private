@@ -1,9 +1,11 @@
+import {log} from '../app/core/log'
+log('myContainer', window, document, HTMLElement)
 import "./sigma/sigma.core.js"
 import "./sigma/conrad.js"
 import "./sigma/utils/sigma.utils.js"
 import "./sigma/utils/sigma.utils.branches.js"
 // import "./sigma/utils/sigma.polyfills.js" // << didn't refactor
-// import "./sigma/sigma.settings.js"
+import "./sigma/sigma.settings.js"
 import "./sigma/classes/sigma.classes.dispatcher.js"
 import "./sigma/classes/sigma.classes.configurable.js"
 import "./sigma/classes/sigma.classes.graph.js"

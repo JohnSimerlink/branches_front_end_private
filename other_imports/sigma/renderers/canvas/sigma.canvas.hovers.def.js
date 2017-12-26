@@ -1,5 +1,7 @@
+import sigma from '../../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.hovers');
+sigma.canvas.hovers = sigma.canvas.hovers || {}
 
 /**
  * This hover renderer will basically display the label with a background.

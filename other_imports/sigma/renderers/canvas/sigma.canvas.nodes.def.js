@@ -1,4 +1,4 @@
-import sigma from 'sigma.core'
+import sigma from '../../sigma.core'
 var PROFICIENCIES = {
     UNKNOWN: 0,
     ONE: 12.5,

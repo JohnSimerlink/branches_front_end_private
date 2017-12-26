@@ -1,6 +1,7 @@
 import sigma from './sigma.core'
 // Packages initialization:
 sigma.utils.pkg('sigma.settings');
+sigma.settings = sigma.settings || {}
 
 var settings = {
     /**

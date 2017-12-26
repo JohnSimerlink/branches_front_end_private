@@ -2,6 +2,7 @@ import sigma from '../sigma.core'
 
 // Initialize packages:
 sigma.utils.pkg('sigma.misc');
+sigma.misc = sigma.misc || {}
 
 /**
  * This helper will bind any no-DOM renderer (for instance canvas or WebGL)
@@ -266,18 +267,18 @@ sigma.misc.bindEvents = function (prefix) {
 
             if (nodes.length) {
                 var node = nodes[0]
-                if (node.id == window.currentClickedNode) {
-                    // window.currentNodeClicked = true
-                } else {
-                    if (window.currentClickedNode != null) {
-                        PubSub.publish('canvas.differentNodeClicked', {
-                            oldNode: window.currentClickedNode,
-                            newNode: node.id
-                        })
-                    }
-                    window.currentClickedNode = node.id
-                    // window.currentNodeClicked = false
-                }
+                // if (node.id == window.currentClickedNode) {
+                //     // window.currentNodeClicked = true
+                // } else {
+                //     if (window.currentClickedNode != null) {
+                //         PubSub.publish('canvas.differentNodeClicked', {
+                //             oldNode: window.currentClickedNode,
+                //             newNode: node.id
+                //         })
+                //     }
+                //     window.currentClickedNode = node.id
+                //     // window.currentNodeClicked = false
+                // }
                 self.dispatchEvent('clickNode', {
                     node: nodes[0],
                     captor: e.data
@@ -291,15 +292,15 @@ sigma.misc.bindEvents = function (prefix) {
                     edge: edges[0],
                     captor: e.data
                 }
-                PubSub.publish('canvas.clickEdge', eventData)
+                // PubSub.publish('canvas.clickEdge', eventData)
                 self.dispatchEvent('clickEdge', eventData);
                 self.dispatchEvent('clickEdges', {
                     edge: edges,
                     captor: e.data
                 });
             } else {
-                PubSub.publish('canvas.stageClicked', {oldNode: window.currentClickedNode})
-                window.currentClickedNode = null
+                // PubSub.publish('canvas.stageClicked', {oldNode: window.currentClickedNode})
+                // window.currentClickedNode = null
                 self.dispatchEvent('clickStage', {captor: e.data});
             }
 
@@ -452,14 +453,14 @@ sigma.misc.bindEvents = function (prefix) {
                     captor: e.data
                 }
                 self.dispatchEvent('overNode', data);
-                PubSub.publish('canvas.overNode', data)
+                // PubSub.publish('canvas.overNode', data)
             }
             for (i = 0, l = newOutNodes.length; i < l; i++) {
                 self.dispatchEvent('outNode', {
                     node: newOutNodes[i],
                     captor: e.data
                 });
-                PubSub.publish('canvas.outNode', data)
+                // PubSub.publish('canvas.outNode', data)
             }
             if (newOverNodes.length)
                 self.dispatchEvent('overNodes', {

@@ -1,6 +1,8 @@
 import {NODE_TYPES} from "../../../app/core/globals.ts";
 import conrad from '../conrad'
 import sigma from '../sigma.core'
+
+sigma.canvas = sigma.canvas || {}
 // Initialize packages:
 sigma.utils.pkg('sigma.renderers');
 
@@ -20,8 +22,11 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
     if (typeof options !== 'object')
         throw 'sigma.renderers.canvas: Wrong arguments.';
 
-    if (!(options.container instanceof HTMLElement))
+    if (!(options.container instanceof HTMLElement)){
+
+        console.log("options.container is", options.container, options)
         throw 'Container not found.';
+    }
 
     var k,
         i,
@@ -136,6 +141,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
             prefix: this.options.prefix
         });
 
+    console.log("this.graph in sigma renderers is", this.graph)
     // Call the resize function:
     this.resize(false);
 
@@ -358,7 +364,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
  * @param  {string} id  The id of the element (to stores it in "domElements").
  */
 sigma.renderers.canvas.prototype.initDOM = function (tag, id) {
-    var dom = document.createElement(tag);
+    var dom = typeof document !== 'undefined' && document.createElement(tag);
 
     dom.style.position = 'absolute';
     dom.setAttribute('class', 'sigma-' + id);
@@ -419,6 +425,7 @@ sigma.renderers.canvas.prototype.resize = function (w, h) {
  * @return {sigma.renderers.canvas} Returns the instance itself.
  */
 sigma.renderers.canvas.prototype.clear = function () {
+    console.log('sigma renderers canvas this.contexts is', this.contexts)
     for (var k in this.contexts) {
         this.contexts[k].clearRect(0, 0, this.width, this.height);
     }
@@ -457,6 +464,7 @@ sigma.renderers.canvas.prototype.kill = function () {
  *
  * They are stored in different files, in the "./canvas" folder.
  */
+console.log("sigma.canvas is", sigma.canvas)
 sigma.canvas.nodes = sigma.canvas.nodes || {}
 sigma.canvas.edges = sigma.canvas.edges || {}
 sigma.canvas.labels = sigma.canvas.labels || {}
