@@ -200,7 +200,7 @@ function Tooltips(s, renderer, options) {
             _tooltip.innerHTML = options.template;
         }
 
-        var containerPosition = typeof window !== 'undefined' && window.getComputedStyle(renderer.container).position;
+        var containerPosition = window.getComputedStyle(renderer.container).position;
 
         if (containerPosition !== 'static') {
             _tooltip.style.position = 'absolute';

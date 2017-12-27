@@ -1,3 +1,5 @@
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom()
 import test from 'ava'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {myContainer} from '../../../inversify.config';

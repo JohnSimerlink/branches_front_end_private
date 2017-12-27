@@ -1,3 +1,5 @@
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom()
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';

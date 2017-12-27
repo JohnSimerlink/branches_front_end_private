@@ -1,5 +1,7 @@
 // tslint:disable no-var-requires
 // tslint:disable object-literal-sort-keys
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom()
 import {expect} from 'chai'
 
 import test from 'ava'

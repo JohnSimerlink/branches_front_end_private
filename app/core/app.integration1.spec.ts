@@ -1,4 +1,6 @@
 // tslint:disable object-literal-sort-keys
+import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
