@@ -30,14 +30,14 @@ test('AddNode Should call sigmaInstance.addNode and sigmaInstance.refresh()', (t
         addEdge(edge: Edge) { return {} as Graph}
     } as SigmaJs.Graph
     const sigmaInstance: SigmaJs.Sigma = {
-        refresh() {},
+        refresh(): void {},
         graph,
     } as SigmaJs.Sigma
-    const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
-        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(this.sigmaInstance)}
-        )
     const addNodeSpy = sinon.spy(graph, 'addNode')
     const refreshSpy = sinon.spy(sigmaInstance, 'refresh')
+    const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
+        {graph, refresh: refreshSpy}
+        )
     sigmaUpdater.addNode(node)
     expect(addNodeSpy.callCount).to.deep.equal(1)
     const calledWith = addNodeSpy.getCall(0).args[0]

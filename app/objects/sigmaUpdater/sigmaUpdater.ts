@@ -17,6 +17,7 @@ export class SigmaUpdater implements ISigmaUpdater {
         this.graph = graph
     }
     public addNode(node: Node): void {
+        log('sigmaUpdater addNode called')
         this.graph.addNode(node)
         this.refresh()
     }
