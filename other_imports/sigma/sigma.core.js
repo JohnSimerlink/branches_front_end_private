@@ -588,7 +588,6 @@ sigma.prototype.render = function (publishEvents) {
         prefix = 0;
 
     // Call each renderer:
-    console.log('sigmaCore renderers are ', this.renderers)
     a = Object.keys(this.renderers);
     for (i = 0, l = a.length; i < l; i++) {
 

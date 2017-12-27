@@ -141,7 +141,6 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
             prefix: this.options.prefix
         });
 
-    console.log("this.graph in sigma renderers is", this.graph)
     // Call the resize function:
     this.resize(false);
 
@@ -425,7 +424,6 @@ sigma.renderers.canvas.prototype.resize = function (w, h) {
  * @return {sigma.renderers.canvas} Returns the instance itself.
  */
 sigma.renderers.canvas.prototype.clear = function () {
-    console.log('sigma renderers canvas this.contexts is', this.contexts)
     for (var k in this.contexts) {
         this.contexts[k].clearRect(0, 0, this.width, this.height);
     }

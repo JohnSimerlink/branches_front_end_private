@@ -1,3 +1,5 @@
+import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
@@ -34,7 +36,6 @@ import Sigma = SigmaJs.Sigma;
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
-    configureSigma()
     const treeIdToDownload = TREE_ID
 
     const sampleTreeData: ITreeDataWithoutId = {

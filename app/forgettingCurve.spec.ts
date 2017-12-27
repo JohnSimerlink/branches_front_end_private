@@ -1,3 +1,5 @@
+import {injectFakeDom} from './testHelpers/injectFakeDom';
+injectFakeDom()
 import {expect} from 'chai'
 import {} from 'mocha'
 import * as curve from '../app/forgettingCurve'

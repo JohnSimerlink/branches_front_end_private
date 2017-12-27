@@ -1,5 +1,3 @@
-import {log} from '../app/core/log'
-log('myContainer', window, document, HTMLElement)
 import "./sigma/sigma.core.js"
 import "./sigma/conrad.js"
 import "./sigma/utils/sigma.utils.js"
