@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/content/MutableSubscribableContent.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/content</a> MutableSubscribableContent.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>43/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>43/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import test from 'ava'
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {
+    CONTENT_TYPES, ContentPropertyNames, FieldMutationTypes, IDatedMutation,
+    IProppedDatedMutation
+} from '../interfaces';
+import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {TYPES} from '../types';
+import {MutableSubscribableContent} from './MutableSubscribableContent';
+test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
+    ' should publish an update of the entire object\'s value '
+    + ' after startPublishing has been called', (t) =&gt; {
+    /* = myContainer.get&lt;ISubscribableMutableField&gt;(TYPES.ISubscribableMutableField)
+     // TODO: figure out why DI puts in a bad updatesCallback!
+    */
+&nbsp;
+    const type = new SubscribableMutableField&lt;CONTENT_TYPES&gt;({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField&lt;string&gt;({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField&lt;string&gt;({field: 'Columbus'})
+    const title = new SubscribableMutableField&lt;string&gt;({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
+    })
+&nbsp;
+    content.startPublishing()
+&nbsp;
+    const callback = sinon.spy()
+    content.onUpdate(callback)
+&nbsp;
+    const sampleMutation = myContainer.get&lt;IDatedMutation&lt;FieldMutationTypes&gt;&gt;(TYPES.IProppedDatedMutation)
+    // question.addMutation(sampleMutation)
+    // const newContentDataValue = content.val()
+    // const calledWith = callback.getCall(0).args[0]
+    // expect(callback.callCount).to.equal(1)
+    // expect(calledWith).to.deep.equal(newContentDataValue)
+    t.pass()
+})
+test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
+    ' should NOT publish an update of the entire object\'s value'
+    + ' before startPublishing has been called', (t) =&gt; {
+&nbsp;
+    /* = myContainer.get&lt;ISubscribableMutableField&gt;(TYPES.ISubscribableMutableField)
+     // TODO: figure out why DI puts in a bad updatesCallback!
+    */
+&nbsp;
+    const type = new SubscribableMutableField&lt;CONTENT_TYPES&gt;({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField&lt;string&gt;({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField&lt;string&gt;({field: 'Columbus'})
+    const title = new SubscribableMutableField&lt;string&gt;({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
+    })
+&nbsp;
+    const callback = sinon.spy()
+    content.onUpdate(callback)
+&nbsp;
+    expect(callback.callCount).to.equal(0)
+    t.pass()
+})
+test('MutableSubscribableContent:::addMutation ' +
+    ' should call addMutation on the appropriate descendant property' +
+    'and that mutation called on the descendant property should no longer have the propertyName on it', (t) =&gt; {
+    const type = new SubscribableMutableField&lt;CONTENT_TYPES&gt;({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField&lt;string&gt;({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField&lt;string&gt;({field: 'Columbus'})
+    const title = new SubscribableMutableField&lt;string&gt;({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
+    })
+    const questionAddMutationSpy = sinon.spy(question, 'addMutation')
+&nbsp;
+    // tslint:disable variable-name
+    const mutationWithoutPropName: IDatedMutation&lt;FieldMutationTypes&gt; = {
+        data: 'What is the capital of California?',
+        timestamp: Date.now(),
+        type: FieldMutationTypes.SET
+    }
+    const mutation: IProppedDatedMutation&lt;FieldMutationTypes, ContentPropertyNames&gt; = {
+        ...mutationWithoutPropName,
+        propertyName: ContentPropertyNames.QUESTION,
+    }
+&nbsp;
+    content.addMutation(mutation)
+    expect(questionAddMutationSpy.callCount).to.equal(1)
+    const calledWith = questionAddMutationSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal(mutationWithoutPropName)
+    t.pass()
+&nbsp;
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 15:50:25 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

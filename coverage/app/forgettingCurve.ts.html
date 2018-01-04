@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/forgettingCurve.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\prettify.css" />
+    <link rel="stylesheet" href="..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\index.html">All files</a> / <a href="index.html">app</a> forgettingCurve.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">77.27% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>34/44</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">61.11% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>11/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">77.78% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>7/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">77.27% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>34/44</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum'
+&nbsp;
+export const e = 2.7182828
+export const criticalRecall = 1 - 1 / e
+/* memory strength in decibels -
+ https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
+ */
+<span class="fstat-no" title="function not covered" >export function calculateStrength(</span>R, t) {
+    const proficiencyAsDecimal = <span class="cstat-no" title="statement not covered" >R / 100</span>
+    const logProficiency = <span class="cstat-no" title="statement not covered" >Math.log(proficiencyAsDecimal)</span>
+    const ebbinghaus = <span class="cstat-no" title="statement not covered" >-1 * t / logProficiency</span>
+    const dbE = <span class="cstat-no" title="statement not covered" >10 * Math.log10(ebbinghaus)</span>
+<span class="cstat-no" title="statement not covered" >    return dbE &gt; 0 ? dbE : 0</span>
+}
+// Se = previous estimated strength
+// R = proficiency from 0 to 100
+// t equals time since previous interaction
+<span class="fstat-no" title="function not covered" >export function calculateSecondsTilCriticalReviewTime(</span>strength) {
+<span class="cstat-no" title="statement not covered" >    return calculateTime(strength, criticalRecall)</span>
+}
+// function measureInitialPreviousInteractionStrength
+export function measurePreviousStrength(estimatedPreviousStrength, R, t) {
+&nbsp;
+    const proficiencyAsDecimal = R / 100
+    const logProficiency = Math.log(proficiencyAsDecimal)
+    const ebbinghaus = -1 * t / logProficiency
+    let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
+    measuredPreviousStrength = measuredPreviousStrength &gt; 0 ? measuredPreviousStrength : <span class="branch-1 cbranch-no" title="branch not covered" >0</span>
+&nbsp;
+    /* if proficiency is less than PROFICIENCIES.ONE, and its been a really long time
+    since the user last saw the fact,
+    our measure strength formula above can unintentionally think
+    the user's strength value was much higher than it possible
+    could have been,
+    since we are only recording the value as 1% and not the
+    actual .01% or whatever it actually is
+    */
+    // TODO: Think about what unintended side effects this could cause
+    if (doubleLessThanOrEqualTo(R, PROFICIENCIES.ONE) &amp;&amp; measuredPreviousStrength &gt; estimatedPreviousStrength ) {
+        measuredPreviousStrength = estimatedPreviousStrength
+    }
+&nbsp;
+    /* if proficiency is greater than PROFICIENCIES.FOUR,
+    and its been a really short time since the user last saw the fact,
+    our measure strength formula above can unintentionally think
+    the user's strength value was much lower than it possible could have been,
+    since we are only recording the value as PROFICIENCIES.FOUR% and not
+    the actually (PROFICIENCIES.FOUR + epsilon)% or whatever it actually is
+    */
+    if (doubleGreaterThanOrEqualTo(R, PROFICIENCIES.FOUR)  &amp;&amp; measuredPreviousStrength &lt; estimatedPreviousStrength ) {
+        measuredPreviousStrength = estimatedPreviousStrength
+    }
+    return measuredPreviousStrength
+    /*
+&nbsp;
+    11/10 - Part of me today wondered whether
+    this was going to cause decibel values to get permanently stuck at a level.
+    But then I realized this function isn't the one the determines the decibel delta after an interaction.
+    Rather we use the estimateCurrentStrength function to do that.
+&nbsp;
+    */
+}
+&nbsp;
+function doubleLessThanOrEqualTo(doubleOne, doubleTwo) {
+    return doubleOne &lt;= (doubleTwo + .01)
+}
+function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo) {
+    return doubleOne &gt;= (doubleTwo - .01)
+}
+&nbsp;
+// calculate percent change of recall (e.g. proficiency)
+// returns as a num in range [0,1]
+export function calculateRecall(S, t) {
+    return Math.pow(e, -1 * t / decibelsToEbbinghaus(S))
+}
+&nbsp;
+function decibelsToEbbinghaus(dbE) {
+    return Math.pow(10, dbE / 10)
+}
+// R input is in [0,1]
+export function calculateTime(S, R) {
+    return -1 * decibelsToEbbinghaus(S) * Math.log(R)
+}
+&nbsp;
+// current proficiency in [0, 100]
+export function estimateCurrentStrength(
+    previousInteractionStrengthDecibels,
+    currentProficiency,
+    secondsSinceLastInteraction
+) {
+    let newInteractionStrengthDecibels
+    const t = secondsSinceLastInteraction
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (currentProficiency &lt;= PROFICIENCIES.ONE) {
+        const t1percent = <span class="cstat-no" title="statement not covered" >calculateTime(previousInteractionStrengthDecibels, currentProficiency / 100)</span>
+<span class="cstat-no" title="statement not covered" >        if (t &gt;= t1percent) {</span>
+<span class="cstat-no" title="statement not covered" >            newInteractionStrengthDecibels = previousInteractionStrengthDecibels * t1percent / t</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >            newInteractionStrengthDecibels = previousInteractionStrengthDecibels</span>
+        }
+    } else {
+        currentProficiency = currentProficiency / 100
+        const Bt = 1 - calculateRecall(previousInteractionStrengthDecibels, t)
+        const Bp = (e * currentProficiency - 1) / (e - 1)
+        const Bc = 10 * (e - 1)
+        const deltaStrength = Bt * Bp * Bc
+        newInteractionStrengthDecibels = previousInteractionStrengthDecibels + deltaStrength
+    }
+    newInteractionStrengthDecibels = newInteractionStrengthDecibels &lt; 10 ? <span class="branch-0 cbranch-no" title="branch not covered" >10 </span>: newInteractionStrengthDecibels
+    return newInteractionStrengthDecibels
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Dec 16 2017 15:58:16 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\sorter.js"></script>
+</body>
+</html>

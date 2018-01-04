@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/sigmaNode/SigmaNodeHandler.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/sigmaNode</a> SigmaNodeHandler.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>88/88</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>88/88</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// tslint:disable object-literal-sort-keys
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {log} from '../../../app/core/log'
+import {myContainer} from '../../../inversify.config';
+import {CONTENT_TYPES, ISigmaNodeHandler, ISigmaRenderManager, ITreeLocationData} from '../interfaces';
+import {ObjectDataTypes} from '../interfaces';
+import {ITypeAndIdAndValUpdates} from '../interfaces';
+import {IContentData, IContentUserData, ICoordinate,
+    ISigmaNode, ITreeDataWithoutId, ITreeUserData} from '../interfaces';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {TYPES} from '../types';
+import {SigmaNodeHandler} from './SigmaNodeHandler';
+&nbsp;
+import {
+    CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID,
+    TREE_ID2
+} from '../../testHelpers/testHelpers';
+&nbsp;
+let sigmaNodes
+let sigmaNode1
+let sigmaNode2
+let renderedSigmaNodes
+&nbsp;
+let sigmaNodeHandler: ISigmaNodeHandler
+let sigmaRenderManager: ISigmaRenderManager
+describe('SigmaNodeHandler', () =&gt; {
+    beforeEach('init sigmaNodes', () =&gt; {
+        sigmaNode1 = myContainer.get&lt;ISigmaNode&gt;(TYPES.ISigmaNode)
+        sigmaNode2 = myContainer.get&lt;ISigmaNode&gt;(TYPES.ISigmaNode)
+        sigmaNodes = {}
+        renderedSigmaNodes = {}
+        sigmaNodes[SIGMA_ID1] = sigmaNode1
+        sigmaNodes[SIGMA_ID2] = sigmaNode2
+        sigmaRenderManager = myContainer.get&lt;ISigmaRenderManager&gt;(TYPES.ISigmaRenderManager)
+&nbsp;
+        sigmaNodeHandler = new SigmaNodeHandler(
+            {sigmaNodes, getSigmaIdsForContentId, renderedSigmaNodes, sigmaRenderManager}
+            )
+    })
+//
+    it('A Tree Update should call the correct method on the sigma Node with the correct args', () =&gt; {
+        const newContentId = '4324234'
+        const newParentId = '4344324234'
+        const newChildren = ['45344324234', 'aabc321', 'abcd43132']
+        const val: ITreeDataWithoutId = {
+            children: newChildren,
+            contentId: newContentId,
+            parentId: newParentId,
+        }
+        const update: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_DATA,
+            val,
+        }
+        const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeData')
+        const sigmaNode2ReceiveNewTreeDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeData')
+        // TODO: make one unit for testing that updateSigmaNode gets called correctly twice
+        // (and with the correct params ?). . .and make another unit for testing that updateSigmaNode behaves correctly
+&nbsp;
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewTreeDataSpy.callCount).to.equal(1)
+        expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0)
+    })
+//
+    it('A Tree Location Update should call the correct method on the sigma Node with the correct args', () =&gt; {
+        const val: ITreeLocationData = {
+            point: {
+                x: 5,
+                y: 9,
+            },
+        }
+        const update: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_LOCATION_DATA,
+            val,
+        }
+&nbsp;
+        const sigmaNode1ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeLocationData')
+        const sigmaNode2ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeLocationData')
+&nbsp;
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1)
+        expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0)
+    })
+//
+    it('A Tree User Data Update should call the correct method on the sigma Node with the correct args', () =&gt; {
+        const val: ITreeUserData = {
+            aggregationTimer: 1230,
+            proficiencyStats: {
+                UNKNOWN: 8,
+                ONE: 3,
+                TWO: 4,
+                THREE: 5,
+                FOUR: 8,
+            },
+        }
+        // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
+        const update: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_USER_DATA,
+            val,
+        }
+        const sigmaNode1ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData')
+        const sigmaNode2ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeUserData')
+&nbsp;
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1)
+        expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0)
+    })
+//
+    it('A Content Update should call the correct method on the sigma Node with the correct args', () =&gt; {
+        const val: IContentData = {
+            answer: 'Sacramento',
+            question: 'California',
+            type: CONTENT_TYPES.FACT,
+        }
+        // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
+        const update: ITypeAndIdAndValUpdates = {
+            id: CONTENT_ID,
+            type: ObjectDataTypes.CONTENT_DATA,
+            val,
+        }
+        const sigmaNode1ReceiveNewContentDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentData')
+        const sigmaNode2ReceiveNewContentDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentData')
+&nbsp;
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
+    })
+//
+    it('A Content User Update should call the correct method on the sigma Node with the correct args', () =&gt; {
+        const val: IContentUserData = {
+            lastRecordedStrength: 54, // TODO: this mig
+            overdue: true,
+            proficiency: PROFICIENCIES.ONE,
+            timer: 432,
+        }
+        // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
+        const update: ITypeAndIdAndValUpdates = {
+            id: CONTENT_ID,
+            type: ObjectDataTypes.CONTENT_USER_DATA,
+            val,
+        }
+        const sigmaNode1ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentUserData')
+        const sigmaNode2ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentUserData')
+&nbsp;
+        sigmaNodeHandler.handleUpdate(update)
+        expect(sigmaNode1ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
+        expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
+    })
+&nbsp;
+    it('A receive tree data and receive tree location data should place the node into the rendered nodes list', () =&gt; {
+        const newContentId = '4324234'
+        const newParentId = '4344324234'
+        const newChildren = ['45344324234', 'aabc321', 'abcd43132']
+        const val1: ITreeDataWithoutId = {
+            children: newChildren,
+            contentId: newContentId,
+            parentId: newParentId,
+        }
+        const update1: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_DATA,
+            val: val1,
+        }
+&nbsp;
+        const val2: ITreeLocationData = {
+            point: {
+                x: 5,
+                y: 9,
+            },
+        }
+        const update2: ITypeAndIdAndValUpdates = {
+            id: TREE_ID,
+            type: ObjectDataTypes.TREE_LOCATION_DATA,
+            val: val2,
+        }
+&nbsp;
+        const sigmaRenderManagerMarkTreeDataLoadedSpy = sinon.spy(sigmaRenderManager, 'markTreeDataLoaded')
+&nbsp;
+        log('renderedSigmaNodes are ', renderedSigmaNodes)
+        let isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(true)
+        log('renderedSigmaNodes are ', renderedSigmaNodes)
+        sigmaNodeHandler.handleUpdate(update1)
+        expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1)
+        isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(true)
+        isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(true)
+        sigmaNodeHandler.handleUpdate(update2)
+        isNotRendered = !renderedSigmaNodes[TREE_ID]
+        expect(isNotRendered).to.equal(false)
+        // /* TODO: rather than just adding an object to a hashmap, have a renderedNodeList.add() method,
+        //  which will also call sigmaInstance.addNode() */
+    })
+&nbsp;
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Dec 09 2017 10:58:24 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for objects/set/MutableSet.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">objects/set</a> MutableSet.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.7% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>2/74</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.82% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>2/71</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {expect} from 'chai'
+import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
+<span class="cstat-no" title="statement not covered" >import {SetMutationTypes} from './SetMutationTypes';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >describe('MutableSet:string', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+    // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
+    // const po = new Point({x:5, y:6})
+    const FIRST_MEMBER_ID = <span class="cstat-no" title="statement not covered" >'abc123'</span>
+    const SECOND_MEMBER_ID = <span class="cstat-no" title="statement not covered" >'dfabc123'</span>
+    const THIRD_MEMBER_ID = <span class="cstat-no" title="statement not covered" >'gfabc123'</span>
+    const FOURTH_MEMBER_ID = <span class="cstat-no" title="statement not covered" >'hgabc123'</span>
+    const NONEXISTENT_MEMBER_ID = <span class="cstat-no" title="statement not covered" >'nonexistentid'</span>
+    const INIT_MEMBER_VALUE = <span class="cstat-no" title="statement not covered" >[]</span>
+    const FIRST_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >{</span>
+        data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+    }
+    const FIRST_MEMBER_VALUE = [...<span class="cstat-no" title="statement not covered" >INIT_MEMBER_VALUE, FIRST_MEMBER_ID]</span>
+    const SECOND_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >{</span>
+        data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.REMOVE
+    }
+    const THIRD_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >FIRST_SUCCESSFUL_MUTATION</span>
+<span class="cstat-no" title="statement not covered" >    THIRD_SUCCESSFUL_MUTATION.timestamp = Date.now()</span>
+    const FOURTH_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >{</span>
+        data: SECOND_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+    }
+    const FIFTH_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >{</span>
+        data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+    }
+    const SIXTH_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >{</span>
+        data: FOURTH_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+    }
+    const SEVENTH_SUCCESSFUL_MUTATION = <span class="cstat-no" title="statement not covered" >{</span>
+        data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.REMOVE
+    }
+    const membersAfterSixthSuccessfulMutation = [
+        ...<span class="cstat-no" title="statement not covered" >FIRST_MEMBER_VALUE,</span>
+        SECOND_MEMBER_ID,
+        THIRD_MEMBER_ID,
+        FOURTH_MEMBER_ID
+    ]
+    const membersAfterSeventhSuccessfulMutation = [
+        ...<span class="cstat-no" title="statement not covered" >FIRST_MEMBER_VALUE,</span>
+        SECOND_MEMBER_ID,
+        FOURTH_MEMBER_ID
+    ]
+    const firstAndFourthIds = <span class="cstat-no" title="statement not covered" >[</span>
+        FIRST_MEMBER_ID, FOURTH_MEMBER_ID
+    ]
+    // ,SECOND_MEMBER_ID, THIRD_MEMBER_ID, FOURTH_MEMBER_ID]
+    const stringSet = <span class="cstat-no" title="statement not covered" >new SubscribableMutableStringSet()</span>
+    const FIRST_MUTATION_INDEX = <span class="cstat-no" title="statement not covered" >0</span>
+    const SECOND_MUTATION_INDEX = <span class="cstat-no" title="statement not covered" >1</span>
+    const THIRD_MUTATION_INDEX = <span class="cstat-no" title="statement not covered" >2</span>
+    const FOURTH_MUTATION_INDEX = <span class="cstat-no" title="statement not covered" >3</span>
+    const FIFTH_MUTATION_INDEX = <span class="cstat-no" title="statement not covered" >4</span>
+<span class="cstat-no" title="statement not covered" >    it('INIT should have no members after constructor', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(INIT_MEMBER_VALUE)</span>
+    })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    it('INIT should return history of mutations on the point after creation', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(0)</span>
+        // TODO: ^^ Fix Violation of Law of Demeter
+    } )
+<span class="cstat-no" title="statement not covered" >    it('GOOD ADD mutation should add member to members array and add entry to mutation history', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(FIRST_SUCCESSFUL_MUTATION)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(FIRST_MEMBER_VALUE)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(1)</span>
+    })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    it(`BAD ADD mutation that tries adding a member that already exists should throw a RangeError</span>
+    and keep the data and mutation values the same`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        const disallowedRedundantMutation = <span class="cstat-no" title="statement not covered" >FIRST_SUCCESSFUL_MUTATION</span>
+<span class="cstat-no" title="statement not covered" >        disallowedRedundantMutation.timestamp = Date.now()</span>
+<span class="cstat-no" title="statement not covered" >        expect(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" ></span>stringSet.addMutation(disallowedRedundantMutation))</span>.to.throw(RangeError)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(FIRST_MEMBER_VALUE)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(1)</span>
+    })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    it(`BAD REMOVE mutation on non-existent member will throw range error</span>
+    and should keep data and mutations the same`
+        , <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+            const badRemoveMutation = <span class="cstat-no" title="statement not covered" >{</span>
+                data: NONEXISTENT_MEMBER_ID,
+                timestamp: Date.now(),
+                type: SetMutationTypes.REMOVE
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            expect(<span class="fstat-no" title="function not covered" >() =&gt; {<span class="cstat-no" title="statement not covered" ></span>stringSet.addMutation(badRemoveMutation)}</span>).to.throw(RangeError)</span>
+<span class="cstat-no" title="statement not covered" >            expect(stringSet.getMembers()).to.deep.equal(FIRST_MEMBER_VALUE)</span>
+<span class="cstat-no" title="statement not covered" >            expect(stringSet.mutations().length).to.equal(1)</span>
+        })
+<span class="cstat-no" title="statement not covered" >    it(`GOOD REMOVE mutation on existing member will remove member</span>
+    and should add another mutation`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        const goodRemoveMutation = <span class="cstat-no" title="statement not covered" >SECOND_SUCCESSFUL_MUTATION</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(goodRemoveMutation)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(INIT_MEMBER_VALUE)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(2)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it(`BAD REMOVE (2) mutation on non-existent member will throw range error</span>
+    and should keep data and mutations the same`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        // const goodRemoveMutation = SECOND_SUCCESSFUL_MUTATION
+        const badRemoveMutation = <span class="cstat-no" title="statement not covered" >{</span>
+            data: FIRST_MEMBER_ID,
+            timestamp: Date.now(),
+            type: SetMutationTypes.REMOVE
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        expect( <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" ></span>stringSet.addMutation(badRemoveMutation))</span>.to.throw(RangeError)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(INIT_MEMBER_VALUE)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(2)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it(`GOOD ADD mutation on a member that has been removed by another mutation</span>
+    will simply append another ADD MEMBER mutation
+    and should increment mutations length`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        // const goodRemoveMutation = SECOND_SUCCESSFUL_MUTATION
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(THIRD_SUCCESSFUL_MUTATION)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(FIRST_MEMBER_VALUE)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(3)</span>
+    })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    it(`3 GOOD ADD mutations should increase the num members to 4,</span>
+    and num mutations to 6`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        // const goodRemoveMutation = SECOND_SUCCESSFUL_MUTATION
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(FOURTH_SUCCESSFUL_MUTATION)</span>
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(FIFTH_SUCCESSFUL_MUTATION)</span>
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(SIXTH_SUCCESSFUL_MUTATION)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(membersAfterSixthSuccessfulMutation)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(6)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it(`GOOD REMOVE mutation should decrease the num members to 3,</span>
+    and num mutations to 7`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        // const goodRemoveMutation = SECOND_SUCCESSFUL_MUTATION
+<span class="cstat-no" title="statement not covered" >        stringSet.addMutation(SEVENTH_SUCCESSFUL_MUTATION)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.getMembers()).to.deep.equal(membersAfterSeventhSuccessfulMutation)</span>
+<span class="cstat-no" title="statement not covered" >        expect(stringSet.mutations().length).to.equal(7)</span>
+    })
+    // TODO: do tests with injecting a mutations array that is not empty
+&nbsp;
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 25 2017 12:28:08 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>

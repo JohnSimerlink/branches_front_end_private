@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/stores/content/SubscribableContentStore.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/stores/content</a> SubscribableContentStore.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>35/35</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>35/35</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import test from 'ava'
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../../inversify.config';
+import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
+import {MutableSubscribableContent} from '../../content/MutableSubscribableContent';
+import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {
+    CONTENT_TYPES,
+    ContentPropertyNames, FieldMutationTypes, IMutableSubscribableContent, IProppedDatedMutation,
+    ISubscribableContentStore, ISubscribableContentStoreSource, ISubscribableStoreSource
+} from '../../interfaces';
+import {TYPES} from '../../types';
+import {SubscribableContentStore} from './SubscribableContentStore';
+&nbsp;
+test('SubscribableContentStore &gt; addAndSubscribeToItem:::An update' +
+    ' in a member content should be published to a subscriber of the content data stores', (t) =&gt; {
+    /* TODO: Note this is more of an integration test than a true unit test.
+    It might be that some of these modules are designed poorly, being the reason
+     why I couldn't find an easy way to do a pure unit test.
+     e.g. rather than just triggering an update directly on content,
+     I had to do it indirectly by adding a mutation
+     */
+    const contentId = CONTENT_ID2
+    const type = new SubscribableMutableField&lt;CONTENT_TYPES&gt;({field: CONTENT_TYPES.FACT})
+    const question = new SubscribableMutableField&lt;string&gt;({field: 'What is capital of Ohio?'})
+    const answer = new SubscribableMutableField&lt;string&gt;({field: 'Columbus'})
+    const title = new SubscribableMutableField&lt;string&gt;({field: ''})
+    const content = new MutableSubscribableContent({
+        type, question, answer, title, updatesCallbacks: [],
+    })
+&nbsp;
+    const storeSource: ISubscribableContentStoreSource
+        = myContainer.get&lt;ISubscribableContentStoreSource&gt;
+    (TYPES.ISubscribableContentStoreSource)
+    const contentStore: ISubscribableContentStore = new SubscribableContentStore({
+        storeSource,
+        updatesCallbacks: []
+    })
+    // const contentStore = myContainer.get&lt;ISubscribableContentStore&gt;(TYPES.ISubscribableContentStore)
+    const callback1 = sinon.spy()
+    const callback2 = sinon.spy()
+&nbsp;
+    contentStore.onUpdate(callback1)
+    contentStore.onUpdate(callback2)
+    contentStore.startPublishing()
+    /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
+     */
+    contentStore.addAndSubscribeToItem(contentId, content)
+&nbsp;
+    const sampleMutation: IProppedDatedMutation&lt;FieldMutationTypes, ContentPropertyNames&gt; = {
+        data: 'Sacramento',
+        propertyName: ContentPropertyNames.ANSWER,
+        timestamp: Date.now(),
+        type: FieldMutationTypes.SET,
+    }
+&nbsp;
+    content.addMutation(sampleMutation)
+&nbsp;
+    const contentNewVal = content.val()
+    expect(callback1.callCount).to.equal(1)
+    expect(callback1.getCall(0).args[0].id).to.equal(contentId)
+    expect(callback1.getCall(0).args[0].val).to.deep.equal(contentNewVal)
+    expect(callback2.callCount).to.equal(1)
+    expect(callback2.getCall(0).args[0].id).to.equal(contentId)
+    expect(callback2.getCall(0).args[0].val).to.deep.equal(contentNewVal)
+    t.pass()
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 15:50:25 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\..\sorter.js"></script>
+</body>
+</html>
