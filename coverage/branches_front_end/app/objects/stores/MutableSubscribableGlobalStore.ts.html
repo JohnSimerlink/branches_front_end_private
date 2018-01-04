@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/stores/MutableSubscribableGlobalStore.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/stores</a> MutableSubscribableGlobalStore.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.15% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>53/54</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">85.71% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>6/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">97.83% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>45/46</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119</td><td class="line-coverage quiet"><span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log'
+import {
+    AllPropertyMutationTypes, ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
+    ContentUserPropertyNames, IGlobalDatedMutation,
+    IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
+    TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames
+} from '../interfaces';
+import {TYPES} from '../types';
+import {SubscribableGlobalStore} from './SubscribableGlobalStore';
+&nbsp;
+@injectable()
+class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
+    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
+        treeStore, treeUserStore, treeLocationStore,
+        contentUserStore, contentStore, updatesCallbacks
+    }) {
+        super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+    }
+    public addMutation(mutation: IGlobalDatedMutation&lt;AllPropertyMutationTypes&gt;) {
+        switch (mutation.objectType) {
+            case ObjectTypes.TREE: {
+                const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
+                const type: TreePropertyMutationTypes = mutation.type as TreePropertyMutationTypes
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const treeStoreMutation: IIdProppedDatedMutation&lt;TreePropertyMutationTypes, TreePropertyNames&gt; = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type,
+                }
+                this.treeStore.addMutation(treeStoreMutation)
+                break
+            }
+            case ObjectTypes.TREE_USER: {
+                const propertyName: TreeUserPropertyNames = mutation.propertyName as TreeUserPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const type: TreeUserPropertyMutationTypes = mutation.type as TreeUserPropertyMutationTypes
+                const treeUserStoreMutation:
+                    IIdProppedDatedMutation&lt;TreeUserPropertyMutationTypes, TreeUserPropertyNames&gt; = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type,
+                }
+                // } as IIdProppedDatedMutation&lt;TreeUserPropertyMutationTypes, TreeUserPropertyNames&gt;
+                // ^^ TODO: figure out why I need this cast but not in the other cases on the switch . . .
+                this.treeUserStore.addMutation(treeUserStoreMutation)
+                break
+            }
+            case ObjectTypes.TREE_LOCATION: {
+                const propertyName: TreeLocationPropertyNames = mutation.propertyName as TreeLocationPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const type: TreeLocationPropertyMutationTypes = mutation.type as TreeLocationPropertyMutationTypes
+                const treeLocationStoreMutation:
+                    IIdProppedDatedMutation&lt;TreeLocationPropertyMutationTypes, TreeLocationPropertyNames&gt; = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type,
+                }
+                this.treeLocationStore.addMutation(treeLocationStoreMutation)
+                break
+            }
+            case ObjectTypes.CONTENT_USER: {
+                const propertyName: ContentUserPropertyNames = mutation.propertyName as ContentUserPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const contentUserStoreMutation:
+                  IIdProppedDatedMutation&lt;ContentUserPropertyMutationTypes, ContentUserPropertyNames&gt; = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
+                }
+                this.contentUserStore.addMutation(contentUserStoreMutation)
+                break
+            }
+            case ObjectTypes.CONTENT: {
+                const propertyName: ContentPropertyNames = mutation.propertyName as ContentPropertyNames
+                // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
+                const contentStoreMutation:
+                    IIdProppedDatedMutation&lt;ContentPropertyMutationTypes, ContentPropertyNames&gt; = {
+                    data: mutation.data,
+                    id: mutation.id,
+                    propertyName,
+                    timestamp: mutation.timestamp,
+                    type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
+                }
+                this.contentStore.addMutation(contentStoreMutation)
+                break
+            }
+        }
+    }
+    public callCallbacks() {
+        super.callCallbacks()
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public mutations(): Array&lt;IGlobalDatedMutation&lt;AllPropertyMutationTypes&gt;&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('Method not implemented.');</span>
+    }
+&nbsp;
+}
+&nbsp;
+@injectable()
+class MutableSubscribableGlobalStoreArgs {
+    @inject(TYPES.Array) public updatesCallbacks;
+    @inject(TYPES.IMutableSubscribableTreeStore) public treeStore
+    @inject(TYPES.IMutableSubscribableTreeUserStore) public treeUserStore
+    @inject(TYPES.IMutableSubscribableTreeLocationStore) public treeLocationStore
+    @inject(TYPES.IMutableSubscribableContentStore) public contentStore
+    @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore
+}
+export {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 15:50:27 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

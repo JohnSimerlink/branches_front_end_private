@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/tree/SubscribableTree.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/tree</a> SubscribableTree.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>48/48</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>48/48</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import test from 'ava'
+import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {
+    ISubscribableMutableField,
+    ISubscribableMutableStringSet,
+} from '../interfaces';
+import {TYPES} from '../types';
+import {SubscribableTree} from './SubscribableTree';
+&nbsp;
+test('SubscribableTree:::constructor should set all the subscribable properties', (t) =&gt; {
+    const contentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const parentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const children = myContainer.get&lt;ISubscribableMutableStringSet&gt;(TYPES.ISubscribableMutableStringSet)
+    const TREE_ID = 'efa123'
+    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+    expect(tree.contentId).to.deep.equal(contentId)
+    expect(tree.parentId).to.deep.equal(parentId)
+    expect(tree.children).to.deep.equal(children)
+    expect(tree.getId()).to.deep.equal(TREE_ID)
+    t.pass()
+})
+test('SubscribableTree:::.val() should display the value of the object', (t) =&gt; {
+    const contentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const parentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const children = myContainer.get&lt;ISubscribableMutableStringSet&gt;(TYPES.ISubscribableMutableStringSet)
+    const TREE_ID = 'efa123'
+    const expectedVal = {
+        children: children.val(),
+        contentId: contentId.val(),
+        parentId: parentId.val(),
+    }
+    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+    expect(tree.val()).to.deep.equal(expectedVal)
+    t.pass()
+})
+test('SubscribableTree:::.getId() should display the id of the object', (t) =&gt; {
+    const contentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const parentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const children = myContainer.get&lt;ISubscribableMutableStringSet&gt;(TYPES.ISubscribableMutableStringSet)
+    const TREE_ID = 'efa123'
+    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+    expect(tree.getId()).to.deep.equal(TREE_ID)
+    t.pass()
+})
+test('SubscribableTree:::startPublishing() should call the onUpdate' +
+    ' methods of all member Subscribable properties', (t) =&gt; {
+    const contentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const parentId = myContainer.get&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString)
+    const children = myContainer.get&lt;ISubscribableMutableStringSet&gt;(TYPES.ISubscribableMutableStringSet)
+    const TREE_ID = 'efa123'
+    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+    const contentIdOnUpdateSpy = sinon.spy(contentId, 'onUpdate')
+    const parentIdOnUpdateSpy = sinon.spy(parentId, 'onUpdate')
+    const childrenOnUpdateSpy = sinon.spy(children, 'onUpdate')
+    tree.startPublishing()
+    expect(contentIdOnUpdateSpy.callCount).to.deep.equal(1)
+    expect(parentIdOnUpdateSpy.callCount).to.deep.equal(1)
+    expect(childrenOnUpdateSpy.callCount).to.deep.equal(1)
+    t.pass()
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 15:50:25 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

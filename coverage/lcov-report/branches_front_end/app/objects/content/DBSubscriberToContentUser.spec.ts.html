@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/content/DBSubscriberToContentUser.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/content</a> DBSubscriberToContentUser.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">29.63% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>8/27</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">33.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">29.63% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>8/27</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {IDatabaseSyncer, IDBSubscriber, ISubscribableContentUser} from '../interfaces';
+import {TYPES} from '../types';
+import {DBSubscriberToContentUser} from './DBSubscriberToContentUser';
+&nbsp;
+describe('IDBSubscriber &gt; DBSubscriberToContentUser', () =&gt; {
+    let subscribableContentUser
+    let overdueSyncer: IDatabaseSyncer
+    let proficiencySyncer: IDatabaseSyncer
+    let lastRecordedStrengthSyncer: IDatabaseSyncer
+    let timerSyncer: IDatabaseSyncer
+    let dbSubscriberToContentUser: IDBSubscriber
+    beforeEach('constructor', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        subscribableContentUser = myContainer.get&lt;ISubscribableContentUser&gt;(TYPES.ISubscribableContentUser)</span>
+<span class="cstat-no" title="statement not covered" >        overdueSyncer = myContainer.get&lt;IDatabaseSyncer&gt;(TYPES.IDatabaseSyncer)</span>
+<span class="cstat-no" title="statement not covered" >        proficiencySyncer = myContainer.get&lt;IDatabaseSyncer&gt;(TYPES.IDatabaseSyncer)</span>
+<span class="cstat-no" title="statement not covered" >        lastRecordedStrengthSyncer = myContainer.get&lt;IDatabaseSyncer&gt;(TYPES.IDatabaseSyncer)</span>
+<span class="cstat-no" title="statement not covered" >        timerSyncer = myContainer.get&lt;IDatabaseSyncer&gt;(TYPES.IDatabaseSyncer)</span>
+<span class="cstat-no" title="statement not covered" >        dbSubscriberToContentUser = new DBSubscriberToContentUser(</span>
+            {
+                lastRecordedStrength: subscribableContentUser.lastRecordedStrength,
+                lastRecordedStrengthSyncer,
+                overdue: subscribableContentUser.overdue,
+                overdueSyncer,
+                proficiency: subscribableContentUser.proficiency,
+                proficiencySyncer,
+                timer: subscribableContentUser.timer,
+                timerSyncer,
+            }
+        )
+    })
+    it('subscribe should call subscribe on each of the database syncers', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        const overdueSyncerSubscribeSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(overdueSyncer, 'subscribe')</span>
+        const proficiencySyncerSubscribeSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(proficiencySyncer, 'subscribe')</span>
+        const lastRecordedStrengthSyncerSubscribeSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(lastRecordedStrengthSyncer, 'subscribe')</span>
+        const timerSyncerSubscribeSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(timerSyncer, 'subscribe')</span>
+<span class="cstat-no" title="statement not covered" >        expect(overdueSyncerSubscribeSpy.callCount).to.equal(0)</span>
+<span class="cstat-no" title="statement not covered" >        expect(proficiencySyncerSubscribeSpy.callCount).to.equal(0)</span>
+<span class="cstat-no" title="statement not covered" >        expect(lastRecordedStrengthSyncerSubscribeSpy.callCount).to.equal(0)</span>
+<span class="cstat-no" title="statement not covered" >        expect(timerSyncerSubscribeSpy.callCount).to.equal(0)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        dbSubscriberToContentUser.subscribe()</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        expect(overdueSyncerSubscribeSpy.callCount).to.equal(1)</span>
+<span class="cstat-no" title="statement not covered" >        expect(proficiencySyncerSubscribeSpy.callCount).to.equal(1)</span>
+<span class="cstat-no" title="statement not covered" >        expect(lastRecordedStrengthSyncerSubscribeSpy.callCount).to.equal(1)</span>
+<span class="cstat-no" title="statement not covered" >        expect(timerSyncerSubscribeSpy.callCount).to.equal(1)</span>
+     })
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Dec 05 2017 18:37:27 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>
