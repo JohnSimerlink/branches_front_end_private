@@ -7,6 +7,7 @@ const secondsInDay = secondsInHour * 24
 const secondsInWeek = secondsInDay * 7
 const secondsInYear = secondsInDay * 365
 const secondsInMonth = secondsInYear / 12
+require('./forgettingCalculator.less')
 export function truncateToHundredths(num) {
     return Math.floor(num * 100) / 100
 }
@@ -26,6 +27,7 @@ export default {
             seconds: 0,
             s: 60,
             r: 70,
+            highlight: 'none',
         }
     },
     async created() {
@@ -41,16 +43,18 @@ export default {
         const hours = url.searchParams.get('hours')
         const minutes = url.searchParams.get('minutes')
         const seconds = url.searchParams.get('seconds')
+        const highlight = url.searchParams.get('highlight')
 
         this.s = s || this.s
         this.r = r || this.r
-        this.years = years
-        this.months = months
-        this.weeks = weeks
-        this.days = days
-        this.hours = hours
-        this.minutes = minutes
-        this.seconds = seconds
+        this.years = years || this.years
+        this.months = months || this.months
+        this.weeks = weeks || this.weeks
+        this.days = days || this.days
+        this.hours = hours || this.hours
+        this.minutes = minutes || this.minutes
+        this.seconds = seconds || this.seconds
+        this.highlight = highlight || this.highlight
         log('forgettingcalculator component created')
     },
     computed: {
@@ -157,6 +161,15 @@ export default {
             log('secondsComputed is', secondsComputed)
             return secondsComputed
         },
+        timeHighlighted() {
+            return this.highlight === 'time'
+        },
+        strengthHighlighted() {
+            return this.highlight === 'strength'
+        },
+        recallHighlighted() {
+            return this.highlight === 'recall'
+        }
     },
     methods: {
     },
