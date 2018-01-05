@@ -1,4 +1,5 @@
 TN:
+<<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 SF:C:\Users\John\dev\branches_front_end\app\forgettingCurve.ts
 FN:8,calculateStrength
@@ -22,6 +23,8 @@ FNDA:6,decibelsToEbbinghaus
 FNDA:1,calculateTime
 FNDA:5,estimateCurrentStrength
 =======
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 SF:C:\Users\John\dev\branches_front_end\inversify.config.ts
 FN:143,(anonymous_0)
 FN:152,(anonymous_1)
@@ -6439,11 +6442,15 @@ FNDA:1,(anonymous_0)
 FNDA:1,(anonymous_1)
 FNDA:1,(anonymous_2)
 FNDA:1,(anonymous_3)
+<<<<<<< HEAD
 >>>>>>> Init Forgetting Curve Calculator Widget
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 DA:1,1
 DA:2,1
 DA:3,1
 DA:4,1
+<<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 DA:9,0
 DA:10,0
@@ -6557,6 +6564,8 @@ DA:9,1
 LF:5
 LH:4
 =======
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 DA:9,1
 DA:10,1
 DA:12,1
@@ -6758,11 +6767,15 @@ DA:36,1
 DA:37,1
 LF:20
 LH:19
+<<<<<<< HEAD
 >>>>>>> Init Forgetting Curve Calculator Widget
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 BRF:0
 BRH:0
 end_of_record
 TN:
+<<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 SF:C:\Users\John\dev\branches_front_end\app\core\md5wrapper.js
 FN:3,default_1
@@ -6776,6 +6789,8 @@ DA:6,1
 LF:4
 LH:4
 =======
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 SF:C:\Users\John\dev\branches_front_end\app\objects\treeLocation\MutableSubscribableTreeLocation.spec.ts
 FN:15,(anonymous_1)
 FN:29,(anonymous_2)
@@ -6861,11 +6876,15 @@ DA:142,1
 DA:143,1
 LF:70
 LH:70
+<<<<<<< HEAD
 >>>>>>> Init Forgetting Curve Calculator Widget
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 BRF:0
 BRH:0
 end_of_record
 TN:
+<<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 SF:C:\Users\John\dev\branches_front_end\app\objects\contentItem\uriParser.ts
 FN:2,getLastNBreadcrumbsString
@@ -6909,6 +6928,8 @@ BRDA:13,0,1,0
 BRDA:31,1,0,7
 BRDA:31,1,1,0
 =======
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 SF:C:\Users\John\dev\branches_front_end\app\objects\treeLocation\MutableSubscribableTreeLocation.ts
 FN:18,(anonymous_9)
 FN:21,MutableSubscribableTreeLocation
@@ -7032,11 +7053,15 @@ BRDA:27,0,0,22
 BRDA:27,0,1,0
 BRDA:35,1,0,0
 BRDA:35,1,1,4
+<<<<<<< HEAD
 >>>>>>> Init Forgetting Curve Calculator Widget
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 BRF:4
 BRH:2
 end_of_record
 TN:
+<<<<<<< HEAD
 <<<<<<< 1b0e6dc60757a0a28fcd6e6109d1fd7eb488983b
 SF:C:\Users\John\dev\branches_front_end\app\objects\tree\proficiencyStats.ts
 FN:1,(anonymous_0)
@@ -7100,6 +7125,8 @@ BRDA:40,8,1,0
 BRF:20
 BRH:7
 =======
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 SF:C:\Users\John\dev\branches_front_end\app\objects\treeUser\DBSubscriberToTreeUser.spec.ts
 FN:13,(anonymous_0)
 FN:27,(anonymous_1)
@@ -7491,5 +7518,8 @@ LH:20
 BRDA:15,0,0,4
 BRF:1
 BRH:1
+<<<<<<< HEAD
 >>>>>>> Init Forgetting Curve Calculator Widget
+=======
+>>>>>>> 366df2586362df079927af172f325d9c30d9b98e
 end_of_record
