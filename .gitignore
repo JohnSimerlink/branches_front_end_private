@@ -4,6 +4,7 @@ src/firebase.prod.config.json
 src/env.js
 .idea
 
+coverage
 branches.pem
 .deploy-configured
 .coveralls.yml
