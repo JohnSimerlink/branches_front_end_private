@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/dataStores/globalDataStore.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/dataStores</a> globalDataStore.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">57.78% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>26/45</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">57.78% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>26/45</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {myContainer} from '../../../inversify.config';
+import {IdMutationTypes} from '../id/IdMutationTypes';
+import {SubscribableMutableId} from '../id/SubscribableMutableId';
+import {IDatedMutation} from '../mutations/IMutation';
+import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {SubscribableBasicTree} from '../tree/SubscribableBasicTree';
+import {TreePropertyNames} from '../tree/TreePropertyNames';
+import {TYPES} from '../types';
+import {ObjectTypes} from './ObjectTypes';
+import {SubscribableGlobalDataStore} from './SubscribableGlobalDataStore';
+import {ISubscribableTreeDataStore} from './SubscribableTreeDataStore';
+&nbsp;
+describe('SubscribableGlobalDataStore', () =&gt; {
+    it(' calling startBroadcasting on GlobalStore, should call onUpdate on each of the component Stores', () =&gt; {
+        const contentId = new SubscribableMutableId()
+        const parentId = new SubscribableMutableId()
+        const children = new SubscribableMutableStringSet()
+        const TREE_ID = 'efa123'
+        const tree = new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
+        // const tree = myContainer.get&lt;ISubscribableBasicTree&gt;(TYPES.ISubscribableBasicTree)
+        // &lt;&lt;&lt; TODO: using this dependency injection causes this entire test to fail. WHY?
+        tree.publishUponDescendantUpdates()
+        const treeStore = myContainer.get&lt;ISubscribableTreeDataStore&gt;(TYPES.ISubscribableTreeDataStore)
+        const globalStore = new SubscribableGlobalDataStore(
+            {
+                subscribableTreeDataStore: treeStore,
+                updatesCallbacks: [],
+            }
+        )
+        const treeStoreOnUpdateSpy = sinon.spy(treeStore, 'onUpdate')
+&nbsp;
+        expect(treeStoreOnUpdateSpy.callCount).to.equal(0)
+        globalStore.startBroadcasting()
+        expect(treeStoreOnUpdateSpy.callCount).to.equal(1)
+        expect(treeStoreOnUpdateSpy.call()).to.equal(1)
+    })
+&nbsp;
+    it('After calling startBroadcasting, globalStore should publish updates'
+        + ' when one of its component stores publishes an update', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+        const contentId = <span class="cstat-no" title="statement not covered" >new SubscribableMutableId()</span>
+        const parentId = <span class="cstat-no" title="statement not covered" >new SubscribableMutableId()</span>
+        const children = <span class="cstat-no" title="statement not covered" >new SubscribableMutableStringSet()</span>
+        const TREE_ID = <span class="cstat-no" title="statement not covered" >'efa123'</span>
+        const tree = <span class="cstat-no" title="statement not covered" >new SubscribableBasicTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})</span>
+        // const tree = myContainer.get&lt;ISubscribableBasicTree&gt;(TYPES.ISubscribableBasicTree)
+        // &lt;&lt;&lt; TODO: using this dependency injection causes this entire test to fail. WHY?
+<span class="cstat-no" title="statement not covered" >        tree.publishUponDescendantUpdates()</span>
+        const treeStore = <span class="cstat-no" title="statement not covered" >myContainer.get&lt;ISubscribableTreeDataStore&gt;(TYPES.ISubscribableTreeDataStore)</span>
+        const globalStore = <span class="cstat-no" title="statement not covered" >new SubscribableGlobalDataStore(</span>
+            {
+                subscribableTreeDataStore: treeStore,
+                updatesCallbacks: [],
+            }
+        )
+        const callback1 = <span class="cstat-no" title="statement not covered" >sinon.spy()</span>
+        const callback2 = <span class="cstat-no" title="statement not covered" >sinon.spy()</span>
+&nbsp;
+        const globalStoreCallCallbacksSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(globalStore, 'callCallbacks')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        globalStore.onUpdate(callback2)</span>
+<span class="cstat-no" title="statement not covered" >        globalStore.onUpdate(callback1)</span>
+<span class="cstat-no" title="statement not covered" >        treeStore.addAndSubscribeToItem({id: TREE_ID, item: tree})</span>
+        const sampleMutation = <span class="cstat-no" title="statement not covered" >myContainer.get&lt;IDatedMutation&lt;IdMutationTypes&gt;&gt;(TYPES.IDatedMutation)</span>
+<span class="cstat-no" title="statement not covered" >        globalStore.startBroadcasting()</span>
+<span class="cstat-no" title="statement not covered" >        tree.addDescendantMutation(TreePropertyNames.parentId, sampleMutation)</span>
+&nbsp;
+        const treeNewVal = <span class="cstat-no" title="statement not covered" >tree.val()</span>
+<span class="cstat-no" title="statement not covered" >        expect(globalStoreCallCallbacksSpy.callCount).to.equal(1)</span>
+        // expect(callback1.callCount).to.equal(1)
+        // expect(callback1.getCall(0).args[0].id).to.equal(TREE_ID)
+        // expect(callback1.getCall(0).args[0].val).to.deep.equal(treeNewVal)
+        // expect(callback1.getCall(0).args[0].type).to.deep.equal(ObjectTypes.TREE)
+        // expect(callback2.callCount).to.equal(1)
+        // expect(callback2.getCall(0).args[0].id).to.equal(TREE_ID)
+        // expect(callback2.getCall(0).args[0].val).to.deep.equal(treeNewVal)
+        // expect(callback2.getCall(0).args[0].type).to.deep.equal(ObjectTypes.TREE)
+&nbsp;
+    })
+&nbsp;
+    it('Before calling startBroadcasting, globalStore should NOT publish updates ' +
+        ' when one of its component stores publishes an update', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+&nbsp;
+    })
+&nbsp;
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 30 2017 15:57:51 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

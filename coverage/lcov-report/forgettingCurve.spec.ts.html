@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for forgettingCurve.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="index.html">All files</a> forgettingCurve.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">5.88% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>2/34</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">5.88% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>2/34</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {expect} from 'chai'
+import {} from 'mocha'
+import * as curve from '../app/forgettingCurve'
+<span class="cstat-no" title="statement not covered" >describe('measuringPreviousStrength', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    it(`should return estimated previous strength if proficiency &gt;= PROFICIENCIES.FOUR</span>
+    and time since last review was really short`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.measurePreviousStrength(40, 99, 2)).to.equal(40)</span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.measurePreviousStrength(40, 99.9, 2)).to.equal(40)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it(`should return estimated previous strength if proficiency &lt;= 1'</span>
+        ' and time since last review was really long`, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.measurePreviousStrength(40, 1, 9999999)).to.equal(40)</span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.measurePreviousStrength(40, .1, 9999999)).to.equal(40)</span>
+        /* if you were to plug in 1% in our formula for 9999999 seconds
+         you would normally val 63 dB,
+          which doesn't make sense given the previous estimated decibel strength of 40 */
+    })
+<span class="cstat-no" title="statement not covered" >    it('should return 10 dbE for 1/e proficiency and 10 seconds', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.measurePreviousStrength(39, 100 * 1 / curve.e, 10)).to.closeTo(10, .1)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it('should return 50 dbE for 75% proficiency and 8 hours', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.measurePreviousStrength(39, 100 * .75, 8 * 60 * 60)).to.closeTo(50, .1)</span>
+    })
+})
+<span class="cstat-no" title="statement not covered" >describe('estimateCurrentStrength', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    it('should return previous strength for 1/e proficiency', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.estimateCurrentStrength(39, 100 * 1 / curve.e, 8 * 60 * 60)).to.closeTo(39, .1)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it('should return previous strength for 0 seconds since last review', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.estimateCurrentStrength(39, 100 * 1 / curve.e, 0)).to.closeTo(39, .1)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it('should return + 10(e-1) dB for 100% proficiency and longgg time since last review', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+        const originalStrength = <span class="cstat-no" title="statement not covered" >39</span>
+        const newExpectedStrength = <span class="cstat-no" title="statement not covered" >originalStrength + 10 * (curve.e - 1)</span>
+<span class="cstat-no" title="statement not covered" >        expect(curve.estimateCurrentStrength(39, 99.99999, 9999999999)).to.closeTo(newExpectedStrength, .1)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it('should return + 10(1 - 1/e) dB for 100% proficiency at Tc', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+        const originalStrength = <span class="cstat-no" title="statement not covered" >39</span>
+        const newExpectedStrength = <span class="cstat-no" title="statement not covered" >originalStrength + 10 * ( 1 - 1 / curve.e)</span>
+        const Tc = <span class="cstat-no" title="statement not covered" >curve.calculateTime(originalStrength, curve.criticalRecall)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        expect(curve.estimateCurrentStrength(39, 99.99999, Tc)).to.closeTo(newExpectedStrength, .1)</span>
+    })
+<span class="cstat-no" title="statement not covered" >    it('should return + 4.4dB for 99% proficiency at 40 minutes past a 39 strength memory ', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+        const originalStrength = <span class="cstat-no" title="statement not covered" >39</span>
+        const proficiency = <span class="cstat-no" title="statement not covered" >99</span>
+        const timeSincePreviousInteraction = <span class="cstat-no" title="statement not covered" >40 * 60</span>
+&nbsp;
+        const newStrength = <span class="cstat-no" title="statement not covered" >originalStrength + 4.4</span>
+        const estimatedCurrentStrength = <span class="cstat-no" title="statement not covered" >curve.estimateCurrentStrength(</span>
+            originalStrength,
+            proficiency,
+            timeSincePreviousInteraction
+        )
+<span class="cstat-no" title="statement not covered" >        expect(estimatedCurrentStrength).to.closeTo(newStrength, .1)</span>
+    })
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Nov 29 2017 11:15:30 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>

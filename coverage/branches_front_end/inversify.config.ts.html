@@ -1,0 +1,1700 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/inversify.config.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\prettify.css" />
+    <link rel="stylesheet" href="..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\index.html">All files</a> / <a href="index.html">branches_front_end</a> inversify.config.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">60.93% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>170/279</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">16.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">61.54% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>168/273</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546</td><td class="line-coverage quiet"><span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">337x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">225x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as firebase from 'firebase';
+import {Container, ContainerModule, interfaces} from 'inversify'
+import 'reflect-metadata'
+import {log} from './app/core/log'
+import {FIREBASE_PATHS} from './app/loaders/paths';
+import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
+import {TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
+import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
+import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
+import {
+    SubscribableContentUser,
+    SubscribableContentUserArgs
+} from './app/objects/contentUserData/SubscribableContentUser';
+import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
+import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
+import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
+import {
+    SubscribableMutableField,
+    SubscribableMutableFieldArgs
+} from './app/objects/field/SubscribableMutableField';
+import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
+import {
+    IDatedMutation, IMutableSubscribablePoint, IStoreSourceUpdateListenerCore, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
+    ISubscribableTreeStoreSource,
+    ISubscribableTreeUserStoreSource, ITreeLoader,
+    ObjectDataTypes
+} from './app/objects/interfaces';
+import Reference = firebase.database.Reference;
+// import firebase from './app/objects/firebaseService.js'
+import {
+    FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
+    ISigmaNode, ISubscribableContentUser,
+    ISubscribableMutableField, ISubscribableMutableStringSet,  ITree,
+    radian,
+    TreePropertyNames
+} from './app/objects/interfaces';
+import {
+    CONTENT_TYPES,
+    fGetSigmaIdsForContentId, IMutableSubscribableContentStore,
+    IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTree,
+    IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore,
+    ISigmaNodesUpdater,
+    ISigmaRenderManager,
+    IStoreSourceUpdateListener, ISubscribableContent,
+    ISubscribableContentStore,
+    ISubscribableContentUserStore,
+    ISubscribableGlobalStore, ISubscribableTree, ISubscribableTreeLocationStore,
+    ISubscribableTreeStore,
+    ISubscribableTreeUser,
+    ISubscribableTreeUserStore
+} from './app/objects/interfaces';
+import {MutableSubscribablePoint, SubscribableMutablePointArgs} from './app/objects/point/MutableSubscribablePoint';
+import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
+import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
+import {
+    SubscribableMutableStringSet,
+    SubscribableMutableStringSetArgs
+} from './app/objects/set/SubscribableMutableStringSet';
+import {
+    CanvasUI,
+    CanvasUIArgs
+} from './app/objects/sigmaNode/CanvasUI';
+import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
+import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderedNodesManager';
+import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderedNodesManagerCore';
+import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
+import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
+import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
+import {
+    SubscribableContentStore,
+    SubscribableContentStoreArgs
+} from './app/objects/stores/content/SubscribableContentStore';
+import {MutableSubscribableContentUserStore} from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
+import {
+    SubscribableContentUserStore,
+    SubscribableContentUserStoreArgs
+} from './app/objects/stores/contentUser/SubscribableContentUserStore';
+import {
+    MutableSubscribableGlobalStore,
+    MutableSubscribableGlobalStoreArgs
+} from './app/objects/stores/MutableSubscribableGlobalStore';
+import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './app/objects/stores/StoreSourceUpdateListener';
+import {
+    StoreSourceUpdateListenerCore,
+    StoreSourceUpdateListenerCoreArgs
+} from './app/objects/stores/StoreSourceUpdateListenerCore';
+import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './app/objects/stores/SubscribableGlobalStore';
+import {SubscribableStoreArgs} from './app/objects/stores/SubscribableStore';
+import {
+    SubscribableContentStoreSource, SubscribableContentStoreSourceArgs,
+    SubscribableContentUserStoreSource, SubscribableContentUserStoreSourceArgs,
+    SubscribableStoreSourceArgs, SubscribableTreeLocationStoreSource,
+    SubscribableTreeLocationStoreSourceArgs,
+    SubscribableTreeStoreSource,
+    SubscribableTreeStoreSourceArgs, SubscribableTreeUserStoreSource, SubscribableTreeUserStoreSourceArgs
+} from './app/objects/stores/SubscribableStoreSource';
+import {MutableSubscribableTreeStore} from './app/objects/stores/tree/MutableSubscribableTreeStore';
+import {SubscribableTreeStore, SubscribableTreeStoreArgs} from './app/objects/stores/tree/SubscribableTreeStore';
+import {MutableSubscribableTreeLocationStore} from './app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+import {
+    SubscribableTreeLocationStore,
+    SubscribableTreeLocationStoreArgs
+} from './app/objects/stores/treeLocation/SubscribableTreeLocationStore';
+import {MutableSubscribableTreeUserStore} from './app/objects/stores/treeUser/MutableSubscribableTreeUserStore';
+import {
+    SubscribableTreeUserStore,
+    SubscribableTreeUserStoreArgs
+} from './app/objects/stores/treeUser/SubscribableTreeUserStore';
+import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
+import {DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
+import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
+import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
+import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
+import {
+    SubscribableTreeLocation,
+    SubscribableTreeLocationArgs
+} from './app/objects/treeLocation/SubscribableTreeLocation';
+import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
+import {TYPES } from './app/objects/types'
+import {UIColor} from './app/objects/uiColor';
+import { TREE_ID3} from './app/testHelpers/testHelpers';
+&nbsp;
+const firebaseConfig = firebaseDevConfig
+const myContainer = new Container()
+// throw new Error('inversify error error error')
+&nbsp;
+// const firebaseConfig = {
+//     apiKey: 'AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A',
+//     authDomain: 'branches-dev.firebaseapp.com',
+//     databaseURL: 'https://branches-dev.firebaseio.com',
+//     projectId: 'branches-dev',
+//     storageBucket: 'branches-dev.appspot.com',
+//     messagingSenderId: '354929800016'
+// }
+firebase.initializeApp(firebaseConfig)
+const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
+const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
+const loaders = new ContainerModule(<span class="fstat-no" title="function not covered" >(</span>bind: interfaces.Bind, unbind: interfaces.Unbind) =&gt; {
+<span class="cstat-no" title="statement not covered" >    bind&lt;ITreeLoader&gt;(TYPES.ITreeLoader).to(TreeLoader)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;TreeLoaderArgs&gt;(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableStoreArgs&gt;(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)</span>
+    // bind&lt;Reference&gt;(TYPES.Reference).toConstantValue(treesRef)
+    //     .whenInjectedInto(TreeLoaderArgs)
+    // bind&lt;Reference&gt;(TYPES.Reference).toConstantValue(firebaseApp.database().ref(FIREBASE_PATHS.TREE_LOCATIONS))
+    //     .whenInjectedInto(TreeLocationLoaderArgs)
+})
+const stores = new ContainerModule(<span class="fstat-no" title="function not covered" >(</span>bind: interfaces.Bind, unbind: interfaces.Unbind) =&gt; {
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeLocationStoreSource&gt;(TYPES.ISubscribableTreeLocationStoreSource)</span>
+        .to(SubscribableTreeLocationStoreSource)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeStoreSource&gt;(TYPES.ISubscribableTreeStoreSource)</span>
+        .to(SubscribableTreeStoreSource)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeUserStoreSource&gt;(TYPES.ISubscribableTreeUserStoreSource)</span>
+        .to(SubscribableTreeUserStoreSource)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableContentStoreSource&gt;(TYPES.ISubscribableContentStoreSource)</span>
+        .to(SubscribableContentStoreSource)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableContentUserStoreSource&gt;(TYPES.ISubscribableContentUserStoreSource)</span>
+        .to(SubscribableContentUserStoreSource)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableGlobalStoreArgs&gt;(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableGlobalStore&gt;</span>
+    (TYPES.IMutableSubscribableGlobalStore).to(MutableSubscribableGlobalStore)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableContentUserStoreArgs&gt;(TYPES.SubscribableContentUserStoreArgs)</span>
+        .to(SubscribableContentUserStoreArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableContentStoreArgs&gt;(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeStoreArgs&gt;(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeUserStoreArgs&gt;(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeLocationStoreArgs&gt;(TYPES.SubscribableTreeLocationStoreArgs)</span>
+        .to(SubscribableTreeLocationStoreArgs)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableTreeStore&gt;(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableTreeUserStore&gt;(TYPES.IMutableSubscribableTreeUserStore)</span>
+        .to(MutableSubscribableTreeUserStore)
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableTreeLocationStore&gt;(TYPES.IMutableSubscribableTreeLocationStore)</span>
+        .to(MutableSubscribableTreeLocationStore)
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableTreeLocation&gt;(TYPES.IMutableSubscribableTreeLocation)</span>
+        .to(MutableSubscribableTreeLocation)
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableContentStore&gt;(TYPES.IMutableSubscribableContentStore)</span>
+        .to(MutableSubscribableContentStore)
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableContentUserStore&gt;(TYPES.IMutableSubscribableContentUserStore)</span>
+        .to(MutableSubscribableContentUserStore)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableStoreSourceArgs&gt;(TYPES.SubscribableStoreSourceArgs)</span>
+        .to(SubscribableStoreSourceArgs)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;MutableSubscribableGlobalStoreArgs&gt;(TYPES.MutableSubscribableGlobalStoreArgs)</span>
+        .to(MutableSubscribableGlobalStoreArgs)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableGlobalStore&gt;(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableContentStoreSourceArgs&gt;(TYPES.SubscribableContentStoreSourceArgs)</span>
+        .to(SubscribableContentStoreSourceArgs)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableContentUserStoreSourceArgs&gt;(TYPES.SubscribableContentUserStoreSourceArgs)</span>
+        .to(SubscribableContentUserStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeStoreSourceArgs&gt;(TYPES.SubscribableTreeStoreSourceArgs)</span>
+        .to(SubscribableTreeStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeLocationStoreSourceArgs&gt;(TYPES.SubscribableTreeLocationStoreSourceArgs)</span>
+        .to(SubscribableTreeLocationStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeUserStoreSourceArgs&gt;(TYPES.SubscribableTreeUserStoreSourceArgs)</span>
+        .to(SubscribableTreeUserStoreSourceArgs)
+// myContainer.bind&lt;ISubscribableStore&lt;ISubscribableTreeCore&gt;&gt;
+// (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
+    /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeStore&gt;(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeUserStore&gt;(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeLocationStore&gt;(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableContentUserStore&gt;(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableContentStore&gt;(TYPES.ISubscribableContentStore).to(SubscribableContentStore)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_DATA)</span>
+        .whenInjectedInto(SubscribableTreeStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_LOCATION_DATA)</span>
+        .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_USER_DATA)</span>
+        .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_DATA)</span>
+        .whenInjectedInto(SubscribableContentStoreSourceArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)</span>
+        .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
+&nbsp;
+})
+//
+const rendering = new ContainerModule(<span class="fstat-no" title="function not covered" >(</span>bind: interfaces.Bind, unbind: interfaces.Unbind) =&gt; {
+<span class="cstat-no" title="statement not covered" >    bind&lt;radian&gt;(TYPES.radian).toConstantValue(0)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SigmaNodesUpdaterArgs&gt;(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;CanvasUI&gt;(TYPES.CanvasUI).to(CanvasUI)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;CanvasUIArgs&gt;(TYPES.CanvasUIArgs)</span>
+        .to(CanvasUIArgs)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SigmaNodeArgs&gt;(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISigmaRenderManager&gt;(TYPES.SigmaRenderManager).to(SigmaRenderManager)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SigmaRenderManagerArgs&gt;(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;StoreSourceUpdateListenerArgs&gt;(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IStoreSourceUpdateListener&gt;(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;StoreSourceUpdateListenerCoreArgs&gt;(TYPES.StoreSourceUpdateListenerCoreArgs)</span>
+        .to(StoreSourceUpdateListenerCoreArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;IStoreSourceUpdateListenerCore&gt;(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;IRenderedNodesManager&gt;(TYPES.IRenderedNodesManager).to(RenderedNodesManager)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IRenderedNodesManagerCore&gt;(TYPES.IRenderedNodesManagerCore).to(RenderedNodesManagerCore)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;RenderedNodesManagerArgs&gt;(TYPES.RenderedNodesManagerArgs).to(RenderedNodesManagerArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;RenderedNodesManagerCoreArgs&gt;(TYPES.RenderedNodesManagerCoreArgs).to(RenderedNodesManagerCoreArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISigmaNode&gt;(TYPES.ISigmaNode).to(SigmaNode)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISigmaRenderManager&gt;(TYPES.ISigmaRenderManager).to(SigmaRenderManager)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISigmaNodesUpdater&gt;(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    myContainer.bind&lt;IColorSlice&gt;(TYPES.IColorSlice).to(ColorSlice)</span>
+<span class="cstat-no" title="statement not covered" >    myContainer.bind&lt;fGetSigmaIdsForContentId&gt;(TYPES.fGetSigmaIdsForContentId).toConstantValue(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" ></span>[])</span></span>
+})
+//
+const dataObjects = new ContainerModule(<span class="fstat-no" title="function not covered" >(</span>bind: interfaces.Bind, unbind: interfaces.Unbind) =&gt; {
+<span class="cstat-no" title="statement not covered" >    bind&lt;IDatedMutation&lt;FieldMutationTypes&gt;&gt;(TYPES.IDatedMutation).toConstantValue({</span>
+        data: {id: '12345'},
+        timestamp: Date.now(),
+        type: FieldMutationTypes.SET,
+    })
+<span class="cstat-no" title="statement not covered" >    bind&lt;IProppedDatedMutation&lt;FieldMutationTypes, TreePropertyNames&gt;&gt;</span>
+    (TYPES.IProppedDatedMutation).toConstantValue({
+        data: {id: TREE_ID3},
+        propertyName: TreePropertyNames.PARENT_ID,
+        timestamp: Date.now(),
+        type: FieldMutationTypes.SET,
+    })
+<span class="cstat-no" title="statement not covered" >    bind&lt;ContentUserDataArgs&gt;(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;DBSubscriberToTreeArgs&gt;(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribablePoint&gt;(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableMutablePointArgs&gt;(TYPES.SubscribableMutablePointArgs).to(SubscribableMutablePointArgs)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableContent&gt;(TYPES.ISubscribableContent).to(SubscribableContent)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableContentUser&gt;(TYPES.ISubscribableContentUser).to(SubscribableContentUser)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTree&gt;(TYPES.ISubscribableTree).to(SubscribableTree)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeLocation&gt;(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableTreeUser&gt;(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableField&lt;boolean&gt;&gt;(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableMutableFieldArgs&gt;(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableContentUserArgs&gt;(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableField&lt;number&gt;&gt;(TYPES.ISubscribableMutableNumber).to(SubscribableMutableField)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString).to(SubscribableMutableField)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableField&lt;PROFICIENCIES&gt;&gt;(TYPES.ISubscribableMutableProficiency)</span>
+        .to(SubscribableMutableField)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableField&lt;CONTENT_TYPES&gt;&gt;(TYPES.ISubscribableMutableContentType)</span>
+        .to(SubscribableMutableField)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableField&lt;IProficiencyStats&gt;&gt;(TYPES.ISubscribableMutableProficiencyStats)</span>
+        .to(SubscribableMutableField)
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISubscribableMutableStringSet&gt;(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)</span>
+//
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableMutableStringSetArgs&gt;</span>
+    (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableArgs&gt;(TYPES.SubscribableArgs).to(SubscribableArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeArgs&gt;(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeLocationArgs&gt;(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableSubscribableTree&gt;(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IMutableStringSet&gt;(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableTreeUserArgs&gt;(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IDatabaseSyncer&gt;(TYPES.IDatabaseSyncer).to(SyncToDB)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SubscribableContentArgs&gt;(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;any[]&gt;(TYPES.Array).toDynamicValue(<span class="fstat-no" title="function not covered" >(</span>context: interfaces.Context) =&gt; <span class="cstat-no" title="statement not covered" >[] </span>)</span>
+// tslint:disable-next-line ban-types
+<span class="cstat-no" title="statement not covered" >    bind&lt;Number&gt;(TYPES.Number).toConstantValue(0)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;PROFICIENCIES&gt;(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)</span>
+&nbsp;
+// tslint:disable-next-line ban-types
+<span class="cstat-no" title="statement not covered" >    bind&lt;String&gt;(TYPES.String).toConstantValue('')</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;SyncToDBArgs&gt;(TYPES.SyncToDBArgs).to(SyncToDBArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ISaveUpdatesToDBFunction&gt;(TYPES.ISaveUpdatesToDBFunction)</span>
+        .toConstantValue(<span class="fstat-no" title="function not covered" >(</span>updates: IDetailedUpdates) =&gt; <span class="cstat-no" title="statement not covered" >void 0)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;UIColor&gt;(TYPES.UIColor).toConstantValue(UIColor.GRAY);</span>
+// tslint:disable-next-line ban-types
+<span class="cstat-no" title="statement not covered" >    bind&lt;Object&gt;(TYPES.Object).toDynamicValue(<span class="fstat-no" title="function not covered" >(</span>context: interfaces.Context) =&gt; <span class="cstat-no" title="statement not covered" >({}))</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;any&gt;(TYPES.Any).toConstantValue(null)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;boolean&gt;(TYPES.Boolean).toConstantValue(false)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;FirebaseSaverArgs&gt;(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;ITree&gt;(TYPES.ITree).to(SubscribableTree)</span>
+// TODO: maybe only use this constant binding for a test container. . . Not production container
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    bind&lt;IContentUserData&gt;(TYPES.IContentUserData).to(ContentUserData)</span>
+<span class="cstat-no" title="statement not covered" >    bind&lt;IFirebaseRef&gt;(TYPES.IFirebaseRef).to(FirebaseRef)</span>
+&nbsp;
+// myContainer.bind&lt;Reference&gt;(TYPES.Reference).to
+<span class="cstat-no" title="statement not covered" >    bind&lt;IProficiencyStats&gt;(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)</span>
+})
+&nbsp;
+// =============================================
+// loaders
+myContainer.bind&lt;ITreeLoader&gt;(TYPES.ITreeLoader).to(TreeLoader)
+myContainer.bind&lt;TreeLoaderArgs&gt;(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
+myContainer.bind&lt;SubscribableStoreArgs&gt;(TYPES.SubscribableStoreArgs).to(SubscribableStoreArgs)
+myContainer.bind&lt;Reference&gt;(TYPES.Reference).toConstantValue(treesRef)
+    .whenInjectedInto(TreeLoaderArgs)
+myContainer.bind&lt;Reference&gt;(TYPES.Reference).toConstantValue(treeLocationsRef)
+    .whenInjectedInto(TreeLocationLoaderArgs)
+// stores
+myContainer.bind&lt;ISubscribableTreeLocationStoreSource&gt;(TYPES.ISubscribableTreeLocationStoreSource)
+    .to(SubscribableTreeLocationStoreSource)
+myContainer.bind&lt;ISubscribableTreeStoreSource&gt;(TYPES.ISubscribableTreeStoreSource)
+    .to(SubscribableTreeStoreSource)
+myContainer.bind&lt;ISubscribableTreeUserStoreSource&gt;(TYPES.ISubscribableTreeUserStoreSource)
+    .to(SubscribableTreeUserStoreSource)
+myContainer.bind&lt;ISubscribableContentStoreSource&gt;(TYPES.ISubscribableContentStoreSource)
+    .to(SubscribableContentStoreSource)
+myContainer.bind&lt;ISubscribableContentUserStoreSource&gt;(TYPES.ISubscribableContentUserStoreSource)
+    .to(SubscribableContentUserStoreSource)
+&nbsp;
+myContainer.bind&lt;SubscribableGlobalStoreArgs&gt;(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
+myContainer.bind&lt;IMutableSubscribableGlobalStore&gt;
+(TYPES.IMutableSubscribableGlobalStore).to(MutableSubscribableGlobalStore)
+&nbsp;
+myContainer.bind&lt;SubscribableContentUserStoreArgs&gt;(TYPES.SubscribableContentUserStoreArgs)
+    .to(SubscribableContentUserStoreArgs)
+myContainer.bind&lt;SubscribableContentStoreArgs&gt;(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)
+myContainer.bind&lt;SubscribableTreeStoreArgs&gt;(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs)
+myContainer.bind&lt;SubscribableTreeUserStoreArgs&gt;(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs)
+myContainer.bind&lt;SubscribableTreeLocationStoreArgs&gt;(TYPES.SubscribableTreeLocationStoreArgs)
+    .to(SubscribableTreeLocationStoreArgs)
+&nbsp;
+myContainer.bind&lt;IMutableSubscribableTreeStore&gt;(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
+myContainer.bind&lt;IMutableSubscribableTreeUserStore&gt;(TYPES.IMutableSubscribableTreeUserStore)
+    .to(MutableSubscribableTreeUserStore)
+myContainer.bind&lt;IMutableSubscribableTreeLocationStore&gt;(TYPES.IMutableSubscribableTreeLocationStore)
+    .to(MutableSubscribableTreeLocationStore)
+myContainer.bind&lt;IMutableSubscribableTreeLocation&gt;(TYPES.IMutableSubscribableTreeLocation)
+    .to(MutableSubscribableTreeLocation)
+myContainer.bind&lt;IMutableSubscribableContentStore&gt;(TYPES.IMutableSubscribableContentStore)
+    .to(MutableSubscribableContentStore)
+myContainer.bind&lt;IMutableSubscribableContentUserStore&gt;(TYPES.IMutableSubscribableContentUserStore)
+    .to(MutableSubscribableContentUserStore)
+&nbsp;
+myContainer.bind&lt;SubscribableStoreSourceArgs&gt;(TYPES.SubscribableStoreSourceArgs)
+    .to(SubscribableStoreSourceArgs)
+&nbsp;
+myContainer.bind&lt;MutableSubscribableGlobalStoreArgs&gt;(TYPES.MutableSubscribableGlobalStoreArgs)
+    .to(MutableSubscribableGlobalStoreArgs)
+&nbsp;
+myContainer.bind&lt;ISubscribableGlobalStore&gt;(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
+&nbsp;
+myContainer.bind&lt;SubscribableContentStoreSourceArgs&gt;(TYPES.SubscribableContentStoreSourceArgs)
+    .to(SubscribableContentStoreSourceArgs)
+&nbsp;
+myContainer.bind&lt;SubscribableContentUserStoreSourceArgs&gt;(TYPES.SubscribableContentUserStoreSourceArgs)
+    .to(SubscribableContentUserStoreSourceArgs)
+myContainer.bind&lt;SubscribableTreeStoreSourceArgs&gt;(TYPES.SubscribableTreeStoreSourceArgs)
+    .to(SubscribableTreeStoreSourceArgs)
+myContainer.bind&lt;SubscribableTreeLocationStoreSourceArgs&gt;(TYPES.SubscribableTreeLocationStoreSourceArgs)
+    .to(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind&lt;SubscribableTreeUserStoreSourceArgs&gt;(TYPES.SubscribableTreeUserStoreSourceArgs)
+    .to(SubscribableTreeUserStoreSourceArgs)
+// myContainer.bind&lt;ISubscribableStore&lt;ISubscribableTreeCore&gt;&gt;
+// (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
+/* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
+myContainer.bind&lt;ISubscribableTreeStore&gt;(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
+myContainer.bind&lt;ISubscribableTreeUserStore&gt;(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore)
+myContainer.bind&lt;ISubscribableTreeLocationStore&gt;(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore)
+myContainer.bind&lt;ISubscribableContentUserStore&gt;(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore)
+myContainer.bind&lt;ISubscribableContentStore&gt;(TYPES.ISubscribableContentStore).to(SubscribableContentStore)
+&nbsp;
+myContainer.bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_DATA)
+    .whenInjectedInto(SubscribableTreeStoreSourceArgs)
+myContainer.bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_LOCATION_DATA)
+    .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
+myContainer.bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.TREE_USER_DATA)
+    .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
+myContainer.bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_DATA)
+    .whenInjectedInto(SubscribableContentStoreSourceArgs)
+myContainer.bind&lt;ObjectDataTypes&gt;(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)
+    .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
+&nbsp;
+// rendering
+&nbsp;
+myContainer.bind&lt;radian&gt;(TYPES.radian).toConstantValue(0)
+myContainer.bind&lt;SigmaNodesUpdaterArgs&gt;(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
+myContainer.bind&lt;CanvasUI&gt;(TYPES.CanvasUI).to(CanvasUI)
+myContainer.bind&lt;CanvasUIArgs&gt;(TYPES.CanvasUIArgs)
+    .to(CanvasUIArgs)
+&nbsp;
+myContainer.bind&lt;SigmaNodeArgs&gt;(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
+myContainer.bind&lt;ISigmaRenderManager&gt;(TYPES.SigmaRenderManager).to(SigmaRenderManager)
+myContainer.bind&lt;SigmaRenderManagerArgs&gt;(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
+&nbsp;
+myContainer.bind&lt;StoreSourceUpdateListenerArgs&gt;(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
+myContainer.bind&lt;IStoreSourceUpdateListener&gt;(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener)
+&nbsp;
+myContainer.bind&lt;StoreSourceUpdateListenerCoreArgs&gt;(TYPES.StoreSourceUpdateListenerCoreArgs)
+    .to(StoreSourceUpdateListenerCoreArgs)
+myContainer.bind&lt;IStoreSourceUpdateListenerCore&gt;(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore)
+&nbsp;
+myContainer.bind&lt;IRenderedNodesManager&gt;(TYPES.IRenderedNodesManager).to(RenderedNodesManager)
+myContainer.bind&lt;IRenderedNodesManagerCore&gt;(TYPES.IRenderedNodesManagerCore).to(RenderedNodesManagerCore)
+myContainer.bind&lt;RenderedNodesManagerArgs&gt;(TYPES.RenderedNodesManagerArgs).to(RenderedNodesManagerArgs)
+myContainer.bind&lt;RenderedNodesManagerCoreArgs&gt;(TYPES.RenderedNodesManagerCoreArgs).to(RenderedNodesManagerCoreArgs)
+myContainer.bind&lt;ISigmaNode&gt;(TYPES.ISigmaNode).to(SigmaNode)
+myContainer.bind&lt;ISigmaRenderManager&gt;(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
+myContainer.bind&lt;ISigmaNodesUpdater&gt;(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
+&nbsp;
+myContainer.bind&lt;IColorSlice&gt;(TYPES.IColorSlice).to(ColorSlice)
+myContainer.bind&lt;fGetSigmaIdsForContentId&gt;(TYPES.fGetSigmaIdsForContentId).toConstantValue(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" ></span>[])</span>
+//  dataObjects
+&nbsp;
+myContainer.bind&lt;IDatedMutation&lt;FieldMutationTypes&gt;&gt;(TYPES.IDatedMutation).toConstantValue({
+    data: {id: '12345'},
+    timestamp: Date.now(),
+    type: FieldMutationTypes.SET,
+})
+myContainer.bind&lt;IProppedDatedMutation&lt;FieldMutationTypes, TreePropertyNames&gt;&gt;
+(TYPES.IProppedDatedMutation).toConstantValue({
+    data: {id: TREE_ID3},
+    propertyName: TreePropertyNames.PARENT_ID,
+    timestamp: Date.now(),
+    type: FieldMutationTypes.SET,
+})
+myContainer.bind&lt;ContentUserDataArgs&gt;(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
+myContainer.bind&lt;DBSubscriberToTreeArgs&gt;(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
+&nbsp;
+myContainer.bind&lt;IMutableSubscribablePoint&gt;(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
+myContainer.bind&lt;SubscribableMutablePointArgs&gt;(TYPES.SubscribableMutablePointArgs).to(SubscribableMutablePointArgs)
+&nbsp;
+myContainer.bind&lt;ISubscribableContent&gt;(TYPES.ISubscribableContent).to(SubscribableContent)
+myContainer.bind&lt;ISubscribableContentUser&gt;(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
+myContainer.bind&lt;ISubscribableTree&gt;(TYPES.ISubscribableTree).to(SubscribableTree)
+myContainer.bind&lt;ISubscribableTreeLocation&gt;(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
+myContainer.bind&lt;ISubscribableTreeUser&gt;(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
+myContainer.bind&lt;ISubscribableMutableField&lt;boolean&gt;&gt;(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
+myContainer.bind&lt;SubscribableMutableFieldArgs&gt;(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
+myContainer.bind&lt;SubscribableContentUserArgs&gt;(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
+myContainer.bind&lt;ISubscribableMutableField&lt;number&gt;&gt;(TYPES.ISubscribableMutableNumber).to(SubscribableMutableField)
+myContainer.bind&lt;ISubscribableMutableField&lt;string&gt;&gt;(TYPES.ISubscribableMutableString).to(SubscribableMutableField)
+myContainer.bind&lt;ISubscribableMutableField&lt;PROFICIENCIES&gt;&gt;(TYPES.ISubscribableMutableProficiency)
+    .to(SubscribableMutableField)
+myContainer.bind&lt;ISubscribableMutableField&lt;CONTENT_TYPES&gt;&gt;(TYPES.ISubscribableMutableContentType)
+    .to(SubscribableMutableField)
+myContainer.bind&lt;ISubscribableMutableField&lt;IProficiencyStats&gt;&gt;(TYPES.ISubscribableMutableProficiencyStats)
+    .to(SubscribableMutableField)
+myContainer.bind&lt;ISubscribableMutableStringSet&gt;(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
+//
+myContainer.bind&lt;SubscribableMutableStringSetArgs&gt;
+(TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
+myContainer.bind&lt;SubscribableArgs&gt;(TYPES.SubscribableArgs).to(SubscribableArgs)
+myContainer.bind&lt;SubscribableTreeArgs&gt;(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs)
+myContainer.bind&lt;SubscribableTreeLocationArgs&gt;(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs)
+&nbsp;
+myContainer.bind&lt;IMutableSubscribableTree&gt;(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
+myContainer.bind&lt;IMutableStringSet&gt;(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
+&nbsp;
+myContainer.bind&lt;SubscribableTreeUserArgs&gt;(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
+myContainer.bind&lt;IDatabaseSyncer&gt;(TYPES.IDatabaseSyncer).to(SyncToDB)
+myContainer.bind&lt;SubscribableContentArgs&gt;(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
+&nbsp;
+myContainer.bind&lt;any[]&gt;(TYPES.Array).toDynamicValue((context: interfaces.Context) =&gt; [] )
+// tslint:disable-next-line ban-types
+myContainer.bind&lt;Number&gt;(TYPES.Number).toConstantValue(0)
+myContainer.bind&lt;PROFICIENCIES&gt;(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
+&nbsp;
+// tslint:disable-next-line ban-types
+myContainer.bind&lt;String&gt;(TYPES.String).toConstantValue('')
+myContainer.bind&lt;SyncToDBArgs&gt;(TYPES.SyncToDBArgs).to(SyncToDBArgs)
+myContainer.bind&lt;ISaveUpdatesToDBFunction&gt;(TYPES.ISaveUpdatesToDBFunction)
+    .toConstantValue(<span class="fstat-no" title="function not covered" >(</span>updates: IDetailedUpdates) =&gt; <span class="cstat-no" title="statement not covered" >void 0)</span>
+myContainer.bind&lt;UIColor&gt;(TYPES.UIColor).toConstantValue(UIColor.GRAY);
+// tslint:disable-next-line ban-types
+myContainer.bind&lt;Object&gt;(TYPES.Object).toDynamicValue((context: interfaces.Context) =&gt; ({}))
+&nbsp;
+myContainer.bind&lt;any&gt;(TYPES.Any).toConstantValue(null)
+myContainer.bind&lt;boolean&gt;(TYPES.Boolean).toConstantValue(false)
+myContainer.bind&lt;FirebaseSaverArgs&gt;(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
+myContainer.bind&lt;ITree&gt;(TYPES.ITree).to(SubscribableTree)
+// TODO: maybe only use this constant binding for a test container. . . Not production container
+&nbsp;
+myContainer.bind&lt;IContentUserData&gt;(TYPES.IContentUserData).to(ContentUserData)
+myContainer.bind&lt;IFirebaseRef&gt;(TYPES.IFirebaseRef).to(FirebaseRef)
+&nbsp;
+// myContainer.bind&lt;Reference&gt;(TYPES.Reference).to
+myContainer.bind&lt;IProficiencyStats&gt;(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
+&nbsp;
+// ====================================================
+&nbsp;
+//
+// myContainer.bind&lt;IDatedMutation&lt;FieldMutationTypes&gt;&gt;(TYPES.IDatedMutation).toConstantValue({
+//     data: {id: '12345'},
+//     timestamp: Date.now(),
+//     type: FieldMutationTypes.SET,
+// })
+// myContainer.load(stores)
+// myContainer.load(loaders)
+// myContainer.load(rendering)
+// myContainer.load(dataObjects)
+//
+// /* myContainer.bind&lt;ISubscribable&lt;IDetailedUpdates&gt;&gt;
+// (TYPES.Subscribable_IDetailedUpdates).to(Subscribable&lt;IDetailedUpdates&gt;);
+//
+//  */
+// // myContainer.bind&lt;IActivatableDatedMutation&gt;(TYPES.IActivatableDatedMutationArr).to()
+&nbsp;
+export {myContainer}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 15:50:27 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\sorter.js"></script>
+</body>
+</html>
