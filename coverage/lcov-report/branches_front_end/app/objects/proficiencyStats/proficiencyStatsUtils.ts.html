@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/proficiencyStats/proficiencyStatsUtils.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/proficiencyStats</a> proficiencyStatsUtils.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">38.89% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>7/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">28.57% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">38.89% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>7/18</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {IProficiencyStats} from '../interfaces';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+&nbsp;
+export function addObjToProficiencyStats(proficiencyStats: IProficiencyStats, deltaObj: IProficiencyStats) {
+    const newStats: IProficiencyStats = {...proficiencyStats}
+    Object.keys(deltaObj).forEach((key) =&gt; {
+        newStats[key] = (newStats[key] || 0) + (deltaObj[key] || 0)
+    })
+    return newStats
+}
+<span class="fstat-no" title="function not covered" >export function incrementProficiencyStatsCategory(</span>proficiencyStats: IProficiencyStats, proficiency: number) {
+<span class="cstat-no" title="statement not covered" >    if (proficiency &lt;= PROFICIENCIES.UNKNOWN) {</span>
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.UNKNOWN++</span>
+    } else <span class="cstat-no" title="statement not covered" >if (proficiency &lt;= PROFICIENCIES.ONE) {</span>
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.ONE++</span>
+    } else <span class="cstat-no" title="statement not covered" >if (proficiency &lt;= PROFICIENCIES.TWO) {</span>
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.TWO++</span>
+    } else <span class="cstat-no" title="statement not covered" >if (proficiency &lt;= PROFICIENCIES.THREE) {</span>
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.THREE++</span>
+    } else <span class="cstat-no" title="statement not covered" >if (proficiency &lt;= PROFICIENCIES.FOUR) {</span>
+<span class="cstat-no" title="statement not covered" >        proficiencyStats.FOUR++</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return proficiencyStats</span>
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 15:50:25 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

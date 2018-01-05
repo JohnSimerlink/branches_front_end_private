@@ -1,0 +1,5 @@
+{
+    "fileExtensions": [".less", ".css"],
+    "excludedFiles": ["./app/components/offline.less"],
+    "propertyOrdering": false
+}

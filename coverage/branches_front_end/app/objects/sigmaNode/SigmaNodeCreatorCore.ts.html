@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for branches_front_end/app/objects/sigmaNode/SigmaNodeCreatorCore.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\..\index.html">All files</a> / <a href="index.html">branches_front_end/app/objects/sigmaNode</a> SigmaNodeCreatorCore.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">41.86% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>18/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">22.22% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">45.16% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>14/31</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {inject, injectable} from 'inversify';
+import {
+    IContentData, IContentUserData, IHash, ISigmaNode, IManagedSigmaNodeCreatorCore, ISigmaRenderManager,
+    ITreeDataWithoutId,
+    ITreeLocationData,
+    ITreeUserData, ISigmaNodeCreatorCore
+} from '../interfaces';
+import {TYPES} from '../types';
+import {SigmaNode} from './SigmaNode';
+&nbsp;
+@injectable()
+export class SigmaNodeCreatorCore implements ISigmaNodeCreatorCore {
+    private sigmaNodes: IHash&lt;ISigmaNode&gt;
+<span class="fstat-no" title="function not covered" >    constructor(@inject(TYPES.SigmaNodeCreatorCoreArgs)</span>{<span class="cstat-no" title="statement not covered" >sigmaNodes}</span>) {
+<span class="cstat-no" title="statement not covered" >        this.sigmaNodes = sigmaNodes</span>
+    }
+<span class="fstat-no" title="function not covered" >    private nodeExists(</span>sigmaId) {
+<span class="cstat-no" title="statement not covered" >        return !!this.sigmaNodes[sigmaId]</span>
+    }
+<span class="fstat-no" title="function not covered" >    public receiveNewTreeData(</span>{<span class="cstat-no" title="statement not covered" >treeId,</span> <span class="cstat-no" title="statement not covered" >treeData}</span>: { treeId: string; treeData: ITreeDataWithoutId }) {
+<span class="cstat-no" title="statement not covered" >        if (this.nodeExists(treeId)) {</span>
+<span class="cstat-no" title="statement not covered" >            throw new RangeError(treeId + ' already exists as a sigmaNode. No need to recreate it')</span>
+        }
+        const sigmaNode: ISigmaNode = <span class="cstat-no" title="statement not covered" >new SigmaNode()</span>
+        const sigmaId = <span class="cstat-no" title="statement not covered" >treeId</span>
+<span class="cstat-no" title="statement not covered" >        sigmaNode.receiveNewTreeData(treeData)</span>
+<span class="cstat-no" title="statement not covered" >        this.sigmaNodes[sigmaId] = sigmaNode</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public receiveNewTreeLocationData(</span>
+        {<span class="cstat-no" title="statement not covered" >treeId,</span> <span class="cstat-no" title="statement not covered" >treeLocationData}</span>: { treeId: string; treeLocationData: ITreeLocationData }
+        ) {
+<span class="cstat-no" title="statement not covered" >        if (this.nodeExists(treeId)) {</span>
+<span class="cstat-no" title="statement not covered" >            throw new RangeError(treeId + ' already exists as a sigmaNode. No need to recreate it')</span>
+        }
+        const sigmaNode: ISigmaNode = <span class="cstat-no" title="statement not covered" >new SigmaNode()</span>
+        const sigmaId = <span class="cstat-no" title="statement not covered" >treeId</span>
+<span class="cstat-no" title="statement not covered" >        sigmaNode.receiveNewTreeLocationData(treeLocationData)</span>
+<span class="cstat-no" title="statement not covered" >        this.sigmaNodes[sigmaId] = sigmaNode</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public receiveNewTreeUserData(</span>{<span class="cstat-no" title="statement not covered" >treeId,</span> <span class="cstat-no" title="statement not covered" >treeUserData}</span>: { treeId: string; treeUserData: ITreeUserData }) {
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public receiveNewContentData(</span>{<span class="cstat-no" title="statement not covered" >contentId,</span> <span class="cstat-no" title="statement not covered" >contentData}</span>: { contentId: string; contentData: IContentData }) {
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public receiveNewContentUserData(</span>
+        {<span class="cstat-no" title="statement not covered" >contentId,</span> <span class="cstat-no" title="statement not covered" >contentUserData}</span>: { contentId: string; contentUserData: IContentUserData }
+        ) {
+    }
+}
+@injectable()
+export class SigmaNodeCreatorCoreArgs {
+    @inject(TYPES.Object) public sigmaNodes
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 14 2017 10:37:14 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="..\..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\..\sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/core/app.spec.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">app/core</a> app.spec.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">9.68% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>3/31</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">9.68% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>3/31</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {expect} from 'chai'
+import * as sinon from 'sinon'
+import {
+    IApp,
+    IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
+    ISubscribableContentStore,
+    ISubscribableContentUserStore,
+    IUI
+} from '../objects/interfaces';
+import {SubscribableContentUserStore} from '../objects/stores/contentUser/SubscribableContentUserStore';
+<span class="cstat-no" title="statement not covered" >import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';</span>
+<span class="cstat-no" title="statement not covered" >import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';</span>
+<span class="cstat-no" title="statement not covered" >import {App} from './app';</span>
+<span class="cstat-no" title="statement not covered" >import {SubscribableContentStore} from '../objects/stores/content/SubscribableContentStore';</span>
+<span class="cstat-no" title="statement not covered" >import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';</span>
+<span class="cstat-no" title="statement not covered" >import 'reflect-metadata'</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >describe('App', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    it('Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+        const UI1mock: IUI = <span class="cstat-no" title="statement not covered" >{</span>
+            subscribe<span class="fstat-no" title="function not covered" >() {</span>}
+        }
+        const UI2mock: IUI = <span class="cstat-no" title="statement not covered" >{</span>
+            subscribe<span class="fstat-no" title="function not covered" >() {</span>}
+        }
+        const UIs = <span class="cstat-no" title="statement not covered" >[UI1mock, UI2mock]</span>
+        const UI1SubscribeSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(UI1mock, 'subscribe')</span>
+        const UI2SubscribeSpy = <span class="cstat-no" title="statement not covered" >sinon.spy(UI2mock, 'subscribe')</span>
+&nbsp;
+        const treeStore: IMutableSubscribableTreeStore = <span class="cstat-no" title="statement not covered" >new MutableSubscribableTreeStore( {</span>
+            store: {},
+            updatesCallbacks: []
+        })
+&nbsp;
+        const treeUserStore: IMutableSubscribableTreeStore = <span class="cstat-no" title="statement not covered" >new MutableSubscribableTreeStore( {</span>
+            store: {},
+            updatesCallbacks: []
+        })
+&nbsp;
+        const treeLocationStore: IMutableSubscribableTreeLocationStore = <span class="cstat-no" title="statement not covered" >new MutableSubscribableTreeLocationStore( {</span>
+            store: {},
+            updatesCallbacks: []
+        })
+        const contentUserStore: ISubscribableContentUserStore = <span class="cstat-no" title="statement not covered" >new SubscribableContentUserStore({</span>
+            store: {},
+            updatesCallbacks: []
+        })
+&nbsp;
+        const contentStore: ISubscribableContentStore = <span class="cstat-no" title="statement not covered" >new SubscribableContentStore({</span>
+            store: {},
+            updatesCallbacks: []
+        })
+&nbsp;
+        const store: IMutableSubscribableGlobalStore = <span class="cstat-no" title="statement not covered" >new MutableSubscribableGlobalStore(</span>
+            {
+                contentStore,
+                contentUserStore,
+                treeStore,
+                treeLocationStore,
+                treeUserStore,
+                updatesCallbacks: [],
+            }
+        )
+&nbsp;
+        const app: IApp = <span class="cstat-no" title="statement not covered" >new App({store, UIs})</span>
+<span class="cstat-no" title="statement not covered" >        app.start()</span>
+        const UI1SubscribeSpyCalledWith = <span class="cstat-no" title="statement not covered" >UI1SubscribeSpy.getCall(0).args[0]</span>
+<span class="cstat-no" title="statement not covered" >        expect(UI1SubscribeSpyCalledWith).to.deep.equal(store)</span>
+<span class="cstat-no" title="statement not covered" >        expect(UI1SubscribeSpy.callCount).to.deep.equal(1)</span>
+&nbsp;
+        const UI2SubscribeSpyCalledWith = <span class="cstat-no" title="statement not covered" >UI2SubscribeSpy.getCall(0).args[0]</span>
+<span class="cstat-no" title="statement not covered" >        expect(UI2SubscribeSpyCalledWith).to.deep.equal(store)</span>
+<span class="cstat-no" title="statement not covered" >        expect(UI2SubscribeSpy.callCount).to.deep.equal(1)</span>
+&nbsp;
+    })
+<span class="cstat-no" title="statement not covered" >    it('Should subscribe the uis to the updates in the store (DI for subcomponents)', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+        // const UI1mock: IUI = {
+        //     subscribe() {}
+        // }
+        // const UI2mock: IUI = {
+        //     subscribe() {}
+        // }
+        // const UIs = [UI1mock, UI2mock]
+        // const store: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore({contentUserStore})
+        // const app: IApp = new App()
+    })
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 17:33:37 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>
