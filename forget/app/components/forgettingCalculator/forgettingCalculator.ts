@@ -57,6 +57,71 @@ export default {
         this.highlight = highlight || this.highlight
         log('forgettingcalculator component created')
     },
+    watch: {
+        seconds: (newSeconds ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('seconds', newSeconds)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        minutes: (newMinutes ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('minutes', newMinutes)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        hours: (newHours ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('hours', newHours)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        days: (newDays ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('days', newDays)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        weeks: (newWeeks) => {
+            const searchParams = getSearchParams()
+            searchParams.set('weeks', newWeeks)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        months: (newMonths ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('months', newMonths)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        years: (newYears ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('years', newYears)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        s: (newS) => {
+            const searchParams = getSearchParams()
+            searchParams.set('s', newS)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        r: (newR ) => {
+            const searchParams = getSearchParams()
+            searchParams.set('r', newR)
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+    },
     computed: {
         t() {
             const t = this.seconds +
@@ -134,29 +199,29 @@ export default {
             return monthsComputed
         },
         weeksComputed() {
-            const weeksComputed = Math.floor(this.monthsRemainder * 12)
+            const weeksComputed = Math.floor(this.monthsRemainder * 30.5 / 7)
             log('weeksComputed is', weeksComputed)
             return weeksComputed
         },
         daysComputed() {
-            const daysComputed = Math.floor(this.weeksRemainder * 12)
+            const daysComputed = Math.floor(this.weeksRemainder * 7)
             log('daysComputed is', daysComputed)
             return daysComputed
         },
         hoursComputed() {
-            const hoursComputed = Math.floor(this.daysRemainder * 12)
+            const hoursComputed = Math.floor(this.daysRemainder * 24)
             log('inside of hoursComputed, daysRemainder is', this.daysRemainder)
             log('hoursComputed is', hoursComputed)
             return hoursComputed
         },
         minutesComputed() {
-            const minutesComputed = Math.floor(this.hoursRemainder * 12)
+            const minutesComputed = Math.floor(this.hoursRemainder * 60)
             log('inside of minutesComputed, hoursRemainder is', this.hoursRemainder)
             log('minutesComputed is', minutesComputed)
             return minutesComputed
         },
         secondsComputed() {
-            const secondsComputed = Math.floor(this.minutesRemainder * 12)
+            const secondsComputed = Math.floor(this.minutesRemainder * 60)
             log('inside of secondsComputed, minutesRemainder is', this.minutesRemainder)
             log('secondsComputed is', secondsComputed)
             return secondsComputed
@@ -172,5 +237,40 @@ export default {
         }
     },
     methods: {
+        setTimeHighlight() {
+            log('setTimeHighlight called')
+            this.highlight = 'time'
+            const searchParams = getSearchParams()
+            searchParams.set('highlight', 'time')
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        setStrengthHighlight() {
+            log('setStrengthHighlight called')
+            this.highlight = 'strength'
+            const searchParams = getSearchParams()
+            searchParams.set('highlight', 'strength')
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
+        setRecallHighlight() {
+            log('setRecallHighlight called')
+            this.highlight = 'recall'
+            const searchParams = getSearchParams()
+            searchParams.set('highlight', 'recall')
+            const oldRootURL = window.location.href.split('?')[0];
+            const newUrl = oldRootURL + '?' + searchParams.toString()
+            history.pushState(null, null, newUrl)
+        },
     },
+}
+// function get
+function getSearchParams() {
+    const urlString = window.location.href
+    // "http://www.example.com/t.html?a=1&b=3&c=m2-m3-m4-m5"; //window.location.href
+    const url = new URL(urlString);
+    const searchParams = url.searchParams
+    return searchParams
 }

@@ -1,7 +1,7 @@
 <div>
     <h2>Forgetting Curve Calculator</h2>
     <div class="calculators">
-        <div v-bind:class="{highlight: strengthHighlighted}">
+        <div v-bind:class="{highlight: strengthHighlighted}" v-on:click="setStrengthHighlight">
             <div>
                 <h3>Strength Calculator</h3>
 
@@ -24,7 +24,7 @@
 
             </div>
         </div>
-        <div v-bind:class="{highlight: recallHighlighted}">
+        <div v-bind:class="{highlight: recallHighlighted}" v-on:click="setRecallHighlight">
             <h3>Recall Calculator</h3>
             If you learned something
             <div><input v-model="years" type="text"> years,</div>
@@ -49,7 +49,7 @@
                 <span style="font-weight: bold">{{rComputed | times100 | truncateToHundredths}}</span>% chance of remembering that fact
             </span>
         </div>
-        <div v-bind:class="{highlight: timeHighlighted}">
+        <div v-bind:class="{highlight: timeHighlighted}" v-on:click="setTimeHighlight">
 
             <h3>Time Calculator</h3>
             You will have a
