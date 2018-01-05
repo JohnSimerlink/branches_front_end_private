@@ -29,7 +29,29 @@ export default {
         }
     },
     async created() {
-        log('forgettingcalculator componetn created')
+        const urlString = window.location.href
+        // "http://www.example.com/t.html?a=1&b=3&c=m2-m3-m4-m5"; //window.location.href
+        const url = new URL(urlString);
+        const s = url.searchParams.get('s')
+        const r = url.searchParams.get('r')
+        const years = url.searchParams.get('years')
+        const months = url.searchParams.get('months')
+        const weeks = url.searchParams.get('weeks')
+        const days = url.searchParams.get('days')
+        const hours = url.searchParams.get('hours')
+        const minutes = url.searchParams.get('minutes')
+        const seconds = url.searchParams.get('seconds')
+
+        this.s = s || this.s
+        this.r = r || this.r
+        this.years = years
+        this.months = months
+        this.weeks = weeks
+        this.days = days
+        this.hours = hours
+        this.minutes = minutes
+        this.seconds = seconds
+        log('forgettingcalculator component created')
     },
     computed: {
         t() {

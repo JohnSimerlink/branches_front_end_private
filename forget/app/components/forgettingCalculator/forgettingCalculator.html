@@ -18,7 +18,7 @@
 
         <br>
          . . . then that fact will need to be encoded as
-            {{sComputed | truncateToHundredths}} dbE memory in your brain.
+        <span style="font-weight: bold">{{sComputed | truncateToHundredths}}</span> dbE memory in your brain.
 
     </div>
     <div>
@@ -44,8 +44,8 @@
         . . . then today, you would have a
         <br>
         <div>
-            {{rComputed | times100 | truncateToHundredths}}% chance of remembering that fact
-        </div>
+            <span style="font-weight: bold">{{rComputed | times100 | truncateToHundredths}}</span>% chance of remembering that fact
+        </span>
     </div>
     <div>
 
@@ -61,13 +61,15 @@
         </div>
 
         <br>
-        <div> {{yearsComputed}} years</div>
-        <div> {{monthsComputed}} months</div>
-        <div> {{weeksComputed}} weeks</div>
-        <div> {{daysComputed}} days</div>
-        <div> {{hoursComputed}} hours</div>
-        <div> {{minutesComputed}} minutes</div>
-        <div> {{secondsComputed}} seconds</div>
-        from now
+        <div style="font-weight: bold">
+            <div> {{yearsComputed}} years</div>
+            <div> {{monthsComputed}} months</div>
+            <div> {{weeksComputed}} weeks</div>
+            <div> {{daysComputed}} days</div>
+            <div> {{hoursComputed}} hours</div>
+            <div> {{minutesComputed}} minutes</div>
+            <div> {{secondsComputed}} seconds</div>
+            from now
+        </div>
     </div>
 </div>
