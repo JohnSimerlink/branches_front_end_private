@@ -5,7 +5,7 @@ var CodeAndTestConfig = require('../webpack.config.codeandtest.rules.js')
 module.exports = {
     entry: {
         regenerator: 'babel-regenerator-runtime',
-        build: './app/bootstrap.ts',
+        build: './app/bootstrap.js',
     },
     output: {
         path: path.resolve(__dirname, './dist'),
