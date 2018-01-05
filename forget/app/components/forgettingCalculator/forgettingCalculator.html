@@ -1,15 +1,73 @@
-<div>
+<div style="max-width:400px;">
+    <h2>Forgetting Curve Calculator</h2>
     <div>
         <h3>Strength Calculator</h3>
-        #Years: <input v-model="years" type="text">
+
+        <br>
+        <div>
+          If you want to have a <input v-model="r" type="number">% chance of remembering a fact after
+        </div>
+
+        <div><input v-model="years" type="text"> years,</div>
+        <div><input v-model="months" type="text"> months,</div>
+        <div><input v-model="weeks" type="text"> weeks,</div>
+        <div><input v-model="days" type="text"> days,</div>
+        <div><input v-model="hours" type="text"> hours,</div>
+        <div><input v-model="minutes" type="text"> minutes,</div>
+        and <div><input v-model="seconds" type="text"> seconds</div>
+
+        <br>
+         . . . then that fact will need to be encoded as
+            {{sComputed}} dbE memory in your brain.
+
     </div>
     <div>
         <h3>Recall Calculator</h3>
-        #Years: <input v-model="years" type="text">
+        If you learned something
+        <div><input v-model="years" type="text"> years,</div>
+        <div><input v-model="months" type="text"> months,</div>
+        <div><input v-model="weeks" type="text"> weeks,</div>
+        <div><input v-model="days" type="text"> days,</div>
+        <div><input v-model="hours" type="text"> hours,</div>
+        <div><input v-model="minutes" type="text"> minutes,</div>
+        and <div><input v-model="seconds" type="text"> seconds</div>
+        ago,
+
+        and it was encoded as a
+        <br>
+        <div>
+            <input v-model="s" type="number"> dBE
+        </div>
+        memory in your brain,
+        <br>
+
+        . . . then today, you would have a
+        <br>
+        <div>
+            {{rComputed | times100}}% chance of remembering that fact
+        </div>
     </div>
     <div>
+
         <h3>Time Calculator</h3>
-        <div>{{years}} years</div>
+        You will have a
+        <div>
+            <input v-model="r" type="number">% Chance Remembering
+        </div>
+
+        <br>
+        <div> a
+            <input v-model="s" type="number"> dBE fact
+        </div>
+
+        <br>
+        <div> {{yearsComputed}} years</div>
+        <div> {{monthsComputed}} months</div>
+        <div> {{weeksComputed}} weeks</div>
+        <div> {{daysComputed}} days</div>
+        <div> {{hoursComputed}} hours</div>
+        <div> {{minutesComputed}} minutes</div>
+        <div> {{secondsComputed}} seconds</div>
+        from now
     </div>
-    <input v-model="years">
 </div>
