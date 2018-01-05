@@ -18,7 +18,7 @@
 
         <br>
          . . . then that fact will need to be encoded as
-            {{sComputed}} dbE memory in your brain.
+            {{sComputed | truncateToHundredths}} dbE memory in your brain.
 
     </div>
     <div>
@@ -44,7 +44,7 @@
         . . . then today, you would have a
         <br>
         <div>
-            {{rComputed | times100}}% chance of remembering that fact
+            {{rComputed | times100 | truncateToHundredths}}% chance of remembering that fact
         </div>
     </div>
     <div>
