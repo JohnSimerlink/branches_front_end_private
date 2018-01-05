@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/objects/interfaces.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">app/objects</a> interfaces.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>43/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>22/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>11/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>43/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// tslint:disable no-empty-interface
+// tslint:disable no-namespace
+import {PROFICIENCIES} from './proficiency/proficiencyEnum';
+import {UIColor} from './uiColor';
+&nbsp;
+// app
+&nbsp;
+export interface IApp {
+    start()
+}
+// components
+export interface IKnawledgeMapCreator {
+    create()
+}
+export interface IVuexStore {
+}
+&nbsp;
+// contentItem
+&nbsp;
+// TODO: this is a really pathological interface. This should really be for IContentUserData or something
+export interface IContentItem {
+    interactions,
+    hasInteractions,
+    lastRecordedStrength,
+    overdue,
+    isNew(),
+}
+&nbsp;
+// loaders
+export interface ITreeLoaderCore {
+    download(treeId): Promise&lt;ITreeDataWithoutId&gt;
+    deserialize(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
+}
+export interface ITreeLoader {
+    getData(treeId): ITreeDataWithoutId
+    downloadData(treeId): Promise&lt;ITreeDataWithoutId&gt;
+    isLoaded(treeId): boolean
+}
+export interface ITreeLocationLoaderCore {
+    download(treeId): Promise&lt;ITreeLocationData&gt;
+    deserialize(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation
+}
+export interface ITreeLocationLoader {
+    getData(treeId): ITreeLocationData
+    downloadData(treeId): Promise&lt;ITreeLocationData&gt;
+    isLoaded(treeId): boolean
+}
+&nbsp;
+// content
+&nbsp;
+export enum CONTENT_TYPES {
+    SKILL = 'skill',
+    CATEGORY = 'heading', // heading, bc of backwards compatability
+    FACT = 'fact',
+}
+&nbsp;
+export interface IContent {
+    type: IMutableField&lt;CONTENT_TYPES&gt;;
+    question: IMutableField&lt;string&gt;;
+    answer: IMutableField&lt;string&gt;;
+    title: IMutableField&lt;string&gt;;
+}
+&nbsp;
+export interface ISubscribableContentCore extends IContent {
+    type: ISubscribableMutableField&lt;CONTENT_TYPES&gt;;
+    question: ISubscribableMutableField&lt;string&gt;;
+    answer: ISubscribableMutableField&lt;string&gt;;
+    title: ISubscribableMutableField&lt;string&gt;;
+    val(): IContentData
+}
+&nbsp;
+export interface IContentData {
+    type: CONTENT_TYPES;
+    question?: string;
+    answer?: string;
+    title?: string;
+}
+&nbsp;
+export enum ContentPropertyNames {
+    TYPE,
+    QUESTION,
+    ANSWER,
+    TITLE,
+}
+&nbsp;
+export interface ISubscribableContent extends
+    ISubscribable&lt;IValUpdates&gt;, ISubscribableContentCore, IDescendantPublisher {}
+&nbsp;
+export interface IMutableSubscribableContent
+    extends ISubscribableContent,
+        IMutable&lt;IProppedDatedMutation&lt;ContentPropertyMutationTypes, ContentPropertyNames&gt;&gt; {}
+&nbsp;
+// contentUser
+&nbsp;
+export interface IContentUser {
+    overdue: IMutableField&lt;boolean&gt;
+    timer: IMutableField&lt;number&gt;
+    proficiency: IMutableField&lt;PROFICIENCIES&gt;
+    lastRecordedStrength: IMutableField&lt;number&gt;
+    // ^^ TODO: this might actually be an object not a simple number
+}
+&nbsp;
+export interface ISubscribableContentUserCore extends IContentUser {
+    overdue: ISubscribableMutableField&lt;boolean&gt;
+    timer: ISubscribableMutableField&lt;number&gt;
+    proficiency: ISubscribableMutableField&lt;PROFICIENCIES&gt;
+    lastRecordedStrength: ISubscribableMutableField&lt;number&gt;
+    val(): IContentUserData
+}
+&nbsp;
+export enum ContentUserPropertyNames {
+    OVERDUE,
+    TIMER,
+    PROFICIENCY,
+    LAST_RECORDED_STRENGTH,
+}
+&nbsp;
+export interface ISubscribableContentUser extends
+    ISubscribable&lt;IValUpdates&gt;, ISubscribableContentUserCore, IDescendantPublisher {}
+&nbsp;
+export interface IMutableSubscribableContentUser
+    extends ISubscribableContentUser,
+        IMutable&lt;IProppedDatedMutation&lt;ContentUserPropertyMutationTypes, ContentUserPropertyNames&gt;&gt; {}
+&nbsp;
+export interface IContentUserData {
+    overdue: boolean,
+    timer: number,
+    proficiency: PROFICIENCIES,
+    lastRecordedStrength: number,
+}
+&nbsp;
+// dbSync
+&nbsp;
+export interface IDatabaseSaver {
+    save(updates: IDetailedUpdates)
+}
+&nbsp;
+export interface IDatabaseSyncer extends ISubscriber&lt;IDetailedUpdates&gt; {
+}
+&nbsp;
+export interface IDBSubscriber {
+    subscribe()
+}
+&nbsp;
+export interface IDetailedUpdates {
+    updates?: object,
+    pushes?: object
+}
+&nbsp;
+export interface IFirebaseRef {
+    update(updates: object),
+    child(path: string): IPushable,
+    on(eventName: string, callback: (ISnapshot) =&gt; {})
+}
+&nbsp;
+export interface ISnapshot {
+    val(): any
+}
+&nbsp;
+export interface IPushable {
+    push(item: any)
+}
+&nbsp;
+export type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) =&gt; void
+&nbsp;
+// field
+&nbsp;
+export enum FieldMutationTypes {
+    SET,
+    INCREMENT
+}
+export interface IField&lt;T&gt; {
+    val(): T;
+}
+export interface IMutableField&lt;T&gt; extends IMutable&lt;IDatedMutation&lt;FieldMutationTypes&gt;&gt;, IField&lt;T&gt; {}
+&nbsp;
+export interface ISubscribableMutableField&lt;T&gt; extends ISubscribable&lt;IDetailedUpdates&gt;, IMutableField&lt;T&gt; {
+}
+&nbsp;
+// MathUtils
+&nbsp;
+export type radian = number // between 0 and 2 pi
+export type IPercentage = number // between 0 and 1
+&nbsp;
+// mutations
+&nbsp;
+export interface IMutable&lt;MutationInterface/*: IMutation*/&gt; {
+    addMutation(mutation: MutationInterface), // idempotent.
+    mutations(): MutationInterface[],
+    /* TODO: Arrays are evil for firebase / distributed data.
+     might have to replace this with a set.
+      - https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
+      - https://firebase.googleblog.com/2014/05/handling-synchronized-arrays-with-real.html*/
+}
+export interface IUndoableMutable&lt;MutationInterface&gt; extends IMutable&lt;MutationInterface&gt; {
+    undo(mutationListIndex: number),
+    redo(mutationListIndex: number)
+}
+export interface IMutation&lt;MutationTypes&gt; {
+    type: MutationTypes,
+    data
+}
+export interface IDatedMutation&lt;MutationTypes&gt; extends IMutation&lt;MutationTypes&gt; {
+    timestamp: number // ISO 8601 POSIX Timestamp
+}
+export interface IProppedDatedMutation&lt;MutationTypes, PropertyNames&gt; extends IDatedMutation&lt;MutationTypes&gt; {
+    propertyName: PropertyNames
+}
+export interface IIdProppedDatedMutation&lt;MutationTypes, PropertyNames&gt;
+    extends IIdDatedMutation&lt;MutationTypes&gt; {
+    propertyName: PropertyNames
+}
+export interface IIdDatedMutation&lt;MutationTypes&gt; extends IDatedMutation&lt;MutationTypes&gt; {
+    id: string
+}
+export interface IGlobalDatedMutation&lt;MutationTypes&gt;
+    extends IIdProppedDatedMutation&lt;MutationTypes, AllPropertyNames&gt; {
+    objectType: ObjectTypes
+}
+export interface IActivatableMutation&lt;MutationTypes&gt; extends IMutation&lt;MutationTypes&gt; {
+    active: boolean
+}
+export interface IActivatableDatedMutation&lt;MutationTypes&gt;
+    extends IDatedMutation&lt;MutationTypes&gt;, IActivatableMutation&lt;MutationTypes&gt; {
+}
+&nbsp;
+export enum SetMutationTypes {
+    ADD,
+    REMOVE
+}
+&nbsp;
+export enum PointMutationTypes {
+    SHIFT
+}
+&nbsp;
+export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
+export type TreeUserPropertyMutationTypes = FieldMutationTypes
+export type TreeLocationPropertyMutationTypes = PointMutationTypes
+export type ContentUserPropertyMutationTypes = FieldMutationTypes
+export type ContentPropertyMutationTypes = FieldMutationTypes
+export type AllPropertyMutationTypes = TreePropertyMutationTypes
+    | TreeUserPropertyMutationTypes
+    | TreeLocationPropertyMutationTypes
+    | ContentUserPropertyMutationTypes
+    | ContentPropertyMutationTypes
+&nbsp;
+export enum ObjectDataTypes {
+    TREE_DATA,
+    TREE_LOCATION_DATA,
+    TREE_USER_DATA,
+    CONTENT_DATA,
+    CONTENT_USER_DATA,
+}
+export enum ObjectTypes {
+    TREE,
+    TREE_LOCATION,
+    TREE_USER,
+    CONTENT,
+    CONTENT_USER,
+}
+&nbsp;
+// point
+export interface ICoordinate {
+    x: number,
+    y: number
+}
+&nbsp;
+export interface IPoint {
+    val(): ICoordinate,
+    // Points can have their coordinate shifted by another coordinate
+}
+export interface IUndoableMutablePoint extends IUndoableMutable&lt;IDatedMutation&lt;PointMutationTypes&gt;&gt;, IPoint { }
+&nbsp;
+export interface IMutableSubscribablePoint  extends ISubscribable&lt;IDetailedUpdates&gt;, IUndoableMutablePoint { }
+&nbsp;
+// proficiencyStats
+&nbsp;
+export interface IProficiencyStats {
+    UNKNOWN: number,
+    ONE: number,
+    TWO: number,
+    THREE: number,
+    FOUR: number,
+}
+&nbsp;
+// set
+&nbsp;
+export interface IMutableStringSet extends IMutable&lt;IDatedMutation&lt;SetMutationTypes&gt;&gt;, ISet&lt;string&gt; {
+}
+&nbsp;
+export interface ISet&lt;T&gt; {
+    val(): T[],
+}
+&nbsp;
+export interface ISubscribableMutableStringSet extends ISubscribable&lt;IDetailedUpdates&gt;, IMutableStringSet {
+}
+&nbsp;
+// sigmaNode
+export type fGetSigmaIdsForContentId = (id: string) =&gt; string[]
+export interface ISigmaNodesUpdater {
+    handleUpdate(update: ITypeAndIdAndValUpdates)
+}
+&nbsp;
+export interface IColorSlice {
+    color: UIColor
+    start: radian
+    end: radian
+}
+&nbsp;
+export interface IEditableSigmaNode {
+    receiveNewContentData(contentData: IContentData)
+    receiveNewContentUserData(contentUserData: IContentUserData)
+    receiveNewTreeLocationData(treeLocationData: ITreeLocationData)
+    receiveNewTreeUserData(treeUserData: ITreeUserData)
+    receiveNewTreeData(treeData: ITreeDataWithoutId)
+// TODO handle some of the receiveNewTreeData (parentId, children) in another class
+}
+&nbsp;
+export interface ISigmaNode extends ISigmaNodeData, IEditableSigmaNode {}
+&nbsp;
+export interface ISigmaNodeData {
+    id: string;
+    parentId: string;
+    contentId: string;
+    children: string[];
+    x: number;
+    y: number;
+    aggregationTimer: number;
+    contentUserData: IContentUserData;
+    content: IContentData;
+    label: string;
+    size: number;
+    colorSlices: IColorSlice[];
+    proficiencyStats: IProficiencyStats;
+    overdue: boolean;
+}
+&nbsp;
+// SigmaNodeCreator
+export interface ISigmaNodeCreatorCore {
+    receiveNewTreeData({treeId, treeData}: {treeId: string, treeData: ITreeDataWithoutId})
+    receiveNewTreeLocationData({treeId, treeLocationData}: {treeId: string, treeLocationData: ITreeLocationData} )
+    receiveNewTreeUserData({treeId, treeUserData}: {treeId: string, treeUserData: ITreeUserData})
+    receiveNewContentData({contentId, contentData}: {contentId: string, contentData: IContentData})
+    receiveNewContentUserData({contentId, contentUserData}: {contentId: string, contentUserData: IContentUserData})
+}
+export interface IManagedSigmaNodeCreatorCore extends ISigmaNodeCreatorCore {
+}
+export interface ISigmaNodeCreator {
+    receiveUpdate(update: ITypeAndIdAndValUpdates)
+}
+export interface IStoreSourceUpdateListener extends ISubscriber&lt;ITypeAndIdAndValUpdates&gt; {}
+// SigmaRendererManager
+export interface IStoreSourceUpdateListenerCore {
+    receiveUpdate(update: ITypeAndIdAndValUpdates)
+}
+export interface ISigmaRenderManager extends ISubscribable&lt;ISigmaIdToRender&gt; {
+    markTreeDataLoaded(treeId)
+    markTreeLocationDataLoaded(treeId)
+}
+export interface IRenderedNodesManagerCore {
+    addToRenderList(sigmaId: string)
+}
+export interface IRenderedNodesManager extends ISubscriber&lt;ISigmaIdToRender&gt; {}
+&nbsp;
+// stores
+&nbsp;
+export interface IMutableSubscribableGlobalStore
+    extends ISubscribableGlobalStore, IMutable&lt;IGlobalDatedMutation&lt;AllPropertyMutationTypes&gt;&gt; {
+}
+&nbsp;
+export interface ISubscribableGlobalStore extends ISubscribable&lt;ITypeAndIdAndValUpdates&gt;,
+    IDescendantPublisher {
+}
+&nbsp;
+export interface ICoreSubscribableStore&lt;UpdatesType, ObjectType&gt; extends IDescendantPublisher {
+    addAndSubscribeToItem(id: any, item: ISubscribable&lt;UpdatesType&gt; &amp; ObjectType)
+}
+&nbsp;
+export interface IMutableSubscribableTreeStore
+    extends ISubscribableTreeStore,
+        IMutable&lt;IIdProppedDatedMutation&lt;TreePropertyMutationTypes, TreePropertyNames&gt;&gt; {
+}
+&nbsp;
+export interface IMutableSubscribableTreeUserStore
+    extends ISubscribableTreeUserStore,
+        IMutable&lt;IIdProppedDatedMutation&lt;TreeUserPropertyMutationTypes, TreeUserPropertyNames&gt;&gt; {
+}
+&nbsp;
+export interface IMutableSubscribableTreeLocationStore
+    extends ISubscribableTreeLocationStore,
+        IMutable&lt;IIdProppedDatedMutation&lt;TreeLocationPropertyMutationTypes, TreeLocationPropertyNames&gt;&gt; {
+}
+&nbsp;
+export interface IMutableSubscribableContentUserStore
+    extends ISubscribableContentUserStore,
+        IMutable&lt;IIdProppedDatedMutation&lt;ContentUserPropertyMutationTypes, ContentUserPropertyNames&gt;&gt; {
+}
+&nbsp;
+export interface IMutableSubscribableContentStore
+    extends ISubscribableContentStore,
+        IMutable&lt;IIdProppedDatedMutation&lt;ContentPropertyMutationTypes, ContentPropertyNames&gt;&gt; {
+}
+&nbsp;
+export interface ISubscribableStore&lt;SubscribableCoreInterface&gt; extends ISubscribable&lt;IIdAndValUpdates&gt;,
+    ICoreSubscribableStore&lt;IIdAndValUpdates, SubscribableCoreInterface&gt; {}
+&nbsp;
+export interface ISubscribableTreeStore
+    extends ISubscribableStore&lt;ISubscribableTreeCore&gt; {}
+&nbsp;
+export interface ISubscribableTreeUserStore
+    extends ISubscribableStore&lt;ISubscribableTreeUserCore&gt; {}
+&nbsp;
+export interface ISubscribableTreeLocationStore
+    extends ISubscribableStore&lt;ISubscribableTreeLocationCore&gt; {}
+&nbsp;
+export interface ISubscribableContentUserStore
+    extends ISubscribableStore&lt;ISubscribableContentUserCore&gt; {}
+&nbsp;
+export interface ISubscribableContentStore
+    extends ISubscribableStore&lt;ISubscribableContentCore&gt; {}
+&nbsp;
+export type IValUpdates = any
+export interface IIdAndValUpdates {
+    id: any,
+    val: any
+}
+export interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
+    type: ObjectDataTypes
+}
+export type ObjectDataDataTypes = ITreeDataWithoutId &amp; ITreeUserData &amp;
+    ITreeLocationData &amp; IContentData &amp; IContentUserData &amp; ICoordinate
+&nbsp;
+// subscribable
+export type updatesCallback&lt;UpdateObjectType&gt; = (updates: UpdateObjectType) =&gt; void;
+&nbsp;
+export interface ISubscribable&lt;UpdateObjectType&gt; {
+    onUpdate(func: updatesCallback&lt;UpdateObjectType&gt;);
+}
+&nbsp;
+export interface ISubscriber&lt;UpdateObjectType&gt; {
+    subscribe(obj: ISubscribable&lt;UpdateObjectType&gt;)
+}
+&nbsp;
+export interface IDescendantPublisher {
+    startPublishing()
+}
+export interface ISigmaIdToRender {
+    sigmaIdToRender: string
+}
+&nbsp;
+export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
+    TreeLocationPropertyNames | ContentUserPropertyNames | ContentPropertyNames
+&nbsp;
+export interface IHash&lt;T&gt; {
+    [id: string]: T
+}
+export interface IMap&lt;T&gt; {
+    get(id: string): T
+    set(id: string, item: T)
+    entries(): Array&lt;entry&lt;T&gt;&gt;
+}
+export type entry&lt;T&gt; = [string, T]
+&nbsp;
+// IStoreSource
+export interface ISubscribableStoreSource&lt;T&gt; extends IMap&lt;T&gt;, ISubscribable&lt;ITypeAndIdAndValUpdates&gt; {}
+export interface ISubscribableTreeStoreSource
+    extends IMap&lt;IMutableSubscribableTree&gt;, ISubscribable&lt;ITypeAndIdAndValUpdates&gt; {}
+export interface ISubscribableTreeLocationStoreSource
+    extends IMap&lt;IMutableSubscribableTreeLocation&gt;, ISubscribable&lt;ITypeAndIdAndValUpdates&gt; {}
+export interface ISubscribableTreeUserStoreSource
+    extends IMap&lt;IMutableSubscribableTreeUser&gt;, ISubscribable&lt;ITypeAndIdAndValUpdates&gt; {}
+export interface ISubscribableContentStoreSource
+    extends IMap&lt;IMutableSubscribableContent&gt;, ISubscribable&lt;ITypeAndIdAndValUpdates&gt; {}
+export interface ISubscribableContentUserStoreSource
+    extends IMap&lt;IMutableSubscribableContentUser&gt;, ISubscribable&lt;ITypeAndIdAndValUpdates&gt; {}
+&nbsp;
+// tree
+export interface ITree {
+    getId(): string;
+    contentId: IMutableField&lt;string&gt;;
+    parentId: IMutableField&lt;string&gt;;
+    children: IMutableStringSet;
+}
+export interface ITreeDataWithoutId {
+    contentId: string;
+    parentId: string;
+    children: string[];
+}
+export interface ITreeData extends ITreeDataWithoutId {
+    id: string;
+}
+&nbsp;
+export interface ISubscribableTreeCore extends ITree {
+    contentId: ISubscribableMutableField&lt;string&gt;
+    parentId: ISubscribableMutableField&lt;string&gt;
+    children: ISubscribableMutableStringSet
+    val(): ITreeDataWithoutId
+}
+&nbsp;
+export enum TreePropertyNames {
+    CONTENT_ID,
+    PARENT_ID,
+    CHILDREN
+}
+&nbsp;
+export interface ISubscribableTree extends ISubscribable&lt;IValUpdates&gt;,
+    ISubscribableTreeCore, IDescendantPublisher { }
+&nbsp;
+export interface IMutableSubscribableTree
+    extends ISubscribableTree, IMutable&lt;IProppedDatedMutation&lt;TreePropertyMutationTypes, TreePropertyNames&gt;&gt; {}
+&nbsp;
+// treeUser
+&nbsp;
+export interface ITreeUser {
+    proficiencyStats: IMutableField&lt;IProficiencyStats&gt;,
+    aggregationTimer: IMutableField&lt;number&gt;,
+}
+&nbsp;
+export interface ISubscribableTreeUserCore extends ITreeUser {
+    proficiencyStats: ISubscribableMutableField&lt;IProficiencyStats&gt;,
+    aggregationTimer: ISubscribableMutableField&lt;number&gt;,
+    val(): ITreeUserData
+}
+&nbsp;
+export enum TreeUserPropertyNames {
+    PROFICIENCY_STATS,
+    AGGREGATION_TIMER,
+}
+&nbsp;
+export interface ISubscribableTreeUser extends
+    ISubscribable&lt;IValUpdates&gt;, ISubscribableTreeUserCore, IDescendantPublisher {}
+&nbsp;
+export interface IMutableSubscribableTreeUser
+    extends ISubscribableTreeUser,
+        IMutable&lt;IProppedDatedMutation&lt;TreeUserPropertyMutationTypes, TreeUserPropertyNames&gt;&gt; {}
+&nbsp;
+export interface ITreeUserData {
+    proficiencyStats: IProficiencyStats,
+    aggregationTimer: number,
+}
+&nbsp;
+// treeLocation
+export interface ITreeLocation {
+    point: IUndoableMutablePoint,
+}
+&nbsp;
+export interface ISubscribableTreeLocationCore extends ITreeLocation {
+    point: IMutableSubscribablePoint,
+    val(): ITreeLocationData
+}
+&nbsp;
+export enum TreeLocationPropertyNames {
+    POINT,
+}
+&nbsp;
+export interface ISubscribableTreeLocation extends
+    ISubscribable&lt;IValUpdates&gt;, ISubscribableTreeLocationCore, IDescendantPublisher {}
+&nbsp;
+export interface IMutableSubscribableTreeLocation
+    extends ISubscribableTreeLocation,
+        IMutable&lt;IProppedDatedMutation&lt;TreeLocationPropertyMutationTypes, TreeLocationPropertyNames&gt;&gt; {}
+&nbsp;
+export interface ITreeLocationData {
+    point: ICoordinate,
+}
+&nbsp;
+// ui
+export interface IUI extends ISubscriber&lt;ITypeAndIdAndValUpdates&gt; {}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Dec 16 2017 15:58:16 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>

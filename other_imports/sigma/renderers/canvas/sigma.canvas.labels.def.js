@@ -93,8 +93,10 @@
         var fontSize,
             prefix = settings('prefix') || '',
             size = node[prefix + 'size'];
-        if (!node.label || typeof node.label !== 'string')
+        if (!node.label || typeof node.label !== 'string') {
             return;
+        }
+
 
         // fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
         fontSize = getLabelFontSizeFromNode(node, settings)
@@ -105,6 +107,7 @@
         if (sectionOffScreen(section)){
             packageData.hideCount++
             return
+        } else {
         }
 
             // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
@@ -135,11 +138,13 @@
             (node.color || settings('defaultNodeColor')) :
             settings('defaultLabelColor');
 
+        var x = Math.round(node[prefix + 'x'] /*+ size + 3*/)
+        var y = Math.round(node[prefix + 'y'] + fontSize / 3)
         var label = node.label.length > 20 ? node.label.substring(0,19) + ' . . .' : node.label
         context.fillText(
             label,
-            Math.round(node[prefix + 'x'] /*+ size + 3*/),
-            Math.round(node[prefix + 'y'] + fontSize / 3)
+            x,
+            y
         );
     };
 }).call(window);

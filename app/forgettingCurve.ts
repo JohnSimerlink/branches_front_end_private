@@ -4,6 +4,8 @@ export const e = 2.7182828
 export const criticalRecall = 1 - 1 / e
 /* memory strength in decibels -
  https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
+R = proficiency from 0 to 100
+t equals time since previous interaction in seconds
  */
 export function calculateStrength(R, t) {
     const proficiencyAsDecimal = R / 100
@@ -14,7 +16,7 @@ export function calculateStrength(R, t) {
 }
 // Se = previous estimated strength
 // R = proficiency from 0 to 100
-// t equals time since previous interaction
+// t equals time since previous interaction in seconds
 export function calculateSecondsTilCriticalReviewTime(strength) {
     return calculateTime(strength, criticalRecall)
 }
@@ -61,6 +63,8 @@ function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo) {
     return doubleOne >= (doubleTwo - .01)
 }
 
+// S is in decibels
+// t is in seconds
 // calculate percent change of recall (e.g. proficiency)
 // returns as a num in range [0,1]
 export function calculateRecall(S, t) {

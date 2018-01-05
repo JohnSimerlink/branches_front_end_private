@@ -1,4 +1,5 @@
 import {expect} from 'chai'
+import {} from 'mocha'
 import * as curve from '../app/forgettingCurve'
 describe('measuringPreviousStrength', () => {
     it(`should return estimated previous strength if proficiency >= PROFICIENCIES.FOUR

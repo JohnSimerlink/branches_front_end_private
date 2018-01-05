@@ -8,9 +8,13 @@ if (typeof window !== 'undefined'){
     window.trees = trees //expose to window for console debugging
 }
 function processTreeData(treeData, resolve){
-    var tree = new Tree(treeData)
-    trees[tree.id] = tree // add to cache
-    resolve(tree)
+    try {
+        var tree = new Tree({...treeData, createInDB: false})
+        trees[tree.id] = tree // add to cache
+        resolve(tree)
+    } catch (err){
+        console.error(err)
+    }
 }
 export class Trees {
     static getAll(success){
@@ -33,8 +37,12 @@ export class Trees {
                     return
                 }
                 firebase.database().ref(lookupKey).once("value", function onFirebaseTreeGet(snapshot){
-                    let treeData = snapshot.val();
-                    processTreeData(treeData, resolve)
+                    try {
+                        let treeData = snapshot.val();
+                        processTreeData(treeData, resolve)
+                    } catch (err){
+                        console.error(err)
+                    }
                 })
             })
         })

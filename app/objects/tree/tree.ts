@@ -1,6 +1,6 @@
 /* tslint:disable object-literal-sort-keys */
-import md5 from 'md5'
 import {error, log} from '../../core/log';
+import md5 from '../../core/md5wrapper'
 import store from '../../core/store'
 import {IContentItem} from '../contentItem/IContentItem';
 import ContentItems from '../contentItems'
@@ -11,6 +11,8 @@ import {user} from '../user'
 import {ITree} from './ITree';
 import { addObjToProficiencyStats, incrementProficiencyStatsCategory } from './proficiencyStats'
 
+// log('md5 is ', md5)
+// log('md5 of 1234 is', md5(1234))
 function syncGraphWithNode(treeId) {
     store.commit('syncGraphWithNode', treeId)
     // PubSub.publish('syncGraphWithNode', treeId)
@@ -48,24 +50,31 @@ export class Tree implements IMutable<ITreeMutation> {
     public aggregationTimer;
     public x;
     public y;
+    public level;
     public userNumOverdueMap;
     public userProficiencyStatsMap;
     public userAggregationTimerMap;
-    public contentType;
     public mutations;
 
-    constructor(contentId, contentType, parentId, parentDegree, x, y) {
+    public _loadExistingTreeFromDB(treeObj) {
+        loadObject(treeObj, this)
+        this.proficiencyStats = this.userProficiencyStatsMap
+            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
+        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
+        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
+    }
+    constructor({contentId, parentId, x, y, createInDB, level}) {
         this.leaves = []
         let treeObj
-        if (arguments[0] && typeof arguments[0] === 'object') {
+        if (arguments[0] && typeof arguments[0] === 'object' && !arguments[0].createInDB) {
             treeObj = arguments[0]
             this._loadExistingTreeFromDB(treeObj)
             return
         }
 
         this.contentId = contentId
-        this.contentType = contentType
         this.parentId = parentId;
+        this.level = level
         this.children = {};
         this.mutations = []
 
@@ -75,39 +84,24 @@ export class Tree implements IMutable<ITreeMutation> {
         this.proficiencyStats = this.userProficiencyStatsMap
             && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
         this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
-        this.userNumOverdueMap = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
+        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
 
         this.x = x
         this.y = y
 
-        treeObj = {contentType: this.contentType, contentId: this.contentId, parentId, children: this.children}
+        treeObj = {contentId: this.contentId, parentId, children: this.children}
         this.id = md5(JSON.stringify(treeObj))
-        if (typeof arguments[0] === 'object') {
-            /*
-         TODO: use a boolean to determine if the tree already exists.
-         or use Trees.get() and Trees.create() separate methods,
-          so we aren't getting confused by the same constructor
-        */
-            return
-        }
 
         const updates = {
             id: this.id,
             contentId,
-            contentType,
             parentId,
+            level,
             x,
             y,
         }
         const lookupKey = 'trees/' + this.id
         firebase.database().ref(lookupKey).update(updates)
-    }
-    public _loadExistingTreeFromDB(treeObj) {
-        loadObject(treeObj, this)
-        this.proficiencyStats = this.userProficiencyStatsMap
-            && this.userProficiencyStatsMap[user.getId()] || unknownProficiencyStats
-        this.aggregationTimer = this.userAggregationTimerMap && this.userAggregationTimerMap[user.getId()] || 0
-        this.numOverdue = this.userNumOverdueMap && this.userNumOverdueMap[user.getId()] || 0
     }
     public getChildIds() {
         if (!this.children) {
@@ -278,12 +272,10 @@ export class Tree implements IMutable<ITreeMutation> {
      * Change the content of a given node ("Tree")
      * Available content types currently header and fact
      */
-    public changeContent(contentId, contentType) {
+    public changeContent(contentId) {
         this.contentId = contentId;
-        this.contentType = contentType;
         const updates = {
             contentId,
-            contentType,
         }
         const lookupKey = 'trees/' + this.id
 
