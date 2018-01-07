@@ -1,0 +1,15 @@
+.info-container {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /*width: 100%;*/
+    /*font-family: 'Fredoka One', cursive !important;*/
+}
