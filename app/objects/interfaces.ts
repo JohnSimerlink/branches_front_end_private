@@ -2,7 +2,7 @@
 // tslint:disable no-namespace
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
-import {SigmaJs} from 'sigmajs';
+// import {SigmaJs} from 'sigmajs';
 
 // app
 
@@ -302,12 +302,18 @@ export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUp
 
 export interface ISigmaUpdater {
     // refresh(): void
-    addNode(node: SigmaJs.Node): void
+    addNode(node/*: SigmaJs.Node*/): void
 }
 export type fGetSigmaIdsForContentId = (id: string) => string[]
 export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
+
+export type ISigma = any
+// export interface ISigma {
+//     graph?: any,
+//     refresh?(arg: any): any,
+// }
 
 export interface IColorSlice {
     color: UIColor

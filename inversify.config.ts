@@ -29,9 +29,9 @@ import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
-    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction,
+    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet,  ITree,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITree,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
@@ -142,15 +142,15 @@ import {TYPES } from './app/objects/types'
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
-import SigmaConfigs = SigmaJs.SigmaConfigs;
-import Sigma = SigmaJs.Sigma;
+// import SigmaConfigs = SigmaJs.SigmaConfigs;
+// import Sigma = SigmaJs.Sigma;
 import {GRAPH_CONTAINER_ID} from './app/core/globals';
-import {SigmaJs} from 'sigmajs';
+// import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
 
-const sigmaInstance: Sigma = new sigma({
+const sigmaInstance /*: Sigma*/ = new sigma({
         graph: {
             nodes: [],
             edges: []
@@ -164,7 +164,7 @@ const sigmaInstance: Sigma = new sigma({
         glyphFontStyle: 'normal',
         glyphTextThreshold: 6,
         glyphThreshold: 3,
-    } as SigmaConfigs)
+    } as any/* as SigmaConfigs*/) as any
 log('inversify config sigmaInstance is ', sigmaInstance, sigmaInstance.bind)
 // throw new Error('inversify error error error')
 
@@ -290,7 +290,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
     bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
 
-    bind<Sigma>(TYPES.Sigma).toConstantValue(sigmaInstance)
+    bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance)
 
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
 
