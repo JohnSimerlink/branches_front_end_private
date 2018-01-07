@@ -150,6 +150,22 @@ import {SigmaJs} from 'sigmajs';
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
 
+const sigmaInstance: Sigma = new sigma({
+        graph: {
+            nodes: [],
+            edges: []
+        },
+        container: GRAPH_CONTAINER_ID,
+        glyphScale: 0.7,
+        glyphFillColor: '#666',
+        glyphTextColor: 'white',
+        glyphStrokeColor: 'transparent',
+        glyphFont: 'FontAwesome',
+        glyphFontStyle: 'normal',
+        glyphTextThreshold: 6,
+        glyphThreshold: 3,
+    } as SigmaConfigs)
+log('inversify config sigmaInstance is ', sigmaInstance, sigmaInstance.bind)
 // throw new Error('inversify error error error')
 
 // const firebaseConfig = {
@@ -274,21 +290,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
     bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
 
-    bind<Sigma>(TYPES.Sigma).toConstantValue(new sigma({
-        graph: {
-            nodes: [],
-            edges: []
-        },
-        container: GRAPH_CONTAINER_ID,
-        glyphScale: 0.7,
-        glyphFillColor: '#666',
-        glyphTextColor: 'white',
-        glyphStrokeColor: 'transparent',
-        glyphFont: 'FontAwesome',
-        glyphFontStyle: 'normal',
-        glyphTextThreshold: 6,
-        glyphThreshold: 3,
-    } as SigmaConfigs))
+    bind<Sigma>(TYPES.Sigma).toConstantValue(sigmaInstance)
 
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
 
