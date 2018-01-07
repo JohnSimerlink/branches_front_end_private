@@ -1,7 +1,10 @@
 import * as firebase from 'firebase';
 import {log} from './app/core/log'
+log('About to import sigmaConfigurations from inversify config')
 import './other_imports/sigmaConfigurations'
+log('just imported sigmaConfigurations from inversify config')
 import sigma from './other_imports/sigma/sigma.core.js'
+log('just imported sigma from sigma core')
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {App, AppArgs} from './app/core/app';
@@ -142,6 +145,7 @@ import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUp
 import SigmaConfigs = SigmaJs.SigmaConfigs;
 import Sigma = SigmaJs.Sigma;
 import {GRAPH_CONTAINER_ID} from './app/core/globals';
+import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()

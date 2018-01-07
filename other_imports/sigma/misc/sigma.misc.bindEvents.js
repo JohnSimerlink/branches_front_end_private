@@ -83,6 +83,7 @@ sigma.misc.bindEvents = function (prefix) {
 
 
     function getEdges(e) {
+        console.log('sigma misc bindEvents getEdges called')
         if (!self.settings('enableEdgeHovering')) {
             // No event if the setting is off:
             return [];
@@ -263,6 +264,7 @@ sigma.misc.bindEvents = function (prefix) {
             self.dispatchEvent('click', e.data);
 
             nodes = getNodes(e);
+            console.log('bindEvents 267 onClick called')
             edges = getEdges(e).filter(e => e.state !== 'severedh');
 
             if (nodes.length) {
@@ -313,6 +315,7 @@ sigma.misc.bindEvents = function (prefix) {
             self.dispatchEvent('doubleClick', e.data);
 
             nodes = getNodes(e);
+            console.log('bindEvents 267 onDoubleClick called, getEdges about to be called')
             edges = getEdges(e);
 
             if (nodes.length) {
@@ -344,6 +347,7 @@ sigma.misc.bindEvents = function (prefix) {
             self.dispatchEvent('rightClick', e.data);
 
             nodes = getNodes(e);
+            console.log("onRightClick getEdges about to be called")
             edges = getEdges(e);
 
             if (nodes.length) {
@@ -414,6 +418,7 @@ sigma.misc.bindEvents = function (prefix) {
                 return;
 
             nodes = getNodes(e);
+            console.log('bindEvents onMove called getEdges about to get called')
             edges = getEdges(e);
 
             var i,

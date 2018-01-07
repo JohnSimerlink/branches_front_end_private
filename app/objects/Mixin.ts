@@ -1,7 +1,7 @@
-import {ConstructorFuntion} from './tstypes';
+import {ConstructorFunction} from './tstypes';
 
 function Mixin(...classes/*: Function[]*/) {
-    return (combinedConstructor: ConstructorFuntion) => {
+    return (combinedConstructor: ConstructorFunction) => {
         classes.forEach(constructor => {
             Object.getOwnPropertyNames(constructor.prototype).forEach(name => {
                 const descriptor = Object.getOwnPropertyDescriptor(constructor.prototype, name);

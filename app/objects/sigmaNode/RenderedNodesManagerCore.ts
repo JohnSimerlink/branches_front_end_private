@@ -2,6 +2,7 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {IRenderedNodesManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
+import {SigmaJs} from 'sigmajs';
 
 @injectable()
 export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
