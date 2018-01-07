@@ -7,6 +7,7 @@ import Sigma = SigmaJs.Sigma;
 import Graph = SigmaJs.Graph;
 import Node = SigmaJs.Node
 import {log, error} from '../../core/log'
+import {SigmaJs} from 'sigmajs';
 
 @injectable()
 export class SigmaUpdater implements ISigmaUpdater {

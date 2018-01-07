@@ -28,10 +28,11 @@ import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import GraphData = SigmaJs.GraphData;
-import {configureSigma} from '../objects/sigmaNode/configureSigma.js'
+import {configureSigma} from '../objects/sigmaNode/configureSigma'
 import Graph = SigmaJs.Graph;
 import Edge = SigmaJs.Edge;
 import Sigma = SigmaJs.Sigma;
+import {SigmaJs} from 'sigmajs';
 
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +

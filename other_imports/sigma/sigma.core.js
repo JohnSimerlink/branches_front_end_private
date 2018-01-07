@@ -321,6 +321,7 @@ sigma.prototype.killCamera = function (v) {
  *                               id.
  */
 sigma.prototype.addRenderer = function (options) {
+    console.log('sigma core addRenderer line 324 HTMLElement is ', HTMLElement)
     var id,
         fn,
         camera,
@@ -330,8 +331,7 @@ sigma.prototype.addRenderer = function (options) {
     // Polymorphism:
     if (typeof o === 'string')
         o = {
-            container: document.getElementById(o) /*** ==>>> */ || new HTMLElement() /** <<=== added for testing purposes only to avoid a container element not found error in sigma.renderers.canvas **/
-        };
+            container: document.getElementById(o) /*** ==>>> */ || /** **/ document.createElement('div')  /** <<=== added for testing purposes only to avoid a container element not found error in sigma.renderers.canvas **/};
     else if (o instanceof HTMLElement)
         o = {
             container: o

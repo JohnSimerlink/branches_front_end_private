@@ -41,6 +41,11 @@ import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
 import Sigma = SigmaJs.Sigma;
+import {SigmaJs} from 'sigmajs';
+import sigma from '../../other_imports/sigma/sigma.core.js'
+log('about to call configureSigma')
+configureSigma(sigma)
+log('just called configureSigma')
 
 Vue.component('branchesFooter', BranchesFooter)
 class AppContainer {
@@ -107,7 +112,6 @@ class AppContainer {
             mode: 'history',
         })
 
-        configureSigma()
         app.start()
         // For now, new Vue must be called after app.start()
         const vm = new Vue({

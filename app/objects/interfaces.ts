@@ -2,6 +2,7 @@
 // tslint:disable no-namespace
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
+import {SigmaJs} from 'sigmajs';
 
 // app
 

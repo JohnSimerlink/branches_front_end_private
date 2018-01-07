@@ -1,2 +1,2 @@
-declare type ConstructorFuntion = new (...args: any[]) => any
-export {ConstructorFuntion}
+declare type ConstructorFunction = new (...args: any[]) => any
+export {ConstructorFunction}

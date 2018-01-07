@@ -10,6 +10,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import Graph = SigmaJs.Graph;
 import Edge = SigmaJs.Edge;
+import {SigmaJs} from 'sigmajs';
 
 test('DI constructor should work', (t) => {
 
