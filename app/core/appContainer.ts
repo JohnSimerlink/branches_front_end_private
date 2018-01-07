@@ -3,7 +3,7 @@ import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
     IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation,
     IRenderedNodesManager,
-    IRenderedNodesManagerCore, ISigmaNode,
+    IRenderedNodesManagerCore, ISigma, ISigmaNode,
     ISigmaRenderManager, ISigmaUpdater, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
     ITreeLoader, ITreeLocationLoader
@@ -74,7 +74,7 @@ class AppContainer {
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
-        const sigmaInstance: SigmaJs.Sigma = myContainer.get<Sigma>(TYPES.Sigma)
+        const sigmaInstance: ISigma = myContainer.get<ISigma>(TYPES.ISigma)
         const sigmaUpdater: ISigmaUpdater =
             new SigmaUpdater({graph: sigmaInstance.graph, refresh: sigmaInstance.refresh})
         const sigmaNodes: IHash<ISigmaNode> = {}

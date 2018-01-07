@@ -11,7 +11,7 @@
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es2015", "es2017", "dom", "es2017.object"],
-    "types": ["mocha", "node", "reflect-metadata", "firebase", "sigmajs"]
+    "types": ["mocha", "node", "reflect-metadata", "firebase"]
   },
   "exclude": [
     "node_modules"

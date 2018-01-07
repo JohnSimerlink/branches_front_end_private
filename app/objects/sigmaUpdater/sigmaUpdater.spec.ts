@@ -8,9 +8,9 @@ import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
 import {ISigmaUpdater} from '../interfaces';
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import Graph = SigmaJs.Graph;
-import Edge = SigmaJs.Edge;
-import {SigmaJs} from 'sigmajs';
+// import Graph = SigmaJs.Graph;
+// import Edge = SigmaJs.Edge;
+// import {SigmaJs} from 'sigmajs';
 
 test('DI constructor should work', (t) => {
 
@@ -25,15 +25,15 @@ test('DI constructor should work', (t) => {
 })
 
 test('AddNode Should call sigmaInstance.addNode and sigmaInstance.refresh()', (t) => {
-    const node: SigmaJs.Node = {id: '53234'} as SigmaJs.Node
-    const graph: SigmaJs.Graph = {
-        addNode(node: SigmaJs.Node) { return {} as Graph},
-        addEdge(edge: Edge) { return {} as Graph}
-    } as SigmaJs.Graph
-    const sigmaInstance: SigmaJs.Sigma = {
+    const node /*: SigmaJs.Node */ = {id: '53234'} /* as SigmaJs.Node */
+    const graph /*: SigmaJs.Graph */ = {
+        addNode(node /*: SigmaJs.Node */) { return {} /* as Graph */},
+        addEdge(edge /*: Edge */) { return {} /* as Graph */}
+    } /* as SigmaJs.Graph */
+    const sigmaInstance /*: SigmaJs.Sigma */ = {
         refresh(): void {},
         graph,
-    } as SigmaJs.Sigma
+    } /* as SigmaJs.Sigma */
     const addNodeSpy = sinon.spy(graph, 'addNode')
     const refreshSpy = sinon.spy(sigmaInstance, 'refresh')
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(

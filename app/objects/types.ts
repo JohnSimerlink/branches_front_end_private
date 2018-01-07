@@ -42,6 +42,7 @@ const TYPES = {
     IRenderedNodesManager: Symbol('IRenderedNodesManager'),
     IRenderedNodesManagerCore: Symbol('IRenderedNodesManagerCore'),
     ISaveUpdatesToDBFunction: Symbol('ISaveUpdatesToDBFunction'),
+    ISigma: Symbol('ISigma'),
     ISigmaNode: Symbol('ISigmaNode'),
     ISigmaNodeCreator: Symbol('ISigmaNodeCreator'),
     ISigmaNodeCreatorCore: Symbol('ISigmaNodeCreatorCore'),
