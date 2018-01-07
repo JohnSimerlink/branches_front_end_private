@@ -89,7 +89,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
         // Added as the last plugin
-        // Not sure if it's worth gzipping index.html - no harm no foul
+        // Not sure if it's worth gzipping old_index.html - no harm no foul
         new CompressionPlugin({
             asset: "[path].gz[query]",
             algorithm: "gzip",
