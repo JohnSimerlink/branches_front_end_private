@@ -6,56 +6,38 @@ import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
 import {
-    IHash, IMutableSubscribableTree, ITree, ITreeData, ITreeDataFromFirebase,
-    ITreeDataWithoutId
+    IHash, IMutableSubscribableContent, IContent, IContentData,
+    CONTENT_TYPES
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
-import {TreeDeserializer} from './TreeDeserializer';
+import {MutableSubscribableContent} from '../../objects/content/MutableSubscribableContent';
+import {ContentDeserializer} from './ContentDeserializer';
 
-test('TreeDeserializer::: deserialize Should deserialize properly', (t) => {
-    const contentIdVal = '1234'
-    const parentIdVal = '041234'
-    const childrenVal = ['041234', 'abd123']
-    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
+test('ContentDeserializer::: deserialize Should deserialize properly', (t) => {
+    const typeVal = CONTENT_TYPES.FACT
+    const questionVal = 'What is the Capital of Ohio?'
+    const answerVal = 'Columbus'
+    const titleVal = null
 
-    const treeData: ITreeDataFromFirebase = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenSet,
+    const contentData: IContentData = {
+        type: typeVal,
+        question: questionVal,
+        answer: answerVal,
+        title: titleVal,
     }
-    const treeId = '092384'
+    const contentId = '092384'
 
-    const contentId = new SubscribableMutableField<string>({field: contentIdVal})
+    const type = new SubscribableMutableField<CONTENT_TYPES>({field: typeVal})
+    const question = new SubscribableMutableField<string>({field: questionVal})
+    const answer = new SubscribableMutableField<string>({field: answerVal})
+    const title = new SubscribableMutableField<string>({field: titleVal})
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
-    const parentId = new SubscribableMutableField<string>({field: parentIdVal})
-    const children = new SubscribableMutableStringSet({set: childrenSet})
-    const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
-        {updatesCallbacks: [], id: treeId, contentId, parentId, children}
+    const expectedContent: IMutableSubscribableContent = new MutableSubscribableContent(
+        {updatesCallbacks: [], type, question, answer, title}
     )
-    const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeData, treeId})
-    expect(deserializedTree).to.deep.equal(expectedTree)
-    t.pass()
-})
-test('TreeDeserializer::: convert sets to arrays should work', (t) => {
-    const contentIdVal = '1234'
-    const parentIdVal = '041234'
-    const childrenVal = ['041234', 'abd123']
-    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
-
-    const treeData: ITreeDataFromFirebase = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenSet,
-    }
-    const expectedConvertedTreeData: ITreeDataWithoutId = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenVal,
-    }
-    const convertedTreeData: ITreeDataWithoutId = TreeDeserializer.convertSetsToArrays({treeData})
-    expect(convertedTreeData).to.deep.equal(expectedConvertedTreeData)
+    const deserializedContent: IMutableSubscribableContent = ContentDeserializer.deserialize({contentData, contentId})
+    expect(deserializedContent).to.deep.equal(expectedContent)
     t.pass()
 })

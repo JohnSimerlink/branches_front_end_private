@@ -70,6 +70,16 @@ export interface ISubscribableContentCore extends IContent {
     val(): IContentData
 }
 
+// interface IContentDataFact {
+//     type: CONTENT_TYPES;
+//     question: string;
+//     answer: string;
+// }
+// interface IContentDataNotFact {
+//     type: CONTENT_TYPES;
+//     title: string;
+// }
+// export type IContentData = IContentDataFact & IContentDataNotFact
 export interface IContentData {
     type: CONTENT_TYPES;
     question?: string;
