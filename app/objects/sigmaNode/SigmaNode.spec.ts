@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import {myContainer} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
-import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
+import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {CONTENT_TYPES, ITreeLocationData} from '../interfaces';
 import {
     IContentData, IContentUserData,

@@ -7,7 +7,7 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../inversify.config';
 import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
-import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
+import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
 import {
     CONTENT_TYPES, ContentPropertyMutationTypes, ContentPropertyNames,

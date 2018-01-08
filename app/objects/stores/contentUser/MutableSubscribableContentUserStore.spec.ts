@@ -6,7 +6,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
-import {MutableSubscribableContentUser} from '../../contentUserData/MutableSubscribableContentUser';
+import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     ContentUserPropertyMutationTypes,

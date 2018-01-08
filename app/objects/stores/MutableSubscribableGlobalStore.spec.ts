@@ -7,7 +7,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID2, injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
-import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
+import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
     CONTENT_TYPES, ContentPropertyNames,

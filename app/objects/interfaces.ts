@@ -28,23 +28,40 @@ export interface IContentItem {
 }
 
 // loaders
-export interface ITreeLoaderCore {
-    download(treeId): Promise<ITreeDataWithoutId>
-    deserialize(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
-}
+// export interface ITreeLoaderCore {
+//     download(treeId): Promise<ITreeDataWithoutId>
+//     deserialize(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
+// }
 export interface ITreeLoader {
     getData(treeId): ITreeDataWithoutId
     downloadData(treeId): Promise<ITreeDataWithoutId>
     isLoaded(treeId): boolean
 }
-export interface ITreeLocationLoaderCore {
-    download(treeId): Promise<ITreeLocationData>
-    deserialize(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation
-}
+// export interface ITreeLocationLoaderCore {
+//     download(treeId): Promise<ITreeLocationData>
+//     deserialize(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation
+// }
 export interface ITreeLocationLoader {
     getData(treeId): ITreeLocationData
     downloadData(treeId): Promise<ITreeLocationData>
     isLoaded(treeId): boolean
+}
+export interface ITreeUserLoader {
+    getData({treeId, userId}): ITreeUserData
+    downloadData({treeId, userId}): Promise<ITreeUserData>
+    isLoaded({treeId, userId}): boolean
+}
+
+export interface IContentLoader {
+    getData(contentId): IContentData
+    downloadData(contentId): Promise<IContentData>
+    isLoaded(contentId): boolean
+}
+
+export interface IContentUserLoader {
+    getData({contentId, userId}): IContentUserData
+    downloadData({contentId, userId}): Promise<IContentUserData>
+    isLoaded({contentId, userId}): boolean
 }
 
 // content

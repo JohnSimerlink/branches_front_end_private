@@ -1,34 +1,34 @@
 import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
-import {IHash, IMutableSubscribableTree, ITreeDataFromFirebase, ITreeDataWithoutId} from '../../objects/interfaces';
+import {IHash, IMutableSubscribableTreeUser, ITreeUserDataFromFirebase, ITreeUserDataWithoutId} from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
+import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
 
-class TreeDeserializer {
+class TreeUserDeserializer {
    public static deserialize(
-       {treeData, treeId}: {treeData: ITreeDataFromFirebase, treeId: string}
-       ): IMutableSubscribableTree {
-       const contentId = new SubscribableMutableField<string>({field: treeData.contentId})
+       {treeUserData, treeUserId}: {treeUserData: ITreeUserDataFromFirebase, treeUserId: string}
+       ): IMutableSubscribableTreeUser {
+       const contentId = new SubscribableMutableField<string>({field: treeUserData.contentId})
        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
         // TODO: figure out why DI puts in a bad updatesCallback!
        */
-       const parentId = new SubscribableMutableField<string>({field: treeData.parentId})
-       const childrenSet: IHash<boolean> = treeData.children
+       const parentId = new SubscribableMutableField<string>({field: treeUserData.parentId})
+       const childrenSet: IHash<boolean> = treeUserData.children
        const children = new SubscribableMutableStringSet({set: childrenSet})
-       const tree: IMutableSubscribableTree = new MutableSubscribableTree(
-           {updatesCallbacks: [], id: treeId, contentId, parentId, children}
+       const treeUser: IMutableSubscribableTreeUser = new MutableSubscribableTreeUser(
+           {updatesCallbacks: [], id: treeUserId, contentId, parentId, children}
            )
-       return tree
+       return treeUser
    }
    public static convertSetsToArrays(
-       {treeData, }: {treeData: ITreeDataFromFirebase, }
-   ): ITreeDataWithoutId {
-       const childrenArray = setToStringArray(treeData.children)
+       {treeUserData, }: {treeUserData: ITreeUserDataFromFirebase, }
+   ): ITreeUserDataWithoutId {
+       const childrenArray = setToStringArray(treeUserData.children)
        return {
-           parentId: treeData.parentId,
+           parentId: treeUserData.parentId,
            children: childrenArray,
-           contentId: treeData.contentId,
+           contentId: treeUserData.contentId,
        }
    }
 }
-export {TreeDeserializer}
+export {TreeUserDeserializer}
