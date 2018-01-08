@@ -1,6 +1,7 @@
-import {ITreeUserData} from '../interfaces';
+import {IContentUserData, ITreeUserData} from '../interfaces';
 
-export function isContentUserValid(treeUser: ITreeUserData) {
-    return treeUser && treeUser.proficiencyStats && Object.keys(treeUser.proficiencyStats).length
-        && treeUser.aggregationTimer
+export function isValidContentUser(contentUser: IContentUserData) {
+    return contentUser && contentUser.overdue
+        && contentUser.timer && contentUser.proficiency
+        && contentUser.lastRecordedStrength
 }

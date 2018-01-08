@@ -11,7 +11,7 @@ import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {setToStringArray} from '../../core/newUtils';
 
-function getContentUserId({contentId, userId}) {
+export function getContentUserId({contentId, userId}) {
     const separator = '__'
     return contentId + separator + userId
 }
@@ -38,6 +38,7 @@ export class ContentUserLoader implements IContentUserLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData({contentId, userId}): Promise<IContentUserData> {
+        const contentUserId = getContentUserId({contentId, userId})
         const contentUsersFirebaseRefForContentId = this.firebaseRef.child(contentId)
         log('contentUserLoader downloadData called')
         const me = this
@@ -61,10 +62,9 @@ export class ContentUserLoader implements IContentUserLoader {
 
                 if (isValidContentUser(contentUserData)) {
                     const contentUser: IMutableSubscribableContentUser =
-                        ContentUserDeserializer.deserialize({contentUserId, contentUserData})
+                        ContentUserDeserializer.deserialize({contentUserData})
                     me.storeSource.set(contentUserId, contentUser)
-                    const convertedData = ContentUserDeserializer.convertSetsToArrays({contentUserData})
-                    resolve(convertedData)
+                    resolve(contentUserData)
                 } else {
                     reject('contentUser is invalid! ! ' + JSON.stringify(contentUserData))
                 }
