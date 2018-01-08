@@ -74,7 +74,8 @@ export class ContentUserLoader implements IContentUserLoader {
         // TODO ^^ Figure out how to do this without casting
     }
 
-    public isLoaded(contentUserId): boolean {
+    public isLoaded({contentId, userId}): boolean {
+        const contentUserId = getContentUserId({contentId, userId})
         return !!this.storeSource.get(contentUserId)
     }
 

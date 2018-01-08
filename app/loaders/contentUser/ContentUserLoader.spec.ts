@@ -47,13 +47,15 @@ test('ContentUserLoader:::Should mark an id as loaded if test exists in the inje
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
 
-    const contentUserId = '1234'
+    const contentId = '987245'
+    const userId = '43987234'
+    const contentUserId = getContentUserId({contentId, userId})
     const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
     const firebaseRef: IFirebaseRef =  new FirebaseRef()
     storeSource.set(contentUserId, contentUser)
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
-    const isLoaded = contentUserLoader.isLoaded(contentUserId)
+    const isLoaded = contentUserLoader.isLoaded({contentId, userId})
     expect(isLoaded).to.deep.equal(true)
     t.pass()
 })
@@ -62,12 +64,14 @@ test('ContentUserLoader:::Should mark an id as not loaded if test does not exist
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
 
     const contentUserId = '1234'
-    const nonExistentContentUserId = '0123bdefa52344'
+    const nonExistentContentUserContentId = '0123bdefa52344'
+    const nonExistentContentUserUserId = '0123bdefa5234abc4'
     const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
     const firebaseRef: IFirebaseRef = new FirebaseRef()
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
-    const isLoaded = contentUserLoader.isLoaded(nonExistentContentUserId)
+    const isLoaded =
+        contentUserLoader.isLoaded({contentId: nonExistentContentUserContentId, userId: nonExistentContentUserUserId})
     expect(isLoaded).to.deep.equal(false)
     t.pass()
 })
@@ -88,20 +92,21 @@ test('ContentUserLoader:::Should mark an id as loaded after being loaded', async
     }
 
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
-    const childFirebaseRef = firebaseRef.child(contentUserId)
+    const childFirebaseRef = firebaseRef.child(contentId)
+    const grandchildFirebaseRef = childFirebaseRef.child(userId)
 
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
 
     contentUserLoader.downloadData({contentId, userId})
-    let isLoaded = contentUserLoader.isLoaded(contentUserId)
+    let isLoaded = contentUserLoader.isLoaded({contentId, userId})
     expect(isLoaded).to.equal(false)
 
-    childFirebaseRef.fakeEvent('value', undefined, contentUserData)
-    childFirebaseRef.flush()
+    grandchildFirebaseRef.fakeEvent('value', undefined, contentUserData)
+    grandchildFirebaseRef.flush()
 
-    isLoaded = contentUserLoader.isLoaded(contentUserId)
+    isLoaded = contentUserLoader.isLoaded({contentId, userId})
     expect(isLoaded).to.equal(true)
     t.pass()
 
@@ -123,7 +128,8 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     }
 
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
-    const childFirebaseRef = firebaseRef.child(contentUserId)
+    const childFirebaseRef = firebaseRef.child(contentId)
+    const grandChildFirebaseRef = childFirebaseRef.child(userId)
 
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
@@ -134,9 +140,9 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     const wrappedPromise = makeQuerablePromise(contentUserDataPromise)
     log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentUserData)
+    grandChildFirebaseRef.fakeEvent('value', undefined, sampleContentUserData)
     log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
-    childFirebaseRef.flush()
+    grandChildFirebaseRef.flush()
     log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
 
     const contentUserData = await contentUserDataPromise

@@ -201,6 +201,7 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
     myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs)
+    myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenInjectedInto(TreeLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
