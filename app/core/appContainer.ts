@@ -1,10 +1,16 @@
 // for now, this is where we will inject all the dependencies
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
-    IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableTree, IMutableSubscribableTreeLocation,
+    IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
+    IMutableSubscribableTree,
+    IMutableSubscribableTreeLocation,
+    IMutableSubscribableTreeUserStore,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigma, ISigmaNode,
-    ISigmaRenderManager, ISigmaUpdater, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
+    ISigmaRenderManager, ISigmaUpdater, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore,
+    ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
+    ISubscribableStoreSource,
+    ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
     ITreeLoader, ITreeLocationLoader
 } from '../objects/interfaces';
@@ -17,6 +23,7 @@ import {
     fGetSigmaIdsForContentId, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     ISigmaNodesUpdater,
     IUI,
+    ISubscribableTreeUserStoreSource,
 } from '../objects/interfaces';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
@@ -43,6 +50,16 @@ import {configureSigma} from '../objects/sigmaNode/configureSigma';
 // import Sigma = SigmaJs.Sigma;
 // import {SigmaJs} from 'sigmajs';
 import sigma from '../../other_imports/sigma/sigma.core.js'
+import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdateListenerCore';
+import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
+import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
+import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
+import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
+import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
+import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
+import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
+
 log('about to call configureSigma')
 configureSigma(sigma)
 log('just called configureSigma')
@@ -62,15 +79,49 @@ class AppContainer {
 
     */
     public async start() {
-        const firebaseTreesRef = firebase.database().ref('trees')
+        const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
         const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
+        const contentStoreSource: ISubscribableContentStoreSource
+            = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+        const contentUserStoreSource: ISubscribableContentUserStoreSource
+            = myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
         const treeStoreSource: ISubscribableTreeStoreSource
         = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        const treeUserStoreSource: ISubscribableTreeUserStoreSource
+            = myContainer.get<ISubscribableTreeUserStoreSource>
+        (TYPES.ISubscribableTreeUserStoreSource)
         const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
             (TYPES.ISubscribableTreeLocationStoreSource)
-        const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
-        const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
+        const treeLoader: ITreeLoader =
+            new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
+        const treeLocationLoader: ITreeLocationLoader =
+            new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+        const treeUserLoader: ITreeUsersLoader =
+            new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
+
+        const treeStore: IMutableSubscribableTreeStore =
+            new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
+
+        const treeUserStore: IMutableSubscribableTreeUserStore =
+            new MutableSubscribableTreeUserStore({storeSource: treeUserStoreSource, updatesCallbacks: []})
+            // myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+
+        const treeLocationStore: IMutableSubscribableTreeLocationStore =
+            new MutableSubscribableTreeLocationStore({storeSource: treeLocationStoreSource, updatesCallbacks: []})
+            // myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
+
+        const contentStore: IMutableSubscribableContentStore =
+            new MutableSubscribableContentStore({storeSource: contentStoreSource, updatesCallbacks: []})
+            // myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+
+        const contentUserStore: IMutableSubscribableContentUserStore =
+            new MutableSubscribableContentUserStore({storeSource: contentUserStoreSource, updatesCallbacks: []})
+
+        const globalStore: IMutableSubscribableGlobalStore =
+            new MutableSubscribableGlobalStore(
+                {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
+
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
@@ -87,12 +138,23 @@ class AppContainer {
         const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater({sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId})
 
+        const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
+            = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})
+        const storeSourceUpdateListener: IStoreSourceUpdateListener
+            = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
+
+        storeSourceUpdateListener.subscribe(treeStoreSource)
+        storeSourceUpdateListener.subscribe(treeLocationStoreSource)
+        storeSourceUpdateListener.subscribe(treeUserStoreSource)
+        storeSourceUpdateListener.subscribe(contentStoreSource)
+        storeSourceUpdateListener.subscribe(contentUserStoreSource)
+
         const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         // const
         // DataLoader.start()
 
-        const globalStore: IMutableSubscribableGlobalStore
-        = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
+        // const globalStore: IMutableSubscribableGlobalStore
+        // = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
 
