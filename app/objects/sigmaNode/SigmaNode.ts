@@ -2,7 +2,7 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
-import {ContentUserDataUtils} from '../contentUserData/ContentUserDataUtils';
+import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {
     IColorSlice, IContentData,
     IContentUserData, ICoordinate, IProficiencyStats,

@@ -57,7 +57,7 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
-import {MutableSubscribableContentUser} from '../objects/contentUserData/MutableSubscribableContentUser';
+import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 
 log('about to call configureSigma')

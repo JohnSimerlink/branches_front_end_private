@@ -5,7 +5,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
-import {MutableSubscribableContentUser} from '../contentUserData/MutableSubscribableContentUser';
+import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
     ContentUserPropertyMutationTypes, ContentUserPropertyNames,

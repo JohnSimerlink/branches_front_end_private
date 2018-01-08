@@ -1,34 +1,24 @@
 import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
-import {IHash, IMutableSubscribableTree, ITreeDataFromFirebase, ITreeDataWithoutId} from '../../objects/interfaces';
+import {IContentUserData, IHash, IMutableSubscribableContentUser} from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
+import {MutableSubscribableContentUser} from '../../objects/contentUser/MutableSubscribableContentUser';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
-class TreeDeserializer {
+class ContentUserDeserializer {
    public static deserialize(
-       {treeData, treeId}: {treeData: ITreeDataFromFirebase, treeId: string}
-       ): IMutableSubscribableTree {
-       const contentId = new SubscribableMutableField<string>({field: treeData.contentId})
-       /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-        // TODO: figure out why DI puts in a bad updatesCallback!
-       */
-       const parentId = new SubscribableMutableField<string>({field: treeData.parentId})
-       const childrenSet: IHash<boolean> = treeData.children
-       const children = new SubscribableMutableStringSet({set: childrenSet})
-       const tree: IMutableSubscribableTree = new MutableSubscribableTree(
-           {updatesCallbacks: [], id: treeId, contentId, parentId, children}
+       {contentUserData, contentUserId}: {contentUserData: IContentUserData, contentUserId: string}
+       ): IMutableSubscribableContentUser {
+
+       const overdue = new SubscribableMutableField<boolean>({field: contentUserData.overdue})
+       const lastRecordedStrength = new SubscribableMutableField<number>({field: contentUserData.lastRecordedStrength})
+       const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: contentUserData.proficiency})
+       const timer = new SubscribableMutableField<number>({field: contentUserData.timer})
+
+       const contentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser(
+           {updatesCallbacks: [], overdue, lastRecordedStrength, proficiency, timer}
            )
-       return tree
-   }
-   public static convertSetsToArrays(
-       {treeData, }: {treeData: ITreeDataFromFirebase, }
-   ): ITreeDataWithoutId {
-       const childrenArray = setToStringArray(treeData.children)
-       return {
-           parentId: treeData.parentId,
-           children: childrenArray,
-           contentId: treeData.contentId,
-       }
+       return contentUser
    }
 }
-export {TreeDeserializer}
+export {ContentUserDeserializer}

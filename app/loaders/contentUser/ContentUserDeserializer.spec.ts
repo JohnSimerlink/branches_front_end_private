@@ -6,56 +6,36 @@ import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
 import {
-    IHash, IMutableSubscribableTree, ITree, ITreeData, ITreeDataFromFirebase,
-    ITreeDataWithoutId
+    IHash, IMutableSubscribableContentUser, IContentUser, IContentUserData,
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
-import {TreeDeserializer} from './TreeDeserializer';
+import {MutableSubscribableContentUser} from '../../objects/contentUser/MutableSubscribableContentUser';
+import {ContentUserDeserializer} from './ContentUserDeserializer';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
-test('TreeDeserializer::: deserialize Should deserialize properly', (t) => {
-    const contentIdVal = '1234'
-    const parentIdVal = '041234'
-    const childrenVal = ['041234', 'abd123']
-    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
+test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) => {
+    const overdueVal = true
+    const lastRecordedStrengthVal = 30
+    const proficiencyVal = PROFICIENCIES.TWO
+    const timerVal = 30
 
-    const treeData: ITreeDataFromFirebase = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenSet,
+    const overdue = new SubscribableMutableField<boolean>({field: overdueVal})
+    const lastRecordedStrength = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
+    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer = new SubscribableMutableField<number>({field: timerVal})
+    const contentUserData: IContentUserData = {
+        overdue: overdueVal,
+        lastRecordedStrength: lastRecordedStrengthVal,
+        proficiency: proficiencyVal,
+        timer: timerVal
     }
-    const treeId = '092384'
+    const contentUserId = '092384'
 
-    const contentId = new SubscribableMutableField<string>({field: contentIdVal})
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
-    */
-    const parentId = new SubscribableMutableField<string>({field: parentIdVal})
-    const children = new SubscribableMutableStringSet({set: childrenSet})
-    const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
-        {updatesCallbacks: [], id: treeId, contentId, parentId, children}
+    const expectedContentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser(
+        {updatesCallbacks: [], overdue, lastRecordedStrength, proficiency, timer}
     )
-    const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeData, treeId})
-    expect(deserializedTree).to.deep.equal(expectedTree)
-    t.pass()
-})
-test('TreeDeserializer::: convert sets to arrays should work', (t) => {
-    const contentIdVal = '1234'
-    const parentIdVal = '041234'
-    const childrenVal = ['041234', 'abd123']
-    const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
-
-    const treeData: ITreeDataFromFirebase = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenSet,
-    }
-    const expectedConvertedTreeData: ITreeDataWithoutId = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenVal,
-    }
-    const convertedTreeData: ITreeDataWithoutId = TreeDeserializer.convertSetsToArrays({treeData})
-    expect(convertedTreeData).to.deep.equal(expectedConvertedTreeData)
+    const deserializedContentUser: IMutableSubscribableContentUser
+        = ContentUserDeserializer.deserialize({contentUserData, contentUserId})
+    expect(deserializedContentUser).to.deep.equal(expectedContentUser)
     t.pass()
 })

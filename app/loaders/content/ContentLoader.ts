@@ -2,43 +2,43 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource, ITreeDataFromFirebase,
-    ITreeDataWithoutId,
-    ITreeLoader
+    IMutableSubscribableContent, ISubscribableStoreSource, ISubscribableContentStoreSource,
+    IContentLoader, IContentData
 } from '../../objects/interfaces';
-import {isValidTree} from '../../objects/tree/treeValidator';
+import {isValidContent} from '../../objects/content/contentValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
-import {TreeDeserializer} from './TreeDeserializer';
+import {ContentDeserializer} from './ContentDeserializer';
 import {setToStringArray} from '../../core/newUtils';
 
 @injectable()
-export class TreeLoader implements ITreeLoader {
-    private storeSource: ISubscribableTreeStoreSource
+export class ContentLoader implements IContentLoader {
+    private storeSource: ISubscribableContentStoreSource
     private firebaseRef: Reference
-    constructor(@inject(TYPES.TreeLoaderArgs){firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.ContentLoaderArgs){firebaseRef, storeSource}) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }
 
-    public getData(treeId): ITreeDataWithoutId {
-        if (!this.storeSource.get(treeId)) {
-            throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
+    public getData(contentId): IContentData {
+        if (!this.storeSource.get(contentId)) {
+            throw new RangeError(contentId +
+                ' does not exist in ContentLoader storeSource. Use isLoaded(contentId) to check.')
         }
-        return this.storeSource.get(treeId).val()
+        return this.storeSource.get(contentId).val()
         // TODO: fix violoation of law of demeter
     }
 
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
-    public async downloadData(treeId: string): Promise<ITreeDataWithoutId> {
-        log('treeLoader downloadData called')
+    public async downloadData(contentId: string): Promise<IContentData> {
+        log('contentLoader downloadData called')
         const me = this
         return new Promise((resolve, reject) => {
-            this.firebaseRef.child(treeId).on('value', (snapshot) => {
-                log('treeLoader data received')
-                const treeData: ITreeDataFromFirebase = snapshot.val()
-                if (!treeData) {
+            this.firebaseRef.child(contentId).on('value', (snapshot) => {
+                log('contentLoader data received')
+                const contentData: IContentData = snapshot.val()
+                if (!contentData) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
@@ -48,31 +48,31 @@ export class TreeLoader implements ITreeLoader {
                        as the promise will actually get resolved in ideally a few more (dozen) milliseconds
                        */
                 }
-                // let children = treeData.children || {}
+                // let children = contentData.children || {}
                 // children = setToStringArray(children)
-                // treeData.children = children as string[]
+                // contentData.children = children as string[]
 
-                if (isValidTree(treeData)) {
-                    const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
-                    me.storeSource.set(treeId, tree)
-                    const convertedData = TreeDeserializer.convertSetsToArrays({treeData})
-                    resolve(convertedData)
+                if (isValidContent(contentData)) {
+                    const content: IMutableSubscribableContent =
+                        ContentDeserializer.deserialize({contentId, contentData})
+                    me.storeSource.set(contentId, content)
+                    resolve(contentData)
                 } else {
-                    reject('treeData is invalid! ! ' + JSON.stringify(treeData))
+                    reject('contentData is invalid! ! ' + JSON.stringify(contentData))
                 }
             })
-        }) as Promise<ITreeDataWithoutId>
+        }) as Promise<IContentData>
         // TODO ^^ Figure out how to do this without casting
     }
 
-    public isLoaded(treeId): boolean {
-        return !!this.storeSource.get(treeId)
+    public isLoaded(contentId): boolean {
+        return !!this.storeSource.get(contentId)
     }
 
 }
 
 @injectable()
-export class TreeLoaderArgs {
+export class ContentLoaderArgs {
     @inject(TYPES.FirebaseReference) public firebaseRef: Reference
-    @inject(TYPES.ISubscribableTreeStoreSource) public storeSource: ISubscribableTreeStoreSource
+    @inject(TYPES.ISubscribableContentStoreSource) public storeSource: ISubscribableContentStoreSource
 }

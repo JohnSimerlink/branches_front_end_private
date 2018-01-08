@@ -12,11 +12,11 @@ import {FIREBASE_PATHS} from './app/loaders/paths';
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
 import {TreeLocationLoader, TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
 import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
-import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUserData/ContentUserData';
+import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUser/ContentUserData';
 import {
     SubscribableContentUser,
     SubscribableContentUserArgs
-} from './app/objects/contentUserData/SubscribableContentUser';
+} from './app/objects/contentUser/SubscribableContentUser';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
 import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
@@ -145,6 +145,9 @@ import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUp
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
 import {GRAPH_CONTAINER_ID} from './app/core/globals';
+import {ContentLoaderArgs} from './app/loaders/content/ContentLoader';
+import {ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
+import {TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -179,15 +182,25 @@ log('inversify config sigmaInstance is ', sigmaInstance, sigmaInstance.bind)
 firebase.initializeApp(firebaseConfig)
 const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
 const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
+const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
+const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
+const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
     myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
+    myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenInjectedInto(TreeLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
         .whenInjectedInto(TreeLocationLoaderArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
+        .whenInjectedInto(ContentLoaderArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
+        .whenInjectedInto(ContentUserLoaderArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
+        .whenInjectedInto(TreeUserLoaderArgs)
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
     = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
