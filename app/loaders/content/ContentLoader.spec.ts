@@ -169,6 +169,7 @@ test('ContentLoader:::GetData on an existing content should return the content',
         type: typeVal,
         question: questionVal,
         answer: answerVal,
+        title: null,
     }
     const expectedContentData = sampleContentData
     const sampleContent: IMutableSubscribableContent =
