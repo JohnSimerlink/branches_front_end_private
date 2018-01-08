@@ -7,7 +7,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
 class ContentUserDeserializer {
    public static deserialize(
-       {contentUserData, contentUserId}: {contentUserData: IContentUserData, contentUserId: string}
+       {contentUserData}: {contentUserData: IContentUserData}
        ): IMutableSubscribableContentUser {
 
        const overdue = new SubscribableMutableField<boolean>({field: contentUserData.overdue})
