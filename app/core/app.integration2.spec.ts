@@ -8,7 +8,7 @@ import {myContainer} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
-import {ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
+import {ISigma, ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
 import {
     IRenderedNodesManager,
     IStoreSourceUpdateListener
@@ -27,12 +27,11 @@ import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdate
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-import GraphData = SigmaJs.GraphData;
+// import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma'
-import Graph = SigmaJs.Graph;
-import Edge = SigmaJs.Edge;
-import Sigma = SigmaJs.Sigma;
-import {SigmaJs} from 'sigmajs';
+// import Graph = SigmaJs.Graph;
+// import Edge = SigmaJs.Edge;
+// import Sigma = SigmaJs.Sigma;
 
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
@@ -72,7 +71,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
 
-    const sigmaInstance: SigmaJs.Sigma = myContainer.get<Sigma>(TYPES.Sigma)
+    const sigmaInstance: ISigma /* SigmaJs.Sigma */ = myContainer.get<ISigma>(TYPES.ISigma)
 
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(this.sigmaInstance)}

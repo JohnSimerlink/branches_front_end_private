@@ -38,10 +38,10 @@ import {log} from './log'
 import studyMenu from '../components/studyMenu/studyMenu'
 import BranchesFooter from '../components/footer/branchesFooter'
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-import GraphData = SigmaJs.GraphData;
+// import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
-import Sigma = SigmaJs.Sigma;
-import {SigmaJs} from 'sigmajs';
+// import Sigma = SigmaJs.Sigma;
+// import {SigmaJs} from 'sigmajs';
 import sigma from '../../other_imports/sigma/sigma.core.js'
 log('about to call configureSigma')
 configureSigma(sigma)
