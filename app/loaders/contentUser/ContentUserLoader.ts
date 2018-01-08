@@ -40,10 +40,11 @@ export class ContentUserLoader implements IContentUserLoader {
     public async downloadData({contentId, userId}): Promise<IContentUserData> {
         const contentUserId = getContentUserId({contentId, userId})
         const contentUsersFirebaseRefForContentId = this.firebaseRef.child(contentId)
+        const contentUserRef = contentUsersFirebaseRefForContentId.child(userId)
         log('contentUserLoader downloadData called')
         const me = this
         return new Promise((resolve, reject) => {
-            contentUsersFirebaseRefForContentId.child(userId).on('value', (snapshot) => {
+            contentUserRef.on('value', (snapshot) => {
                 log('contentUserLoader data received')
                 const contentUserData: IContentUserData = snapshot.val()
                 if (!contentUserData) {

@@ -17,8 +17,9 @@ import Reference = firebase.database.Reference;
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
-import {ContentUserLoader, ContentUserLoaderArgs} from './ContentUserLoader';
+import {ContentUserLoader, ContentUserLoaderArgs, getContentUserId} from './ContentUserLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 test('ContentUserLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<ContentUserLoaderArgs, IContentUserLoader>({
         container: myContainer,
@@ -71,28 +72,33 @@ test('ContentUserLoader:::Should mark an id as not loaded if test does not exist
     t.pass()
 })
 test('ContentUserLoader:::Should mark an id as loaded after being loaded', async (t) => {
-    const contentUserId = 'fedbadcaddac1234'
+    const contentId = '423487'
+    const userId = '12476'
+    const contentUserId = getContentUserId({contentId, userId})
+    const overdueVal = true
+    const lastRecordedStrengthVal = 30
+    const proficiencyVal = PROFICIENCIES.TWO
+    const timerVal = 30
+
+    const contentUserData: IContentUserData = {
+        overdue: overdueVal,
+        lastRecordedStrength: lastRecordedStrengthVal,
+        proficiency: proficiencyVal,
+        timer: timerVal
+    }
+
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
     const childFirebaseRef = firebaseRef.child(contentUserId)
-
-    const sampleContentUserData: IContentUserData = {
-        contentId: '12345532',
-        parentId: '493284',
-        children: {
-            2948: true,
-            2947: true,
-        }
-    }
 
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
 
-    contentUserLoader.downloadData(contentUserId)
+    contentUserLoader.downloadData({contentId, userId})
     let isLoaded = contentUserLoader.isLoaded(contentUserId)
     expect(isLoaded).to.equal(false)
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentUserData)
+    childFirebaseRef.fakeEvent('value', undefined, contentUserData)
     childFirebaseRef.flush()
 
     isLoaded = contentUserLoader.isLoaded(contentUserId)
@@ -101,31 +107,30 @@ test('ContentUserLoader:::Should mark an id as loaded after being loaded', async
 
 })
 test('ContentUserLoader:::DownloadData should return the data', async (t) => {
-    const contentUserId = '1234'
+    const contentId = '423487234'
+    const userId = '12476abc'
+    const contentUserId = getContentUserId({contentId, userId})
+    const overdueVal = true
+    const lastRecordedStrengthVal = 30
+    const proficiencyVal = PROFICIENCIES.TWO
+    const timerVal = 30
+
+    const sampleContentUserData: IContentUserData = {
+        overdue: overdueVal,
+        lastRecordedStrength: lastRecordedStrengthVal,
+        proficiency: proficiencyVal,
+        timer: timerVal
+    }
+
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
     const childFirebaseRef = firebaseRef.child(contentUserId)
 
-    const contentId = '12345532'
-    const parentId = '493284'
-    const sampleContentUserData: IContentUserData = {
-        contentId,
-        parentId,
-        children: {
-            2948: true,
-            2947: true
-        }
-    }
-    const expectedContentUserData: IContentUserData = {
-        contentId,
-        parentId,
-        children: ['2947', '2948']
-    }
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
     // childFirebaseRef.flush()
     const contentUserLoader = new ContentUserLoader({ storeSource, firebaseRef})
 
-    const contentUserDataPromise = contentUserLoader.downloadData(contentUserId)
+    const contentUserDataPromise = contentUserLoader.downloadData({contentId, userId})
     const wrappedPromise = makeQuerablePromise(contentUserDataPromise)
     log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
@@ -137,66 +142,80 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     const contentUserData = await contentUserDataPromise
     log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
-    expect(contentUserData).to.deep.equal(expectedContentUserData)
+    expect(contentUserData).to.deep.equal(sampleContentUserData)
     t.pass()
 })
-test('ContentUserLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
-    const contentUserId = '1234'
-    const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
-    const childFirebaseRef = firebaseRef.child(contentUserId)
+test('ContentUserLoader:::DownloadData should have the side effect' +
+    ' of storing the data in the storeSource', async (t) => {
+    const contentId = '423487234'
+    const userId = '12476abc'
+    const contentUserId = getContentUserId({contentId, userId})
+    const overdueVal = true
+    const lastRecordedStrengthVal = 30
+    const proficiencyVal = PROFICIENCIES.TWO
+    const timerVal = 30
 
     const sampleContentUserData: IContentUserData = {
-        contentId: '12345532',
-        parentId: '493284',
-        children: {
-            2948: true,
-            2947: true,
-        }
+        overdue: overdueVal,
+        lastRecordedStrength: lastRecordedStrengthVal,
+        proficiency: proficiencyVal,
+        timer: timerVal
     }
-    const sampleContentUser: IMutableSubscribableContentUser = ContentUserDeserializer.deserialize({contentUserId, contentUserData: sampleContentUserData})
+
+    const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
+    const childFirebaseRef = firebaseRef.child(contentId)
+    const grandChildFirebaseRef = childFirebaseRef.child(userId)
+
+    const sampleContentUser: IMutableSubscribableContentUser = ContentUserDeserializer.deserialize(
+        {contentUserData: sampleContentUserData}
+        )
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentUserData)
-    contentUserLoader.downloadData(contentUserId)
+    grandChildFirebaseRef.fakeEvent('value', undefined, sampleContentUserData)
+    contentUserLoader.downloadData({contentId, userId})
     // childFirebaseRef.flush()
 
     expect(storeSource.get(contentUserId)).to.deep.equal(sampleContentUser)
     t.pass()
 })
 test('ContentUserLoader:::GetData on an existing contentUser should return the contentUser', async (t) => {
-    const contentUserId = '1234'
-    const firebaseRef: Reference = new MockFirebase().child(contentUserId)
 
-    const contentId = '12345532'
-    const parentId = '493284'
+    const contentId = '423487234'
+    const userId = '12476abc'
+    const contentUserId = getContentUserId({contentId, userId})
+    const overdueVal = true
+    const lastRecordedStrengthVal = 30
+    const proficiencyVal = PROFICIENCIES.TWO
+    const timerVal = 30
+
+    const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
+    const childFirebaseRef = firebaseRef.child(contentId)
+    const grandChildFirebaseRef = childFirebaseRef.child(userId)
+
     const sampleContentUserData: IContentUserData = {
-        contentId,
-        parentId,
-        children: {
-            2948: true,
-            2947: true,
-        }
+        overdue: overdueVal,
+        lastRecordedStrength: lastRecordedStrengthVal,
+        proficiency: proficiencyVal,
+        timer: timerVal
     }
-    const childrenArray = setToStringArray(sampleContentUserData.children)
-    const expectedContentUserData: IContentUserData = {
-        contentId,
-        parentId,
-        children: childrenArray,
-    }
-    const sampleContentUser: IMutableSubscribableContentUser = ContentUserDeserializer.deserialize({contentUserId, contentUserData: sampleContentUserData})
+    const sampleContentUser: IMutableSubscribableContentUser =
+        ContentUserDeserializer.deserialize({contentUserData: sampleContentUserData})
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
     storeSource.set(contentUserId, sampleContentUser)
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
-    const contentUserData = contentUserLoader.getData(contentUserId)
+    const contentUserData = contentUserLoader.getData({contentId, userId})
 
-    expect(contentUserData).to.deep.equal(expectedContentUserData)
+    expect(contentUserData).to.deep.equal(sampleContentUserData)
     t.pass()
 })
 test('ContentUserLoader:::GetData on a non existing contentUser should throw a RangeError', async (t) => {
-    const contentUserId = 'abcdefgh4141234'
+    const nonExistentContentUserContentId = 'abcdefgh4141234'
+    const nonExistentContentUserUserId = 'abcdefgh4141234'
+    const nonExistentContentUserId =
+        getContentUserId({contentId: nonExistentContentUserContentId, userId: nonExistentContentUserUserId})
     const firebaseRef: Reference = new MockFirebase(FIREBASE_PATHS.TREES)
 
     const storeSource: ISubscribableContentUserStoreSource =
@@ -204,6 +223,8 @@ test('ContentUserLoader:::GetData on a non existing contentUser should throw a R
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
 
-    expect(() => contentUserLoader.getData(contentUserId)).to.throw(RangeError)
+    expect(() => contentUserLoader.getData(
+        {contentId: nonExistentContentUserContentId, userId: nonExistentContentUserContentId}
+        )).to.throw(RangeError)
     t.pass()
 })
