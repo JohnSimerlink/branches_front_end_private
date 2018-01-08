@@ -16,6 +16,7 @@ export class SigmaUpdater implements ISigmaUpdater {
     constructor(@inject(TYPES.SigmaUpdaterArgs){refresh, graph}) {
         this.refresh = refresh
         this.graph = graph
+        log('sigmaUpdater created')
     }
     public addNode(node: Node): void {
         log('sigmaUpdater addNode called')
