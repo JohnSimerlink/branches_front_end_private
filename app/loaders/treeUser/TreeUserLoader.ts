@@ -11,7 +11,7 @@ import {TYPES} from '../../objects/types';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {setToStringArray} from '../../core/newUtils';
 
-function getTreeUserId({treeId, userId}) {
+export function getTreeUserId({treeId, userId}) {
     const separator = '__'
     return treeId + separator + userId
 }
@@ -36,14 +36,14 @@ export class TreeUserLoader implements ITreeUserLoader {
 
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
-    public async downloadData(treeUserId: string): Promise<ITreeUserData> {
+    public async downloadData({treeId, userId}): Promise<ITreeUserData> {
         const treeUserId = getTreeUserId({treeId, userId})
         log('treeUserLoader downloadData called')
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeUserId).on('value', (snapshot) => {
                 log('treeUserLoader data received')
-                const treeUserData: ITreeUserDataFromFirebase = snapshot.val()
+                const treeUserData: ITreeUserData = snapshot.val()
                 if (!treeUserData) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -62,17 +62,17 @@ export class TreeUserLoader implements ITreeUserLoader {
                     const treeUser: IMutableSubscribableTreeUser =
                         TreeUserDeserializer.deserialize({treeUserId, treeUserData})
                     me.storeSource.set(treeUserId, treeUser)
-                    const convertedData = TreeUserDeserializer.convertSetsToArrays({treeUserData})
-                    resolve(convertedData)
+                    resolve(treeUserData)
                 } else {
                     reject('treeUserData is invalid! ! ' + JSON.stringify(treeUserData))
                 }
             })
-        }) as Promise<ITreeUserDataWithoutId>
+        }) as Promise<ITreeUserData>
         // TODO ^^ Figure out how to do this without casting
     }
 
-    public isLoaded(treeUserId): boolean {
+    public isLoaded({treeId, userId}): boolean {
+        const treeUserId = getTreeUserId({treeId, userId})
         return !!this.storeSource.get(treeUserId)
     }
 
