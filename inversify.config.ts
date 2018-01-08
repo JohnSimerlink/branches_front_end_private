@@ -29,7 +29,9 @@ import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
-    IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction, ISigma,
+    IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IProficiencyStats,
+    IProppedDatedMutation,
+    ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
     ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeUserLoader,
     radian,
@@ -63,6 +65,7 @@ import {
     ISubscribableTreeUserStore,
     ISigmaUpdater,
     IContentUserLoader,
+    IMutableSubscribableTreeUser,
 } from './app/objects/interfaces';
 import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -149,6 +152,9 @@ import {GRAPH_CONTAINER_ID} from './app/core/globals';
 import {ContentLoader, ContentLoaderArgs} from './app/loaders/content/ContentLoader';
 import {ContentUserLoader, ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
 import {TreeUserLoader, TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
+import {MutableSubscribableContent} from './app/objects/content/MutableSubscribableContent';
+import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscribableTreeUser';
+import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -376,6 +382,10 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<SubscribableTreeLocationArgs>(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs)
 
     bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
+    bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation).to(MutableSubscribableTreeLocation)
+    bind<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser).to(MutableSubscribableTreeUser)
+    bind<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent).to(MutableSubscribableContent)
+    bind<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser).to(MutableSubscribableContentUser)
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 
     bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)

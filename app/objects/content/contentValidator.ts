@@ -2,7 +2,7 @@ import {IContentData} from '../interfaces';
 
 export function isValidContent(content: IContentData) {
     return isValidContentFact(content)
-        && isValidContentNotFact(content)
+        || isValidContentNotFact(content)
     // && content.children instanceof Array
 }
 function isValidContentNotFact(content: IContentData) {
