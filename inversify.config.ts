@@ -28,10 +28,10 @@ import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
 import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
-    FieldMutationTypes, IColorSlice, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IProficiencyStats, IProppedDatedMutation, ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITree,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeUserLoader,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
@@ -62,6 +62,7 @@ import {
     ISubscribableTreeUser,
     ISubscribableTreeUserStore,
     ISigmaUpdater,
+    IContentUserLoader,
 } from './app/objects/interfaces';
 import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
@@ -145,9 +146,9 @@ import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUp
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
 import {GRAPH_CONTAINER_ID} from './app/core/globals';
-import {ContentLoaderArgs} from './app/loaders/content/ContentLoader';
-import {ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
-import {TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
+import {ContentLoader, ContentLoaderArgs} from './app/loaders/content/ContentLoader';
+import {ContentUserLoader, ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
+import {TreeUserLoader, TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -186,7 +187,10 @@ const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
 const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
 const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
+    myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
+    myContainer.bind<ITreeUserLoader>(TYPES.ITreeLoader).to(TreeUserLoader)
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
     myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
