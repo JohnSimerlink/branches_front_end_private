@@ -90,6 +90,7 @@ const TYPES = {
     ITreeLoader: Symbol('ITreeLoader'),
     ITreeLocation: Symbol('ITreeLocation'),
     ITreeLocationLoader: Symbol('ITreeLocationLoader'),
+    ITreeUser: Symbol('ITree'),
     ITreeUserLoader: Symbol('ITreeUserLoader'),
     IVuexStore: Symbol('IVuexStore'),
     KnawledgeMapCreatorArgs: Symbol('KnawledgeMapCreatorArgs'),
