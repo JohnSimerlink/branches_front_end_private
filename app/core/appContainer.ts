@@ -164,7 +164,7 @@ class AppContainer {
 
         const store: Store<any> = new BranchesStore() as Store<any>
         const knawledgeMapCreator: IKnawledgeMapCreator =
-            new KnawledgeMapCreator({store, treeLoader})
+            new KnawledgeMapCreator({store, treeLoader, treeLocationLoader})
         const knawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: knawledgeMap, props: true }
@@ -177,7 +177,7 @@ class AppContainer {
             routes, // short for `routes: routes`
             mode: 'history',
         })
-
+        const treeIdToDownload = 1
         app.start()
         // For now, new Vue must be called after app.start()
         const vm = new Vue({

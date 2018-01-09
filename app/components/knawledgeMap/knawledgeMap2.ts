@@ -6,7 +6,7 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
-import {IKnawledgeMapCreator, ITree, ITreeLoader, IVuexStore} from '../../objects/interfaces';
+import {IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader, IVuexStore} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
@@ -20,11 +20,13 @@ const template = require('./knawledgeMap.html').default
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private treeLoader: ITreeLoader
+    private treeLocationLoader: ITreeLocationLoader
     private store: Store<any>
 
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, store}) {
+    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, treeLocationLoader, store}) {
         this.store = store
         this.treeLoader = treeLoader
+        this.treeLocationLoader = treeLocationLoader
     }
     public create() {
         const me = this
@@ -33,6 +35,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             template,
             mounted() {
                 me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
+                me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 // TreeLoader.downLoadData(1)
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()
@@ -57,5 +60,6 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 @injectable()
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
+    @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IVuexStore) public store: IVuexStore
 }
