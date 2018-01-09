@@ -16,6 +16,7 @@ import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {IKnawledgeMapCreator, ITreeLoader, ITreeLocationLoader} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {KnawledgeMapCreator} from './knawledgeMap2';
+import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
@@ -25,6 +26,8 @@ test.beforeEach((t) => {
     myContainer.unbind(TYPES.FirebaseReference)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(firebaseRef)
         .whenInjectedInto(TreeLoaderArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(firebaseRef)
+        .whenInjectedInto(TreeLocationLoaderArgs)
 })
 test.afterEach(t => {
     myContainer.snapshot()
@@ -32,28 +35,28 @@ test.afterEach(t => {
 test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
-    // const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
-    // const treeLocationLoaderDownloadDataSpy = sinon.spy(treeLocationLoader, 'downloadData')
-    // const store = {
-    //     commit() {}
-    // }
-    // const storeCommitSpy = sinon.spy(store, 'commit')
-    // const knawledgeMapCreator: IKnawledgeMapCreator
-    //     = new KnawledgeMapCreator({treeLoader, treeLocationLoader, store})
-    // const knawledgeMap = knawledgeMapCreator.create()
+    const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
+    const treeLocationLoaderDownloadDataSpy = sinon.spy(treeLocationLoader, 'downloadData')
+    const store = {
+        commit() {}
+    }
+    const storeCommitSpy = sinon.spy(store, 'commit')
+    const knawledgeMapCreator: IKnawledgeMapCreator
+        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, store})
+    const knawledgeMap = knawledgeMapCreator.create()
 
-    // expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
-    // expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(0)
-    // knawledgeMap.mounted()
-    // expect(treeLoaderDownloadDataSpy.callCount).to.equal(1)
-    // expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(1)
-    // let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
-    // const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
-    // expect(calledWith).to.equal(expectedCalledWith)
-    //
-    // expect(storeCommitSpy.callCount).to.equal(2)
-    // calledWith = storeCommitSpy.getCall(0).args[0]
-    // expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
+    expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(0)
+    knawledgeMap.mounted()
+    expect(treeLoaderDownloadDataSpy.callCount).to.equal(1)
+    expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(1)
+    let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
+    const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
+    expect(calledWith).to.equal(expectedCalledWith)
+
+    expect(storeCommitSpy.callCount).to.equal(2)
+    calledWith = storeCommitSpy.getCall(0).args[0]
+    expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
 
     t.pass()
 })
