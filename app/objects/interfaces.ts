@@ -2,6 +2,7 @@
 // tslint:disable no-namespace
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
+import {SigmaNodeArgs} from './sigmaNode/SigmaNode';
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -357,7 +358,9 @@ export interface IEditableSigmaNode {
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
-export interface ISigmaNode extends ISigmaNodeData, IEditableSigmaNode {}
+export interface ISigmaNode extends ISigmaNodeData, IEditableSigmaNode {
+    // new(args: SigmaNodeArgs)
+}
 
 export interface ISigmaNodeData {
     id: string;

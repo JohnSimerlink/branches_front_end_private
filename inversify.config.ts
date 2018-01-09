@@ -175,7 +175,6 @@ const sigmaInstance /*: Sigma*/ = new sigma({
         glyphTextThreshold: 6,
         glyphThreshold: 3,
     } as any/* as SigmaConfigs*/) as any
-log('inversify config sigmaInstance is ', sigmaInstance, sigmaInstance.bind)
 // throw new Error('inversify error error error')
 
 // const firebaseConfig = {
@@ -197,7 +196,7 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
-    myContainer.bind<ITreeUserLoader>(TYPES.ITreeLoader).to(TreeUserLoader)
+    myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
     myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)
     myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs)
@@ -257,8 +256,6 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         .to(MutableSubscribableTreeUserStore)
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
         .to(MutableSubscribableTreeLocationStore)
-    bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
-        .to(MutableSubscribableTreeLocation)
     bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
         .to(MutableSubscribableContentStore)
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)

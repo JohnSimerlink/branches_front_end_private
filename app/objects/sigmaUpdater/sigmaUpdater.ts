@@ -15,12 +15,13 @@ export class SigmaUpdater implements ISigmaUpdater {
     private refresh: () => void
     constructor(@inject(TYPES.SigmaUpdaterArgs){refresh, graph}) {
         this.refresh = refresh
+        log('the refresh function passed into sigmaUpdater is', refresh)
         this.graph = graph
         log('sigmaUpdater created')
     }
     public addNode(node: Node): void {
-        log('sigmaUpdater addNode called')
         this.graph.addNode(node)
+        log('sigmaUpdater.addNode about to get CALLED!', this.refresh)
         this.refresh()
     }
 }

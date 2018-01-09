@@ -12,7 +12,7 @@ import {
     ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
-    ITreeLoader, ITreeLocationLoader
+    ITreeLoader, ITreeLocationLoader, ITreeUserLoader
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -59,6 +59,7 @@ import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocati
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
+import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -79,7 +80,10 @@ class AppContainer {
 
     */
     public async start() {
+        const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
+        const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
         const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
+        const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
         const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
         const contentStoreSource: ISubscribableContentStoreSource
             = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
@@ -97,7 +101,7 @@ class AppContainer {
             new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
         const treeLocationLoader: ITreeLocationLoader =
             new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
-        const treeUserLoader: ITreeUsersLoader =
+        const treeUserLoader: ITreeUserLoader =
             new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
 
         const treeStore: IMutableSubscribableTreeStore =

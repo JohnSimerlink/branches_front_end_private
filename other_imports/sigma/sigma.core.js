@@ -216,6 +216,7 @@ var sigma = function (conf) {
 
         // If a graph is given to the to the instance, the "refresh" method is
         // directly called:
+        console.log('sigma core js line 219 initial refresh about ot get called')
         this.refresh();
     }
 
@@ -321,7 +322,6 @@ sigma.prototype.killCamera = function (v) {
  *                               id.
  */
 sigma.prototype.addRenderer = function (options) {
-    console.log('sigma core addRenderer line 324 HTMLElement is ', HTMLElement)
     var id,
         fn,
         camera,
@@ -445,6 +445,7 @@ sigma.prototype.killRenderer = function (v) {
     if (v.kill)
         v.kill();
 
+    console.log('SIGMA CORE JS killRenderer renderers and v are ', this.renderers, v)
     delete this.renderers[v.id];
 
     return this;
@@ -555,6 +556,7 @@ sigma.prototype.refresh = function (options) {
     }
 
     // Call each renderer:
+    console.log('SIGMA CORE REFRESH THIS RENDERERS ARE ', this.renderers,)
     a = Object.keys(this.renderers);
     for (i = 0, l = a.length; i < l; i++)
         if (this.renderers[a[i]].process) {

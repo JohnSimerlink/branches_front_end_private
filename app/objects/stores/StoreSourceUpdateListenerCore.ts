@@ -5,7 +5,7 @@ import {
     ISigmaNodesUpdater, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
     ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
-import {SigmaNode} from '../sigmaNode/SigmaNode';
+import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 
 @injectable()
@@ -25,7 +25,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
             case ObjectDataTypes.TREE_LOCATION_DATA:
                 const sigmaId = update.id
                 if (!this.sigmaNodes[sigmaId]) {
-                    this.sigmaNodes[sigmaId] = new SigmaNode()
+                    this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
                 }
                 this.sigmaNodesUpdater.handleUpdate(update)
                 break;
