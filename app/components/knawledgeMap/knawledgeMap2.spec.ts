@@ -48,7 +48,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
     expect(calledWith).to.equal(expectedCalledWith)
 
-    expect(storeCommitSpy.callCount).to.equal(1)
+    expect(storeCommitSpy.callCount).to.equal(2)
     calledWith = storeCommitSpy.getCall(0).args[0]
     expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
 
