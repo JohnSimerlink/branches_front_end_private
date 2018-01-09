@@ -36,9 +36,8 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
         commit() {}
     }
     const storeCommitSpy = sinon.spy(store, 'commit')
-    const initializeSigmaSpy = sinon.spy()
     const knawledgeMapCreator: IKnawledgeMapCreator
-        = new KnawledgeMapCreator({treeLoader, store,})
+        = new KnawledgeMapCreator({treeLoader, store})
     const knawledgeMap = knawledgeMapCreator.create()
 
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
@@ -52,6 +51,5 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     calledWith = storeCommitSpy.getCall(0).args[0]
     expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
 
-    expect(initializeSigmaSpy.callCount).to.equal(1)
     t.pass()
 })
