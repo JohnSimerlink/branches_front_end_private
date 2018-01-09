@@ -27,8 +27,10 @@ import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdate
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
+import sigma from '../../other_imports/sigma/sigma.core.js'
 // import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma'
+import {log} from './log'
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -36,6 +38,7 @@ import {configureSigma} from '../objects/sigmaNode/configureSigma'
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
+    // configureSigma(sigma)
     const treeIdToDownload = TREE_ID
 
     const sampleTreeData: ITreeDataWithoutId = {
@@ -74,7 +77,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const sigmaInstance: ISigma /* SigmaJs.Sigma */ = myContainer.get<ISigma>(TYPES.ISigma)
 
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
-        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(this.sigmaInstance)}
+        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(sigmaInstance)}
     )
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})

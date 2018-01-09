@@ -83,7 +83,7 @@ sigma.misc.bindEvents = function (prefix) {
 
 
     function getEdges(e) {
-        console.log('sigma misc bindEvents getEdges called')
+        console.log('sigma misc bindEvents getEdges called. this.renderers are ', this.renderers)
         if (!self.settings('enableEdgeHovering')) {
             // No event if the setting is off:
             return [];
@@ -418,7 +418,7 @@ sigma.misc.bindEvents = function (prefix) {
                 return;
 
             nodes = getNodes(e);
-            console.log('bindEvents onMove called getEdges about to get called')
+            console.log('bindEvents onMove called getEdges about to get called, this.renderers is', this.renderers, ' this is ', this)
             edges = getEdges(e);
 
             var i,

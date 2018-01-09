@@ -13,7 +13,6 @@ export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
         this.addNodeToSigma = addNodeToSigma
     }
     public addToRenderList(sigmaId: string) {
-        log('RenderedNodesManagerCore addtoRenderList: ' + sigmaId)
         const sigmaNode = this.sigmaNodes[sigmaId]
         this.addNodeToSigma(sigmaNode)
     }
