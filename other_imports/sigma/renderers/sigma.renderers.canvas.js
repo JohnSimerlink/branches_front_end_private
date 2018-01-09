@@ -462,7 +462,6 @@ sigma.renderers.canvas.prototype.kill = function () {
  *
  * They are stored in different files, in the "./canvas" folder.
  */
-console.log("sigma.canvas is", sigma.canvas)
 sigma.canvas.nodes = sigma.canvas.nodes || {}
 sigma.canvas.edges = sigma.canvas.edges || {}
 sigma.canvas.labels = sigma.canvas.labels || {}

@@ -1,10 +1,7 @@
 import * as firebase from 'firebase';
 import {log} from './app/core/log'
-log('About to import sigmaConfigurations from inversify config')
 import './other_imports/sigmaConfigurations'
-log('just imported sigmaConfigurations from inversify config')
 import sigma from './other_imports/sigma/sigma.core.js'
-log('just imported sigma from sigma core')
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {App, AppArgs} from './app/core/app';
@@ -195,7 +192,6 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
-    myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
     myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)

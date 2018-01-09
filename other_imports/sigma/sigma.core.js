@@ -216,7 +216,6 @@ var sigma = function (conf) {
 
         // If a graph is given to the to the instance, the "refresh" method is
         // directly called:
-        console.log('sigma core js line 219 initial refresh about ot get called')
         this.refresh();
     }
 
@@ -482,7 +481,6 @@ sigma.prototype.refresh = function (options) {
         prefix = 0;
 
     options = options || {};
-    console.log('sigma prototype refresh called')
 
     // Call each middleware:
     a = this.middlewares || [];
@@ -556,7 +554,6 @@ sigma.prototype.refresh = function (options) {
     }
 
     // Call each renderer:
-    console.log('SIGMA CORE REFRESH THIS RENDERERS ARE ', this.renderers,)
     a = Object.keys(this.renderers);
     for (i = 0, l = a.length; i < l; i++)
         if (this.renderers[a[i]].process) {
