@@ -19,6 +19,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     // private receiveUpdate
 
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
+        log('StoreSourceUpdateListenerCore receiveUpdate CALLED!!!', update)
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA:
