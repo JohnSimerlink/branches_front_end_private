@@ -217,13 +217,13 @@ sigma.classes.camera.prototype.getMatrix = function () {
  *                         two opposite points.
  */
 sigma.classes.camera.prototype.getRectangle = function (width, height) {
-    console.log('sigma camera getRectangle', width, height)
+    // console.log('sigma camera getRectangle', width, height)
     var widthVect = this.cameraPosition(width, 0, true),
         heightVect = this.cameraPosition(0, height, true),
         centerVect = this.cameraPosition(width / 2, height / 2, true),
         marginX = this.cameraPosition(width / 4, 0, true).x,
         marginY = this.cameraPosition(0, height / 4, true).y;
-    console.log('sigma camera getRectangle vectors and margin', widthVect, heightVect, centerVect, marginX, marginY)
+    // console.log('sigma camera getRectangle vectors and margin', widthVect, heightVect, centerVect, marginX, marginY)
 
     const rectangle = {
         x1: this.x - centerVect.x - marginX,
@@ -235,6 +235,6 @@ sigma.classes.camera.prototype.getRectangle = function (width, height) {
             Math.pow(heightVect.y + 2 * marginY, 2)
         )
     };
-    console.log("sigma camera getRectangle is", rectangle)
+    // console.log("sigma camera getRectangle is", rectangle)
     return rectangle
 };
