@@ -22,6 +22,7 @@ import {ISigmaRenderManager, ISubscribableTreeLocationStoreSource, ISubscribable
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
+import BranchesStore from './store2'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdateListenerCore';
 import {TYPES} from '../objects/types';
@@ -92,8 +93,9 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         camera.goTo(cameraCoord);
     }
 
+    const store = new BranchesStore()
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
-        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(sigmaInstance), focusNode}
+        {store}
     )
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})

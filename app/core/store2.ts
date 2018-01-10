@@ -44,18 +44,22 @@ mutations[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE] = state => {
         glyphTextThreshold: 6,
         glyphThreshold: 3,
     } as any/* as SigmaConfigs*/) as any
+    log('sigma truly just initialized')
     state.sigmaInstance = sigmaInstance
     state.graph = sigmaInstance.graph
     state.sigmaInitialized = true
 }
 mutations[MUTATION_NAMES.REFRESH] = state => {
+    log('store mutation refresh called', state)
     state.sigmaInstance.refresh()
 }
 mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
     if (state.sigmaInitialized) {
+        log('sigma was already intiialized initialized . .. adding node', node)
         state.graph.addNode(node)
-        mutations[MUTATION_NAMES.REFRESH]()
+        mutations[MUTATION_NAMES.REFRESH](state)
     } else {
+        log('sigma not yet initialized . .. pushing node', node)
         state.graphData.nodes.push(node)
     }
 }
