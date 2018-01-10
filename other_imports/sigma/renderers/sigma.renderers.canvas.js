@@ -180,7 +180,9 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     var A_BIG_NUMBER = 999999999
     // window.mostCenteredNodeId = null
     // window.mostCenteredNodeDistance = A_BIG_NUMBER
-    var nodesOnScreen = this.camera.quadtree.area(rect)
+    // var nodesOnScreen = this.camera.quadtree.area(rect)
+    var nodesOnScreen = this.graph.nodes()
+    console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
     nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
     nodesOnScreen.forEach(node => {
         console.log('a node on screen is ', node)
@@ -325,16 +327,23 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // Draw nodes:
     // - No batching
     if (drawNodes) {
+        console.log(' sigma renderers canvas:  drawNodes about to get called', drawNodes)
         renderers = sigma.canvas.nodes;
-        for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++)
-            if (!a[i].hidden)
-                (renderers[
+        for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++) {
+            console.log("sigma renderers canvas: the node on the screen is a[i]")
+            if (!a[i].hidden) {
+                console.log('sigma renderers canvas: the node is not hidden')
+                ;(renderers[
                 a[i].type || this.settings(options, 'defaultNodeType')
                     ] || renderers.def)(
                     a[i],
                     this.contexts.nodes,
                     embedSettings
                 );
+            } else {
+                console.log('sigma renderers canvas: the node is hidden')
+            }
+        }
     }
 
     // Draw labels:
