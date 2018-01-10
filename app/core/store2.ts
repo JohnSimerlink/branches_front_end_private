@@ -48,6 +48,10 @@ mutations[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE] = state => {
     state.sigmaInstance = sigmaInstance
     state.graph = sigmaInstance.graph
     state.sigmaInitialized = true
+    if (typeof window !== 'undefined') {
+        const windowAny: any = window
+        windowAny.sigmaInstance = sigmaInstance
+    }
 }
 mutations[MUTATION_NAMES.REFRESH] = state => {
     log('store mutation refresh called', state)
