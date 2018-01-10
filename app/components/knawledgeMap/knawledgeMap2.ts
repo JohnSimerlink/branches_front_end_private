@@ -39,12 +39,13 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 me.treeLoader.downloadData(ANOTHER_ID)
                 me.treeLocationLoader.downloadData(ANOTHER_ID)
                 // TreeLoader.downLoadData(1)
+                log('about to initialized sigma')
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()
                 log('kn created')
                 // log('container is ' + document.querySelector('#graph-container'))
                 // me.initializeSigma()
-                log('sigma just initialized')
+                // log('sigma just initialized')
                 me.store.commit(MUTATION_NAMES.JUMP_TO, INITIAL_ID_TO_DOWNLOAD)
             },
             computed: {
