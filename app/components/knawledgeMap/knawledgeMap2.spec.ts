@@ -48,8 +48,8 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
     expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(0)
     knawledgeMap.mounted()
-    expect(treeLoaderDownloadDataSpy.callCount).to.equal(1)
-    expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(1)
+    expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
+    expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(2)
     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
     expect(calledWith).to.equal(expectedCalledWith)
