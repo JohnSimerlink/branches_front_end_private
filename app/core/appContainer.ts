@@ -41,7 +41,7 @@ import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
 import {INITIAL_ID_TO_DOWNLOAD} from './globals';
-import {log} from './log'
+import {log, error} from './log'
 import studyMenu from '../components/studyMenu/studyMenu'
 import BranchesFooter from '../components/footer/branchesFooter'
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
@@ -126,12 +126,31 @@ class AppContainer {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
+        const store: Store<any> = new BranchesStore() as Store<any>
+
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
         const sigmaInstance: ISigma = myContainer.get<ISigma>(TYPES.ISigma)
+
+        const camera = sigmaInstance.cameras[0]
+        function focusNode(node) {
+            if (!node) {
+                error('Tried to go to node');
+                error(node);
+                return;
+            }
+            const cameraCoord = {
+                x: node['read_cam0:x'],
+                y: node['read_cam0:y'],
+                ratio: 0.20
+            };
+            camera.goTo(cameraCoord);
+        }
         const sigmaUpdater: ISigmaUpdater =
-            new SigmaUpdater({graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(sigmaInstance)})
+            new SigmaUpdater({
+                store
+            })
         const sigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
         = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
@@ -161,8 +180,6 @@ class AppContainer {
         // = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
-
-        const store: Store<any> = new BranchesStore() as Store<any>
         const knawledgeMapCreator: IKnawledgeMapCreator =
             new KnawledgeMapCreator({store, treeLoader, treeLocationLoader})
         const knawledgeMap = knawledgeMapCreator.create()

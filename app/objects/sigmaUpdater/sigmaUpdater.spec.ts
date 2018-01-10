@@ -8,6 +8,9 @@ import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
 import {ISigmaUpdater} from '../interfaces';
 import {expect} from 'chai'
 import * as sinon from 'sinon'
+import {error} from '../../core/log'
+import BranchesStore, {MUTATION_NAMES} from '../../core/store2'
+import {log} from '../../core/log'
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import {SigmaJs} from 'sigmajs';
@@ -24,26 +27,24 @@ test('DI constructor should work', (t) => {
 
 })
 
-test('AddNode Should call sigmaInstance.addNode and sigmaInstance.refresh()', (t) => {
+test('AddNode should call store.commit with add node mutation', (t) => {
     const node /*: SigmaJs.Node */ = {id: '53234'} /* as SigmaJs.Node */
-    const graph /*: SigmaJs.Graph */ = {
-        addNode(node /*: SigmaJs.Node */) { return {} /* as Graph */},
-        addEdge(edge /*: Edge */) { return {} /* as Graph */}
-    } /* as SigmaJs.Graph */
-    const sigmaInstance /*: SigmaJs.Sigma */ = {
-        refresh(): void {},
-        graph,
-    } /* as SigmaJs.Sigma */
-    const addNodeSpy = sinon.spy(graph, 'addNode')
-    const refreshSpy = sinon.spy(sigmaInstance, 'refresh')
+    // const store = new BranchesStore()
+    const store = {
+        commit(mutationName, arg) {
+        }
+    }
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
-        {graph, refresh: refreshSpy}
+        {store}
         )
+    const storeCommitSpy = sinon.spy(store, 'commit')
     sigmaUpdater.addNode(node)
-    expect(addNodeSpy.callCount).to.deep.equal(1)
-    const calledWith = addNodeSpy.getCall(0).args[0]
-    expect(calledWith).to.deep.equal(node)
-    expect(refreshSpy.callCount).to.deep.equal(1)
+
+    expect(storeCommitSpy.callCount).to.deep.equal(1)
+    const mutationName = storeCommitSpy.getCall(0).args[0]
+    const commitArg = storeCommitSpy.getCall(0).args[1]
+    expect(mutationName).to.deep.equal(MUTATION_NAMES.ADD_NODE)
+    expect(commitArg).to.deep.equal(node)
     t.pass()
 
 })

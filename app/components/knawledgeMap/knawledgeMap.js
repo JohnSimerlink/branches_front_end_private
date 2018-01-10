@@ -347,6 +347,7 @@ function jumpToTreeId(treeId){
     }
 
 }
+
 function _jumpToTreeId(treeId){
     console.log("jumping to tree id", treeId)
     let node = s.graph.nodes(treeId)

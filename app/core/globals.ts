@@ -1,5 +1,6 @@
 export const ROOT_ID: string = '1'
 export const INITIAL_ID_TO_DOWNLOAD: string = ROOT_ID
+export const ANOTHER_ID: string = '0544dddbb98b36dd9328eb71ba938465'
 export const Globals = {
     colors: {
         proficiency_1: 'red',

@@ -23,7 +23,9 @@ class TreeDeserializer {
    public static convertSetsToArrays(
        {treeData, }: {treeData: ITreeDataFromFirebase, }
    ): ITreeDataWithoutId {
-       const childrenArray = setToStringArray(treeData.children)
+       const childrenArray = treeData.children ?
+           setToStringArray(treeData.children) :
+           []
        return {
            parentId: treeData.parentId,
            children: childrenArray,
