@@ -5,6 +5,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
+    IOneToManyMap,
     ISigmaNodesUpdater, ISigmaRenderManager,
     IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdates,
     ObjectDataTypes
@@ -42,8 +43,9 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
     const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
+    const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})
+        = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
     const sigmaNodesUpdaterHandleUpdateSpy = sinon.spy(sigmaNodesUpdater, 'handleUpdate')
 
     storeSourceUpdateListenerCore.receiveUpdate(update)

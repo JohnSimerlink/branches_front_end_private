@@ -498,6 +498,10 @@ export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
 export interface IHash<T> {
     [id: string]: T
 }
+export interface IOneToManyMap<T> {
+    get(id: string): T[]
+    set(id: string, item: T)
+}
 export interface IMap<T> {
     get(id: string): T
     set(id: string, item: T)

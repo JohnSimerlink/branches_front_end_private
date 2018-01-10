@@ -4,9 +4,12 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
+import {ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
-import {IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader, IVuexStore} from '../../objects/interfaces';
+import {
+    IContentLoader, IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader,
+    IVuexStore
+} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
@@ -21,12 +24,14 @@ const template = require('./knawledgeMap.html').default
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
+    private contentLoader: IContentLoader
     private store: Store<any>
 
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, treeLocationLoader, store}) {
+    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, treeLocationLoader, contentLoader, store}) {
         this.store = store
         this.treeLoader = treeLoader
         this.treeLocationLoader = treeLocationLoader
+        this.contentLoader = contentLoader
     }
     public create() {
         const me = this
@@ -36,6 +41,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             mounted() {
                 me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
+                me.contentLoader.downloadData(ROOT_CONTENT_ID)
                 me.treeLoader.downloadData(ANOTHER_ID)
                 me.treeLocationLoader.downloadData(ANOTHER_ID)
                 // TreeLoader.downLoadData(1)
@@ -64,5 +70,6 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
+    @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
     @inject(TYPES.IVuexStore) public store: IVuexStore
 }

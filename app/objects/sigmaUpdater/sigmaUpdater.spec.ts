@@ -16,7 +16,6 @@ import {log} from '../../core/log'
 // import {SigmaJs} from 'sigmajs';
 
 test('DI constructor should work', (t) => {
-
     const injects = injectionWorks<SigmaUpdaterArgs, ISigmaUpdater>({
         container: myContainer,
         argsType: TYPES.SigmaUpdaterArgs,
