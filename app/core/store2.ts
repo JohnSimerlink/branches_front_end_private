@@ -13,7 +13,12 @@ const state = {
     uri: null,
     centeredTreeId: ROOT_ID,
     sigmaInstance: null,
-    graph: null
+    graphData: {
+        nodes: [],
+        edges: [],
+    },
+    graph: null,
+    sigmaInitialized: false,
 };
 
 const getters = {
@@ -27,12 +32,8 @@ mutations[MUTATION_NAMES.JUMP_TO] = (state, treeId) => {
     state.jumpToId = treeId
 }
 mutations[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE] = state => {
-    const graph = {
-        nodes: [],
-        edges: [],
-    }
     const sigmaInstance /*: Sigma*/ = new sigma({
-        graph,
+        graph: state.graphData,
         container: GRAPH_CONTAINER_ID,
         glyphScale: 0.7,
         glyphFillColor: '#666',
@@ -45,13 +46,18 @@ mutations[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE] = state => {
     } as any/* as SigmaConfigs*/) as any
     state.sigmaInstance = sigmaInstance
     state.graph = sigmaInstance.graph
+    state.sigmaInitialized = true
 }
 mutations[MUTATION_NAMES.REFRESH] = state => {
     state.sigmaInstance.refresh()
 }
 mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
-    state.graph.addNode(node)
-    mutations[MUTATION_NAMES.REFRESH]()
+    if (state.sigmaInitialized) {
+        state.graph.addNode(node)
+        mutations[MUTATION_NAMES.REFRESH]()
+    } else {
+        state.graphData.nodes.push(node)
+    }
 }
 const actions = {}
 
