@@ -131,7 +131,7 @@ class AppContainer {
         }
         const sigmaInstance: ISigma = myContainer.get<ISigma>(TYPES.ISigma)
         const sigmaUpdater: ISigmaUpdater =
-            new SigmaUpdater({graph: sigmaInstance.graph, refresh: sigmaInstance.refresh})
+            new SigmaUpdater({graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(sigmaInstance)})
         const sigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
         = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
