@@ -472,6 +472,7 @@ sigma.prototype.killRenderer = function (v) {
  *                             quadtrees or not (default: false).
  */
 sigma.prototype.refresh = function (options) {
+    console.log('sigma core refresh called. this is ', this)
     var i,
         l,
         k,
@@ -555,6 +556,7 @@ sigma.prototype.refresh = function (options) {
 
     // Call each renderer:
     a = Object.keys(this.renderers);
+    console.log('sigma core renderers keys are ', a)
     for (i = 0, l = a.length; i < l; i++)
         if (this.renderers[a[i]].process) {
             if (this.settings('skipErrors'))
