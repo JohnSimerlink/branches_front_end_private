@@ -6,7 +6,6 @@
 [![Dev Dependencies](https://david-dm.org/branchesorg/branches_front_end/dev-status.svg)](https://david-dm.org/branchesorg/branches_front_end?type=dev)
 [![Join the chat at https://gitter.im/branchesorg](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/branchesorg/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![HitCount](http://hits.dwyl.io/branchesorg/branches_front_end.svg)](http://hits.dwyl.io/branchesorg/branches_front_end)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Instructions
 

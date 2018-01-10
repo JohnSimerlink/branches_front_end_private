@@ -88,6 +88,7 @@ function proficiencyToColor(proficiency){
 
       context.closePath();
       context.fill();
+      console.log('NODE FINISHED DRAWING', node)
 
       if (node.overdue){
           var fontSize = Math.floor(size * 1.414)
@@ -108,13 +109,13 @@ function proficiencyToColor(proficiency){
       var lineWidth = context.lineWidth
       if (node.active){
           // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-          var haloSize = size  + 2
+          var haloSize = size + 2
 
           context.strokeStyle = 'blue'
           context.lineWidth = 4
           var center = context.beginPath()
           // context.fillStyle = 'black'
-          context.arc(x, y,haloSize,0,Math.PI * 2,true );
+          context.arc(x, y, haloSize, 0, Math.PI * 2, true);
           context.stroke()
       }
       context.lineWidth = lineWidth
