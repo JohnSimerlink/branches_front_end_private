@@ -24,7 +24,7 @@ class SigmaNode implements ISigmaNode {
     public content: IContentData;
     public contentUserData: IContentUserData;
     public label: string;
-    public size: number = 1;
+    public size: number;
     public colorSlices: IColorSlice[];
     public proficiencyStats: IProficiencyStats;
     public overdue: boolean;
@@ -99,7 +99,7 @@ class SigmaNode implements ISigmaNode {
         this.aggregationTimer = aggregationTimer
         this.content = content
         this.label = label
-        this.size = size
+        this.size = size || 1
         this.colorSlices = colorSlices
         this.overdue = overdue
     }
