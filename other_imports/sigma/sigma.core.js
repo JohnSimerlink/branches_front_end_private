@@ -523,6 +523,7 @@ sigma.prototype.refresh = function (options) {
                 this.graph,
                 c.readPrefix
             );
+            console.log('sigma core refresh. bounds are', bounds)
 
             // Refresh quadtree:
             c.quadtree.index(this.graph.nodes(), {

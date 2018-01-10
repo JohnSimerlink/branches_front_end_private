@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
+import {ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
 import {IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader, IVuexStore} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -36,6 +36,8 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             mounted() {
                 me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
+                me.treeLoader.downloadData(ANOTHER_ID)
+                me.treeLocationLoader.downloadData(ANOTHER_ID)
                 // TreeLoader.downLoadData(1)
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()

@@ -27,6 +27,7 @@ import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdate
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
+import {error} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
 // import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma'
@@ -76,8 +77,23 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     const sigmaInstance: ISigma /* SigmaJs.Sigma */ = myContainer.get<ISigma>(TYPES.ISigma)
 
+    const camera = sigmaInstance.cameras[0]
+    function focusNode(node) {
+        if (!node) {
+            error('Tried to go to node');
+            error(node);
+            return;
+        }
+        const cameraCoord = {
+            x: node['read_cam0:x'],
+            y: node['read_cam0:y'],
+            ratio: 0.20
+        };
+        camera.goTo(cameraCoord);
+    }
+
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
-        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(sigmaInstance)}
+        {graph: sigmaInstance.graph, refresh: sigmaInstance.refresh.bind(sigmaInstance), focusNode}
     )
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})

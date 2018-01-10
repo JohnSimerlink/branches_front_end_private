@@ -174,12 +174,14 @@ sigma.utils.getBoundaries = function (graph, prefix, doEdges) {
     weightMax = weightMax || 1;
     sizeMax = sizeMax || 1;
 
-    return {
+    var boundaries = {
         weightMax: weightMax,
         sizeMax: sizeMax,
         minX: minX,
         minY: minY,
         maxX: maxX,
         maxY: maxY
-    };
+    }
+    console.log('middlewares rescale boundaries is ', boundaries)
+    return boundaries
 };
