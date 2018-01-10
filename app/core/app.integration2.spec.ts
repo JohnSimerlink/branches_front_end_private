@@ -8,7 +8,7 @@ import {myContainer} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
-import {ISigma, ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
+import {IOneToManyMap, ISigma, ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
 import {
     IRenderedNodesManager,
     IStoreSourceUpdateListener
@@ -33,6 +33,7 @@ import sigma from '../../other_imports/sigma/sigma.core.js'
 // import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma'
 import {log} from './log'
+import {OneToManyMap} from '../objects/oneToManyMap/oneToManyMap';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -97,8 +98,9 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
     )
+    const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})
+        = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
     const storeSourceUpdateListener: IStoreSourceUpdateListener
         = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
     const renderedNodesManagerCore: IRenderedNodesManagerCore

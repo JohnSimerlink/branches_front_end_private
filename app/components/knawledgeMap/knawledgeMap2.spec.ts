@@ -13,7 +13,7 @@ import {MUTATION_NAMES} from '../../core/store2';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
-import {IKnawledgeMapCreator, ITreeLoader, ITreeLocationLoader} from '../../objects/interfaces';
+import {IContentLoader, IKnawledgeMapCreator, ITreeLoader, ITreeLocationLoader} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {KnawledgeMapCreator} from './knawledgeMap2';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
@@ -37,19 +37,23 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
     const treeLocationLoaderDownloadDataSpy = sinon.spy(treeLocationLoader, 'downloadData')
+    const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
+    const contentLoaderDownloadDataSpy = sinon.spy(contentLoader, 'downloadData')
     const store = {
         commit() {}
     }
     const storeCommitSpy = sinon.spy(store, 'commit')
     const knawledgeMapCreator: IKnawledgeMapCreator
-        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, store})
+        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, store})
     const knawledgeMap = knawledgeMapCreator.create()
 
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
     expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(0)
+    expect(contentLoaderDownloadDataSpy.callCount).to.equal(1)
     knawledgeMap.mounted()
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
     expect(treeLocationLoaderDownloadDataSpy.callCount).to.equal(2)
+    expect(contentLoaderDownloadDataSpy.callCount).to.equal(1)
     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
     expect(calledWith).to.equal(expectedCalledWith)

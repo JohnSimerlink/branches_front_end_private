@@ -1,10 +1,11 @@
 // for now, this is where we will inject all the dependencies
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
-    IApp, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
+    IApp, IContentLoader, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableContentStore,
+    IMutableSubscribableContentUserStore,
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocation,
-    IMutableSubscribableTreeUserStore,
+    IMutableSubscribableTreeUserStore, IOneToManyMap,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigma, ISigmaNode,
     ISigmaRenderManager, ISigmaUpdater, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore,
@@ -60,6 +61,7 @@ import {MutableSubscribableContentStore} from '../objects/stores/content/Mutable
 import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
+import {ContentLoader} from '../loaders/content/ContentLoader';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -103,6 +105,8 @@ class AppContainer {
             new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
         const treeUserLoader: ITreeUserLoader =
             new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
+        const contentLoader: IContentLoader =
+            new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
 
         const treeStore: IMutableSubscribableTreeStore =
             new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
@@ -161,8 +165,9 @@ class AppContainer {
         const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater({sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId})
 
+        const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-            = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater})
+            = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
         const storeSourceUpdateListener: IStoreSourceUpdateListener
             = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
 
@@ -181,7 +186,7 @@ class AppContainer {
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
         const knawledgeMapCreator: IKnawledgeMapCreator =
-            new KnawledgeMapCreator({store, treeLoader, treeLocationLoader})
+            new KnawledgeMapCreator({store, treeLoader, treeLocationLoader, contentLoader})
         const knawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: knawledgeMap, props: true }

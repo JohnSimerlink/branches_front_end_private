@@ -26,7 +26,8 @@ import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
-    IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IProficiencyStats,
+    IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IOneToManyMap,
+    IProficiencyStats,
     IProppedDatedMutation,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
@@ -152,6 +153,7 @@ import {TreeUserLoader, TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUse
 import {MutableSubscribableContent} from './app/objects/content/MutableSubscribableContent';
 import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscribableTreeUser';
 import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
+import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -371,6 +373,8 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .to(SubscribableMutableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 //
+    bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)
+    bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
     bind<SubscribableMutableStringSetArgs>
     (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
     bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
