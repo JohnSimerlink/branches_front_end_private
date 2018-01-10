@@ -545,6 +545,9 @@ export interface ISubscribableTreeCore extends ITree {
     children: ISubscribableMutableStringSet
     val(): ITreeDataWithoutId
 }
+export interface IValable {
+    val()
+}
 
 export enum TreePropertyNames {
     CONTENT_ID,

@@ -47,7 +47,7 @@ function proficiencyToColor(proficiency){
       // if (node.trailingDots){
       //     renderTrailingDots(node, context, settings)
       // }
-      if (node.content.type === 'heading') {
+      if (node.content && node.content.type === 'heading') {
           renderHeading(node, context, settings)
           return
       }

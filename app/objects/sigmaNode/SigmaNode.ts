@@ -24,7 +24,7 @@ class SigmaNode implements ISigmaNode {
     public content: IContentData;
     public contentUserData: IContentUserData;
     public label: string;
-    public size: number;
+    public size: number = 1;
     public colorSlices: IColorSlice[];
     public proficiencyStats: IProficiencyStats;
     public overdue: boolean;

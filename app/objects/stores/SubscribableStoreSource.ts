@@ -7,7 +7,7 @@ import {
     ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
-    ITypeAndIdAndValUpdates,
+    ITypeAndIdAndValUpdates, IValable,
     ObjectDataTypes,
 } from '../interfaces';
 import {IMutableSubscribableTreeUser} from '../interfaces';
@@ -36,9 +36,9 @@ export class SubscribableStoreSource<T> extends
         return this.hashmap[id]
     }
 
-    public set(id: string, val: T) {
-        this.hashmap[id] = val
-        this.update = {id, val, type: this.type}
+    public set(id: string, obj: T & IValable) {
+        this.hashmap[id] = obj
+        this.update = {id, val: obj.val(), type: this.type}
         this.callCallbacks()
     }
     public entries(): Array<entry<T>> {
