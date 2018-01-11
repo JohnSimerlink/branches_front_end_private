@@ -40,6 +40,7 @@ class SigmaNode implements ISigmaNode {
         this.proficiencyStats = treeUserData.proficiencyStats
     }
     public receiveNewContentData(contentData: IContentData) {
+        log('sigmaNode', this, ' receiveNewContentData is ', contentData)
         this.label = ContentItemUtils.getLabelFromContent(contentData)
         this.content = contentData
     }

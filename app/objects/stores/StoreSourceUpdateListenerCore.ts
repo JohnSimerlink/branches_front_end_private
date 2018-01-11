@@ -53,6 +53,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }
+                break;
             }
             default:
                 throw new RangeError(JSON.stringify(type) + ' is not a valid update type')

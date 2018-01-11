@@ -1,4 +1,5 @@
 import sigma from '../../sigma.core'
+import {DEFAULT_FONT_SIZE} from "../../../../app/core/globals";
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.hovers');
 sigma.canvas.hovers = sigma.canvas.hovers || {}
@@ -22,12 +23,14 @@ sigma.canvas.hovers.def = function (node, context, settings) {
         fontSize = (settings('labelSize') === 'fixed') ?
           settings('defaultLabelSize') :
           settings('labelSizeRatio') * size;
+        fontSize = DEFAULT_FONT_SIZE
         // fontSize = window.getLabelFontSizeFromNode(node, settings)
         // var fontSize =
 
         // Label background:
         context.font = (fontStyle ? fontStyle + ' ' : '') +
         fontSize + 'px ' + (settings('hoverFont') || settings('font'));
+        fontSize = DEFAULT_FONT_SIZE
 
     context.beginPath();
     context.fillStyle = settings('labelHoverBGColor') === 'node' ?
@@ -95,7 +98,9 @@ sigma.canvas.hovers.def = function (node, context, settings) {
         context.fillStyle = (settings('labelHoverColor') === 'node') ?
             (node.color || settings('defaultNodeColor')) :
             settings('defaultLabelHoverColor');
+        fontSize = DEFAULT_FONT_SIZE
 
+        context.
         context.fillText(
             node.label,
             Math.round(node[prefix + 'x']),
