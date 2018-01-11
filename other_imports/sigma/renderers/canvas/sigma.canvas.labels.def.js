@@ -1,5 +1,5 @@
 import sigma from '../../sigma.core'
-
+import {DEFAULT_FONT_SIZE} from '../../../../app/core/globals.ts'
 var labelLevels = {}
 var packageData = {
     width: 0,
@@ -56,13 +56,14 @@ function resetLabelData() {
 
 // window.resetLabelData = resetLabelData
 //assumes fixed label size
-function determineSection(node) {
-    var x = node['renderer1:x']
-    var y = node['renderer1:y']
+function determineSection(node, prefix) {
+    var x = node[prefix + 'x']
+    var y = node[prefix + 'y']
     var column = Math.floor(x / packageData.columnWidth)
     var row = Math.floor(y / packageData.rowHeight)
+    console.log('determineSection', node, node[prefix + 'x'], node[prefix + 'y'], x, y, column, row)
     var section = {row, column}
-    return {row, column}
+    return section
 }
 
 function sectionOffScreen(section) {
@@ -91,6 +92,7 @@ sigma.canvas.labels = sigma.canvas.labels || {}
  */
 sigma.canvas.labels.prioritizable = function (node, context, settings) {
     // debugger;
+    // console.log('sigma canvas prioritizable called!', node, context, settings, 'and prefix is', settings('prefix'))
     packageData.recentHistory.push(node)
     var fontSize,
         prefix = settings('prefix') || '',
@@ -98,21 +100,25 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     if (!node.label || typeof node.label !== 'string') {
         return;
     }
-
+    // console.log('sigma canvas prioritizable called 2!')
 
     // fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
     fontSize = getLabelFontSizeFromNode(node, settings)
+    console.log('fontSize in labels def is ', fontSize)
     // settings('defaultLabelSize') :
     // settings('labelSizeRatio') * size;
 
-    var section = determineSection(node)
+    var section = determineSection(node, prefix)
     if (sectionOffScreen(section)) {
         packageData.hideCount++
         return
     } else {
     }
+    // console.log('node section is', section)
 
     // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
+    console.log('sigma canvas prioritizable called 3!')
+
     var nodeAtThatSection = labelLevels[section.row][section.column]
     if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
         return
@@ -126,6 +132,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
         column: section.column,
         height: getHeightFromNodeLevel(node.level)
     }
+    console.log('sigma canvas prioritizable called 4!')
     packageData.labels[node.label] = info
     labelLevels[section.row][section.column] = info // labelLevels[section.row][section.column] || {}
     // labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
@@ -141,6 +148,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     // if (size < settings('labelThreshold'))
     //     return;
 
+
     context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
         fontSize /*+ 0 /node.level */ + 'px ' + settings('font');
     context.fillStyle = (settings('labelColor') === 'node') ?
@@ -150,6 +158,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     var x = Math.round(node[prefix + 'x'] /*+ size + 3*/)
     var y = Math.round(node[prefix + 'y'] + fontSize / 3)
     var label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
+    console.log('sigma canvas labels context fillText about to get called', label, x, y, context.font, DEFAULT_FONT_SIZE)
     context.fillText(
         label,
         x,
@@ -158,6 +167,12 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 };
 
 function getLabelFontSizeFromNode(node, settings){
-    var fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+    let fontSize
+    if (!node.level) {
+        fontSize = DEFAULT_FONT_SIZE
+        console.log('there is no node level. fontSize set by line 171', fontSize)
+    } else {
+        fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+    }
     return fontSize
 }

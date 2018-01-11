@@ -162,10 +162,12 @@ class AppContainer {
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         renderedNodesManager.subscribe(sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
-        const sigmaNodesUpdater: ISigmaNodesUpdater
-        = new SigmaNodesUpdater({sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId})
-
         const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+        const sigmaNodesUpdater: ISigmaNodesUpdater
+        = new SigmaNodesUpdater(
+            {sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap)}
+            )
+
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
             = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
         const storeSourceUpdateListener: IStoreSourceUpdateListener
