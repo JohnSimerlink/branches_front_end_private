@@ -246,7 +246,6 @@ sigma.captors.mouse = function (target, camera, settings) {
      */
     function _clickHandler(e) {
         console.log('CLICK HANDLER CALLED')
-        debugger;
         if (_settings('mouseEnabled')) {
             var event = sigma.utils.mouseCoords(e);
             event.isDragging =

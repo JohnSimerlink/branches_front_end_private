@@ -135,11 +135,11 @@ dispatcher.prototype.dispatchEvent = function (events, data) {
     for (i = 0, n = eArray.length; i !== n; i += 1) {
         eventName = eArray[i];
         var isClickNode = eventName === 'clickNode'
-        if (isClickNode) {
-            console.log("dispatchEvent ", eventName, "called")
-            console.log('dispatchEvent handlers', JSON.stringify(this._handlers[eventName]))
-            console.log('dispatchEvent num handlers', this._handlers[eventName].length)
-        }
+        // if (isClickNode) {
+        //     console.log("dispatchEvent ", eventName, "called")
+        //     console.log('dispatchEvent handlers', JSON.stringify(this._handlers[eventName]))
+        //     console.log('dispatchEvent num handlers', this._handlers[eventName].length)
+        // }
 
         if (this._handlers[eventName]) {
             if(isClickNode) {
