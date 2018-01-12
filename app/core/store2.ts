@@ -2,6 +2,11 @@ import Vuex, {Store} from 'vuex'
 import {GRAPH_CONTAINER_ID, ROOT_ID} from './globals';
 import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
+import {ISigmaEventListener, ITooltipOpener} from '../objects/interfaces';
+import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
+import {tooltipsConfig} from '../tooltipsConfig';
+import {TooltipOpener} from '../tooltipOpener';
+const sigmaAny: any = sigma
 
 export const MUTATION_NAMES = {
     INITIALIZE_SIGMA_INSTANCE: 'initializeSigmaInstance',
@@ -48,10 +53,17 @@ mutations[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE] = state => {
     state.sigmaInstance = sigmaInstance
     state.graph = sigmaInstance.graph
     state.sigmaInitialized = true
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') { // for debuggin only. NOT to be used by other classes
         const windowAny: any = window
         windowAny.sigmaInstance = sigmaInstance
     }
+
+    /* TODO: it would be nice if I didn't have to do all this constructing
+     inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
+    const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
+    const tooltipOpener: ITooltipOpener = new TooltipOpener({tooltips, store: getters['getStore']})
+    const sigmaEventListener: ISigmaEventListener = new SigmaEventListener({tooltipOpener, sigmaInstance})
+    sigmaEventListener.startListening()
 }
 mutations[MUTATION_NAMES.REFRESH] = state => {
     log('store mutation refresh called', state)

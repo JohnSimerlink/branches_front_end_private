@@ -141,24 +141,20 @@ class AppContainer {
             return []
         }
 
-        const sigmaInstance: ISigma = myContainer.get<ISigma>(TYPES.ISigma)
-        const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
-        const tooltipOpener: ITooltipOpener = new TooltipOpener({tooltips, store})
-        const sigmaEventListener: ISigmaEventListener = new SigmaEventListener({sigmaInstance, tooltipOpener})
-        const camera = sigmaInstance.cameras[0]
-        function focusNode(node) {
-            if (!node) {
-                error('Tried to go to node');
-                error(node);
-                return;
-            }
-            const cameraCoord = {
-                x: node['read_cam0:x'],
-                y: node['read_cam0:y'],
-                ratio: 0.20
-            };
-            camera.goTo(cameraCoord);
-        }
+        // const camera = sigmaInstance.cameras[0]
+        // function focusNode(node) {
+        //     if (!node) {
+        //         error('Tried to go to node');
+        //         error(node);
+        //         return;
+        //     }
+        //     const cameraCoord = {
+        //         x: node['read_cam0:x'],
+        //         y: node['read_cam0:y'],
+        //         ratio: 0.20
+        //     };
+        //     camera.goTo(cameraCoord);
+        // }
         const sigmaUpdater: ISigmaUpdater =
             new SigmaUpdater({
                 store
@@ -229,8 +225,6 @@ class AppContainer {
             store,
             router
         })
-
-        sigmaEventListener.startListening()
 
         // TODO: don't make the app container container be fetched thorugh dependency injection until we have the UI
         // manually wired and up

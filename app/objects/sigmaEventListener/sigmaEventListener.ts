@@ -13,28 +13,28 @@ export class SigmaEventListener implements ISigmaEventListener {
     }
     public startListening() {
         log('sigmaEventListener called')
-        // this.sigmaInstance.bind('clickNode', (event) => {
-        //     log('clickNode eventListener called!!!!!')
-        //     const nodeId = event && event.data &&
-        //         event.data.node && event.data.node.id
-        //     const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
-        //     this.tooltipOpener.openTooltip(sigmaNode)
+        this.sigmaInstance.bind('clickNode', (event) => {
+            log('clickNode eventListener called!!!!!')
+            const nodeId = event && event.data &&
+                event.data.node && event.data.node.id
+            const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
+            this.tooltipOpener.openTooltip(sigmaNode)
+        })
+        // debugger;
+        // this.sigmaInstance.bind('click', (event) => {
+        //     log('click eventListener called!!!!!')
+        //     // const nodeId = event && event.data &&
+        //     //     event.data.node && event.data.node.id
+        //     // const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
+        //     // this.tooltipOpener.openTooltip(sigmaNode)
         // })
-        debugger;
-        this.sigmaInstance.bind('click', (event) => {
-            log('click eventListener called!!!!!')
-            // const nodeId = event && event.data &&
-            //     event.data.node && event.data.node.id
-            // const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
-            // this.tooltipOpener.openTooltip(sigmaNode)
-        })
-        this.sigmaInstance.bind('doubleClick', (event) => {
-            log('doubleClick eventListener called!!!!!')
-            // const nodeId = event && event.data &&
-            //     event.data.node && event.data.node.id
-            // const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
-            // this.tooltipOpener.openTooltip(sigmaNode)
-        })
+        // this.sigmaInstance.bind('doubleClick', (event) => {
+        //     log('doubleClick eventListener called!!!!!')
+        //     // const nodeId = event && event.data &&
+        //     //     event.data.node && event.data.node.id
+        //     // const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
+        //     // this.tooltipOpener.openTooltip(sigmaNode)
+        // })
     }
 }
 
