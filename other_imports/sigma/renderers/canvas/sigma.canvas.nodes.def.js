@@ -40,7 +40,7 @@ function proficiencyToColor(proficiency){
    * @param  {configurable}             settings The settings function.
    */
   sigma.canvas.nodes.def = function(node, context, settings) {
-      console.log("canvas nodes def called", node, context, settings)
+      // console.log("canvas nodes def called", node, context, settings)
       if (node.type === NODE_TYPES.SHADOW_NODE){
           return
       }
@@ -88,7 +88,7 @@ function proficiencyToColor(proficiency){
 
       context.closePath();
       context.fill();
-      console.log('NODE FINISHED DRAWING', node)
+      // console.log('NODE FINISHED DRAWING', node)
 
       if (node.overdue){
           var fontSize = Math.floor(size * 1.414)

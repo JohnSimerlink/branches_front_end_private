@@ -134,15 +134,36 @@ dispatcher.prototype.dispatchEvent = function (events, data) {
 
     for (i = 0, n = eArray.length; i !== n; i += 1) {
         eventName = eArray[i];
+        var isClickNode = eventName === 'clickNode'
+        if (isClickNode) {
+            console.log("dispatchEvent ", eventName, "called")
+            console.log('dispatchEvent handlers', JSON.stringify(this._handlers[eventName]))
+            console.log('dispatchEvent num handlers', this._handlers[eventName].length)
+        }
 
         if (this._handlers[eventName]) {
+            if(isClickNode) {
+                console.log("handlers about to get called for ", eventName)
+            }
+
             event = self.getEvent(eventName, data);
             a = [];
 
             for (j = 0, m = this._handlers[eventName].length; j !== m; j += 1) {
+                if (isClickNode) {
+                    console.log('dispatchEvent handlers getting called!')
+                }
                 this._handlers[eventName][j].handler(event);
-                if (!this._handlers[eventName][j].one)
+                if (!this._handlers[eventName][j].one) {
                     a.push(this._handlers[eventName][j]);
+                    if (isClickNode) {
+                        console.log('dispatchEvent NOT ONE')
+                    }
+                } else {
+                    if (isClickNode) {
+                        console.log('dispatchEvent ONE')
+                    }
+                }
             }
 
             this._handlers[eventName] = a;

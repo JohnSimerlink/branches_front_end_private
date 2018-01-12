@@ -530,6 +530,7 @@ function Tooltips(s, renderer, options) {
 
         if (!hasDoubleClickStage) {
             s.bind('doubleClickStage', function (event) {
+                console.log('sigma plugin tooltips doubleClickStage called')
                 cancel();
                 _doubleClick = true;
                 self.dispatchEvent('hidden', event.data);
@@ -574,6 +575,7 @@ function Tooltips(s, renderer, options) {
 
         if (!hasDoubleClickNode) {
             s.bind('doubleClickNode', function (event) {
+                console.log('sigma plugins tooltips doubleClickNode')
                 cancel();
                 _doubleClick = true;
                 self.dispatchEvent('hidden', event.data);

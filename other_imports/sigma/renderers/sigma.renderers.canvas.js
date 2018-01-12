@@ -24,7 +24,7 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
 
     if (!(options.container instanceof HTMLElement)){
 
-        console.log("options.container is", options.container, options)
+        // console.log("options.container is", options.container, options)
         throw 'Container not found.';
     }
 
@@ -84,6 +84,7 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
 
     // Initialize captors:
     this.captors = [];
+    // below line makes me think that this.options.captors is a string array of constructor function names (e.g. 'mouse', or 'touch'
     a = this.options.captors || [sigma.captors.mouse, sigma.captors.touch];
     for (i = 0, l = a.length; i < l; i++) {
         fn = typeof a[i] === 'function' ? a[i] : sigma.captors[a[i]];
@@ -111,7 +112,7 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
  * @return {sigma.renderers.canvas}         Returns the instance itself.
  */
 sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
-    console.log("sigma renderers canvas width and height are :", this.width, this.height, ' and this is ', this)
+    // console.log("sigma renderers canvas width and height are :", this.width, this.height, ' and this is ', this)
     options = options || {};
     dontPublish = dontPublish || false
 
@@ -171,21 +172,21 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // Find which nodes are on screen:
     this.edgesOnScreen = [];
     var rect = this.camera.getRectangle(this.width, this.height);
-    console.log('sigma renderers canvas rect is ', rect)
+    // console.log('sigma renderers canvas rect is ', rect)
     this.graph.nodes().forEach(node => {
         node.onScreen = false
         delete node.distanceFromCenter
     })
-    console.log('sigma renderers canvas nodes is ', this.graph.nodes())
+    // console.log('sigma renderers canvas nodes is ', this.graph.nodes())
     var A_BIG_NUMBER = 999999999
     // window.mostCenteredNodeId = null
     // window.mostCenteredNodeDistance = A_BIG_NUMBER
     // var nodesOnScreen = this.camera.quadtree.area(rect)
     var nodesOnScreen = this.graph.nodes()
-    console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
+    // console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
     nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
     nodesOnScreen.forEach(node => {
-        console.log('a node on screen is ', node)
+        // console.log('a node on screen is ', node)
         if (node.type !== NODE_TYPES.TREE) {
             return
         }
@@ -327,12 +328,12 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // Draw nodes:
     // - No batching
     if (drawNodes) {
-        console.log(' sigma renderers canvas:  drawNodes about to get called', drawNodes)
+        // console.log(' sigma renderers canvas:  drawNodes about to get called', drawNodes)
         renderers = sigma.canvas.nodes;
         for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++) {
-            console.log("sigma renderers canvas: the node on the screen is a[i]")
+            // console.log("sigma renderers canvas: the node on the screen is a[i]")
             if (!a[i].hidden) {
-                console.log('sigma renderers canvas: the node is not hidden')
+                // console.log('sigma renderers canvas: the node is not hidden')
                 ;(renderers[
                 a[i].type || this.settings(options, 'defaultNodeType')
                     ] || renderers.def)(
@@ -341,7 +342,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
                     embedSettings
                 );
             } else {
-                console.log('sigma renderers canvas: the node is hidden')
+                // console.log('sigma renderers canvas: the node is hidden')
             }
         }
     }

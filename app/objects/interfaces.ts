@@ -290,6 +290,13 @@ export enum ObjectTypes {
     CONTENT_USER,
 }
 
+// UI Manager objects
+export interface ITooltipOpener {
+    openTooltip(node: ISigmaNode)
+}
+export interface ISigmaEventListener {
+    startListening()
+}
 // point
 export interface ICoordinate {
     x: number,

@@ -100,7 +100,6 @@ sigma.canvas.hovers.def = function (node, context, settings) {
             settings('defaultLabelHoverColor');
         fontSize = DEFAULT_FONT_SIZE
 
-        context.
         context.fillText(
             node.label,
             Math.round(node[prefix + 'x']),

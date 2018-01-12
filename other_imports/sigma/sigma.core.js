@@ -57,6 +57,7 @@ var __instances = {};
  *                       sigma.settings.
  */
 var sigma = function (conf) {
+    console.log('SIGMA CORE CONSTRUCTOR CALLED!')
     // Local variables:
     // ****************
     var i,
@@ -321,6 +322,7 @@ sigma.prototype.killCamera = function (v) {
  *                               id.
  */
 sigma.prototype.addRenderer = function (options) {
+    console.log('SIGMA CORE ADD RENDERER CALLED')
     var id,
         fn,
         camera,
@@ -377,7 +379,8 @@ sigma.prototype.addRenderer = function (options) {
     });
 
     // Bind events:
-    if (renderer.bind)
+    if (renderer.bind) {
+        console.log('sigma core about to bind events')
         renderer.bind(
             [
                 'click',
@@ -416,6 +419,7 @@ sigma.prototype.addRenderer = function (options) {
             ],
             this._handler
         );
+    }
 
     // Reference the renderer by its camera:
     this.renderersPerCamera[camera.id].push(renderer);
@@ -472,7 +476,7 @@ sigma.prototype.killRenderer = function (v) {
  *                             quadtrees or not (default: false).
  */
 sigma.prototype.refresh = function (options) {
-    console.log('sigma core refresh called. this is ', this)
+    // console.log('sigma core refresh called. this is ', this)
     var i,
         l,
         k,
@@ -523,7 +527,7 @@ sigma.prototype.refresh = function (options) {
                 this.graph,
                 c.readPrefix
             );
-            console.log('sigma core refresh. bounds are', bounds)
+            // console.log('sigma core refresh. bounds are', bounds)
 
             // Refresh quadtree:
             c.quadtree.index(this.graph.nodes(), {
@@ -557,7 +561,7 @@ sigma.prototype.refresh = function (options) {
 
     // Call each renderer:
     a = Object.keys(this.renderers);
-    console.log('sigma core renderers keys are ', a)
+    // console.log('sigma core renderers keys are ', a)
     for (i = 0, l = a.length; i < l; i++)
         if (this.renderers[a[i]].process) {
             if (this.settings('skipErrors'))
@@ -568,8 +572,9 @@ sigma.prototype.refresh = function (options) {
                         'Warning: The renderer "' + a[i] + '" crashed on ".process()"'
                     );
                 }
-            else
+            else {
                 this.renderers[a[i]].process();
+            }
         }
 
     this.render();
@@ -717,4 +722,5 @@ sigma.instances = function (id) {
  */
 sigma.version = '1.2.0';
 
+// sigma.plugins = sigma.plugins || []
 export default sigma

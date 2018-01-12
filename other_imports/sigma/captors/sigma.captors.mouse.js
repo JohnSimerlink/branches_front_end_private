@@ -52,6 +52,7 @@ sigma.captors.mouse = function (target, camera, settings) {
     _target.addEventListener('mousemove', _moveHandler, false);
     _target.addEventListener('mousedown', _downHandler, false);
     _target.addEventListener('click', _clickHandler, false);
+    console.log('sigma _clickHandler just added to target')
     _target.addEventListener('mouseout', _outHandler, false);
     document.addEventListener('mouseup', _upHandler, false);
 
@@ -244,6 +245,8 @@ sigma.captors.mouse = function (target, camera, settings) {
      * @param {event} e A mouse event.
      */
     function _clickHandler(e) {
+        console.log('CLICK HANDLER CALLED')
+        debugger;
         if (_settings('mouseEnabled')) {
             var event = sigma.utils.mouseCoords(e);
             event.isDragging =
