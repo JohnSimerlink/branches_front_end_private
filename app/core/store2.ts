@@ -62,6 +62,7 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
         log('sigma was already intiialized initialized . .. adding node', node)
         state.graph.addNode(node)
         mutations[MUTATION_NAMES.REFRESH](state)
+        log('STORE 2 TS ADD NODE. THIS STORE is ', getters['getStore']())
     } else {
         log('sigma not yet initialized . .. pushing node', node)
         state.graphData.nodes.push(node)
@@ -71,11 +72,13 @@ const actions = {}
 
 export default class BranchesStore {
     constructor() {
-        return new Vuex.Store({
+        const store = new Vuex.Store({
             state,
             mutations,
             actions,
             getters,
         } ) as Store<any>
+        getters['getStore'] = () => store
+        return store
     }
 }

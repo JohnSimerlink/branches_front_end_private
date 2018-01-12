@@ -7,12 +7,12 @@ import {
     IMutableSubscribableTreeLocation,
     IMutableSubscribableTreeUserStore, IOneToManyMap,
     IRenderedNodesManager,
-    IRenderedNodesManagerCore, ISigma, ISigmaNode,
+    IRenderedNodesManagerCore, ISigma, ISigmaEventListener, ISigmaNode,
     ISigmaRenderManager, ISigmaUpdater, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore,
     ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
     ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource,
+    ISubscribableTreeStoreSource, ITooltipOpener,
     ITreeLoader, ITreeLocationLoader, ITreeUserLoader
 } from '../objects/interfaces';
 
@@ -62,6 +62,11 @@ import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubs
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
 import {ContentLoader} from '../loaders/content/ContentLoader';
+import {tooltipsConfig} from '../tooltipsConfig';
+const sigmaAny: any = sigma
+import clonedeep from 'lodash.clonedeep'
+import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
+import {TooltipOpener} from '../tooltipOpener';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -135,8 +140,11 @@ class AppContainer {
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
         }
-        const sigmaInstance: ISigma = myContainer.get<ISigma>(TYPES.ISigma)
 
+        const sigmaInstance: ISigma = myContainer.get<ISigma>(TYPES.ISigma)
+        const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
+        const tooltipOpener: ITooltipOpener = new TooltipOpener({tooltips, store})
+        const sigmaEventListener: ISigmaEventListener = new SigmaEventListener({sigmaInstance, tooltipOpener})
         const camera = sigmaInstance.cameras[0]
         function focusNode(node) {
             if (!node) {
@@ -221,6 +229,8 @@ class AppContainer {
             store,
             router
         })
+
+        sigmaEventListener.startListening()
 
         // TODO: don't make the app container container be fetched thorugh dependency injection until we have the UI
         // manually wired and up

@@ -61,7 +61,7 @@ function determineSection(node, prefix) {
     var y = node[prefix + 'y']
     var column = Math.floor(x / packageData.columnWidth)
     var row = Math.floor(y / packageData.rowHeight)
-    console.log('determineSection', node, node[prefix + 'x'], node[prefix + 'y'], x, y, column, row)
+    // console.log('determineSection', node, node[prefix + 'x'], node[prefix + 'y'], x, y, column, row)
     var section = {row, column}
     return section
 }
@@ -104,7 +104,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 
     // fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
     fontSize = getLabelFontSizeFromNode(node, settings)
-    console.log('fontSize in labels def is ', fontSize)
+    // console.log('fontSize in labels def is ', fontSize)
     // settings('defaultLabelSize') :
     // settings('labelSizeRatio') * size;
 
@@ -117,7 +117,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     // console.log('node section is', section)
 
     // labels.push({id: node.id, label: node.label, row:section.row, column:section.column})
-    console.log('sigma canvas prioritizable called 3!')
+    // console.log('sigma canvas prioritizable called 3!')
 
     var nodeAtThatSection = labelLevels[section.row][section.column]
     if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
@@ -132,7 +132,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
         column: section.column,
         height: getHeightFromNodeLevel(node.level)
     }
-    console.log('sigma canvas prioritizable called 4!')
+    // console.log('sigma canvas prioritizable called 4!')
     packageData.labels[node.label] = info
     labelLevels[section.row][section.column] = info // labelLevels[section.row][section.column] || {}
     // labelLevels[section.row][section.column].level = node.level // = labelLevels[section.row][section.column] || {}
@@ -158,7 +158,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     var x = Math.round(node[prefix + 'x'] /*+ size + 3*/)
     var y = Math.round(node[prefix + 'y'] + fontSize / 3)
     var label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
-    console.log('sigma canvas labels context fillText about to get called', label, x, y, context.font, DEFAULT_FONT_SIZE)
+    // console.log('sigma canvas labels context fillText about to get called', label, x, y, context.font, DEFAULT_FONT_SIZE)
     context.fillText(
         label,
         x,
@@ -170,7 +170,7 @@ function getLabelFontSizeFromNode(node, settings){
     let fontSize
     if (!node.level) {
         fontSize = DEFAULT_FONT_SIZE
-        console.log('there is no node level. fontSize set by line 171', fontSize)
+        // console.log('there is no node level. fontSize set by line 171', fontSize)
     } else {
         fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
     }

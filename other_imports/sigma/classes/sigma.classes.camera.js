@@ -52,13 +52,14 @@ sigma.classes.camera.prototype.goTo = function (coordinates, stop) {
         c = coordinates || {},
         keys = ['x', 'y', 'ratio', 'angle'];
 
-    for (i = 0, l = keys.length; i < l; i++)
+    for (i = 0, l = keys.length; i < l; i++) {
         if (c[keys[i]] !== undefined) {
             if (typeof c[keys[i]] === 'number' && !isNaN(c[keys[i]]))
                 this[keys[i]] = c[keys[i]];
             else
                 throw 'Value for "' + keys[i] + '" is not a number.';
         }
+    }
 
     PubSub.publish('canvas.coordinatesUpdated', c)
     this.dispatchEvent('coordinatesUpdated', {stop});

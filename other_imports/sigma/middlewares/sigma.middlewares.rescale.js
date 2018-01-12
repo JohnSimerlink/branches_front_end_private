@@ -182,6 +182,6 @@ sigma.utils.getBoundaries = function (graph, prefix, doEdges) {
         maxX: maxX,
         maxY: maxY
     }
-    console.log('middlewares rescale boundaries is ', boundaries)
+    // console.log('middlewares rescale boundaries is ', boundaries)
     return boundaries
 };
