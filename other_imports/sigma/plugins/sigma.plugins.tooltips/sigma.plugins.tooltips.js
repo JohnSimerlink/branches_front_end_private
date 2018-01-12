@@ -169,6 +169,7 @@ function Tooltips(s, renderer, options) {
      * @param {function?} onComplete Optional function called when open finish
      */
     this.open = function (o, options, x, y, onComplete) {
+        console.log('tooltips open called 1')
         remove();
 
         // Create the DOM element:
@@ -213,6 +214,7 @@ function Tooltips(s, renderer, options) {
         // Style it (pretty sure this does nothing):
         _tooltip.className = options.cssClass;
 
+        console.log('tooltips open called 2')
         if (options.position !== 'css') {
             if (containerPosition === 'static') {
                 _tooltip.style.position = 'absolute';
@@ -320,6 +322,8 @@ function Tooltips(s, renderer, options) {
                 }
             }
             if (onComplete) onComplete();
+
+            console.log('tooltips open called 3')
         }, 0);
     };
 
