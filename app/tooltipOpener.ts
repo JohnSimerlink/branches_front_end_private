@@ -27,7 +27,8 @@ export class TooltipOpener implements ITooltipOpener {
         }
 
         // TODO: may have to use renderer2
-        this.tooltips.open(node, configClone.node[0], node['renderer1:x'], node['renderer1:y']);
+        this.tooltips.open(node, configClone.node[0], node['renderer1:x']
+            || node['renderer2:x'], node['renderer1:y'] || node['renderer2:y']);
         setTimeout(() => {
             const vm = new Vue(
                 {

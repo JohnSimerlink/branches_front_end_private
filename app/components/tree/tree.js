@@ -1,5 +1,5 @@
 // import {Trees} from '../../objects/trees'
-// import {ProficiencyUtils} from "../../objects/proficiency/ProficiencyUtils";
+import {ProficiencyUtils} from "../../objects/proficiency/ProficiencyUtils";
 // import {Fact} from '../../objects/fact'
 // import ContentItems from '../../objects/contentItems'
 //
@@ -62,10 +62,10 @@ export default {
         // openNodeId(){
         //     return this.$store.state.openNodeId;
         // },
-        // typeIsHeading() {
-        //     return this.content.type === 'heading'
-        //     || this.tree.contentType === 'heading' // backwards compatibility
-        // },
+        typeIsHeading() {
+            return this.content.type === 'heading'
+            || this.tree.contentType === 'heading' // backwards compatibility
+        },
         // typeIsFact() {
         //     return this.content.type === 'fact'
         //     || this.tree.contentType === 'fact' // backwards compatibility
@@ -74,20 +74,21 @@ export default {
         //     return this.content.type === 'skill'
         //     || this.tree.contentType === 'skill' // backwards compatibility
         // },
-        // styleObject() {
-        //     const styles = {}
-        //     if (this.typeIsHeading) {
-        //         styles['background-color'] = 'black';
-        //         styles['color'] = 'white'
-        //     } else {
-        //         styles['background-color'] = ProficiencyUtils.getColor(this.content.proficiency)
-        //         if (this.showHistory) {
-        //             styles['background-color'] = 'black'
-        //             styles['color'] = 'white'
-        //         }
-        //     }
-        //     return styles
-        // },
+        styleObject() {
+            const styles = {}
+            if (this.typeIsHeading) {
+                styles['background-color'] = 'black';
+                styles['color'] = 'white'
+            } else {
+                styles['background-color'] = ProficiencyUtils.getColor(this.content.proficiency)
+                if (this.showHistory) {
+                    styles['background-color'] = 'black'
+                    styles['color'] = 'white'
+                }
+            }
+            console.log('trees style object is ', styles)
+            return styles
+        },
         // timerMouseOverMessage() {
         //     return "You have spent " + secondsToPretty(this.content.timer) + "studying this item"
         // },
