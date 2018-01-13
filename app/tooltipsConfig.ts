@@ -1,4 +1,6 @@
 import {log} from './core/log'
+import {ISigmaNode} from './objects/interfaces';
+import {encode} from 'punycode';
 export const tooltipsConfig = {
     node: [
         {
@@ -6,12 +8,21 @@ export const tooltipsConfig = {
             cssClass: 'sigma-tooltip',
             position: 'center',
             template: '',
-            renderer: (node, template) => {
+            renderer: (node: ISigmaNode, template) => {
                 // var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
                 // switch (node.type) {
                 //     case 'tree':
-                log('tooltips config called', node, template)
-                const result: string = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                const contentEscaped = encodeURIComponent(JSON.stringify(node.content))
+                log('tooltips config called', node, template, node.content, contentEscaped)
+                const result: string =
+                    `<div id="vue">
+                        <tree
+                            parentid='${node.parentId}'
+                            contentid='${node.contentId}'
+                            content-string='${contentEscaped}'
+                            id='${node.id}'>
+                        </tree>
+                    </div>`;
                         // break;
                 // }
                 // var result = template // Mustache.render(template, node)

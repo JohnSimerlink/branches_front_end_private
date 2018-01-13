@@ -6,6 +6,7 @@ import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 // import {user} from '../../objects/user'
 // import {Heading} from "../../objects/heading";
 import {secondsToPretty, timeFromNow} from '../../core/filters'
+import {log} from '../../core/log'
 // import {Skill} from "../../objects/skill";
 // import './tree.less'
 // import { mapActions } from 'vuex'
@@ -28,9 +29,20 @@ export default {
     template: require('./tree.html').default,
     // '<div>This is the template for tree.html</div>',
     // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
-    props: ['id'],
+    props: {
+        id: String,
+        parentId: String,
+        contentId: String,
+        contentString: String
+    },
     async created() {
+        log('tree component created',
+            this.id, this.parentId, this.contentId,
+            this.contentString, this.parentid, this.contentid
+        )
+        // this.content = JSON.parse(decodeURIComponent(this.content))
         // var me = this;
+        // log('tree component content is now', this.content)
         //
         // this.editing = false
         // this.addingChild = false
@@ -45,7 +57,7 @@ export default {
     data() {
         return {
             tree: {}, // this.tree
-            content: {}, // this.content
+            // content: {}, // this.content
             editing: false,
             showHistory: false,
             addingChild: false,
@@ -62,10 +74,21 @@ export default {
         // }
     },
     computed: {
+        content() {
+            const decoded = decodeURIComponent(this.contentString)
+            log('decoded is ', decoded)
+            // const content
+            const content = JSON.parse(decoded)
+            log('parsed is', content)
+
+            return content
+        },
         // openNodeId(){
         //     return this.$store.state.openNodeId;
         // },
         typeIsHeading() {
+            const isHeading = this.content.type === 'heading' || this.tree.contentType === 'heading'
+            log('typeIsHeading is ', isHeading, this.content.type, this.tree.contentType)
             return this.content.type === 'heading'
             || this.tree.contentType === 'heading' // backwards compatibility
         },

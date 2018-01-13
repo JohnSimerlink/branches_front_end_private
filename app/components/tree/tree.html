@@ -72,6 +72,7 @@
             <button class="tree-heading-study ui button negative" v-on:click.stop="clearHeading">Remove All Your Data from this Category</button>
         </div>
     </div>
+    <div v-if="!typeIsHeading">TYPE IS NOT HEADING</div>
     <div class="tree-proficiency" v-show="!addingChild && typeIsFact && !showHistory">
         <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
