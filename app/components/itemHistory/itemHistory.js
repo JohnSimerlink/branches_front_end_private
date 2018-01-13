@@ -1,6 +1,6 @@
-import ContentItems from '../../objects/contentItems'
-import {user} from '../../objects/user'
-import './itemHistory.less'
+// import ContentItems from '../../objects/contentItems'
+// import {user} from '../../objects/user'
+// import './itemHistory.less'
 
 export default {
     template: require('./itemHistory.html'), // '<div> {{movie}} this is the tree template</div>',
@@ -18,9 +18,9 @@ export default {
         //   showArea: true
         // });
 
-        this.content = await ContentItems.get(this.itemId)
-        this.loaded = true
-        this.loadItemHistory()
+        // this.content = await ContentItems.get(this.itemId)
+        // this.loaded = true
+        // this.loadItemHistory()
     },
     data () {
         return {
@@ -32,17 +32,17 @@ export default {
             return this.content.interactions || []
         },
         uri() {
-            return this.loaded && this.content.getURIForWindow()
+            // return this.loaded && this.content.getURIForWindow()
         }
     },
     methods: {
         clearInteractions(){
-            console.log("A: tree/tree clearInteractions() called")
-            user.addMutation('clearInteractions', {contentId: this.content.id, timestamp: Date.now()})
-            this.loadItemHistory()
+            // console.log("A: tree/tree clearInteractions() called")
+            // user.addMutation('clearInteractions', {contentId: this.content.id, timestamp: Date.now()})
+            // this.loadItemHistory()
         },
         loadItemHistory(){
-            this.interactions = this.content.interactions
+            // this.interactions = this.content.interactions
             // console.log("interactions are ", this.interactions)
         },
     }

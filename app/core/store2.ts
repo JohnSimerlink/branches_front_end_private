@@ -58,6 +58,7 @@ mutations[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE] = state => {
         windowAny.sigmaInstance = sigmaInstance
     }
 
+    sigmaInstance.cameras[0].goTo({x: 5, y: 5, ratio: .05})
     /* TODO: it would be nice if I didn't have to do all this constructing
      inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
     const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)

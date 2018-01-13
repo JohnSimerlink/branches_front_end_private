@@ -1,5 +1,5 @@
 // import {Trees} from '../../objects/trees'
-import {ProficiencyUtils} from "../../objects/proficiency/ProficiencyUtils";
+import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 // import {Fact} from '../../objects/fact'
 // import ContentItems from '../../objects/contentItems'
 //
@@ -22,9 +22,12 @@ import {ProficiencyUtils} from "../../objects/proficiency/ProficiencyUtils";
 // function goToFromMap(path){
 //     PubSub.publish('goToFromMap', path)
 // }
-//TODO every time we click on a node a new instance of this vue element is created . . . so if you click on the node 5 times 5 instances get created . . .
+// TODO every time we click on a node a new instance of this vue element is created
+// . . . so if you click on the node 5 times 5 instances get created . . .
 export default {
-    template: '<div>This is the template for tree.html</div>', // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
+    template: require('./tree.html').default,
+    // '<div>This is the template for tree.html</div>',
+    // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
     props: ['id'],
     async created() {
         // var me = this;
@@ -86,7 +89,7 @@ export default {
                     styles['color'] = 'white'
                 }
             }
-            console.log('trees style object is ', styles)
+            // console.log('trees style object is ', styles)
             return styles
         },
         // timerMouseOverMessage() {
@@ -112,10 +115,12 @@ export default {
         // toggleAddChild() {
         //     this.addingChild = !this.addingChild
         // },
-        // toggleHistory() {
-        //     if (this.typeisHeading) return
-        //     this.showHistory = !this.showHistory
-        // },
+        toggleHistory() {
+            if (this.typeisHeading) {
+              return
+            }
+            this.showHistory = !this.showHistory
+        },
         // toggleEditingAndAddChild() {
         //     this.addingChild = !this.addingChild
         //     this.editing = this.addingChild
@@ -135,7 +140,8 @@ export default {
         //     this.tree.clearChildrenInteractions()
         // },
         // proficiencyClicked() {
-        //     user.addMutation('interaction', {contentId: this.content.id, proficiency: this.content.proficiency, timestamp: Date.now()})
+        //     user.addMutation('interaction', {contentId: this.content.id,
+        // proficiency: this.content.proficiency, timestamp: Date.now()})
         //     store.commit('itemStudied', this.content.id)
         //     this.tree.setInactive()
         //     // stores.commit('closeNode', this.id)
@@ -186,7 +192,8 @@ export default {
         //     this.syncGraphWithNode()
         // },
         // async remove() {
-        //     if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children? THIS CANNOT BE UNDONE")) {
+        //     if (confirm("Warning! Are you sure you would you like to delete this tree AND all its children?
+        // THIS CANNOT BE UNDONE")) {
         //         removeTreeFromGraph(this.id)
         //         return this.tree.remove()
         //     }
