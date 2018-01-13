@@ -1,42 +1,44 @@
 <div class="tree" v-bind:style="styleObject" >
 <!--<div class="tree">-->
-    TREE TEMPLATE!!
-    <!--<div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">-->
-        <!--<item-history :item-id="content.id" :tree="tree" ></item-history>-->
-    <!--</div>-->
-    <!--<div v-if="!showHistory">-->
-        <!--<div class="tree-skill" v-if="typeIsSkill">-->
-            <!--<div class="tree-current-skill" v-show="!editing">-->
-                <!--<input type="text" class="tree-current-skill-id" :value="content.id" hidden>-->
-                <!--<div class="tree-current-skill">{{content.title}}</div>-->
-                <!--<button class="tree-skill-study ui button positive" v-on:click.stop="studySkill">Study this skill</button>-->
-            <!--</div>-->
+    TREE TEMPLATE!!?? {{showHistory}}
+    <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
+        SHOW HISTORY
+        <item-history :item-id="content.id" :tree="tree" ></item-history>
+    </div>
+    <div v-if="!showHistory">
+        NOT SHOW HISTORY
+        <div class="tree-skill" v-if="typeIsSkill">
+            <div class="tree-current-skill" v-show="!editing">
+                <input type="text" class="tree-current-skill-id" :value="content.id" hidden>
+                <div class="tree-current-skill">{{content.title}}</div>
+                <button class="tree-skill-study ui button positive" v-on:click.stop="studySkill">Study this skill</button>
+            </div>
 
-            <!--<div class="tree-new-skill" v-show="editing">-->
-                <!--<input class="tree-id" v-model="content.id" hidden>-->
-                <!--<textarea class="tree-new-skill-input" v-model="content.title"></textarea>-->
-                <!--<div>-->
-                    <!--<button class="skill-new-save ui button positive" v-on:click.stop="changeContent">Save</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="tree-fact" v-if="typeIsFact">-->
-            <!--<div class="tree-current-fact" v-show="!editing">-->
-                <!--<input type="text" class="tree-current-fact-id" :value="content.id" hidden>-->
-                <!--<div class="tree-current-fact-question">{{content.question}}</div>-->
-                <!--<div class="tree-current-fact-answer">{{content.answer}}</div>-->
-            <!--</div>-->
-            <!--<div class="tree-new-fact" v-show="editing">-->
-                <!--<input class="tree-id" v-model="content.id" hidden >-->
-                <!--<input class="tree-new-fact-question" v-model="content.question" v-on:click.stop="">-->
-                <!--<textarea class="tree-new-fact-answer" v-model="content.answer" v-on:click.stop=""></textarea>-->
-                <!--<div>-->
-                    <!--<button class="fact-new-save" v-on:click.stop="changeContent">Save</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+            <div class="tree-new-skill" v-show="editing">
+                <input class="tree-id" v-model="content.id" hidden>
+                <textarea class="tree-new-skill-input" v-model="content.title"></textarea>
+                <div>
+                    <button class="skill-new-save ui button positive" v-on:click.stop="changeContent">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="tree-fact" v-if="typeIsFact">
+            <div class="tree-current-fact" v-show="!editing">
+                <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
+                <div class="tree-current-fact-question">{{content.question}}</div>
+                <div class="tree-current-fact-answer">{{content.answer}}</div>
+            </div>
+            <div class="tree-new-fact" v-show="editing">
+                <input class="tree-id" v-model="content.id" hidden >
+                <input class="tree-new-fact-question" v-model="content.question" v-on:click.stop="">
+                <textarea class="tree-new-fact-answer" v-model="content.answer" v-on:click.stop=""></textarea>
+                <div>
+                    <button class="fact-new-save" v-on:click.stop="changeContent">Save</button>
+                </div>
+            </div>
+        </div>
 
-    <!--</div>-->
+    </div>
     <!--<div class="tree-heading" v-if="typeIsHeading" v-on:click.stop="toggleEditingAndAddChild">-->
         <!--&lt;!&ndash; {{numChildren}} &ndash;&gt;-->
         <!--&lt;!&ndash;{{tree.id}} &#45;&#45;&ndash;&gt;-->
