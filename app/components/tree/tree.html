@@ -46,19 +46,19 @@
         <div class="tree-current-heading" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-heading">{{content.title}}</div>
-            <div class="tree-heading-aggregationTimer">
-                {{tree.aggregationTimer | secondsToPretty}}
-            </div>
-            <div class="tree-heading-leaf-proficiencies">
-                <div class="tree-heading-leaf-num-unknown">{{tree.proficiencyStats.UNKNOWN}}</div>
-                <div class="tree-heading-leaf-num-one">{{tree.proficiencyStats.ONE}}</div>
-                <div class="tree-heading-leaf-num-two">{{tree.proficiencyStats.TWO}}</div>
-                <div class="tree-heading-leaf-num-three">{{tree.proficiencyStats.THREE}}</div>
-                <div class="tree-heading-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>
-            </div>
-            <div class="tree-heading-numOverdue">
-                {{tree.numOverdue}} overdue items
-            </div>
+            <!--<div class="tree-heading-aggregationTimer">-->
+                <!--{{tree.aggregationTimer | secondsToPretty}}-->
+            <!--</div>-->
+            <!--<div class="tree-heading-leaf-proficiencies">-->
+                <!--<div class="tree-heading-leaf-num-unknown">{{tree.proficiencyStats.UNKNOWN}}</div>-->
+                <!--<div class="tree-heading-leaf-num-one">{{tree.proficiencyStats.ONE}}</div>-->
+                <!--<div class="tree-heading-leaf-num-two">{{tree.proficiencyStats.TWO}}</div>-->
+                <!--<div class="tree-heading-leaf-num-three">{{tree.proficiencyStats.THREE}}</div>-->
+                <!--<div class="tree-heading-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>-->
+            <!--</div>-->
+            <!--<div class="tree-heading-numOverdue">-->
+                <!--{{tree.numOverdue}} overdue items-->
+            <!--</div>-->
             <div class="tree-heading-study">
                 <button class="tree-heading-study ui button positive" v-on:click.stop="studyHeading">Study this Category</button>
             </div>
