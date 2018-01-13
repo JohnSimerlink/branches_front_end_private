@@ -3,7 +3,7 @@
 // import './itemHistory.less'
 
 export default {
-    template: require('./itemHistory.html'), // '<div> {{movie}} this is the tree template</div>',
+    template: require('./itemHistory.html').default, // '<div> {{movie}} this is the tree template</div>',
     props: ['itemId', 'tree'],
     async created () {
         // console.log('item history component created')
@@ -25,6 +25,7 @@ export default {
     data () {
         return {
             content: {},// this.content
+            loaded: false,
         }
     },
     computed : {

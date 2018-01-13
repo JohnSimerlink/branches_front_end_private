@@ -3,7 +3,7 @@ import {PROFICIENCIES} from "../../objects/proficiency/proficiencyEnum.ts";
 
 export default {
     props: ['value'],
-    template: require('./proficiencySelector.html'),
+    template: require('./proficiencySelector.html').default,
     created () {
     },
     data () {
