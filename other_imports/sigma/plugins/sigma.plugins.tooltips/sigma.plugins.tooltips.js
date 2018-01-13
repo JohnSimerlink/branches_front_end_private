@@ -169,7 +169,8 @@ function Tooltips(s, renderer, options) {
      * @param {function?} onComplete Optional function called when open finish
      */
     this.open = function (o, options, x, y, onComplete) {
-        console.log('tooltips open called 1')
+        // debugger;
+        console.log('tooltips open called 1', o, options, x, y, onComplete)
         remove();
 
         // Create the DOM element:
