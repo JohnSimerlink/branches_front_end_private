@@ -2,13 +2,13 @@
 // import {Trees} from "../../objects/trees";
 // import ContentItems from "../../objects/contentItems";
 // //temporary hacky solution for controller
-function newTree() {
+function newTree(type, parentid, primaryparenttreecontenturi, contentArgs) {
 
 }
 export default {
-    template: require('./newTree.html'),
-    props: ['parentid','primaryparenttreecontenturi'],
-    data () {
+    template: require('./newTree.html').default,
+    props: ['parentid', 'primaryparenttreecontenturi'],
+    data() {
         return {
             question: '',
             answer: '',
@@ -17,29 +17,29 @@ export default {
         }
     },
     computed: {
-        headingSelectorStyle () {
+        headingSelectorStyle() {
             return this.contentIsHeading ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
         },
-        factSelectorStyle () {
+        factSelectorStyle() {
             return this.contentIsFact ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
         },
-        skillSelectorStyle () {
+        skillSelectorStyle() {
             return this.contentIsSkill ? 'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
         },
-        contentIsFact () {
-            return this.type == 'fact'
+        contentIsFact() {
+            return this.type === 'fact'
         },
-        contentIsHeading () {
-            return this.type == 'heading'
+        contentIsHeading() {
+            return this.type === 'heading'
         },
-        contentIsSkill () {
-            return this.type == 'skill'
+        contentIsSkill() {
+            return this.type === 'skill'
         },
     },
     methods: {
         createNewTree() {
             let contentArgs;
-            switch(this.type) {
+            switch (this.type) {
                 case 'fact':
                     contentArgs = {question: this.question.trim(), answer: this.answer.trim()}
                     break;
