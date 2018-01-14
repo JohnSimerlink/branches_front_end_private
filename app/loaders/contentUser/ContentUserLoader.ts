@@ -47,6 +47,7 @@ export class ContentUserLoader implements IContentUserLoader {
             contentUserRef.on('value', (snapshot) => {
                 log('contentUserLoader data received')
                 const contentUserData: IContentUserData = snapshot.val()
+                contentUserData.id = contentUserId
                 if (!contentUserData) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -63,7 +64,7 @@ export class ContentUserLoader implements IContentUserLoader {
 
                 if (isValidContentUser(contentUserData)) {
                     const contentUser: IMutableSubscribableContentUser =
-                        ContentUserDeserializer.deserialize({contentUserData})
+                        ContentUserDeserializer.deserialize({id: contentUserId, contentUserData})
                     me.storeSource.set(contentUserId, contentUser)
                     resolve(contentUserData)
                 } else {

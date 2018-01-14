@@ -20,6 +20,7 @@ test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) =
     const timerVal = 30
 
     const contentUserData: IContentUserData = {
+        id: 'abcde_12345',
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,

@@ -108,7 +108,8 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
     t.pass()
 
 })
-test('MutableSubscribableGlobalStore:::adding a contentUser mutation should call contentUserStore.addMutation(mutationObj)'
+test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
+    ' call contentUserStore.addMutation(mutationObj)'
     + ' but without the objectType in mutationObj', (t) => {
 
     // contentUserStore
@@ -245,4 +246,3 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
     expect(storeAddMutationSpy.callCount).to.deep.equal(1)
     t.pass()
 })
-

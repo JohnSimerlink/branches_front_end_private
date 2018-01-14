@@ -7,7 +7,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
 class ContentUserDeserializer {
    public static deserialize(
-       {contentUserData}: {contentUserData: IContentUserData}
+       {contentUserData, id}: {id: string, contentUserData: IContentUserData}
        ): IMutableSubscribableContentUser {
 
        const overdue = new SubscribableMutableField<boolean>({field: contentUserData.overdue})
@@ -16,7 +16,7 @@ class ContentUserDeserializer {
        const timer = new SubscribableMutableField<number>({field: contentUserData.timer})
 
        const contentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser(
-           {updatesCallbacks: [], overdue, lastRecordedStrength, proficiency, timer}
+           {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}
            )
        return contentUser
    }

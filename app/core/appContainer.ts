@@ -1,7 +1,7 @@
 // for now, this is where we will inject all the dependencies
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
-    IApp, IContentLoader, IContentUserLoader, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableContentStore,
+    IApp, IContentLoader, IContentUserLoader, IHash, VueComponentCreator, IMutable, IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocation,
@@ -62,12 +62,18 @@ import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubs
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
 import {ContentLoader} from '../loaders/content/ContentLoader';
-import {tooltipsConfig} from '../tooltipsConfig';
+import {tooltipsConfig} from '../objects/sigmaNode/tooltipsConfig';
 const sigmaAny: any = sigma
 import clonedeep from 'lodash.clonedeep'
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../tooltipOpener';
 import {ContentUserLoader} from '../loaders/contentUser/ContentUserLoader';
+import StudyMenu from '../components/studyMenu/studyMenu'
+import {TreeComponentCreator} from '../components/tree/tree'
+import ItemHistory from '../components/itemHistory/itemHistory'
+import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
+// import NewTree from ''
+import NewTree from '../components/newTree/newTree'
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -88,6 +94,7 @@ class AppContainer {
 
     */
     public async start() {
+
         const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
         const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
         const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
@@ -138,7 +145,7 @@ class AppContainer {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
-        const store: Store<any> = new BranchesStore() as Store<any>
+        const store: Store<any> = new BranchesStore({globalDataStore: globalStore}) as Store<any>
 
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
@@ -195,11 +202,22 @@ class AppContainer {
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
         const userId = 'abc1234'
-        const knawledgeMapCreator: IKnawledgeMapCreator =
+
+        const treeComponentCreator: TreeComponentCreator =
+            new TreeComponentCreator({store})
+        const Tree = treeComponentCreator.create()
+        Vue.component('tree', Tree)
+
+        Vue.component('studyMenu', StudyMenu)
+        Vue.component('itemHistory', ItemHistory)
+        Vue.component('proficiencySelector', ProficiencySelector)
+        Vue.component('newtree', NewTree)
+
+        const knawledgeMapCreator: VueComponentCreator =
             new KnawledgeMapCreator({store, treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId})
-        const knawledgeMap = knawledgeMapCreator.create()
+        const KnawledgeMap = knawledgeMapCreator.create()
         const routes = [
-            { path: '/', component: knawledgeMap, props: true }
+            { path: '/', component: KnawledgeMap, props: true }
         ]
 
 // 3. Create the router instance and pass the `routes` option

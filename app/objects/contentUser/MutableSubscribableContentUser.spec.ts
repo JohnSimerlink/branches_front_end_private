@@ -37,6 +37,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
         updatesCallbacks: [],
     })
     const expectedContentUserData: IContentUserData = {
+        id: 'abcd_12345',
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
@@ -78,6 +79,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
+        id: 'abcd_12345',
         lastRecordedStrength: newRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
@@ -120,6 +122,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
+        id: 'abcd_12345',
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: newOverdueVal,
         proficiency: proficiencyVal,
@@ -163,6 +166,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
+        id: 'abcd_12345',
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: newProficiencyVal,
@@ -205,6 +209,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
+        id: 'abcd_12345',
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,

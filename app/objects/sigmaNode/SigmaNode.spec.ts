@@ -73,7 +73,9 @@ test('sigmaNode:::receive new ContentUserData', (t) => {
     const lastRecordedStrength = 50
     const proficiency: PROFICIENCIES = PROFICIENCIES.THREE
     const timer = 40
+    const contentUserId = 'abcde_12345'
     const contentUserData: IContentUserData = {
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,

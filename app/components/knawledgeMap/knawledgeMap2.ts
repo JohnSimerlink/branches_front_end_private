@@ -7,7 +7,7 @@ import {log} from '../../../app/core/log'
 import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
 import {
-    IContentLoader, IContentUserLoader, IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader,
+    IContentLoader, IContentUserLoader, VueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
     IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -21,7 +21,7 @@ import './knawledgeMap.less'
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
 @injectable()
-export class KnawledgeMapCreator implements IKnawledgeMapCreator {
+export class KnawledgeMapCreator implements VueComponentCreator {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader
@@ -48,6 +48,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             props: [],
             template,
             mounted() {
+                // TODO: Maybe all of these download actions should be done via Vuex Store actions
                 me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.contentLoader.downloadData(ROOT_CONTENT_ID)
@@ -85,4 +86,5 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
     @inject(TYPES.IVuexStore) public store: IVuexStore
+    @inject(TYPES.String) public userId: string
 }

@@ -19,9 +19,9 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
 
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
+        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
     }) {
-        super({updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength})
+        super({updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength})
     }
 
     public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
@@ -61,6 +61,7 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
 @injectable()
 class SubscribableContentUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
+    @inject(TYPES.String) public id: string
     @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
     @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES

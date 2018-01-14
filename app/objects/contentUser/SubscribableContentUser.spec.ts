@@ -7,6 +7,8 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {SubscribableMutableField} from '../field/SubscribableMutableField';
 import {
+    IContentUserData,
+    ISubscribableContentUser,
     ISubscribableMutableField,
     ISubscribableMutableStringSet,
 } from '../interfaces';
@@ -15,12 +17,13 @@ import {TYPES} from '../types';
 import {SubscribableContentUser} from './SubscribableContentUser';
 
 test('SubscribableContentUser:::constructor should set all the subscribable properties', (t) => {
+    const contentUserId = 'abcde12345_defgh1234567'
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
-    const contentUser = new SubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+    const contentUser: ISubscribableContentUser = new SubscribableContentUser({
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     expect(contentUser.overdue).to.deep.equal(overdue)
     expect(contentUser.timer).to.deep.equal(timer)
@@ -29,15 +32,17 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
     t.pass()
 })
 test('SubscribableContentUser:::.val() should display the value of the object', (t) => {
+    const contentUserId = 'abcde12345_defgh1234567'
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new SubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
 
-    const expectedVal = {
+    const expectedVal: IContentUserData = {
+        id: 'abcd_12345',
         lastRecordedStrength: lastRecordedStrength.val(),
         overdue: overdue.val(),
         proficiency: proficiency.val(),
@@ -49,12 +54,13 @@ test('SubscribableContentUser:::.val() should display the value of the object', 
 })
 test('SubscribableContentUser:::startPublishing() should call the onUpdate methods' +
     ' of all member Subscribable properties', (t) => {
+    const contentUserId = 'abcde12345_defgh1234567'
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new SubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
 
     const lastRecordedStrengthOnUpdateSpy = sinon.spy(lastRecordedStrength, 'onUpdate')
