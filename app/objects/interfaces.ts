@@ -383,6 +383,7 @@ export interface ISigmaNodeData {
     size: number;
     colorSlices: IColorSlice[];
     proficiencyStats: IProficiencyStats;
+    proficiency: PROFICIENCIES;
     overdue: boolean;
 }
 
