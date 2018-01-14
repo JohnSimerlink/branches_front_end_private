@@ -10,6 +10,7 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 
 @injectable()
 class SigmaNode implements ISigmaNode {
@@ -27,6 +28,7 @@ class SigmaNode implements ISigmaNode {
     public size: number;
     public colorSlices: IColorSlice[];
     public proficiencyStats: IProficiencyStats;
+    public proficiency: PROFICIENCIES
     public overdue: boolean;
 
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
@@ -49,6 +51,7 @@ class SigmaNode implements ISigmaNode {
         this.overdue = contentUserData.overdue
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
         this.contentUserData = contentUserData
+        this.proficiency = contentUserData.proficiency
     }
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {

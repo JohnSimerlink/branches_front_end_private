@@ -1,7 +1,7 @@
 // for now, this is where we will inject all the dependencies
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
-    IApp, IContentLoader, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableContentStore,
+    IApp, IContentLoader, IContentUserLoader, IHash, IKnawledgeMapCreator, IMutable, IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocation,
@@ -67,6 +67,7 @@ const sigmaAny: any = sigma
 import clonedeep from 'lodash.clonedeep'
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../tooltipOpener';
+import {ContentUserLoader} from '../loaders/contentUser/ContentUserLoader';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -112,6 +113,8 @@ class AppContainer {
             new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
         const contentLoader: IContentLoader =
             new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
+        const contentUserLoader: IContentUserLoader =
+            new ContentUserLoader({firebaseRef: firebaseContentUsersRef, storeSource: contentUserStoreSource})
 
         const treeStore: IMutableSubscribableTreeStore =
             new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
@@ -191,8 +194,9 @@ class AppContainer {
         // = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
+        const userId = 'abc1234'
         const knawledgeMapCreator: IKnawledgeMapCreator =
-            new KnawledgeMapCreator({store, treeLoader, treeLocationLoader, contentLoader})
+            new KnawledgeMapCreator({store, treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId})
         const knawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: knawledgeMap, props: true }

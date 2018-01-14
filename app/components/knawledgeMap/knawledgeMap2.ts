@@ -4,10 +4,10 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
+import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
 import {
-    IContentLoader, IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader,
+    IContentLoader, IContentUserLoader, IKnawledgeMapCreator, ITree, ITreeLoader, ITreeLocationLoader,
     IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -25,13 +25,22 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader
+    private contentUserLoader: IContentUserLoader
     private store: Store<any>
+    private userId: string
 
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){treeLoader, treeLocationLoader, contentLoader, store}) {
+    /* TODO: Each of these loaders should have baked into them certain auth cookies
+     that determine whether or not they are actually permitted to load the data
+      */
+    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){
+        treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store
+    }) {
         this.store = store
         this.treeLoader = treeLoader
         this.treeLocationLoader = treeLocationLoader
         this.contentLoader = contentLoader
+        this.contentUserLoader = contentUserLoader
+        this.userId = userId
     }
     public create() {
         const me = this
@@ -42,8 +51,11 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.contentLoader.downloadData(ROOT_CONTENT_ID)
+                me.contentUserLoader.downloadData({userId: me.userId, contentId: ROOT_CONTENT_ID})
                 me.treeLoader.downloadData(ANOTHER_ID)
                 me.treeLocationLoader.downloadData(ANOTHER_ID)
+                me.contentLoader.downloadData(ANOTHER_CONTENT_ID)
+                me.contentUserLoader.downloadData({userId: me.userId, contentId: ANOTHER_ID})
                 // TreeLoader.downLoadData(1)
                 log('about to initialized sigma')
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
@@ -52,7 +64,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 // log('container is ' + document.querySelector('#graph-container'))
                 // me.initializeSigma()
                 // log('sigma just initialized')
-                me.store.commit(MUTATION_NAMES.JUMP_TO, INITIAL_ID_TO_DOWNLOAD)
+                // me.store.commit(MUTATION_NAMES.JUMP_TO, INITIAL_ID_TO_DOWNLOAD)
             },
             computed: {
             },
@@ -71,5 +83,6 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
+    @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
     @inject(TYPES.IVuexStore) public store: IVuexStore
 }

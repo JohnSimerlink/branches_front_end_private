@@ -7,6 +7,7 @@ import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 // import {Heading} from "../../objects/heading";
 import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {log} from '../../core/log'
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // import {Skill} from "../../objects/skill";
 // import './tree.less'
 // import { mapActions } from 'vuex'
@@ -33,7 +34,8 @@ export default {
         id: String,
         parentId: String,
         contentId: String,
-        contentString: String
+        contentString: String,
+        contentUserDataString: String
     },
     async created() {
         log('tree component created',
@@ -62,6 +64,7 @@ export default {
             showHistory: false,
             addingChild: false,
             user: {},
+            contentUserDataLoaded: false,
         }
     },
     watch: {
@@ -75,6 +78,9 @@ export default {
     },
     computed: {
         content() {
+            if (!this.contentString) {
+                return {}
+            }
             const decoded = decodeURIComponent(this.contentString)
             log('decoded is ', decoded)
             // const content
@@ -82,6 +88,31 @@ export default {
             log('parsed is', content)
 
             return content
+        },
+        contentUserData() {
+            this.contentUserDataLoaded = false
+            if (!this.contentUserDataString) {
+                return {}
+            }
+            const decoded = decodeURIComponent(this.contentUserDataString)
+            log('decoded is ', decoded)
+            // const content
+            const content = JSON.parse(decoded)
+            log('parsed is', content)
+
+            this.contentUserDataLoaded = true
+            return content
+        },
+        proficiency() {
+            return this.contentUserData.proficiency
+        },
+        timer() {
+            let timer = 0
+
+            if (this.contentUserData.timer) {
+                timer = this.contentUserData.timer
+            }
+            return timer
         },
         // openNodeId(){
         //     return this.$store.state.openNodeId;
@@ -102,11 +133,14 @@ export default {
         },
         styleObject() {
             const styles = {}
+            styles['background-color'] = 'gray'
             if (this.typeIsHeading) {
                 styles['background-color'] = 'black';
                 styles['color'] = 'white'
             } else {
-                styles['background-color'] = ProficiencyUtils.getColor(this.content.proficiency)
+                // if ()
+                const proficiency = this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                styles['background-color'] = ProficiencyUtils.getColor(proficiency)
                 if (this.showHistory) {
                     styles['background-color'] = 'black'
                     styles['color'] = 'white'
@@ -116,7 +150,7 @@ export default {
             return styles
         },
         timerMouseOverMessage() {
-            return "You have spent " + secondsToPretty(this.content.timer) + "studying this item"
+            return 'You have spent ' + secondsToPretty(this.timer) + 'studying this item'
         },
         numChildren() {
             return 0
