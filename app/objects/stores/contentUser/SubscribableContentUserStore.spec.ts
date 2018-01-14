@@ -15,6 +15,7 @@ import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {SubscribableStore} from '../SubscribableStore';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
+import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoader';
 
 test('SubscribableContentUserStore > addAndSubscribeToItem:::' +
     'An update in a member content should be published to a subscriber of the content data stores', (t) => {
@@ -25,12 +26,14 @@ test('SubscribableContentUserStore > addAndSubscribeToItem:::' +
      I had to do it indirectly by adding a mutation
      */
     const contentId = CONTENT_ID2
+    const userId = 'abc123'
+    const contentUserId = getContentUserId({contentId, userId})
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new MutableSubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
@@ -43,7 +46,7 @@ test('SubscribableContentUserStore > addAndSubscribeToItem:::' +
     contentUserStore.startPublishing()
     /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
      */
-    contentUserStore.addAndSubscribeToItem(contentId, contentUser)
+    contentUserStore.addAndSubscribeToItem(contentUserId, contentUser)
 
     const sampleMutation: IProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
         data: PROFICIENCIES.TWO,

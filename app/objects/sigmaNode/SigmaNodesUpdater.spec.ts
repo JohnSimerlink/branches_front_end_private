@@ -21,6 +21,7 @@ import {
     CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID,
     TREE_ID2
 } from '../../testHelpers/testHelpers';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 
 let sigmaNodes
 let sigmaNode1
@@ -144,7 +145,10 @@ test('SigmaNodesUpdater:::A Content Update should call the correct method' +
 //
 test('SigmaNodesUpdater:::A Content User Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
+    const userId = '12345'
+    const contentUserId = getContentUserId({userId, contentId: CONTENT_ID})
     const val: IContentUserData = {
+        id: contentUserId,
         lastRecordedStrength: 54, // TODO: this mig
         overdue: true,
         proficiency: PROFICIENCIES.ONE,

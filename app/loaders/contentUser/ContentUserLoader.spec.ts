@@ -85,6 +85,7 @@ test('ContentUserLoader:::Should mark an id as loaded after being loaded', async
     const timerVal = 30
 
     const contentUserData: IContentUserData = {
+        id: contentUserId,
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
@@ -121,6 +122,7 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     const timerVal = 30
 
     const sampleContentUserData: IContentUserData = {
+        id: contentUserId,
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
@@ -162,6 +164,7 @@ test('ContentUserLoader:::DownloadData should have the side effect' +
     const timerVal = 30
 
     const sampleContentUserData: IContentUserData = {
+        id: contentUserId,
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
@@ -200,6 +203,7 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
     const grandChildFirebaseRef = childFirebaseRef.child(userId)
 
     const sampleContentUserData: IContentUserData = {
+        id: contentUserId,
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,

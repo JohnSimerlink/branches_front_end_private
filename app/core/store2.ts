@@ -2,19 +2,36 @@ import Vuex, {Store} from 'vuex'
 import {GRAPH_CONTAINER_ID, ROOT_ID} from './globals';
 import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
-import {ISigmaEventListener, ITooltipOpener} from '../objects/interfaces';
+import {
+    ContentUserPropertyNames, FieldMutationTypes, IGlobalDatedMutation, IIdProppedDatedMutation,
+    IMutableSubscribableGlobalStore, ISigma,
+    ISigmaEventListener, ITooltipOpener,
+    ObjectTypes, TreePropertyNames
+} from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
-import {tooltipsConfig} from '../tooltipsConfig';
+import {tooltipsConfig} from '../objects/sigmaNode/tooltipsConfig';
 import {TooltipOpener} from '../tooltipOpener';
+import {TYPES} from '../objects/types';
+import {inject, injectable} from 'inversify';
+import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
 const sigmaAny: any = sigma
 
 export const MUTATION_NAMES = {
     INITIALIZE_SIGMA_INSTANCE: 'initializeSigmaInstance',
     JUMP_TO: 'jump_to',
     REFRESH: 'refresh',
-    ADD_NODE: 'add_node'
+    ADD_NODE: 'add_node',
+    ADD_CONTENT_INTERACTION: 'add_content_interaction',
 }
-const state = {
+const state: {
+    uri: string,
+    centeredTreeId: string,
+    sigmaInstance: ISigma,
+    graphData: object,
+    graph: object,
+    sigmaInitialized: boolean,
+    globalDataStore: IMutableSubscribableGlobalStore,
+} = {
     uri: null,
     centeredTreeId: ROOT_ID,
     sigmaInstance: null,
@@ -24,6 +41,7 @@ const state = {
     },
     graph: null,
     sigmaInitialized: false,
+    globalDataStore: null,
 };
 
 const getters = {
@@ -81,10 +99,29 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
         state.graphData.nodes.push(node)
     }
 }
+mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION] = (state, {userId, contentId, proficiency, timestamp}) => {
+    const contentUserId = getContentUserId({userId, contentId})
+    const id = contentUserId
+    const objectType = ObjectTypes.CONTENT_USER
+    const propertyName = ContentUserPropertyNames.PROFICIENCY;
+    const type = FieldMutationTypes.SET;
+    const data = proficiency
+
+    const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
+        data, id, propertyName, timestamp, type
+    }
+
+    const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+        objectType,
+        ...storeMutation
+    }
+    state.globalDataStore.addMutation(globalMutation)
+}
 const actions = {}
 
+@injectable()
 export default class BranchesStore {
-    constructor() {
+    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore}) {
         const store = new Vuex.Store({
             state,
             mutations,
@@ -92,6 +129,11 @@ export default class BranchesStore {
             getters,
         } ) as Store<any>
         getters['getStore'] = () => store
+        state.globalDataStore = globalDataStore
         return store
     }
+}
+@injectable()
+export class BranchesStoreArgs {
+    @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore
 }

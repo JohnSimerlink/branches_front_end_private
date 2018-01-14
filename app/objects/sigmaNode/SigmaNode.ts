@@ -99,9 +99,9 @@ class SigmaNode implements ISigmaNode {
         this.children = children
         this.x = x
         this.y = y
-        this.contentUserData = contentUserData
         this.aggregationTimer = aggregationTimer
         this.content = content
+        this.contentUserData = contentUserData
         this.label = label
         this.size = size || 1
         this.colorSlices = colorSlices
@@ -117,9 +117,9 @@ class SigmaNodeArgs {
     @inject(TYPES.String) public children: string;
     @inject(TYPES.Number) public x: number;
     @inject(TYPES.Number) public y: number;
-    @inject(TYPES.Object) public content: object;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
+    @inject(TYPES.Object) public content: object;
     @inject(TYPES.IContentUserData) public contentUserData: IContentUserData;
     @inject(TYPES.Number) public aggregationTimer: number;
     @inject(TYPES.IProficiencyStats) public proficiencyStats: IProficiencyStats;

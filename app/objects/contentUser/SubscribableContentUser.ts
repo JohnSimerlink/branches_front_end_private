@@ -14,6 +14,7 @@ import {TYPES} from '../types'
 @injectable()
 class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
     private publishing = false
+    public id: string
     public overdue: ISubscribableMutableField<boolean>;
     public timer: ISubscribableMutableField<number>;
     public proficiency: ISubscribableMutableField<PROFICIENCIES>;
@@ -22,6 +23,7 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
     // TODO: should the below three objects be private?
     public val(): IContentUserData {
         return {
+            id: this.id,
             lastRecordedStrength: this.lastRecordedStrength.val(),
             overdue: this.overdue.val(),
             proficiency: this.proficiency.val(),
@@ -29,9 +31,10 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
         }
     }
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, overdue, proficiency, timer, lastRecordedStrength
+        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
     }) {
         super({updatesCallbacks})
+        this.id = id
         this.overdue = overdue
         this.proficiency = proficiency
         this.timer = timer
@@ -56,6 +59,7 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
 @injectable()
 class SubscribableContentUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
+    @inject(TYPES.String) public id: string
     @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
     @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES

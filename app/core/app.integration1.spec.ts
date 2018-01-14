@@ -41,6 +41,7 @@ import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribab
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
+import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
@@ -60,12 +61,14 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
 
     // contentUserStore
     const contentId = CONTENT_ID
+    const userId = '1234567'
+    const contentUserId = getContentUserId({contentId, userId})
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new MutableSubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const contentUserStore: IMutableSubscribableContentUserStore = (() => {
         const storeSource: ISubscribableContentUserStoreSource

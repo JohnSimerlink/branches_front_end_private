@@ -94,7 +94,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         camera.goTo(cameraCoord);
     }
 
-    const store = new BranchesStore()
+    const store = new BranchesStore({globalDataStore: {}})
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
     )

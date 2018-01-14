@@ -24,6 +24,7 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
     const expectedProperties = Object.getOwnPropertyNames
@@ -154,13 +155,16 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
     + ' when one of its component stores (contentUserStore) publishes an update', (t) => {
-    const CONTENT_ID = 'efa123'
+    const contentId = 'efa123'
+    const userId = 'abcd12354'
 
+    const contentUserId = getContentUserId({contentId, userId})
     const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>()
     const lastRecordedStrength: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
     const proficiency: ISubscribableMutableField<PROFICIENCIES> = new SubscribableMutableField<PROFICIENCIES>()
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
     const contentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -202,11 +206,11 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     contentUserStore.startPublishing()
     contentUser.startPublishing()
 
-    contentUserStore.addAndSubscribeToItem(CONTENT_ID, contentUser)
+    contentUserStore.addAndSubscribeToItem(contentId, contentUser)
 
     const sampleMutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
         data: PROFICIENCIES.THREE,
-        id: CONTENT_ID,
+        id: contentId,
         propertyName: ContentUserPropertyNames.PROFICIENCY,
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
@@ -215,11 +219,11 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 
     const contentUserNewVal = contentUser.val()
     expect(callback1.callCount).to.equal(1)
-    expect(callback1.getCall(0).args[0].id).to.equal(CONTENT_ID)
+    expect(callback1.getCall(0).args[0].id).to.equal(contentId)
     expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
     expect(callback1.getCall(0).args[0].type).to.deep.equal(ObjectDataTypes.CONTENT_USER_DATA)
     expect(callback2.callCount).to.equal(1)
-    expect(callback2.getCall(0).args[0].id).to.equal(CONTENT_ID)
+    expect(callback2.getCall(0).args[0].id).to.equal(contentId)
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
     expect(callback2.getCall(0).args[0].type).to.deep.equal(ObjectDataTypes.CONTENT_USER_DATA)
     t.pass()

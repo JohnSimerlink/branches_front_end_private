@@ -17,17 +17,20 @@ import {
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
+import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoader';
 
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
+    const userId = 'abcd_1234'
     const contentId = CONTENT_ID2
+    const contentUserId = getContentUserId({userId, contentId})
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new MutableSubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
@@ -61,14 +64,17 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
     ' it either, should throw a RangeError', (t) => {
+
+    const userId = 'abcd_1234'
     const contentId = CONTENT_ID2
+    const contentUserId = getContentUserId({userId, contentId})
     const nonExistentId = 'abdf1295'
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new MutableSubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>

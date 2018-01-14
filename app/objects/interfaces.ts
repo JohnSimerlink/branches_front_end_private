@@ -11,7 +11,7 @@ export interface IApp {
     start()
 }
 // components
-export interface IKnawledgeMapCreator {
+export interface VueComponentCreator {
     create()
 }
 export interface IVuexStore {
@@ -152,6 +152,7 @@ export interface IMutableSubscribableContentUser
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
 export interface IContentUserData {
+    id: string,
     overdue: boolean,
     timer: number,
     proficiency: PROFICIENCIES,
