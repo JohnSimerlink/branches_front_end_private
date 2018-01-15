@@ -378,8 +378,8 @@ export interface ISigmaNodeData {
     x: number;
     y: number;
     aggregationTimer: number;
-    contentUserData: IContentUserData;
     content: IContentData;
+    contentUserData: IContentUserData;
     label: string;
     size: number;
     colorSlices: IColorSlice[];

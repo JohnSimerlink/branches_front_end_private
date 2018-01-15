@@ -1,6 +1,9 @@
 import test from 'ava'
 import {renderer} from './tooltipsConfig'
-import {CONTENT_TYPES, IContentData, IContentUserData, IProficiencyStats, ISigmaNode} from '../interfaces';
+import {
+    CONTENT_TYPES, IContentData, IContentUserData, IProficiencyStats, ISigmaNode,
+    ISigmaNodeData
+} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 test('tooltips renderer content should escape', t => {
@@ -8,7 +11,7 @@ test('tooltips renderer content should escape', t => {
         THREE: 2,
         ONE: 2,
     } as IProficiencyStats
-    const node: ISigmaNode = {
+    const node: ISigmaNodeData = {
          id: '1234',
          parentId: '12345',
          contentId: '4239847',
