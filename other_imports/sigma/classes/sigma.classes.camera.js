@@ -61,7 +61,7 @@ sigma.classes.camera.prototype.goTo = function (coordinates, stop) {
         }
     }
 
-    PubSub.publish('canvas.coordinatesUpdated', c)
+    // PubSub.publish('canvas.coordinatesUpdated', c)
     this.dispatchEvent('coordinatesUpdated', {stop});
     return this;
 };

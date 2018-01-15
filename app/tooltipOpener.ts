@@ -7,7 +7,6 @@ import {isMobile} from './core/utils';
 import {TYPES} from './objects/types';
 import {ISigmaNode, ITooltipOpener} from './objects/interfaces';
 import {log} from './core/log'
-log('tooltipOpener clonedeep is ', clonedeep)
 
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
