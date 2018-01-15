@@ -17,6 +17,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
+    const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const overdueVal = true
     const proficiencyVal = PROFICIENCIES.THREE
@@ -30,6 +31,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -37,7 +39,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
         updatesCallbacks: [],
     })
     const expectedContentUserData: IContentUserData = {
-        id: 'abcd_12345',
+        id: contentUserId,
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
@@ -52,6 +54,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad updatesCallback!
     */
+    const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const newRecordedStrengthVal = 48
     const overdueVal = true
@@ -66,6 +69,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -79,7 +83,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
-        id: 'abcd_12345',
+        id: contentUserId,
         lastRecordedStrength: newRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
@@ -108,7 +112,10 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
         = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
 
+    const contentUserId = 'abc_123'
+
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -122,7 +129,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
-        id: 'abcd_12345',
+        id: contentUserId,
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: newOverdueVal,
         proficiency: proficiencyVal,
@@ -139,6 +146,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad updatesCallback!
     */
+    const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const overdueVal = true
     const proficiencyVal = PROFICIENCIES.THREE
@@ -153,6 +161,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -166,7 +175,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
-        id: 'abcd_12345',
+        id: contentUserId,
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: newProficiencyVal,
@@ -182,6 +191,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad updatesCallback!
     */
+    const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const overdueVal = true
     const proficiencyVal = PROFICIENCIES.THREE
@@ -196,6 +206,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -209,7 +220,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
         type: FieldMutationTypes.SET,
     }
     const expectedContentUserData: IContentUserData = {
-        id: 'abcd_12345',
+        id: contentUserId,
         lastRecordedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
@@ -227,6 +238,7 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
+    const contentUserId = 'abc_123'
     const lastRecordedStrength: ISubscribableMutableField<number>
         = new SubscribableMutableField<number>({field: 60})
     const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>({field: false})
@@ -235,6 +247,7 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: 39})
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -262,12 +275,14 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
 test('MutableSubscribableContentUser:::a mutation in one of the subscribable properties' +
     ' should NOT publish an update of the entire object\'s value'
     + ' before startPublishing has been called', (t) => {
+    const contentUserId = 'abc_123'
     const lastRecordedStrength: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
     const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>()
     const proficiency: ISubscribableMutableField<PROFICIENCIES> = new SubscribableMutableField<PROFICIENCIES>()
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
@@ -290,12 +305,14 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
 test('MutableSubscribableContentUser:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
+    const contentUserId = 'abc_123'
     const lastRecordedStrength: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
     const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>()
     const proficiency: ISubscribableMutableField<PROFICIENCIES> = new SubscribableMutableField<PROFICIENCIES>()
     const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
 
     const contentUser = new MutableSubscribableContentUser({
+        id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
