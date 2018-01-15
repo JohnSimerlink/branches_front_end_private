@@ -1,4 +1,5 @@
 import test from 'ava'
+import 'reflect-metadata'
 import {renderer} from './tooltipsConfig'
 import {
     CONTENT_TYPES, IContentData, IContentUserData, IProficiencyStats, ISigmaNode,
@@ -6,11 +7,22 @@ import {
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 test('tooltips renderer content should escape', t => {
+    const contentId = '452340985'
+    const userId = 'abdcede13'
     const proficiencyStats: IProficiencyStats = {
         THREE: 2,
         ONE: 2,
     } as IProficiencyStats
+    const contentUserId = getContentUserId({contentId, userId})
+    const contentUserData: IContentUserData = {
+        id: contentUserId,
+        overdue: false,
+        timer: 30,
+        proficiency: PROFICIENCIES.ONE,
+        lastRecordedStrength: 40,
+    }
     const node: ISigmaNodeData = {
          id: '1234',
          parentId: '12345',
@@ -25,12 +37,7 @@ test('tooltips renderer content should escape', t => {
               answer: 'Columbus',
               title: null,
          },
-         contentUserData: {
-             overdue: false,
-             timer: 30,
-             proficiency: PROFICIENCIES.ONE,
-             lastRecordedStrength: 40,
-         },
+         contentUserData,
          label: 'What is capital . . .',
          size: 10,
          colorSlices: SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats),
