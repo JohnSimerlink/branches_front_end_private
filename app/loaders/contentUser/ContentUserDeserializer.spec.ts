@@ -18,9 +18,10 @@ test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) =
     const lastRecordedStrengthVal = 30
     const proficiencyVal = PROFICIENCIES.TWO
     const timerVal = 30
+    const id = 'abcde_12345'
 
     const contentUserData: IContentUserData = {
-        id: 'abcde_12345',
+        id,
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
@@ -32,10 +33,10 @@ test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) =
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
     const timer = new SubscribableMutableField<number>({field: timerVal})
     const expectedContentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser(
-        {updatesCallbacks: [], overdue, lastRecordedStrength, proficiency, timer}
+        {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}
     )
     const deserializedContentUser: IMutableSubscribableContentUser
-        = ContentUserDeserializer.deserialize({contentUserData})
+        = ContentUserDeserializer.deserialize({id, contentUserData})
     expect(deserializedContentUser).to.deep.equal(expectedContentUser)
     t.pass()
 })

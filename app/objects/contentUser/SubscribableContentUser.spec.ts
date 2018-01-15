@@ -42,7 +42,7 @@ test('SubscribableContentUser:::.val() should display the value of the object', 
     })
 
     const expectedVal: IContentUserData = {
-        id: 'abcd_12345',
+        id: contentUserId,
         lastRecordedStrength: lastRecordedStrength.val(),
         overdue: overdue.val(),
         proficiency: proficiency.val(),

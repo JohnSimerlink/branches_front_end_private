@@ -176,7 +176,7 @@ test('ContentUserLoader:::DownloadData should have the side effect' +
     const grandChildFirebaseRef = childFirebaseRef.child(userId)
 
     const sampleContentUser: IMutableSubscribableContentUser = ContentUserDeserializer.deserialize(
-        {contentUserData: sampleContentUserData}
+        {id: contentUserId, contentUserData: sampleContentUserData}
         )
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
@@ -210,7 +210,7 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
         timer: timerVal
     }
     const sampleContentUser: IMutableSubscribableContentUser =
-        ContentUserDeserializer.deserialize({contentUserData: sampleContentUserData})
+        ContentUserDeserializer.deserialize({id: contentUserId, contentUserData: sampleContentUserData})
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
     storeSource.set(contentUserId, sampleContentUser)
