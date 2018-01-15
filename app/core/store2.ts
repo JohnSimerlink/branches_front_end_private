@@ -122,7 +122,7 @@ const actions = {}
 @injectable()
 export default class BranchesStore {
     constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore}) {
-        const store = new Vuex.Store({
+        const store = new Store({
             state,
             mutations,
             actions,

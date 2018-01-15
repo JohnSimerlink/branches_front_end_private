@@ -114,12 +114,14 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
 
     // contentUserStore
     const contentId = CONTENT_ID
+    const userId = '1239857'
+    const contentUserId = contentId + userId
     const overdue = new SubscribableMutableField<boolean>({field: false})
     const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
     const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new SubscribableMutableField<number>({field: 30})
     const contentUser = new MutableSubscribableContentUser({
-        lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
