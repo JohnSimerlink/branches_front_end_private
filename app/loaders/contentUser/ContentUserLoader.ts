@@ -45,9 +45,8 @@ export class ContentUserLoader implements IContentUserLoader {
         const me = this
         return new Promise((resolve, reject) => {
             contentUserRef.on('value', (snapshot) => {
-                log('contentUserLoader data received')
+                log('contentUserLoader data received', snapshot.val())
                 const contentUserData: IContentUserData = snapshot.val()
-                contentUserData.id = contentUserId
                 if (!contentUserData) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -58,6 +57,7 @@ export class ContentUserLoader implements IContentUserLoader {
                        as the promise will actually get resolved in ideally a few more (dozen) milliseconds
                        */
                 }
+                contentUserData.id = contentUserId
                 // let children = contentUser.children || {}
                 // children = setToStringArray(children)
                 // contentUser.children = children as string[]

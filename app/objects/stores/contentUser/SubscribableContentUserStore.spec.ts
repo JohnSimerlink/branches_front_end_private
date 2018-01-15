@@ -62,7 +62,7 @@ test('SubscribableContentUserStore > addAndSubscribeToItem:::' +
     // expect(callback1.getCall(0).args[0].id).to.equal(contentId)
     // expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
     // expect(callback2.callCount).to.equal(1)
-    expect(callback2.getCall(0).args[0].id).to.equal(contentId)
+    expect(callback2.getCall(0).args[0].id).to.equal(contentUserId)
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
     t.pass()
 })
