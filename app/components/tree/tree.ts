@@ -42,19 +42,6 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // TODO every time we click on a node a new instance of this vue element is created
 // . . . so if you click on the node 5 times 5 instances get created . . .
 @injectable()
-export class TreeComponentCreator2 implements ITreeComponentCreator2 {
-    public create() {
-        throw new Error('Method not implemented.');
-    }
-
-    constructor(@inject(TYPES.TreeComponentCreator2Args){ testVar1
-    }) {
-    }
-}
-export class TreeComponentCreator2Args {
-    @inject(TYPES.String) public testVar1
-}
-@injectable()
 export class TreeComponentCreator implements ITreeComponentCreator {
     private store: Store<any>
     constructor(@inject(TYPES.TreeComponentCreatorArgs){

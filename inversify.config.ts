@@ -31,7 +31,7 @@ import {
     IProppedDatedMutation, ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeComponentCreator, ITreeComponentCreator2,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames
@@ -155,12 +155,7 @@ import {MutableSubscribableContent} from './app/objects/content/MutableSubscriba
 import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscribableTreeUser';
 import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
-import {
-    // TreeComponentCreator,
-    TreeComponentCreator2, TreeComponentCreator2Args,
-    // TreeComponentCreatorArgs
-} from './app/components/tree/tree';
-import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/sampleComponent/sampleComponent';
+import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/sampleComponent/treeComponent';
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
 // import {SigmaJs} from 'sigmajs';
 
@@ -427,9 +422,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     // bind<TreeComponentCreatorArgs>(TYPES.TreeComponentCreatorArgs).to(TreeComponentCreatorArgs)
     // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
-    bind<ITreeComponentCreator2>(TYPES.ITreeComponentCreator2).to(TreeComponentCreator2)
-    bind<TreeComponentCreator2Args>(TYPES.TreeComponentCreator2Args).to(TreeComponentCreator2Args)
-    bind<ITree2ComponentCreator>(TYPES.ISampleComponentCreator).to(Tree2ComponentCreator)
+    bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
     bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 })
 // app
