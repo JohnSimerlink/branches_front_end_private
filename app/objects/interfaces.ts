@@ -19,6 +19,8 @@ export interface IKnawledgeMapCreator extends IVueComponentCreator {
 }
 export interface IKnawledgeMapCreatorClone extends IVueComponentCreator {
 }
+export interface Tree3CreatorClone extends IVueComponentCreator {
+}
 export interface ITreeComponentCreator2 extends IVueComponentCreator {}
 export interface IVuexStore extends Store<any> {
 }

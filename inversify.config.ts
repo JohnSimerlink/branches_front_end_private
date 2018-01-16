@@ -160,8 +160,8 @@ import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToMa
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap2';
 import {
-    KnawledgeMapCreatorClone,
-    KnawledgeMapCreatorCloneArgs
+    Tree3CreatorClone,
+    Tree3CreatorCloneArgs
 } from './app/components/knawledgeMapClone/knawledgeMapClone';
 // import {SigmaJs} from 'sigmajs';
 
@@ -433,8 +433,8 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
 
     bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-    bind<KnawledgeMapCreatorCloneArgs>(TYPES.KnawledgeMapCreatorCloneArgs).to(KnawledgeMapCreatorCloneArgs)
-    bind<KnawledgeMapCreatorClone>(TYPES.IKnawledgeMapCreatorClone).to(KnawledgeMapCreatorClone)
+    bind<Tree3CreatorCloneArgs>(TYPES.Tree3CreatorCloneArgs).to(Tree3CreatorCloneArgs)
+    bind<Tree3CreatorClone>(TYPES.IKnawledgeMapCreatorClone).to(Tree3CreatorClone)
 })
 // app
 
