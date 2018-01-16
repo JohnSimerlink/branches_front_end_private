@@ -18,7 +18,7 @@ import {
     ITreeLocationLoader, IKnawledgeMapCreator, ITree
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {Tree3CreatorClone, Tree3CreatorCloneArgs} from './knawledgeMapClone';
+import {Tree3CreatorClone, Tree3CreatorCloneArgs} from './tree3Component';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
