@@ -18,7 +18,7 @@ import {
     ITreeLocationLoader, IKnawledgeMapCreator, ITree
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMap2';
+import {KnawledgeMapCreatorClone, KnawledgeMapCreatorCloneArgs} from './knawledgeMapClone';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
@@ -33,7 +33,7 @@ if (!Vue) {
 // process.env.node_ENV = 'test' && register(['.html'])
 
 test('knawledeMap DI constructor should work', t => {
-    const injects = injectionWorks<KnawledgeMapCreatorArgs, KnawledgeMapCreator >({
+    const injects = injectionWorks<KnawledgeMapCreatorCloneArgs, KnawledgeMapCreatorClone >({
         container: myContainer,
         argsType: TYPES.KnawledgeMapCreatorArgs,
         interfaceType: TYPES.IKnawledgeMapCreator,
@@ -78,7 +78,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     }
     const storeCommitSpy = sinon.spy(store, 'commit')
     const knawledgeMapCreator: IVueComponentCreator
-        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
+        = new KnawledgeMapCreatorClone({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
     const knawledgeMap = knawledgeMapCreator.create()
 
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
@@ -103,7 +103,7 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
     const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
     const knawledgeMapCreator: IKnawledgeMapCreator
-        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, store, userId})
+        = new KnawledgeMapCreatorClone({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, store, userId})
     const KnawledgeMapComponent = knawledgeMapCreator.create()
     const Constructor = Vue.extend(KnawledgeMapComponent)
     const propsData = {

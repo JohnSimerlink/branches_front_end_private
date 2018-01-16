@@ -11,9 +11,17 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 function getTemplate() {
     let template = require('./tree.html').default // for webpack
     if (!template) {
+        log('template could not be found through require default')
         template = require('./tree.html') // for ava-ts tests
+    } else {
+        log('template was found through require default')
     }
+    log('template ended up being ', template, require('./tree.html'))
     return template
+}
+let template = require('./tree.html').default
+if (!template) {
+    template = require('./tree.html') // for ava-ts tests
 }
 @injectable()
 export class Tree2ComponentCreator implements ITree2ComponentCreator {
@@ -24,7 +32,7 @@ export class Tree2ComponentCreator implements ITree2ComponentCreator {
     public create() {
         const me = this
         const component = {
-            template: getTemplate(),
+            template,
             // '<div>This is the template for tree.html</div>',
             // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
             props: {

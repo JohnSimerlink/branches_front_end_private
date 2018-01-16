@@ -2,11 +2,12 @@ import test from 'ava'
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {ITree2ComponentCreator, ITreeComponentCreator2} from '../../objects/interfaces';
+import {ITree2ComponentCreator} from '../../objects/interfaces';
 import {myContainer} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {expect} from 'chai'
 import {Tree2ComponentCreatorArgs} from './treeComponent';
+import {log} from '../../core/log'
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -31,7 +32,9 @@ test('Tree component proficiencyClicked', t => {
         contentId,
         userId,
     }
-    const instance = new Constructor({propsData}).$mount()
-    instance.methods.proficiencyClicked()
+    const instance = new Constructor({propsData})
+    instance.$mount()
+    log('instance of treeComponent is ', instance)
+    instance.proficiencyClicked()
     t.pass()
 })
