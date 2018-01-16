@@ -157,6 +157,7 @@ import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableS
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
 import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/sampleComponent/treeComponent';
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap2';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -424,6 +425,9 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
     // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
     bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
     bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
+
+    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
+    bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
 })
 // app
 

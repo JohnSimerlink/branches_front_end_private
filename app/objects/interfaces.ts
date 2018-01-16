@@ -15,6 +15,8 @@ export interface IApp {
 export interface IVueComponentCreator {
     create()
 }
+export interface IKnawledgeMapCreator extends IVueComponentCreator {
+}
 export interface ITreeComponentCreator2 extends IVueComponentCreator {}
 export interface IVuexStore extends Store<any> {
 }

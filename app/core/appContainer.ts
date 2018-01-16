@@ -13,7 +13,7 @@ import {
     ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
-    ITreeLoader, ITreeLocationLoader, ITreeUserLoader
+    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -69,7 +69,7 @@ import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListen
 import {TooltipOpener} from '../tooltipOpener';
 import {ContentUserLoader} from '../loaders/contentUser/ContentUserLoader';
 import StudyMenu from '../components/studyMenu/studyMenu'
-import {TreeComponentCreator} from '../components/tree/tree'
+import {Tree2ComponentCreator} from '../components/sampleComponent/treeComponent'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // import NewTree from ''
@@ -203,8 +203,8 @@ class AppContainer {
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
         const userId = 'abc1234'
 
-        const treeComponentCreator: TreeComponentCreator =
-            new TreeComponentCreator({store})
+        const treeComponentCreator: ITreeComponentCreator2 =
+            new Tree2ComponentCreator({store})
         const Tree = treeComponentCreator.create()
         Vue.component('tree', Tree)
 
