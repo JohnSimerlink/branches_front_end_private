@@ -1,4 +1,7 @@
-import * as Vue from 'vue'
+let Vue = require('vue').default // for webpack
+if (!Vue) {
+    Vue = require('vue') // for ava-ts tests
+}
 
 import moment from 'moment'
 export function timeFromNow(utcTimestamp){

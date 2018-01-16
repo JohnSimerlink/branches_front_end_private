@@ -2,15 +2,15 @@ import test from 'ava'
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {ISampleComponentCreator} from '../../objects/interfaces';
+import {ITree2ComponentCreator} from '../../objects/interfaces';
 import {myContainer} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {expect} from 'chai'
-import {SampleComponentCreatorArgs} from './sampleComponent';
+import {Tree2ComponentCreatorArgs} from './sampleComponent';
 test('Samplecomponent DI constructor should work', t => {
-    const injects = injectionWorks<SampleComponentCreatorArgs, ISampleComponentCreator>({
+    const injects = injectionWorks<Tree2ComponentCreatorArgs, ITree2ComponentCreator>({
         container: myContainer,
-        argsType: TYPES.SampleComponentCreatorArgs,
+        argsType: TYPES.Tree2ComponentCreatorArgs,
         interfaceType: TYPES.ISampleComponentCreator,
     })
     expect(injects).to.equal(true)

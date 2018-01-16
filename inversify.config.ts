@@ -28,7 +28,7 @@ import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IOneToManyMap,
     IProficiencyStats,
-    IProppedDatedMutation, ISampleComponentCreator,
+    IProppedDatedMutation, ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
     ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeComponentCreator, ITreeComponentCreator2,
@@ -160,7 +160,7 @@ import {
     TreeComponentCreator2, TreeComponentCreator2Args,
     // TreeComponentCreatorArgs
 } from './app/components/tree/tree';
-import {SampleComponentCreator, SampleComponentCreatorArgs} from './app/components/sampleComponent/sampleComponent';
+import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/sampleComponent/sampleComponent';
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
 // import {SigmaJs} from 'sigmajs';
 
@@ -429,8 +429,8 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
     // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
     bind<ITreeComponentCreator2>(TYPES.ITreeComponentCreator2).to(TreeComponentCreator2)
     bind<TreeComponentCreator2Args>(TYPES.TreeComponentCreator2Args).to(TreeComponentCreator2Args)
-    bind<ISampleComponentCreator>(TYPES.ISampleComponentCreator).to(SampleComponentCreator)
-    bind<SampleComponentCreatorArgs>(TYPES.SampleComponentCreatorArgs).to(SampleComponentCreatorArgs)
+    bind<ITree2ComponentCreator>(TYPES.ISampleComponentCreator).to(Tree2ComponentCreator)
+    bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 })
 // app
 

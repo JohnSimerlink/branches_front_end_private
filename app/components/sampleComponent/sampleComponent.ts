@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../../objects/types';
-import {ISampleComponentCreator, IVuexStore} from '../../objects/interfaces';
+import {ITree2ComponentCreator, IVuexStore} from '../../objects/interfaces';
 import {Store} from 'vuex';
 import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
 import {log} from '../../core/log'
@@ -9,9 +9,9 @@ import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
 @injectable()
-export class SampleComponentCreator implements ISampleComponentCreator {
+export class Tree2ComponentCreator implements ITree2ComponentCreator {
     private store: Store<any>
-    constructor(@inject(TYPES.SampleComponentCreatorArgs){store}) {
+    constructor(@inject(TYPES.Tree2ComponentCreatorArgs){store}) {
         this.store = store
     }
     public create() {
@@ -260,7 +260,7 @@ export class SampleComponentCreator implements ISampleComponentCreator {
     }
 }
 @injectable()
-export class SampleComponentCreatorArgs {
+export class Tree2ComponentCreatorArgs {
     @inject(TYPES.BranchesStore) public store: BranchesStore
     // @inject(TYPES.String) public store
 }

@@ -15,8 +15,16 @@ import {TooltipOpener} from '../tooltipOpener';
 import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
-import * as Vue from 'vue';
+let Vue = require('vue').default // for webpack
+if (!Vue) {
+    Vue = require('vue') // for ava-ts tests
+}
+// import Vue from 'vue';
+// if (!Vue) {
+//     import * as Vue from 'vue'
+// }
 const sigmaAny: any = sigma
+log('Vue in store2 ts is ', Vue)
 Vue.use(Vuex)
 
 export const MUTATION_NAMES = {
