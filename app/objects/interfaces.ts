@@ -18,7 +18,7 @@ export interface IVueComponentCreator {
 export interface ITreeComponentCreator2 extends IVueComponentCreator {}
 export interface IVuexStore extends Store<any> {
 }
-export interface ISampleComponentCreator extends IVueComponentCreator {}
+export interface ITree2ComponentCreator extends IVueComponentCreator {}
 
 // contentItem
 
