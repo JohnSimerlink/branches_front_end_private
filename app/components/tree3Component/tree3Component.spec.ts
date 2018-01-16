@@ -162,6 +162,8 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     expect(commitArg1.userId).to.deep.equal(userId)
     expect(commitArg1.contentId).to.deep.equal(contentId)
     expect(commitArg1.proficiency).to.deep.equal(proficiency)
+    const timestampUndefined = !commitArg1.timestamp
+    expect(timestampUndefined).to.equal(false)
     // log('instance in knawldegMapSPEC is', instance)
     // instance.methods.proficiencyClicked()
 
