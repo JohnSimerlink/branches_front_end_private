@@ -28,10 +28,11 @@ import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IOneToManyMap,
     IProficiencyStats,
-    IProppedDatedMutation,
+    IProppedDatedMutation, ISampleComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeUserLoader,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeComponentCreator, ITreeComponentCreator2,
+    ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames
 } from './app/objects/interfaces';
@@ -154,6 +155,13 @@ import {MutableSubscribableContent} from './app/objects/content/MutableSubscriba
 import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscribableTreeUser';
 import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
+import {
+    // TreeComponentCreator,
+    TreeComponentCreator2, TreeComponentCreator2Args,
+    // TreeComponentCreatorArgs
+} from './app/components/tree/tree';
+import {SampleComponentCreator, SampleComponentCreatorArgs} from './app/components/sampleComponent/sampleComponent';
+import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -297,6 +305,10 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         .whenInjectedInto(SubscribableContentStoreSourceArgs)
     bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
+
+    bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
+    bind<BranchesStore>(TYPES.BranchesStore).to(BranchesStore)
+
 })
 //
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -412,6 +424,14 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 })
+const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    // bind<TreeComponentCreatorArgs>(TYPES.TreeComponentCreatorArgs).to(TreeComponentCreatorArgs)
+    // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
+    bind<ITreeComponentCreator2>(TYPES.ITreeComponentCreator2).to(TreeComponentCreator2)
+    bind<TreeComponentCreator2Args>(TYPES.TreeComponentCreator2Args).to(TreeComponentCreator2Args)
+    bind<ISampleComponentCreator>(TYPES.ISampleComponentCreator).to(SampleComponentCreator)
+    bind<SampleComponentCreatorArgs>(TYPES.SampleComponentCreatorArgs).to(SampleComponentCreatorArgs)
+})
 // app
 
 const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -432,6 +452,7 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
 myContainer.load(stores)
 myContainer.load(loaders)
 myContainer.load(rendering)
+myContainer.load(components)
 myContainer.load(dataObjects)
 myContainer.load(app)
 myContainer.load(misc)

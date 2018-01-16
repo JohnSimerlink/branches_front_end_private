@@ -3,6 +3,7 @@
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
 import {SigmaNodeArgs} from './sigmaNode/SigmaNode';
+import {Store} from 'vuex';
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -11,11 +12,13 @@ export interface IApp {
     start()
 }
 // components
-export interface VueComponentCreator {
+export interface IVueComponentCreator {
     create()
 }
-export interface IVuexStore {
+export interface ITreeComponentCreator2 extends IVueComponentCreator {}
+export interface IVuexStore extends Store<any> {
 }
+export interface ISampleComponentCreator extends IVueComponentCreator {}
 
 // contentItem
 
@@ -531,6 +534,10 @@ export interface ISubscribableContentStoreSource
 export interface ISubscribableContentUserStoreSource
     extends IMap<IMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
 
+// components
+export interface ITreeComponentCreator extends IVueComponentCreator {
+
+}
 // tree
 export interface ITree {
     getId(): string;

@@ -7,14 +7,22 @@ import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 // import {Heading} from "../../objects/heading";
 import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {log} from '../../core/log'
-import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+// import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {inject, injectable} from 'inversify';
-import {IVuexStore, VueComponentCreator} from '../../objects/interfaces';
+import {
+    ITreeComponentCreator,
+    // IVuexStore, IVueComponentCreator, ITreeComponentCreator,
+    ITreeComponentCreator2, IVuexStore
+} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store2';
-import {Component} from 'vue';
-const template = require('./tree.html').default
+import {Store} from 'vuex';
+import {Component} from 'vue/types/options';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+// import {Store} from 'vuex';
+// import {MUTATION_NAMES} from '../../core/store2';
+// import {Component} from 'vue';
+// const template = require('./tree.html').default
 // import {Skill} from "../../objects/skill";
 // import './tree.less'
 // import { mapActions } from 'vuex'
@@ -34,7 +42,20 @@ const template = require('./tree.html').default
 // TODO every time we click on a node a new instance of this vue element is created
 // . . . so if you click on the node 5 times 5 instances get created . . .
 @injectable()
-export class TreeComponentCreator implements VueComponentCreator {
+export class TreeComponentCreator2 implements ITreeComponentCreator2 {
+    public create() {
+        throw new Error('Method not implemented.');
+    }
+
+    constructor(@inject(TYPES.TreeComponentCreator2Args){ testVar1
+    }) {
+    }
+}
+export class TreeComponentCreator2Args {
+    @inject(TYPES.String) public testVar1
+}
+@injectable()
+export class TreeComponentCreator implements ITreeComponentCreator {
     private store: Store<any>
     constructor(@inject(TYPES.TreeComponentCreatorArgs){
         store
@@ -283,12 +304,11 @@ export class TreeComponentCreator implements VueComponentCreator {
             }
         }
         return component
+        // return {} as Component
     }
 
 }
 @injectable()
 export class TreeComponentCreatorArgs {
     @inject(TYPES.IVuexStore) public store: IVuexStore
-}
-export default {
 }
