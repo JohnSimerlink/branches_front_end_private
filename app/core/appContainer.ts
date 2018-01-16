@@ -13,7 +13,7 @@ import {
     ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
-    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2
+    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -74,6 +74,7 @@ import ItemHistory from '../components/itemHistory/itemHistory'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // import NewTree from ''
 import NewTree from '../components/newTree/newTree'
+import {Tree3Creator} from '../components/tree3Component/tree3Component';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -203,8 +204,8 @@ class AppContainer {
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
         const userId = 'abc1234'
 
-        const treeComponentCreator: ITreeComponentCreator2 =
-            new Tree2ComponentCreator({store})
+        const treeComponentCreator: ITree3Creator =
+            new Tree3Creator({store})
         const Tree = treeComponentCreator.create()
         Vue.component('tree', Tree)
 

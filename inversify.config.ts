@@ -32,7 +32,7 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITree3CreatorClone, ITreeComponentCreator,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITree3Creator, ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
@@ -160,8 +160,8 @@ import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToMa
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap2';
 import {
-    Tree3CreatorClone,
-    Tree3CreatorCloneArgs
+    Tree3Creator,
+    Tree3CreatorArgs
 } from './app/components/tree3Component/tree3Component';
 // import {SigmaJs} from 'sigmajs';
 
@@ -433,8 +433,8 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
 
     bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-    bind<Tree3CreatorCloneArgs>(TYPES.Tree3CreatorCloneArgs).to(Tree3CreatorCloneArgs)
-    bind<ITree3CreatorClone>(TYPES.ITree3CreatorClone).to(Tree3CreatorClone)
+    bind<Tree3CreatorArgs>(TYPES.Tree3CreatorArgs).to(Tree3CreatorArgs)
+    bind<ITree3Creator>(TYPES.ITree3CreatorClone).to(Tree3Creator)
 })
 // app
 

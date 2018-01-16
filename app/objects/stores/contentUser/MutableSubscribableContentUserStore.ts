@@ -22,7 +22,7 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
         const contentUser: IMutableSubscribableContentUser
             = this.storeSource.get(id)
         if (!contentUser) {
-            throw new RangeError('Couldn\'t find content for contentId' + id)
+            throw new RangeError('Couldn\'t find contentuser for contentUserId' + id)
         }
 
         const proppedDatedMutation:
