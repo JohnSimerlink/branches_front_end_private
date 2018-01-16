@@ -18,7 +18,7 @@ import {
     ITreeLocationLoader, IKnawledgeMapCreator, ITree
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreatorClone, KnawledgeMapCreatorCloneArgs} from './knawledgeMapClone';
+import {Tree3CreatorClone, Tree3CreatorCloneArgs} from './knawledgeMapClone';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
@@ -33,9 +33,9 @@ if (!Vue) {
 // process.env.node_ENV = 'test' && register(['.html'])
 
 test('knawledeMap DI constructor should work', t => {
-    const injects = injectionWorks<KnawledgeMapCreatorCloneArgs, KnawledgeMapCreatorClone >({
+    const injects = injectionWorks<Tree3CreatorCloneArgs, Tree3CreatorClone >({
         container: myContainer,
-        argsType: TYPES.KnawledgeMapCreatorCloneArgs,
+        argsType: TYPES.Tree3CreatorCloneArgs,
         interfaceType: TYPES.IKnawledgeMapCreatorClone,
     })
     expect(injects).to.equal(true)
@@ -79,7 +79,7 @@ test.afterEach(t => {
 //     }
 //     const storeCommitSpy = sinon.spy(store, 'commit')
 //     const knawledgeMapCreator: IVueComponentCreator
-//         = new KnawledgeMapCreatorClone({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
+//         = new Tree3CreatorClone({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
 //     const knawledgeMap = knawledgeMapCreator.create()
 //
 //     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
@@ -105,7 +105,7 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
     const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
     const knawledgeMapCreator: IKnawledgeMapCreator
-        = new KnawledgeMapCreatorClone(
+        = new Tree3CreatorClone(
             {treeLoader, treeLocationLoader, contentLoader, contentUserLoader, store, userId}
             )
     const KnawledgeMapComponent = knawledgeMapCreator.create()

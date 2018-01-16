@@ -35,7 +35,7 @@ const defaultStudySettings = {
     }
 }
 @injectable()
-export class KnawledgeMapCreatorClone implements IKnawledgeMapCreatorClone {
+export class Tree3CreatorClone implements Tree3CreatorClone {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader
@@ -46,7 +46,7 @@ export class KnawledgeMapCreatorClone implements IKnawledgeMapCreatorClone {
     /* TODO: Each of these loaders should have baked into them certain auth cookies
      that determine whether or not they are actually permitted to load the data
       */
-    constructor(@inject(TYPES.KnawledgeMapCreatorCloneArgs){
+    constructor(@inject(TYPES.Tree3CreatorCloneArgs){
         treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store
     }) {
         this.store = store
@@ -308,7 +308,7 @@ export class KnawledgeMapCreatorClone implements IKnawledgeMapCreatorClone {
     }
 }
 @injectable()
-export class KnawledgeMapCreatorCloneArgs {
+export class Tree3CreatorCloneArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader

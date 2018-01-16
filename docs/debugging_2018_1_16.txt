@@ -21,3 +21,5 @@ studyMenu spec test with a method doesn't work. this is probably because there i
 	-- still worked
 
 [2] lets replace knawledgemapclone's innards with treeComponents innards
+	-- works great!
+[3] lets slowly rename everything from knawledgemapclone to treeComponet. . .. tree3Component haha?
