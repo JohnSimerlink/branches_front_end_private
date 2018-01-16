@@ -6,9 +6,9 @@ when i do import Vue from 'vue' in store.ts, Vue loads fine in webpack/web  . . 
 
 
 
-get knawledgeMap DI working
-check if knawledemap mounting can work
-get treecomponent official mounting working so we can test with props
+DONE get knawledgeMap DI working
+DONE check if knawledemap mounting can work
+GOAL get treecomponent official mounting working so we can test with props
 
 
 
@@ -16,3 +16,8 @@ studyMenu spec test with a method doesn't work. this is probably because there i
 	. . . . but we get that same warning on knawledgeMap2.spec.ts . . . where a test with a method DOES work
 
 [1] lets try cloning knawledgemap into a different folder and running the same spec.
+	-- so it worked
+	-- then i replaced its innards with study menus
+	-- still worked
+
+[2] lets replace knawledgemapclone's innards with treeComponents innards
