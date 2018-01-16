@@ -15,15 +15,15 @@ import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader, IKnawledgeMapCreator, ITree, ITree3CreatorClone, IMutableSubscribableGlobalStore,
+    ITreeLocationLoader, IKnawledgeMapCreator, ITree, ITree3Creator, IMutableSubscribableGlobalStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableContentStore, IMutableSubscribableContentUserStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {Tree3CreatorClone, Tree3CreatorCloneArgs} from './tree3Component';
+import {Tree3Creator, Tree3CreatorArgs} from './tree3Component';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
-import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
+import {ContentUserLoaderArgs, getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {log} from '../../core/log'
@@ -36,10 +36,10 @@ if (!Vue) {
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
-test('knawledeMap DI constructor should work', t => {
-    const injects = injectionWorks<Tree3CreatorCloneArgs, ITree3CreatorClone >({
+test('Tree3Component DI constructor should work', t => {
+    const injects = injectionWorks<Tree3CreatorArgs, ITree3Creator >({
         container: myContainer,
-        argsType: TYPES.Tree3CreatorCloneArgs,
+        argsType: TYPES.Tree3CreatorArgs,
         interfaceType: TYPES.ITree3CreatorClone,
     })
     expect(injects).to.equal(true)
@@ -83,7 +83,7 @@ test.afterEach(t => {
 //     }
 //     const storeCommitSpy = sinon.spy(store, 'commit')
 //     const tree3CreatorCreator: IVueComponentCreator
-//         = new Tree3CreatorClone({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
+//         = new Tree3Creator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
 //     const tree3Creator = tree3CreatorCreator.create()
 //
 //     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
@@ -100,7 +100,7 @@ test.afterEach(t => {
 //     t.pass()
 // })
 
-test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => {
+test('Tree3Component::::trying to create and mount component VueJS style', (t) => {
     const contentId = 'abc123'
     const userId = 'bdd123'
     const treeStore: IMutableSubscribableTreeStore
@@ -117,14 +117,6 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
 
     const contentUserStore = {} as IMutableSubscribableContentUserStore
     contentUserStore.addMutation = () => {}
-    // const contentUserStore
-    //     = {
-    //     addMutation() {},
-    //     onUpdate(),
-    //     addAndSubscribeToItem(),
-    //     startPublishing(),
-    //     mutations: [],
-    // } as IMutableSubscribableContentUserStore
     const globalDataStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
         {
             contentStore,
@@ -137,16 +129,16 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     )
     const store: BranchesStore = new BranchesStore({globalDataStore})
     const storeCommitSpy = sinon.spy(store, 'commit')
-    const tree3CreatorCreator: ITree3CreatorClone
-        = new Tree3CreatorClone(
+    const tree3CreatorCreator: ITree3Creator
+        = new Tree3Creator(
             {store}
             )
-    const KnawledgeMapComponent = tree3CreatorCreator.create()
-    const Constructor = Vue.extend(KnawledgeMapComponent)
+    const Tree3Component = tree3CreatorCreator.create()
+    const Constructor = Vue.extend(Tree3Component)
     // const instance = new Constructor({propsData}).$mount()
+    const contentUserId = getContentUserId({contentId, userId})
     const propsData = {
-        contentId,
-        userId,
+        contentUserId
     }
     const proficiency = PROFICIENCIES.TWO
     const instance = new Constructor({propsData})
@@ -159,8 +151,7 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const commitArg0 = storeCommitSpy.getCall(0).args[0]
     const commitArg1 = storeCommitSpy.getCall(0).args[1]
     expect(commitArg0).to.deep.equal(MUTATION_NAMES.ADD_CONTENT_INTERACTION)
-    expect(commitArg1.userId).to.deep.equal(userId)
-    expect(commitArg1.contentId).to.deep.equal(contentId)
+    expect(commitArg1.contentUserId).to.deep.equal(contentUserId)
     expect(commitArg1.proficiency).to.deep.equal(proficiency)
     const timestampUndefined = !commitArg1.timestamp
     expect(timestampUndefined).to.equal(false)

@@ -8,7 +8,7 @@ export function escape(str) {
    }
    return encodeURIComponent(JSON.stringify(str))
 }
-export function renderer(node: ISigmaNode, template) {
+export function renderer(node: ISigmaNode, userId, template) {
     // var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
     // switch (node.type) {
     //     case 'tree':
@@ -22,6 +22,7 @@ export function renderer(node: ISigmaNode, template) {
                 contentid='${node.contentId}'
                 content-string='${contentEscaped}'
                 content-user-string='${contentUserDataEscaped}'
+                user-id='${userId}'
                 id='${node.id}'>
             </tree>
         </div>`;

@@ -4,11 +4,9 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
-    IContentLoader, IContentUserLoader, ITreeLoader, ITreeLocationLoader,
-    IKnawledgeMapCreator, IKnawledgeMapCreatorClone, ITree3CreatorClone
+    ITree3Creator
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
@@ -24,18 +22,8 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {secondsToPretty} from '../../core/filters'
 const template = require('./tree.html').default
 // import {Store} from 'vuex';
-const defaultStudySettings = {
-    itemTypes: {
-        old: true,
-        _new: true,
-    }, // TODO get from DB,
-    oldTypes: {
-        overdue: true,
-        notOverdue: true,
-    }
-}
 @injectable()
-export class Tree3CreatorClone implements ITree3CreatorClone {
+export class Tree3Creator implements ITree3Creator {
     private store: Store<any>
     // private userId: string
 
@@ -43,7 +31,7 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
      that determine whether or not they are actually permitted to load the data
       */
     // TODO: will this constructor need userId as an arg?
-    constructor(@inject(TYPES.Tree3CreatorCloneArgs){
+    constructor(@inject(TYPES.Tree3CreatorArgs){
          /*userId,*/ store
     }) {
         this.store = store
@@ -58,6 +46,7 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
             props: {
                 id: String,
                 parentId: String,
+                contentUserId: String,
                 contentId: String,
                 userId: String,
                 contentString: String,
@@ -230,11 +219,10 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
                     // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked(proficiency) {
-                    log('proficiencyClicked', this.proficiency, this.userId)
+                    log('proficiencyClicked', this.proficiency, this.userId, this.contentUserId)
                     log('proficiencyClicked this.proficiency is', this.proficiency)
                     me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
-                        userId: this.userId,
-                        contentId: this.contentId,
+                        contentUserId: this.contentUserId,
                         proficiency, // NOTICE HOW `this` is different from `me`
                         timestamp: Date.now()
                     })
@@ -301,6 +289,6 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
     }
 }
 @injectable()
-export class Tree3CreatorCloneArgs {
+export class Tree3CreatorArgs {
     @inject(TYPES.BranchesStore) public store: BranchesStore
 }
