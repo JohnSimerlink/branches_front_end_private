@@ -92,6 +92,7 @@ const TYPES = {
     ISubscriber_ITypeAndIdAndValUpdates_Array: Symbol('ISubscriber_ITypeAndIdAndValUpdates_Array'),
     ITooltipOpener: Symbol('ITooltipOpener'),
     ITree: Symbol('ITree'),
+    ITree2ComponentCreator: Symbol('ITree2ComponentCreator'),
     ITreeComponentCreator: Symbol('ITreeComponentCreator'),
     ITreeComponentCreator2: Symbol('ITreeComponentCreator2'),
     ITreeLoader: Symbol('ITreeLoader'),
