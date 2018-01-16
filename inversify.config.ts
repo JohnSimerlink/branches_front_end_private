@@ -162,7 +162,7 @@ import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/kna
 import {
     Tree3CreatorClone,
     Tree3CreatorCloneArgs
-} from './app/components/knawledgeMapClone/knawledgeMapClone';
+} from './app/components/tree3Component/tree3Component';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
