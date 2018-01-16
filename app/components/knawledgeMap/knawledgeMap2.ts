@@ -7,7 +7,7 @@ import {log} from '../../../app/core/log'
 import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store2';
 import {
-    IContentLoader, IContentUserLoader, VueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
+    IContentLoader, IContentUserLoader, IVueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
     IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -21,7 +21,7 @@ import './knawledgeMap.less'
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
 @injectable()
-export class KnawledgeMapCreator implements VueComponentCreator {
+export class KnawledgeMapCreator implements IVueComponentCreator {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader

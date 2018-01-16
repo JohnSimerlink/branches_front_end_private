@@ -1,6 +1,7 @@
 import {interfaces} from 'inversify';
 import {myContainer} from '../../inversify.config';
 import Container = interfaces.Container;
+import {log} from '../core/log'
 
 export const TREE_ID = '12334'
 export const TREE_ID2 = '1252334'
@@ -21,9 +22,12 @@ export function injectionWorks<argsInterface, classInterface>(
     {container, argsType, interfaceType}: {container: Container, argsType: symbol, interfaceType: symbol }) {
     const expectedProperties = Object.getOwnPropertyNames
     (container.get<argsInterface>(argsType))
+    log('expectedProperties is', expectedProperties)
     const obj: classInterface = myContainer.get<classInterface>(interfaceType)
+    log('obj is', obj)
     const propertiesExist = expectedProperties.every(property =>  obj[property] !== undefined
     )
+    log('propertiesExist is', propertiesExist)
     return propertiesExist
 }
 

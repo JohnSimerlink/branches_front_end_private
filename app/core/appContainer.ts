@@ -1,7 +1,7 @@
 // for now, this is where we will inject all the dependencies
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
-    IApp, IContentLoader, IContentUserLoader, IHash, VueComponentCreator, IMutable, IMutableSubscribableContentStore,
+    IApp, IContentLoader, IContentUserLoader, IHash, IVueComponentCreator, IMutable, IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
     IMutableSubscribableTree,
     IMutableSubscribableTreeLocation,
@@ -213,7 +213,7 @@ class AppContainer {
         Vue.component('proficiencySelector', ProficiencySelector)
         Vue.component('newtree', NewTree)
 
-        const knawledgeMapCreator: VueComponentCreator =
+        const knawledgeMapCreator: IVueComponentCreator =
             new KnawledgeMapCreator({store, treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId})
         const KnawledgeMap = knawledgeMapCreator.create()
         const routes = [

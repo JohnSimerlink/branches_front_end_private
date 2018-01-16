@@ -14,7 +14,7 @@ import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
-    IContentLoader, IContentUserLoader, VueComponentCreator, ITreeLoader,
+    IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
     ITreeLocationLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -62,7 +62,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
         commit() {}
     }
     const storeCommitSpy = sinon.spy(store, 'commit')
-    const knawledgeMapCreator: VueComponentCreator
+    const knawledgeMapCreator: IVueComponentCreator
         = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
     const knawledgeMap = knawledgeMapCreator.create()
 

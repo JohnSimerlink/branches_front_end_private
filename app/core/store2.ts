@@ -1,11 +1,12 @@
-import Vuex, {Store} from 'vuex'
+import {Store} from 'vuex'
+import * as Vuex from 'vuex'
 import {GRAPH_CONTAINER_ID, ROOT_ID} from './globals';
 import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, IGlobalDatedMutation, IIdProppedDatedMutation,
     IMutableSubscribableGlobalStore, ISigma,
-    ISigmaEventListener, ITooltipOpener,
+    ISigmaEventListener, ITooltipOpener, IVuexStore,
     ObjectTypes, TreePropertyNames
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
@@ -14,7 +15,9 @@ import {TooltipOpener} from '../tooltipOpener';
 import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
+import * as Vue from 'vue';
 const sigmaAny: any = sigma
+Vue.use(Vuex)
 
 export const MUTATION_NAMES = {
     INITIALIZE_SIGMA_INSTANCE: 'initializeSigmaInstance',
@@ -129,6 +132,7 @@ export default class BranchesStore {
             getters,
         } ) as Store<any>
         getters['getStore'] = () => store
+        store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         state.globalDataStore = globalDataStore
         return store
     }
