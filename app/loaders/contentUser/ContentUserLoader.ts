@@ -38,6 +38,9 @@ export class ContentUserLoader implements IContentUserLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData({contentId, userId}): Promise<IContentUserData> {
+        if (!contentId || ! userId ) {
+          throw RangeError('No contentId or userId supplied for downloadData')
+        }
         const contentUserId = getContentUserId({contentId, userId})
         const contentUsersFirebaseRefForContentId = this.firebaseRef.child(contentId)
         const contentUserRef = contentUsersFirebaseRefForContentId.child(userId)

@@ -9,13 +9,13 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
-import {MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader
+    ITreeLocationLoader, IKnawledgeMapCreator, ITree
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMap2';
@@ -24,6 +24,11 @@ import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
+import {log} from '../../core/log'
+let Vue = require('vue').default // for webpack
+if (!Vue) {
+    Vue = require('vue') // for ava-ts tests
+}
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
@@ -90,33 +95,26 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     t.pass()
 })
 // test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => {
+//     const contentId = 'abc123'
+//     const userId = 'bdd123'
 //     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
-//     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
 //     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
-//     const treeLocationLoaderDownloadDataSpy = sinon.spy(treeLocationLoader, 'downloadData')
 //     const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
-//     const contentLoaderDownloadDataSpy = sinon.spy(contentLoader, 'downloadData')
 //     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
-//     const contentUserLoaderDownloadDataSpy = sinon.spy(contentUserLoader, 'downloadData')
-//     const userId = '4324324abc'
-//     const store = {
-//         commit() {}
+//     const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
+//     const knawledgeMapCreator: IKnawledgeMapCreator
+//         = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, store, userId})
+//     const KnawledgeMapComponent = knawledgeMapCreator.create()
+//     const Constructor = Vue.extend(KnawledgeMapComponent)
+//     const propsData = {
+//         // contentId,
+//         // userId,
 //     }
-//     const storeCommitSpy = sinon.spy(store, 'commit')
-//     const knawledgeMapCreator: IVueComponentCreator
-//         = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
-//     const knawledgeMap = knawledgeMapCreator.create()
-//
-//     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
-//     knawledgeMap.mounted()
-//     expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
-//     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
-//     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
-//     expect(calledWith).to.equal(expectedCalledWith)
-//
-//     expect(storeCommitSpy.callCount).to.equal(1)
-//     calledWith = storeCommitSpy.getCall(0).args[0]
-//     expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+//     // const instance = new Constructor({propsData}).$mount()
+//     const instance = new Constructor()
+//     instance.$mount()
+//     log('instance in knawldegMapSPEC is', instance)
+//     // instance.methods.proficiencyClicked()
 //
 //     t.pass()
 // })

@@ -238,3 +238,11 @@ test('ContentUserLoader:::GetData on a non existing contentUser should throw a R
         )).to.throw(RangeError)
     t.pass()
 })
+test('ContentUserLoader:::GetData with an empty param should throw RangeError', async (t) => {
+    const contentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
+
+    expect(() => contentUserLoader.getData(
+        {contentId: '', userId: ''}
+    )).to.throw(RangeError)
+    t.pass()
+})

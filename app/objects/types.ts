@@ -127,6 +127,7 @@ const TYPES = {
     SigmaRenderManagerArgs: Symbol('SigmaRenderManagerArgs'),
     SigmaUpdaterArgs: Symbol('SigmaUpdaterArgs'),
     String: Symbol('String'),
+    StringNotEmpty: Symbol('StringNotEmpty'),
     StoreSourceUpdateListenerArgs: Symbol('StoreSourceUpdateListenerArgs'),
     StoreSourceUpdateListenerCoreArgs: Symbol('StoreSourceUpdateListenerCoreArgs'),
     Subscribable: Symbol('Subscribable'),
