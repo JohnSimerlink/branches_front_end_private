@@ -32,7 +32,7 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITreeComponentCreator,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITree3CreatorClone, ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
@@ -434,7 +434,7 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
     bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<Tree3CreatorCloneArgs>(TYPES.Tree3CreatorCloneArgs).to(Tree3CreatorCloneArgs)
-    bind<Tree3CreatorClone>(TYPES.IKnawledgeMapCreatorClone).to(Tree3CreatorClone)
+    bind<ITree3CreatorClone>(TYPES.ITree3CreatorClone).to(Tree3CreatorClone)
 })
 // app
 

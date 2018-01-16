@@ -8,7 +8,7 @@ import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID}
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
     IContentLoader, IContentUserLoader, ITreeLoader, ITreeLocationLoader,
-    IKnawledgeMapCreator, IKnawledgeMapCreatorClone
+    IKnawledgeMapCreator, IKnawledgeMapCreatorClone, ITree3CreatorClone
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
@@ -35,26 +35,19 @@ const defaultStudySettings = {
     }
 }
 @injectable()
-export class Tree3CreatorClone implements Tree3CreatorClone {
-    private treeLoader: ITreeLoader
-    private treeLocationLoader: ITreeLocationLoader
-    private contentLoader: IContentLoader
-    private contentUserLoader: IContentUserLoader
+export class Tree3CreatorClone implements ITree3CreatorClone {
     private store: Store<any>
-    private userId: string
+    // private userId: string
 
     /* TODO: Each of these loaders should have baked into them certain auth cookies
      that determine whether or not they are actually permitted to load the data
       */
+    // TODO: will this constructor need userId as an arg?
     constructor(@inject(TYPES.Tree3CreatorCloneArgs){
-        treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store
+         /*userId,*/ store
     }) {
         this.store = store
-        this.treeLoader = treeLoader
-        this.treeLocationLoader = treeLocationLoader
-        this.contentLoader = contentLoader
-        this.contentUserLoader = contentUserLoader
-        this.userId = userId
+        // this.userId = userId
     }
     public create() {
         const me = this
@@ -237,7 +230,7 @@ export class Tree3CreatorClone implements Tree3CreatorClone {
                     // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked() {
-                    log('proficiencyClicked', this.proficiency)
+                    log('proficiencyClicked', this.proficiency, this.userId)
                     log('proficiencyClicked this.proficiency is', this.proficiency)
                     // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                     //     userId: this.userId,
@@ -309,10 +302,5 @@ export class Tree3CreatorClone implements Tree3CreatorClone {
 }
 @injectable()
 export class Tree3CreatorCloneArgs {
-    @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
-    @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
-    @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
-    @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore) public store: BranchesStore
-    @inject(TYPES.StringNotEmpty) public userId: string
 }
