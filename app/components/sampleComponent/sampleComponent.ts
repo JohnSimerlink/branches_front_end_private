@@ -7,11 +7,10 @@ import BranchesStore from '../../core/store2';
 @injectable()
 export class SampleComponentCreator implements ISampleComponentCreator {
     private store: Store<any>
-    public create() {
-    }
-    private arg1
     constructor(@inject(TYPES.SampleComponentCreatorArgs){store}) {
         this.store = store
+    }
+    public create() {
     }
 }
 @injectable()
