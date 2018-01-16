@@ -65,7 +65,7 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
             },
             async created() {
                 log('tree component created',
-                    this.id, this.parentId, this.contentId,
+                    this.id, this.parentId, this.contentId, this.userId,
                     this.contentString, this.parentid, this.contentid
                 )
                 // this.content = JSON.parse(decodeURIComponent(this.content))
@@ -186,7 +186,7 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
             },
             methods: {
                 aMethod() {
-                    for (let i = 0; i < 200; i++) {
+                    for (let i = 0; i < 2; i++) {
                         log('i ', i)
                     }
                 },
@@ -229,15 +229,15 @@ export class Tree3CreatorClone implements ITree3CreatorClone {
                 clearHeading() {
                     // this.tree.clearChildrenInteractions()
                 },
-                proficiencyClicked() {
+                proficiencyClicked(proficiency) {
                     log('proficiencyClicked', this.proficiency, this.userId)
                     log('proficiencyClicked this.proficiency is', this.proficiency)
-                    // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
-                    //     userId: this.userId,
-                    //     contentId: this.contentId,
-                    //     proficiency: this.proficiency, // NOTICE HOW `this` is different from `me`
-                    //     timestamp: Date.now()
-                    // })
+                    me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
+                        userId: this.userId,
+                        contentId: this.contentId,
+                        proficiency, // NOTICE HOW `this` is different from `me`
+                        timestamp: Date.now()
+                    })
                     //     user.addMutation('interaction', {contentId: this.content.id,
                     // proficiency: this.content.proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)
