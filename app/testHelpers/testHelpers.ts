@@ -22,12 +22,9 @@ export function injectionWorks<argsInterface, classInterface>(
     {container, argsType, interfaceType}: {container: Container, argsType: symbol, interfaceType: symbol }) {
     const expectedProperties = Object.getOwnPropertyNames
     (container.get<argsInterface>(argsType))
-    log('expectedProperties is', expectedProperties)
     const obj: classInterface = myContainer.get<classInterface>(interfaceType)
-    log('obj is', obj)
     const propertiesExist = expectedProperties.every(property =>  obj[property] !== undefined
     )
-    log('propertiesExist is', propertiesExist)
     return propertiesExist
 }
 
