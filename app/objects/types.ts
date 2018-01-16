@@ -94,6 +94,7 @@ const TYPES = {
     ITooltipOpener: Symbol('ITooltipOpener'),
     ITree: Symbol('ITree'),
     ITree2ComponentCreator: Symbol('ITree2ComponentCreator'),
+    ITree3CreatorClone: Symbol('ITree3CreatorClone'),
     ITreeComponentCreator: Symbol('ITreeComponentCreator'),
     ITreeComponentCreator2: Symbol('ITreeComponentCreator2'),
     ITreeLoader: Symbol('ITreeLoader'),

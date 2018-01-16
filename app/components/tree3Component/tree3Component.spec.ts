@@ -15,7 +15,7 @@ import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader, IKnawledgeMapCreator, ITree
+    ITreeLocationLoader, IKnawledgeMapCreator, ITree, ITree3CreatorClone
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {Tree3CreatorClone, Tree3CreatorCloneArgs} from './tree3Component';
@@ -33,10 +33,10 @@ if (!Vue) {
 // process.env.node_ENV = 'test' && register(['.html'])
 
 test('knawledeMap DI constructor should work', t => {
-    const injects = injectionWorks<Tree3CreatorCloneArgs, Tree3CreatorClone >({
+    const injects = injectionWorks<Tree3CreatorCloneArgs, ITree3CreatorClone >({
         container: myContainer,
         argsType: TYPES.Tree3CreatorCloneArgs,
-        interfaceType: TYPES.IKnawledgeMapCreatorClone,
+        interfaceType: TYPES.ITree3CreatorClone,
     })
     expect(injects).to.equal(true)
     t.pass()
@@ -64,7 +64,7 @@ test.afterEach(t => {
     myContainer.snapshot()
 })
 
-// test('KnawledgeMap::::create knawledgeMap should work', (t) => {
+// test('KnawledgeMap::::create tree3Creator should work', (t) => {
 //     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
 //     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
 //     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
@@ -78,12 +78,12 @@ test.afterEach(t => {
 //         commit() {}
 //     }
 //     const storeCommitSpy = sinon.spy(store, 'commit')
-//     const knawledgeMapCreator: IVueComponentCreator
+//     const tree3CreatorCreator: IVueComponentCreator
 //         = new Tree3CreatorClone({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
-//     const knawledgeMap = knawledgeMapCreator.create()
+//     const tree3Creator = tree3CreatorCreator.create()
 //
 //     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
-//     knawledgeMap.mounted()
+//     tree3Creator.mounted()
 //     expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
 //     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
 //     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
@@ -104,11 +104,11 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
     const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
-    const knawledgeMapCreator: IKnawledgeMapCreator
+    const tree3CreatorCreator: ITree3CreatorClone
         = new Tree3CreatorClone(
-            {treeLoader, treeLocationLoader, contentLoader, contentUserLoader, store, userId}
+            {store}
             )
-    const KnawledgeMapComponent = knawledgeMapCreator.create()
+    const KnawledgeMapComponent = tree3CreatorCreator.create()
     const Constructor = Vue.extend(KnawledgeMapComponent)
     const propsData = {
         // contentId,
@@ -118,7 +118,7 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const instance = new Constructor()
     instance.$mount()
     instance.aMethod()
-    log('instance in knawldegMapSPEC is', instance)
+    // log('instance in knawldegMapSPEC is', instance)
     // instance.methods.proficiencyClicked()
 
     t.pass()
