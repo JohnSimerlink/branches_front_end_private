@@ -440,6 +440,7 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
     bind<any>(TYPES.Any).toConstantValue(null)
     bind<boolean>(TYPES.Boolean).toConstantValue(false)
     bind<string>(TYPES.String).toConstantValue('')
+    bind<string>(TYPES.StringNotEmpty).toConstantValue('abc123')
     bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
 // tslint:disable-next-line ban-types
     bind<Number>(TYPES.Number).toConstantValue(0)

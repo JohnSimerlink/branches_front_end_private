@@ -86,5 +86,5 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore) public store: BranchesStore
-    @inject(TYPES.String) public userId: string
+    @inject(TYPES.StringNotEmpty) public userId: string
 }
