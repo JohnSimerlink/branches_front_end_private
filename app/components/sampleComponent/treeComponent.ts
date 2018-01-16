@@ -8,6 +8,13 @@ import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
+function getTemplate() {
+    let template = require('./tree.html').default // for webpack
+    if (!template) {
+        template = require('./tree.html') // for ava-ts tests
+    }
+    return template
+}
 @injectable()
 export class Tree2ComponentCreator implements ITree2ComponentCreator {
     private store: Store<any>
@@ -17,7 +24,7 @@ export class Tree2ComponentCreator implements ITree2ComponentCreator {
     public create() {
         const me = this
         const component = {
-            template: require('./tree.html').default,
+            template: getTemplate(),
             // '<div>This is the template for tree.html</div>',
             // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
             props: {
@@ -190,13 +197,14 @@ export class Tree2ComponentCreator implements ITree2ComponentCreator {
                     // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked() {
-                    log('proficiencyClicked')
-                    me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
-                        userId: this.userId,
-                        contentId: this.contentId,
-                        proficiency: this.proficiency, // NOTICE HOW `this` is different from `me`
-                        timestamp: Date.now()
-                    })
+                    log('proficiencyClicked', this.proficiency)
+                    log('proficiencyClicked this.proficiency is', this.proficiency)
+                    // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
+                    //     userId: this.userId,
+                    //     contentId: this.contentId,
+                    //     proficiency: this.proficiency, // NOTICE HOW `this` is different from `me`
+                    //     timestamp: Date.now()
+                    // })
                     //     user.addMutation('interaction', {contentId: this.content.id,
                     // proficiency: this.content.proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)

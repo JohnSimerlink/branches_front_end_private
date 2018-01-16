@@ -5,10 +5,10 @@ import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
-import {MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
-    IVuexStore
+    IVuexStore, IKnawledgeMapCreator
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
@@ -21,7 +21,7 @@ import './knawledgeMap.less'
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
 @injectable()
-export class KnawledgeMapCreator implements IVueComponentCreator {
+export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader
@@ -85,6 +85,6 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
-    @inject(TYPES.IVuexStore) public store: IVuexStore
+    @inject(TYPES.BranchesStore) public store: BranchesStore
     @inject(TYPES.String) public userId: string
 }

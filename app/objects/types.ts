@@ -101,6 +101,7 @@ const TYPES = {
     ITreeUser: Symbol('ITree'),
     ITreeUserLoader: Symbol('ITreeUserLoader'),
     IVuexStore: Symbol('IVuexStore'),
+    KnawledgeMapCreator: Symbol('KnawledgeMapCreator'),
     KnawledgeMapCreatorArgs: Symbol('KnawledgeMapCreatorArgs'),
     ManagedSigmaNodeCreatorCoreArgs: Symbol('ManagedSigmaNodeCreatorCoreArgs'),
     MutableSubscribablePointArgs: Symbol('MutableSubscribablePointArgs'),

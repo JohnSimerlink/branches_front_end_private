@@ -18,14 +18,24 @@ import {
     ITreeLocationLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreator} from './knawledgeMap2';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMap2';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
+import {injectionWorks} from '../../testHelpers/testHelpers';
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
+test('knawledeMap DI constructor should work', t => {
+    const injects = injectionWorks<KnawledgeMapCreatorArgs, KnawledgeMapCreator >({
+        container: myContainer,
+        argsType: TYPES.KnawledgeMapCreatorArgs,
+        interfaceType: TYPES.IKnawledgeMapCreator,
+    })
+    expect(injects).to.equal(true)
+    t.pass()
+})
 test.beforeEach((t) => {
     myContainer.snapshot()
     const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
@@ -79,3 +89,34 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
 
     t.pass()
 })
+// test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => {
+//     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+//     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
+//     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
+//     const treeLocationLoaderDownloadDataSpy = sinon.spy(treeLocationLoader, 'downloadData')
+//     const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
+//     const contentLoaderDownloadDataSpy = sinon.spy(contentLoader, 'downloadData')
+//     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
+//     const contentUserLoaderDownloadDataSpy = sinon.spy(contentUserLoader, 'downloadData')
+//     const userId = '4324324abc'
+//     const store = {
+//         commit() {}
+//     }
+//     const storeCommitSpy = sinon.spy(store, 'commit')
+//     const knawledgeMapCreator: IVueComponentCreator
+//         = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
+//     const knawledgeMap = knawledgeMapCreator.create()
+//
+//     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
+//     knawledgeMap.mounted()
+//     expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
+//     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
+//     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
+//     expect(calledWith).to.equal(expectedCalledWith)
+//
+//     expect(storeCommitSpy.callCount).to.equal(1)
+//     calledWith = storeCommitSpy.getCall(0).args[0]
+//     expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+//
+//     t.pass()
+// })

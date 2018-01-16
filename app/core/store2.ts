@@ -24,7 +24,6 @@ if (!Vue) {
 //     import * as Vue from 'vue'
 // }
 const sigmaAny: any = sigma
-log('Vue in store2 ts is ', Vue)
 Vue.use(Vuex)
 
 export const MUTATION_NAMES = {
