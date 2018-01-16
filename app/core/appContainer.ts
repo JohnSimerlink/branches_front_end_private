@@ -69,7 +69,7 @@ import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListen
 import {TooltipOpener} from '../tooltipOpener';
 import {ContentUserLoader} from '../loaders/contentUser/ContentUserLoader';
 import StudyMenu from '../components/studyMenu/studyMenu'
-import {Tree2ComponentCreator} from '../components/sampleComponent/treeComponent'
+import {Tree2ComponentCreator} from '../components/tree2Component/treeComponent'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // import NewTree from ''

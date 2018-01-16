@@ -21,6 +21,7 @@ export default {
     template, // '<div> {{movie}} this is the tree template</div>',
     props: [],
     async created() {
+        log('studyMenu created!', template)
         // PubSub.subscribe('login', async () => {
         //     // this.studySettings = await user.getStudySettings() || defaultStudySettings
         // })
@@ -71,6 +72,7 @@ export default {
             // } else {
             //     this.$store.commit('enterStudyingMode')
             // }
+            log('toggleStudying STUDY MENU called')
         }
     },
     computed: {

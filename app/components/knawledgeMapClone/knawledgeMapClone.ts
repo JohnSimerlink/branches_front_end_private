@@ -7,8 +7,8 @@ import {log} from '../../../app/core/log'
 import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
-    IContentLoader, IContentUserLoader, IVueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
-    IVuexStore, IKnawledgeMapCreator
+    IContentLoader, IContentUserLoader, ITreeLoader, ITreeLocationLoader,
+    IKnawledgeMapCreator, IKnawledgeMapCreatorClone
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
@@ -21,7 +21,7 @@ import './knawledgeMap.less'
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
 @injectable()
-export class KnawledgeMapCreator implements IKnawledgeMapCreator {
+export class KnawledgeMapCreatorClone implements IKnawledgeMapCreatorClone {
     private treeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader
@@ -32,7 +32,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     /* TODO: Each of these loaders should have baked into them certain auth cookies
      that determine whether or not they are actually permitted to load the data
       */
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){
+    constructor(@inject(TYPES.KnawledgeMapCreatorCloneArgs){
         treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store
     }) {
         this.store = store
@@ -85,7 +85,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     }
 }
 @injectable()
-export class KnawledgeMapCreatorArgs {
+export class KnawledgeMapCreatorCloneArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
