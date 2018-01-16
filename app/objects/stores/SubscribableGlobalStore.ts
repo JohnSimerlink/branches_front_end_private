@@ -12,7 +12,7 @@ import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
 @injectable()
-class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUpdates>
+export class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUpdates>
 implements ISubscribableGlobalStore {
     private update: ITypeAndIdAndValUpdates;
     protected callbackArguments(): ITypeAndIdAndValUpdates {
@@ -84,7 +84,7 @@ implements ISubscribableGlobalStore {
 }
 
 @injectable()
-class SubscribableGlobalStoreArgs {
+export class SubscribableGlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.ISubscribableTreeStore) public treeStore
     @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore
@@ -92,5 +92,3 @@ class SubscribableGlobalStoreArgs {
     @inject(TYPES.ISubscribableContentUserStore) public contentUserStore
     @inject(TYPES.ISubscribableContentStore) public contentStore
 }
-
-export {SubscribableGlobalStore, SubscribableGlobalStoreArgs, ISubscribableGlobalStore}

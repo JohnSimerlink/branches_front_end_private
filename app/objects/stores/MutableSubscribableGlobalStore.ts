@@ -11,8 +11,8 @@ import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 
 @injectable()
-class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
-    constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
+export class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
+    constructor(@inject(TYPES.MutableSubscribableGlobalStoreArgs){
         treeStore, treeUserStore, treeLocationStore,
         contentUserStore, contentStore, updatesCallbacks
     }) {
@@ -77,6 +77,7 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
                     timestamp: mutation.timestamp,
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 }
+                log('this contentUserStore is ', this.contentUserStore, this.contentUserStore.addMutation)
                 this.contentUserStore.addMutation(contentUserStoreMutation)
                 break
             }
@@ -107,7 +108,7 @@ class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements 
 }
 
 @injectable()
-class MutableSubscribableGlobalStoreArgs {
+export class MutableSubscribableGlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.IMutableSubscribableTreeStore) public treeStore
     @inject(TYPES.IMutableSubscribableTreeUserStore) public treeUserStore
@@ -115,4 +116,3 @@ class MutableSubscribableGlobalStoreArgs {
     @inject(TYPES.IMutableSubscribableContentStore) public contentStore
     @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore
 }
-export {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs}

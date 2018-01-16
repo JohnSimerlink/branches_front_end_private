@@ -15,7 +15,9 @@ import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader, IKnawledgeMapCreator, ITree, ITree3CreatorClone
+    ITreeLocationLoader, IKnawledgeMapCreator, ITree, ITree3CreatorClone, IMutableSubscribableGlobalStore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {Tree3CreatorClone, Tree3CreatorCloneArgs} from './tree3Component';
@@ -25,6 +27,8 @@ import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {log} from '../../core/log'
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscribableGlobalStore';
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -99,25 +103,65 @@ test.afterEach(t => {
 test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => {
     const contentId = 'abc123'
     const userId = 'bdd123'
-    const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
-    const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
-    const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
-    const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
-    const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
+    const treeStore: IMutableSubscribableTreeStore
+        = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
+
+    const treeUserStore: IMutableSubscribableTreeUserStore
+        = myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+
+    const treeLocationStore: IMutableSubscribableTreeLocationStore
+        = myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
+
+    const contentStore: IMutableSubscribableContentStore
+        = myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+
+    const contentUserStore = {} as IMutableSubscribableContentUserStore
+    contentUserStore.addMutation = () => {}
+    // const contentUserStore
+    //     = {
+    //     addMutation() {},
+    //     onUpdate(),
+    //     addAndSubscribeToItem(),
+    //     startPublishing(),
+    //     mutations: [],
+    // } as IMutableSubscribableContentUserStore
+    const globalDataStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
+        {
+            contentStore,
+            contentUserStore,
+            treeStore,
+            treeLocationStore,
+            treeUserStore,
+            updatesCallbacks: [],
+        }
+    )
+    const store: BranchesStore = new BranchesStore({globalDataStore})
+    const storeCommitSpy = sinon.spy(store, 'commit')
     const tree3CreatorCreator: ITree3CreatorClone
         = new Tree3CreatorClone(
             {store}
             )
     const KnawledgeMapComponent = tree3CreatorCreator.create()
     const Constructor = Vue.extend(KnawledgeMapComponent)
-    const propsData = {
-        // contentId,
-        // userId,
-    }
     // const instance = new Constructor({propsData}).$mount()
-    const instance = new Constructor()
+    const propsData = {
+        contentId,
+        userId,
+    }
+    const proficiency = PROFICIENCIES.TWO
+    const instance = new Constructor({propsData})
+    log('instance props are ', instance.$props)
+    instance.$createElement()
     instance.$mount()
     instance.aMethod()
+    instance.proficiencyClicked(proficiency)
+    expect(storeCommitSpy.callCount).to.deep.equal(1)
+    const commitArg0 = storeCommitSpy.getCall(0).args[0]
+    const commitArg1 = storeCommitSpy.getCall(0).args[1]
+    expect(commitArg0).to.deep.equal(MUTATION_NAMES.ADD_CONTENT_INTERACTION)
+    expect(commitArg1.userId).to.deep.equal(userId)
+    expect(commitArg1.contentId).to.deep.equal(contentId)
+    expect(commitArg1.proficiency).to.deep.equal(proficiency)
     // log('instance in knawldegMapSPEC is', instance)
     // instance.methods.proficiencyClicked()
 
