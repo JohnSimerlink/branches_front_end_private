@@ -32,27 +32,8 @@ export const MUTATION_NAMES = {
     REFRESH: 'refresh',
     ADD_NODE: 'add_node',
     ADD_CONTENT_INTERACTION: 'add_content_interaction',
+    CHANGE_USER_ID: 'changeUserId',
 }
-const state: {
-    uri: string,
-    centeredTreeId: string,
-    sigmaInstance: ISigma,
-    graphData: object,
-    graph: object,
-    sigmaInitialized: boolean,
-    globalDataStore: IMutableSubscribableGlobalStore,
-} = {
-    uri: null,
-    centeredTreeId: ROOT_ID,
-    sigmaInstance: null,
-    graphData: {
-        nodes: [],
-        edges: [],
-    },
-    graph: null,
-    sigmaInitialized: false,
-    globalDataStore: null,
-};
 
 const getters = {
 }
@@ -97,17 +78,6 @@ const mutations = {
         log('store mutation refresh called', state)
         state.sigmaInstance.refresh()
     },
-    [MUTATION_NAMES.ADD_NODE](state, node) {
-        if (state.sigmaInitialized) {
-            log('sigma was already initialized . .. adding node', node)
-            state.graph.addNode(node)
-            this[MUTATION_NAMES.REFRESH](state)
-            log('STORE 2 TS ADD NODE. THIS STORE is ', getters['getStore']())
-        } else {
-            log('sigma not yet initialized . .. pushing node', node)
-            state.graphData.nodes.push(node)
-        }
-    },
 // TODO: if contentUser does not yet exist in the DB create it.
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {userId, contentId, proficiency, timestamp}) {
         const contentUserId = getContentUserId({userId, contentId})
@@ -126,13 +96,27 @@ const mutations = {
             ...storeMutation
         }
         state.globalDataStore.addMutation(globalMutation)
+    },
+    [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
+        state.userId = userId
+    }
+}
+mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
+    if (state.sigmaInitialized) {
+        log('sigma was already initialized . .. adding node', node)
+        state.graph.addNode(node)
+        mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+        log('STORE 2 TS ADD NODE. THIS STORE is ', getters['getStore']())
+    } else {
+        log('sigma not yet initialized . .. pushing node', node)
+        state.graphData.nodes.push(node)
     }
 }
 const actions = {}
 
 @injectable()
 export default class BranchesStore {
-    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore}) {
+    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, state}) {
         const store = new Store({
             state,
             mutations,
@@ -141,11 +125,13 @@ export default class BranchesStore {
         } ) as Store<any>
         getters['getStore'] = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
-        state.globalDataStore = globalDataStore
+        state.globalDataStore = globalDataStore /* added because this is actually
+        the mechanism we will use to access globalDataStore */
         return store
     }
 }
 @injectable()
 export class BranchesStoreArgs {
     @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore
+    @inject(TYPES.BranchesStoreState) public state
 }

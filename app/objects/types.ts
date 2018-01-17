@@ -4,6 +4,7 @@ const TYPES = {
     Array: Symbol('Array'),
     Boolean: Symbol('Boolean'),
     BranchesStore: Symbol('BranchesStore'),
+    BranchesStoreState: Symbol('BranchesStoreState'),
     BranchesStoreArgs: Symbol('BranchesStoreArgs'),
     ContentUserDataArgs: Symbol('ContentUserDataArgs'),
     ContentLoaderArgs: Symbol('ContentLoaderArgs'),

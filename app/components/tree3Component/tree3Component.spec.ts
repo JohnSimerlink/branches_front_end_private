@@ -127,7 +127,8 @@ test('Tree3Component::::trying to create and mount component VueJS style', (t) =
             updatesCallbacks: [],
         }
     )
-    const store: BranchesStore = new BranchesStore({globalDataStore})
+    const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
+    const store: BranchesStore = new BranchesStore({globalDataStore, state})
     const storeCommitSpy = sinon.spy(store, 'commit')
     const tree3CreatorCreator: ITree3Creator
         = new Tree3Creator(
