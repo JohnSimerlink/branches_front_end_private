@@ -8,6 +8,9 @@ import {TYPES} from './objects/types';
 import {ISigmaNode, ITooltipOpener} from './objects/interfaces';
 import {log} from './core/log'
 
+/* If we ever have a feature where someone can essentially masquerade
+ as another user and open a tooltip with a different userId,
+ we will have to instantiate another tooltipOpener object */
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
     private tooltips

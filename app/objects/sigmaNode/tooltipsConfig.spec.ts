@@ -38,6 +38,7 @@ test('tooltips renderer content should escape', t => {
               title: null,
          },
          contentUserData,
+         contentUserId: contentUserData.id,
          label: 'What is capital . . .',
          size: 10,
          colorSlices: SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats),

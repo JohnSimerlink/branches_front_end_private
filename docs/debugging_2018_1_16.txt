@@ -23,3 +23,12 @@ studyMenu spec test with a method doesn't work. this is probably because there i
 [2] lets replace knawledgemapclone's innards with treeComponents innards
 	-- works great!
 [3] lets slowly rename everything from knawledgemapclone to treeComponet. . .. tree3Component haha?
+
+
+
+==========
+1/17/2018
+// Get tooltip opener to pass in correct contentUserId
+// Get app to generate a random initial userId
+// TODO: if contentUser does not yet exist in the DB create it.
+mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION]
