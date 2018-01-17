@@ -7,6 +7,7 @@ import {isMobile} from './core/utils';
 import {TYPES} from './objects/types';
 import {ISigmaNode, ITooltipOpener} from './objects/interfaces';
 import {log} from './core/log'
+import {Store} from 'vuex';
 
 /* If we ever have a feature where someone can essentially masquerade
  as another user and open a tooltip with a different userId,
@@ -14,10 +15,11 @@ import {log} from './core/log'
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
     private tooltips
-    private store
+    private store: Store<any>
     constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store}) {
         this.tooltips = tooltips
         this.store = store
+        // this.store.watch(state => state.userId, (newValue, oldValue))
     }
     public openTooltip(node: ISigmaNode) {
         const me = this
