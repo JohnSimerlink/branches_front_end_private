@@ -375,6 +375,10 @@ export interface IEditableSigmaNode {
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
+/*
+SigmaNode doesn't have to know anything about the user or userId . . .
+It just has to know about the userContentData or userTreeData
+ */
 export interface ISigmaNode extends ISigmaNodeData, IEditableSigmaNode {
     // new(args: SigmaNodeArgs)
 }
@@ -388,6 +392,7 @@ export interface ISigmaNodeData {
     y: number;
     aggregationTimer: number;
     content: IContentData;
+    contentUserId: string;
     contentUserData: IContentUserData;
     label: string;
     size: number;

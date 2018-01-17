@@ -14,7 +14,10 @@ export function renderer(node: ISigmaNode, userId, template) {
     //     case 'tree':
     const contentEscaped = escape(node.content)
     const contentUserDataEscaped = escape(node.contentUserData)
-    log('tooltips config called', node, template, node.content, contentEscaped, contentUserDataEscaped)
+    const contentUserId = node && node.contentUserData && node.contentUserData.id
+    log('tooltips config called', node, template, node.content, contentEscaped,
+        ' and contentUserId is', contentUserId,
+        ' and contentUserData is ', contentUserDataEscaped)
     const result: string =
         `<div id="vue">
             <tree
@@ -22,7 +25,7 @@ export function renderer(node: ISigmaNode, userId, template) {
                 contentid='${node.contentId}'
                 content-string='${contentEscaped}'
                 content-user-string='${contentUserDataEscaped}'
-                user-id='${userId}'
+                content-user-id='${contentUserId}'
                 id='${node.id}'>
             </tree>
         </div>`;

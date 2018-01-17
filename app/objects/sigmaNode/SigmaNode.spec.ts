@@ -89,6 +89,7 @@ test('sigmaNode:::receive new ContentUserData', (t) => {
     expect(sigmaNode.size).to.equal(size)
     expect(sigmaNode.overdue).to.equal(overdue)
     expect(sigmaNode.proficiency).to.equal(proficiency)
+    expect(sigmaNode.contentUserId).to.equal(contentUserId)
     expect(sigmaNode.contentUserData).to.deep.equal(contentUserData)
     t.pass()
 })

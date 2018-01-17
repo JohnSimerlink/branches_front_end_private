@@ -55,7 +55,8 @@ export class Tree3Creator implements ITree3Creator {
             async created() {
                 log('tree component created',
                     this.id, this.parentId, this.contentId, this.userId,
-                    this.contentString, this.parentid, this.contentid
+                    this.contentString, this.parentid, this.contentid,
+                    'contentUserId', this.contentUserId
                 )
                 // this.content = JSON.parse(decodeURIComponent(this.content))
                 // var me = this;

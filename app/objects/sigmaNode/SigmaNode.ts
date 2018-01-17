@@ -18,6 +18,7 @@ class SigmaNode implements ISigmaNode {
     public id: string;
     public parentId: string;
     public contentId: string;
+    public contentUserId: string;
     public children: string[];
     public x: number;
     public y: number;
@@ -48,6 +49,7 @@ class SigmaNode implements ISigmaNode {
     }
 
     public receiveNewContentUserData(contentUserData: IContentUserData) {
+        this.contentUserId = contentUserData.id
         this.overdue = contentUserData.overdue
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
         this.contentUserData = contentUserData
@@ -124,7 +126,7 @@ class SigmaNodeArgs {
     @inject(TYPES.Number) public aggregationTimer: number;
     @inject(TYPES.IProficiencyStats) public proficiencyStats: IProficiencyStats;
     @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
-    @inject(TYPES.String) public overdue: boolean;
+    @inject(TYPES.String) public overdue: string;
 }
 
 export {SigmaNode, SigmaNodeArgs}

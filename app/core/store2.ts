@@ -109,6 +109,7 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
         state.graphData.nodes.push(node)
     }
 }
+// TODO: if contentUser does not yet exist in the DB create it.
 mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION] = (state, {userId, contentId, proficiency, timestamp}) => {
     const contentUserId = getContentUserId({userId, contentId})
     const id = contentUserId
