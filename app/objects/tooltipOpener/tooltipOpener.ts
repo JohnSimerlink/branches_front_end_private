@@ -1,14 +1,20 @@
 import {inject, injectable} from 'inversify';
 import Vue from 'vue';
 import clonedeep = require('lodash.clonedeep') // TODO: why didn't regular require syntax work?
-import {tooltipsConfig} from './objects/sigmaNode/tooltipsConfig';
 
-import {isMobile} from './core/utils';
-import {TYPES} from './objects/types';
-import {ISigmaNode, ITooltipOpener} from './objects/interfaces';
-import {log} from './core/log'
+import {isMobile} from '../../core/utils';
+import {TYPES} from '../types';
+import {ISigmaNode, ITooltipOpener, ITooltipRendererFunction} from '../interfaces';
+import {log} from '../../core/log'
 import {Store} from 'vuex';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 
+export function escape(str) {
+    if (!str) {
+        return ''
+    }
+    return encodeURIComponent(JSON.stringify(str))
+}
 /* If we ever have a feature where someone can essentially masquerade
  as another user and open a tooltip with a different userId,
  we will have to instantiate another tooltipOpener object */
@@ -16,14 +22,23 @@ import {Store} from 'vuex';
 export class TooltipOpener implements ITooltipOpener {
     private tooltips
     private store: Store<any>
-    constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store}) {
+    private tooltipsConfig: object
+    private userId: string
+    constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store, tooltipsConfig}) {
+        this.tooltipsConfig = tooltipsConfig
         this.tooltips = tooltips
         this.store = store
-        // this.store.watch(state => state.userId, (newValue, oldValue))
+        // TODO: maybe set up this watch outside of constructor?
+        this.store.watch(
+            state => state.userId,
+            (newValue, oldValue) => {
+                this.userId = newValue
+            })
     }
     public openTooltip(node: ISigmaNode) {
         const me = this
         // Make copy of singleton's config by value to avoid mutation
+        const tooltipsConfig = this.tooltipsConfig
         const configClone = clonedeep(tooltipsConfig);
 
         if (isMobile.any()) {
@@ -49,5 +64,6 @@ export class TooltipOpener implements ITooltipOpener {
 @injectable()
 class TooltipOpenerArgs {
     @inject(TYPES.Object) public tooltips
+    @inject(TYPES.Object) public tooltipsConfig
     @inject(TYPES.Object) public store
 }

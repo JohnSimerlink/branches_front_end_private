@@ -66,7 +66,7 @@ import {tooltipsConfig} from '../objects/sigmaNode/tooltipsConfig';
 const sigmaAny: any = sigma
 import clonedeep from 'lodash.clonedeep'
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
-import {TooltipOpener} from '../tooltipOpener';
+import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
 import {ContentUserLoader} from '../loaders/contentUser/ContentUserLoader';
 import StudyMenu from '../components/studyMenu/studyMenu'
 import {Tree2ComponentCreator} from '../components/tree2Component/treeComponent'
