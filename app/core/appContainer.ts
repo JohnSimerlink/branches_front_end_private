@@ -146,7 +146,8 @@ class AppContainer {
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
-        const store: Store<any> = new BranchesStore({globalDataStore: globalStore}) as Store<any>
+        const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
+        const store: Store<any> = new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
 
         const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
             return []
