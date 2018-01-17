@@ -148,7 +148,7 @@ import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
-import {GRAPH_CONTAINER_ID, ROOT_ID} from './app/core/globals';
+import {GRAPH_CONTAINER_ID, JOHN_USER_ID, ROOT_ID} from './app/core/globals';
 import {ContentLoader, ContentLoaderArgs} from './app/loaders/content/ContentLoader';
 import {ContentUserLoader, ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
 import {TreeUserLoader, TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
@@ -442,6 +442,29 @@ const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbin
     bind<IApp>(TYPES.IApp).to(App)
     bind<AppArgs>(TYPES.AppArgs).to(AppArgs)
 })
+
+export const state: {
+    uri: string,
+    centeredTreeId: string,
+    sigmaInstance: ISigma,
+    graphData: object,
+    graph: object,
+    sigmaInitialized: boolean,
+    globalDataStore: IMutableSubscribableGlobalStore,
+    userId: string,
+} = {
+    uri: null,
+    centeredTreeId: ROOT_ID,
+    sigmaInstance: null,
+    graphData: {
+        nodes: [],
+        edges: [],
+    },
+    graph: null,
+    sigmaInitialized: false,
+    globalDataStore: null,
+    userId: JOHN_USER_ID,
+};
 const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)
     bind<any>(TYPES.Any).toConstantValue(null)
@@ -452,26 +475,6 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
 // tslint:disable-next-line ban-types
     bind<Number>(TYPES.Number).toConstantValue(0)
     bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
-    const state: {
-        uri: string,
-        centeredTreeId: string,
-        sigmaInstance: ISigma,
-        graphData: object,
-        graph: object,
-        sigmaInitialized: boolean,
-        globalDataStore: IMutableSubscribableGlobalStore,
-    } = {
-        uri: null,
-        centeredTreeId: ROOT_ID,
-        sigmaInstance: null,
-        graphData: {
-            nodes: [],
-            edges: [],
-        },
-        graph: null,
-        sigmaInitialized: false,
-        globalDataStore: null,
-    };
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
         state
     )

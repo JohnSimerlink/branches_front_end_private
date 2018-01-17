@@ -6,15 +6,15 @@ import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, IGlobalDatedMutation, IIdProppedDatedMutation,
     IMutableSubscribableGlobalStore, ISigma,
-    ISigmaEventListener, ITooltipOpener, IVuexStore,
+    ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
-import {tooltipsConfig} from '../objects/sigmaNode/tooltipsConfig';
-import {TooltipOpener} from '../tooltipOpener';
+import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
 import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
+import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -67,10 +67,20 @@ const mutations = {
         }
 
         sigmaInstance.cameras[0].goTo({x: 5, y: 5, ratio: .05})
+
         /* TODO: it would be nice if I didn't have to do all this constructing
          inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
+        const store = getters['getStore']
+        const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
+        const tooltipsConfig = tooltipRenderer.getTooltipsConfig()
         const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
-        const tooltipOpener: ITooltipOpener = new TooltipOpener({tooltips, store: getters['getStore']})
+        const tooltipOpener: ITooltipOpener =
+            new TooltipOpener(
+                {
+                    tooltips,
+                    store: getters['getStore'],
+                    tooltipsConfig,
+                })
         const sigmaEventListener: ISigmaEventListener = new SigmaEventListener({tooltipOpener, sigmaInstance})
         sigmaEventListener.startListening()
     },

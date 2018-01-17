@@ -429,6 +429,17 @@ export interface IRenderedNodesManagerCore {
 }
 export interface IRenderedNodesManager extends ISubscriber<ISigmaIdToRender> {}
 
+export type ITooltipRendererFunction = (node: ISigmaNode, template) => any
+export interface ITooltipRenderer {
+    renderer: (node: ISigmaNode, template) => any
+    getTooltipsConfig(): object
+    // renderer: ITooltipRendererFunction
+}
+
+export type Constructor = {
+    new (...args: any[]): any;
+}
+
 // stores
 
 export interface IMutableSubscribableGlobalStore
