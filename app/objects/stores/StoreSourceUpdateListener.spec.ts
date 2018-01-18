@@ -27,10 +27,11 @@ test('StoreSourceUpdateListener:::subscribe', (t) => {
         }
     }
     const subscribableUpdateSpy = sinon.spy(subscribable, 'onUpdate')
-    const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        = myContainer.get<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore)
+    // const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
+    //     = myContainer.get<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore)
     const storeSourceUpdateListener: IStoreSourceUpdateListener =
-        new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
+        myContainer.get<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener)
+        // new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
 
     expect(subscribableUpdateSpy.callCount).to.equal(0)
     storeSourceUpdateListener.subscribe(subscribable)
