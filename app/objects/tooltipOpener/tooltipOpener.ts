@@ -62,7 +62,7 @@ export class TooltipOpener implements ITooltipOpener {
 }
 
 @injectable()
-class TooltipOpenerArgs {
+export class TooltipOpenerArgs {
     @inject(TYPES.Object) public tooltips
     @inject(TYPES.Object) public tooltipsConfig
     @inject(TYPES.Object) public store
