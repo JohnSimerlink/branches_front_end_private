@@ -62,7 +62,6 @@ import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubs
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
 import {ContentLoader} from '../loaders/content/ContentLoader';
-import {tooltipsConfig} from '../objects/sigmaNode/tooltipsConfig';
 const sigmaAny: any = sigma
 import clonedeep from 'lodash.clonedeep'
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
