@@ -9,6 +9,7 @@ import {
 import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getSigmaIdsForContentId} from '../../testHelpers/testHelpers';
+import {getContentId} from '../../loaders/contentUser/ContentUserLoader';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
@@ -49,6 +50,16 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
             case ObjectDataTypes.CONTENT_DATA: {
                 // TODO: currently assumes that tree/sigma id's  are loaded before content is
                 const contentId = update.id
+                const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
+                if (sigmaIds.length) {
+                    this.sigmaNodesUpdater.handleUpdate(update)
+                }
+                break;
+            }
+            case ObjectDataTypes.CONTENT_USER_DATA: {
+                // TODO: currently assumes that tree/sigma id's  are loaded before content is
+                const contentUserId = update.id
+                const contentId = getContentId({contentUserId})
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)

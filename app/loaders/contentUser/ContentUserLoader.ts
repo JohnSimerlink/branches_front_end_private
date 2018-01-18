@@ -15,6 +15,11 @@ export function getContentUserId({contentId, userId}) {
     const separator = '__'
     return contentId + separator + userId
 }
+export function getContentId({contentUserId}) {
+    const separator = '__'
+    const contentId = contentUserId.substring(0, contentUserId.indexOf(separator))
+    return contentId
+}
 
 @injectable()
 export class ContentUserLoader implements IContentUserLoader {

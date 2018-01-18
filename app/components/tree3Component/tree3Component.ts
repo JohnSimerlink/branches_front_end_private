@@ -21,6 +21,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {secondsToPretty} from '../../core/filters'
+import {escape} from '../../objects/tooltipOpener/tooltipRenderer';
 const template = require('./tree.html').default
 // import {Store} from 'vuex';
 @injectable()
@@ -226,6 +227,28 @@ export class Tree3Creator implements ITree3Creator {
                     log('proficiencyClicked', this.proficiency, this.userId, this.contentUserId)
                     log('proficiencyClicked this.proficiency is', this.proficiency, proficiency, this.proficiencyInput)
                     this.proficiencyInput = proficiency
+                    const contentUserId = this.contentUserId
+                    const timestamp = Date.now()
+                    if (!this.contentUserDataLoaded) {
+                        const contentUserData = me.store.commit(
+                            MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA,
+                            {
+                                contentUserId,
+                                proficiency,
+                                timestamp,
+                            }
+                        )
+                        const contentUserDataString = escape(contentUserData)
+                        this.contentUserDataString = contentUserDataString
+                        // ^^^ trigger the recomputation of contentUserData()
+                        this.contentUserDataLoaded = true
+                    } else {
+                        me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
+                            contentUserId,
+                            proficiency,
+                            timestamp
+                        })
+                    }
                     // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                     //     contentUserId: this.contentUserId,
                     //     proficiency, // NOTICE HOW `this` is different from `me`

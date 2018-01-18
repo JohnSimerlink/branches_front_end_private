@@ -115,10 +115,10 @@ export interface IContentData {
 }
 
 export enum ContentPropertyNames {
-    TYPE,
-    QUESTION,
-    ANSWER,
-    TITLE,
+    TYPE = 'TYPE',
+    QUESTION = 'QUESTION',
+    ANSWER = 'ANSWER',
+    TITLE = 'TITLE',
 }
 
 export interface ISubscribableContent extends
@@ -147,10 +147,10 @@ export interface ISubscribableContentUserCore extends IContentUser {
 }
 
 export enum ContentUserPropertyNames {
-    OVERDUE,
-    TIMER,
-    PROFICIENCY,
-    LAST_RECORDED_STRENGTH,
+    OVERDUE = 'VERDUE',
+    TIMER = 'TIMER',
+    PROFICIENCY = 'PROFICIENCY',
+    LAST_RECORDED_STRENGTH = 'LAST_RECORDED_STRENGTH',
 }
 
 export interface ISubscribableContentUser extends
@@ -207,8 +207,8 @@ export type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 // field
 
 export enum FieldMutationTypes {
-    SET = 1001,
-    INCREMENT = 1002
+    SET = 'FIELD_MUTATION_TYPES_SET',
+    INCREMENT = 'FIELD_MUTATION_TYPES_INCREMENT',
 }
 export interface IField<T> {
     val(): T;
@@ -272,19 +272,19 @@ export interface ICreateMutation<ObjectDataInterface> {
     type: STORE_MUTATION_TYPES.CREATE_ITEM
 }
 export enum STORE_MUTATION_TYPES {
-    CREATE_ITEM = 1300,
-    DELETE_ITEM = 1301,
+    CREATE_ITEM = 'CREATE_ITEM',
+    DELETE_ITEM = 'DELETE_ITEM',
 }
 export type IGlobalMutation = ITypeIdProppedDatedMutation<AllPropertyMutationTypes>
     | ICreateMutation<any>
 
 export enum SetMutationTypes {
-    ADD = 1100,
-    REMOVE = 1101
+    ADD = 'ADD',
+    REMOVE = 'REMOVE'
 }
 
 export enum PointMutationTypes {
-    SHIFT = 1200
+    SHIFT = 'SHIFT'
 }
 
 export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
@@ -299,18 +299,18 @@ export type AllPropertyMutationTypes = TreePropertyMutationTypes
     | ContentPropertyMutationTypes
 
 export enum ObjectDataTypes {
-    TREE_DATA,
-    TREE_LOCATION_DATA,
-    TREE_USER_DATA,
-    CONTENT_DATA,
-    CONTENT_USER_DATA,
+    TREE_DATA = 'TREE_DATA',
+    TREE_LOCATION_DATA = 'TREE_LOCATION_DATA',
+    TREE_USER_DATA = 'TREE_USER_DATA',
+    CONTENT_DATA = 'CONTENT_DATA',
+    CONTENT_USER_DATA = 'CONTENT_USER_DATA',
 }
 export enum ObjectTypes {
-    TREE,
-    TREE_LOCATION,
-    TREE_USER,
-    CONTENT,
-    CONTENT_USER,
+    TREE = 'TREE',
+    TREE_LOCATION =  'TREE_LOCATION',
+    TREE_USER = 'TREE_USER',
+    CONTENT = 'CONTENT',
+    CONTENT_USER = 'CONTENT_USER',
 }
 
 // UI Manager objects
@@ -606,9 +606,9 @@ export interface IValable {
 }
 
 export enum TreePropertyNames {
-    CONTENT_ID,
-    PARENT_ID,
-    CHILDREN
+    CONTENT_ID = 'CONTENT_ID',
+    PARENT_ID = 'PARENT_ID',
+    CHILDREN = 'CHILDREN',
 }
 
 export interface ISubscribableTree extends ISubscribable<IValUpdates>,
@@ -631,8 +631,8 @@ export interface ISubscribableTreeUserCore extends ITreeUser {
 }
 
 export enum TreeUserPropertyNames {
-    PROFICIENCY_STATS,
-    AGGREGATION_TIMER,
+    PROFICIENCY_STATS = 'STATS',
+    AGGREGATION_TIMER = 'AGGREGATION_TIMER',
 }
 
 export interface ISubscribableTreeUser extends
@@ -658,7 +658,7 @@ export interface ISubscribableTreeLocationCore extends ITreeLocation {
 }
 
 export enum TreeLocationPropertyNames {
-    POINT,
+    POINT = 'POINT',
 }
 
 export interface ISubscribableTreeLocation extends

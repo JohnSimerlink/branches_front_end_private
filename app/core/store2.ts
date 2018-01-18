@@ -7,7 +7,7 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     IMutableSubscribableGlobalStore, ISigma,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
-    ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES
+    ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -35,6 +35,8 @@ export const MUTATION_NAMES = {
     ADD_NODE: 'add_node',
     CREATE_CONTENT_USER_DATA: 'create_content_user_data',
     ADD_CONTENT_INTERACTION: 'add_content_interaction',
+    ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA: 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
+    ADD_FIRST_CONTENT_INTERACTION: 'add_first_content_interaction',
     CHANGE_USER_ID: 'changeUserId',
 }
 
@@ -109,6 +111,18 @@ const mutations = {
         }
         state.globalDataStore.addMutation(globalMutation)
     },
+    [MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](state, {contentUserId, proficiency, timestamp}) {
+        const contentUserData: IContentUserData = {
+            id: contentUserId,
+            timer: 0, // TODO: add timer to app
+            lastRecordedStrength: null, // TODO: Add calculate strength to app,
+            overdue: false, // TODO: add overdue functionality
+            proficiency,
+        }
+        mutations[MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData})
+        mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {contentUserId, proficiency, timestamp})
+        return contentUserData
+    },
     [MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData}) {
         const createMutation: ICreateMutation<ContentUserData> = {
             id: contentUserId,
@@ -117,6 +131,7 @@ const mutations = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
         }
         state.globalDataStore.addMutation(createMutation)
+        // const contentUserData: IContentUserData = state.globalDataStore.addMutation(createMutation)
     //
     },
     [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
