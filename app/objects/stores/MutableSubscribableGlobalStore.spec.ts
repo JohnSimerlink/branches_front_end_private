@@ -21,7 +21,7 @@ import {
     IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore, ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeStoreSource,
-    ObjectTypes, TreePropertyNames
+    ObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
@@ -32,6 +32,9 @@ import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscrib
 import {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
 import {partialInject} from '../../testHelpers/partialInject';
+import {ContentUserData} from '../contentUser/ContentUserData';
+import {create} from 'domain';
+import {log} from '../../core/log'
 
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
@@ -44,6 +47,7 @@ test('MutableSubscribableGlobalStore:::Dependency injection should set all prope
 })
 test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeStore.addMutation(mutationObj)'
     + ' but without the objectType in mutationObj', (t) => {
+    // log('MSGlobalStore adding tree mutation called')
 
     const contentId = new SubscribableMutableField<string>({field: CONTENT_ID2})
     const parentId = new SubscribableMutableField<string>({field: 'adf12356'})
@@ -88,9 +92,9 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
 
     globalStore.addMutation(globalMutation)
 
+    expect(storeAddMutationSpy.callCount).to.deep.equal(1)
     const calledWith = storeAddMutationSpy.getCall(0).args[0]
     expect(calledWith).to.deep.equal(storeMutation)
-    expect(storeAddMutationSpy.callCount).to.deep.equal(1)
     t.pass()
 
 })
@@ -143,9 +147,9 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
 
     globalStore.addMutation(globalMutation)
 
+    expect(storeAddMutationSpy.callCount).to.deep.equal(1)
     const calledWith = storeAddMutationSpy.getCall(0).args[0]
     expect(calledWith).to.deep.equal(storeMutation)
-    expect(storeAddMutationSpy.callCount).to.deep.equal(1)
     t.pass()
 
 })
@@ -197,8 +201,49 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
 
     globalStore.addMutation(globalMutation)
 
+    expect(storeAddMutationSpy.callCount).to.deep.equal(1)
     const calledWith = storeAddMutationSpy.getCall(0).args[0]
     expect(calledWith).to.deep.equal(storeMutation)
-    expect(storeAddMutationSpy.callCount).to.deep.equal(1)
+    t.pass()
+})
+
+test('MutableSubscribableGlobalStore:::adding a create contentuser mutation should call contentUserStore addAndSubscribeToItemFromData', (t) => {
+    const contentUserStore: IMutableSubscribableContentUserStore =
+        myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
+    const overdue = true
+    const lastRecordedStrength = 50
+    const proficiency: PROFICIENCIES = PROFICIENCIES.THREE
+    const timer = 40
+    const contentUserId = 'abcde_12345'
+    const id = contentUserId
+    const contentUserData: IContentUserData = {
+        id,
+        lastRecordedStrength,
+        overdue,
+        proficiency,
+        timer,
+    }
+    const createMutation: ICreateMutation<IContentUserData> = {
+        id,
+        data: contentUserData,
+        objectType: ObjectTypes.CONTENT_USER,
+        type: STORE_MUTATION_TYPES.CREATE_ITEM,
+    }
+
+    const globalStore: IMutableSubscribableGlobalStore = partialInject<MutableSubscribableGlobalStoreArgs>({
+        konstructor: MutableSubscribableGlobalStore,
+        constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,
+        injections: {contentUserStore},
+        container: myContainer
+    })
+    const contentUserStoreAddAndSubscribeToItemFromDataSpy
+        = sinon.spy(contentUserStore, 'addAndSubscribeToItemFromData')
+
+    globalStore.startPublishing()
+    globalStore.addMutation(createMutation)
+
+    expect(contentUserStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1)
+    const calledWith = contentUserStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal({id, contentUserData})
     t.pass()
 })

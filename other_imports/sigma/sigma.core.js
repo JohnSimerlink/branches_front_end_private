@@ -57,7 +57,7 @@ var __instances = {};
  *                       sigma.settings.
  */
 var sigma = function (conf) {
-    console.log('SIGMA CORE CONSTRUCTOR CALLED!')
+    // console.log('SIGMA CORE CONSTRUCTOR CALLED!')
     // Local variables:
     // ****************
     var i,
@@ -322,7 +322,7 @@ sigma.prototype.killCamera = function (v) {
  *                               id.
  */
 sigma.prototype.addRenderer = function (options) {
-    console.log('SIGMA CORE ADD RENDERER CALLED')
+    // console.log('SIGMA CORE ADD RENDERER CALLED')
     var id,
         fn,
         camera,
@@ -371,7 +371,7 @@ sigma.prototype.addRenderer = function (options) {
         throw 'sigma.addRenderer: The camera is not properly referenced.';
 
     // Instantiate:
-    console.log('o being passed into the renderer function is', o)
+    // console.log('o being passed into the renderer function is', o)
     renderer = new fn(this.graph, camera, this.settings, o);
     this.renderers[id] = renderer;
     Object.defineProperty(renderer, 'id', {
@@ -380,7 +380,7 @@ sigma.prototype.addRenderer = function (options) {
 
     // Bind events:
     if (renderer.bind) {
-        console.log('sigma core about to bind events')
+        // console.log('sigma core about to bind events')
         renderer.bind(
             [
                 'click',
