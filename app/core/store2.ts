@@ -4,7 +4,7 @@ import {GRAPH_CONTAINER_ID, ROOT_ID} from './globals';
 import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
-    ContentUserPropertyNames, FieldMutationTypes, IGlobalDatedMutation, IIdProppedDatedMutation,
+    ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     IMutableSubscribableGlobalStore, ISigma,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames
@@ -101,7 +101,7 @@ const mutations = {
             data, id, propertyName, timestamp, type
         }
 
-        const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+        const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
             objectType,
             ...storeMutation
         }

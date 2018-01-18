@@ -13,7 +13,7 @@ import {
     CONTENT_TYPES, ContentPropertyNames,
     ContentUserPropertyNames,
     FieldMutationTypes,
-    IGlobalDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContent, IMutableSubscribableContentStore,
+    ITypeIdProppedDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContent, IMutableSubscribableContentStore,
     IMutableSubscribableContentUser,
     IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTree,
@@ -80,7 +80,7 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
         data, id, propertyName, timestamp, type
     }
 
-    const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+    const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
         objectType,
         ...storeMutation
     }
@@ -135,7 +135,7 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
         data, id: contentId, propertyName, timestamp, type
     }
 
-    const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+    const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
         objectType,
         ...storeMutation
     }
@@ -189,7 +189,7 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
         data, id: contentId, propertyName, timestamp, type: mutationType,
     }
 
-    const globalMutation: IGlobalDatedMutation<FieldMutationTypes> = {
+    const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
         objectType,
         ...storeMutation
     }

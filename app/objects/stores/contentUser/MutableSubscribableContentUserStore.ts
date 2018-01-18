@@ -15,7 +15,6 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
             ContentUserDeserializer.deserialize({id, contentUserData})
         this.storeSource.set(id, contentUser)
 
-        throw new Error('Method not implemented.');
     }
 
     public addMutation(

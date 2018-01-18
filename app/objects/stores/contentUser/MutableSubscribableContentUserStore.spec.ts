@@ -131,4 +131,3 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
     expect(calledWithContentUser).to.deep.equal(contentUser)
     t.pass()
 })
-
