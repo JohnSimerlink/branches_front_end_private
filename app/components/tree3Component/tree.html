@@ -2,6 +2,7 @@
 <!--<div class="tree">-->
     TREE TEMPLATE!!?? {{showHistory}}
     {{contentUserId}}
+    PROFICIENCY INPUT IS {{proficiencyInput}}
     <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
         SHOW HISTORY
         <item-history :item-id="content.id" :tree="tree" ></item-history>
@@ -77,7 +78,7 @@
     <div class="tree-proficiency" v-show="!addingChild && typeIsFact && !showHistory">
         <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
-        <proficiency-selector v-on:input="proficiencyClicked(proficiency)" v-model="proficiency"></proficiency-selector>
+        <proficiency-selector v-on:input="proficiencyClicked(proficiencyInput)" v-model="proficiencyInput"></proficiency-selector>
     </div>
     <div class="tree-footer" v-show="!addingChild && !showHistory">
         <div class="divider-horizontal"></div>

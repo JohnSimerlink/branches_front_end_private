@@ -227,8 +227,7 @@ export class TreeComponentCreator implements ITreeComponentCreator {
                 proficiencyClicked() {
                     log('proficiencyClicked')
                     me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
-                        userId: this.userId,
-                        contentId: this.contentId,
+                        contentUserId: this.contentUserId,
                         proficiency: this.proficiency, // NOTICE HOW `this` is different from `me`
                         timestamp: Date.now()
                     })

@@ -31,6 +31,7 @@ export const MUTATION_NAMES = {
     JUMP_TO: 'jump_to',
     REFRESH: 'refresh',
     ADD_NODE: 'add_node',
+    CREATE_CONTENT_USER_DATA: 'create_content_user_data',
     ADD_CONTENT_INTERACTION: 'add_content_interaction',
     CHANGE_USER_ID: 'changeUserId',
 }
@@ -89,8 +90,7 @@ const mutations = {
         state.sigmaInstance.refresh()
     },
 // TODO: if contentUser does not yet exist in the DB create it.
-    [MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {userId, contentId, proficiency, timestamp}) {
-        const contentUserId = getContentUserId({userId, contentId})
+    [MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {contentUserId, proficiency, timestamp}) {
         const id = contentUserId
         const objectType = ObjectTypes.CONTENT_USER
         const propertyName = ContentUserPropertyNames.PROFICIENCY;
@@ -106,6 +106,9 @@ const mutations = {
             ...storeMutation
         }
         state.globalDataStore.addMutation(globalMutation)
+    },
+    [MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData}) {
+    //
     },
     [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
         state.userId = userId
