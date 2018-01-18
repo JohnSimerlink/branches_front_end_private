@@ -29,11 +29,14 @@ studyMenu spec test with a method doesn't work. this is probably because there i
 ==========
 1/17/2018
 // FINISH tooltipRenderer/opener so that store can compile so that I can test partial dependency injection tool
-// Write Partial Dependency Injection tool
+//DONE Write Partial Dependency Injection tool
+// [] get tooltipRenderer.spec.ts working
+	- get store.watch working
 // Rewrite a bunch of the global store tests to use the partial inject tool
 // Make tooltipRenderer and tooltipOpener classes
 // Get tooltip opener to pass in correct contentUserId
 // Get app to generate a random initial userId
+// Get correct contentUserId to be sent to the contentuserstoreMutation center
 // TODO: if contentUser does not yet exist in the DB create it.
 mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION]
 

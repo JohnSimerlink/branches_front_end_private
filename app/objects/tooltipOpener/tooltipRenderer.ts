@@ -21,17 +21,12 @@ export function escape(str) {
 @injectable()
 export class TooltipRenderer implements ITooltipRenderer {
     private store: Store<any>
-    private userId: string
     constructor(@inject(TYPES.TooltipOpenerArgs){store}) {
         this.store = store
         // TODO: maybe set up this watch outside of constructor?
-        log('the store in tooltipRenderer is ', store)
-        this.store.watch(
-            state => state.userId,
-            (newValue, oldValue) => {
-                this.userId = newValue
-            })
-        // TODO: does this initialize userId with the initial value?
+    }
+    private userId(): string {
+        return this.store.state.userId
     }
     public renderer(node: ISigmaNode, template) {
         // var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
@@ -40,7 +35,7 @@ export class TooltipRenderer implements ITooltipRenderer {
         const contentEscaped = escape(node.content)
         const contentUserDataEscaped = escape(node.contentUserData)
         const contentId = node.contentId
-        const userId = this.userId
+        const userId = this.userId()
         const contentUserId = getContentUserId({contentId, userId})
         log('tooltips config called', node, template, node.content, contentEscaped,
             ' and contentUserId is', contentUserId,

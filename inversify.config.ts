@@ -32,7 +32,8 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITree, ITree3Creator, ITreeComponentCreator,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ITooltipOpener, ITooltipRenderer, ITree, ITree3Creator,
+    ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
@@ -163,6 +164,8 @@ import {
     Tree3Creator,
     Tree3CreatorArgs
 } from './app/components/tree3Component/tree3Component';
+import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
+import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -345,6 +348,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 
     bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
+    bind<TooltipRendererArgs>(TYPES.TooltipRendererArgs).to(TooltipRendererArgs)
+    bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer)
+    bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs)
+    bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener)
 })
 //
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
