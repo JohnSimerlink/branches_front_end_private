@@ -207,8 +207,8 @@ export type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 // field
 
 export enum FieldMutationTypes {
-    SET,
-    INCREMENT
+    SET = 1001,
+    INCREMENT = 1002
 }
 export interface IField<T> {
     val(): T;
@@ -267,23 +267,24 @@ export interface IActivatableDatedMutation<MutationTypes>
 }
 export interface ICreateMutation<ObjectDataInterface> {
     objectType: ObjectTypes
+    id: string
     data: ObjectDataInterface
     type: STORE_MUTATION_TYPES.CREATE_ITEM
 }
 export enum STORE_MUTATION_TYPES {
-    CREATE_ITEM,
-    DELETE_ITEM,
+    CREATE_ITEM = 1300,
+    DELETE_ITEM = 1301,
 }
 export type IGlobalMutation = ITypeIdProppedDatedMutation<AllPropertyMutationTypes>
-    & ICreateMutation<any>
+    | ICreateMutation<any>
 
 export enum SetMutationTypes {
-    ADD,
-    REMOVE
+    ADD = 1100,
+    REMOVE = 1101
 }
 
 export enum PointMutationTypes {
-    SHIFT
+    SHIFT = 1200
 }
 
 export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
@@ -455,7 +456,7 @@ export type Constructor = {
 // stores
 
 export interface IMutableSubscribableGlobalStore
-    extends ISubscribableGlobalStore, IMutable<ITypeIdProppedDatedMutation<AllPropertyMutationTypes>> {
+    extends ISubscribableGlobalStore, IMutable<IGlobalMutation> {
 }
 
 export interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,
@@ -484,7 +485,7 @@ export interface IMutableSubscribableTreeLocationStore
 export interface IMutableSubscribableContentUserStore
     extends ISubscribableContentUserStore,
         IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
-    addItem({id, contentUserData}: {id: string, contentUserData: IContentUserData})
+    addAndSubscribeToItemFromData({id, contentUserData}: {id: string, contentUserData: IContentUserData})
 }
 
 export interface IMutableSubscribableContentStore

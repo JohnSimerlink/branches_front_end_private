@@ -5,7 +5,7 @@ import {
     ContentUserPropertyNames, ITypeIdProppedDatedMutation,
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames, IGlobalMutation
+    TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
@@ -18,9 +18,11 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     }) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
     }
-    public addMutation(mutation: IGlobalMutation) {
+    private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
+        // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
             case ObjectTypes.TREE: {
+                // log('MSGlobalStore addEditMutation TREE called', mutation)
                 const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
                 const type: TreePropertyMutationTypes = mutation.type as TreePropertyMutationTypes
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
@@ -70,7 +72,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 const propertyName: ContentUserPropertyNames = mutation.propertyName as ContentUserPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const contentUserStoreMutation:
-                  IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
+                    IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     data: mutation.data,
                     id: mutation.id,
                     propertyName,
@@ -95,6 +97,26 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 this.contentStore.addMutation(contentStoreMutation)
                 break
             }
+        }
+    }
+    private addCreateMutation(mutation: ICreateMutation<any>) {
+        // log('MSGLobalStore addCreateMutation called: 3')
+        switch (mutation.objectType) {
+            case ObjectTypes.CONTENT_USER: {
+                const id = mutation.id
+                const contentUserData = mutation.data
+                this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData})
+            }
+        }
+    }
+    public addMutation(mutation: IGlobalMutation) {
+        // log('MSGLobalStore addMutation called 1', mutation.type, STORE_MUTATION_TYPES.CREATE_ITEM)
+        if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
+            // log('MSGLobalStore addMutation called: about to call addCreateMutation 2 ')
+            this.addCreateMutation(mutation)
+        } else {
+            // log('MSGLobalStore addMutation called: about to call addEditMutation 2')
+            this.addEditMutation(mutation)
         }
     }
     public callCallbacks() {

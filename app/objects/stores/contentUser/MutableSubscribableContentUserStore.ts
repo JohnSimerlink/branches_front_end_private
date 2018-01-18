@@ -10,11 +10,10 @@ import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserD
 
 class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
-    public addItem({id, contentUserData}: { id: string; contentUserData: IContentUserData; }) {
+    public addAndSubscribeToItemFromData({id, contentUserData}: { id: string; contentUserData: IContentUserData; }) {
         const contentUser: IMutableSubscribableContentUser =
             ContentUserDeserializer.deserialize({id, contentUserData})
-        this.storeSource.set(id, contentUser)
-
+        this.addAndSubscribeToItem(id, contentUser)
     }
 
     public addMutation(
