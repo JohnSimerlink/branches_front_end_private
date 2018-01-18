@@ -10,12 +10,13 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SigmaNodeUtils} from '../SigmaNode/SigmaNodeUtils';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {TooltipRenderer, TooltipRendererArgs} from './tooltipRenderer';
+import {escape, TooltipRenderer, TooltipRendererArgs} from './tooltipRenderer';
 import {myContainer, state} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {expect} from 'chai'
 import clonedeep = require('lodash.clonedeep')
 import BranchesStore from '../../core/store2';
+import {Store} from 'vuex';
 
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({
@@ -24,26 +25,6 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
         interfaceType: TYPES.ITooltipRenderer
     })
     expect(injects).to.equal(true)
-    t.pass()
-})
-test('TooltipRenderer:::Constructor should set userId with value from store state', (t) => {
-    const userId = 'abcdegh12938'
-    const stateClone = clonedeep(state)
-    stateClone.userId = userId
-    const globalDataStore: IMutableSubscribableGlobalStore =
-        myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
-
-    const store = new BranchesStore({state: stateClone, globalDataStore})
-    const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
-    // TODO: REWRITE this test with the partial DEPENDENCY INJECTION THING RIGHT NOW
-    // stateClone.userId = userId
-    // const store = new BranchesStore({state: stateClone, globalDataStore})
-    // const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({
-    //     container: myContainer,
-    //     argsType: TYPES.TooltipRendererArgs,
-    //     interfaceType: TYPES.ITooltipRenderer
-    // })
-    // expect(injects).to.equal(true)
     t.pass()
 })
 
@@ -62,22 +43,23 @@ test('tooltips renderer content should escape', t => {
         proficiency: PROFICIENCIES.ONE,
         lastRecordedStrength: 40,
     }
+    const content = {
+        type: CONTENT_TYPES.FACT,
+        question: 'What is capital of Ohio?',
+        answer: 'Columbus',
+        title: null,
+    }
     const node: ISigmaNodeData = {
         id: '1234',
         parentId: '12345',
-        contentId: '4239847',
+        contentId,
         children: [],
         x: 5,
         y: 7,
         aggregationTimer: 50,
-        content: {
-            type: CONTENT_TYPES.FACT,
-            question: 'What is capital of Ohio?',
-            answer: 'Columbus',
-            title: null,
-        },
+        content,
         contentUserData,
-        contentUserId: contentUserData.id,
+        contentUserId,
         label: 'What is capital . . .',
         size: 10,
         colorSlices: SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats),
@@ -85,16 +67,23 @@ test('tooltips renderer content should escape', t => {
         proficiency: PROFICIENCIES.ONE,
         overdue: false,
     }
-    // const expectedVueTreeTemplate: string =
-    //     `<div id="vue">
-    //         <tree
-    //             parentid='${node.parentId}'
-    //             contentid='${node.contentId}'
-    //             content-string='${contentEscaped}'
-    //             content-user-string='${contentUserDataEscaped}'
-    //             id='${node.id}'>
-    //         </tree>
-    //     </div>`;
-    // const vueTreeTemplate = renderer(node, null)
+    const contentEscaped = escape(node.content)
+    const contentUserDataEscaped = escape(node.contentUserData)
+    const expectedVueTreeTemplate: string =
+        `<div id="vue">
+            <tree
+                parentid='${node.parentId}'
+                contentid='${node.contentId}'
+                content-string='${contentEscaped}'
+                content-user-string='${contentUserDataEscaped}'
+                content-user-id='${contentUserId}'
+                id='${node.id}'>
+            </tree>
+        </div>`;
+    const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
+    const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
+    store.state.userId = userId
+    const vueTreeTemplate = tooltipRenderer.renderer(node, null)
+    expect(vueTreeTemplate).to.deep.equal(expectedVueTreeTemplate)
     t.pass()
 })

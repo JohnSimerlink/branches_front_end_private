@@ -4,7 +4,7 @@ import clonedeep = require('lodash.clonedeep') // TODO: why didn't regular requi
 
 import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
-import {ISigmaNode, ITooltipOpener, ITooltipRenderer, ITooltipRendererFunction} from '../interfaces';
+import {ISigmaNode, ISigmaNodeData, ITooltipOpener, ITooltipRenderer, ITooltipRendererFunction} from '../interfaces';
 import {log} from '../../core/log'
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
@@ -28,7 +28,7 @@ export class TooltipRenderer implements ITooltipRenderer {
     private userId(): string {
         return this.store.state.userId
     }
-    public renderer(node: ISigmaNode, template) {
+    public renderer(node: ISigmaNodeData, template) {
         // var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
         // switch (node.type) {
         //     case 'tree':
@@ -37,9 +37,9 @@ export class TooltipRenderer implements ITooltipRenderer {
         const contentId = node.contentId
         const userId = this.userId()
         const contentUserId = getContentUserId({contentId, userId})
-        log('tooltips config called', node, template, node.content, contentEscaped,
-            ' and contentUserId is', contentUserId,
-            ' and contentUserData is ', contentUserDataEscaped)
+        // log('tooltips config called', node, template, node.content, contentEscaped,
+        //     ' and contentUserId is', contentUserId,
+        //     ' and contentUserData is ', contentUserDataEscaped)
         const result: string =
             `<div id="vue">
             <tree

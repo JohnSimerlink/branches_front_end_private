@@ -431,7 +431,7 @@ export interface IRenderedNodesManager extends ISubscriber<ISigmaIdToRender> {}
 
 export type ITooltipRendererFunction = (node: ISigmaNode, template) => any
 export interface ITooltipRenderer {
-    renderer: (node: ISigmaNode, template) => any
+    renderer: (node: ISigmaNodeData, template) => any
     getTooltipsConfig(): object
     // renderer: ITooltipRendererFunction
 }
