@@ -48,7 +48,7 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
         return sigmaIds
     }
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
-        log('sigmaNodesUpdate handleUpdate called', update)
+        // log('sigmaNodesUpdate handleUpdate called', update)
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
         const me = this
         sigmaIds.forEach(sigmaId => {

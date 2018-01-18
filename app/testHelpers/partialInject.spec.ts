@@ -6,7 +6,6 @@ import {
 } from '../objects/interfaces';
 import {myContainer} from '../../inversify.config';
 import {TYPES} from '../objects/types';
-
 import test from 'ava'
 import {partialInject} from './partialInject';
 import {expect} from 'chai'
@@ -39,6 +38,35 @@ test('partial inject on ContentLoader', (t) => {
     })()
 
     expect(expectedContentLoader).to.deep.equal(partiallyInjectedContentLoader)
+    t.pass()
+})
+test('partial inject on ContentLoader FAIL', (t) => {
+    const expectedContentLoader = (() => {
+        const storeSource: ISubscribableContentStoreSource =
+            myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+
+        const firebaseRef: IFirebaseRef =  new FirebaseRef()
+        firebaseRef.update = (updates: object) => void 1
+        const contentLoader = new ContentLoader({ storeSource, firebaseRef})
+        return contentLoader
+    })()
+
+    const partiallyInjectedContentLoader = (() => {
+        const firebaseRef: IFirebaseRef = new FirebaseRef()
+        const contentLoader = partialInject<ContentLoaderArgs>(
+            {
+                konstructor: ContentLoader,
+                constructorArgsType: TYPES.ContentLoaderArgs,
+                injections: {
+                    firebaseRef,
+                },
+                container: myContainer,
+            }
+        )
+        return contentLoader
+    })()
+
+    expect(expectedContentLoader).to.not.deep.equal(partiallyInjectedContentLoader)
     t.pass()
 })
 // test('partial injection on BranchesStore', t => {

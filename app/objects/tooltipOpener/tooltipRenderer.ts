@@ -25,6 +25,7 @@ export class TooltipRenderer implements ITooltipRenderer {
     constructor(@inject(TYPES.TooltipOpenerArgs){store}) {
         this.store = store
         // TODO: maybe set up this watch outside of constructor?
+        log('the store in tooltipRenderer is ', store)
         this.store.watch(
             state => state.userId,
             (newValue, oldValue) => {

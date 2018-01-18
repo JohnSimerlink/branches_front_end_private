@@ -70,7 +70,7 @@ const mutations = {
 
         /* TODO: it would be nice if I didn't have to do all this constructing
          inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
-        const store = getters['getStore']
+        const store = getters['getStore']()
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig()
         const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
@@ -78,7 +78,7 @@ const mutations = {
             new TooltipOpener(
                 {
                     tooltips,
-                    store: getters['getStore'],
+                    store,
                     tooltipsConfig,
                 })
         const sigmaEventListener: ISigmaEventListener = new SigmaEventListener({tooltipOpener, sigmaInstance})
@@ -118,7 +118,6 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
         log('STORE 2 TS ADD NODE. THIS STORE is ', getters['getStore']())
     } else {
-        log('sigma not yet initialized . .. pushing node', node)
         state.graphData.nodes.push(node)
     }
 }
