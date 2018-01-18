@@ -255,7 +255,7 @@ export interface IIdProppedDatedMutation<MutationTypes, PropertyNames>
 export interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
     id: string
 }
-export interface IGlobalDatedMutation<MutationTypes>
+export interface ITypeIdProppedDatedMutation<MutationTypes>
     extends IIdProppedDatedMutation<MutationTypes, AllPropertyNames> {
     objectType: ObjectTypes
 }
@@ -268,7 +268,14 @@ export interface IActivatableDatedMutation<MutationTypes>
 export interface ICreateMutation<ObjectDataInterface> {
     objectType: ObjectTypes
     data: ObjectDataInterface
+    type: STORE_MUTATION_TYPES.CREATE_ITEM
 }
+export enum STORE_MUTATION_TYPES {
+    CREATE_ITEM,
+    DELETE_ITEM,
+}
+export type IGlobalMutation = ITypeIdProppedDatedMutation<AllPropertyMutationTypes>
+    & ICreateMutation<any>
 
 export enum SetMutationTypes {
     ADD,
@@ -448,7 +455,7 @@ export type Constructor = {
 // stores
 
 export interface IMutableSubscribableGlobalStore
-    extends ISubscribableGlobalStore, IMutable<IGlobalDatedMutation<AllPropertyMutationTypes>> {
+    extends ISubscribableGlobalStore, IMutable<ITypeIdProppedDatedMutation<AllPropertyMutationTypes>> {
 }
 
 export interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,

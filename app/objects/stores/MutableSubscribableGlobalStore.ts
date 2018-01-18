@@ -2,10 +2,10 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     AllPropertyMutationTypes, ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, IGlobalDatedMutation,
+    ContentUserPropertyNames, ITypeIdProppedDatedMutation,
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames
+    TreeUserPropertyNames, IGlobalMutation
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
@@ -18,7 +18,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     }) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
     }
-    public addMutation(mutation: IGlobalDatedMutation<AllPropertyMutationTypes>) {
+    public addMutation(mutation: IGlobalMutation) {
         switch (mutation.objectType) {
             case ObjectTypes.TREE: {
                 const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
@@ -101,7 +101,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         super.callCallbacks()
     }
 
-    public mutations(): Array<IGlobalDatedMutation<AllPropertyMutationTypes>> {
+    public mutations(): Array<ITypeIdProppedDatedMutation<AllPropertyMutationTypes>> {
         throw new Error('Method not implemented.');
     }
 
