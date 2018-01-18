@@ -43,10 +43,10 @@ export class TreeLoader implements ITreeLoader {
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
                      Often this first snapshot is null, if firebase hasn't called the network yet,
-                      or if the FirebaseMock hasn't flushed a mocked a fake event yet
-                      Therefore we just return without resolving,
-                       as the promise will actually get resolved in ideally a few more (dozen) milliseconds
-                       */
+                     or if the FirebaseMock hasn't flushed a mocked a fake event yet
+                     Therefore we just return without resolving,
+                     as the promise will actually get resolved in ideally a few more (dozen) milliseconds
+                    */
                 }
                 // let children = treeData.children || {}
                 // children = setToStringArray(children)
