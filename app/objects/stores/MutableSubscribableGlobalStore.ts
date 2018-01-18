@@ -77,7 +77,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                     timestamp: mutation.timestamp,
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 }
-                log('this contentUserStore is ', this.contentUserStore, this.contentUserStore.addMutation)
+                // log('this contentUserStore is ', this.contentUserStore, this.contentUserStore.addMutation)
                 this.contentUserStore.addMutation(contentUserStoreMutation)
                 break
             }

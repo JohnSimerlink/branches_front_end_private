@@ -31,6 +31,7 @@ import {MutableSubscribableContentStore} from './content/MutableSubscribableCont
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
+import {partialInject} from '../../testHelpers/partialInject';
 
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
@@ -61,28 +62,13 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
         updatesCallbacks: []
     })
 
-    const treeUserStore: IMutableSubscribableTreeUserStore
-        = myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+    const globalStore: IMutableSubscribableGlobalStore = partialInject<MutableSubscribableGlobalStoreArgs>({
+        konstructor: MutableSubscribableGlobalStore,
+        constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,
+        injections: {treeStore},
+        container: myContainer
+    })
 
-    const treeLocationStore: IMutableSubscribableTreeLocationStore
-        = myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
-
-    const contentStore: IMutableSubscribableContentStore
-        = myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
-
-    const contentUserStore: IMutableSubscribableContentUserStore
-        = myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
-
-    const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
-        {
-            contentStore,
-            contentUserStore,
-            treeStore,
-            treeLocationStore,
-            treeUserStore,
-            updatesCallbacks: [],
-        }
-    )
     const NEW_CONTENT_ID = 'def123'
     const objectType = ObjectTypes.TREE
     const propertyName = TreePropertyNames.CONTENT_ID;
@@ -132,28 +118,12 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
         updatesCallbacks: []
     })
 
-    const contentStore: IMutableSubscribableContentStore
-        = myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
-
-    const treeStore: IMutableSubscribableTreeStore
-        = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
-
-    const treeUserStore: IMutableSubscribableTreeUserStore
-        = myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
-
-    const treeLocationStore: IMutableSubscribableTreeLocationStore
-        = myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
-
-    const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
-        {
-            contentStore,
-            contentUserStore,
-            treeStore,
-            treeUserStore,
-            treeLocationStore,
-            updatesCallbacks: [],
-        }
-    )
+    const globalStore: IMutableSubscribableGlobalStore = partialInject<MutableSubscribableGlobalStoreArgs>({
+        konstructor: MutableSubscribableGlobalStore,
+        constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,
+        injections: {contentUserStore},
+        container: myContainer
+    })
     const newProficiencyVal = PROFICIENCIES.THREE
     const objectType = ObjectTypes.CONTENT_USER
     const propertyName = ContentUserPropertyNames.PROFICIENCY;
@@ -202,28 +172,12 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
         updatesCallbacks: []
     })
 
-    const contentUserStore: IMutableSubscribableContentUserStore =
-        myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
-
-    const treeStore: IMutableSubscribableTreeStore
-        = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
-
-    const treeUserStore: IMutableSubscribableTreeUserStore
-        = myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
-
-    const treeLocationStore: IMutableSubscribableTreeLocationStore
-        = myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
-
-    const globalStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
-        {
-            contentStore,
-            contentUserStore,
-            treeStore,
-            treeLocationStore,
-            treeUserStore,
-            updatesCallbacks: [],
-        }
-    )
+    const globalStore: IMutableSubscribableGlobalStore = partialInject<MutableSubscribableGlobalStoreArgs>({
+        konstructor: MutableSubscribableGlobalStore,
+        constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,
+        injections: {contentStore},
+        container: myContainer
+    })
     const newQuestionVal = 'What is the capital of Iowa?'
     const objectType = ObjectTypes.CONTENT
     const propertyName = ContentPropertyNames.QUESTION;
