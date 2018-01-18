@@ -10,14 +10,17 @@ import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscriba
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
     ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IProppedDatedMutation, ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
+    ContentUserPropertyNames, FieldMutationTypes, IContentUserData, IIdProppedDatedMutation,
+    IMutableSubscribableContentUser,
+    IMutableSubscribableContentUserStore, IProppedDatedMutation, ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource,
     ISubscribableStoreSource
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoader';
+import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
 
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
@@ -99,3 +102,33 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     expect(() => contentUserStore.addMutation(sampleMutation)).to.throw(RangeError)
     t.pass()
 })
+
+test('MutableSubscribableContentUserStore > addItem::::addMutation' +
+    ' should call set() on storeSource', (t) => {
+
+    const userId = 'abcd_1234'
+    const contentId = CONTENT_ID2
+    const contentUserId = getContentUserId({userId, contentId})
+    const contentUserData: IContentUserData = {
+        id: contentUserId,
+        proficiency: PROFICIENCIES.FOUR,
+        timer: 27,
+        lastRecordedStrength: 50,
+        overdue: false,
+    }
+    const contentUser = ContentUserDeserializer.deserialize({id: contentUserId, contentUserData})
+    const storeSource: ISubscribableContentUserStoreSource
+        = myContainer.get<ISubscribableContentUserStoreSource>
+    (TYPES.ISubscribableContentUserStoreSource)
+    const contentUserStore: IMutableSubscribableContentUserStore = new MutableSubscribableContentUserStore({
+        storeSource,
+        updatesCallbacks: []
+    })
+    const storeSourceSetSpy = sinon.spy(storeSource, 'set')
+    contentUserStore.addItem({id: contentUserId, contentUserData})
+    expect(storeSourceSetSpy.callCount).to.deep.equal(1)
+    const calledWithContentUser = storeSourceSetSpy.getCall(0).args[1]
+    expect(calledWithContentUser).to.deep.equal(contentUser)
+    t.pass()
+})
+

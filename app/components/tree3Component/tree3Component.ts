@@ -6,6 +6,7 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
+    IContentUserData,
     ITree3Creator
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -50,7 +51,7 @@ export class Tree3Creator implements ITree3Creator {
                 contentId: String,
                 userId: String,
                 contentString: String,
-                contentUserDataString: String
+                contentUserDataString: String,
             },
             async created() {
                 log('tree component created',
@@ -81,6 +82,7 @@ export class Tree3Creator implements ITree3Creator {
                     addingChild: false,
                     user: {},
                     contentUserDataLoaded: false,
+                    proficiencyInput: PROFICIENCIES.UNKNOWN,
                 }
             },
             watch: {
@@ -111,17 +113,18 @@ export class Tree3Creator implements ITree3Creator {
                         return {}
                     }
                     const decoded = decodeURIComponent(this.contentUserDataString)
-                    log('decoded is ', decoded)
+                    log('contentUserData decoded is ', decoded)
                     // const content
-                    const content = JSON.parse(decoded)
-                    log('parsed is', content)
+                    const contentUserData: IContentUserData = JSON.parse(decoded)
+                    log('contentUserData parsed is', contentUserData)
 
+                    this.proficiencyInput = contentUserData.proficiency
                     this.contentUserDataLoaded = true
-                    return content
+                    return contentUserData
                 },
-                proficiency() {
-                    return this.contentUserData.proficiency
-                },
+                // proficiency() {
+                //     return this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                // },
                 timer() {
                     let timer = 0
 
@@ -221,12 +224,13 @@ export class Tree3Creator implements ITree3Creator {
                 },
                 proficiencyClicked(proficiency) {
                     log('proficiencyClicked', this.proficiency, this.userId, this.contentUserId)
-                    log('proficiencyClicked this.proficiency is', this.proficiency)
-                    me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
-                        contentUserId: this.contentUserId,
-                        proficiency, // NOTICE HOW `this` is different from `me`
-                        timestamp: Date.now()
-                    })
+                    log('proficiencyClicked this.proficiency is', this.proficiency, proficiency, this.proficiencyInput)
+                    this.proficiencyInput = proficiency
+                    // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
+                    //     contentUserId: this.contentUserId,
+                    //     proficiency, // NOTICE HOW `this` is different from `me`
+                    //     timestamp: Date.now()
+                    // })
                     //     user.addMutation('interaction', {contentId: this.content.id,
                     // proficiency: this.content.proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)

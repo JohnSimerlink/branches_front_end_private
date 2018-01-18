@@ -241,6 +241,7 @@ export interface IMutation<MutationTypes> {
     type: MutationTypes,
     data
 }
+// mutation types
 export interface IDatedMutation<MutationTypes> extends IMutation<MutationTypes> {
     timestamp: number // ISO 8601 POSIX Timestamp
 }
@@ -263,6 +264,10 @@ export interface IActivatableMutation<MutationTypes> extends IMutation<MutationT
 }
 export interface IActivatableDatedMutation<MutationTypes>
     extends IDatedMutation<MutationTypes>, IActivatableMutation<MutationTypes> {
+}
+export interface ICreateMutation<ObjectDataInterface> {
+    objectType: ObjectTypes
+    data: ObjectDataInterface
 }
 
 export enum SetMutationTypes {
@@ -472,6 +477,7 @@ export interface IMutableSubscribableTreeLocationStore
 export interface IMutableSubscribableContentUserStore
     extends ISubscribableContentUserStore,
         IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+    addItem({id, contentUserData}: {id: string, contentUserData: IContentUserData})
 }
 
 export interface IMutableSubscribableContentStore

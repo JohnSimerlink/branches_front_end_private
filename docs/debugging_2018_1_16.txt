@@ -41,7 +41,17 @@ studyMenu spec test with a method doesn't work. this is probably because there i
 mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION]
 
 
+GET A DEV and PRODUCTION DATABASE GOING
 
+======
+so color needs to be determined from ProficiencyOutput
+
+proficiencyInput by default gets set to contentUserData.proficiency or PROFICIENCIES.UNKNOWN if contentUserDataLoaded does not exist
+	-it is not a computed Property though . .. because it needs to get set by the proficiency-selector-component
+
+proficiencyInput model is synced with proficiencySelector
+	proficiencySelector onChange triggers ProficiencySelected event, which will call a mutation that fluxes through the system and updates the contentUserData in sigmaNode that tooltipRenderer uses to pass props into the vue template.
+	so as designed right now, contentUserData will stay null/undefined after user interactions if it started off null, unless the user closes the vue template and rerenders it from the updatedSigmaNode
 
 
 

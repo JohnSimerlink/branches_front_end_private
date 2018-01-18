@@ -1,16 +1,20 @@
 import {log} from '../../../core/log'
 import {
     ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames,
-    FieldMutationTypes,
+    ContentUserPropertyNames, IContentUserData,
     IIdProppedDatedMutation, IMutableSubscribableContentUser,
     IMutableSubscribableContentUserStore, IProppedDatedMutation,
 } from '../../interfaces';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
+import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
 
 class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
-    public mutations(): Array<IIdProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames>> {
+    public addItem({id, contentUserData}: { id: string; contentUserData: IContentUserData; }) {
+        const contentUser: IMutableSubscribableContentUser =
+            ContentUserDeserializer.deserialize({id, contentUserData})
+        this.storeSource.set(id, contentUser)
+
         throw new Error('Method not implemented.');
     }
 
@@ -34,6 +38,10 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
         }
         contentUser.addMutation(proppedDatedMutation)
         // throw new Error("Method not implemented.");
+    }
+    public mutations(): Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+        // return [] as Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>>
+        throw new Error('Not Implemented')
     }
 }
 
