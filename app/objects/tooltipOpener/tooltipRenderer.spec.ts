@@ -1,3 +1,5 @@
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom()
 import test from 'ava'
 import 'reflect-metadata'
 import {
