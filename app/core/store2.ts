@@ -7,7 +7,7 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     IMutableSubscribableGlobalStore, ISigma,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
-    ObjectTypes, TreePropertyNames
+    ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -15,6 +15,8 @@ import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
 import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
+import {ContentUserData} from '../objects/contentUser/ContentUserData';
+
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -108,6 +110,13 @@ const mutations = {
         state.globalDataStore.addMutation(globalMutation)
     },
     [MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData}) {
+        const createMutation: ICreateMutation<ContentUserData> = {
+            id: contentUserId,
+            data: contentUserData,
+            objectType: ObjectTypes.CONTENT_USER,
+            type: STORE_MUTATION_TYPES.CREATE_ITEM,
+        }
+        state.globalDataStore.addMutation(createMutation)
     //
     },
     [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
