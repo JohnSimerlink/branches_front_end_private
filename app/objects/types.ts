@@ -133,6 +133,7 @@ const TYPES = {
     SigmaRenderManager: Symbol('SigmaRenderManager'),
     SigmaRenderManagerArgs: Symbol('SigmaRenderManagerArgs'),
     SigmaUpdaterArgs: Symbol('SigmaUpdaterArgs'),
+    SpecialTreeLoaderArgs: Symbol('SpecialTreeLoaderArgs'),
     String: Symbol('String'),
     StringNotEmpty: Symbol('StringNotEmpty'),
     StoreSourceUpdateListenerArgs: Symbol('StoreSourceUpdateListenerArgs'),

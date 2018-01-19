@@ -140,15 +140,15 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
 
     const contentUserDataPromise = contentUserLoader.downloadData({contentId, userId})
     const wrappedPromise = makeQuerablePromise(contentUserDataPromise)
-    log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
     grandChildFirebaseRef.fakeEvent('value', undefined, sampleContentUserData)
-    log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
     grandChildFirebaseRef.flush()
-    log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
 
     const contentUserData = await contentUserDataPromise
-    log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(contentUserData).to.deep.equal(sampleContentUserData)
     t.pass()

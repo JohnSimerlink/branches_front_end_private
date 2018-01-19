@@ -8,7 +8,7 @@ import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
-    IFirebaseRef, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
+    IFirebaseRef, IHash, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
     ITreeDataFromFirebase,
     ITreeDataWithoutId, ITreeLoader
 } from '../../objects/interfaces';
@@ -88,10 +88,10 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
         myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
 
-    treeLoader.downloadData(treeId)
     let isLoaded = treeLoader.isLoaded(treeId)
     expect(isLoaded).to.equal(false)
 
+    treeLoader.downloadData(treeId)
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
     childFirebaseRef.flush()
 
@@ -127,15 +127,15 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
 
     const treeDataPromise = treeLoader.downloadData(treeId)
     const wrappedPromise = makeQuerablePromise(treeDataPromise)
-    log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
-    log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
     childFirebaseRef.flush()
-    log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
 
     const treeData = await treeDataPromise
-    log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(treeData).to.deep.equal(expectedTreeData)
     t.pass()

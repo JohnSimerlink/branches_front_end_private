@@ -119,15 +119,15 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
 
     const contentDataPromise = contentLoader.downloadData(contentId)
     const wrappedPromise = makeQuerablePromise(contentDataPromise)
-    log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
     childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
-    log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
     childFirebaseRef.flush()
-    log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
 
     const contentData = await contentDataPromise
-    log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
+    // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(contentData).to.deep.equal(expectedContentData)
     t.pass()
