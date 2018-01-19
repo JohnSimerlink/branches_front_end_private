@@ -7,13 +7,18 @@ import {
 } from '../../interfaces';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
+import {inject} from 'inversify';
+import {TYPES} from '../../types';
+import {FirebaseRef} from '../../dbSync/FirebaseRef';
 
-class MutableSubscribableContentUserStore extends SubscribableContentUserStore
+export class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
+    // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
     public addAndSubscribeToItemFromData({id, contentUserData}: { id: string; contentUserData: IContentUserData; }) {
         const contentUser: IMutableSubscribableContentUser =
             ContentUserDeserializer.deserialize({id, contentUserData})
         this.addAndSubscribeToItem(id, contentUser)
+        return contentUser
     }
 
     public addMutation(
@@ -43,5 +48,3 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
         throw new Error('Not Implemented')
     }
 }
-
-export {MutableSubscribableContentUserStore}

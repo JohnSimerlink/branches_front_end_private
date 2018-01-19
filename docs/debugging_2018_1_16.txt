@@ -75,7 +75,13 @@ e.g. have a SyncableMutableSubscribableContentUser class which extends
 class ObjectFirebaseAutoSaver {
 	private syncableObject: ISyncableObject
 	constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){syncableObject, syncableObjectFirebaseRef}) {
+		this.syncableObject = syncableObject
+		this.syncableObjectFirebaseRef = this.syncableObjectFirebaseRef
+	}
+	startAutoSave() {
 		
+		
+
 
 constructor({syncableObject, syncableObjectFirebaseRef})
 +startAutoSave()
@@ -123,3 +129,11 @@ we need a property called contentUserData
 so component we init contentUserDataInput to null
 and we have contentUserData be a computed property that returns contentUserDataInput if exists
 else returns the descaping of contentUserDataString
+=================need a function to save the contentUserData into
+
+
+======so when new contentUserDataItems are created the contentUserStore.addAndSubscribeToItemFromData will be called ======
+
+
+
+====TODO: when items are loaded, are they subscribed to???

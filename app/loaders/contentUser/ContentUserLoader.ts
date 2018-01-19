@@ -40,6 +40,16 @@ export class ContentUserLoader implements IContentUserLoader {
         // TODO: fix violoation of law of demeter
     }
 
+    public getItem({contentUserId}): IMutableSubscribableContentUser {
+        const contentItem = this.storeSource.get(contentUserId)
+        if (!contentItem) {
+            throw new RangeError(contentUserId +
+                ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.')
+        }
+        return contentItem
+        // TODO: fix violoation of law of demeter
+    }
+
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData({contentId, userId}): Promise<IContentUserData> {
