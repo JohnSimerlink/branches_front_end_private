@@ -16,7 +16,7 @@ import {
 } from './app/objects/contentUser/SubscribableContentUser';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
-import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/SyncToDB';
+import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/DBSyncer';
 import {
     SubscribableMutableField,
     SubscribableMutableFieldArgs

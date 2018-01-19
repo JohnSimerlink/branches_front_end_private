@@ -47,6 +47,7 @@ export interface ITreeLoader {
     downloadData(treeId): Promise<ITreeDataWithoutId>
     isLoaded(treeId): boolean
 }
+// export interface ISpecialTreeLoader extends ITreeLoader {}
 // export interface ITreeLocationLoaderCore {
 //     download(treeId): Promise<ITreeLocationData>
 //     deserialize(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation

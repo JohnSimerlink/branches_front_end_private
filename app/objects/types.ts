@@ -65,6 +65,7 @@ const TYPES = {
     ISigmaNodesUpdater: Symbol('ISigmaNodesUpdater'),
     ISigmaRenderManager: Symbol('ISigmaRenderManager'),
     ISigmaUpdater: Symbol('ISigmaUpdater'),
+    ISpecialTreeLoader: Symbol('ISpecialTreeLoader'),
     IStoreSourceUpdateListener: Symbol('IStoreSourceUpdateListener'),
     IStoreSourceUpdateListenerCore: Symbol('IStoreSourceUpdateListenerCore'),
     ISubscribableContent: Symbol('ISubscribableContent'),

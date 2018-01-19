@@ -74,6 +74,7 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 // import NewTree from ''
 import NewTree from '../components/newTree/newTree'
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
+import {SpecialTreeLoader} from '../loaders/tree/specialTreeLoader';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -114,6 +115,9 @@ class AppContainer {
             (TYPES.ISubscribableTreeLocationStoreSource)
         const treeLoader: ITreeLoader =
             new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
+        const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+        const specialTreeLoader: ITreeLoader =
+            new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
         const treeLocationLoader: ITreeLocationLoader =
             new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
         const treeUserLoader: ITreeUserLoader =
@@ -215,7 +219,14 @@ class AppContainer {
         Vue.component('newtree', NewTree)
 
         const knawledgeMapCreator: IVueComponentCreator =
-            new KnawledgeMapCreator({store, treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId})
+            new KnawledgeMapCreator({
+                    store,
+                    specialTreeLoader,
+                    treeLocationLoader,
+                    contentLoader,
+                    contentUserLoader,
+                    userId
+                })
         const KnawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: KnawledgeMap, props: true }

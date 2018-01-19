@@ -43,6 +43,11 @@ mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION]
 
 GET A DEV and PRODUCTION DATABASE GOING
 
+====specialTreeLoader debugging =====
+
+
+
+
 ======
 so color needs to be determined from ProficiencyOutput
 
@@ -54,8 +59,23 @@ proficiencyInput model is synced with proficiencySelector
 	so as designed right now, contentUserData will stay null/undefined after user interactions if it started off null, unless the user closes the vue template and rerenders it from the updatedSigmaNode
 
 
+public addMutation() {
+	if (mutation.objectType){
+		this.addEditMutation
+private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) . . . 
+private addCreateMutation(mutation: ICreationMutation) {
+	
+}
 
-
+===== syncable object =====
++_getPropertiesToSync(): Array<ISubscribable<IDetailedUpdates>>
+=====AutoSaver====
++startFirebaseAutoSave()
+	-needs to know the firebase ref of the root object - e.g. the contentUser object
+	-will then construct firebaseRefs for each of the child properties
+	-will then construct a firebaseSaver for each of those refs
+	-and will then construct a DBSyncer using that firebaseSavers.save function
+	-and will then subscribe each prop of the propertiesToSync from _getPropertiesToSync() with the DBSyncer.subscribe(prop)
 ==================junkyard====================
 so tooltipOpener needs to use tooltips to call this.tooltips.open. it also needs to have a getTooltipsConfig method
 
@@ -78,3 +98,11 @@ well getTooltipRenderer doesn't actually depend on anything. so we'll create tah
         return tooltipsConfig
     }
 
+
+we need a property called contentUserData
+	it gets set from contentUserDataString which is a prop
+	it also gets set from contentUserDataInput - which gets set from the result the add_content_interaction_if_no_content_user_data commit
+
+so component we init contentUserDataInput to null
+and we have contentUserData be a computed property that returns contentUserDataInput if exists
+else returns the descaping of contentUserDataString

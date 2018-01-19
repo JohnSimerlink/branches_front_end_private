@@ -22,7 +22,7 @@ const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
-    private treeLoader: ITreeLoader
+    private specialTreeLoader: ITreeLoader
     private treeLocationLoader: ITreeLocationLoader
     private contentLoader: IContentLoader
     private contentUserLoader: IContentUserLoader
@@ -33,10 +33,10 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
      that determine whether or not they are actually permitted to load the data
       */
     constructor(@inject(TYPES.KnawledgeMapCreatorArgs){
-        treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store
+        specialTreeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store
     }) {
         this.store = store
-        this.treeLoader = treeLoader
+        this.specialTreeLoader = specialTreeLoader
         this.treeLocationLoader = treeLocationLoader
         this.contentLoader = contentLoader
         this.contentUserLoader = contentUserLoader
@@ -49,11 +49,11 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             template,
             mounted() {
                 // TODO: Maybe all of these download actions should be done via Vuex Store actions
-                me.treeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
+                me.specialTreeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 me.contentLoader.downloadData(ROOT_CONTENT_ID)
                 me.contentUserLoader.downloadData({userId: me.userId, contentId: ROOT_CONTENT_ID})
-                me.treeLoader.downloadData(ANOTHER_ID)
+                me.specialTreeLoader.downloadData(ANOTHER_ID)
                 me.treeLocationLoader.downloadData(ANOTHER_ID)
                 me.contentLoader.downloadData(ANOTHER_CONTENT_ID)
                 me.contentUserLoader.downloadData({userId: me.userId, contentId: ANOTHER_ID})
@@ -86,7 +86,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 }
 @injectable()
 export class KnawledgeMapCreatorArgs {
-    @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
+    @inject(TYPES.ITreeLoader) public specialTreeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
