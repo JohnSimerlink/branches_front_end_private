@@ -15,8 +15,8 @@ import {
     SubscribableContentUserArgs
 } from './app/objects/contentUser/SubscribableContentUser';
 import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
-import {FirebaseSaverArgs} from './app/objects/dbSync/FirebaseSaver';
-import {SyncToDB, SyncToDBArgs} from './app/objects/dbSync/DBSyncer';
+import {PropertyFirebaseSaverArgs} from './app/objects/dbSync/PropertyFirebaseSaver';
+import {PropertyAutoFirebaseSaver, PropertyAutoFirebaseSaverArgs} from './app/objects/dbSync/PropertyAutoFirebaseSaver';
 import {
     SubscribableMutableField,
     SubscribableMutableFieldArgs
@@ -25,7 +25,7 @@ import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
 import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
-    FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseSyncer, IDetailedUpdates,
+    FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
     IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IOneToManyMap,
     IProficiencyStats,
     IProppedDatedMutation,
@@ -409,7 +409,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 
     bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
-    bind<IDatabaseSyncer>(TYPES.IDatabaseSyncer).to(SyncToDB)
+    bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver)
     bind<IDBSubscriberToTree>(TYPES.IDBSubscriberToTree).to(DBSubscriberToTree)
     bind<IDBSubscriberToTreeLocation>(TYPES.IDBSubscriberToTreeLocation).to(DBSubscriberToTreeLocation)
     bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
@@ -417,13 +417,13 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
 
 // tslint:disable-next-line ban-types
-    bind<SyncToDBArgs>(TYPES.SyncToDBArgs).to(SyncToDBArgs)
+    bind<PropertyAutoFirebaseSaverArgs>(TYPES.PropertyAutoFirebaseSaverArgs).to(PropertyAutoFirebaseSaverArgs)
     bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
         .toConstantValue((updates: IDetailedUpdates) => void 0)
     bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 
-    bind<FirebaseSaverArgs>(TYPES.FirebaseSaverArgs).to(FirebaseSaverArgs)
+    bind<PropertyFirebaseSaverArgs>(TYPES.PropertyFirebaseSaverArgs).to(PropertyFirebaseSaverArgs)
     bind<ITree>(TYPES.ITree).to(SubscribableTree)
 // TODO: maybe only use this constant binding for a test container. . . Not production container
 

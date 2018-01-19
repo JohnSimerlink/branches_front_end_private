@@ -1,6 +1,6 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer, ISubscribableMutableField} from '../interfaces';
+import {IDatabaseAutoSaver, ISubscribableMutableField} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
 
@@ -10,10 +10,10 @@ class DBSubscriberToContent implements IDBSubscriber {
     private question: ISubscribableMutableField<string>;
     private answer: ISubscribableMutableField<string>;
     private title: ISubscribableMutableField<number>;
-    private typeSyncer: IDatabaseSyncer;
-    private questionSyncer: IDatabaseSyncer;
-    private answerSyncer: IDatabaseSyncer;
-    private titleSyncer: IDatabaseSyncer;
+    private typeSyncer: IDatabaseAutoSaver;
+    private questionSyncer: IDatabaseAutoSaver;
+    private answerSyncer: IDatabaseAutoSaver;
+    private titleSyncer: IDatabaseAutoSaver;
 
     constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
       type, question, answer, title,
@@ -42,9 +42,9 @@ class DBSubscriberToContentArgs {
     @inject(TYPES.ISubscribableMutableString) public question
     @inject(TYPES.ISubscribableMutableString) public answer
     @inject(TYPES.ISubscribableMutableString) public title
-    @inject(TYPES.IDatabaseSyncer) private typeSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private questionSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private answerSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private titleSyncer: IDatabaseSyncer;
+    @inject(TYPES.IDatabaseAutoSaver) private typeSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private questionSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private answerSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private titleSyncer: IDatabaseAutoSaver;
 }
 export {DBSubscriberToContent, DBSubscriberToContentArgs}

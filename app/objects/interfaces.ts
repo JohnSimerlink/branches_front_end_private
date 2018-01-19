@@ -175,7 +175,7 @@ export interface IDatabaseSaver {
     save(updates: IDetailedUpdates)
 }
 
-export interface IDatabaseSyncer extends ISubscriber<IDetailedUpdates> {
+export interface IDatabaseAutoSaver extends ISubscriber<IDetailedUpdates> {
 }
 
 export interface IDBSubscriber {
@@ -195,6 +195,9 @@ export interface IFirebaseRef {
     on(eventName: string, callback: (ISnapshot) => {})
 }
 
+export interface ISyncableObject {
+    getPropertiesToSync(): Array<ISubscribable<IDetailedUpdates>>
+}
 export interface ISnapshot {
     val(): any
 }

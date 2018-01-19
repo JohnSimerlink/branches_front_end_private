@@ -4,18 +4,18 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatabaseSyncer, IDBSubscriber, ISubscribableTreeUser} from '../interfaces';
+import {IDatabaseAutoSaver, IDBSubscriber, ISubscribableTreeUser} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToTreeUser} from './DBSubscriberToTreeUser';
 
 let subscribableTreeUser
-let proficiencyStatsSyncer: IDatabaseSyncer
-let aggregationTimerSyncer: IDatabaseSyncer
+let proficiencyStatsSyncer: IDatabaseAutoSaver
+let aggregationTimerSyncer: IDatabaseAutoSaver
 let dbSubscriberToTreeUser: IDBSubscriber
 test.beforeEach('constructor', () => {
     subscribableTreeUser = myContainer.get<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser)
-    proficiencyStatsSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    aggregationTimerSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+    proficiencyStatsSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    aggregationTimerSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
     dbSubscriberToTreeUser = new DBSubscriberToTreeUser(
         {
             aggregationTimer: subscribableTreeUser.aggregationTimer,

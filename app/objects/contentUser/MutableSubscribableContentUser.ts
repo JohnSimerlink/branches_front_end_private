@@ -15,8 +15,7 @@ import {TYPES} from '../types'
 import {SubscribableContentUser} from './SubscribableContentUser';
 import {log} from '../../core/log'
 @injectable()
-class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
-
+export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
         updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
@@ -58,15 +57,3 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
         throw new Error('Not Implemented!')
     }
 }
-
-@injectable()
-class SubscribableContentUserArgs {
-    @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.String) public id: string
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
-    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
-    @inject(TYPES.ISubscribableMutableNumber) public timer: number
-}
-
-export {MutableSubscribableContentUser}

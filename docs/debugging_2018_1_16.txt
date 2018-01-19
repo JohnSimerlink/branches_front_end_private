@@ -67,15 +67,26 @@ private addCreateMutation(mutation: ICreationMutation) {
 	
 }
 
-===== syncable object =====
-+_getPropertiesToSync(): Array<ISubscribable<IDetailedUpdates>>
-=====AutoSaver====
-+startFirebaseAutoSave()
+===== syncableObject =====
++_getPropertiesToSync(): IHash<<ISubscribable<IDetailedUpdates>>>
+e.g. have a SyncableMutableSubscribableContentUser class which extends 
+===== FirebaseAutoSaver ====
+constructor({syncableObject, syncableObjectFirebaseRef})
++startAutoSave()
 	-needs to know the firebase ref of the root object - e.g. the contentUser object
 	-will then construct firebaseRefs for each of the child properties
+		--to do this we need the names of each of the properties
 	-will then construct a firebaseSaver for each of those refs
 	-and will then construct a DBSyncer using that firebaseSavers.save function
 	-and will then subscribe each prop of the propertiesToSync from _getPropertiesToSync() with the DBSyncer.subscribe(prop)
+		-- so obviously for this we need the actual prop as well as a mapping with its name so that we can subscribe the correct dbsyncer with correct prop
+
+const firebaseAutoSave = new FirebaseAutoSaver({
+	syncableObject: contentUser,
+	syncableObjectFirebaseRef: contentUserFirebaseRef (created from CONTENT_USERS_FIREBASE_REF.child(contentUserId)
+	})
+
+firebaseAutoSave.startAutoSave() // will ensure that any mutations call on properties of the syncableObject will have their side effects saved in the database
 ==================junkyard====================
 so tooltipOpener needs to use tooltips to call this.tooltips.open. it also needs to have a getTooltipsConfig method
 

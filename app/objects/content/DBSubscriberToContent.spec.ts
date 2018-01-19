@@ -3,23 +3,23 @@ injectFakeDom()
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatabaseSyncer, IDBSubscriber, ISubscribableContent} from '../interfaces';
+import {IDatabaseAutoSaver, IDBSubscriber, ISubscribableContent} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToContent} from './DBSubscriberToContent';
 import test from 'ava'
 
 let subscribableContent
-let typeSyncer: IDatabaseSyncer
-let titleSyncer: IDatabaseSyncer
-let questionSyncer: IDatabaseSyncer
-let answerSyncer: IDatabaseSyncer
+let typeSyncer: IDatabaseAutoSaver
+let titleSyncer: IDatabaseAutoSaver
+let questionSyncer: IDatabaseAutoSaver
+let answerSyncer: IDatabaseAutoSaver
 let dbSubscriberToContent: IDBSubscriber
 test.beforeEach('constructor', (t) => {
     subscribableContent = myContainer.get<ISubscribableContent>(TYPES.ISubscribableContent)
-    typeSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    titleSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    questionSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    answerSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+    typeSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    titleSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    questionSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    answerSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
     dbSubscriberToContent = new DBSubscriberToContent(
         {
             question: subscribableContent.question,

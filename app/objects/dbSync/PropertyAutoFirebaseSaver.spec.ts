@@ -6,7 +6,7 @@ import {myContainer} from '../../../inversify.config';
 import {IDetailedUpdates, ISaveUpdatesToDBFunction} from '../interfaces';
 import {ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
-import {SyncToDB} from './DBSyncer';
+import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
 import test from 'ava'
 
 // const firebaseRef = 'path/subpath/prop'
@@ -15,7 +15,7 @@ import test from 'ava'
 test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdate method to add the subscriber\'s
  callback method to the Subscribable\'s callback list`, (t) => {
     const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
-    const syncToDB = new SyncToDB({saveUpdatesToDBFunction})
+    const syncToDB = new PropertyAutoFirebaseSaver({saveUpdatesToDBFunction})
 // var spy = sinon.spy(saveUpdatesToDBFunction)
 // TODO: test the constructor to ensure it takes into account the firebaseRef
 

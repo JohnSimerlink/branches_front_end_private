@@ -1,6 +1,6 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer, ISubscribableMutableField} from '../interfaces';
+import {IDatabaseAutoSaver, ISubscribableMutableField} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
@@ -11,10 +11,10 @@ class DBSubscriberToContentUser implements IDBSubscriber {
     private timer: ISubscribableMutableField<string>;
     private proficiency: ISubscribableMutableField<PROFICIENCIES>;
     private lastRecordedStrength: ISubscribableMutableField<number>;
-    private overdueSyncer: IDatabaseSyncer;
-    private timerSyncer: IDatabaseSyncer;
-    private proficiencySyncer: IDatabaseSyncer;
-    private lastRecordedStrengthSyncer: IDatabaseSyncer;
+    private overdueSyncer: IDatabaseAutoSaver;
+    private timerSyncer: IDatabaseAutoSaver;
+    private proficiencySyncer: IDatabaseAutoSaver;
+    private lastRecordedStrengthSyncer: IDatabaseAutoSaver;
 
     constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
       overdue, timer, proficiency, lastRecordedStrength,
@@ -43,9 +43,9 @@ class DBSubscriberToContentUserArgs {
     @inject(TYPES.ISubscribableMutableString) public timer
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency
     @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength
-    @inject(TYPES.IDatabaseSyncer) private overdueSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private timerSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private proficiencySyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private lastRecordedStrengthSyncer: IDatabaseSyncer;
+    @inject(TYPES.IDatabaseAutoSaver) private overdueSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private timerSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private proficiencySyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private lastRecordedStrengthSyncer: IDatabaseAutoSaver;
 }
 export {DBSubscriberToContentUser, DBSubscriberToContentUserArgs}

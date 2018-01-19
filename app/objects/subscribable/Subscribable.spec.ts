@@ -11,7 +11,7 @@ import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
 const updatesCallbacks = []
 const set = new SubscribableMutableStringSet({updatesCallbacks})
 // const firebaseRef = 'path/subpath/prop'
-// const firebaseSyncer = new SyncToDB({firebaseRef})
+// const firebaseSyncer = new PropertyAutoFirebaseSaver({firebaseRef})
 
 const callback1 = sinon.spy() // () => void 0
 const callback2 = sinon.spy() // () => void 0
