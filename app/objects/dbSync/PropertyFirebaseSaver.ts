@@ -8,9 +8,9 @@ if (!Object.entries) {
     entries.shim()
 }
 
-class FirebaseSaver implements IDatabaseSaver {
+export class PropertyFirebaseSaver implements IDatabaseSaver {
     private firebaseRef: IFirebaseRef
-    constructor(@inject(TYPES.FirebaseSaverArgs) {firebaseRef}) {
+    constructor(@inject(TYPES.PropertyFirebaseSaverArgs) {firebaseRef}) {
         this.firebaseRef = firebaseRef
     }
     public save(updatesObj: IDetailedUpdates) {
@@ -30,7 +30,6 @@ class FirebaseSaver implements IDatabaseSaver {
     }
 }
 @injectable()
-class FirebaseSaverArgs {
+export class PropertyFirebaseSaverArgs {
     @inject(TYPES.String) public firebaseRef
 }
-export {FirebaseSaver, FirebaseSaverArgs}

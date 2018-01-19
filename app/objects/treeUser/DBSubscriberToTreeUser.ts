@@ -1,6 +1,6 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatabaseSyncer, IProficiencyStats, ISubscribableMutableField} from '../interfaces';
+import {IDatabaseAutoSaver, IProficiencyStats, ISubscribableMutableField} from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
@@ -9,8 +9,8 @@ import {TYPES} from '../types';
 class DBSubscriberToTreeUser implements IDBSubscriber {
     private proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
     private aggregationTimer: ISubscribableMutableField<number>;
-    private proficiencyStatsSyncer: IDatabaseSyncer;
-    private aggregationTimerSyncer: IDatabaseSyncer;
+    private proficiencyStatsSyncer: IDatabaseAutoSaver;
+    private aggregationTimerSyncer: IDatabaseAutoSaver;
 
     constructor(@inject(TYPES.DBSubscriberToTreeUserArgs) {
       proficiencyStats, aggregationTimer,
@@ -31,7 +31,7 @@ class DBSubscriberToTreeUser implements IDBSubscriber {
 class DBSubscriberToTreeUserArgs {
     @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats
     @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer
-    @inject(TYPES.IDatabaseSyncer) private proficiencyStatsSyncer: IDatabaseSyncer;
-    @inject(TYPES.IDatabaseSyncer) private aggregationTimerSyncer: IDatabaseSyncer;
+    @inject(TYPES.IDatabaseAutoSaver) private proficiencyStatsSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) private aggregationTimerSyncer: IDatabaseAutoSaver;
 }
 export {DBSubscriberToTreeUser, DBSubscriberToTreeUserArgs}

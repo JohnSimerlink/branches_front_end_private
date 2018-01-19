@@ -1,13 +1,13 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
-import {IDatabaseSyncer, IDetailedUpdates, ISaveUpdatesToDBFunction, ISubscribable} from '../interfaces';
+import {IDatabaseAutoSaver, IDetailedUpdates, ISaveUpdatesToDBFunction, ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-class SyncToDB implements IDatabaseSyncer {
+export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {
     private saveUpdatesToDBFunction: ISaveUpdatesToDBFunction
-    constructor(@inject(TYPES.SyncToDBArgs){saveUpdatesToDBFunction}) {
+    constructor(@inject(TYPES.PropertyAutoFirebaseSaverArgs){saveUpdatesToDBFunction}) {
         this.saveUpdatesToDBFunction = saveUpdatesToDBFunction
     }
 
@@ -17,8 +17,6 @@ class SyncToDB implements IDatabaseSyncer {
 }
 
 @injectable()
-class SyncToDBArgs {
+export class PropertyAutoFirebaseSaverArgs {
     @inject(TYPES.ISaveUpdatesToDBFunction) public saveUpdatesToDBFunction
 }
-
-export {SyncToDB, SyncToDBArgs}

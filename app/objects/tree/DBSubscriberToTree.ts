@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import {
-    IDatabaseSyncer, IDBSubscriberToTree, ISubscribableMutableField,
+    IDatabaseAutoSaver, IDBSubscriberToTree, ISubscribableMutableField,
     ISubscribableMutableStringSet
 } from '../interfaces';
 import {IDBSubscriber} from '../interfaces';
@@ -12,9 +12,9 @@ export class DBSubscriberToTree implements IDBSubscriberToTree {
     private contentId: ISubscribableMutableField<string>;
     private parentId: ISubscribableMutableField<string>;
     private children: ISubscribableMutableStringSet;
-    private contentIdSyncer: IDatabaseSyncer;
-    private parentIdSyncer: IDatabaseSyncer;
-    private childrenSyncer: IDatabaseSyncer;
+    private contentIdSyncer: IDatabaseAutoSaver;
+    private parentIdSyncer: IDatabaseAutoSaver;
+    private childrenSyncer: IDatabaseAutoSaver;
 
     constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
       contentId, parentId, children,
@@ -42,7 +42,7 @@ export class DBSubscriberToTreeArgs {
     @inject(TYPES.ISubscribableMutableString) public contentId
     @inject(TYPES.ISubscribableMutableString) public parentId
     @inject(TYPES.ISubscribableMutableStringSet) public children
-    @inject(TYPES.IDatabaseSyncer) public contentIdSyncer: IDatabaseSyncer
-    @inject(TYPES.IDatabaseSyncer) public parentIdSyncer: IDatabaseSyncer
-    @inject(TYPES.IDatabaseSyncer) public childrenSyncer: IDatabaseSyncer
+    @inject(TYPES.IDatabaseAutoSaver) public contentIdSyncer: IDatabaseAutoSaver
+    @inject(TYPES.IDatabaseAutoSaver) public parentIdSyncer: IDatabaseAutoSaver
+    @inject(TYPES.IDatabaseAutoSaver) public childrenSyncer: IDatabaseAutoSaver
 }

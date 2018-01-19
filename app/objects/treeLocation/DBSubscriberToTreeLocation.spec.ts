@@ -7,20 +7,20 @@ import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {
-    IDatabaseSyncer, IDBSubscriber, IDBSubscriberToTreeLocation, IMutableSubscribablePoint,
+    IDatabaseAutoSaver, IDBSubscriber, IDBSubscriberToTreeLocation, IMutableSubscribablePoint,
     ISubscribableTreeLocation
 } from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToTreeLocation, DBSubscriberToTreeLocationArgs} from './DBSubscriberToTreeLocation';
 
 let subscribableTreeLocation
-let pointSyncer: IDatabaseSyncer
+let pointSyncer: IDatabaseAutoSaver
 let dbSubscriberToTreeLocation: IDBSubscriber
 test.beforeEach('constructor', () => {
     subscribableTreeLocation = myContainer.get<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation)
     log('subscribableTreeLocation and props are ' + subscribableTreeLocation +
         subscribableTreeLocation.aggregationTimer + subscribableTreeLocation.proficiencyStats)
-    pointSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+    pointSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
     dbSubscriberToTreeLocation = new DBSubscriberToTreeLocation(
         {
             point: subscribableTreeLocation.point,

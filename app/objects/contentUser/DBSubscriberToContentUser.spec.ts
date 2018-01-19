@@ -4,22 +4,22 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDatabaseSyncer, IDBSubscriber, ISubscribableContentUser} from '../interfaces';
+import {IDatabaseAutoSaver, IDBSubscriber, ISubscribableContentUser} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToContentUser} from './DBSubscriberToContentUser';
 
 let subscribableContentUser
-let overdueSyncer: IDatabaseSyncer
-let proficiencySyncer: IDatabaseSyncer
-let lastRecordedStrengthSyncer: IDatabaseSyncer
-let timerSyncer: IDatabaseSyncer
+let overdueSyncer: IDatabaseAutoSaver
+let proficiencySyncer: IDatabaseAutoSaver
+let lastRecordedStrengthSyncer: IDatabaseAutoSaver
+let timerSyncer: IDatabaseAutoSaver
 let dbSubscriberToContentUser: IDBSubscriber
 test.beforeEach('constructor', () => {
     subscribableContentUser = myContainer.get<ISubscribableContentUser>(TYPES.ISubscribableContentUser)
-    overdueSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    proficiencySyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    lastRecordedStrengthSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
-    timerSyncer = myContainer.get<IDatabaseSyncer>(TYPES.IDatabaseSyncer)
+    overdueSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    proficiencySyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    lastRecordedStrengthSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
+    timerSyncer = myContainer.get<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver)
     dbSubscriberToContentUser = new DBSubscriberToContentUser(
         {
             lastRecordedStrength: subscribableContentUser.lastRecordedStrength,

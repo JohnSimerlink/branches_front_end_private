@@ -12,7 +12,7 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
+export class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
     private publishing = false
     public id: string
     public overdue: ISubscribableMutableField<boolean>;
@@ -57,7 +57,7 @@ class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubs
 }
 
 @injectable()
-class SubscribableContentUserArgs {
+export class SubscribableContentUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
     @inject(TYPES.String) public id: string
     @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
@@ -66,4 +66,3 @@ class SubscribableContentUserArgs {
     @inject(TYPES.ISubscribableMutableNumber) public timer: number
 }
 
-export {SubscribableContentUser, SubscribableContentUserArgs}

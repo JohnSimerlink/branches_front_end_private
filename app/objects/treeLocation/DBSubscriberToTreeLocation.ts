@@ -2,14 +2,14 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IDatabaseSyncer, IDBSubscriberToTreeLocation, IMutableSubscribablePoint
+    IDatabaseAutoSaver, IDBSubscriberToTreeLocation, IMutableSubscribablePoint
 } from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
 export class DBSubscriberToTreeLocation implements IDBSubscriberToTreeLocation {
     private point: IMutableSubscribablePoint;
-    private pointSyncer: IDatabaseSyncer
+    private pointSyncer: IDatabaseAutoSaver
 
     constructor(@inject(TYPES.DBSubscriberToTreeLocationArgs) {
       point, pointSyncer,
@@ -24,5 +24,5 @@ export class DBSubscriberToTreeLocation implements IDBSubscriberToTreeLocation {
 @injectable()
 export class DBSubscriberToTreeLocationArgs {
     @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint;
-    @inject(TYPES.IDatabaseSyncer) private pointSyncer: IDatabaseSyncer;
+    @inject(TYPES.IDatabaseAutoSaver) private pointSyncer: IDatabaseAutoSaver;
 }
