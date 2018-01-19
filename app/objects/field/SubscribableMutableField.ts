@@ -6,7 +6,7 @@ import {FieldMutationTypes, IDatedMutation, IMutableField} from '../interfaces';
 import {} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-
+import {log} from '../../core/log'
 @injectable()
 class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
     private field: T
@@ -33,6 +33,7 @@ class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> impleme
         this.updates.val = field
     }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {
+        log('subscribable mutable field called')
         switch (mutation.type) {
             case FieldMutationTypes.SET:
                 this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?

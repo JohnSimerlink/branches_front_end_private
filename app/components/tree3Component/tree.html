@@ -3,6 +3,7 @@
     TREE TEMPLATE!!?? {{showHistory}}
     {{contentUserId}}
     PROFICIENCY INPUT IS {{proficiencyInput}}
+    {{stringifiedContentUserData}}
     <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
         SHOW HISTORY
         <item-history :item-id="content.id" :tree="tree" ></item-history>

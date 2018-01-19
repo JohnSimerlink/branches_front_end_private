@@ -13,6 +13,7 @@ import {
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
+import {getContentId} from '../../loaders/contentUser/ContentUserLoader';
 
 @injectable()
 class SigmaNodesUpdater implements ISigmaNodesUpdater {
@@ -38,17 +39,24 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 const treeId = update.id
                 sigmaIds = [treeId]
                 break
-            case ObjectDataTypes.CONTENT_DATA:
-            case ObjectDataTypes.CONTENT_USER_DATA:
+            case ObjectDataTypes.CONTENT_DATA: {
                 const contentId = update.id
                 sigmaIds = this.getSigmaIdsForContentId(contentId)
+                break
+            }
+            case ObjectDataTypes.CONTENT_USER_DATA: {
+                const contentUserId = update.id
+                const contentId = getContentId({contentUserId})
+                sigmaIds = this.getSigmaIdsForContentId(contentId)
+                log(contentUserId, 'sigmaIds for ', contentId, ' is ', sigmaIds)
                 // TODO: what to do if contentId is not stored in sigmaId map yet?
                 break;
+            }
         }
         return sigmaIds
     }
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
-        // log('sigmaNodesUpdate handleUpdate called', update)
+        log('sigmaNodesUpdate handleUpdate called', update)
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
         const me = this
         sigmaIds.forEach(sigmaId => {

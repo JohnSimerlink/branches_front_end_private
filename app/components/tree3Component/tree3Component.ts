@@ -82,6 +82,7 @@ export class Tree3Creator implements ITree3Creator {
                     showHistory: false,
                     addingChild: false,
                     user: {},
+                    contentUserDataLocal: null,
                     contentUserDataLoaded: false,
                     proficiencyInput: PROFICIENCIES.UNKNOWN,
                 }
@@ -110,6 +111,9 @@ export class Tree3Creator implements ITree3Creator {
                 },
                 contentUserData() {
                     this.contentUserDataLoaded = false
+                    if (this.contentUserDataLocal) {
+                        return this.contentUserDataLocal
+                    }
                     if (!this.contentUserDataString) {
                         return {}
                     }
@@ -177,6 +181,9 @@ export class Tree3Creator implements ITree3Creator {
                     // return this.tree && this.tree.children instanceof Object
                     // ? Object.keys(this.tree.children).length : 0
                 },
+                stringifiedContentUserData() {
+                    return JSON.stringify(this.contentUserData)
+                }
             },
             methods: {
                 aMethod() {
@@ -238,9 +245,7 @@ export class Tree3Creator implements ITree3Creator {
                                 timestamp,
                             }
                         )
-                        const contentUserDataString = escape(contentUserData)
-                        this.contentUserDataString = contentUserDataString
-                        // ^^^ trigger the recomputation of contentUserData()
+                        this.contentUserDataLocal = contentUserData
                         this.contentUserDataLoaded = true
                     } else {
                         me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {

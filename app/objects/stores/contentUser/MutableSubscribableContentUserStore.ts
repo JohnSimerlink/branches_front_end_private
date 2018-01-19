@@ -19,6 +19,7 @@ class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     public addMutation(
         mutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
     ) {
+        log('mutable subscribable contentuser store addMutation')
         // TODO: what to do if object does not exist in storeSource
         const id = mutation.id
         const contentUser: IMutableSubscribableContentUser

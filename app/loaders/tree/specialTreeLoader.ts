@@ -3,7 +3,8 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IHash,
-    IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource, ITreeDataFromFirebase,
+    IMutableSubscribableTree, IOneToManyMap, ISubscribableStoreSource, ISubscribableTreeStoreSource,
+    ITreeDataFromFirebase,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
@@ -16,8 +17,11 @@ import {setToStringArray} from '../../core/newUtils';
 @injectable()
 export class SpecialTreeLoader implements ITreeLoader {
     private treeLoader: ITreeLoader
-    private contentIdSigmaIdsMap: IHash<IHash<boolean>>
-    constructor(@inject(TYPES.SpecialTreeLoaderArgs){treeLoader, contentIdSigmaIdsMap}) {
+    private contentIdSigmaIdsMap: IOneToManyMap<string>
+    constructor(@inject(TYPES.SpecialTreeLoaderArgs){treeLoader, contentIdSigmaIdsMap}: {
+        treeLoader: ITreeLoader,
+        contentIdSigmaIdsMap: IOneToManyMap<string>
+    }) {
         this.treeLoader = treeLoader
         this.contentIdSigmaIdsMap = contentIdSigmaIdsMap
     }
@@ -28,10 +32,7 @@ export class SpecialTreeLoader implements ITreeLoader {
         log('treeLoader download finishedcalled')
         const contentId = treeDataWithoutId.contentId
         const sigmaId = treeId
-        if (!this.contentIdSigmaIdsMap[contentId]) {
-            this.contentIdSigmaIdsMap[contentId] = {}
-        }
-        this.contentIdSigmaIdsMap[contentId][sigmaId] = true
+        this.contentIdSigmaIdsMap.set(contentId, sigmaId)
         log('specialTreeLoader download called finished', this.contentIdSigmaIdsMap)
         return treeDataWithoutId
     }
@@ -46,7 +47,7 @@ export class SpecialTreeLoader implements ITreeLoader {
 }
 
 @injectable()
-export class TreeLoaderArgs {
+export class SpecialTreeLoaderArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
-    @inject(TYPES.Object) public contentIdSigmaIdsMap: IHash<IHash<boolean>>
+    @inject(TYPES.IOneToManyMap) public contentIdSigmaIdsMap: IOneToManyMap<string>
 }

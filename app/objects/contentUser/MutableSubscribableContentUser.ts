@@ -13,7 +13,7 @@ import {
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types'
 import {SubscribableContentUser} from './SubscribableContentUser';
-
+import {log} from '../../core/log'
 @injectable()
 class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
 
@@ -27,6 +27,7 @@ class MutableSubscribableContentUser extends SubscribableContentUser implements 
     public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
     // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
+        log('contentUser addMutation called', mutation)
         const propertyName: ContentUserPropertyNames = mutation.propertyName
         const propertyMutation: IDatedMutation<ContentUserPropertyMutationTypes> = {
             data: mutation.data,

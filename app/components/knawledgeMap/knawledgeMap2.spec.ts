@@ -15,7 +15,7 @@ import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader, IKnawledgeMapCreator, ITree
+    ITreeLocationLoader, IKnawledgeMapCreator, ITree, IOneToManyMap
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMap2';
@@ -25,6 +25,7 @@ import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {log} from '../../core/log'
+import {SpecialTreeLoader} from '../../loaders/tree/specialTreeLoader';
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -65,6 +66,8 @@ test.afterEach(t => {
 })
 test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+    const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+    const specialTreeLoader: ITreeLoader = new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
     const treeLocationLoaderDownloadDataSpy = sinon.spy(treeLocationLoader, 'downloadData')
@@ -78,7 +81,15 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     }
     const storeCommitSpy = sinon.spy(store, 'commit')
     const knawledgeMapCreator: IVueComponentCreator
-        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, userId, store})
+        = new KnawledgeMapCreator(
+            {
+                specialTreeLoader,
+                treeLocationLoader,
+                contentLoader,
+                contentUserLoader,
+                userId,
+                store
+            })
     const knawledgeMap = knawledgeMapCreator.create()
 
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
@@ -98,12 +109,20 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const contentId = 'abc123'
     const userId = 'bdd123'
     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+    const specialTreeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
     const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
     const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
     const knawledgeMapCreator: IKnawledgeMapCreator
-        = new KnawledgeMapCreator({treeLoader, treeLocationLoader, contentLoader, contentUserLoader, store, userId})
+        = new KnawledgeMapCreator({
+        specialTreeLoader,
+        treeLocationLoader,
+        contentLoader,
+        contentUserLoader,
+        store,
+        userId
+    })
     const KnawledgeMapComponent = knawledgeMapCreator.create()
     const Constructor = Vue.extend(KnawledgeMapComponent)
     const propsData = {

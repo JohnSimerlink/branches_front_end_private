@@ -115,7 +115,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             // log('MSGLobalStore addMutation called: about to call addCreateMutation 2 ')
             this.addCreateMutation(mutation)
         } else {
-            // log('MSGLobalStore addMutation called: about to call addEditMutation 2')
+            log('MSGLobalStore addMutation called: about to call addEditMutation 2')
             this.addEditMutation(mutation)
         }
     }
