@@ -40,7 +40,8 @@ class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> impleme
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
-                    + JSON.stringify(FieldMutationTypes))
+                    + JSON.stringify(FieldMutationTypes) +
+                `. ${mutation.type} is invalid`)
         }
         this._mutations.push(mutation)
         this.pushes = {mutations: mutation}

@@ -67,10 +67,16 @@ private addCreateMutation(mutation: ICreationMutation) {
 	
 }
 
-===== syncableObject =====
+===== <<interface>> ISyncableObject ===== (eh don't like the name all the way . . . oh well)
 +_getPropertiesToSync(): IHash<<ISubscribable<IDetailedUpdates>>>
 e.g. have a SyncableMutableSubscribableContentUser class which extends 
-===== FirebaseAutoSaver ====
+===== ObjectFirebaseAutoSaver ====
+@injectable()
+class ObjectFirebaseAutoSaver {
+	private syncableObject: ISyncableObject
+	constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){syncableObject, syncableObjectFirebaseRef}) {
+		
+
 constructor({syncableObject, syncableObjectFirebaseRef})
 +startAutoSave()
 	-needs to know the firebase ref of the root object - e.g. the contentUser object

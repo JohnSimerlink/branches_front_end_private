@@ -69,7 +69,8 @@ class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
-                    + JSON.stringify(SetMutationTypes))
+                    + JSON.stringify(SetMutationTypes) +
+                    `. ${mutation.type} is invalid`)
         }
         this._mutations.push(mutation)
         this.pushes = {mutations: mutation}

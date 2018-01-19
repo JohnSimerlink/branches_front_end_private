@@ -91,7 +91,8 @@ export class MutableSubscribablePoint
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
-                    + JSON.stringify(PointMutationTypes))
+                    + JSON.stringify(PointMutationTypes) +
+                    `. ${mutation.type} is invalid`)
         }
     }
 
@@ -102,7 +103,8 @@ export class MutableSubscribablePoint
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
-                    + JSON.stringify(PointMutationTypes))
+                    + JSON.stringify(PointMutationTypes) +
+                    `. ${mutation.type} is invalid`)
         }
     }
 

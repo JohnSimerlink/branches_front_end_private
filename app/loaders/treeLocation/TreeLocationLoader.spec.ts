@@ -19,7 +19,7 @@ test('treeLocationLoader:::DI Constructor should work', (t) => {
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
-    const firebaseRef: IFirebaseRef = new FirebaseRef()
+    const firebaseRef: IFirebaseRef = new MockFirebase()
 
     const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
     expect(treeLoader['storeSource']).to.deep.equal(storeSource)
@@ -30,7 +30,7 @@ test('treeLocationLoader:::Should set the firebaseRef and storeSource for the lo
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
-    const firebaseRef: IFirebaseRef = new FirebaseRef()
+    const firebaseRef: IFirebaseRef = new MockFirebase()
 
     const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
     expect(treeLoader['storeSource']).to.deep.equal(storeSource)
@@ -44,7 +44,7 @@ test('treeLocationLoader:::Should mark an id as loaded if it exists in the injec
 
     const treeId = '1234'
     const treeLocation = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
-    const firebaseRef: IFirebaseRef = new FirebaseRef()
+    const firebaseRef: IFirebaseRef = new MockFirebase()
     storeSource.set(treeId, treeLocation)
 
     const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
@@ -57,7 +57,7 @@ test('treeLocationLoader:::Should mark an id as not loaded if it does not exist 
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
     const nonExistentTreeLocationId = '01234'
-    const firebaseRef: IFirebaseRef = new FirebaseRef()
+    const firebaseRef: IFirebaseRef = new MockFirebase()
 
     const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
     const isLoaded = treeLoader.isLoaded(nonExistentTreeLocationId)
@@ -71,7 +71,7 @@ test('treeLocationLoader:::Should mark an id as loaded after being loaded', (t) 
     const treeId = '1234'
     const nonExistentTreeLocationId = '01234'
     const tree = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
-    const firebaseRef: IFirebaseRef = new FirebaseRef()
+    const firebaseRef: IFirebaseRef = new MockFirebase()
     storeSource.set(treeId, tree)
 
     const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
