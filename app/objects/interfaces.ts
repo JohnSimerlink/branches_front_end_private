@@ -71,6 +71,7 @@ export interface IContentLoader {
 
 export interface IContentUserLoader {
     getData({contentId, userId}): IContentUserData
+    getItem({contentUserId}): IMutableSubscribableContentUser
     downloadData({contentId, userId}): Promise<IContentUserData>
     isLoaded({contentId, userId}): boolean
 }
@@ -172,6 +173,7 @@ export interface IContentUserData {
 // dbSync
 
 export interface IObjectFirebaseAutoSaver {
+    initialSave()
     start()
 }
 export interface IDatabaseSaver {
@@ -200,8 +202,10 @@ export interface IFirebaseRef {
     on(eventName: string, callback: (ISnapshot) => {})
 }
 
-export interface ISyncableObject {
+export interface ISyncable {
     getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates>>
+}
+export interface ISyncableValable extends IValable, ISyncable {
 }
 export interface ISnapshot {
     val(): any
@@ -493,7 +497,11 @@ export interface IMutableSubscribableTreeLocationStore
 export interface IMutableSubscribableContentUserStore
     extends ISubscribableContentUserStore,
         IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
-    addAndSubscribeToItemFromData({id, contentUserData}: {id: string, contentUserData: IContentUserData})
+    addAndSubscribeToItemFromData(
+        {id, contentUserData}: {id: string, contentUserData: IContentUserData}
+        ): IMutableSubscribableContentUser
+}
+export interface IAutoSaveMutableSubscribableContentUserStore extends IMutableSubscribableContentUserStore {
 }
 
 export interface IMutableSubscribableContentStore
