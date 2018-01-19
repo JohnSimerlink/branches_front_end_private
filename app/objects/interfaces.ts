@@ -171,9 +171,14 @@ export interface IContentUserData {
 
 // dbSync
 
+export interface IObjectFirebaseAutoSaver {
+    start()
+}
 export interface IDatabaseSaver {
     save(updates: IDetailedUpdates)
 }
+
+export type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 
 export interface IDatabaseAutoSaver extends ISubscriber<IDetailedUpdates> {
 }
@@ -196,7 +201,7 @@ export interface IFirebaseRef {
 }
 
 export interface ISyncableObject {
-    getPropertiesToSync(): Array<ISubscribable<IDetailedUpdates>>
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates>>
 }
 export interface ISnapshot {
     val(): any
@@ -206,7 +211,6 @@ export interface IPushable {
     push(item: any)
 }
 
-export type ISaveUpdatesToDBFunction = (updates: IDetailedUpdates) => void
 
 // field
 
@@ -276,19 +280,19 @@ export interface ICreateMutation<ObjectDataInterface> {
     type: STORE_MUTATION_TYPES.CREATE_ITEM
 }
 export enum STORE_MUTATION_TYPES {
-    CREATE_ITEM = 'CREATE_ITEM',
-    DELETE_ITEM = 'DELETE_ITEM',
+    CREATE_ITEM = 'STORE_MUTATION_TYPES_CREATE_ITEM',
+    DELETE_ITEM = 'STORE_MUTATION_TYPES_DELETE_ITEM',
 }
 export type IGlobalMutation = ITypeIdProppedDatedMutation<AllPropertyMutationTypes>
     | ICreateMutation<any>
 
 export enum SetMutationTypes {
-    ADD = 'ADD',
-    REMOVE = 'REMOVE'
+    ADD = 'SetMutationTypes_ADD',
+    REMOVE = 'SetMutationTypes_REMOVE'
 }
 
 export enum PointMutationTypes {
-    SHIFT = 'SHIFT'
+    SHIFT = 'PointMutationTypes_SHIFT'
 }
 
 export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes

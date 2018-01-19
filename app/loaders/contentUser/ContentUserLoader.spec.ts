@@ -36,7 +36,7 @@ test('ContentUserLoader:::Should set the firebaseRef and storeSource for the loa
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
 
-    const firebaseRef: IFirebaseRef =  new FirebaseRef()
+    const firebaseRef: IFirebaseRef =  new MockFirebase()
 
     const contentUserLoader = new ContentUserLoader({ storeSource, firebaseRef})
     expect(contentUserLoader['storeSource']).to.deep.equal(storeSource)
@@ -51,7 +51,7 @@ test('ContentUserLoader:::Should mark an id as loaded if test exists in the inje
     const userId = '43987234'
     const contentUserId = getContentUserId({contentId, userId})
     const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
-    const firebaseRef: IFirebaseRef =  new FirebaseRef()
+    const firebaseRef: IFirebaseRef =  new MockFirebase()
     storeSource.set(contentUserId, contentUser)
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
@@ -67,7 +67,7 @@ test('ContentUserLoader:::Should mark an id as not loaded if test does not exist
     const nonExistentContentUserContentId = '0123bdefa52344'
     const nonExistentContentUserUserId = '0123bdefa5234abc4'
     const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
-    const firebaseRef: IFirebaseRef = new FirebaseRef()
+    const firebaseRef: IFirebaseRef = new MockFirebase()
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
     const isLoaded =
