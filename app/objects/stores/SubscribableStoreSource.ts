@@ -14,6 +14,7 @@ import {IMutableSubscribableTreeUser} from '../interfaces';
 import {ISubscribableTreeUserStoreSource} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
+import {log} from '../../core/log'
 if (!Object.entries) {
     entries.shim()
 }
@@ -39,6 +40,7 @@ export class SubscribableStoreSource<T> extends
     public set(id: string, obj: T & IValable) {
         this.hashmap[id] = obj
         this.update = {id, val: obj.val(), type: this.type}
+        log('storeSource set just called', this.update)
         this.callCallbacks()
     }
     public entries(): Array<entry<T>> {

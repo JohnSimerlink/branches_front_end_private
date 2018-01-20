@@ -55,6 +55,7 @@ export class ContentLoader implements IContentLoader {
                 if (isValidContent(contentData)) {
                     const content: IMutableSubscribableContent =
                         ContentDeserializer.deserialize({contentId, contentData})
+                    log('Content storeSource about to be set with ', contentId, content, content.val())
                     me.storeSource.set(contentId, content)
                     resolve(contentData)
                 } else {
