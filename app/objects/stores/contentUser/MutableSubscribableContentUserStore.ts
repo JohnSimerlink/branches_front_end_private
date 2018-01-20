@@ -3,7 +3,7 @@ import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, IContentUserData,
     IIdProppedDatedMutation, IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IProppedDatedMutation,
+    IMutableSubscribableContentUserStore, IProppedDatedMutation, ISyncableMutableSubscribableContentUser,
 } from '../../interfaces';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
@@ -14,8 +14,10 @@ import {FirebaseRef} from '../../dbSync/FirebaseRef';
 export class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    public addAndSubscribeToItemFromData({id, contentUserData}: { id: string; contentUserData: IContentUserData; }) {
-        const contentUser: IMutableSubscribableContentUser =
+    public addAndSubscribeToItemFromData(
+        {id, contentUserData}:
+            { id: string; contentUserData: IContentUserData; }): ISyncableMutableSubscribableContentUser {
+        const contentUser: ISyncableMutableSubscribableContentUser =
             ContentUserDeserializer.deserialize({id, contentUserData})
         this.addAndSubscribeToItem(id, contentUser)
         return contentUser

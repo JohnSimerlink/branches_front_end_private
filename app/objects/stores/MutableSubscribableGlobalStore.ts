@@ -106,8 +106,6 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 const id = mutation.id
                 const contentUserData = mutation.data
                 this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData})
-                const contentUserItem = this.contentUserStore.getItem({contentUserId: id})
-
             }
         }
     }

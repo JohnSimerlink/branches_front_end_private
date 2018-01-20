@@ -1,12 +1,13 @@
 import {log} from '../../../core/log'
 import {
-    IContentUserData, IFirebaseRef, IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver,
+    IContentUserData, IFirebaseRef,
+    IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableContentUser,
 } from '../../interfaces';
 import {inject} from 'inversify';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
+import {getContentId, getUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 
 export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
@@ -21,10 +22,15 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
     public addAndSubscribeToItemFromData(
         {id, contentUserData}:
         { id: string; contentUserData: IContentUserData; })
-    : IMutableSubscribableContentUser {
-        const contentUser: IMutableSubscribableContentUser =
+    : ISyncableMutableSubscribableContentUser {
+        const contentUser: ISyncableMutableSubscribableContentUser =
             super.addAndSubscribeToItemFromData({id, contentUserData})
-        const contentUserFirebaseRef = this.contentUsersFirebaseRef.child(id)
+        log('contentUser just created is', contentUser)
+        const contentId = getContentId({contentUserId: id})
+        const userId = getUserId({contentUserId: id})
+        const contentUsersContentFirebaseRef = this.contentUsersFirebaseRef.child(contentId)
+        const contentUserFirebaseRef = contentUsersContentFirebaseRef.child(userId)
+        log('contentUserFirebaseRef is', contentUserFirebaseRef)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: contentUser,
             syncableObjectFirebaseRef: contentUserFirebaseRef
@@ -34,4 +40,9 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
         // TODO: this needs to add the actual value into the db
         return contentUser
     }
+}
+export class AutoSaveMutableSubscribableContentUserStoreArgs {
+    @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource;
+    @inject(TYPES.Array) public updatesCallbacks;
+    @inject(TYPES.IFirebaseRef) public contentUsersFirebaseRef;
 }

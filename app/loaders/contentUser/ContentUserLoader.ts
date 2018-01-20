@@ -10,16 +10,7 @@ import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {setToStringArray} from '../../core/newUtils';
-
-export function getContentUserId({contentId, userId}) {
-    const separator = '__'
-    return contentId + separator + userId
-}
-export function getContentId({contentUserId}) {
-    const separator = '__'
-    const contentId = contentUserId.substring(0, contentUserId.indexOf(separator))
-    return contentId
-}
+import {getContentUserId} from './ContentUserLoaderUtils';
 
 @injectable()
 export class ContentUserLoader implements IContentUserLoader {
@@ -63,7 +54,7 @@ export class ContentUserLoader implements IContentUserLoader {
         const me = this
         return new Promise((resolve, reject) => {
             contentUserRef.on('value', (snapshot) => {
-                log('contentUserLoader data received', snapshot.val())
+                log('contentUserLoader data received', snapshot.val(), contentUserRef)
                 const contentUserData: IContentUserData = snapshot.val()
                 if (!contentUserData) {
                     return
@@ -93,6 +84,7 @@ export class ContentUserLoader implements IContentUserLoader {
         // TODO ^^ Figure out how to do this without casting
     }
 
+    // TODO: violates the COMMAND, DON'T ASK PRINCIPLE
     public isLoaded({contentId, userId}): boolean {
         const contentUserId = getContentUserId({contentId, userId})
         return !!this.storeSource.get(contentUserId)

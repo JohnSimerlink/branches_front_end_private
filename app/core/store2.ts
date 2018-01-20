@@ -5,7 +5,6 @@ import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
-    IMutableSubscribableGlobalStore, ISigma,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData
 } from '../objects/interfaces';
@@ -13,7 +12,6 @@ import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListen
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
 import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
-import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
 import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
 

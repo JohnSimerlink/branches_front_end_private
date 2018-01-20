@@ -13,7 +13,7 @@ import {
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
-import {getContentId} from '../../loaders/contentUser/ContentUserLoader';
+import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 @injectable()
 class SigmaNodesUpdater implements ISigmaNodesUpdater {

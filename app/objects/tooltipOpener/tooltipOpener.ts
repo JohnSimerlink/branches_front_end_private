@@ -7,7 +7,6 @@ import {TYPES} from '../types';
 import {ISigmaNode, ITooltipOpener, ITooltipRendererFunction} from '../interfaces';
 import {log} from '../../core/log'
 import {Store} from 'vuex';
-import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
 
 export function escape(str) {
     if (!str) {

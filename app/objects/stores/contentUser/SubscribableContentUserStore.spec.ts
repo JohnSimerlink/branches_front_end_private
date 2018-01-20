@@ -8,14 +8,12 @@ import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
 import {SubscribableMutableField} from '../../field/SubscribableMutableField';
 import {
-    ContentUserPropertyNames, FieldMutationTypes, IProppedDatedMutation, ISubscribableContentUserCore,
+    ContentUserPropertyNames, FieldMutationTypes, IProppedDatedMutation,
     ISubscribableContentUserStore
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
-import {SubscribableStore} from '../SubscribableStore';
-import {SubscribableContentUserStore} from './SubscribableContentUserStore';
-import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoader';
+import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 
 test('SubscribableContentUserStore > addAndSubscribeToItem:::' +
     'An update in a member content should be published to a subscriber of the content data stores', (t) => {

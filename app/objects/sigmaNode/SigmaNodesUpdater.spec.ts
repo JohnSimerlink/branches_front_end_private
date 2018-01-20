@@ -21,7 +21,7 @@ import {
     CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID,
     TREE_ID2
 } from '../../testHelpers/testHelpers';
-import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 let sigmaNodes
 let sigmaNode1

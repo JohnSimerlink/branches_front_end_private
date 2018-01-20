@@ -5,20 +5,34 @@ import {
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
+import {log} from '../../core/log'
 
 @injectable()
 export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
     private syncableObject: ISyncableValable
     private syncableObjectFirebaseRef: IFirebaseRef
 
-    constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){syncableObject, syncableObjectFirebaseRef}) {
+    constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){
+        syncableObject, syncableObjectFirebaseRef
+    }: {
+            syncableObject: ISyncableValable,
+            syncableObjectFirebaseRef: IFirebaseRef
+        }) {
         this.syncableObject = syncableObject
         this.syncableObjectFirebaseRef = syncableObjectFirebaseRef
     }
 
     public initialSave() {
-        const val = this.syncableObject.val()
-        this.syncableObjectFirebaseRef.update(val)
+        const saveVal = {}
+
+        const propertiesToSync = this.syncableObject.getPropertiesToSync()
+        for (const [propName, property] of Object.entries(propertiesToSync)) {
+            saveVal[propName] = {
+                val: property.val()
+            }
+        }
+        log('initialSave ObjectAutoFirebaseSaver val is', saveVal)
+        this.syncableObjectFirebaseRef.update(saveVal)
     }
     public start() {
         const propertiesToSync = this.syncableObject.getPropertiesToSync()

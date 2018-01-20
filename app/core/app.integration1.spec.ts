@@ -41,7 +41,7 @@ import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribab
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
-import {getContentUserId} from '../loaders/contentUser/ContentUserLoader';
+import {getContentUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +

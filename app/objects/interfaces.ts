@@ -162,6 +162,10 @@ export interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
+export interface ISyncableMutableSubscribableContentUser extends IMutableSubscribableContentUser, ISyncable {
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+}
+
 export interface IContentUserData {
     id: string,
     overdue: boolean,
@@ -196,14 +200,14 @@ export interface IDetailedUpdates {
     pushes?: object
 }
 
-export interface IFirebaseRef {
+export interface IFirebaseRef extends IPushable {
     update(updates: object),
-    child(path: string): IPushable,
+    child(path: string): IFirebaseRef,
     on(eventName: string, callback: (ISnapshot) => {})
 }
 
 export interface ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates>>
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 export interface ISyncableValable extends IValable, ISyncable {
 }

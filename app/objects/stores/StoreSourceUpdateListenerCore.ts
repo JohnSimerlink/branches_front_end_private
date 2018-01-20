@@ -9,7 +9,7 @@ import {
 import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getSigmaIdsForContentId} from '../../testHelpers/testHelpers';
-import {getContentId} from '../../loaders/contentUser/ContentUserLoader';
+import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {

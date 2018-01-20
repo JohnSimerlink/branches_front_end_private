@@ -41,7 +41,7 @@ import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
-import {INITIAL_ID_TO_DOWNLOAD} from './globals';
+import {INITIAL_ID_TO_DOWNLOAD, JOHN_USER_ID} from './globals';
 import {log, error} from './log'
 import studyMenu from '../components/studyMenu/studyMenu'
 import BranchesFooter from '../components/footer/branchesFooter'
@@ -75,6 +75,7 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 import NewTree from '../components/newTree/newTree'
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
 import {SpecialTreeLoader} from '../loaders/tree/specialTreeLoader';
+import {AutoSaveMutableSubscribableContentUserStore} from '../objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
 
 log('about to call configureSigma')
 configureSigma(sigma)
@@ -143,7 +144,11 @@ class AppContainer {
             // myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const contentUserStore: IMutableSubscribableContentUserStore =
-            new MutableSubscribableContentUserStore({storeSource: contentUserStoreSource, updatesCallbacks: []})
+            new AutoSaveMutableSubscribableContentUserStore({
+                storeSource: contentUserStoreSource,
+                updatesCallbacks: [],
+                contentUsersFirebaseRef: firebaseContentUsersRef,
+            })
 
         const globalStore: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
@@ -206,7 +211,7 @@ class AppContainer {
         // = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
-        const userId = 'abc1234'
+        const userId = JOHN_USER_ID // 'abc1234'
 
         const treeComponentCreator: ITree3Creator =
             new Tree3Creator({store})
