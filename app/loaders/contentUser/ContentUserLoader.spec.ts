@@ -6,7 +6,6 @@ import * as firebase from 'firebase'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
-import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserData,
@@ -17,9 +16,10 @@ import Reference = firebase.database.Reference;
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
-import {ContentUserLoader, ContentUserLoaderArgs, getContentUserId} from './ContentUserLoader';
+import {ContentUserLoader, ContentUserLoaderArgs} from './ContentUserLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+import {getContentUserId} from './ContentUserLoaderUtils';
 test('ContentUserLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<ContentUserLoaderArgs, IContentUserLoader>({
         container: myContainer,

@@ -54,6 +54,7 @@ class SigmaNode implements ISigmaNode {
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
         this.contentUserData = contentUserData
         this.proficiency = contentUserData.proficiency
+        log('sigmaNode receive new contentUserData', contentUserData)
     }
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {

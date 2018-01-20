@@ -4,18 +4,15 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as firebase from 'firebase';
 import {MockFirebase} from 'firebase-mock'
-import {Container, interfaces} from 'inversify';
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
-    IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader, IKnawledgeMapCreator, ITree, ITree3Creator, IMutableSubscribableGlobalStore,
+    ITree3Creator, IMutableSubscribableGlobalStore,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
     IMutableSubscribableContentStore, IMutableSubscribableContentUserStore
 } from '../../objects/interfaces';
@@ -23,12 +20,13 @@ import {TYPES} from '../../objects/types';
 import {Tree3Creator, Tree3CreatorArgs} from './tree3Component';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
-import {ContentUserLoaderArgs, getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
+import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {log} from '../../core/log'
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscribableGlobalStore';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests

@@ -19,8 +19,8 @@ import {
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
-import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoader';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
+import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +

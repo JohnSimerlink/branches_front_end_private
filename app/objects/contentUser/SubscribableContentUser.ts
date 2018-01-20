@@ -65,4 +65,3 @@ export class SubscribableContentUserArgs {
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
     @inject(TYPES.ISubscribableMutableNumber) public timer: number
 }
-

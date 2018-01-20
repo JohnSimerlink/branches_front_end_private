@@ -24,7 +24,7 @@ import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
 import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
-import {getContentUserId} from '../../loaders/contentUser/ContentUserLoader';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
     const expectedProperties = Object.getOwnPropertyNames
