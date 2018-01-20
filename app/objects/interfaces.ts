@@ -174,6 +174,22 @@ export interface IContentUserData {
     lastRecordedStrength: number,
 }
 
+export interface IContentUserDataFromDB {
+    id: string,
+    overdue: {
+        val: boolean,
+    },
+    timer: {
+        val: number,
+    },
+    proficiency: {
+        val: PROFICIENCIES
+    },
+    lastRecordedStrength: {
+        val: number
+    }
+}
+
 // dbSync
 
 export interface IObjectFirebaseAutoSaver {

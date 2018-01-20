@@ -37,6 +37,7 @@ export class TooltipRenderer implements ITooltipRenderer {
         const contentId = node.contentId
         const userId = this.userId()
         const contentUserId = getContentUserId({contentId, userId})
+        log('renderer contentUserDataEscaped is', contentId, userId, contentUserDataEscaped)
         // log('tooltips config called', node, template, node.content, contentEscaped,
         //     ' and contentUserId is', contentUserId,
         //     ' and contentUserData is ', contentUserDataEscaped)
@@ -46,7 +47,7 @@ export class TooltipRenderer implements ITooltipRenderer {
                 parentid='${node.parentId}'
                 contentid='${node.contentId}'
                 content-string='${contentEscaped}'
-                content-user-string='${contentUserDataEscaped}'
+                content-user-data-string='${contentUserDataEscaped}'
                 content-user-id='${contentUserId}'
                 id='${node.id}'>
             </tree>

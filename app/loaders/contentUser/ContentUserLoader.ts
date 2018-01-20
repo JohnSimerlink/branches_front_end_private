@@ -3,9 +3,9 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
-    IContentUserLoader, IContentUserData
+    IContentUserLoader, IContentUserData, IContentUserDataFromDB
 } from '../../objects/interfaces';
-import {isValidContentUser} from '../../objects/contentUser/contentUserValidator';
+import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/contentUserValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
@@ -50,13 +50,13 @@ export class ContentUserLoader implements IContentUserLoader {
         const contentUserId = getContentUserId({contentId, userId})
         const contentUsersFirebaseRefForContentId = this.firebaseRef.child(contentId)
         const contentUserRef = contentUsersFirebaseRefForContentId.child(userId)
-        log('contentUserLoader downloadData called')
+        log('contentUserLoader downloadData called', contentId, userId)
         const me = this
         return new Promise((resolve, reject) => {
             contentUserRef.on('value', (snapshot) => {
-                log('contentUserLoader data received', snapshot.val(), contentUserRef)
-                const contentUserData: IContentUserData = snapshot.val()
-                if (!contentUserData) {
+                log('contentUserLoader data received', contentId, userId, snapshot.val(), contentUserRef)
+                const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val()
+                if (!contentUserDataFromDB) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
@@ -66,14 +66,17 @@ export class ContentUserLoader implements IContentUserLoader {
                        as the promise will actually get resolved in ideally a few more (dozen) milliseconds
                        */
                 }
-                contentUserData.id = contentUserId
+                contentUserDataFromDB.id = contentUserId
                 // let children = contentUser.children || {}
                 // children = setToStringArray(children)
                 // contentUser.children = children as string[]
 
-                if (isValidContentUser(contentUserData)) {
+                const contentUserData: IContentUserData =
+                    ContentUserDeserializer.convertDBDataToObjectData({contentUserDataFromDB, id: contentUserId})
+                if (isValidContentUserDataFromDB(contentUserDataFromDB)) {
                     const contentUser: IMutableSubscribableContentUser =
-                        ContentUserDeserializer.deserialize({id: contentUserId, contentUserData})
+                        ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB})
+                    log('ContentUser storeSource about to be set with ', contentUserId, contentUser, contentUser.val())
                     me.storeSource.set(contentUserId, contentUser)
                     resolve(contentUserData)
                 } else {
