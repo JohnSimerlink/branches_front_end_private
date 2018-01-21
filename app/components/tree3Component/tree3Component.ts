@@ -110,8 +110,10 @@ export class Tree3Creator implements ITree3Creator {
                     return content
                 },
                 contentUserData() {
+                    log('ContentUserData updated!')
                     this.contentUserDataLoaded = false
                     if (this.contentUserDataLocal) {
+                        log('ContentUserData updated. using contentUserDataLocal!')
                         return this.contentUserDataLocal
                     }
                     if (!this.contentUserDataString) {
@@ -163,7 +165,8 @@ export class Tree3Creator implements ITree3Creator {
                         styles['color'] = 'white'
                     } else {
                         // if ()
-                        const proficiency = this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                        const proficiency = this.proficiencyInput
+                        // ^^ this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
                         styles['background-color'] = ProficiencyUtils.getColor(proficiency)
                         if (this.showHistory) {
                             styles['background-color'] = 'black'
