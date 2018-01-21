@@ -22,6 +22,7 @@ import {
     TREE_ID2
 } from '../../testHelpers/testHelpers';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+function refresh() {}
 
 let sigmaNodes
 let sigmaNode1
@@ -38,7 +39,7 @@ test.beforeEach('init sigmaNodes', () => {
     sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
     sigmaNodesUpdater = new SigmaNodesUpdater(
-        {sigmaNodes, getSigmaIdsForContentId, sigmaRenderManager}
+        {sigmaNodes, getSigmaIdsForContentId, sigmaRenderManager, refresh }
     )
 })
 //

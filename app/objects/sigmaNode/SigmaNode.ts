@@ -54,6 +54,7 @@ class SigmaNode implements ISigmaNode {
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
         this.contentUserData = contentUserData
         this.proficiency = contentUserData.proficiency
+        this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiency(this.proficiency)
         log('sigmaNode receive new contentUserData', contentUserData)
     }
 

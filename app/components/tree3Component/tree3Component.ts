@@ -249,6 +249,8 @@ export class Tree3Creator implements ITree3Creator {
                             }
                         )
                         this.contentUserDataLocal = contentUserData
+                        ;this.contentUserData; // trigger update
+                        ;this.stringifiedContentUserData; // trigger update
                         this.contentUserDataLoaded = true
                     } else {
                         me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {

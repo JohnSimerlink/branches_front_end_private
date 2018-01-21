@@ -20,13 +20,20 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
     private sigmaRenderManager: ISigmaRenderManager
+    private refresh: () => void
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId, sigmaNodes,
-        sigmaRenderManager} ) {
+        sigmaRenderManager, refresh}: {
+        getSigmaIdsForContentId: fGetSigmaIdsForContentId,
+        sigmaNodes: {},
+        sigmaRenderManager: ISigmaRenderManager,
+        refresh: () => void
+    } ) {
         this.sigmaNodes = sigmaNodes
         this.getSigmaIdsForContentId = getSigmaIdsForContentId
         this.sigmaRenderManager = sigmaRenderManager
+        this.refresh = refresh
     }
 
     private getSigmaNodeIds(update: ITypeAndIdAndValUpdates) {
@@ -91,6 +98,7 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
             default:
                 throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(ObjectDataTypes))
         }
+        this.refresh()
     }
 }
 @injectable()
@@ -98,6 +106,7 @@ class SigmaNodesUpdaterArgs {
     @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
     @inject(TYPES.Object) public sigmaNodes;
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
+    @inject(TYPES.Function) public refresh;
 }
 
 export {SigmaNodesUpdater, SigmaNodesUpdaterArgs}

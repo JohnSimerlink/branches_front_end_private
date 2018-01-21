@@ -57,8 +57,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager
-        })
+            sigmaRenderManager, refresh: () => void 0, })
 
     // contentUserStore
     const contentId = CONTENT_ID
@@ -132,8 +131,7 @@ test('Adding a mutation into the global stores for a content data,' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager
-        })
+            sigmaRenderManager, refresh: () => void 0, })
 
     // contentStore
     const contentId = CONTENT_ID
@@ -217,8 +215,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager
-        })
+            sigmaRenderManager, refresh: () => void 0, })
 
     // contentStore
     const proficiencyStatsVal: IProficiencyStats = {
@@ -302,8 +299,7 @@ test('Adding a mutation into the global stores for a tree location data,' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager
-        })
+            sigmaRenderManager, refresh: () => void 0, })
 
     const treeId = TREE_ID
     const FIRST_POINT_VALUE = {x: 5, y: 7}

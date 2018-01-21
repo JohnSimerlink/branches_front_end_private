@@ -47,10 +47,10 @@ function proficiencyToColor(proficiency){
       // if (node.trailingDots){
       //     renderTrailingDots(node, context, settings)
       // }
-      if (node.content && node.content.type === 'heading') {
-          renderHeading(node, context, settings)
-          return
-      }
+      // if (node.content && node.content.type === 'heading') {
+      //     renderHeading(node, context, settings)
+      //     return
+      // }
 
       var prefix = settings('prefix') || '';
 
@@ -76,18 +76,57 @@ function proficiencyToColor(proficiency){
       //      context.stroke()
       // }
 
-      context.beginPath();
-      context.arc(
-        x,
-        y,
-        size,
-        0,
-        Math.PI * 2,
-        true
-      );
-
-      context.closePath();
-      context.fill();
+      console.log("node, render called ", node, node.colorSlices)
+      // if (node.colorSlices && node.colorSlices.length) {
+      //     console.log("render Node has colorSlices")
+      //     for (let {color, start, end} in node.colorSlices) {
+      //         context.beginPath()
+      //         context.fillStyle = color
+      //         context.arc(x, y, size, start, end, true)
+      //         console.log('render context for this slice is', context)
+      //     }
+      //     context.closePath()
+      //     context.fill()
+      // } else {
+      // const colorSlices =[
+      //   {
+      //     color: 'purple',
+      //     start: Math.PI * -1 /2,
+      //     end: 3 * Math.PI / 2,
+      //   },
+      if (node.colorSlices) {
+          for (let colorSlice of node.colorSlices) {
+              console.log("render for loop", colorSlice)
+              context.fillStyle = colorSlice.color
+              context.beginPath()
+              context.arc(
+                  x,
+                  y,
+                  size,
+                  colorSlice.start,
+                  colorSlice.end,
+                  true
+              )
+              context.closePath()
+              context.fill()
+          }
+      }
+      // ]
+          // console.log("render Node does not have colorSlices", node.colorSlices)
+          // context.fillStyle = 'purple'
+          // context.beginPath();
+          // context.arc(
+          //     x,
+          //     y,
+          //     size,
+          //     Math.PI / 2 * -1,
+          //     3 * Math.PI / 2,
+          //     true
+          // );
+          //
+          // context.closePath();
+          // context.fill();
+      // }
       // console.log('NODE FINISHED DRAWING', node)
 
       if (node.overdue){
