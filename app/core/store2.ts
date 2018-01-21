@@ -108,6 +108,7 @@ const mutations = {
             ...storeMutation
         }
         state.globalDataStore.addMutation(globalMutation)
+        mutations[MUTATION_NAMES.REFRESH](state, null)
     },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](state, {contentUserId, proficiency, timestamp}) {
         const contentUserData: IContentUserData = {

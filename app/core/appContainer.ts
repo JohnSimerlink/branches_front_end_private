@@ -29,7 +29,7 @@ import {
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {App} from './app';
-import BranchesStore from './store2'
+import BranchesStore, {MUTATION_NAMES} from './store2'
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -192,10 +192,17 @@ class AppContainer {
         renderedNodesManager.subscribe(sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
         const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+        function refresh() {
+            store.commit(MUTATION_NAMES.REFRESH)
+        }
         const sigmaNodesUpdater: ISigmaNodesUpdater
         = new SigmaNodesUpdater(
-            {sigmaRenderManager, sigmaNodes, getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap)}
-            )
+            {
+                sigmaRenderManager,
+                sigmaNodes,
+                getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
+                refresh,
+            })
 
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
             = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})

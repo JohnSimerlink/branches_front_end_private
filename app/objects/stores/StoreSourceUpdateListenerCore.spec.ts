@@ -10,11 +10,12 @@ import {
     IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdates,
     ObjectDataTypes
 } from '../interfaces';
-import {SigmaNodesUpdater} from '../sigmaNode/SigmaNodesUpdater';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager} from '../sigmaNode/SigmaRenderManager';
 import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava'
+import {partialInject} from '../../testHelpers/partialInject';
 
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
     const injects = injectionWorks<StoreSourceUpdateListenerCoreArgs, IStoreSourceUpdateListenerCore>({
@@ -41,8 +42,12 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
     }
     const sigmaNodes = {}
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater
-        = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
+    const sigmaNodesUpdater: ISigmaNodesUpdater = partialInject<SigmaNodesUpdaterArgs>({
+        constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+        konstructor: SigmaNodesUpdater, container: myContainer,
+        injections: {sigmaNodes}
+    })
+        // = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})

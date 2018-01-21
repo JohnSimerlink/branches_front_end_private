@@ -1,12 +1,21 @@
 // tslint:disable object-literal-sort-keys
 import {start} from 'repl';
-import {IColorSlice, IProficiencyStats} from '../interfaces';
+import {IColorSlice, IContentUserData, IProficiencyStats} from '../interfaces';
 import {MathUtils} from '../MathUtils/MathUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 
-const INITIAL_START_RADIANS = -Math.PI / 2 // north
-class SigmaNodeUtils {
+export const INITIAL_START_RADIANS = -Math.PI / 2 // north
+export class SigmaNodeUtils {
+
+    public static getColorSlicesFromProficiency(proficiency): IColorSlice[] {
+        const colorSlice = {
+            color: ProficiencyUtils.getColor(proficiency),
+            start: INITIAL_START_RADIANS,
+            end: INITIAL_START_RADIANS + 2 * Math.PI,
+        }
+        return [colorSlice]
+    }
     public static getColorSlicesFromProficiencyStats(proficiencyStats: IProficiencyStats): IColorSlice[] {
         const colorSlices: IColorSlice[] = []
 
@@ -84,4 +93,3 @@ class SigmaNodeUtils {
         return colorSlices
     }
 }
-export {SigmaNodeUtils, INITIAL_START_RADIANS }

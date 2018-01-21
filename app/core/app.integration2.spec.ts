@@ -83,7 +83,13 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
     const sigmaNodesUpdater: ISigmaNodesUpdater
-        = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
+        = new SigmaNodesUpdater(
+        {
+            sigmaNodes,
+            sigmaRenderManager,
+            getSigmaIdsForContentId: () => void 0,
+            refresh: () => void 0
+        })
 
     const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
     const store: Store<any> = new BranchesStore({globalDataStore: {}, state}) as Store<any>
