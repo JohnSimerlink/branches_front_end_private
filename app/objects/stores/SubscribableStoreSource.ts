@@ -6,7 +6,7 @@ import {
     IMutableSubscribableTreeLocation, ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource,
+    ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser,
     ITypeAndIdAndValUpdates, IValable,
     ObjectDataTypes,
 } from '../interfaces';
@@ -84,7 +84,8 @@ export class SubscribableContentStoreSource
 }
 @injectable()
 export class SubscribableContentUserStoreSource
-    extends SubscribableStoreSource<IMutableSubscribableContentUser> implements ISubscribableContentUserStoreSource {
+    extends SubscribableStoreSource<ISyncableMutableSubscribableContentUser>
+    implements ISubscribableContentUserStoreSource {
     constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){hashmap, updatesCallbacks, type}) {
         super({hashmap, updatesCallbacks, type})
     }

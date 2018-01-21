@@ -8,7 +8,7 @@ import {myContainer} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID2, injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     CONTENT_TYPES, ContentPropertyNames,
     ContentUserPropertyNames,
@@ -35,6 +35,7 @@ import {partialInject} from '../../testHelpers/partialInject';
 import {ContentUserData} from '../contentUser/ContentUserData';
 import {create} from 'domain';
 import {log} from '../../core/log'
+import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser';
 
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
@@ -49,8 +50,8 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
     + ' but without the objectType in mutationObj', (t) => {
     // log('MSGlobalStore adding tree mutation called')
 
-    const contentId = new SubscribableMutableField<string>({field: CONTENT_ID2})
-    const parentId = new SubscribableMutableField<string>({field: 'adf12356'})
+    const contentId = new MutableSubscribableField<string>({field: CONTENT_ID2})
+    const parentId = new MutableSubscribableField<string>({field: 'adf12356'})
     const children = new SubscribableMutableStringSet()
     const id = TREE_ID
     const tree = new MutableSubscribableTree({
@@ -106,11 +107,11 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
     const contentId = CONTENT_ID
     const userId = '1239857'
     const contentUserId = contentId + userId
-    const overdue = new SubscribableMutableField<boolean>({field: false})
-    const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
-    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer = new SubscribableMutableField<number>({field: 30})
-    const contentUser = new MutableSubscribableContentUser({
+    const overdue = new MutableSubscribableField<boolean>({field: false})
+    const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+    const timer = new MutableSubscribableField<number>({field: 30})
+    const contentUser = new SyncableMutableSubscribableContentUser({
         id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
@@ -159,10 +160,10 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
 
     // contentStore
     const contentId = CONTENT_ID
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })

@@ -143,7 +143,6 @@ dispatcher.prototype.dispatchEvent = function (events, data) {
 
         if (this._handlers[eventName]) {
             if(isClickNode) {
-                console.log("handlers about to get called for ", eventName)
             }
 
             event = self.getEvent(eventName, data);
@@ -151,17 +150,14 @@ dispatcher.prototype.dispatchEvent = function (events, data) {
 
             for (j = 0, m = this._handlers[eventName].length; j !== m; j += 1) {
                 if (isClickNode) {
-                    console.log('dispatchEvent handlers getting called!')
                 }
                 this._handlers[eventName][j].handler(event);
                 if (!this._handlers[eventName][j].one) {
                     a.push(this._handlers[eventName][j]);
                     if (isClickNode) {
-                        console.log('dispatchEvent NOT ONE')
                     }
                 } else {
                     if (isClickNode) {
-                        console.log('dispatchEvent ONE')
                     }
                 }
             }

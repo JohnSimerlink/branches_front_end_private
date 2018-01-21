@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
-import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IHash, IMutableSubscribableContentUser, IContentUser, IContentUserData,
 } from '../../objects/interfaces';
@@ -28,10 +28,10 @@ test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) =
         timer: timerVal
     }
 
-    const overdue = new SubscribableMutableField<boolean>({field: overdueVal})
-    const lastRecordedStrength = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
-    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer = new SubscribableMutableField<number>({field: timerVal})
+    const overdue = new MutableSubscribableField<boolean>({field: overdueVal})
+    const lastRecordedStrength = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer = new MutableSubscribableField<number>({field: timerVal})
     const expectedContentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser(
         {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}
     )

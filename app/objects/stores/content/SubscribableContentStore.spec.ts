@@ -6,7 +6,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../../content/MutableSubscribableContent';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     CONTENT_TYPES,
     ContentPropertyNames, FieldMutationTypes, IMutableSubscribableContent, IProppedDatedMutation,
@@ -24,10 +24,10 @@ test('SubscribableContentStore > addAndSubscribeToItem:::An update' +
      I had to do it indirectly by adding a mutation
      */
     const contentId = CONTENT_ID2
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })

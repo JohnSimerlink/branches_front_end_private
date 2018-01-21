@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
-import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IHash, IMutableSubscribableContent, IContent, IContentData,
     CONTENT_TYPES
@@ -27,10 +27,10 @@ test('ContentDeserializer::: deserialize Should deserialize properly', (t) => {
     }
     const contentId = '092384'
 
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: typeVal})
-    const question = new SubscribableMutableField<string>({field: questionVal})
-    const answer = new SubscribableMutableField<string>({field: answerVal})
-    const title = new SubscribableMutableField<string>({field: titleVal})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: typeVal})
+    const question = new MutableSubscribableField<string>({field: questionVal})
+    const answer = new MutableSubscribableField<string>({field: answerVal})
+    const title = new MutableSubscribableField<string>({field: titleVal})
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */

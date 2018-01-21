@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
-import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IHash, IMutableSubscribableTree, ITree, ITreeData, ITreeDataFromFirebase,
     ITreeDataWithoutId
@@ -26,11 +26,11 @@ test('TreeDeserializer::: deserialize Should deserialize properly', (t) => {
     }
     const treeId = '092384'
 
-    const contentId = new SubscribableMutableField<string>({field: contentIdVal})
+    const contentId = new MutableSubscribableField<string>({field: contentIdVal})
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
-    const parentId = new SubscribableMutableField<string>({field: parentIdVal})
+    const parentId = new MutableSubscribableField<string>({field: parentIdVal})
     const children = new SubscribableMutableStringSet({set: childrenSet})
     const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
         {updatesCallbacks: [], id: treeId, contentId, parentId, children}

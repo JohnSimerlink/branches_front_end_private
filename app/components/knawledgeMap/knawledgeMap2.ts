@@ -49,10 +49,10 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             template,
             mounted() {
                 // TODO: Maybe all of these download actions should be done via Vuex Store actions
-                me.specialTreeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
-                me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
-                me.contentLoader.downloadData(ROOT_CONTENT_ID)
-                me.contentUserLoader.downloadData({userId: me.userId, contentId: ROOT_CONTENT_ID})
+                // me.specialTreeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
+                // me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
+                // me.contentLoader.downloadData(ROOT_CONTENT_ID)
+                // me.contentUserLoader.downloadData({userId: me.userId, contentId: ROOT_CONTENT_ID})
                 me.specialTreeLoader.downloadData(ANOTHER_ID)
                 me.treeLocationLoader.downloadData(ANOTHER_ID)
                 me.contentLoader.downloadData(ANOTHER_CONTENT_ID)
@@ -61,7 +61,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 log('about to initialized sigma')
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
                 // sigmaInstance.initialize()
-                log('kn created')
+                // log('kn created')
                 // log('container is ' + document.querySelector('#graph-container'))
                 // me.initializeSigma()
                 // log('sigma just initialized')

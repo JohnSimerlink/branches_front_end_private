@@ -9,7 +9,7 @@ import {myContainer} from '../../../inversify.config';
 import {
     IFirebaseRef, IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserData,
-    IContentUserLoader
+    IContentUserLoader, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import Reference = firebase.database.Reference;
@@ -50,7 +50,8 @@ test('ContentUserLoader:::Should mark an id as loaded if test exists in the inje
     const contentId = '987245'
     const userId = '43987234'
     const contentUserId = getContentUserId({contentId, userId})
-    const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
+    const contentUser = myContainer.get<ISyncableMutableSubscribableContentUser>
+    (TYPES.ISyncableMutableSubscribableContentUser)
     const firebaseRef: IFirebaseRef =  new MockFirebase()
     storeSource.set(contentUserId, contentUser)
 
@@ -209,7 +210,7 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
         proficiency: proficiencyVal,
         timer: timerVal
     }
-    const sampleContentUser: IMutableSubscribableContentUser =
+    const sampleContentUser: ISyncableMutableSubscribableContentUser =
         ContentUserDeserializer.deserialize({id: contentUserId, contentUserData: sampleContentUserData})
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)

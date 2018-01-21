@@ -219,7 +219,8 @@ export interface IDetailedUpdates {
 export interface IFirebaseRef extends IPushable {
     update(updates: object),
     child(path: string): IFirebaseRef,
-    on(eventName: string, callback: (ISnapshot) => {})
+    on(eventName: string, callback: (ISnapshot) => void)
+    once(eventName: string, callback: (ISnapshot) => void)
 }
 
 export interface ISyncable {
@@ -604,7 +605,7 @@ export interface ISubscribableTreeUserStoreSource
 export interface ISubscribableContentStoreSource
     extends IMap<IMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableContentUserStoreSource
-    extends IMap<IMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
 
 // components
 export interface ITreeComponentCreator extends IVueComponentCreator {

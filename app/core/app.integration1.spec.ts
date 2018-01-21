@@ -8,7 +8,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../inversify.config';
 import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
-import {SubscribableMutableField} from '../objects/field/SubscribableMutableField';
+import {MutableSubscribableField} from '../objects/field/MutableSubscribableField';
 import {
     CONTENT_TYPES, ContentPropertyMutationTypes, ContentPropertyNames,
     ContentUserPropertyMutationTypes,
@@ -42,6 +42,7 @@ import {TYPES} from '../objects/types';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App} from './app';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
+import {SyncableMutableSubscribableContentUser} from '../objects/contentUser/SyncableMutableSubscribableContentUser';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
@@ -63,12 +64,13 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const contentId = CONTENT_ID
     const userId = '1234567'
     const contentUserId = getContentUserId({contentId, userId})
-    const overdue = new SubscribableMutableField<boolean>({field: false})
-    const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
-    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer = new SubscribableMutableField<number>({field: 30})
-    const contentUser = new MutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+    const overdue = new MutableSubscribableField<boolean>({field: false})
+    const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+    const timer = new MutableSubscribableField<number>({field: 30})
+    const contentUser = new SyncableMutableSubscribableContentUser({
+        id: contentUserId, lastRecordedStrength, overdue,
+        proficiency, timer, updatesCallbacks: [],
     })
     const contentUserStore: IMutableSubscribableContentUserStore = (() => {
         const storeSource: ISubscribableContentUserStoreSource
@@ -135,10 +137,10 @@ test('Adding a mutation into the global stores for a content data,' +
 
     // contentStore
     const contentId = CONTENT_ID
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
@@ -234,8 +236,8 @@ test('Adding a mutation into the global stores for a tree user data,' +
         FOUR: 2,
     }
     const aggregationTimerVal = 54
-    const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
-    const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
+    const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal})
+    const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal})
     const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
 
     const contentUserStore: IMutableSubscribableContentUserStore =

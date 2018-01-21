@@ -7,7 +7,6 @@ import VueRouter from 'vue-router'
 // import KnawledgeMap, {KnawledgeMapCreator} from '../components/knawledgeMap/knawledgeMap2'
 import './components2'
 import {log} from './log'
-log('Vue is ' + Vue)
 // import './components.js'
 import Vuex from 'vuex'
 import {AppContainer} from './appContainer';

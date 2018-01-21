@@ -1,3 +1,5 @@
+import {IFirebaseRef} from '../../objects/interfaces';
+
 export const separator = '__'
 export function getContentUserId({contentId, userId}) {
     return contentId + separator + userId
@@ -11,4 +13,10 @@ export function getUserId({contentUserId}) {
     const end = contentUserId.length
     const userId = contentUserId.substring(start, end)
     return userId
+}
+export function getContentUserRef({contentUsersRef, contentId, userId, }: {
+    contentUsersRef: IFirebaseRef, contentId: string, userId: string,
+}): IFirebaseRef {
+    const contentUserRef = contentUsersRef.child(contentId).child(userId)
+    return contentUserRef
 }
