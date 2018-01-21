@@ -2,12 +2,13 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    IDescendantPublisher, IIdAndValUpdates,
-    ISubscribableStore, ISubscribableStoreSource
+    IDescendantPublisher, IIdAndValUpdates, ISubscribableContentUserStoreSource,
+    ISubscribableStore, ISubscribableStoreSource, ITypeAndIdAndValAndObjUpdates, ITypeAndIdAndValUpdates
 } from '../interfaces';
 import {IValUpdates} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
+import {log} from '../../core/log'
 
 // interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
@@ -20,7 +21,14 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         >;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
-    constructor({ storeSource, updatesCallbacks}) {
+    constructor(
+        { storeSource, updatesCallbacks}: {
+            storeSource: ISubscribableStoreSource<
+        ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
+        >,
+            updatesCallbacks: Function[],
+        }
+    ) {
         super({updatesCallbacks})
         this.storeSource = storeSource
     }
@@ -46,12 +54,29 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
             me.callCallbacks()
         })
     }
-    public startPublishing() {
+    private subscribeToExistingItems() {
         for (let [id, item] of this.storeSource.entries()) {
             item = item
             this.subscribeToItem(id, item)
             item.startPublishing()
         }
+    }
+    private subscribeToFutureItems() {
+        log('subscribeToFutureItems called')
+        // TODO: add a test to see if subscribe gets
+        // called on an item that gets added to store source after startPublishing gets called
+        this.storeSource.onUpdate((update: ITypeAndIdAndValAndObjUpdates) => {
+            const id = update.id
+            const item = update.obj
+            this.subscribeToItem(id, item)
+            item.startPublishing()
+            log('subscribeToFutureItems update in store Source is ', update, update.obj, update.obj['_id'])
+        })
+    }
+    public startPublishing() {
+        this.subscribeToExistingItems()
+        this.subscribeToFutureItems()
+        log('store', this, ' just startedPublishing')
         this.startedPublishing = true
     }
 

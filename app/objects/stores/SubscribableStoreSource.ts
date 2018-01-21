@@ -6,7 +6,7 @@ import {
     IMutableSubscribableTreeLocation, ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser,
+    ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser, ITypeAndIdAndValAndObjUpdates,
     ITypeAndIdAndValUpdates, IValable,
     ObjectDataTypes,
 } from '../interfaces';
@@ -22,7 +22,7 @@ if (!Object.entries) {
 @injectable()
 export class SubscribableStoreSource<T> extends
     SubscribableCore<ITypeAndIdAndValUpdates> implements ISubscribableStoreSource<T> {
-    private update: ITypeAndIdAndValUpdates
+    private update: ITypeAndIdAndValAndObjUpdates
     private type: ObjectDataTypes
     private hashmap: IHash<T>
     constructor(@inject(TYPES.SubscribableStoreSourceArgs){hashmap, type, updatesCallbacks}) {
@@ -30,7 +30,7 @@ export class SubscribableStoreSource<T> extends
         this.type = type
         this.hashmap = hashmap
     }
-    protected callbackArguments(): ITypeAndIdAndValUpdates {
+    protected callbackArguments(): ITypeAndIdAndValAndObjUpdates {
         return this.update
     }
     public get(id: string): T {
@@ -39,7 +39,7 @@ export class SubscribableStoreSource<T> extends
 
     public set(id: string, obj: T & IValable) {
         this.hashmap[id] = obj
-        this.update = {id, val: obj.val(), type: this.type}
+        this.update = {id, val: obj.val(), obj, type: this.type}
         log('storeSource set just called', this.update)
         this.callCallbacks()
     }
