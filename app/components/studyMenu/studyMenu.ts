@@ -21,7 +21,7 @@ export default {
     template, // '<div> {{movie}} this is the tree template</div>',
     props: [],
     async created() {
-        log('studyMenu created!', template)
+        // log('studyMenu created!', template)
         // PubSub.subscribe('login', async () => {
         //     // this.studySettings = await user.getStudySettings() || defaultStudySettings
         // })
@@ -105,12 +105,12 @@ export default {
         },
         treeId() {
             const id = this.$store.state.currentStudyingCategoryTreeId
-            log('studymenu - treeId() called', id)
+            // log('studymenu - treeId() called', id)
             return id
             // return this.$store.state.currentStudyingCategoryTreeId
         },
         studying() {
-            log('studying getter called', this.$store.getters.studying)
+            // log('studying getter called', this.$store.getters.studying)
             // return true
             return this.$store.getters.studying
         }

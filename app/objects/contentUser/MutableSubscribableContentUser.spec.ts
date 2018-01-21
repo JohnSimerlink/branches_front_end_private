@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames,
@@ -23,12 +23,12 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
     const proficiencyVal = PROFICIENCIES.THREE
     const timerVal = 1003
     const lastRecordedStrength: ISubscribableMutableField<number>
-        = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
+        = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     const overdue: ISubscribableMutableField<boolean>
-        = new SubscribableMutableField<boolean>({field: overdueVal})
+        = new MutableSubscribableField<boolean>({field: overdueVal})
     const proficiency: ISubscribableMutableField<PROFICIENCIES>
-        = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
+        = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -61,12 +61,12 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     const proficiencyVal = PROFICIENCIES.THREE
     const timerVal = 1003
     const lastRecordedStrength: ISubscribableMutableField<number>
-        = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
+        = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     const overdue: ISubscribableMutableField<boolean>
-        = new SubscribableMutableField<boolean>({field: overdueVal})
+        = new MutableSubscribableField<boolean>({field: overdueVal})
     const proficiency: ISubscribableMutableField<PROFICIENCIES>
-        = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
+        = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -105,12 +105,12 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     const proficiencyVal = PROFICIENCIES.THREE
     const timerVal = 1003
     const lastRecordedStrength: ISubscribableMutableField<number>
-        = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
+        = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     const overdue: ISubscribableMutableField<boolean>
-        = new SubscribableMutableField<boolean>({field: overdueVal})
+        = new MutableSubscribableField<boolean>({field: overdueVal})
     const proficiency: ISubscribableMutableField<PROFICIENCIES>
-        = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
+        = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
 
     const contentUserId = 'abc_123'
 
@@ -153,12 +153,12 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
     const newProficiencyVal = PROFICIENCIES.TWO
     const timerVal = 1003
     const lastRecordedStrength: ISubscribableMutableField<number>
-        = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
+        = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     const overdue: ISubscribableMutableField<boolean>
-        = new SubscribableMutableField<boolean>({field: overdueVal})
+        = new MutableSubscribableField<boolean>({field: overdueVal})
     const proficiency: ISubscribableMutableField<PROFICIENCIES>
-        = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
+        = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -198,12 +198,12 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     const timerVal = 1003
     const newTimerVal = 1004
     const lastRecordedStrength: ISubscribableMutableField<number>
-        = new SubscribableMutableField<number>({field: lastRecordedStrengthVal})
+        = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     const overdue: ISubscribableMutableField<boolean>
-        = new SubscribableMutableField<boolean>({field: overdueVal})
+        = new MutableSubscribableField<boolean>({field: overdueVal})
     const proficiency: ISubscribableMutableField<PROFICIENCIES>
-        = new SubscribableMutableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: timerVal})
+        = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -240,11 +240,11 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     */
     const contentUserId = 'abc_123'
     const lastRecordedStrength: ISubscribableMutableField<number>
-        = new SubscribableMutableField<number>({field: 60})
-    const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>({field: false})
+        = new MutableSubscribableField<number>({field: 60})
+    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>({field: false})
     const proficiency: ISubscribableMutableField<PROFICIENCIES>
-        = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>({field: 39})
+        = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: 39})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -276,10 +276,10 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     ' should NOT publish an update of the entire object\'s value'
     + ' before startPublishing has been called', (t) => {
     const contentUserId = 'abc_123'
-    const lastRecordedStrength: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
-    const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>()
-    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new SubscribableMutableField<PROFICIENCIES>()
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
+    const lastRecordedStrength: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
+    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>()
+    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -306,10 +306,10 @@ test('MutableSubscribableContentUser:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
     const contentUserId = 'abc_123'
-    const lastRecordedStrength: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
-    const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>()
-    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new SubscribableMutableField<PROFICIENCIES>()
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
+    const lastRecordedStrength: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
+    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>()
+    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,

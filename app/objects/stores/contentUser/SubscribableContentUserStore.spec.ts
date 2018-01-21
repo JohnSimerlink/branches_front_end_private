@@ -6,7 +6,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     ContentUserPropertyNames, FieldMutationTypes, IProppedDatedMutation,
     ISubscribableContentUserStore
@@ -26,10 +26,10 @@ test('SubscribableContentUserStore > addAndSubscribeToItem:::' +
     const contentId = CONTENT_ID2
     const userId = 'abc123'
     const contentUserId = getContentUserId({contentId, userId})
-    const overdue = new SubscribableMutableField<boolean>({field: false})
-    const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
-    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer = new SubscribableMutableField<number>({field: 30})
+    const overdue = new MutableSubscribableField<boolean>({field: false})
+    const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+    const timer = new MutableSubscribableField<number>({field: 30})
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })

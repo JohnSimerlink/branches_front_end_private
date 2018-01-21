@@ -41,6 +41,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                 this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             case ContentUserPropertyNames.PROFICIENCY:
+                log('contentUser proficiency mutation about to be called', mutation)
                 this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             case ContentUserPropertyNames.TIMER:

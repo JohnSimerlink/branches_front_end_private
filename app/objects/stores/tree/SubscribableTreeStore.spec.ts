@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeCore, ISubscribableTreeStore,
     TreePropertyNames
@@ -20,8 +20,8 @@ test('SubscribableTreeStore > addAndSubscribeToItem::::' +
      why I couldn't find an easy way to do a pure unit test.
      e.g. rather than just triggering an update directly on tree, I had to do it indirectly by adding a mutation
      */
-    const contentId = new SubscribableMutableField<string>()
-    const parentId = new SubscribableMutableField<string>()
+    const contentId = new MutableSubscribableField<string>()
+    const parentId = new MutableSubscribableField<string>()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
     const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})

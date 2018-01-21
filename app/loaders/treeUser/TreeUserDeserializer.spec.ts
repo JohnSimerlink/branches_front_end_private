@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
-import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IHash, IMutableSubscribableTreeUser, IProficiencyStats, ITreeUser, ITreeUserData,
 } from '../../objects/interfaces';
@@ -24,8 +24,8 @@ test('TreeUserDeserializer::: deserialize Should deserialize properly', (t) => {
     }
     const treeUserId = '092384'
 
-    const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
-    const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
+    const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal})
+    const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal})
     const expectedTreeUser: IMutableSubscribableTreeUser = new MutableSubscribableTreeUser(
         {updatesCallbacks: [], proficiencyStats, aggregationTimer}
     )

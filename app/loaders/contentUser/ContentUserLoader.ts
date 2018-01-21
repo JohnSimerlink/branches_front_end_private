@@ -3,14 +3,14 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
-    IContentUserLoader, IContentUserData, IContentUserDataFromDB
+    IContentUserLoader, IContentUserData, IContentUserDataFromDB, IFirebaseRef, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/contentUserValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {setToStringArray} from '../../core/newUtils';
-import {getContentUserId} from './ContentUserLoaderUtils';
+import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
 
 @injectable()
 export class ContentUserLoader implements IContentUserLoader {
@@ -31,7 +31,7 @@ export class ContentUserLoader implements IContentUserLoader {
         // TODO: fix violoation of law of demeter
     }
 
-    public getItem({contentUserId}): IMutableSubscribableContentUser {
+    public getItem({contentUserId}): ISyncableMutableSubscribableContentUser {
         const contentItem = this.storeSource.get(contentUserId)
         if (!contentItem) {
             throw new RangeError(contentUserId +
@@ -48,12 +48,12 @@ export class ContentUserLoader implements IContentUserLoader {
           throw RangeError('No contentId or userId supplied for downloadData')
         }
         const contentUserId = getContentUserId({contentId, userId})
-        const contentUsersFirebaseRefForContentId = this.firebaseRef.child(contentId)
-        const contentUserRef = contentUsersFirebaseRefForContentId.child(userId)
+        const contentUserRef: IFirebaseRef =
+            getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId})
         log('contentUserLoader downloadData called', contentId, userId)
         const me = this
         return new Promise((resolve, reject) => {
-            contentUserRef.on('value', (snapshot) => {
+            contentUserRef.once('value', (snapshot) => {
                 log('contentUserLoader data received', contentId, userId, snapshot.val(), contentUserRef)
                 const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val()
                 if (!contentUserDataFromDB) {
@@ -74,7 +74,7 @@ export class ContentUserLoader implements IContentUserLoader {
                 const contentUserData: IContentUserData =
                     ContentUserDeserializer.convertDBDataToObjectData({contentUserDataFromDB, id: contentUserId})
                 if (isValidContentUserDataFromDB(contentUserDataFromDB)) {
-                    const contentUser: IMutableSubscribableContentUser =
+                    const contentUser: ISyncableMutableSubscribableContentUser =
                         ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB})
                     log('ContentUser storeSource about to be set with ', contentUserId, contentUser, contentUser.val())
                     me.storeSource.set(contentUserId, contentUser)

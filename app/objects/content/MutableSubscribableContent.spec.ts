@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     CONTENT_TYPES, ContentPropertyNames, FieldMutationTypes, IDatedMutation,
     IProppedDatedMutation
@@ -19,10 +19,10 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
 
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
@@ -48,10 +48,10 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
 
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
@@ -65,10 +65,10 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
 test('MutableSubscribableContent:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })

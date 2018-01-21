@@ -41,7 +41,7 @@ export class TreeUserLoader implements ITreeUserLoader {
         log('treeUserLoader downloadData called')
         const me = this
         return new Promise((resolve, reject) => {
-            this.firebaseRef.child(treeUserId).on('value', (snapshot) => {
+            this.firebaseRef.child(treeUserId).once('value', (snapshot) => {
                 log('treeUserLoader data received')
                 const treeUserData: ITreeUserData = snapshot.val()
                 if (!treeUserData) {

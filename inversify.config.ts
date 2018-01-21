@@ -18,9 +18,9 @@ import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {PropertyFirebaseSaverArgs} from './app/objects/dbSync/PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver, PropertyAutoFirebaseSaverArgs} from './app/objects/dbSync/PropertyAutoFirebaseSaver';
 import {
-    SubscribableMutableField,
-    SubscribableMutableFieldArgs
-} from './app/objects/field/SubscribableMutableField';
+    MutableSubscribableField,
+    MutableSubscribableFieldArgs
+} from './app/objects/field/MutableSubscribableField';
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
 import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
@@ -32,7 +32,9 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ITooltipOpener, ITooltipRenderer, ITree, ITree3Creator,
+    ISubscribableMutableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
+    ITooltipOpener, ITooltipRenderer, ITree,
+    ITree3Creator,
     ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
@@ -166,6 +168,7 @@ import {
 } from './app/components/tree3Component/tree3Component';
 import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
+import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -310,6 +313,7 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
 
+    bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser).to(SyncableMutableSubscribableContentUser)
     bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
     bind<BranchesStore>(TYPES.BranchesStore).to(BranchesStore)
 
@@ -380,17 +384,17 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
     bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
     bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
-    bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(SubscribableMutableField)
-    bind<SubscribableMutableFieldArgs>(TYPES.SubscribableMutableFieldArgs).to(SubscribableMutableFieldArgs)
+    bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(MutableSubscribableField)
+    bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs)
     bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
-    bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(SubscribableMutableField)
-    bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(SubscribableMutableField)
+    bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(MutableSubscribableField)
+    bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(MutableSubscribableField)
     bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
-        .to(SubscribableMutableField)
+        .to(MutableSubscribableField)
     bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMutableContentType)
-        .to(SubscribableMutableField)
+        .to(MutableSubscribableField)
     bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
-        .to(SubscribableMutableField)
+        .to(MutableSubscribableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
 //
     bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)

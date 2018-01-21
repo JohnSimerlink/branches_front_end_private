@@ -7,7 +7,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes, IContentUserData, IIdProppedDatedMutation,
@@ -21,6 +21,7 @@ import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
+import {SyncableMutableSubscribableContentUser} from '../../contentUser/SyncableMutableSubscribableContentUser';
 
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
@@ -28,11 +29,11 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     const userId = 'abcd_1234'
     const contentId = CONTENT_ID2
     const contentUserId = getContentUserId({userId, contentId})
-    const overdue = new SubscribableMutableField<boolean>({field: false})
-    const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
-    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer = new SubscribableMutableField<number>({field: 30})
-    const contentUser = new MutableSubscribableContentUser({
+    const overdue = new MutableSubscribableField<boolean>({field: false})
+    const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+    const timer = new MutableSubscribableField<number>({field: 30})
+    const contentUser = new SyncableMutableSubscribableContentUser({
         id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
@@ -72,11 +73,11 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     const contentId = CONTENT_ID2
     const contentUserId = getContentUserId({userId, contentId})
     const nonExistentId = 'abdf1295'
-    const overdue = new SubscribableMutableField<boolean>({field: false})
-    const lastRecordedStrength = new SubscribableMutableField<number>({field: 45})
-    const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer = new SubscribableMutableField<number>({field: 30})
-    const contentUser = new MutableSubscribableContentUser({
+    const overdue = new MutableSubscribableField<boolean>({field: false})
+    const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+    const timer = new MutableSubscribableField<number>({field: 30})
+    const contentUser = new SyncableMutableSubscribableContentUser({
         id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource

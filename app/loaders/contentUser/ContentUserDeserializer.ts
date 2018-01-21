@@ -1,4 +1,4 @@
-import {SubscribableMutableField} from '../../objects/field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IContentUserData, IContentUserDataFromDB,
     ISyncableMutableSubscribableContentUser
@@ -11,10 +11,10 @@ class ContentUserDeserializer {
        {contentUserData, id}: {id: string, contentUserData: IContentUserData}
        ): ISyncableMutableSubscribableContentUser {
 
-       const overdue = new SubscribableMutableField<boolean>({field: contentUserData.overdue})
-       const lastRecordedStrength = new SubscribableMutableField<number>({field: contentUserData.lastRecordedStrength})
-       const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: contentUserData.proficiency})
-       const timer = new SubscribableMutableField<number>({field: contentUserData.timer})
+       const overdue = new MutableSubscribableField<boolean>({field: contentUserData.overdue})
+       const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastRecordedStrength})
+       const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: contentUserData.proficiency})
+       const timer = new MutableSubscribableField<number>({field: contentUserData.timer})
 
        const contentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
            {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}
@@ -27,10 +27,10 @@ class ContentUserDeserializer {
         const contentUserData: IContentUserData
             = ContentUserDeserializer.convertDBDataToObjectData({id, contentUserDataFromDB})
 
-        const overdue = new SubscribableMutableField<boolean>({field: contentUserData.overdue})
-        const lastRecordedStrength = new SubscribableMutableField<number>({field: contentUserData.lastRecordedStrength})
-        const proficiency = new SubscribableMutableField<PROFICIENCIES>({field: contentUserData.proficiency})
-        const timer = new SubscribableMutableField<number>({field: contentUserData.timer})
+        const overdue = new MutableSubscribableField<boolean>({field: contentUserData.overdue})
+        const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastRecordedStrength})
+        const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: contentUserData.proficiency})
+        const timer = new MutableSubscribableField<number>({field: contentUserData.timer})
 
         const contentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
             {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}

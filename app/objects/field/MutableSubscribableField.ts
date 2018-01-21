@@ -3,15 +3,15 @@
 import {inject, injectable} from 'inversify';
 import {IDetailedUpdates} from '../interfaces';
 import {FieldMutationTypes, IDatedMutation, IMutableField} from '../interfaces';
-import {} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log'
 @injectable()
-class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
+export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
     private field: T
+    private _id: number
     private _mutations: Array<IDatedMutation<FieldMutationTypes>>
-    constructor(@inject(TYPES.SubscribableMutableFieldArgs) {
+    constructor(@inject(TYPES.MutableSubscribableFieldArgs) {
         updatesCallbacks = [], field = null, mutations = []
     } =
         {
@@ -20,6 +20,8 @@ class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> impleme
         super({updatesCallbacks})
         this.field = field
         this._mutations = mutations
+        this._id = Math.random()
+        log('Mutable Subscribable field just created with id of ', this._id, this)
     }
 
     public val(): T {
@@ -33,7 +35,7 @@ class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> impleme
         this.updates.val = field
     }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {
-        log('subscribable mutable field called')
+        log('subscribable mutable field add Mutation called called', mutation,)
         switch (mutation.type) {
             case FieldMutationTypes.SET:
                 this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?
@@ -53,10 +55,9 @@ class SubscribableMutableField<T> extends Subscribable<IDetailedUpdates> impleme
     }
 }
 @injectable()
-class SubscribableMutableFieldArgs {
+export class MutableSubscribableFieldArgs {
     @inject(TYPES.Array) public updatesCallbacks = []
     @inject(TYPES.Any) public field = null
     // TODO ^^ : Dependency inject the correct type into field dynamically
     @inject(TYPES.Array) public mutations = []
 }
-export {SubscribableMutableField, SubscribableMutableFieldArgs}

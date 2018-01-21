@@ -7,7 +7,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../../content/MutableSubscribableContent';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     CONTENT_TYPES,
     ContentPropertyMutationTypes,
@@ -21,10 +21,10 @@ test('MutableSubscribableContentStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
     const contentId = CONTENT_ID2
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
@@ -63,10 +63,10 @@ test('MutableSubscribableContentStore > addMutation::::addMutation' +
     ' it either, should throw a RangeError', (t) => {
     const contentId = CONTENT_ID2
     const nonExistentId = 'abdf1295'
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new MutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })

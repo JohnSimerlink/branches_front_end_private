@@ -35,7 +35,7 @@ export class ContentLoader implements IContentLoader {
         log('contentLoader downloadData called')
         const me = this
         return new Promise((resolve, reject) => {
-            this.firebaseRef.child(contentId).on('value', (snapshot) => {
+            this.firebaseRef.child(contentId).once('value', (snapshot) => {
                 const contentData: IContentData = snapshot.val()
                 log('contentLoader data received', contentData)
                 if (!contentData) {

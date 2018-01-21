@@ -13,7 +13,7 @@ import {
     ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
-    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator
+    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator, IObjectFirebaseAutoSaver
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -76,10 +76,10 @@ import NewTree from '../components/newTree/newTree'
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
 import {SpecialTreeLoader} from '../loaders/tree/specialTreeLoader';
 import {AutoSaveMutableSubscribableContentUserStore} from '../objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
+import {ContentUserLoaderAndAutoSaver} from '../loaders/contentUser/ContentUserLoaderAndAutoSaver';
+import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 
-log('about to call configureSigma')
 configureSigma(sigma)
-log('just called configureSigma')
 
 Vue.component('branchesFooter', BranchesFooter)
 class AppContainer {
@@ -125,8 +125,13 @@ class AppContainer {
             new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
         const contentLoader: IContentLoader =
             new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
-        const contentUserLoader: IContentUserLoader =
-            new ContentUserLoader({firebaseRef: firebaseContentUsersRef, storeSource: contentUserStoreSource})
+        // const objectAutoFirebaseSaver: IObjectFirebaseAutoSaver =
+            // new ObjectFirebaseAutoSaver({})
+        const contentUserLoaderAndAutoSaver: IContentUserLoader =
+            new ContentUserLoaderAndAutoSaver(
+                {
+                    firebaseRef: firebaseContentUsersRef, storeSource: contentUserStoreSource
+                })
 
         const treeStore: IMutableSubscribableTreeStore =
             new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
@@ -229,7 +234,7 @@ class AppContainer {
                     specialTreeLoader,
                     treeLocationLoader,
                     contentLoader,
-                    contentUserLoader,
+                    contentUserLoader: contentUserLoaderAndAutoSaver,
                     userId
                 })
         const KnawledgeMap = knawledgeMapCreator.create()
@@ -250,7 +255,7 @@ class AppContainer {
         const vm = new Vue({
             el: '#branches-app',
             created() {
-                log('Vue instance created')
+                // log('Vue instance created')
                 return void 0
             },
             data() {

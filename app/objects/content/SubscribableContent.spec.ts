@@ -4,17 +4,17 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     CONTENT_TYPES,
 } from '../interfaces';
 import {SubscribableContent} from './SubscribableContent';
 
 test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new SubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
@@ -25,10 +25,10 @@ test('SubscribableContent:::constructor should set all the subscribable properti
     t.pass()
 })
 test('SubscribableContent:::.val() should display the value of the object', (t) => {
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new SubscribableContent({
         title, question, answer, type, updatesCallbacks: [],
     })
@@ -45,10 +45,10 @@ test('SubscribableContent:::.val() should display the value of the object', (t) 
 })
 test('SubscribableContent:::startPublishing() should call the onUpdate methods of' +
     ' all member Subscribable properties', (t) => {
-    const type = new SubscribableMutableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new SubscribableMutableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new SubscribableMutableField<string>({field: 'Columbus'})
-    const title = new SubscribableMutableField<string>({field: ''})
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
+    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
+    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
+    const title = new MutableSubscribableField<string>({field: ''})
     const content = new SubscribableContent({
         title, question, answer, type, updatesCallbacks: [],
     })

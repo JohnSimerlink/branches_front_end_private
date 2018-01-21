@@ -6,7 +6,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
     IIdProppedDatedMutation, IMutableSubscribableTree, IMutableSubscribableTreeStore, IProppedDatedMutation,
@@ -23,8 +23,8 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
     ' should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
     const contentIdVal = CONTENT_ID2
-    const contentId = new SubscribableMutableField<string>({field: contentIdVal })
-    const parentId = new SubscribableMutableField<string>({field: 'adf12356' })
+    const contentId = new MutableSubscribableField<string>({field: contentIdVal })
+    const parentId = new MutableSubscribableField<string>({field: 'adf12356' })
     const children = new SubscribableMutableStringSet()
     const id = TREE_ID
     const tree = new MutableSubscribableTree({

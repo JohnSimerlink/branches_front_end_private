@@ -6,7 +6,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../../inversify.config';
 import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
-import {SubscribableMutableField} from '../../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
     IIdProppedDatedMutation, IMutableSubscribableTreeLocation, IMutableSubscribableTreeUser,
@@ -38,8 +38,8 @@ test('MutableSubscribableTreeUserStore > addMutation::::' +
         FOUR: 2,
     }
     const aggregationTimerVal = 54
-    const proficiencyStats = new SubscribableMutableField<IProficiencyStats>({field: proficiencyStatsVal})
-    const aggregationTimer = new SubscribableMutableField<number>({field: aggregationTimerVal})
+    const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal})
+    const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal})
     const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
 
     const storeSource: ISubscribableTreeUserStoreSource

@@ -6,7 +6,7 @@ import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
-import {SubscribableMutableField} from '../field/SubscribableMutableField';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     ContentUserPropertyMutationTypes, ContentUserPropertyNames,
     FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
@@ -38,8 +38,8 @@ test('ISubscribableGlobalStore::::Dependency injection should set all properties
 })
 test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
     ' should call onUpdate on each of the component Stores', (t) => {
-    const contentId = new SubscribableMutableField<string>()
-    const parentId = new SubscribableMutableField<string>()
+    const contentId = new MutableSubscribableField<string>()
+    const parentId = new MutableSubscribableField<string>()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
     const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -83,8 +83,8 @@ test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
     + ' when one of its component stores (treeStore) publishes an update', (t) => {
-    const contentId: ISubscribableMutableField<string> = new SubscribableMutableField<string>()
-    const parentId: ISubscribableMutableField<string> = new SubscribableMutableField<string>()
+    const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
+    const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
     const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
 
@@ -159,10 +159,10 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     const userId = 'abcd12354'
 
     const contentUserId = getContentUserId({contentId, userId})
-    const overdue: ISubscribableMutableField<boolean> = new SubscribableMutableField<boolean>()
-    const lastRecordedStrength: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
-    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new SubscribableMutableField<PROFICIENCIES>()
-    const timer: ISubscribableMutableField<number> = new SubscribableMutableField<number>()
+    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>()
+    const lastRecordedStrength: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
+    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
+    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
     const contentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser({
         id: contentUserId,
         lastRecordedStrength,
@@ -232,8 +232,8 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 //
 test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore should NOT publish updates ' +
     ' when one of its component stores publishes an update', (t) => {
-    const contentId: ISubscribableMutableField<string> = new SubscribableMutableField<string>()
-    const parentId: ISubscribableMutableField<string> = new SubscribableMutableField<string>()
+    const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
+    const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
     const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
 
