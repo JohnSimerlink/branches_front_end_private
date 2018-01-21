@@ -23,6 +23,7 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
         {id, contentUserData}:
         { id: string; contentUserData: IContentUserData; })
     : ISyncableMutableSubscribableContentUser {
+        log('AutoSaveMutableSubscribableContentUserStore addAndSubscribeToItemFromData', id, contentUserData)
         const contentUser: ISyncableMutableSubscribableContentUser =
             super.addAndSubscribeToItemFromData({id, contentUserData})
         log('contentUser just created is', contentUser)

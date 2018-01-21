@@ -553,6 +553,9 @@ export interface IIdAndValUpdates {
     id: any,
     val: any
 }
+export interface ITypeAndIdAndValAndObjUpdates extends ITypeAndIdAndValUpdates {
+    obj
+}
 export interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
     type: ObjectDataTypes
 }

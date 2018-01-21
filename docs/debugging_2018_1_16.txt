@@ -134,6 +134,18 @@ else returns the descaping of contentUserDataString
 
 ======so when new contentUserDataItems are created the contentUserStore.addAndSubscribeToItemFromData will be called ======
 
+maybe i should make 
 
 
 ====TODO: when items are loaded, are they subscribed to???
+
+esterel
+tla+
+
+
+0 1516494034641
+  1516494035768
+
+this method calls this.storeSource.set(id, item) and then this.subscribeToItem(id, item).
+
+we need a way where any time the storeSource calls .set (whether called from the Loader or from the storeSource), that the store notes that, and subscribes the item for updates, if it hasn't already
