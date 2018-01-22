@@ -6,12 +6,13 @@ import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableContentUser, IContentUser, IContentUserData,
+    IHash, IMutableSubscribableContentUser, IContentUser, IContentUserData, ISyncableMutableSubscribableContentUser,
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableContentUser} from '../../objects/contentUser/MutableSubscribableContentUser';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+import {SyncableMutableSubscribableContentUser} from '../../objects/contentUser/SyncableMutableSubscribableContentUser';
 
 test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) => {
     const overdueVal = true
@@ -32,7 +33,7 @@ test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) =
     const lastRecordedStrength = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
     const timer = new MutableSubscribableField<number>({field: timerVal})
-    const expectedContentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser(
+    const expectedContentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
         {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}
     )
     const deserializedContentUser: IMutableSubscribableContentUser

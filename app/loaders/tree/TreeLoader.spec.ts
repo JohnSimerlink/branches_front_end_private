@@ -91,8 +91,8 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
     let isLoaded = treeLoader.isLoaded(treeId)
     expect(isLoaded).to.equal(false)
 
-    treeLoader.downloadData(treeId)
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
+    treeLoader.downloadData(treeId)
     childFirebaseRef.flush()
 
     isLoaded = treeLoader.isLoaded(treeId)
@@ -125,11 +125,11 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
     // childFirebaseRef.flush()
     const treeLoader = new TreeLoader({ storeSource, firebaseRef})
 
-    const treeDataPromise = treeLoader.downloadData(treeId)
-    const wrappedPromise = makeQuerablePromise(treeDataPromise)
     // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
+    const treeDataPromise = treeLoader.downloadData(treeId)
+    const wrappedPromise = makeQuerablePromise(treeDataPromise)
     // log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
     childFirebaseRef.flush()
     // log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
@@ -158,9 +158,10 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
         myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
-    treeLoader.downloadData(treeId)
-    // childFirebaseRef.flush()
+    const treeLoadPromise = treeLoader.downloadData(treeId)
+    childFirebaseRef.flush()
 
+    await treeLoadPromise
     expect(storeSource.get(treeId)).to.deep.equal(sampleTree)
     t.pass()
 })

@@ -8,6 +8,6 @@ test('getUserId', t => {
     const contentUserId =  contentId + separator + userId
 
     const calculatedUserId = getUserId({contentUserId})
-    expect(calculatedUserId).to.deep.equal(contentUserId)
+    expect(calculatedUserId).to.deep.equal(userId)
     t.pass()
 })
