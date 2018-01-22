@@ -14,6 +14,7 @@ import {FirebaseRef} from '../../dbSync/FirebaseRef';
 export class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
+    // ^^ TODO: Not sure if above TODO is relevant any more
     public addAndSubscribeToItemFromData(
         {id, contentUserData}:
             { id: string; contentUserData: IContentUserData; }): ISyncableMutableSubscribableContentUser {

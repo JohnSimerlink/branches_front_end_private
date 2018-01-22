@@ -11,5 +11,17 @@ a list of sigmanodes to load from cache
 	-if already loaded, it will not attempt to load again
 		-make sure child loaders have same behavior
 
+Create_content_mutation
+Create_tree_location_mutation
+create_tree_mutation
+> > > these three will use the same process create Content USER did to add the item to the db as well as to the local store
+-- automatically once tree and treeLocation are created the sigmaEventsListener should add them to the list . . .we should add an integration test (that has fake firebase refs . .  . . or at least links to a test db) that tests this
+create_new_child_tree_mutation({parentTreeId, timestamp, contentType, question?, answer?, title?, x, y})
+	triggers create_content_mutation({contentType, question?, answer?, title?})
+		returns contentId
+	triggers create_tree_mutation({contentId, parentTreeId})
+		returns treeId
+	triggers create_tree_location_mutation({treeId, x, y})
+
 
 now the other objects have already started subscribing (via appContainer.js . .. so calling sigmaNodeLoader.load(treeId) or sigmaNodeLoader.loadAndLoadChildren(treeId) will have the items appear on the map (but maybe we hsould have the .startListening to store or store/source changes be a function of sigmaNodeLoader and not other objects)

@@ -12,7 +12,7 @@ import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutabl
 import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 
-test('TreeUserDeserializer::: deserialize Should deserialize properly', (t) => {
+test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const proficiencyStatsVal = {
         ONE: 3,
     } as IProficiencyStats

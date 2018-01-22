@@ -11,7 +11,7 @@ import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribableP
 import {MutableSubscribableTreeLocation} from '../../objects/treeLocation/MutableSubscribableTreeLocation';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 
-test('TreeLocationDeserializer::::Should deserialize properly with a blank mutation history' +
+test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
     ' (besides the mutation from creation)', (t) => {
 
     const pointVal = {
@@ -30,7 +30,7 @@ test('TreeLocationDeserializer::::Should deserialize properly with a blank mutat
     expect(deserializedTreeLocation).to.deep.equal(expectedTreeLocation)
     t.pass()
 })
-// it('Should deserialize properly with a mutation history', () => {
+// it('Should deserializeFromDB properly with a mutation history', () => {
 //
 //     const pointVal = {
 //         x: 5,
@@ -53,6 +53,6 @@ test('TreeLocationDeserializer::::Should deserialize properly with a blank mutat
 //     const expectedTreeLocation: IMutableSubscribableTreeLocation
 //         = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 //     const deserializedTreeLocation: IMutableSubscribableTreeLocation
-//         = TreeLocationDeserializer.deserialize({treeLocationData})
+//         = TreeLocationDeserializer.deserializeFromDB({treeLocationData})
 //     expect(deserializedTreeLocation).to.deep.equal(expectedTreeLocation)
 // })

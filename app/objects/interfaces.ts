@@ -40,7 +40,7 @@ export interface IContentItem {
 // loaders
 // export interface ITreeLoaderCore {
 //     download(treeId): Promise<ITreeDataWithoutId>
-//     deserialize(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
+//     deserializeFromDB(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
 // }
 export interface ITreeLoader {
     getData(treeId): ITreeDataWithoutId
@@ -50,7 +50,7 @@ export interface ITreeLoader {
 // export interface ISpecialTreeLoader extends ITreeLoader {}
 // export interface ITreeLocationLoaderCore {
 //     download(treeId): Promise<ITreeLocationData>
-//     deserialize(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation
+//     deserializeFromDB(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation
 // }
 export interface ITreeLocationLoader {
     getData(treeId): ITreeLocationData
@@ -99,15 +99,19 @@ export interface ISubscribableContentCore extends IContent {
     val(): IContentData
 }
 
-// interface IContentDataFact {
-//     type: CONTENT_TYPES;
-//     question: string;
-//     answer: string;
-// }
-// interface IContentDataNotFact {
-//     type: CONTENT_TYPES;
-//     title: string;
-// }
+export interface IContentDataFact {
+    type: CONTENT_TYPES;
+    question: string;
+    answer: string;
+    title?: string // << shouldn't exist
+}
+export interface IContentDataNotFact {
+    type: CONTENT_TYPES;
+    title: string;
+    question?: string // <shouldn't exist
+    answer?: string // <shouldn't exist
+}
+export type IContentDataEither = IContentDataFact | IContentDataNotFact
 // export type IContentData = IContentDataFact & IContentDataNotFact
 export interface IContentData {
     type: CONTENT_TYPES;
@@ -163,6 +167,13 @@ export interface IMutableSubscribableContentUser
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
 export interface ISyncableMutableSubscribableContentUser extends IMutableSubscribableContentUser, ISyncable {
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+}
+
+export interface ISyncableMutableSubscribableContent extends IMutableSubscribableContent, ISyncable {
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+}
+export interface ISyncableMutableSubscribableTree extends IMutableSubscribableTree, ISyncable {
     getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 
@@ -236,7 +247,6 @@ export interface IPushable {
     push(item: any)
 }
 
-
 // field
 
 export enum FieldMutationTypes {
@@ -300,7 +310,7 @@ export interface IActivatableDatedMutation<MutationTypes>
 }
 export interface ICreateMutation<ObjectDataInterface> {
     objectType: ObjectTypes
-    id: string
+    id?: string // only should exist for ICreateMutation<ContentUserData>
     data: ObjectDataInterface
     type: STORE_MUTATION_TYPES.CREATE_ITEM
 }
@@ -503,6 +513,9 @@ export interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescen
 export interface IMutableSubscribableTreeStore
     extends ISubscribableTreeStore,
         IMutable<IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
+    addAndSubscribeToItemFromData(
+        {id, treeData}: {id: string, treeData: ITreeData}
+    ): IMutableSubscribableTree
 }
 
 export interface IMutableSubscribableTreeUserStore
@@ -528,6 +541,9 @@ export interface IAutoSaveMutableSubscribableContentUserStore extends IMutableSu
 export interface IMutableSubscribableContentStore
     extends ISubscribableContentStore,
         IMutable<IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {
+    addAndSubscribeToItemFromData(
+        {id, contentData}: {id: string, contentData: IContentData}
+    ): IMutableSubscribableContent
 }
 
 export interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdates>,
@@ -656,7 +672,6 @@ export interface ISubscribableTree extends ISubscribable<IValUpdates>,
 
 export interface IMutableSubscribableTree
     extends ISubscribableTree, IMutable<IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {}
-
 // treeUser
 
 export interface ITreeUser {

@@ -13,7 +13,7 @@ import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutabl
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 
-test('TreeDeserializer::: deserialize Should deserialize properly', (t) => {
+test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const contentIdVal = '1234'
     const parentIdVal = '041234'
     const childrenVal = ['041234', 'abd123']
@@ -35,7 +35,7 @@ test('TreeDeserializer::: deserialize Should deserialize properly', (t) => {
     const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
         {updatesCallbacks: [], id: treeId, contentId, parentId, children}
     )
-    const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeData, treeId})
+    const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeData, treeId})
     expect(deserializedTree).to.deep.equal(expectedTree)
     t.pass()
 })
