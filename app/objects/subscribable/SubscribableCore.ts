@@ -19,16 +19,16 @@ abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesTyp
         */
     }
     public onUpdate(func: updatesCallback<UpdatesType>) {
-        log('SubscribableCore onUpdateCalled updatesCallbacks before: called for ',
-            this.updatesCallbacks, this.updatesCallbacks.length, this, func)
+        // log('SubscribableCore onUpdateCalled updatesCallbacks before: called for ',
+        //     this.updatesCallbacks, this.updatesCallbacks.length, this, func)
         this.updatesCallbacks.push(func)
-        log('SubscribableCore onUpdateCalled updatesCallbacks after: called for ',
-            this.updatesCallbacks, this.updatesCallbacks.length, this)
+        // log('SubscribableCore onUpdateCalled updatesCallbacks after: called for ',
+        //     this.updatesCallbacks, this.updatesCallbacks.length, this)
     }
     protected abstract callbackArguments(): UpdatesType
 
     protected callCallbacks() {
-        log('SubscribableCore callCallbacks called for ', this.updatesCallbacks, this)
+        // log('SubscribableCore callCallbacks called for ', this.updatesCallbacks, this)
         const me = this
         this.updatesCallbacks.forEach(callback => {
             callback(me.callbackArguments())

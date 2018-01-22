@@ -93,13 +93,14 @@ test('TreeUserLoader:::Should mark an id as loaded after being loaded', async (t
         myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
     const treeUserLoader = new TreeUserLoader({storeSource, firebaseRef})
 
-    treeUserLoader.downloadData({treeId, userId})
     let isLoaded = treeUserLoader.isLoaded({treeId, userId})
     expect(isLoaded).to.equal(false)
 
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeUserData)
+    const treeUserLoaderPromise = treeUserLoader.downloadData({treeId, userId})
     childFirebaseRef.flush()
 
+    await treeUserLoaderPromise
     isLoaded = treeUserLoader.isLoaded({treeId, userId})
     expect(isLoaded).to.equal(true)
     t.pass()
@@ -165,7 +166,7 @@ test('TreeUserLoader:::DownloadData should have the side effect of storing the d
     const treeUserLoader = new TreeUserLoader({storeSource, firebaseRef})
     childFirebaseRef.fakeEvent('value', undefined, expectedTreeUserData)
     treeUserLoader.downloadData({treeId, userId})
-    // childFirebaseRef.flush()
+    childFirebaseRef.flush()
 
     expect(storeSource.get(treeUserId)).to.deep.equal(sampleTreeUser)
     t.pass()

@@ -40,7 +40,7 @@ export class SubscribableStoreSource<T> extends
     public set(id: string, obj: T & IValable) {
         this.hashmap[id] = obj
         this.update = {id, val: obj.val(), obj, type: this.type}
-        log('storeSource set just called', this.update)
+        // log('storeSource set just called', this.update)
         this.callCallbacks()
     }
     public entries(): Array<entry<T>> {

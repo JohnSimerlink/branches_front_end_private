@@ -87,20 +87,22 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
 
-    contentLoader.downloadData(contentId)
     let isLoaded = contentLoader.isLoaded(contentId)
     expect(isLoaded).to.equal(false)
 
     childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    const contentLoaderPromise = contentLoader.downloadData(contentId)
     childFirebaseRef.flush()
 
+    await contentLoaderPromise
     isLoaded = contentLoader.isLoaded(contentId)
     expect(isLoaded).to.equal(true)
     t.pass()
 
 })
 test('ContentLoader:::DownloadData should return the data', async (t) => {
-    const contentId = '1234'
+    const contentId = '12345' /* cannot have the same contentId as others in the same file
+     because the tests run in parallet and will trigger firebase events for other tests . . .if the ids are the same */
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
     const childFirebaseRef = firebaseRef.child(contentId)
 
@@ -118,11 +120,11 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     // childFirebaseRef.flush()
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
 
-    const contentDataPromise = contentLoader.downloadData(contentId)
-    const wrappedPromise = makeQuerablePromise(contentDataPromise)
     // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
     childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    const contentDataPromise = contentLoader.downloadData(contentId)
+    const wrappedPromise = makeQuerablePromise(contentDataPromise)
     // log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
     childFirebaseRef.flush()
     // log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
@@ -134,7 +136,7 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     t.pass()
 })
 test('ContentLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
-    const contentId = '1234'
+    const contentId = '123456da'
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
     const childFirebaseRef = firebaseRef.child(contentId)
 
@@ -152,15 +154,16 @@ test('ContentLoader:::DownloadData should have the side effect of storing the da
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
     childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
-    contentLoader.downloadData(contentId)
-    // childFirebaseRef.flush()
+    const contentLoadPromise = contentLoader.downloadData(contentId)
+    childFirebaseRef.flush()
 
+    await contentLoadPromise
     expect(storeSource.get(contentId)).to.deep.equal(sampleContent)
     t.pass()
 })
 test('ContentLoader:::DownloadData twice in a row on the same contentId' +
     ' should fetch the contentId from the storeSource', async (t) => {
-    const contentId = '1234'
+    const contentId = '123456bed'
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
     const childFirebaseRef = firebaseRef.child(contentId)
 
@@ -178,12 +181,14 @@ test('ContentLoader:::DownloadData twice in a row on the same contentId' +
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
     childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
-    const storeSourceGetSpy = sinon.spy(storeSource, 'get')
-    await contentLoader.downloadData(contentId)
-    expect(storeSourceGetSpy.callCount).to.equal(0)
-    await contentLoader.downloadData(contentId)
-    expect(storeSourceGetSpy.callCount).to.equal(1)
-    // childFirebaseRef.flush()
+    const contentLoaderGetDataSpy = sinon.spy(contentLoader, 'getData')
+    let contentLoadPromise = contentLoader.downloadData(contentId)
+    childFirebaseRef.flush()
+    await contentLoadPromise
+    const contentLoaderGetDataSpyCount = contentLoaderGetDataSpy.callCount
+    contentLoadPromise = contentLoader.downloadData(contentId)
+    await contentLoadPromise
+    expect(contentLoaderGetDataSpy.callCount).to.equal(contentLoaderGetDataSpyCount + 1)
 
     expect(storeSource.get(contentId)).to.deep.equal(sampleContent)
     t.pass()
