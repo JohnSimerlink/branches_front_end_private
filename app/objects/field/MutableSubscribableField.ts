@@ -9,7 +9,7 @@ import {log} from '../../core/log'
 @injectable()
 export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
     private field: T
-    private _id: number
+    // private _id: number
     private _mutations: Array<IDatedMutation<FieldMutationTypes>>
     constructor(@inject(TYPES.MutableSubscribableFieldArgs) {
         updatesCallbacks = [], field = null, mutations = []
@@ -20,8 +20,8 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         super({updatesCallbacks})
         this.field = field
         this._mutations = mutations
-        this._id = Math.random()
-        log('Mutable Subscribable field just created with id of ', this._id, this)
+        // this._id = Math.random()
+        // log('Mutable Subscribable field just created with id of ', this._id, this)
     }
 
     public val(): T {

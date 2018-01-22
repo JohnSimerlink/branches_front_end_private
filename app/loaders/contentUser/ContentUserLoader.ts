@@ -48,15 +48,20 @@ export class ContentUserLoader implements IContentUserLoader {
           throw RangeError('No contentId or userId supplied for downloadData')
         }
         const contentUserId = getContentUserId({contentId, userId})
+        if (this.isLoaded({contentId, userId})) {
+            return this.getData({contentId, userId})
+        }
         const contentUserRef: IFirebaseRef =
             getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId})
         log('contentUserLoader downloadData called', contentId, userId)
         const me = this
         return new Promise((resolve, reject) => {
             contentUserRef.once('value', (snapshot) => {
-                log('contentUserLoader data received', contentId, userId, snapshot.val(), contentUserRef)
+                log('contentUserLoader data received', contentId, userId, snapshot.val())
                 const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val()
+                log('contentUserLoader data - just valled data', contentUserDataFromDB)
                 if (!contentUserDataFromDB) {
+                    log('contentUserDataFromDB doesn\'t exist')
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
@@ -65,6 +70,8 @@ export class ContentUserLoader implements IContentUserLoader {
                       Therefore we just return without resolving,
                        as the promise will actually get resolved in ideally a few more (dozen) milliseconds
                        */
+                } else {
+                    log('contentUserDataFromDB exists')
                 }
                 contentUserDataFromDB.id = contentUserId
                 // let children = contentUser.children || {}
@@ -73,6 +80,7 @@ export class ContentUserLoader implements IContentUserLoader {
 
                 const contentUserData: IContentUserData =
                     ContentUserDeserializer.convertDBDataToObjectData({contentUserDataFromDB, id: contentUserId})
+                log('about to check if contentUserData valid')
                 if (isValidContentUserDataFromDB(contentUserDataFromDB)) {
                     const contentUser: ISyncableMutableSubscribableContentUser =
                         ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB})
@@ -80,6 +88,8 @@ export class ContentUserLoader implements IContentUserLoader {
                     me.storeSource.set(contentUserId, contentUser)
                     resolve(contentUserData)
                 } else {
+                    log('ContentUserData invalid', contentUserData )
+                    setTimeout(() => {}, 0)
                     reject('contentUser is invalid! ! ' + JSON.stringify(contentUserData))
                 }
             })

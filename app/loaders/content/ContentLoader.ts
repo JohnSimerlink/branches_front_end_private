@@ -33,6 +33,9 @@ export class ContentLoader implements IContentLoader {
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData(contentId: string): Promise<IContentData> {
         log('contentLoader downloadData called')
+        if (this.isLoaded(contentId)) {
+            return this.getData(contentId)
+        }
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(contentId).once('value', (snapshot) => {

@@ -1,0 +1,15 @@
+what are all the things a load could be triggered from
+
+sigmaNodeLoader
+	-will call the 5 loaders related to that treeId
+a list of sigmanodes to load from cache
+	-which may or may not be in the same map
+	-from a user action
+		-user just hovered over a parent (either by mouse, or by placing in center of screen) . . .and thus children should load
+	
+	-immediately after that user created a node - or someone else created a child node of a parent node that the user has loaded 
+	-if already loaded, it will not attempt to load again
+		-make sure child loaders have same behavior
+
+
+now the other objects have already started subscribing (via appContainer.js . .. so calling sigmaNodeLoader.load(treeId) or sigmaNodeLoader.loadAndLoadChildren(treeId) will have the items appear on the map (but maybe we hsould have the .startListening to store or store/source changes be a function of sigmaNodeLoader and not other objects)
