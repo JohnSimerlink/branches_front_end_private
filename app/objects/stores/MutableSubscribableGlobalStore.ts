@@ -5,10 +5,12 @@ import {
     ContentUserPropertyNames, ITypeIdProppedDatedMutation,
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES
+    TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, IContentData,
+    ITreeData, ITreeDataWithoutId
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore} from './SubscribableGlobalStore';
+import {createContentId} from '../content/contentUtils';
 
 @injectable()
 export class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
@@ -106,6 +108,23 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 const id = mutation.id
                 const contentUserData = mutation.data
                 this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData})
+                /* IF all subscriptions are set up . . .
+                this should trigger sigmaEventListener / sigmaNode.receiveContent
+                 . TODO: make an intgration test for this */
+            }
+            case ObjectTypes.CONTENT: {
+                const contentData: IContentData = mutation.data
+                const contentId = createContentId(contentData)
+                this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData})
+            }
+            case ObjectTypes.TREE: {
+                const treeDataWithoutId: ITreeDataWithoutId = mutation.data
+                const id = mutation.id
+                const treeData: ITreeData = {
+                    ...treeDataWithoutId,
+                    id
+                }
+                this.treeStore.addAndSubscribeToItemFromData({id, treeData})
             }
         }
     }

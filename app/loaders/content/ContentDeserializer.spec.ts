@@ -13,7 +13,7 @@ import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutabl
 import {MutableSubscribableContent} from '../../objects/content/MutableSubscribableContent';
 import {ContentDeserializer} from './ContentDeserializer';
 
-test('ContentDeserializer::: deserialize Should deserialize properly', (t) => {
+test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const typeVal = CONTENT_TYPES.FACT
     const questionVal = 'What is the Capital of Ohio?'
     const answerVal = 'Columbus'

@@ -51,7 +51,7 @@ export class TreeLoader implements ITreeLoader {
                 // treeData.children = children as string[]
 
                 if (isValidTree(treeData)) {
-                    const tree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData})
+                    const tree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData})
                     me.storeSource.set(treeId, tree)
                     const convertedData = TreeDeserializer.convertSetsToArrays({treeData})
                     resolve(convertedData)

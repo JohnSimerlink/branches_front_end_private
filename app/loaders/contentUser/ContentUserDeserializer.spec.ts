@@ -14,7 +14,7 @@ import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {SyncableMutableSubscribableContentUser} from '../../objects/contentUser/SyncableMutableSubscribableContentUser';
 
-test('ContentUserDeserializer::: deserialize Should deserialize properly', (t) => {
+test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const overdueVal = true
     const lastRecordedStrengthVal = 30
     const proficiencyVal = PROFICIENCIES.TWO

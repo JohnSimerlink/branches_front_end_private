@@ -6,7 +6,8 @@ import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
-    ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData
+    ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
+    IContentDataEither, IContentData
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -26,19 +27,21 @@ if (!Vue) {
 const sigmaAny: any = sigma
 Vue.use(Vuex)
 
-export const MUTATION_NAMES = {
-    INITIALIZE_SIGMA_INSTANCE: 'initializeSigmaInstance',
-    JUMP_TO: 'jump_to',
-    REFRESH: 'refresh',
-    ADD_NODE: 'add_node',
-    CREATE_CONTENT_USER_DATA: 'create_content_user_data',
-    ADD_CONTENT_INTERACTION: 'add_content_interaction',
-    ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA: 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
-    ADD_FIRST_CONTENT_INTERACTION: 'add_first_content_interaction',
-    CHANGE_USER_ID: 'changeUserId',
+export enum MUTATION_NAMES {
+    INITIALIZE_SIGMA_INSTANCE = 'initializeSigmaInstance',
+    JUMP_TO = 'jump_to',
+    REFRESH = 'refresh',
+    ADD_NODE = 'add_node',
+    CREATE_CONTENT_USER_DATA = 'create_content_user_data',
+    CREATE_CONTENT = 'create_content',
+    ADD_CONTENT_INTERACTION = 'add_content_interaction',
+    ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA = 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
+    ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
+    CHANGE_USER_ID = 'changeUserId',
 }
 
 const getters = {
+    getStore() {} // Will redefine later
 }
 const mutations = {
     initializeSigmaInstance() {
@@ -73,7 +76,7 @@ const mutations = {
 
         /* TODO: it would be nice if I didn't have to do all this constructing
          inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
-        const store = getters['getStore']()
+        const store = getters.getStore()
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig()
         const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
@@ -133,16 +136,26 @@ const mutations = {
         // const contentUserData: IContentUserData = state.globalDataStore.addMutation(createMutation)
     //
     },
+    [MUTATION_NAMES.CREATE_CONTENT](state, {
+        type, question, answer, title
+    }: IContentDataEither) {
+        const createMutation: ICreateMutation<IContentData> = {
+            type: STORE_MUTATION_TYPES.CREATE_ITEM,
+            objectType: ObjectTypes.CONTENT,
+            data: {type, question, answer, title},
+        }
+        state.globalDataStore.addMutation(createMutation)
+    },
     [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
         state.userId = userId
-    }
+    },
 }
 mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
     if (state.sigmaInitialized) {
         log('sigma was already initialized . .. adding node', node)
         state.graph.addNode(node)
         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
-        log('STORE 2 TS ADD NODE. THIS STORE is ', getters['getStore']())
+        log('STORE 2 TS ADD NODE. THIS STORE is ', getters.getStore())
     } else {
         state.graphData.nodes.push(node)
     }
@@ -158,7 +171,7 @@ export default class BranchesStore {
             actions,
             getters,
         } ) as Store<any>
-        getters['getStore'] = () => store
+        getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         state.globalDataStore = globalDataStore /* added because this is actually
         the mechanism we will use to access globalDataStore */

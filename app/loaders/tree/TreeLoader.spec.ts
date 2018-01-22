@@ -153,7 +153,7 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
             2947: true,
         }
     }
-    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData: sampleTreeData})
+    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
         myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
@@ -185,7 +185,7 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
         parentId,
         children: childrenArray,
     }
-    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserialize({treeId, treeData: sampleTreeData})
+    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
         myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
     storeSource.set(treeId, sampleTree)
