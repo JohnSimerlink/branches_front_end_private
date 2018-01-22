@@ -19,6 +19,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {ContentDeserializer} from './ContentDeserializer';
 import {ContentLoader, ContentLoaderArgs} from './ContentLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+import * as sinon from 'sinon'
 test('ContentLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<ContentLoaderArgs, IContentLoader>({
         container: myContainer,
@@ -152,6 +153,36 @@ test('ContentLoader:::DownloadData should have the side effect of storing the da
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
     childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
     contentLoader.downloadData(contentId)
+    // childFirebaseRef.flush()
+
+    expect(storeSource.get(contentId)).to.deep.equal(sampleContent)
+    t.pass()
+})
+test('ContentLoader:::DownloadData twice in a row on the same contentId' +
+    ' should fetch the contentId from the storeSource', async (t) => {
+    const contentId = '1234'
+    const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
+    const childFirebaseRef = firebaseRef.child(contentId)
+
+    const typeVal = CONTENT_TYPES.FACT
+    const questionVal = 'What is the Capital of Ohio?'
+    const answerVal = 'Columbus'
+    const sampleContentData: IContentData = {
+        type: typeVal,
+        question: questionVal,
+        answer: answerVal,
+    }
+    const sampleContent: IMutableSubscribableContent =
+        ContentDeserializer.deserialize({contentId, contentData: sampleContentData})
+    const storeSource: ISubscribableContentStoreSource =
+        myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+    const contentLoader = new ContentLoader({storeSource, firebaseRef})
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    const storeSourceGetSpy = sinon.spy(storeSource, 'get')
+    await contentLoader.downloadData(contentId)
+    expect(storeSourceGetSpy.callCount).to.equal(0)
+    await contentLoader.downloadData(contentId)
+    expect(storeSourceGetSpy.callCount).to.equal(1)
     // childFirebaseRef.flush()
 
     expect(storeSource.get(contentId)).to.deep.equal(sampleContent)

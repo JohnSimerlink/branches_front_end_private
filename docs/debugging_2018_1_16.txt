@@ -149,3 +149,6 @@ tla+
 this method calls this.storeSource.set(id, item) and then this.subscribeToItem(id, item).
 
 we need a way where any time the storeSource calls .set (whether called from the Loader or from the storeSource), that the store notes that, and subscribes the item for updates, if it hasn't already
+
+function to load all children
+function to determine center node in screen
