@@ -5,11 +5,11 @@ import {IDBSubscriber} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-class DBSubscriberToContent implements IDBSubscriber {
+export class DBSubscriberToContent implements IDBSubscriber {
     private type: ISubscribableMutableField<string>;
     private question: ISubscribableMutableField<string>;
     private answer: ISubscribableMutableField<string>;
-    private title: ISubscribableMutableField<number>;
+    private title: ISubscribableMutableField<string>;
     private typeSyncer: IDatabaseAutoSaver;
     private questionSyncer: IDatabaseAutoSaver;
     private answerSyncer: IDatabaseAutoSaver;
@@ -18,7 +18,7 @@ class DBSubscriberToContent implements IDBSubscriber {
     constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
       type, question, answer, title,
       typeSyncer, questionSyncer, answerSyncer, titleSyncer
-    }) {
+    }: DBSubscriberToContentArgs ) {
         this.type = type
         this.question = question
         this.answer = answer
@@ -37,14 +37,13 @@ class DBSubscriberToContent implements IDBSubscriber {
     }
 }
 @injectable()
-class DBSubscriberToContentArgs {
-    @inject(TYPES.ISubscribableMutableString) public type
-    @inject(TYPES.ISubscribableMutableString) public question
-    @inject(TYPES.ISubscribableMutableString) public answer
-    @inject(TYPES.ISubscribableMutableString) public title
-    @inject(TYPES.IDatabaseAutoSaver) private typeSyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private questionSyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private answerSyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private titleSyncer: IDatabaseAutoSaver;
+export class DBSubscriberToContentArgs {
+    @inject(TYPES.ISubscribableMutableString) public type: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public question: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public answer: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public title: ISubscribableMutableField<string>
+    @inject(TYPES.IDatabaseAutoSaver) public typeSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public questionSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public answerSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public titleSyncer: IDatabaseAutoSaver;
 }
-export {DBSubscriberToContent, DBSubscriberToContentArgs}

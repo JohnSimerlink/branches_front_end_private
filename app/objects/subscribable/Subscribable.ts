@@ -5,12 +5,12 @@ import {TYPES} from '../types';
 import {SubscribableCore} from './SubscribableCore';
 
 @injectable()
-class Subscribable<UpdatesType>
+export class Subscribable<UpdatesType>
     extends SubscribableCore<UpdatesType>
     implements ISubscribable<UpdatesType> {
     protected updates: {val?: any} = {}
     protected pushes: {} = {}
-    constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
+    constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []}: SubscribableArgs = {updatesCallbacks: []}) {
         super({updatesCallbacks})
     }
     protected callbackArguments(): UpdatesType {
@@ -29,7 +29,6 @@ class Subscribable<UpdatesType>
     }
 }
 @injectable()
-class SubscribableArgs {
+export class SubscribableArgs {
     @inject(TYPES.Array) public updatesCallbacks;
 }
-export {Subscribable, SubscribableArgs}

@@ -7,7 +7,7 @@ import {TYPES} from '../types';
 @injectable()
 export class RenderedNodesManager implements IRenderedNodesManager {
     private renderedNodesManagerCore: IRenderedNodesManagerCore
-    constructor(@inject(TYPES.RenderedNodesManagerArgs){renderedNodesManagerCore}) {
+    constructor(@inject(TYPES.RenderedNodesManagerArgs){renderedNodesManagerCore}: RenderedNodesManagerArgs) {
         this.renderedNodesManagerCore =  renderedNodesManagerCore
     }
     public subscribe(obj: ISubscribable<ISigmaIdToRender>) {

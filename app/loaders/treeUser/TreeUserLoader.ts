@@ -19,7 +19,7 @@ export function getTreeUserId({treeId, userId}) {
 export class TreeUserLoader implements ITreeUserLoader {
     private storeSource: ISubscribableTreeUserStoreSource
     private firebaseRef: Reference
-    constructor(@inject(TYPES.TreeUserLoaderArgs){firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.TreeUserLoaderArgs){firebaseRef, storeSource}: TreeUserLoaderArgs) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }

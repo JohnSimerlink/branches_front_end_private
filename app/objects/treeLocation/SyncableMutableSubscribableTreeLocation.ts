@@ -4,18 +4,17 @@ import {inject, injectable} from 'inversify';
 import {
     IDetailedUpdates, IHash,
     ISubscribable,
-    ISyncableMutableSubscribableTree,
+    ISyncableMutableSubscribableTreeLocation,
     IValable,
 } from '../interfaces';
-import {MutableSubscribableTree} from './MutableSubscribableTree';
+import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
 
 @injectable()
-export class SyncableMutableSubscribableTree
-    extends MutableSubscribableTree implements ISyncableMutableSubscribableTree {
+export class SyncableMutableSubscribableTreeLocation
+    extends MutableSubscribableTreeLocation implements ISyncableMutableSubscribableTreeLocation {
     public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable> {
         return {
-            contentId: this.contentId,
-            parentId: this.parentId,
+            point: this.point,
         }
     }
 }

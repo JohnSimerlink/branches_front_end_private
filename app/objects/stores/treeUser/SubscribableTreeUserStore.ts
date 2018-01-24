@@ -12,7 +12,8 @@ export class SubscribableTreeUserStore
     extends SubscribableStore<ISubscribableTreeUserCore, IMutableSubscribableTreeUser>
     implements ISubscribableTreeUserStore {
 
-     constructor(@inject(TYPES.SubscribableTreeUserStoreArgs){ storeSource, updatesCallbacks}) {
+     constructor(
+         @inject(TYPES.SubscribableTreeUserStoreArgs){ storeSource, updatesCallbacks}: SubscribableTreeUserStoreArgs ) {
         super({updatesCallbacks, storeSource})
     }
 }

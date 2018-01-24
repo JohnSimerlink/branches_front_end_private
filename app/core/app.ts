@@ -8,7 +8,7 @@ import {TYPES} from '../objects/types';
 export class App implements IApp {
     private UIs: IUI[]
     private store: IMutableSubscribableGlobalStore
-    constructor(@inject(TYPES.AppArgs){UIs, store}) {
+    constructor(@inject(TYPES.AppArgs){UIs, store}: AppArgs ) {
         this.UIs = UIs
         this.store = store
     }

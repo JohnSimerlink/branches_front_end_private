@@ -6,18 +6,17 @@ import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
 import {log} from '../../core/log'
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
     private syncableObject: ISyncableValable
-    private syncableObjectFirebaseRef: IFirebaseRef
+    private syncableObjectFirebaseRef: Reference
 
     constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){
         syncableObject, syncableObjectFirebaseRef
-    }: {
-            syncableObject: ISyncableValable,
-            syncableObjectFirebaseRef: IFirebaseRef
-        }) {
+    }: ObjectFirebaseAutoSaverArgs) {
         this.syncableObject = syncableObject
         this.syncableObjectFirebaseRef = syncableObjectFirebaseRef
     }
@@ -53,4 +52,5 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
 @injectable()
 export class ObjectFirebaseAutoSaverArgs {
     @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncableValable
+    @inject(TYPES.IFirebaseRef) public syncableObjectFirebaseRef: Reference
 }

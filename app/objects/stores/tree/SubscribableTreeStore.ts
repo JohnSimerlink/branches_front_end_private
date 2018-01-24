@@ -9,7 +9,7 @@ import {SubscribableStore} from '../SubscribableStore';
 export class SubscribableTreeStore extends SubscribableStore<ISubscribableTreeCore, IMutableSubscribableTree>
     implements ISubscribableTreeStore {
 
-    constructor(@inject(TYPES.SubscribableTreeStoreArgs){ storeSource, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableTreeStoreArgs){ storeSource, updatesCallbacks}: SubscribableTreeStoreArgs ) {
         super({updatesCallbacks, storeSource})
     }
 }

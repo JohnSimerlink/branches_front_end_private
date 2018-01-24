@@ -8,7 +8,8 @@ import {inject, injectable} from 'inversify';
 
 export class SubscribableContentStore extends SubscribableStore<ISubscribableContentCore, IMutableSubscribableContent>
     implements ISubscribableContentStore {
-    constructor(@inject(TYPES.SubscribableContentStoreArgs){ storeSource, updatesCallbacks}) {
+    constructor(
+        @inject(TYPES.SubscribableContentStoreArgs){ storeSource, updatesCallbacks}: SubscribableContentStoreArgs ) {
         super({updatesCallbacks, storeSource})
     }
 }

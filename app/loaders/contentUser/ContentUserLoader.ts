@@ -16,7 +16,7 @@ import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
 export class ContentUserLoader implements IContentUserLoader {
     private storeSource: ISubscribableContentUserStoreSource
     private firebaseRef: Reference
-    constructor(@inject(TYPES.ContentUserLoaderArgs){firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.ContentUserLoaderArgs){firebaseRef, storeSource}: ContentUserLoaderArgs) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }

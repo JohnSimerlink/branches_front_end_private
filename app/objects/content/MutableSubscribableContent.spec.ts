@@ -16,7 +16,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
+     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
@@ -45,7 +45,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
     + ' before startPublishing has been called', (t) => {
 
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
+     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})

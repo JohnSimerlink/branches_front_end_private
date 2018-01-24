@@ -7,7 +7,7 @@ import {TYPES} from '../types';
 @injectable()
 export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {
     private saveUpdatesToDBFunction: ISaveUpdatesToDBFunction
-    constructor(@inject(TYPES.PropertyAutoFirebaseSaverArgs){saveUpdatesToDBFunction}) {
+    constructor(@inject(TYPES.PropertyAutoFirebaseSaverArgs){saveUpdatesToDBFunction}: PropertyAutoFirebaseSaverArgs) {
         this.saveUpdatesToDBFunction = saveUpdatesToDBFunction
     }
 

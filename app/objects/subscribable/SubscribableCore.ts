@@ -2,14 +2,14 @@
 import 'reflect-metadata'
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
-import {ISubscribable, updatesCallback} from '../interfaces';
+import {ISubscribable, IUpdatesCallback} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
 // TODO: make abstract?
-abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesType> {
-    private updatesCallbacks: Array<updatesCallback<UpdatesType>>;
-    constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []} = {updatesCallbacks: []}) {
+export abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesType> {
+    private updatesCallbacks: Array<IUpdatesCallback<UpdatesType>>;
+    constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []}: SubscribableArgs = {updatesCallbacks: []}) {
         this.updatesCallbacks = updatesCallbacks
         // log('subscribable core updates callbacks is ', this.updatesCallbacks)
         /* let updatesCallbacks be injected for
@@ -18,7 +18,7 @@ abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesTyp
          of set, mutations, and updatesCallbacks easy-peasy
         */
     }
-    public onUpdate(func: updatesCallback<UpdatesType>) {
+    public onUpdate(func: IUpdatesCallback<UpdatesType>) {
         // log('SubscribableCore onUpdateCalled updatesCallbacks before: called for ',
         //     this.updatesCallbacks, this.updatesCallbacks.length, this, func)
         this.updatesCallbacks.push(func)
@@ -36,7 +36,6 @@ abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesTyp
     }
 }
 @injectable()
-class SubscribableArgs {
+export class SubscribableArgs {
     @inject(TYPES.Array) public updatesCallbacks;
 }
-export {SubscribableCore, SubscribableArgs}

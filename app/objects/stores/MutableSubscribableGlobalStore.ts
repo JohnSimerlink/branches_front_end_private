@@ -6,19 +6,30 @@ import {
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
     TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, IContentData,
-    ITreeData, ITreeDataWithoutId
+    ITreeData, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, id, IUpdatesCallback,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableTreeStore
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableGlobalStore} from './SubscribableGlobalStore';
+import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {createContentId} from '../content/contentUtils';
+import {createTreeId} from '../tree/TreeUtils';
 
 @injectable()
+// TODO: the fact that this class changes the types of variables
 export class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
+    private _globalStoreId
+    protected treeStore: IMutableSubscribableTreeStore
+    protected treeUserStore: IMutableSubscribableTreeUserStore
+    protected treeLocationStore: IMutableSubscribableTreeLocationStore
+    protected contentStore: IMutableSubscribableContentStore
+    protected contentUserStore: IMutableSubscribableContentUserStore
     constructor(@inject(TYPES.MutableSubscribableGlobalStoreArgs){
         treeStore, treeUserStore, treeLocationStore,
         contentUserStore, contentStore, updatesCallbacks
-    }) {
+    }: MutableSubscribableGlobalStoreArgs) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
+        this._globalStoreId = Math.random()
     }
     private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
         // log('MSGlobalStore addEditMutation called',)
@@ -101,8 +112,8 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             }
         }
     }
-    private addCreateMutation(mutation: ICreateMutation<any>) {
-        // log('MSGLobalStore addCreateMutation called: 3')
+    private addCreateMutation(mutation: ICreateMutation<any>): id {
+        log('MSGLobalStore addCreateMutation called. id is,', this._globalStoreId )
         switch (mutation.objectType) {
             case ObjectTypes.CONTENT_USER: {
                 const id = mutation.id
@@ -111,31 +122,44 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 /* IF all subscriptions are set up . . .
                 this should trigger sigmaEventListener / sigmaNode.receiveContent
                  . TODO: make an intgration test for this */
+                return id
             }
             case ObjectTypes.CONTENT: {
                 const contentData: IContentData = mutation.data
                 const contentId = createContentId(contentData)
                 this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData})
+                return contentId
             }
             case ObjectTypes.TREE: {
+                log('MUTATION CREATE TREE in GLOBAL STORE data is', mutation.data)
                 const treeDataWithoutId: ITreeDataWithoutId = mutation.data
-                const id = mutation.id
+                const id = createTreeId(treeDataWithoutId)
                 const treeData: ITreeData = {
                     ...treeDataWithoutId,
                     id
                 }
                 this.treeStore.addAndSubscribeToItemFromData({id, treeData})
+                return id
+            }
+            /* TODO: WE HAVE A LOT OF INTEGRATION TESTS
+             TO MAKE SURE ALL THESE CREATION MUTATIONS WORK PROPERLY and STAY PROPERLY WORKING */
+            case ObjectTypes.TREE_LOCATION: {
+                const treeLocationData: ITreeLocationData = mutation.data
+                const id = mutation.id
+                this.treeLocationStore.addAndSubscribeToItemFromData({id, treeLocationData})
+                return id
             }
         }
     }
-    public addMutation(mutation: IGlobalMutation) {
+    public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
+        log('global store addMutation is', mutation)
         // log('MSGLobalStore addMutation called 1', mutation.type, STORE_MUTATION_TYPES.CREATE_ITEM)
         if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
             // log('MSGLobalStore addMutation called: about to call addCreateMutation 2 ')
-            this.addCreateMutation(mutation)
+            return this.addCreateMutation(mutation)
         } else {
             log('MSGLobalStore addMutation called: about to call addEditMutation 2')
-            this.addEditMutation(mutation)
+            return this.addEditMutation(mutation)
         }
     }
     public callCallbacks() {
@@ -145,15 +169,23 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     public mutations(): Array<ITypeIdProppedDatedMutation<AllPropertyMutationTypes>> {
         throw new Error('Method not implemented.');
     }
+    public startPublishing() {
+        log('globalstore startPublishing called')
+        this.treeStore.startPublishing()
+        this.contentStore.startPublishing()
+        this.treeUserStore.startPublishing()
+        this.contentUserStore.startPublishing()
+        this.treeLocationStore.startPublishing()
+    }
 
 }
 
 @injectable()
-export class MutableSubscribableGlobalStoreArgs {
-    @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.IMutableSubscribableTreeStore) public treeStore
-    @inject(TYPES.IMutableSubscribableTreeUserStore) public treeUserStore
-    @inject(TYPES.IMutableSubscribableTreeLocationStore) public treeLocationStore
-    @inject(TYPES.IMutableSubscribableContentStore) public contentStore
-    @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore
+export class MutableSubscribableGlobalStoreArgs extends SubscribableGlobalStoreArgs {
+    @inject(TYPES.Array) public updatesCallbacks: Array<IUpdatesCallback<any>>;
+    @inject(TYPES.IMutableSubscribableTreeStore) public treeStore: IMutableSubscribableTreeStore
+    @inject(TYPES.IMutableSubscribableTreeUserStore) public treeUserStore: IMutableSubscribableTreeUserStore
+    @inject(TYPES.IMutableSubscribableTreeLocationStore) public treeLocationStore: IMutableSubscribableTreeLocationStore
+    @inject(TYPES.IMutableSubscribableContentStore) public contentStore: IMutableSubscribableContentStore
+    @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore: IMutableSubscribableContentUserStore
 }

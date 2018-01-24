@@ -4,25 +4,21 @@ import {
     ISubscribableContentUserStoreSource, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import * as firebase from 'firebase';
-import Reference = firebase.storage.Reference;
 import {ContentUserLoader} from './ContentUserLoader';
 import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
 import {log} from '../../core/log'
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
 export class ContentUserLoaderAndAutoSaver extends ContentUserLoader implements IContentUserLoader {
-    private firebaseRefCopy: IFirebaseRef
+    private firebaseRefCopy: Reference
     constructor(@inject(TYPES.ContentUserLoaderAndAutoSaverArgs){
-        firebaseRef, storeSource, }: {
-        firebaseRef: IFirebaseRef,
-        storeSource: ISubscribableContentUserStoreSource,
-    }) {
+        firebaseRef, storeSource, }: ContentUserLoaderAndAutoSaverArgs) {
         super({firebaseRef, storeSource})
         this.firebaseRefCopy = firebaseRef
-
     }
 
     public async downloadData({contentId, userId}: { contentId: any; userId: any }): Promise<IContentUserData> {

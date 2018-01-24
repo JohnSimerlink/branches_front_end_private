@@ -1,15 +1,24 @@
 import {log} from '../../../../app/core/log'
 import {
     IIdProppedDatedMutation,
-     IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
+    IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
+    ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
     TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames
 } from '../../interfaces';
 import {SubscribableTreeLocationStore} from './SubscribableTreeLocationStore';
+import {TreeLocationDeserializer} from '../../../loaders/treeLocation/TreeLocationDeserializer';
 
-class MutableSubscribableTreeLocationStore
+export class MutableSubscribableTreeLocationStore
     extends SubscribableTreeLocationStore
     implements IMutableSubscribableTreeLocationStore {
+    public addAndSubscribeToItemFromData({id, treeLocationData}: { id: string; treeLocationData: ITreeLocationData }):
+    IMutableSubscribableTreeLocation {
+        const treeLocation: ISyncableMutableSubscribableTreeLocation =
+            TreeLocationDeserializer.deserialize({treeLocationData})
+        this.addAndSubscribeToItem(id, treeLocation)
+        return undefined;
+    }
     public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes,
         TreeLocationPropertyNames>) {
         // const treeLocationId = mutation.id
@@ -41,5 +50,3 @@ class MutableSubscribableTreeLocationStore
         throw new Error('Not implemented!')
     }
 }
-
-export {MutableSubscribableTreeLocationStore}

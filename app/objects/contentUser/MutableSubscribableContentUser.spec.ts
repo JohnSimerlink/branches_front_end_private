@@ -15,7 +15,7 @@ import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 
 test('MutableSubscribableContentUser:::.val() should work after constructor', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
+     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
@@ -52,7 +52,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
 test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     'after ADD MUTATION SET lastRecordedStrength', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-    // TODO: figure out why DI puts in a bad updatesCallback!
+    // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
@@ -97,7 +97,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
 
 test('MutableSubscribableContentUser:::.val() should give appropiate value after ADD MUTATION SET overdueVal', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-    // TODO: figure out why DI puts in a bad updatesCallback!
+    // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const lastRecordedStrengthVal = 45
     const overdueVal = true
@@ -144,7 +144,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
 test('MutableSubscribableContentUser:::.val() should give appropiate value' +
     ' after ADD MUTATION SET proficiency', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-    // TODO: figure out why DI puts in a bad updatesCallback!
+    // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
@@ -189,7 +189,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
 
 test('MutableSubscribableContentUser:::.val() should give appropiate value after ADD MUTATION SET timer', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-    // TODO: figure out why DI puts in a bad updatesCallback!
+    // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
@@ -236,7 +236,7 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
+     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
     const lastRecordedStrength: ISubscribableMutableField<number>

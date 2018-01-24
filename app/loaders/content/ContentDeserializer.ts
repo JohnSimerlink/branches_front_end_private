@@ -1,11 +1,8 @@
-import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IHash, IMutableSubscribableContent, IContentData, CONTENT_TYPES,
     ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableContent} from '../../objects/content/MutableSubscribableContent';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
 
 class ContentDeserializer {
@@ -14,7 +11,7 @@ class ContentDeserializer {
        ): ISyncableMutableSubscribableContent {
        const type = new MutableSubscribableField<CONTENT_TYPES>({field: contentData.type})
        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-        // TODO: figure out why DI puts in a bad updatesCallback!
+        // TODO: figure out why DI puts in a bad IUpdatesCallback!
        */
        const question = new MutableSubscribableField<string>({field: contentData.question})
        const answer = new MutableSubscribableField<string>({field: contentData.answer})

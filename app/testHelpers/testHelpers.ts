@@ -17,6 +17,10 @@ export function getSigmaIdsForContentId(contentId) {
             return [SIGMA_ID1, SIGMA_ID2]
     }
 }
+export function inRenderedSetf({treeId, store}) {
+    const sigmaInstance = store.state.sigmaInstance
+    return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId))
+}
 
 export function injectionWorks<argsInterface, classInterface>(
     {container, argsType, interfaceType}: {container: Container, argsType: symbol, interfaceType: symbol }) {
@@ -25,6 +29,7 @@ export function injectionWorks<argsInterface, classInterface>(
     const obj: classInterface = myContainer.get<classInterface>(interfaceType)
     const propertiesExist = expectedProperties.every(property =>  obj[property] !== undefined
     )
+    // TODO: this doesn't check
     return propertiesExist
 }
 

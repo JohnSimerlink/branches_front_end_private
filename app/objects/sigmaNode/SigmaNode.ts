@@ -13,7 +13,7 @@ import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 
 @injectable()
-class SigmaNode implements ISigmaNode {
+export class SigmaNode implements ISigmaNode {
 
     public id: string;
     public parentId: string;
@@ -78,11 +78,12 @@ class SigmaNode implements ISigmaNode {
             content,
             contentUserData,
             label,
+            proficiencyStats,
             size,
             aggregationTimer,
             colorSlices,
             overdue,
-        } =  {
+        }: SigmaNodeArgs = {
             id: undefined,
             parentId: undefined,
             contentId: undefined,
@@ -91,6 +92,7 @@ class SigmaNode implements ISigmaNode {
             y: undefined,
             content: undefined,
             contentUserData: undefined,
+            proficiencyStats: undefined,
             label: undefined,
             size: undefined,
             aggregationTimer: undefined,
@@ -114,21 +116,19 @@ class SigmaNode implements ISigmaNode {
 }
 
 @injectable()
-class SigmaNodeArgs {
+export class SigmaNodeArgs {
     @inject(TYPES.String) public id: string;
     @inject(TYPES.String) public parentId: string;
     @inject(TYPES.String) public contentId: string;
-    @inject(TYPES.String) public children: string;
+    @inject(TYPES.Array) public children: string[];
     @inject(TYPES.Number) public x: number;
     @inject(TYPES.Number) public y: number;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
-    @inject(TYPES.Object) public content: object;
+    @inject(TYPES.Object) public content: IContentData;
     @inject(TYPES.IContentUserData) public contentUserData: IContentUserData;
     @inject(TYPES.Number) public aggregationTimer: number;
     @inject(TYPES.IProficiencyStats) public proficiencyStats: IProficiencyStats;
     @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
-    @inject(TYPES.String) public overdue: string;
+    @inject(TYPES.Boolean) public overdue: boolean;
 }
-
-export {SigmaNode, SigmaNodeArgs}

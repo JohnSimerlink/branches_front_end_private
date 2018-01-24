@@ -17,13 +17,13 @@ const callback1 = sinon.spy() // () => void 0
 const callback2 = sinon.spy() // () => void 0
 test('Subscribable:SubscribableMutableStringSet:::' +
     'Subscribable:mutableStringSet onUpdate func should add func to callback list', (t) => {
-    set.onUpdate(callback1) // TODO: why doesn't typescript complain that func is not of type updatesCallback?
+    set.onUpdate(callback1) // TODO: why doesn't typescript complain that func is not of type IUpdatesCallback?
     expect(updatesCallbacks).to.deep.equal([callback1])
     t.pass()
 })
 test(`Subscribable:mutableStringSet addMutation should call
  all the callbacks with the expected published updates`, (t) => {
-    set.onUpdate(callback2) // TODO: why doesn't typescript complain that func is not of type updatesCallback?
+    set.onUpdate(callback2) // TODO: why doesn't typescript complain that func is not of type IUpdatesCallback?
     const ADDED_KEY = '123'
     const mutation: IDatedMutation<SetMutationTypes> = {
         data: ADDED_KEY,

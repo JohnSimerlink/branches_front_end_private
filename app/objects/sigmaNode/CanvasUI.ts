@@ -11,10 +11,10 @@ import {ISubscribable, IUI} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
-class CanvasUI implements IUI  {
+export class CanvasUI implements IUI  {
     private sigmaNodesUpdater: ISigmaNodesUpdater
 
-    constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater}) {
+    constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater}: CanvasUIArgs ) {
         this.sigmaNodesUpdater = sigmaNodesUpdater
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
@@ -23,8 +23,6 @@ class CanvasUI implements IUI  {
 }
 
 @injectable()
-class CanvasUIArgs {
+export class CanvasUIArgs {
     @inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater
 }
-
-export {CanvasUI, CanvasUIArgs}

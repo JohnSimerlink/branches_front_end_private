@@ -1,18 +1,18 @@
 import {
-     IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
+    IMutableSubscribablePoint, ISyncableMutableSubscribableTreeLocation,
     ITreeLocationData
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
-import {MutableSubscribableTreeLocation} from '../../objects/treeLocation/MutableSubscribableTreeLocation';
+import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 
 class TreeLocationDeserializer {
    public static deserialize(
        {treeLocationData}: {treeLocationData: ITreeLocationData}
-       ): IMutableSubscribableTreeLocation {
+       ): ISyncableMutableSubscribableTreeLocation {
        const point: IMutableSubscribablePoint =
            new MutableSubscribablePoint({...treeLocationData.point})
-       const treeLocation: IMutableSubscribableTreeLocation
-           = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+       const treeLocation: ISyncableMutableSubscribableTreeLocation
+           = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
        return treeLocation
    }

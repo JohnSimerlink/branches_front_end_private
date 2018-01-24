@@ -1,4 +1,6 @@
 import {IFirebaseRef} from '../../objects/interfaces';
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 
 export const separator = '__'
 export function getContentUserId({contentId, userId}) {
@@ -15,8 +17,8 @@ export function getUserId({contentUserId}) {
     return userId
 }
 export function getContentUserRef({contentUsersRef, contentId, userId, }: {
-    contentUsersRef: IFirebaseRef, contentId: string, userId: string,
-}): IFirebaseRef {
+    contentUsersRef: Reference, contentId: string, userId: string,
+}): Reference {
     const contentUserRef = contentUsersRef.child(contentId).child(userId)
     return contentUserRef
 }

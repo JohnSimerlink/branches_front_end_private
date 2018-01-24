@@ -6,7 +6,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 
 @injectable()
-class DBSubscriberToTreeUser implements IDBSubscriber {
+export class DBSubscriberToTreeUser implements IDBSubscriber {
     private proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
     private aggregationTimer: ISubscribableMutableField<number>;
     private proficiencyStatsSyncer: IDatabaseAutoSaver;
@@ -15,7 +15,7 @@ class DBSubscriberToTreeUser implements IDBSubscriber {
     constructor(@inject(TYPES.DBSubscriberToTreeUserArgs) {
       proficiencyStats, aggregationTimer,
       proficiencyStatsSyncer, aggregationTimerSyncer,
-    }) {
+    }: DBSubscriberToTreeUserArgs ) {
         this.proficiencyStats = proficiencyStats
         this.aggregationTimer = aggregationTimer
         this.proficiencyStatsSyncer = proficiencyStatsSyncer
@@ -28,10 +28,9 @@ class DBSubscriberToTreeUser implements IDBSubscriber {
     }
 }
 @injectable()
-class DBSubscriberToTreeUserArgs {
+export class DBSubscriberToTreeUserArgs {
     @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats
-    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer
-    @inject(TYPES.IDatabaseAutoSaver) private proficiencyStatsSyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private aggregationTimerSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer: ISubscribableMutableField<number>
+    @inject(TYPES.IDatabaseAutoSaver) public proficiencyStatsSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public aggregationTimerSyncer: IDatabaseAutoSaver;
 }
-export {DBSubscriberToTreeUser, DBSubscriberToTreeUserArgs}

@@ -36,12 +36,7 @@ export class MutableSubscribablePoint
         x = null,
         y = null,
         mutations = [],
-    }: {
-        updatesCallbacks?: any[],
-        x?: number,
-        y?: number,
-        mutations?: Array<IActivatableDatedMutation<PointMutationTypes>>
-    }
+    }: MutableSubscribablePointArgs
     = {
         updatesCallbacks: [],
         x: null,
@@ -170,8 +165,8 @@ export class MutableSubscribablePoint
 
 @injectable()
 export class MutableSubscribablePointArgs {
-    @inject(TYPES.Array) public updatesCallbacks = []
+    @inject(TYPES.Array) public updatesCallbacks? = []
     @inject(TYPES.Number) public x: number
     @inject(TYPES.Number) public y: number
-    @inject(TYPES.Array) public mutations = []
+    @inject(TYPES.Array) public mutations?: Array<IActivatableDatedMutation<PointMutationTypes>>  = []
 }

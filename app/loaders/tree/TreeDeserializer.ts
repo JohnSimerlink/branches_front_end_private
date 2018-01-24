@@ -15,7 +15,7 @@ export class TreeDeserializer {
        ): IMutableSubscribableTree {
        const contentId = new MutableSubscribableField<string>({field: treeData.contentId})
        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-        // TODO: figure out why DI puts in a bad updatesCallback!
+        // TODO: figure out why DI puts in a bad IUpdatesCallback!
        */
        const parentId = new MutableSubscribableField<string>({field: treeData.parentId})
        const childrenSet: IHash<boolean> = treeData.children
@@ -30,10 +30,10 @@ export class TreeDeserializer {
     ): ISyncableMutableSubscribableTree {
         const contentId = new MutableSubscribableField<string>({field: treeData.contentId})
         /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
-         // TODO: figure out why DI puts in a bad updatesCallback!
+         // TODO: figure out why DI puts in a bad IUpdatesCallback!
         */
         const parentId = new MutableSubscribableField<string>({field: treeData.parentId})
-        const childrenArray: string[] = treeData.children
+        const childrenArray: string[] = treeData.children || []
         const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray)
         const children = new SubscribableMutableStringSet({set: childrenSet})
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(

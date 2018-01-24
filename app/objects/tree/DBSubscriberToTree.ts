@@ -19,7 +19,7 @@ export class DBSubscriberToTree implements IDBSubscriberToTree {
     constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
       contentId, parentId, children,
       contentIdSyncer, parentIdSyncer, childrenSyncer
-    }) {
+    }: DBSubscriberToTreeArgs ) {
         this.contentId = contentId
         this.parentId = parentId
         this.children = children

@@ -7,12 +7,13 @@ import {
 import {isValidTreeLocation} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
-
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 @injectable()
 export class TreeLocationLoader implements ITreeLocationLoader {
     private storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
     private firebaseRef
-    constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, storeSource}: TreeLocationLoaderArgs ) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }
@@ -52,6 +53,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
 }
 @injectable()
 export class TreeLocationLoaderArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef
-    @inject(TYPES.ISubscribableTreeLocationStoreSource) public store: ISubscribableTreeLocationStoreSource
+    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+
+    @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource: ISubscribableTreeLocationStoreSource
 }

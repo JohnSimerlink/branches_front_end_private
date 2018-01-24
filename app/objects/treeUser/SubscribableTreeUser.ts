@@ -13,7 +13,7 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscribableTreeUser {
+export class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscribableTreeUser {
     private publishing = false
     public proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
     public aggregationTimer: ISubscribableMutableField<number>;
@@ -27,7 +27,7 @@ class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscri
     }
     constructor(@inject(TYPES.SubscribableTreeUserArgs) {
         updatesCallbacks, proficiencyStats, aggregationTimer
-    }) {
+    }: SubscribableTreeUserArgs) {
         super({updatesCallbacks})
         this.proficiencyStats = proficiencyStats
         this.aggregationTimer = aggregationTimer
@@ -48,10 +48,9 @@ class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscri
 }
 
 @injectable()
-class SubscribableTreeUserArgs {
+export class SubscribableTreeUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableMutableProficiencyStats) public proficiencyStats: IProficiencyStats
-    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer: number
+    @inject(TYPES.ISubscribableMutableProficiencyStats)
+        public proficiencyStats: ISubscribableMutableField<IProficiencyStats>
+    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer: ISubscribableMutableField<number>
 }
-
-export {SubscribableTreeUser, SubscribableTreeUserArgs}

@@ -91,6 +91,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
             refresh: () => void 0
         })
 
+    // TODO: do full dep injection for this store
     const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
     const store: Store<any> = new BranchesStore({globalDataStore: {}, state}) as Store<any>
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
@@ -108,19 +109,20 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     storeSourceUpdateListener.subscribe(treeStoreSource)
     storeSourceUpdateListener.subscribe(treeLocationStoreSource)
+    // TODO: encapsulate this subscription logic in some sort of subapp.start() method?
 
     const treeStoreSourceCallCallbacks = sinon.spy(treeStoreSource, 'callCallbacks')
 
-    function inRenderedSetf(treeId, store) {
+    function inRenderedSetf({treeId, store}) {
         const sigmaInstance = store.state.sigmaInstance
         return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId))
     }
-    let inRenderedSet: boolean = inRenderedSetf(treeIdToDownload, store)
+    let inRenderedSet: boolean = inRenderedSetf({treeId: treeIdToDownload, store})
     expect(inRenderedSet).to.equal(false)
     treeRef.fakeEvent('value', undefined, sampleTreeData)
     treeLoader.downloadData(treeIdToDownload)
     treeRef.flush()
-    inRenderedSet = inRenderedSetf(treeIdToDownload, store)
+    inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store})
     expect(treeStoreSourceCallCallbacks.callCount).to.equal(1)
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
     expect(inRenderedSet).to.equal(false)
@@ -134,7 +136,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance.graph.nodes()))
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance))
     log('sigmaInstance state is ', JSON.stringify(store.state))
-    inRenderedSet = inRenderedSetf(treeIdToDownload, store)
+    inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store})
     expect(inRenderedSet).to.equal(true)
     t.pass()
 

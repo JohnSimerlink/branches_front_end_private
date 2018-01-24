@@ -4,12 +4,13 @@ import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
 @injectable()
-class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> implements ISigmaRenderManager {
+export class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> implements ISigmaRenderManager {
     private treeDataLoadedIdsSet: IHash<boolean>
     private treeLocationDataLoadedIdsSet: IHash<boolean>
     private treeIdToBroadcast: string
-    constructor(@inject(TYPES.SigmaRenderManagerArgs) {treeDataLoadedIdsSet,
-                                                          treeLocationDataLoadedIdsSet, updatesCallbacks}) {
+    constructor(
+        @inject(TYPES.SigmaRenderManagerArgs) {treeDataLoadedIdsSet, treeLocationDataLoadedIdsSet, updatesCallbacks
+        }: SigmaRenderManagerArgs) {
         super({updatesCallbacks})
         this.treeDataLoadedIdsSet = treeDataLoadedIdsSet
         this.treeLocationDataLoadedIdsSet = treeLocationDataLoadedIdsSet
@@ -44,9 +45,8 @@ class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> implements I
 }
 
 @injectable()
-class SigmaRenderManagerArgs {
+export class SigmaRenderManagerArgs {
     @inject(TYPES.Object) public treeDataLoadedIdsSet: IHash<boolean>
     @inject(TYPES.Object) public treeLocationDataLoadedIdsSet: IHash<boolean>
+    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
 }
-
-export {SigmaRenderManager, SigmaRenderManagerArgs}

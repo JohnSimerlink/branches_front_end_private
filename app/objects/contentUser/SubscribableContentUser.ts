@@ -32,7 +32,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
     }
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
         updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
-    }) {
+    }: SubscribableContentUserArgs) {
         super({updatesCallbacks})
         this.id = id
         this.overdue = overdue
@@ -58,10 +58,10 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
 
 @injectable()
 export class SubscribableContentUserArgs {
-    @inject(TYPES.Array) public updatesCallbacks
+    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.String) public id: string
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: number
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue: boolean
-    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: PROFICIENCIES
-    @inject(TYPES.ISubscribableMutableNumber) public timer: number
+    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: ISubscribableMutableField<number>
+    @inject(TYPES.ISubscribableMutableBoolean) public overdue: ISubscribableMutableField<boolean>
+    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: ISubscribableMutableField<PROFICIENCIES>
+    @inject(TYPES.ISubscribableMutableNumber) public timer: ISubscribableMutableField<number>
 }

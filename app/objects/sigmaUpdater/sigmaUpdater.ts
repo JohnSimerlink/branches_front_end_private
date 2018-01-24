@@ -15,7 +15,7 @@ export class SigmaUpdater implements ISigmaUpdater {
     private store // : BranchesStore // : Graph
     // private refresh: () => void
     // private focusNode: (node: Node) => void
-    constructor(@inject(TYPES.SigmaUpdaterArgs){store}) {
+    constructor(@inject(TYPES.SigmaUpdaterArgs){store}: SigmaUpdaterArgs) {
         this.store = store
         // this.refresh = refresh
         // this.graph = graph
@@ -23,6 +23,9 @@ export class SigmaUpdater implements ISigmaUpdater {
     }
     public addNode(node: Node): void {
         this.store.commit(MUTATION_NAMES.ADD_NODE, node)
+        /* TODO: LOL. DO i even need this class any more? seems like maybe an uncessary level of indirection.
+         unless i actually am going to use the stuff I am commenting out
+          */
         // this.graph.addNode(node)
         // this.focusNode(node)
         // this.refresh()

@@ -23,7 +23,7 @@ export class TooltipOpener implements ITooltipOpener {
     private store: Store<any>
     private tooltipsConfig: object
     private userId: string
-    constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store, tooltipsConfig}) {
+    constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store, tooltipsConfig}: TooltipOpenerArgs ) {
         this.tooltipsConfig = tooltipsConfig
         this.tooltips = tooltips
         this.store = store

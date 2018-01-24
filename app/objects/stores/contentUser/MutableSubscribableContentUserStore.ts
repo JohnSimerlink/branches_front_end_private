@@ -7,9 +7,6 @@ import {
 } from '../../interfaces';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
-import {inject} from 'inversify';
-import {TYPES} from '../../types';
-import {FirebaseRef} from '../../dbSync/FirebaseRef';
 
 export class MutableSubscribableContentUserStore extends SubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {

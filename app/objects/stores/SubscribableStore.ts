@@ -21,6 +21,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         >;
     private update: IIdAndValUpdates;
     private startedPublishing: boolean = false
+    private _id
     constructor(
         { storeSource, updatesCallbacks}: {
             storeSource: ISubscribableStoreSource<
@@ -31,6 +32,8 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
     ) {
         super({updatesCallbacks})
         this.storeSource = storeSource
+        this._id = Math.random()
+        log('new SubscribableStore just created', this._id)
     }
     protected callbackArguments(): IIdAndValUpdates {
         return this.update
@@ -40,7 +43,8 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
     ) {
         // TODO: make the arg type cleaner!
         if (!this.startedPublishing) {
-            throw new Error('Can\'t add item until started publishing!')
+            throw new Error('Can\'t add item to store,' + this._id +
+                ' until store has started publishing!')
         }
         this.storeSource.set(id, item)
         this.subscribeToItem(id, item)
@@ -62,7 +66,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         }
     }
     private subscribeToFutureItems() {
-        log('subscribeToFutureItems called')
+        // log('subscribeToFutureItems called')
         // TODO: add a test to see if subscribe gets
         // called on an item that gets added to store source after startPublishing gets called
         this.storeSource.onUpdate((update: ITypeAndIdAndValAndObjUpdates) => {
@@ -70,13 +74,13 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
             const item = update.obj
             this.subscribeToItem(id, item)
             item.startPublishing()
-            log('subscribeToFutureItems update in store Source is ', update, update.obj, update.obj['_id'])
+            // log('subscribeToFutureItems update in store Source is ', update, update.obj, update.obj['_id'])
         })
     }
     public startPublishing() {
         this.subscribeToExistingItems()
         this.subscribeToFutureItems()
-        log('store', this, ' just startedPublishing')
+        // log('store ID: ', this._id, this, ' just startedPublishing')
         this.startedPublishing = true
     }
 
