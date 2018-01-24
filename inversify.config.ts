@@ -26,7 +26,8 @@ import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
-    IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser, IOneToManyMap,
+    IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser,
+    INewTreeComponentCreator, IOneToManyMap,
     IProficiencyStats,
     IProppedDatedMutation,
     // ITree2ComponentCreator,
@@ -169,6 +170,7 @@ import {
 import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
+import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTreeComponentCreator';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -446,6 +448,8 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<Tree3CreatorArgs>(TYPES.Tree3CreatorArgs).to(Tree3CreatorArgs)
     bind<ITree3Creator>(TYPES.ITree3CreatorClone).to(Tree3Creator)
+    bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
+    bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
 })
 // app
 

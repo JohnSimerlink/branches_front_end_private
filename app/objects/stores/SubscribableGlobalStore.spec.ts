@@ -69,6 +69,7 @@ test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
         treeLocationStore,
         contentUserStore,
         contentStore,
+        updatesCallbacks: []
     })
     const treeStoreOnUpdateSpy = sinon.spy(treeStore, 'onUpdate')
     const contentUserStoreOnUpdateSpy = sinon.spy(contentUserStore, 'onUpdate')

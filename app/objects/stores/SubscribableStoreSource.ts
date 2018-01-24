@@ -25,7 +25,9 @@ export class SubscribableStoreSource<T> extends
     private update: ITypeAndIdAndValAndObjUpdates
     private type: ObjectDataTypes
     private hashmap: IHash<T>
-    constructor(@inject(TYPES.SubscribableStoreSourceArgs){hashmap, type, updatesCallbacks}) {
+    constructor(@inject(TYPES.SubscribableStoreSourceArgs){
+        hashmap, type, updatesCallbacks
+    }: SubscribableStoreSourceArgs ) {
         super({updatesCallbacks})
         this.type = type
         this.hashmap = hashmap
@@ -50,35 +52,43 @@ export class SubscribableStoreSource<T> extends
 
 @injectable()
 export class SubscribableStoreSourceArgs {
-    @inject(TYPES.Object) public hashmap
-    @inject(TYPES.Array) public updatesCalbacks: any[]
-    @inject(TYPES.String) private type: ObjectDataTypes
+    @inject(TYPES.Object) public hashmap: IHash<any>
+    @inject(TYPES.Array) public updatesCallbacks: any[]
+    @inject(TYPES.String) public type: ObjectDataTypes
 }
 @injectable()
 export class SubscribableTreeStoreSource extends SubscribableStoreSource<IMutableSubscribableTree>
     implements ISubscribableTreeStoreSource {
-    constructor(@inject(TYPES.SubscribableTreeStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+    constructor(@inject(TYPES.SubscribableTreeStoreSourceArgs){
+        hashmap, updatesCallbacks, type
+    }: SubscribableStoreSourceArgs ) {
         super({hashmap, updatesCallbacks, type})
     }
 }
 @injectable()
 export class SubscribableTreeLocationStoreSource
     extends SubscribableStoreSource<IMutableSubscribableTreeLocation> implements ISubscribableTreeLocationStoreSource {
-    constructor(@inject(TYPES.SubscribableTreeLocationStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+    constructor(@inject(TYPES.SubscribableTreeLocationStoreSourceArgs){
+        hashmap, updatesCallbacks, type
+    }: SubscribableStoreSourceArgs) {
         super({hashmap, updatesCallbacks, type})
     }
 }
 @injectable()
 export class SubscribableTreeUserStoreSource
     extends SubscribableStoreSource<IMutableSubscribableTreeUser> implements ISubscribableTreeUserStoreSource {
-    constructor(@inject(TYPES.SubscribableTreeUserStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+    constructor(@inject(TYPES.SubscribableTreeUserStoreSourceArgs){
+        hashmap, updatesCallbacks, type
+    }: SubscribableStoreSourceArgs) {
         super({hashmap, updatesCallbacks, type})
     }
 }
 @injectable()
 export class SubscribableContentStoreSource
     extends SubscribableStoreSource<IMutableSubscribableContent> implements ISubscribableContentStoreSource {
-    constructor(@inject(TYPES.SubscribableContentStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+    constructor(@inject(TYPES.SubscribableContentStoreSourceArgs){
+        hashmap, updatesCallbacks, type
+    }: SubscribableStoreSourceArgs ) {
         super({hashmap, updatesCallbacks, type})
     }
 }
@@ -86,7 +96,7 @@ export class SubscribableContentStoreSource
 export class SubscribableContentUserStoreSource
     extends SubscribableStoreSource<ISyncableMutableSubscribableContentUser>
     implements ISubscribableContentUserStoreSource {
-    constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){hashmap, updatesCallbacks, type}) {
+    constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){hashmap, updatesCallbacks, type}: SubscribableStoreSourceArgs ) {
         super({hashmap, updatesCallbacks, type})
     }
 }

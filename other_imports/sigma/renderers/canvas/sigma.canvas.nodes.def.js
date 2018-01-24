@@ -76,7 +76,7 @@ function proficiencyToColor(proficiency){
       //      context.stroke()
       // }
 
-      console.log("node, render called ", node, node.colorSlices)
+      // console.log("node, render called ", node, node.colorSlices)
       // if (node.colorSlices && node.colorSlices.length) {
       //     console.log("render Node has colorSlices")
       //     for (let {color, start, end} in node.colorSlices) {
@@ -96,7 +96,7 @@ function proficiencyToColor(proficiency){
       //   },
       if (node.colorSlices) {
           for (let colorSlice of node.colorSlices) {
-              console.log("render for loop", colorSlice)
+              // console.log("render for loop", colorSlice)
               context.fillStyle = colorSlice.color
               context.beginPath()
               context.arc(

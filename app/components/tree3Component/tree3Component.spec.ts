@@ -27,6 +27,7 @@ import {log} from '../../core/log'
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {Store} from 'vuex';
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -126,7 +127,7 @@ test('Tree3Component::::trying to create and mount component VueJS style', (t) =
         }
     )
     const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
-    const store: BranchesStore = new BranchesStore({globalDataStore, state})
+    const store: Store<any> = new BranchesStore({globalDataStore, state}) as Store<any>
     const storeCommitSpy = sinon.spy(store, 'commit')
     const tree3CreatorCreator: ITree3Creator
         = new Tree3Creator(

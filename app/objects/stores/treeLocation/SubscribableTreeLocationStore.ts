@@ -11,7 +11,9 @@ import {SubscribableStore} from '../SubscribableStore';
 export class SubscribableTreeLocationStore
     extends SubscribableStore<ISubscribableTreeLocationCore, IMutableSubscribableTreeLocation>
     implements ISubscribableTreeLocationStore {
-    constructor(@inject(TYPES.SubscribableTreeLocationStoreArgs){ storeSource, updatesCallbacks}) {
+    constructor(
+        @inject(TYPES.SubscribableTreeLocationStoreArgs){
+            storeSource, updatesCallbacks}: SubscribableTreeLocationStoreArgs ) {
         super({updatesCallbacks, storeSource})
     }
 }

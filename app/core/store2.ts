@@ -7,7 +7,8 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-    IContentDataEither, IContentData
+    IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
+    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -15,6 +16,7 @@ import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
 import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
+import {state} from '../../inversify.config';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -34,10 +36,13 @@ export enum MUTATION_NAMES {
     ADD_NODE = 'add_node',
     CREATE_CONTENT_USER_DATA = 'create_content_user_data',
     CREATE_CONTENT = 'create_content',
+    CREATE_TREE_LOCATION = 'create_tree_location',
+    CREATE_TREE = 'create_tree',
     ADD_CONTENT_INTERACTION = 'add_content_interaction',
     ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA = 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
     ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
     CHANGE_USER_ID = 'changeUserId',
+    NEW_CHILD_TREE = 'new_child_tree',
 }
 
 const getters = {
@@ -94,6 +99,9 @@ const mutations = {
         log('store mutation refresh called', state)
         state.sigmaInstance.refresh()
     },
+    [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
+        state.userId = userId
+    },
 // TODO: if contentUser does not yet exist in the DB create it.
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {contentUserId, proficiency, timestamp}) {
         const id = contentUserId
@@ -136,20 +144,90 @@ const mutations = {
         // const contentUserData: IContentUserData = state.globalDataStore.addMutation(createMutation)
     //
     },
+    [MUTATION_NAMES.NEW_CHILD_TREE](
+        state,
+        {
+            parentTreeId, timestamp, contentType, question, answer, title, x, y,
+        }: INewChildTreeArgs
+    ): id {
+        // TODO: UNIT / INT TEST
+        log('NEW CHILD TREE MUTATION CALLED!', parentTreeId, timestamp, contentType, question, answer, title, x, y, )
+        log('NEW CHILD TREE MUTATION CALLED! THE STORE IT IS CREATED ON IS!', getters.getStore()['_id'])
+        const contentId = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
+            question, answer, title, type: contentType
+        })
+        const contentIdString = contentId as any as id // TODO: Why do I have to do this casting?
+
+        const createTreeMutationArgs: ICreateTreeMutationArgs = {
+            parentId: parentTreeId, contentId: contentIdString
+        }
+        const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
+        const treeIdString = treeId as any as id
+
+        const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
+            treeId: treeIdString, x, y
+        }
+        const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
+        /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
+
+        return treeIdString
+        },
     [MUTATION_NAMES.CREATE_CONTENT](state, {
         type, question, answer, title
-    }: IContentDataEither) {
+    }: IContentDataEither): id {
         const createMutation: ICreateMutation<IContentData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.CONTENT,
             data: {type, question, answer, title},
         }
-        state.globalDataStore.addMutation(createMutation)
+        log('BRANCHES_STORE store2.ts CREATE_CONTENT_MUTATION, branchesStore id is', )
+        const contentId = state.globalDataStore.addMutation(createMutation)
+        log('contentId created from CREATE_CONTENT MUTATION', contentId)
+        return contentId
     },
-    [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
-        state.userId = userId
+    [MUTATION_NAMES.CREATE_TREE](state, {parentId, contentId}: ICreateTreeMutationArgs): id {
+        const createMutation: ICreateMutation<ITreeDataWithoutId> = {
+            type: STORE_MUTATION_TYPES.CREATE_ITEM,
+            objectType: ObjectTypes.TREE,
+            data: {parentId, contentId, children: []},
+        }
+        const treeId = state.globalDataStore.addMutation(createMutation)
+        log('treeId created in create tree mutation', treeId)
+        return treeId
+    },
+    // [MUTATION_NAMES.CREATE_TREE](
+    //     state,
+    //     {
+    //         parentTreeId, contentId
+    //     }: {parentTreeId: id, contentId: id}
+    // ): id {
+    //     const createMutation: ICreateMutation<ITreeDataWithoutId> = {
+    //         type: STORE_MUTATION_TYPES.CREATE_ITEM,
+    //         objectType: ObjectTypes.TREE,
+    //         data: {parentId: parentTreeId, contentId, children: []},
+    //     }
+    //     const treeId = state.globalDataStore.addMutation(createMutation)
+    //     log('treeId created in create tree mutation', treeId)
+    //     return treeId
+    // },
+    [MUTATION_NAMES.CREATE_TREE_LOCATION](
+        state,
+        {
+            treeId, x, y,
+        }: ICreateTreeLocationMutationArgs
+    ): ITreeLocationData {
+        const createMutation: ICreateMutation<ITreeLocationData> = {
+            type: STORE_MUTATION_TYPES.CREATE_ITEM,
+            objectType: ObjectTypes.TREE,
+            data: {point: {x, y}},
+            id: treeId
+        }
+        const treeLocationData = state.globalDataStore.addMutation(createMutation)
+        log('treeLocationData created in create tree mutation', treeLocationData)
+        return treeLocationData
     },
 }
+
 mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
     if (state.sigmaInitialized) {
         log('sigma was already initialized . .. adding node', node)
@@ -165,16 +243,20 @@ const actions = {}
 @injectable()
 export default class BranchesStore {
     constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, state}) {
+        const stateArg = {
+            ...state,
+            globalDataStore
+        }
         const store = new Store({
-            state,
+            state: stateArg,
             mutations,
             actions,
             getters,
         } ) as Store<any>
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
-        state.globalDataStore = globalDataStore /* added because this is actually
-        the mechanism we will use to access globalDataStore */
+        store['_id'] = Math.random()
+        log('BranchesStore just created. BranchesStore id', store['_id'])
         return store
     }
 }

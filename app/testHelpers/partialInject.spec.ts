@@ -12,19 +12,21 @@ import {expect} from 'chai'
 import {FirebaseRef} from '../objects/dbSync/FirebaseRef';
 import {ContentLoader, ContentLoaderArgs} from '../loaders/content/ContentLoader';
 import {MockFirebase} from 'firebase-mock'
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 
 test('partial inject on ContentLoader', (t) => {
     const expectedContentLoader = (() => {
         const storeSource: ISubscribableContentStoreSource =
             myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
 
-        const firebaseRef: IFirebaseRef =  new MockFirebase()
+        const firebaseRef: Reference =  new MockFirebase()
         const contentLoader = new ContentLoader({ storeSource, firebaseRef})
         return contentLoader
     })()
 
     const partiallyInjectedContentLoader = (() => {
-        const firebaseRef: IFirebaseRef = new MockFirebase()
+        const firebaseRef: Reference = new MockFirebase()
         const contentLoader = partialInject<ContentLoaderArgs>(
             {
                 konstructor: ContentLoader,
@@ -46,14 +48,14 @@ test('partial inject on ContentLoader FAIL', (t) => {
         const storeSource: ISubscribableContentStoreSource =
             myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
 
-        const firebaseRef: IFirebaseRef =  new MockFirebase()
+        const firebaseRef: Reference =  new MockFirebase()
         firebaseRef.update = (updates: object) => void 1
         const contentLoader = new ContentLoader({ storeSource, firebaseRef})
         return contentLoader
     })()
 
     const partiallyInjectedContentLoader = (() => {
-        const firebaseRef: IFirebaseRef = new MockFirebase()
+        const firebaseRef: Reference = new MockFirebase()
         const contentLoader = partialInject<ContentLoaderArgs>(
             {
                 konstructor: ContentLoader,

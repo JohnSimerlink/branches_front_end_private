@@ -21,7 +21,7 @@ export function escape(str) {
 @injectable()
 export class TooltipRenderer implements ITooltipRenderer {
     private store: Store<any>
-    constructor(@inject(TYPES.TooltipOpenerArgs){store}) {
+    constructor(@inject(TYPES.TooltipOpenerArgs){store}: TooltipRendererArgs) {
         this.store = store
         // TODO: maybe set up this watch outside of constructor?
     }
@@ -44,6 +44,8 @@ export class TooltipRenderer implements ITooltipRenderer {
         const result: string =
             `<div id="vue">
             <tree
+                x='${node.x}'
+                y='${node.y}'
                 parentid='${node.parentId}'
                 contentid='${node.contentId}'
                 content-string='${contentEscaped}'

@@ -15,7 +15,7 @@ import {setToStringArray} from '../../core/newUtils';
 export class ContentLoader implements IContentLoader {
     private storeSource: ISubscribableContentStoreSource
     private firebaseRef: Reference
-    constructor(@inject(TYPES.ContentLoaderArgs){firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.ContentLoaderArgs){firebaseRef, storeSource}: ContentLoaderArgs) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }

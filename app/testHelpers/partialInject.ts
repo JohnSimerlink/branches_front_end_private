@@ -4,6 +4,7 @@ import {Constructor, IMutableSubscribableGlobalStore} from '../objects/interface
 import {Container} from 'inversify'
 // import BranchesStore, {BranchesStoreArgs} from '../core/store2';
 // import clonedeep = require('lodash.clonedeep')
+import {log} from '../core/log'
 
 export function partialInject<constructorArgsClass>(
     {
@@ -23,6 +24,10 @@ export function partialInject<constructorArgsClass>(
     for (const [key, value] of Object.entries(injections)) {
         args[key] = value
     }
+    for (const [key, value] of Object.entries(args)) {
+        log('the ._id of ', key, ' is ', value._id)
+    }
+
     const obj = new konstructor(args)
     return obj
 }

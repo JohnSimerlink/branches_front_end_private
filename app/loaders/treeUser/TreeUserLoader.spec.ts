@@ -36,7 +36,7 @@ test('TreeUserLoader:::Should set the firebaseRef and storeSource for the loader
     const storeSource: ISubscribableTreeUserStoreSource =
         myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
 
-    const firebaseRef: IFirebaseRef =  new MockFirebase()
+    const firebaseRef: Reference =  new MockFirebase()
 
     const treeUserLoader = new TreeUserLoader({ storeSource, firebaseRef})
     expect(treeUserLoader['storeSource']).to.deep.equal(storeSource)
@@ -51,7 +51,7 @@ test('TreeUserLoader:::Should mark an id as loaded if test exists in the injecte
     const userId = '5432'
     const treeUserId = getTreeUserId({treeId, userId})
     const treeUser = myContainer.get<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser)
-    const firebaseRef: IFirebaseRef =  new MockFirebase()
+    const firebaseRef: Reference =  new MockFirebase()
     storeSource.set(treeUserId, treeUser)
 
     const treeUserLoader = new TreeUserLoader({storeSource, firebaseRef})
@@ -65,7 +65,7 @@ test('TreeUserLoader:::Should mark an id as not loaded if test does not exist in
 
     const nonExistentTreeUserTreeId = '12345666'
     const nonExistentTreeUserUserId = '4329875325'
-    const firebaseRef: IFirebaseRef = new MockFirebase()
+    const firebaseRef: Reference = new MockFirebase()
 
     const treeUserLoader = new TreeUserLoader({storeSource, firebaseRef})
     const isLoaded = treeUserLoader.isLoaded({treeId: nonExistentTreeUserTreeId, userId: nonExistentTreeUserUserId})

@@ -2,26 +2,17 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IHash,
-    IMutableSubscribableTree, IOneToManyMap, ISubscribableStoreSource, ISubscribableTreeStoreSource,
-    ITreeDataFromFirebase,
+    IOneToManyMap,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
-import {isValidTree} from '../../objects/tree/treeValidator';
-import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
-import {TreeDeserializer} from './TreeDeserializer';
-import {setToStringArray} from '../../core/newUtils';
 
 @injectable()
 export class SpecialTreeLoader implements ITreeLoader {
     private treeLoader: ITreeLoader
     private contentIdSigmaIdsMap: IOneToManyMap<string>
-    constructor(@inject(TYPES.SpecialTreeLoaderArgs){treeLoader, contentIdSigmaIdsMap}: {
-        treeLoader: ITreeLoader,
-        contentIdSigmaIdsMap: IOneToManyMap<string>
-    }) {
+    constructor(@inject(TYPES.SpecialTreeLoaderArgs){treeLoader, contentIdSigmaIdsMap}: SpecialTreeLoaderArgs) {
         this.treeLoader = treeLoader
         this.contentIdSigmaIdsMap = contentIdSigmaIdsMap
     }

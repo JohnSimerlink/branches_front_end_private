@@ -21,7 +21,7 @@ import {
     IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore, ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeStoreSource,
-    ObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES
+    ObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES, IContentData
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
@@ -36,6 +36,7 @@ import {ContentUserData} from '../contentUser/ContentUserData';
 import {create} from 'domain';
 import {log} from '../../core/log'
 import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser';
+import {createContentId} from '../content/contentUtils';
 
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
@@ -246,5 +247,50 @@ test('MutableSubscribableGlobalStore:::adding a create contentuser mutation shou
     expect(contentUserStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1)
     const calledWith = contentUserStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0]
     expect(calledWith).to.deep.equal({id, contentUserData})
+    t.pass()
+})
+test('MutableSubscribableGlobalStore:::adding a create content mutation should call' +
+    ' contentStore addAndSubscribeToItemFromData', (t) => {
+    const logAny: any = log
+    logAny.on = false
+    const contentStore: IMutableSubscribableContentStore =
+        myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+    const question = 'What is the capital of Ohio?'
+    const answer = 'Columbus'
+    const title = ''
+    const type = CONTENT_TYPES.FACT
+    const contentData: IContentData = {
+        question,
+        answer,
+        type,
+        title
+    }
+    const id = createContentId(contentData)
+    const createMutation: ICreateMutation<IContentData> = {
+        id,
+        data: contentData,
+        objectType: ObjectTypes.CONTENT,
+        type: STORE_MUTATION_TYPES.CREATE_ITEM,
+    }
+
+    const globalStore: IMutableSubscribableGlobalStore = partialInject<MutableSubscribableGlobalStoreArgs>({
+        konstructor: MutableSubscribableGlobalStore,
+        constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,
+        injections: {contentStore},
+        container: myContainer
+    })
+    logAny.on = true
+    log(' 280 contentStoreAddAndSubscribeToItemFromData is ', contentStore.addAndSubscribeToItemFromData)
+    const contentStoreAddAndSubscribeToItemFromDataSpy
+        = sinon.spy(contentStore, 'addAndSubscribeToItemFromData')
+
+    log('globalStart Startpublishing is', globalStore.startPublishing)
+    globalStore.startPublishing()
+    globalStore.addMutation(createMutation)
+    logAny.on = false
+
+    expect(contentStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1)
+    const calledWith = contentStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal({id, contentData})
     t.pass()
 })

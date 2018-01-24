@@ -1,0 +1,12 @@
+tests to fix
+app integration 1
+subscribabletreelocationStore
+subscribableTreeStore
+subscribablecontentStore
+
+a bunch of random tests are failing that I never thought would . . . man it is important to have tests
+
+
+TODO: replace all IFirebaseRef with
+TODO: Type all constructor arguments
+TODO: finish tests for other global store create mutations

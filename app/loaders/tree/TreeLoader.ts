@@ -16,7 +16,7 @@ import {setToStringArray} from '../../core/newUtils';
 export class TreeLoader implements ITreeLoader {
     private storeSource: ISubscribableTreeStoreSource
     private firebaseRef: Reference
-    constructor(@inject(TYPES.TreeLoaderArgs){firebaseRef, storeSource}) {
+    constructor(@inject(TYPES.TreeLoaderArgs){firebaseRef, storeSource}: TreeLoaderArgs) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }

@@ -2,6 +2,7 @@
 // import {Trees} from "../../objects/trees";
 // import ContentItems from "../../objects/contentItems";
 // //temporary hacky solution for controller
+
 function newTree(type, parentid, primaryparenttreecontenturi, contentArgs) {
 
 }

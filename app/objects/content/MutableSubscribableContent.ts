@@ -9,13 +9,19 @@ import {
     ISubscribableContent, SetMutationTypes
 } from '../interfaces';
 import {TYPES} from '../types'
-import {SubscribableContent} from './SubscribableContent';
+import {SubscribableContent, SubscribableContentArgs} from './SubscribableContent';
 
 @injectable()
 class MutableSubscribableContent extends SubscribableContent implements IMutableSubscribableContent {
 
     // TODO: should the below three objects be private?
-    constructor(@inject(TYPES.SubscribableContentArgs) {updatesCallbacks, type, title, question, answer}) {
+    constructor(@inject(TYPES.SubscribableContentArgs) {
+        updatesCallbacks,
+        type,
+        title,
+        question,
+        answer
+    }: SubscribableContentArgs) {
         super({updatesCallbacks, type, title, question, answer})
     }
 

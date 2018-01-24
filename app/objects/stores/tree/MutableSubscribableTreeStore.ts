@@ -8,7 +8,7 @@ import {
 import {SubscribableTreeStore} from './SubscribableTreeStore';
 import {TreeDeserializer} from '../../../loaders/tree/TreeDeserializer';
 
-class MutableSubscribableTreeStore
+export class MutableSubscribableTreeStore
     extends SubscribableTreeStore
     implements IMutableSubscribableTreeStore {
     public addAndSubscribeToItemFromData({id, treeData}: { id: string; treeData: ITreeData }):
@@ -45,5 +45,3 @@ class MutableSubscribableTreeStore
         throw new Error('Not implemented!')
     }
 }
-
-export {MutableSubscribableTreeStore}

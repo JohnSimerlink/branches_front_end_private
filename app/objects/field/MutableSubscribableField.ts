@@ -13,7 +13,7 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
     private _mutations: Array<IDatedMutation<FieldMutationTypes>>
     constructor(@inject(TYPES.MutableSubscribableFieldArgs) {
         updatesCallbacks = [], field = null, mutations = []
-    } =
+    }: MutableSubscribableFieldArgs  =
         {
              field: null,  mutations: [], updatesCallbacks: [],
         }) {
@@ -56,8 +56,8 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
 }
 @injectable()
 export class MutableSubscribableFieldArgs {
-    @inject(TYPES.Array) public updatesCallbacks = []
+    @inject(TYPES.Array) public updatesCallbacks? = []
     @inject(TYPES.Any) public field = null
     // TODO ^^ : Dependency inject the correct type into field dynamically
-    @inject(TYPES.Array) public mutations = []
+    @inject(TYPES.Array) public mutations? = []
 }

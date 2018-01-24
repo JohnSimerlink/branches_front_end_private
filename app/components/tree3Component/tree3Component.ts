@@ -35,7 +35,7 @@ export class Tree3Creator implements ITree3Creator {
     // TODO: will this constructor need userId as an arg?
     constructor(@inject(TYPES.Tree3CreatorArgs){
          /*userId,*/ store
-    }) {
+    }: Tree3CreatorArgs ) {
         this.store = store
         // this.userId = userId
     }
@@ -47,6 +47,8 @@ export class Tree3Creator implements ITree3Creator {
             // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
             props: {
                 id: String,
+                x: String, // Am I doing this right? should I be giving it a class of Number??
+                y: String, // Am I doing this right? should I be giving it a class of Number??
                 parentId: String,
                 contentUserId: String,
                 contentId: String,
@@ -328,5 +330,5 @@ export class Tree3Creator implements ITree3Creator {
 }
 @injectable()
 export class Tree3CreatorArgs {
-    @inject(TYPES.BranchesStore) public store: BranchesStore
+    @inject(TYPES.BranchesStore) public store: Store<any>
 }

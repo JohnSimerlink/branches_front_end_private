@@ -7,7 +7,7 @@ import {
 } from '../../interfaces';
 import {SubscribableTreeUserStore} from './SubscribableTreeUserStore';
 
-class MutableSubscribableTreeUserStore
+export class MutableSubscribableTreeUserStore
     extends SubscribableTreeUserStore
     implements IMutableSubscribableTreeUserStore {
     public addMutation(    mutation: IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>) {
@@ -37,5 +37,3 @@ class MutableSubscribableTreeUserStore
         throw new Error('Not implemented!')
     }
 }
-
-export {MutableSubscribableTreeUserStore}

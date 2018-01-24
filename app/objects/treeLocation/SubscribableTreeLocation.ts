@@ -11,7 +11,7 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISubscribableTreeLocation {
+export class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISubscribableTreeLocation {
     private publishing = false
     public point: IMutableSubscribablePoint
 
@@ -23,7 +23,7 @@ class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISub
     }
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
         updatesCallbacks, point,
-    }) {
+    }: SubscribableTreeLocationArgs) {
         super({updatesCallbacks})
         this.point = point
     }
@@ -42,9 +42,7 @@ class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISub
 }
 
 @injectable()
-class SubscribableTreeLocationArgs {
-    @inject(TYPES.Array) public updatesCallbacks
+export class SubscribableTreeLocationArgs {
+    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint
 }
-
-export {SubscribableTreeLocation, SubscribableTreeLocationArgs}

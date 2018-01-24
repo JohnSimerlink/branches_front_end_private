@@ -26,6 +26,15 @@ test('get returns the item, as an array', (t) => {
     expect(array).to.deep.equal(expectedArray)
     t.pass()
 })
+test('get returns an empty array if item not found', (t) => {
+    const expectedArray = []
+    const mapSource = {
+    }
+    const map = new OneToManyMap({map: mapSource})
+    const array = map.get('jeff')
+    expect(array).to.deep.equal(expectedArray)
+    t.pass()
+})
 test('get returns multiple items, as an array', (t) => {
     const expectedArray = ['kelsie', 'alyssa']
     const mapSource = {

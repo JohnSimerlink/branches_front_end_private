@@ -17,14 +17,22 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  */
 
 @injectable()
-class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
+export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
     implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
     /* TODO: maybe this and the above should be inherited protected properties from a base class */
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
     private set: object;
     constructor(@inject(TYPES.SubscribableMutableStringSetArgs)
-        {set = {}, mutations = [], updatesCallbacks = []} = {set: {}, mutations: [], updatesCallbacks: []} ) {
+        {
+            set = {},
+            mutations = [],
+            updatesCallbacks = []
+        }: SubscribableMutableStringSetArgs  = {
+            set: {},
+            mutations: [],
+            updatesCallbacks: []
+    } ) {
         super({updatesCallbacks})
         this.set = set
         this._mutations = mutations
@@ -83,10 +91,8 @@ class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
 
 }
 @injectable()
-class SubscribableMutableStringSetArgs {
-    @inject(TYPES.Object) public set;
-    @inject(TYPES.Array) public mutations;
-    @inject(TYPES.Array) public updatesCallbacks;
+export class SubscribableMutableStringSetArgs {
+    @inject(TYPES.Object) public set?;
+    @inject(TYPES.Array) public mutations?;
+    @inject(TYPES.Array) public updatesCallbacks?;
 }
-
-export {SubscribableMutableStringSet,  SubscribableMutableStringSetArgs}

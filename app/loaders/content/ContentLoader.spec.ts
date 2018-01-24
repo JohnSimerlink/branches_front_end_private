@@ -36,7 +36,7 @@ test('ContentLoader:::Should set the firebaseRef and storeSource for the loader'
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
 
-    const firebaseRef: IFirebaseRef =  new MockFirebase()
+    const firebaseRef: Reference =  new MockFirebase()
 
     const contentLoader = new ContentLoader({ storeSource, firebaseRef})
     expect(contentLoader['storeSource']).to.deep.equal(storeSource)
@@ -49,7 +49,7 @@ test('ContentLoader:::Should mark an id as loaded if test exists in the injected
 
     const contentId = '1234'
     const content = myContainer.get<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent)
-    const firebaseRef: IFirebaseRef =  new MockFirebase()
+    const firebaseRef: Reference =  new MockFirebase()
     storeSource.set(contentId, content)
 
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
@@ -62,7 +62,7 @@ test('ContentLoader:::Should mark an id as not loaded if test does not exist in 
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
 
     const nonExistentContentId = '0123bdefa52344'
-    const firebaseRef: IFirebaseRef = new MockFirebase()
+    const firebaseRef: Reference = new MockFirebase()
 
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
     const isLoaded = contentLoader.isLoaded(nonExistentContentId)
@@ -103,7 +103,7 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
 test('ContentLoader:::DownloadData should return the data', async (t) => {
     const contentId = '12345' /* cannot have the same contentId as others in the same file
      because the tests run in parallet and will trigger firebase events for other tests . . .if the ids are the same */
-    const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
+    const firebaseRef  = new MockFirebase(FIREBASE_PATHS.CONTENT)
     const childFirebaseRef = firebaseRef.child(contentId)
 
     const typeVal = CONTENT_TYPES.FACT

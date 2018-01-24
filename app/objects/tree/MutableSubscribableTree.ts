@@ -12,10 +12,12 @@ import {TYPES} from '../types'
 import {SubscribableTree} from './SubscribableTree';
 
 @injectable()
-class MutableSubscribableTree extends SubscribableTree implements IMutableSubscribableTree {
+export class MutableSubscribableTree extends SubscribableTree implements IMutableSubscribableTree {
 
     // TODO: should the below three objects be private?
-    constructor(@inject(TYPES.SubscribableTreeArgs) {updatesCallbacks, id, contentId, parentId, children}) {
+    constructor(@inject(TYPES.SubscribableTreeArgs) {
+        updatesCallbacks, id, contentId,
+        parentId, children}: SubscribableTreeArgs ) {
         super({updatesCallbacks, id, contentId, parentId, children})
     }
 
@@ -51,12 +53,10 @@ class MutableSubscribableTree extends SubscribableTree implements IMutableSubscr
 }
 
 @injectable()
-class SubscribableTreeArgs {
+export class SubscribableTreeArgs {
     @inject(TYPES.Array) public updatesCallbacks
     @inject(TYPES.String) public id
     @inject(TYPES.ISubscribableMutableString) public contentId
     @inject(TYPES.ISubscribableMutableString) public parentId
     @inject(TYPES.ISubscribableMutableStringSet) public children
 }
-
-export {MutableSubscribableTree}

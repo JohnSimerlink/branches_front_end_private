@@ -1,13 +1,13 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
-import {ISigmaEventListener} from '../interfaces';
+import {ISigma, ISigmaEventListener, ITooltipOpener} from '../interfaces';
 import {log} from '../../core/log'
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
-    private tooltipOpener
-    private sigmaInstance
-    constructor(@inject(TYPES.SigmaEventListenerArgs){tooltipOpener, sigmaInstance}) {
+    private tooltipOpener: ITooltipOpener
+    private sigmaInstance: ISigma
+    constructor(@inject(TYPES.SigmaEventListenerArgs){tooltipOpener, sigmaInstance}: SigmaEventListenerArgs ) {
         this.tooltipOpener = tooltipOpener
         this.sigmaInstance = sigmaInstance
     }
@@ -39,6 +39,6 @@ export class SigmaEventListener implements ISigmaEventListener {
 }
 
 export class SigmaEventListenerArgs {
-    @inject(TYPES.ITooltipOpener) public tooltipOpener
-    @inject(TYPES.ISigma) public sigmaInstance
+    @inject(TYPES.ITooltipOpener) public tooltipOpener: ITooltipOpener
+    @inject(TYPES.ISigma) public sigmaInstance: ISigma
 }

@@ -1,14 +1,12 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMap, IOneToManyMap,
-    ISigmaNode,
-    ISigmaNodesUpdater, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
+    IOneToManyMap,
+    ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
     ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
 import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
-import {getSigmaIdsForContentId} from '../../testHelpers/testHelpers';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 @injectable()
@@ -16,7 +14,9 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     private sigmaNodes: object
     private sigmaNodesUpdater: ISigmaNodesUpdater
     private contentIdSigmaIdMap: IOneToManyMap<string>
-    constructor(@inject(TYPES.StoreSourceUpdateListenerCoreArgs){sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap}) {
+    constructor(
+        @inject(TYPES.StoreSourceUpdateListenerCoreArgs){
+            sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap}: StoreSourceUpdateListenerCoreArgs) {
         this.sigmaNodes = sigmaNodes
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
@@ -51,6 +51,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 // TODO: currently assumes that tree/sigma id's  are loaded before content is
                 const contentId = update.id
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
+                log('StoreSourceUpdateListenerCore sigmaIds in content Data are', sigmaIds, this.contentIdSigmaIdMap)
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }
@@ -61,6 +62,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
+                log('StoreSourceUpdateListenerCore sigmaIds in content ' +
+                    'user data are', sigmaIds, this.contentIdSigmaIdMap)
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }
@@ -75,4 +78,5 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 export class StoreSourceUpdateListenerCoreArgs {
     @inject(TYPES.Object) public sigmaNodes
     @inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater
+    @inject(TYPES.IOneToManyMap) public contentIdSigmaIdMap: IOneToManyMap<string>
 }

@@ -6,8 +6,8 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 
 @injectable()
-class DBSubscriberToContentUser implements IDBSubscriber {
-    private overdue: ISubscribableMutableField<string>;
+export class DBSubscriberToContentUser implements IDBSubscriber {
+    private overdue: ISubscribableMutableField<boolean>;
     private timer: ISubscribableMutableField<string>;
     private proficiency: ISubscribableMutableField<PROFICIENCIES>;
     private lastRecordedStrength: ISubscribableMutableField<number>;
@@ -19,7 +19,7 @@ class DBSubscriberToContentUser implements IDBSubscriber {
     constructor(@inject(TYPES.DBSubscriberToTreeArgs) {
       overdue, timer, proficiency, lastRecordedStrength,
       overdueSyncer, timerSyncer, proficiencySyncer, lastRecordedStrengthSyncer
-    }) {
+    }: DBSubscriberToContentUserArgs) {
         this.overdue = overdue
         this.timer = timer
         this.proficiency = proficiency
@@ -38,14 +38,13 @@ class DBSubscriberToContentUser implements IDBSubscriber {
     }
 }
 @injectable()
-class DBSubscriberToContentUserArgs {
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue
-    @inject(TYPES.ISubscribableMutableString) public timer
+export class DBSubscriberToContentUserArgs {
+    @inject(TYPES.ISubscribableMutableBoolean) public overdue: ISubscribableMutableField<boolean>
+    @inject(TYPES.ISubscribableMutableString) public timer: ISubscribableMutableField<string>
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength
-    @inject(TYPES.IDatabaseAutoSaver) private overdueSyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private timerSyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private proficiencySyncer: IDatabaseAutoSaver;
-    @inject(TYPES.IDatabaseAutoSaver) private lastRecordedStrengthSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: ISubscribableMutableField<number>
+    @inject(TYPES.IDatabaseAutoSaver) public overdueSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public timerSyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public proficiencySyncer: IDatabaseAutoSaver;
+    @inject(TYPES.IDatabaseAutoSaver) public lastRecordedStrengthSyncer: IDatabaseAutoSaver;
 }
-export {DBSubscriberToContentUser, DBSubscriberToContentUserArgs}

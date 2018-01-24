@@ -11,15 +11,16 @@ import {
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {TYPES} from '../types'
-import {SubscribableTreeLocation} from './SubscribableTreeLocation';
+import {SubscribableTreeLocation, SubscribableTreeLocationArgs} from './SubscribableTreeLocation';
 
 @injectable()
-class MutableSubscribableTreeLocation extends SubscribableTreeLocation implements IMutableSubscribableTreeLocation {
+export class MutableSubscribableTreeLocation
+    extends SubscribableTreeLocation implements IMutableSubscribableTreeLocation {
 
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
         updatesCallbacks, point
-    }) {
+    }: SubscribableTreeLocationArgs) {
         super({updatesCallbacks, point})
     }
 
@@ -47,5 +48,3 @@ class MutableSubscribableTreeLocation extends SubscribableTreeLocation implement
         throw new Error('Not Implemented!')
     }
 }
-
-export {MutableSubscribableTreeLocation}

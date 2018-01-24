@@ -13,7 +13,8 @@ import {
     ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
-    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator, IObjectFirebaseAutoSaver
+    ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator, IObjectFirebaseAutoSaver,
+    INewTreeComponentCreator
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
@@ -72,17 +73,17 @@ import {Tree2ComponentCreator} from '../components/tree2Component/treeComponent'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // import NewTree from ''
-import NewTree from '../components/newTree/newTree'
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
 import {SpecialTreeLoader} from '../loaders/tree/specialTreeLoader';
 import {AutoSaveMutableSubscribableContentUserStore} from '../objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
 import {ContentUserLoaderAndAutoSaver} from '../loaders/contentUser/ContentUserLoaderAndAutoSaver';
 import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
+import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCreator';
 
 configureSigma(sigma)
 
 Vue.component('branchesFooter', BranchesFooter)
-class AppContainer {
+export class AppContainer {
     constructor() {
 
     }
@@ -228,6 +229,9 @@ class AppContainer {
         const treeComponentCreator: ITree3Creator =
             new Tree3Creator({store})
         const Tree = treeComponentCreator.create()
+        const newTreeComponentCreator: INewTreeComponentCreator =
+            new NewTreeComponentCreator({store})
+        const NewTree = newTreeComponentCreator.create()
         Vue.component('tree', Tree)
 
         Vue.component('studyMenu', StudyMenu)
@@ -283,5 +287,3 @@ class AppContainer {
     }
 
 }
-
-export {AppContainer}

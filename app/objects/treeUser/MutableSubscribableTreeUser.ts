@@ -15,7 +15,7 @@ import {TYPES} from '../types'
 import {SubscribableTreeUser} from './SubscribableTreeUser';
 
 @injectable()
-class MutableSubscribableTreeUser extends SubscribableTreeUser implements IMutableSubscribableTreeUser {
+export class MutableSubscribableTreeUser extends SubscribableTreeUser implements IMutableSubscribableTreeUser {
 
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableTreeUserArgs) {
@@ -51,5 +51,3 @@ class MutableSubscribableTreeUser extends SubscribableTreeUser implements IMutab
         throw new Error('Not Implemented!')
     }
 }
-
-export {MutableSubscribableTreeUser}

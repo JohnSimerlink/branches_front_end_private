@@ -4,13 +4,15 @@ import * as entries from 'object.entries' // TODO: why cant i get this working n
 import {log} from '../../core/log'
 import {IDatabaseSaver, IDetailedUpdates, IFirebaseRef} from '../interfaces';
 import {TYPES} from '../types';
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 if (!Object.entries) {
     entries.shim()
 }
 
 export class PropertyFirebaseSaver implements IDatabaseSaver {
-    private firebaseRef: IFirebaseRef
-    constructor(@inject(TYPES.PropertyFirebaseSaverArgs) {firebaseRef}) {
+    private firebaseRef: Reference
+    constructor(@inject(TYPES.PropertyFirebaseSaverArgs) {firebaseRef}: PropertyFirebaseSaverArgs) {
         this.firebaseRef = firebaseRef
     }
     public save(updatesObj: IDetailedUpdates) {
@@ -32,5 +34,5 @@ export class PropertyFirebaseSaver implements IDatabaseSaver {
 }
 @injectable()
 export class PropertyFirebaseSaverArgs {
-    @inject(TYPES.String) public firebaseRef
+    @inject(TYPES.String) public firebaseRef: Reference
 }

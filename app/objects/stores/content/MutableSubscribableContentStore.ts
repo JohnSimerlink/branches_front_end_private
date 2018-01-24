@@ -10,11 +10,12 @@ import {
 import {SubscribableContentStore} from './SubscribableContentStore';
 import {ContentDeserializer} from '../../../loaders/content/ContentDeserializer';
 
-class MutableSubscribableContentStore extends SubscribableContentStore
+export class MutableSubscribableContentStore extends SubscribableContentStore
     implements IMutableSubscribableContentStore {
     public addAndSubscribeToItemFromData(
         {id, contentData}:
             { id: string; contentData: IContentData; }): ISyncableMutableSubscribableContent {
+        log('MutableSubscribableContentStore addAndSubscribeToItemFromData called!')
         // content
         const content: ISyncableMutableSubscribableContent =
             ContentDeserializer.deserialize({contentId: id, contentData})
@@ -48,4 +49,3 @@ class MutableSubscribableContentStore extends SubscribableContentStore
     }
 }
 
-export {MutableSubscribableContentStore}

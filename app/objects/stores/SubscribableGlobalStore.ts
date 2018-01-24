@@ -3,10 +3,11 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore,
-    IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore,
-    ISubscribableGlobalStore, ITypeAndIdAndValUpdates, ObjectDataTypes
+    IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableContentStore,
+    ISubscribableContentUserStore,
+    ISubscribableGlobalStore, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
+    ITypeAndIdAndValUpdates, IUpdatesCallback,
+    ObjectDataTypes,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
@@ -20,13 +21,14 @@ implements ISubscribableGlobalStore {
         return this.update
     }
 
-    protected treeStore: IMutableSubscribableTreeStore;
-    protected treeUserStore: IMutableSubscribableTreeUserStore;
-    protected treeLocationStore: IMutableSubscribableTreeLocationStore;
-    protected contentStore: IMutableSubscribableContentStore;
-    protected contentUserStore: IMutableSubscribableContentUserStore;
+    protected treeStore: ISubscribableTreeStore;
+    protected treeUserStore: ISubscribableTreeUserStore;
+    protected treeLocationStore: ISubscribableTreeLocationStore;
+    protected contentStore: ISubscribableContentStore;
+    protected contentUserStore: ISubscribableContentUserStore;
     constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
-        treeStore, treeUserStore, treeLocationStore, contentStore, contentUserStore, updatesCallbacks = []}) {
+        treeStore, treeUserStore, treeLocationStore,
+        contentStore, contentUserStore, updatesCallbacks = []}: SubscribableGlobalStoreArgs ) {
         super({updatesCallbacks})
         this.treeStore = treeStore
         this.treeUserStore = treeUserStore
@@ -85,10 +87,10 @@ implements ISubscribableGlobalStore {
 
 @injectable()
 export class SubscribableGlobalStoreArgs {
-    @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.ISubscribableTreeStore) public treeStore
-    @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore
-    @inject(TYPES.ISubscribableTreeLocationStore) public treeLocationStore
-    @inject(TYPES.ISubscribableContentUserStore) public contentUserStore
-    @inject(TYPES.ISubscribableContentStore) public contentStore
+    @inject(TYPES.Array) public updatesCallbacks: Array<IUpdatesCallback<any>>;
+    @inject(TYPES.ISubscribableTreeStore) public treeStore: ISubscribableTreeStore
+    @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore: ISubscribableTreeUserStore
+    @inject(TYPES.ISubscribableTreeLocationStore) public treeLocationStore: ISubscribableTreeLocationStore
+    @inject(TYPES.ISubscribableContentUserStore) public contentUserStore: ISubscribableContentUserStore
+    @inject(TYPES.ISubscribableContentStore) public contentStore: ISubscribableContentStore
 }

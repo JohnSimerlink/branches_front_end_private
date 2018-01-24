@@ -8,11 +8,11 @@ export class OneToManyMap<T> implements IOneToManyMap<T> {
     private map: object
     constructor(@inject(TYPES.OneToManyMapArgs) {
         map
-    }) {
+    }: OneToManyMapArgs) {
         this.map = map
     }
     public get(id: string): T[] {
-        return this.map[id]
+        return this.map[id] || []
     }
 
     public set(id: string, item: T) {

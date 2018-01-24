@@ -176,6 +176,9 @@ export interface ISyncableMutableSubscribableContent extends IMutableSubscribabl
 export interface ISyncableMutableSubscribableTree extends IMutableSubscribableTree, ISyncable {
     getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
+export interface ISyncableMutableSubscribableTreeLocation extends IMutableSubscribableTreeLocation, ISyncable {
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+}
 
 export interface IContentUserData {
     id: string,
@@ -363,6 +366,8 @@ export interface ITooltipOpener {
 export interface ISigmaEventListener {
     startListening()
 }
+
+export type IAddNodeToSigma = (node: /* SigmaJs.Node & */ ISigmaNode) => void
 // point
 export interface ICoordinate {
     x: number,
@@ -526,6 +531,9 @@ export interface IMutableSubscribableTreeUserStore
 export interface IMutableSubscribableTreeLocationStore
     extends ISubscribableTreeLocationStore,
         IMutable<IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {
+    addAndSubscribeToItemFromData(
+        {id, treeLocationData}: {id: string, treeLocationData: ITreeLocationData}
+    ): IMutableSubscribableTreeLocation
 }
 
 export interface IMutableSubscribableContentUserStore
@@ -579,10 +587,10 @@ export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
     ITreeLocationData & IContentData & IContentUserData & ICoordinate
 
 // subscribable
-export type updatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
+export type IUpdatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
 
 export interface ISubscribable<UpdateObjectType> {
-    onUpdate(func: updatesCallback<UpdateObjectType>);
+    onUpdate(func: IUpdatesCallback<UpdateObjectType>);
 }
 
 export interface ISubscriber<UpdateObjectType> {
@@ -630,6 +638,13 @@ export interface ISubscribableContentUserStoreSource
 export interface ITreeComponentCreator extends IVueComponentCreator {
 
 }
+export interface INewTreeComponentCreator extends IVueComponentCreator {
+
+}
+export type id = string
+export interface INewChildTreeArgs {
+    parentTreeId, timestamp, contentType, question, answer, title, x, y
+}
 // tree
 export interface ITree {
     getId(): string;
@@ -651,6 +666,12 @@ export interface ITreeData extends ITreeDataWithoutId {
     id: string;
 }
 
+export interface ICreateTreeMutationArgs {
+    parentId: id, contentId: id
+}
+export interface ICreateTreeLocationMutationArgs {
+    treeId: id, x: number, y: number
+}
 export interface ISubscribableTreeCore extends ITree {
     contentId: ISubscribableMutableField<string>
     parentId: ISubscribableMutableField<string>

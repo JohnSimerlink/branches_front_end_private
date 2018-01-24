@@ -12,14 +12,14 @@ import {
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types'
-import {SubscribableContentUser} from './SubscribableContentUser';
+import {SubscribableContentUser, SubscribableContentUserArgs} from './SubscribableContentUser';
 import {log} from '../../core/log'
 @injectable()
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
         updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
-    }) {
+    }: SubscribableContentUserArgs ) {
         super({updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength})
     }
 

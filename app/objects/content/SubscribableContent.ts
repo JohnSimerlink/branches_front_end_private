@@ -30,7 +30,7 @@ class SubscribableContent extends Subscribable<IValUpdates> implements ISubscrib
     }
     constructor(@inject(TYPES.SubscribableContentArgs) {
         updatesCallbacks, type, question, answer, title
-    }) {
+    }: SubscribableContentArgs ) {
         super({updatesCallbacks})
         this.type = type
         this.question = question

@@ -2,6 +2,7 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
+    id,
     ISubscribableMutableField,
     ISubscribableMutableStringSet, ISubscribableTree,
     ITreeDataWithoutId,
@@ -11,7 +12,7 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
+export class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
     // private publishing = false
     // TODO: should the below three objects be private?
     private publishing = false ; // todo: inject this via dependency injection in constructor
@@ -30,7 +31,10 @@ class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribabl
             parentId: this.parentId.val(),
         }
     }
-    constructor(@inject(TYPES.SubscribableTreeArgs) {updatesCallbacks, id, contentId, parentId, children}) {
+    constructor(@inject(TYPES.SubscribableTreeArgs) {
+        updatesCallbacks, id, contentId,
+        parentId, children
+    }: SubscribableTreeArgs ) {
         super({updatesCallbacks})
         this.id = id
         this.contentId = contentId
@@ -53,12 +57,10 @@ class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribabl
 }
 
 @injectable()
-class SubscribableTreeArgs {
-    @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.String) public id
-    @inject(TYPES.ISubscribableMutableString) public contentId
-    @inject(TYPES.ISubscribableMutableString) public parentId
-    @inject(TYPES.ISubscribableMutableStringSet) public children
+export class SubscribableTreeArgs {
+    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
+    @inject(TYPES.String) public id: id
+    @inject(TYPES.ISubscribableMutableString) public contentId: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public parentId: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableStringSet) public children: ISubscribableMutableStringSet
 }
-
-export {ISubscribableTree, SubscribableTree, SubscribableTreeArgs}

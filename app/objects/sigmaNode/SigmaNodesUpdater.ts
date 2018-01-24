@@ -16,7 +16,7 @@ import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 @injectable()
-class SigmaNodesUpdater implements ISigmaNodesUpdater {
+export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: object;
     private sigmaRenderManager: ISigmaRenderManager
@@ -24,12 +24,7 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId, sigmaNodes,
-        sigmaRenderManager, refresh}: {
-        getSigmaIdsForContentId: fGetSigmaIdsForContentId,
-        sigmaNodes: {},
-        sigmaRenderManager: ISigmaRenderManager,
-        refresh: () => void
-    } ) {
+        sigmaRenderManager, refresh}: SigmaNodesUpdaterArgs ) {
         this.sigmaNodes = sigmaNodes
         this.getSigmaIdsForContentId = getSigmaIdsForContentId
         this.sigmaRenderManager = sigmaRenderManager
@@ -102,11 +97,9 @@ class SigmaNodesUpdater implements ISigmaNodesUpdater {
     }
 }
 @injectable()
-class SigmaNodesUpdaterArgs {
+export class SigmaNodesUpdaterArgs {
     @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
     @inject(TYPES.Object) public sigmaNodes;
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
     @inject(TYPES.Function) public refresh;
 }
-
-export {SigmaNodesUpdater, SigmaNodesUpdaterArgs}
