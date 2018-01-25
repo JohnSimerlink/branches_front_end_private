@@ -6,6 +6,7 @@ export const TYPES = {
     AutoSaveMutableSubscribableContentUserStoreArgs: Symbol('AutoSaveMutableSubscribableContentStoreArgs'),
     AutoSaveMutableSubscribableTreeStoreArgs: Symbol('AutoSaveMutableSubscribableTreeStoreArgs'),
     AutoSaveMutableSubscribableTreeLocationStoreArgs: Symbol('AutoSaveMutableSubscribableTreeLocationStoreArgs'),
+    AutoSaveMutableSubscribableTreeUserStoreArgs: Symbol('AutoSaveMutableSubscribableTreeUserStoreArgs'),
     Boolean: Symbol('Boolean'),
     BranchesStore: Symbol('BranchesStore'),
     BranchesStoreState: Symbol('BranchesStoreState'),

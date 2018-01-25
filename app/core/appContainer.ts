@@ -77,6 +77,10 @@ import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCre
 import {ContentLoaderAndAutoSaver} from '../loaders/content/ContentLoaderAndAutoSaver';
 import {TreeLoaderAndAutoSaver} from '../loaders/tree/TreeLoaderAndAutoSaver';
 import {TreeLocationLoaderAndAutoSaver} from '../loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
+import {AutoSaveMutableSubscribableContentStore} from '../objects/stores/content/AutoSaveMutableSubscribableContentStore';
+import {AutoSaveMutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
+import {AutoSaveMutableSubscribableTreeUserStore} from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
+import {AutoSaveMutableSubscribableTreeStore} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 
 configureSigma(sigma)
 
@@ -155,18 +159,34 @@ export class AppContainer {
                 })
 
         const treeStore: IMutableSubscribableTreeStore =
-            new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
+            new AutoSaveMutableSubscribableTreeStore({
+                storeSource: treeStoreSource,
+                updatesCallbacks: [],
+                treesFirebaseRef: firebaseTreesRef,
+            })
 
         const treeUserStore: IMutableSubscribableTreeUserStore =
-            new MutableSubscribableTreeUserStore({storeSource: treeUserStoreSource, updatesCallbacks: []})
+            new AutoSaveMutableSubscribableTreeUserStore({
+                storeSource: treeUserStoreSource,
+                updatesCallbacks: [],
+                treeUsersFirebaseRef: firebaseTreeUsersRef,
+            })
             // myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore =
-            new MutableSubscribableTreeLocationStore({storeSource: treeLocationStoreSource, updatesCallbacks: []})
+            new AutoSaveMutableSubscribableTreeLocationStore({
+                storeSource: treeLocationStoreSource,
+                updatesCallbacks: [],
+                treeLocationsFirebaseRef: firebaseTreeLocationsRef,
+            })
             // myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const contentStore: IMutableSubscribableContentStore =
-            new MutableSubscribableContentStore({storeSource: contentStoreSource, updatesCallbacks: []})
+            new AutoSaveMutableSubscribableContentStore({
+                storeSource: contentStoreSource,
+                updatesCallbacks: [],
+                contentFirebaseRef: firebaseContentRef
+            })
             // myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const contentUserStore: IMutableSubscribableContentUserStore =
