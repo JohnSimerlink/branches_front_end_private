@@ -1,11 +1,6 @@
 import sigma from '../../sigma.core'
-var PROFICIENCIES = {
-    UNKNOWN: 0,
-    ONE: 12.5,
-    TWO: 37.5,
-    THREE: 62.5,
-    FOUR: 87.5,// DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
-}
+import {ProficiencyUtils} from '../../../../app/objects/proficiency/ProficiencyUtils'
+import {PROFICIENCIES} from "../../../../app/objects/proficiency/proficiencyEnum";
 
 const NODE_TYPES = {
     SHADOW_NODE: 9100,
@@ -110,6 +105,19 @@ function proficiencyToColor(proficiency){
               context.closePath()
               context.fill()
           }
+      } else {
+          context.fillStyle = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
+          context.beginPath()
+          context.arc(
+              x,
+              y,
+              size,
+              0,
+              2 * Math.PI,
+              true
+          )
+          context.closePath()
+          context.fill()
       }
       // ]
           // console.log("render Node does not have colorSlices", node.colorSlices)
