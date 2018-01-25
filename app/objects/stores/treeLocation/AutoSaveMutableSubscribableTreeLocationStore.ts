@@ -24,7 +24,7 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
         {id, treeLocationData}:
         { id: string; treeLocationData: ITreeLocationData; })
     : ISyncableMutableSubscribableTreeLocation {
-        log('AutoSaveMutableSubscribableTreeLocationStore addAndSubscribeToItemFromData', id, treeLocationData)
+        log('AutoSaveMutableSubscribableTreeUserStore addAndSubscribeToItemFromData', id, treeLocationData)
         const treeLocationId = id
         const treeLocation: ISyncableMutableSubscribableTreeLocation =
             super.addAndSubscribeToItemFromData({id, treeLocationData})
