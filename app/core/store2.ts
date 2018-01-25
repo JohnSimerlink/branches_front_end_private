@@ -185,11 +185,11 @@ const mutations = {
         log('contentId created from CREATE_CONTENT MUTATION', contentId)
         return contentId
     },
-    [MUTATION_NAMES.CREATE_TREE](state, {parentId, contentId}: ICreateTreeMutationArgs): id {
+    [MUTATION_NAMES.CREATE_TREE](state, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.TREE,
-            data: {parentId, contentId, children: []},
+            data: {parentId, contentId, children},
         }
         const treeId = state.globalDataStore.addMutation(createMutation)
         log('treeId created in create tree mutation', treeId)
@@ -218,7 +218,7 @@ const mutations = {
     ): ITreeLocationData {
         const createMutation: ICreateMutation<ITreeLocationData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
-            objectType: ObjectTypes.TREE,
+            objectType: ObjectTypes.TREE_LOCATION,
             data: {point: {x, y}},
             id: treeId
         }

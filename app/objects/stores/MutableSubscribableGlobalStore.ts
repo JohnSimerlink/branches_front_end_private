@@ -134,11 +134,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 log('MUTATION CREATE TREE in GLOBAL STORE data is', mutation.data)
                 const treeDataWithoutId: ITreeDataWithoutId = mutation.data
                 const id = createTreeId(treeDataWithoutId)
-                const treeData: ITreeData = {
-                    ...treeDataWithoutId,
-                    id
-                }
-                this.treeStore.addAndSubscribeToItemFromData({id, treeData})
+                this.treeStore.addAndSubscribeToItemFromData({id, treeDataWithoutId})
                 return id
             }
             /* TODO: WE HAVE A LOT OF INTEGRATION TESTS

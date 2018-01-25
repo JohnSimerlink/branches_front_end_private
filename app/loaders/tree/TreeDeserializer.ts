@@ -3,7 +3,7 @@ import {MutableSubscribableField} from '../../objects/field/MutableSubscribableF
 import {
     IHash, IMutableSubscribableTree, ITreeData, ITreeDataFromFirebase,
     ITreeDataWithoutId,
-    ISyncableMutableSubscribableTree,
+    ISyncableMutableSubscribableTree, ITree,
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
@@ -25,6 +25,22 @@ export class TreeDeserializer {
            )
        return tree
    }
+    public static deserializeWithoutId(
+        {treeDataWithoutId, treeId}: {treeDataWithoutId: ITreeDataWithoutId, treeId: string}
+    ): ISyncableMutableSubscribableTree {
+        const contentId = new MutableSubscribableField<string>({field: treeDataWithoutId.contentId})
+        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+         // TODO: figure out why DI puts in a bad IUpdatesCallback!
+        */
+        const parentId = new MutableSubscribableField<string>({field: treeDataWithoutId.parentId})
+        const childrenArray: string[] = treeDataWithoutId.children || []
+        const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray)
+        const children = new SubscribableMutableStringSet({set: childrenSet})
+        const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
+            {updatesCallbacks: [], id: treeId, contentId, parentId, children}
+        )
+        return tree
+    }
     public static deserialize(
         {treeData, treeId}: {treeData: ITreeData, treeId: string}
     ): ISyncableMutableSubscribableTree {

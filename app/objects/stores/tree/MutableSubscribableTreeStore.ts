@@ -1,7 +1,7 @@
 import {
     IIdProppedDatedMutation, IMutableSubscribableTree,
     IMutableSubscribableTreeStore,
-    IProppedDatedMutation, ISyncableMutableSubscribableTree, ITreeData,
+    IProppedDatedMutation, ISyncableMutableSubscribableTree, ITreeData, ITreeDataWithoutId,
     TreePropertyMutationTypes,
     TreePropertyNames
 } from '../../interfaces';
@@ -11,12 +11,13 @@ import {TreeDeserializer} from '../../../loaders/tree/TreeDeserializer';
 export class MutableSubscribableTreeStore
     extends SubscribableTreeStore
     implements IMutableSubscribableTreeStore {
-    public addAndSubscribeToItemFromData({id, treeData}: { id: string; treeData: ITreeData }):
-    IMutableSubscribableTree {
+    public addAndSubscribeToItemFromData(
+        {id, treeDataWithoutId}: { id: string; treeDataWithoutId: ITreeDataWithoutId }):
+    ISyncableMutableSubscribableTree {
         const tree: ISyncableMutableSubscribableTree =
-            TreeDeserializer.deserialize({treeId: id, treeData})
+            TreeDeserializer.deserializeWithoutId({treeId: id, treeDataWithoutId})
         this.addAndSubscribeToItem(id, tree)
-        return undefined;
+        return tree;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>) {
         // const treeId = mutation.id

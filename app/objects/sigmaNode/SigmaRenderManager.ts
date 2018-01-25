@@ -2,6 +2,7 @@ import {inject, injectable} from 'inversify'
 import {IHash, ISigmaIdToRender, ISigmaRenderManager} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
+import {log} from '../../core/log'
 
 @injectable()
 export class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> implements ISigmaRenderManager {
@@ -30,8 +31,12 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> imple
     }
 
     private broadcastIfRenderable(treeId: string) {
+        log('broadCastIfRenderable called ', treeId)
         if (this.canRender(treeId)) {
+            log('broadCastIfRenderable called, canRender is true ', treeId)
             this.broadcastUpdate(treeId)
+        } else {
+            log('broadCastIfRenderable called, canRender is false ', treeId)
         }
     }
     private canRender(treeId: string) {
