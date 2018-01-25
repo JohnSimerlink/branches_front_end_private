@@ -1,7 +1,8 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTreeLocation, ISubscribableStoreSource, ISubscribableTreeLocationStoreSource, ITreeLocationData,
+    ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
+    ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
     ITreeLocationLoader
 } from '../../objects/interfaces';
 import {isValidTreeLocation} from '../../objects/treeLocation/treeLocationValidator';
@@ -11,20 +12,32 @@ import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 @injectable()
 export class TreeLocationLoader implements ITreeLocationLoader {
-    private storeSource: ISubscribableStoreSource<IMutableSubscribableTreeLocation>
-    private firebaseRef
+    private storeSource: ISubscribableStoreSource<ISyncableMutableSubscribableTreeLocation>
+    private firebaseRef: Reference
     constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, storeSource}: TreeLocationLoaderArgs ) {
         this.storeSource = storeSource
         this.firebaseRef = firebaseRef
     }
 
     public getData(treeId): ITreeLocationData {
-        if (!this.storeSource.get(treeId)) {
+        const treeLocation: ISyncableMutableSubscribableTreeLocation
+             = this.storeSource.get(treeId)
+        if (!treeLocation) {
             throw new RangeError(treeId
                 + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
         }
-        return this.storeSource.get(treeId).val()
+        return treeLocation.val()
         // TODO: fix violoation of law of demeter
+    }
+
+    public getItem(treeId): ISyncableMutableSubscribableTreeLocation {
+        const treeLocation: ISyncableMutableSubscribableTreeLocation
+            = this.storeSource.get(treeId)
+        if (!treeLocation) {
+            throw new RangeError(treeId
+                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
+        }
+        return treeLocation
     }
 
     // TODO: this method violates SRP.
@@ -35,7 +48,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {
                 const treeLocationData: ITreeLocationData = snapshot.val()
                 if (isValidTreeLocation(treeLocationData)) {
-                    const tree: IMutableSubscribableTreeLocation =
+                    const tree: ISyncableMutableSubscribableTreeLocation =
                         TreeLocationDeserializer.deserialize({treeLocationData})
                     me.storeSource.set(treeId, tree)
                     resolve(treeLocationData)

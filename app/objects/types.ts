@@ -1,4 +1,4 @@
-const TYPES = {
+export const TYPES = {
     Any: Symbol('Any'),
     AppArgs: Symbol('AppArgs'),
     Array: Symbol('Array'),
@@ -12,6 +12,7 @@ const TYPES = {
     BranchesStoreArgs: Symbol('BranchesStoreArgs'),
     ContentUserDataArgs: Symbol('ContentUserDataArgs'),
     ContentLoaderArgs: Symbol('ContentLoaderArgs'),
+    ContentLoaderAndAutoSaverArgs: Symbol('ContentLoaderAndAutoSaverArgs'),
     ContentUserLoaderArgs: Symbol('ContentUserLoaderArgs'),
     ContentUserLoaderAndAutoSaverArgs: Symbol('ContentUserLoaderAndAutoSaverArgs'),
     CanvasUI: Symbol('CanvasUI'),
@@ -178,12 +179,12 @@ const TYPES = {
     TooltipRendererArgs: Symbol('TooltipRendererArgs'),
     TreeComponentCreatorArgs: Symbol('TreeComponentCreatorArgs'),
     TreeComponentCreator2Args: Symbol('TreeComponentCreator2Args'),
+    TreeLoaderAndAutoSaverArgs: Symbol('TreeLoaderAndAutoSaverArgs'),
     TreeLoaderArgs: Symbol('TreeLoaderArgs'),
     TreeLocationLoaderArgs: Symbol('TreeLocationLoaderArgs'),
+    TreeLocationLoaderAndAutoSaverArgs: Symbol('TreeLocationLoaderAndAutoSaverArgs'),
     TreeUserLoaderArgs: Symbol('TreeUserLoaderArgs'),
     UIColor: Symbol('UIColor'),
     fGetSigmaIdsForContentId: Symbol('fGetSigmaIdsForContentId'),
     radian: Symbol('radian'),
 }
-
-export {TYPES}

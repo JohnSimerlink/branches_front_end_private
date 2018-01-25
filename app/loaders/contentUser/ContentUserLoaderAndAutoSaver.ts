@@ -13,12 +13,28 @@ import Reference = firebase.database.Reference;
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
-export class ContentUserLoaderAndAutoSaver extends ContentUserLoader implements IContentUserLoader {
-    private firebaseRefCopy: Reference
+export class ContentUserLoaderAndAutoSaver implements IContentUserLoader {
+    private firebaseRef: Reference
+    private contentUserLoader: IContentUserLoader
     constructor(@inject(TYPES.ContentUserLoaderAndAutoSaverArgs){
-        firebaseRef, storeSource, }: ContentUserLoaderAndAutoSaverArgs) {
-        super({firebaseRef, storeSource})
-        this.firebaseRefCopy = firebaseRef
+        firebaseRef, contentUserLoader, }: ContentUserLoaderAndAutoSaverArgs) {
+        this.contentUserLoader = contentUserLoader
+        this.firebaseRef = firebaseRef
+    }
+
+    public getData({contentId, userId}: { contentId: any; userId: any }): IContentUserData {
+        return this.contentUserLoader.getData({contentId, userId})
+        // return undefined;
+    }
+
+    public getItem({contentUserId}: { contentUserId: any }): ISyncableMutableSubscribableContentUser {
+        return this.contentUserLoader.getItem({contentUserId})
+        // return undefined;
+    }
+
+    public isLoaded({contentId, userId}: { contentId: any; userId: any }): boolean {
+        return this.contentUserLoader.isLoaded({contentId, userId})
+        // return undefined;
     }
 
     public async downloadData({contentId, userId}: { contentId: any; userId: any }): Promise<IContentUserData> {
@@ -26,10 +42,10 @@ export class ContentUserLoaderAndAutoSaver extends ContentUserLoader implements 
             log('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again')
             return
         }
-        const contentUserData: IContentUserData = await super.downloadData({contentId, userId})
+        const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({contentId, userId})
         const contentUserId = getContentUserId({contentId, userId})
         const contentUser = this.getItem({contentUserId})
-        const contentUserFirebaseRef = getContentUserRef({contentId, userId, contentUsersRef: this.firebaseRefCopy})
+        const contentUserFirebaseRef = getContentUserRef({contentId, userId, contentUsersRef: this.firebaseRef})
         const contentUserAutoSaver: IObjectFirebaseAutoSaver =
             new ObjectFirebaseAutoSaver({
                     syncableObjectFirebaseRef: contentUserFirebaseRef, syncableObject: contentUser
@@ -46,5 +62,5 @@ export class ContentUserLoaderAndAutoSaver extends ContentUserLoader implements 
 @injectable()
 export class ContentUserLoaderAndAutoSaverArgs {
     @inject(TYPES.FirebaseReference) public firebaseRef: Reference
-    @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource: ISubscribableContentUserStoreSource
+    @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
 }

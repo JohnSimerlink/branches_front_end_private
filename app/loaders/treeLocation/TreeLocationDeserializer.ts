@@ -5,7 +5,7 @@ import {
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
 import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 
-class TreeLocationDeserializer {
+export class TreeLocationDeserializer {
    public static deserialize(
        {treeLocationData}: {treeLocationData: ITreeLocationData}
        ): ISyncableMutableSubscribableTreeLocation {
@@ -17,4 +17,3 @@ class TreeLocationDeserializer {
        return treeLocation
    }
 }
-export {TreeLocationDeserializer}

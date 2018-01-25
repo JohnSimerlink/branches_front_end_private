@@ -44,6 +44,7 @@ export interface IContentItem {
 // }
 export interface ITreeLoader {
     getData(treeId): ITreeDataWithoutId
+    getItem(treeId): ISyncableMutableSubscribableTree
     downloadData(treeId): Promise<ITreeDataWithoutId>
     isLoaded(treeId): boolean
 }
@@ -54,24 +55,27 @@ export interface ITreeLoader {
 // }
 export interface ITreeLocationLoader {
     getData(treeId): ITreeLocationData
+    getItem(treeId): ISyncableMutableSubscribableTreeLocation
     downloadData(treeId): Promise<ITreeLocationData>
     isLoaded(treeId): boolean
 }
 export interface ITreeUserLoader {
     getData({treeId, userId}): ITreeUserData
+    // getItem({treeId, userId}): ISyncableMutableSubscribableTreeUser
     downloadData({treeId, userId}): Promise<ITreeUserData>
     isLoaded({treeId, userId}): boolean
 }
 
 export interface IContentLoader {
     getData(contentId): IContentData
+    getItem(contentId): ISyncableMutableSubscribableContent
     downloadData(contentId): Promise<IContentData>
     isLoaded(contentId): boolean
 }
 
 export interface IContentUserLoader {
     getData({contentId, userId}): IContentUserData
-    getItem({contentUserId}): IMutableSubscribableContentUser
+    getItem({contentUserId}): ISyncableMutableSubscribableContentUser
     downloadData({contentId, userId}): Promise<IContentUserData>
     isLoaded({contentId, userId}): boolean
 }
@@ -625,13 +629,13 @@ export type entry<T> = [string, T]
 // IStoreSource
 export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableTreeStoreSource
-    extends IMap<IMutableSubscribableTree>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableTree>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableTreeLocationStoreSource
-    extends IMap<IMutableSubscribableTreeLocation>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableTreeLocation>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableTreeUserStoreSource
     extends IMap<IMutableSubscribableTreeUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableContentStoreSource
-    extends IMap<IMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableContentUserStoreSource
     extends IMap<ISyncableMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
 

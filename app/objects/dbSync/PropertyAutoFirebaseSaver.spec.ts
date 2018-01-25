@@ -9,7 +9,7 @@ import {TYPES} from '../types';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
 import test from 'ava'
 
-// const firebaseRef = 'path/subpath/prop'
+// const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 
 test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdate method to add the subscriber\'s
@@ -17,7 +17,7 @@ test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdat
     const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     const syncToDB = new PropertyAutoFirebaseSaver({saveUpdatesToDBFunction})
 // var spy = sinon.spy(saveUpdatesToDBFunction)
-// TODO: test the constructor to ensure it takes into account the firebaseRef
+// TODO: test the constructor to ensure it takes into account the treeLocationsFirebaseRef
 
     /* so i need to test if subscribe works
     todo that I could 1) check if numSubscribers on the ISubscribable increases after subscribe.

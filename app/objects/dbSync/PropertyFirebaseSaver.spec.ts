@@ -7,7 +7,7 @@ import {myContainer} from '../../../inversify.config';
 import {IDetailedUpdates, IFirebaseRef} from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
-// const firebaseRef = 'path/subpath/prop'
+// const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 let firebaseRef
 let firebaseRefUpdateSpy
@@ -21,7 +21,7 @@ test.beforeEach(() => {
     // const saveUpdatesToDBFunction = myContainer.val<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
     propertyFirebaseSaver = new PropertyFirebaseSaver({firebaseRef})
 })
-// TODO: test the constructor to ensure it takes into account the firebaseRef
+// TODO: test the constructor to ensure it takes into account the treeLocationsFirebaseRef
 
 /* so i need to test if subscribe works
 todo that I could 1) check if numSubscribers on the ISubscribable increases after subscribe.
