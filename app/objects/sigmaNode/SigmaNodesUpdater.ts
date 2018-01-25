@@ -14,6 +14,7 @@ import {
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {SigmaNode} from './SigmaNode';
 
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
@@ -57,12 +58,19 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         }
         return sigmaIds
     }
+    // Assumes the sigmaNodes that the update affects already exist
+    // TODO: ensure that anything calling this has the sigmaNodes exist
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
         log('sigmaNodesUpdate handleUpdate called', update)
         const sigmaIds: string[] = this.getSigmaNodeIds(update)
+        log('sigmaNodesUpdate sigmaIds are', sigmaIds)
         const me = this
         sigmaIds.forEach(sigmaId => {
-            const sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId]
+            let sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId]
+            if (!sigmaNode) {
+                sigmaNode = new SigmaNode()
+                me.sigmaNodes[sigmaId] = sigmaNode
+            }
             this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId})
         })
     }

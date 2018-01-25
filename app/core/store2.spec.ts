@@ -3,7 +3,10 @@ injectFakeDom()
 import {injectionWorks} from '../testHelpers/testHelpers';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2';
 import {
-    IContentUser, IContentUserData, ICreateMutation, IGlobalMutation, IMutableSubscribableGlobalStore, IVuexStore,
+    CONTENT_TYPES,
+    IContentData,
+    IContentUser, IContentUserData, ICreateMutation, IGlobalMutation, IMutableSubscribableGlobalStore,
+    ITreeDataWithoutId, ITreeLocationData, IVuexStore,
     ObjectTypes, STORE_MUTATION_TYPES
 } from '../objects/interfaces';
 import {myContainer} from '../../inversify.config';
@@ -76,6 +79,168 @@ test('Store::::' +
         {
             contentUserId: id,
             contentUserData
+        }
+    )
+
+    expect(globalDataStoreAddMutationSpy.callCount).to.deep.equal(1)
+    // expect(globalDataStoreAddMutationSpy).to.deep.equal(1)
+    const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal(createMutation)
+
+    t.pass()
+})
+test('Store::::' +
+    ' MUTATIONS CREATE_CONTENT: should call globalDataStore with the correct args', (t) => {
+    // log('global window is', globalAny.window)
+    // WHY I couldn't just do a normal
+    // raw javascript object and sinon spy that I don't know . . .
+    class GlobalDataStoreMock {
+        public addMutation(mutation: IGlobalMutation) {
+            log('addMutation called')
+            return void 0
+        }
+    }
+    const globalDataStore: IMutableSubscribableGlobalStore
+        = new GlobalDataStoreMock() as IMutableSubscribableGlobalStore
+    const store: Store<any> = partialInject<BranchesStoreArgs>({
+        konstructor: BranchesStore,
+        constructorArgsType: TYPES.BranchesStoreArgs,
+        injections: {globalDataStore},
+        container: myContainer
+    }) as Store<any>
+    const globalDataStoreAddMutationSpy = sinon.spy(globalDataStore, 'addMutation')
+
+    // const overdueVal = true
+    // const lastRecordedStrengthVal = 30
+    // const proficiencyVal = PROFICIENCIES.TWO
+    // const timerVal = 30
+    // const id = 'abcde_12345'
+
+    const question = 'What is the capital of Ohio?'
+    const answer = 'Columbus'
+    const title = ''
+    const type = CONTENT_TYPES.FACT
+    const contentData: IContentData = {
+        question,
+        answer,
+        type,
+        title
+    }
+
+    const createMutation: ICreateMutation<IContentData> = {
+        objectType: ObjectTypes.CONTENT,
+        type: STORE_MUTATION_TYPES.CREATE_ITEM,
+        // id,
+        data: contentData,
+    }
+    store.commit(
+        MUTATION_NAMES.CREATE_CONTENT,
+        {
+            ...contentData
+        }
+    )
+
+    expect(globalDataStoreAddMutationSpy.callCount).to.deep.equal(1)
+    // expect(globalDataStoreAddMutationSpy).to.deep.equal(1)
+    const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal(createMutation)
+
+    t.pass()
+})
+test('Store::::' +
+    ' MUTATIONS CREATE_TREE: should call globalDataStore with the correct args', (t) => {
+    // log('global window is', globalAny.window)
+    // WHY I couldn't just do a normal
+    // raw javascript object and sinon spy that I don't know . . .
+    class GlobalDataStoreMock {
+        public addMutation(mutation: IGlobalMutation) {
+            log('addMutation called')
+            return void 0
+        }
+    }
+    const globalDataStore: IMutableSubscribableGlobalStore
+        = new GlobalDataStoreMock() as IMutableSubscribableGlobalStore
+    const store: Store<any> = partialInject<BranchesStoreArgs>({
+        konstructor: BranchesStore,
+        constructorArgsType: TYPES.BranchesStoreArgs,
+        injections: {globalDataStore},
+        container: myContainer
+    }) as Store<any>
+    const globalDataStoreAddMutationSpy = sinon.spy(globalDataStore, 'addMutation')
+
+    const contentId = '12334234'
+    const parentId = '43285'
+    const children = ['23487', '2304985']
+    const treeDataWithoutId: ITreeDataWithoutId = {
+        contentId,
+        parentId,
+        children,
+    }
+
+    const createMutation: ICreateMutation<ITreeDataWithoutId> = {
+        objectType: ObjectTypes.TREE,
+        type: STORE_MUTATION_TYPES.CREATE_ITEM,
+        // id,
+        data: treeDataWithoutId,
+    }
+    store.commit(
+        MUTATION_NAMES.CREATE_TREE,
+        {
+            ...treeDataWithoutId
+        }
+    )
+
+    expect(globalDataStoreAddMutationSpy.callCount).to.deep.equal(1)
+    // expect(globalDataStoreAddMutationSpy).to.deep.equal(1)
+    const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0]
+    expect(calledWith).to.deep.equal(createMutation)
+
+    t.pass()
+})
+test('Store::::' +
+    ' MUTATIONS CREATE_TREE_LOCATION: should call globalDataStore with the correct args', (t) => {
+    // log('global window is', globalAny.window)
+    // WHY I couldn't just do a normal
+    // raw javascript object and sinon spy that I don't know . . .
+    class GlobalDataStoreMock {
+        public addMutation(mutation: IGlobalMutation) {
+            log('addMutation called')
+            return void 0
+        }
+    }
+    const globalDataStore: IMutableSubscribableGlobalStore
+        = new GlobalDataStoreMock() as IMutableSubscribableGlobalStore
+    const store: Store<any> = partialInject<BranchesStoreArgs>({
+        konstructor: BranchesStore,
+        constructorArgsType: TYPES.BranchesStoreArgs,
+        injections: {globalDataStore},
+        container: myContainer
+    }) as Store<any>
+    const globalDataStoreAddMutationSpy = sinon.spy(globalDataStore, 'addMutation')
+
+    //
+    // const contentId = '12334234'
+    // const parentId = '43285'
+
+    // const children = ['23487', '2304985']
+    const treeId = '129874'
+    const id = treeId
+    const x = 123214
+    const y = 13214
+    const point = { x, y}
+    const treeLocationData: ITreeLocationData = {
+        point
+    }
+    const createMutation: ICreateMutation<ITreeLocationData> = {
+        objectType: ObjectTypes.TREE_LOCATION,
+        type: STORE_MUTATION_TYPES.CREATE_ITEM,
+        id,
+        data: treeLocationData,
+    }
+    store.commit(
+        MUTATION_NAMES.CREATE_TREE_LOCATION,
+        {
+            x, y, treeId
         }
     )
 

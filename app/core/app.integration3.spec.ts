@@ -233,7 +233,7 @@ function numNodes({store}) {
     return store.state.sigmaInstance.graph.nodes().length
 }
 function thereIsOneNodeAndItContains({store, question, answer, type}): boolean {
-    // TODO: LOL. Massive violation of Law of Demeter
+    // TODO: LOL. Massive violation of Law of Demeter below
     const node: ISigmaNode = store.state.sigmaInstance.graph.nodes()[0]
     return node.content
         && node.content.question === question

@@ -313,8 +313,9 @@ export interface IActivatableDatedMutation<MutationTypes>
 }
 export interface ICreateMutation<ObjectDataInterface> {
     objectType: ObjectTypes
-    id?: string // only should exist for ICreateMutation<ContentUserData>
-    data: ObjectDataInterface
+    id?: string /* only should exist for ICreateMutation<IContentUserData>
+     and ICreateMutation<ITreeLocation> and ICreateMutation<ITreeUserData> */
+    data: ObjectDataInterface // e.g. ITreeData ... ITreeLocationData
     type: STORE_MUTATION_TYPES.CREATE_ITEM
 }
 export enum STORE_MUTATION_TYPES {
@@ -519,8 +520,8 @@ export interface IMutableSubscribableTreeStore
     extends ISubscribableTreeStore,
         IMutable<IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
     addAndSubscribeToItemFromData(
-        {id, treeData}: {id: string, treeData: ITreeData}
-    ): IMutableSubscribableTree
+        {id, treeDataWithoutId}: {id: string, treeDataWithoutId: ITreeDataWithoutId}
+    ): ISyncableMutableSubscribableTree
 }
 
 export interface IMutableSubscribableTreeUserStore
@@ -667,7 +668,7 @@ export interface ITreeData extends ITreeDataWithoutId {
 }
 
 export interface ICreateTreeMutationArgs {
-    parentId: id, contentId: id
+    parentId: id, contentId: id, children?: id[]
 }
 export interface ICreateTreeLocationMutationArgs {
     treeId: id, x: number, y: number
