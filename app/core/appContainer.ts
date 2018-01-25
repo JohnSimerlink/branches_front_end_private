@@ -203,6 +203,7 @@ export class AppContainer {
                 sigmaNodes,
                 getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
                 refresh,
+                contentIdContentMap: {},
             })
 
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
