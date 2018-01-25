@@ -5,7 +5,7 @@ import {
 } from '../../objects/interfaces';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
 
-class ContentDeserializer {
+export class ContentDeserializer {
    public static deserialize(
        {contentData, contentId}: {contentData: IContentData, contentId: string}
        ): ISyncableMutableSubscribableContent {
@@ -22,4 +22,3 @@ class ContentDeserializer {
        return content
    }
 }
-export {ContentDeserializer}

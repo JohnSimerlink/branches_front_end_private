@@ -128,10 +128,14 @@ export class AppContainer {
             new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
         // const objectAutoFirebaseSaver: IObjectFirebaseAutoSaver =
             // new ObjectFirebaseAutoSaver({})
+        const contentUserLoader: IContentUserLoader = new ContentUserLoader({
+            firebaseRef: firebaseContentUsersRef,
+            storeSource: contentUserStoreSource
+        })
         const contentUserLoaderAndAutoSaver: IContentUserLoader =
             new ContentUserLoaderAndAutoSaver(
                 {
-                    firebaseRef: firebaseContentUsersRef, storeSource: contentUserStoreSource
+                    firebaseRef: firebaseContentUsersRef, contentUserLoader
                 })
 
         const contentLoaderAndAutoSaver: IContentLoader =

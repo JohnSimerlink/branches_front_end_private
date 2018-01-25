@@ -2,14 +2,13 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableContent, ISubscribableStoreSource, ISubscribableContentStoreSource,
-    IContentLoader, IContentData
+    ISubscribableContentStoreSource,
+    IContentLoader, IContentData, ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {isValidContent} from '../../objects/content/contentValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentDeserializer} from './ContentDeserializer';
-import {setToStringArray} from '../../core/newUtils';
 
 @injectable()
 export class ContentLoader implements IContentLoader {
@@ -21,12 +20,21 @@ export class ContentLoader implements IContentLoader {
     }
 
     public getData(contentId): IContentData {
-        if (!this.storeSource.get(contentId)) {
+        const contentItem = this.storeSource.get(contentId)
+        if (!contentItem) {
             throw new RangeError(contentId +
                 ' does not exist in ContentLoader storeSource. Use isLoaded(contentId) to check.')
         }
-        return this.storeSource.get(contentId).val()
+        return contentItem.val()
         // TODO: fix violoation of law of demeter
+    }
+    public getItem(contentId: any): ISyncableMutableSubscribableContent {
+        const contentItem = this.storeSource.get(contentId)
+        if (!contentItem) {
+            throw new RangeError(contentId +
+                ' does not exist in ContentLoader storeSource. Use isLoaded(contentId) to check.')
+        }
+        return contentItem
     }
 
     // TODO: this method violates SRP.
@@ -56,7 +64,7 @@ export class ContentLoader implements IContentLoader {
                 // contentData.children = children as string[]
 
                 if (isValidContent(contentData)) {
-                    const content: IMutableSubscribableContent =
+                    const content: ISyncableMutableSubscribableContent =
                         ContentDeserializer.deserialize({contentId, contentData})
                     log('Content storeSource about to be set with ', contentId, content, content.val())
                     me.storeSource.set(contentId, content)

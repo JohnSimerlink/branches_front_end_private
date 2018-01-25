@@ -32,7 +32,7 @@ test('TreeUserLoader:::DI constructor should work', (t) => {
 // test.beforeEach('create fresh container', t => {
 //
 // })
-test('TreeUserLoader:::Should set the firebaseRef and storeSource for the loader', (t) => {
+test('TreeUserLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
     const storeSource: ISubscribableTreeUserStoreSource =
         myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
 

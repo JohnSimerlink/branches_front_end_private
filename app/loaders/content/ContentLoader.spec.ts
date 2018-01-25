@@ -32,7 +32,7 @@ test('ContentLoader:::DI constructor should work', (t) => {
 // test.beforeEach('create fresh container', t => {
 //
 // })
-test('ContentLoader:::Should set the firebaseRef and storeSource for the loader', (t) => {
+test('ContentLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
 

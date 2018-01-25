@@ -32,15 +32,15 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 // test.beforeEach('create fresh container', t => {
 //
 // })
-// test('ContentUserLoader:::Should set the firebaseRef and storeSource for the loader', (t) => {
+// test('ContentUserLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
 //     const storeSource: ISubscribableContentUserStoreSource =
 //         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
 //
-//     const firebaseRef: IFirebaseRef =  new MockFirebase()
+//     const treeLocationsFirebaseRef: IFirebaseRef =  new MockFirebase()
 //
-//     const contentUserLoader = new ContentUserLoader({ storeSource, firebaseRef})
+//     const contentUserLoader = new ContentUserLoader({ storeSource, treeLocationsFirebaseRef})
 //     expect(contentUserLoader['storeSource']).to.deep.equal(storeSource)
-//     expect(contentUserLoader['firebaseRef']).to.deep.equal(firebaseRef) // TODO: why am I testing private properties
+//     expect(contentUserLoader['treeLocationsFirebaseRef']).to.deep.equal(treeLocationsFirebaseRef) // TODO: why am I testing private properties
 //     t.pass()
 // })
 // test('ContentUserLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
@@ -52,10 +52,10 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 //     const contentUserId = getContentUserId({contentId, userId})
 //     const contentUser = myContainer.get<ISyncableMutableSubscribableContentUser>
 //     (TYPES.ISyncableMutableSubscribableContentUser)
-//     const firebaseRef: IFirebaseRef =  new MockFirebase()
+//     const treeLocationsFirebaseRef: IFirebaseRef =  new MockFirebase()
 //     storeSource.set(contentUserId, contentUser)
 //
-//     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
+//     const contentUserLoader = new ContentUserLoader({storeSource, treeLocationsFirebaseRef})
 //     const isLoaded = contentUserLoader.isLoaded({contentId, userId})
 //     expect(isLoaded).to.deep.equal(true)
 //     t.pass()
@@ -68,9 +68,9 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 //     const nonExistentContentUserContentId = '0123bdefa52344'
 //     const nonExistentContentUserUserId = '0123bdefa5234abc4'
 //     const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
-//     const firebaseRef: IFirebaseRef = new MockFirebase()
+//     const treeLocationsFirebaseRef: IFirebaseRef = new MockFirebase()
 //
-//     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
+//     const contentUserLoader = new ContentUserLoader({storeSource, treeLocationsFirebaseRef})
 //     const isLoaded =
 //         contentUserLoader.isLoaded({contentId: nonExistentContentUserContentId, userId: nonExistentContentUserUserId})
 //     expect(isLoaded).to.deep.equal(false)

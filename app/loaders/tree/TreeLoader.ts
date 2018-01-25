@@ -2,7 +2,8 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource, ITreeDataFromFirebase,
+    ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree,
+    ITreeDataFromFirebase,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
@@ -10,7 +11,6 @@ import {isValidTree} from '../../objects/tree/treeValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
-import {setToStringArray} from '../../core/newUtils';
 
 @injectable()
 export class TreeLoader implements ITreeLoader {
@@ -22,11 +22,20 @@ export class TreeLoader implements ITreeLoader {
     }
 
     public getData(treeId): ITreeDataWithoutId {
-        if (!this.storeSource.get(treeId)) {
+        const tree = this.storeSource.get(treeId)
+        if (!tree) {
             throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
         }
-        return this.storeSource.get(treeId).val()
+        return tree.val()
         // TODO: fix violoation of law of demeter
+    }
+
+    public getItem(treeId): ISyncableMutableSubscribableTree {
+        const tree = this.storeSource.get(treeId)
+        if (!tree) {
+            throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
+        }
+        return tree
     }
 
     // TODO: this method violates SRP.
@@ -51,7 +60,8 @@ export class TreeLoader implements ITreeLoader {
                 // treeData.children = children as string[]
 
                 if (isValidTree(treeData)) {
-                    const tree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData})
+                    const tree: ISyncableMutableSubscribableTree =
+                        TreeDeserializer.deserializeFromDB({treeId, treeData})
                     me.storeSource.set(treeId, tree)
                     const convertedData = TreeDeserializer.convertSetsToArrays({treeData})
                     resolve(convertedData)

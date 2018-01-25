@@ -28,7 +28,7 @@ test('treeLocationLoader:::DI Constructor should work', (t) => {
     expect(treeLoader['firebaseRef']).to.deep.equal(firebaseRef) // TODO: why am I testing private properties
     t.pass()
 })
-test('treeLocationLoader:::Should set the firebaseRef and storeSource for the loader', (t) => {
+test('treeLocationLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
