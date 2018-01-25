@@ -134,6 +134,11 @@ export class AppContainer {
                     firebaseRef: firebaseContentUsersRef, storeSource: contentUserStoreSource
                 })
 
+        const contentLoaderAndAutoSaver: IContentLoader =
+            new ContentLoaderAndAutoSaver(
+                {
+                    firebaseRef: firebaseContentRef, storeSource: contentStoreSource
+                })
         const treeStore: IMutableSubscribableTreeStore =
             new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
 
