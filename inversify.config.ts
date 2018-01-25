@@ -34,12 +34,14 @@ import {
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
     ISubscribableMutableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
+    ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation,
     ITooltipOpener, ITooltipRenderer, ITree,
     ITree3Creator,
     ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
+    ISyncableMutableSubscribableContent,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -48,7 +50,7 @@ import {
     ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
-    ISubscribableTreeUserStoreSource, ITreeLoader, ITreeLocationLoader,
+    ISubscribableTreeUserStoreSource, ISyncableMutableSubscribableTreeUser, ITreeLoader, ITreeLocationLoader,
     ObjectDataTypes
 } from './app/objects/interfaces';
 import {
@@ -171,6 +173,10 @@ import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
 import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTreeComponentCreator';
+import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutableSubscribableTree';
+import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
+import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
+import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/SyncableMutableSubscribableTreeUser';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -315,7 +321,8 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind<ObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(ObjectDataTypes.CONTENT_USER_DATA)
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
 
-    bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser).to(SyncableMutableSubscribableContentUser)
+    bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
+        .to(SyncableMutableSubscribableContentUser)
     bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
     bind<BranchesStore>(TYPES.BranchesStore).to(BranchesStore)
 
@@ -398,6 +405,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
         .to(MutableSubscribableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
+    bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 //
     bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
@@ -412,7 +420,16 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser).to(MutableSubscribableTreeUser)
     bind<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent).to(MutableSubscribableContent)
     bind<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser).to(MutableSubscribableContentUser)
-    bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
+
+    bind<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree).to(SyncableMutableSubscribableTree)
+    bind<ISyncableMutableSubscribableTreeLocation>(TYPES.ISyncableMutableSubscribableTreeLocation)
+        .to(SyncableMutableSubscribableTreeLocation)
+    bind<ISyncableMutableSubscribableTreeUser>(TYPES.ISyncableMutableSubscribableTreeUser)
+        .to(SyncableMutableSubscribableTreeUser)
+    bind<ISyncableMutableSubscribableContent>(TYPES.ISyncableMutableSubscribableContent)
+        .to(SyncableMutableSubscribableContent)
+    bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
+        .to(SyncableMutableSubscribableContentUser)
 
     bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
     bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver)

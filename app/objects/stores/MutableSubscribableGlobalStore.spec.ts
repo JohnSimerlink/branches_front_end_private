@@ -42,6 +42,8 @@ import {createContentId} from '../content/contentUtils';
 import {ITreeDataWithoutId} from '../interfaces';
 import {createTreeId} from '../tree/TreeUtils';
 import {MutableSubscribableTreeUser} from '../treeUser/MutableSubscribableTreeUser';
+import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribableTree';
+import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
 
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
@@ -60,7 +62,7 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
     const parentId = new MutableSubscribableField<string>({field: 'adf12356'})
     const children = new SubscribableMutableStringSet()
     const id = TREE_ID
-    const tree = new MutableSubscribableTree({
+    const tree = new SyncableMutableSubscribableTree({
         id, contentId, parentId, children, updatesCallbacks: [],
     })
 
@@ -170,7 +172,7 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
     const answer = new MutableSubscribableField<string>({field: 'Columbus'})
     const title = new MutableSubscribableField<string>({field: ''})
-    const content = new MutableSubscribableContent({
+    const content = new SyncableMutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
 

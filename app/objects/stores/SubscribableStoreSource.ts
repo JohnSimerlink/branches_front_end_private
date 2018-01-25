@@ -2,15 +2,18 @@ import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries' // TODO: why cant i get this working natively with TS es2017?
 import {
     entry,
-    IHash, IMutableSubscribableContent, IMutableSubscribableContentUser, IMutableSubscribableTree,
-    IMutableSubscribableTreeLocation, ISubscribableContentStoreSource,
+    IHash,
+    ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser, ITypeAndIdAndValAndObjUpdates,
     ITypeAndIdAndValUpdates, IValable,
     ObjectDataTypes,
+    ISyncableMutableSubscribableTree,
+    ISyncableMutableSubscribableTreeLocation,
+    ISyncableMutableSubscribableContent,
 } from '../interfaces';
-import {IMutableSubscribableTreeUser} from '../interfaces';
+import {ISyncableMutableSubscribableTreeUser} from '../interfaces';
 import {ISubscribableTreeUserStoreSource} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
@@ -60,7 +63,7 @@ export class SubscribableStoreSourceArgs {
     @inject(TYPES.String) public type: ObjectDataTypes
 }
 @injectable()
-export class SubscribableTreeStoreSource extends SubscribableStoreSource<IMutableSubscribableTree>
+export class SubscribableTreeStoreSource extends SubscribableStoreSource<ISyncableMutableSubscribableTree>
     implements ISubscribableTreeStoreSource {
     constructor(@inject(TYPES.SubscribableTreeStoreSourceArgs){
         hashmap, updatesCallbacks, type
@@ -70,7 +73,8 @@ export class SubscribableTreeStoreSource extends SubscribableStoreSource<IMutabl
 }
 @injectable()
 export class SubscribableTreeLocationStoreSource
-    extends SubscribableStoreSource<IMutableSubscribableTreeLocation> implements ISubscribableTreeLocationStoreSource {
+    extends SubscribableStoreSource<ISyncableMutableSubscribableTreeLocation>
+    implements ISubscribableTreeLocationStoreSource {
     constructor(@inject(TYPES.SubscribableTreeLocationStoreSourceArgs){
         hashmap, updatesCallbacks, type
     }: SubscribableStoreSourceArgs) {
@@ -79,7 +83,7 @@ export class SubscribableTreeLocationStoreSource
 }
 @injectable()
 export class SubscribableTreeUserStoreSource
-    extends SubscribableStoreSource<IMutableSubscribableTreeUser> implements ISubscribableTreeUserStoreSource {
+    extends SubscribableStoreSource<ISyncableMutableSubscribableTreeUser> implements ISubscribableTreeUserStoreSource {
     constructor(@inject(TYPES.SubscribableTreeUserStoreSourceArgs){
         hashmap, updatesCallbacks, type
     }: SubscribableStoreSourceArgs) {
@@ -88,7 +92,7 @@ export class SubscribableTreeUserStoreSource
 }
 @injectable()
 export class SubscribableContentStoreSource
-    extends SubscribableStoreSource<IMutableSubscribableContent> implements ISubscribableContentStoreSource {
+    extends SubscribableStoreSource<ISyncableMutableSubscribableContent> implements ISubscribableContentStoreSource {
     constructor(@inject(TYPES.SubscribableContentStoreSourceArgs){
         hashmap, updatesCallbacks, type
     }: SubscribableStoreSourceArgs ) {
@@ -99,7 +103,8 @@ export class SubscribableContentStoreSource
 export class SubscribableContentUserStoreSource
     extends SubscribableStoreSource<ISyncableMutableSubscribableContentUser>
     implements ISubscribableContentUserStoreSource {
-    constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){hashmap, updatesCallbacks, type}: SubscribableStoreSourceArgs ) {
+    constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){
+        hashmap, updatesCallbacks, type}: SubscribableStoreSourceArgs ) {
         super({hashmap, updatesCallbacks, type})
     }
 }

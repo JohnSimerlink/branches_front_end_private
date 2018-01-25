@@ -9,7 +9,7 @@ import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IMutableSubscribableTreeUser, IProficiencyStats, ISubscribableStoreSource,
-    ISubscribableTreeUserStoreSource,
+    ISubscribableTreeUserStoreSource, ISyncableMutableSubscribableTreeUser,
     ITreeUserData,
     ITreeUserLoader
 } from '../../objects/interfaces';
@@ -50,7 +50,7 @@ test('TreeUserLoader:::Should mark an id as loaded if test exists in the injecte
     const treeId = '1234'
     const userId = '5432'
     const treeUserId = getTreeUserId({treeId, userId})
-    const treeUser = myContainer.get<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser)
+    const treeUser = myContainer.get<ISyncableMutableSubscribableTreeUser>(TYPES.ISyncableMutableSubscribableTreeUser)
     const firebaseRef: Reference =  new MockFirebase()
     storeSource.set(treeUserId, treeUser)
 
@@ -186,7 +186,7 @@ test('TreeUserLoader:::GetData on an existing treeUser should return the treeUse
         proficiencyStats: proficiencyStatsVal,
         aggregationTimer: aggregationTimerVal,
     }
-    const sampleTreeUser: IMutableSubscribableTreeUser =
+    const sampleTreeUser: ISyncableMutableSubscribableTreeUser =
         TreeUserDeserializer.deserialize({treeUserId, treeUserData: expectedTreeUserData})
     const storeSource: ISubscribableTreeUserStoreSource =
         myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)

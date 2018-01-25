@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IOneToManyMap,
+    IOneToManyMap, ISyncableMutableSubscribableTree,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
@@ -33,6 +33,9 @@ export class SpecialTreeLoader implements ITreeLoader {
     }
     public getData(treeId) {
         return this.treeLoader.getData(treeId)
+    }
+    public getItem(treeId): ISyncableMutableSubscribableTree {
+        return this.treeLoader.getItem(treeId)
     }
 
 }

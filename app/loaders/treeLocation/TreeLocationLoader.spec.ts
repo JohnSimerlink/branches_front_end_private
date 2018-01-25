@@ -8,6 +8,7 @@ import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IMutableSubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
+    ISyncableMutableSubscribableTreeLocation,
     ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -45,7 +46,7 @@ test('treeLocationLoader:::Should mark an id as loaded if it exists in the injec
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
 
     const treeId = '1234'
-    const treeLocation = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
+    const treeLocation = myContainer.get<ISyncableMutableSubscribableTreeLocation>(TYPES.ISyncableMutableSubscribableTreeLocation)
     const firebaseRef: Reference = new MockFirebase()
     storeSource.set(treeId, treeLocation)
 
@@ -72,9 +73,10 @@ test('treeLocationLoader:::Should mark an id as loaded after being loaded', (t) 
 
     const treeId = '1234'
     const nonExistentTreeLocationId = '01234'
-    const tree = myContainer.get<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation)
+    const treeLocation = myContainer.get<ISyncableMutableSubscribableTreeLocation>
+    (TYPES.ISyncableMutableSubscribableTreeLocation)
     const firebaseRef: Reference = new MockFirebase()
-    storeSource.set(treeId, tree)
+    storeSource.set(treeId, treeLocation)
 
     const treeLoader = new TreeLocationLoader({storeSource, firebaseRef})
     const isLoaded = treeLoader.isLoaded(nonExistentTreeLocationId)
@@ -167,7 +169,7 @@ test('treeLocationLoader:::GetData on an existing tree should return the tree', 
             y: 8,
         }
     }
-    const sampleTreeLocation: IMutableSubscribableTreeLocation =
+    const sampleTreeLocation: ISyncableMutableSubscribableTreeLocation =
         TreeLocationDeserializer.deserialize({treeLocationData: sampleTreeLocationData})
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)

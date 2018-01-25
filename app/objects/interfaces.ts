@@ -184,6 +184,11 @@ export interface ISyncableMutableSubscribableTreeLocation extends IMutableSubscr
     getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 
+export interface ISyncableMutableSubscribableTreeUser extends
+    IMutableSubscribableTreeUser, ISyncable {
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+}
+
 export interface IContentUserData {
     id: string,
     overdue: boolean,
@@ -633,7 +638,7 @@ export interface ISubscribableTreeStoreSource
 export interface ISubscribableTreeLocationStoreSource
     extends IMap<ISyncableMutableSubscribableTreeLocation>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableTreeUserStoreSource
-    extends IMap<IMutableSubscribableTreeUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableTreeUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableContentStoreSource
     extends IMap<ISyncableMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableContentUserStoreSource

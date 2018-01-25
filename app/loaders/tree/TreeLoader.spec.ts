@@ -9,6 +9,7 @@ import {myContainer} from '../../../inversify.config';
 import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IHash, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
+    ISyncableMutableSubscribableTree,
     ITreeDataFromFirebase,
     ITreeDataWithoutId, ITreeLoader
 } from '../../objects/interfaces';
@@ -47,7 +48,7 @@ test('TreeLoader:::Should mark an id as loaded if test exists in the injected st
         myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
 
     const treeId = '1234'
-    const tree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
+    const tree = myContainer.get<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree)
     const firebaseRef: Reference =  new MockFirebase()
     storeSource.set(treeId, tree)
 
@@ -185,7 +186,8 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
         parentId,
         children: childrenArray,
     }
-    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
+    const sampleTree: ISyncableMutableSubscribableTree
+        = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
         myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
     storeSource.set(treeId, sampleTree)

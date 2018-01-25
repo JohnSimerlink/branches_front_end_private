@@ -1,15 +1,16 @@
 import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableTreeUser, IProficiencyStats, ITreeUserData,
+    IHash, IMutableSubscribableTreeUser, IProficiencyStats, ISyncableMutableSubscribableTreeUser, ITreeUserData,
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
+import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
 class TreeUserDeserializer {
    public static deserialize(
        {treeUserData, treeUserId}: {treeUserData: ITreeUserData, treeUserId: string}
-       ): IMutableSubscribableTreeUser {
+       ): ISyncableMutableSubscribableTreeUser {
 
        const proficiencyStatsVal = {
            ONE: 3,
@@ -19,7 +20,7 @@ class TreeUserDeserializer {
        const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: treeUserData.proficiencyStats})
        const aggregationTimer = new MutableSubscribableField<number>({field: treeUserData.aggregationTimer})
 
-       const treeUser: IMutableSubscribableTreeUser = new MutableSubscribableTreeUser(
+       const treeUser: ISyncableMutableSubscribableTreeUser = new SyncableMutableSubscribableTreeUser(
            {updatesCallbacks: [], proficiencyStats, aggregationTimer}
            )
        return treeUser

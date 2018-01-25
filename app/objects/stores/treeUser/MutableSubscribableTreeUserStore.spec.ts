@@ -19,6 +19,7 @@ import {
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
+import {SyncableMutableSubscribableTreeUser} from '../../treeUser/SyncableMutableSubscribableTreeUser';
 
 test('MutableSubscribableTreeUserStore > addMutation::::' +
     'addMutation to storeSource should call addMutation on the appropriate item,' +
@@ -40,7 +41,7 @@ test('MutableSubscribableTreeUserStore > addMutation::::' +
     const aggregationTimerVal = 54
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal})
     const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal})
-    const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
+    const treeUser = new SyncableMutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
 
     const storeSource: ISubscribableTreeUserStoreSource
         = myContainer.get<ISubscribableTreeUserStoreSource>

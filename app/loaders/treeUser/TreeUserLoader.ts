@@ -2,7 +2,8 @@ import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IMutableSubscribableTreeUser, ISubscribableStoreSource, ISubscribableTreeUserStoreSource, ITreeUserData,
+    IMutableSubscribableTreeUser, ISubscribableStoreSource, ISubscribableTreeUserStoreSource,
+    ISyncableMutableSubscribableTreeUser, ITreeUserData,
     ITreeUserLoader
 } from '../../objects/interfaces';
 import {isValidTreeUser} from '../../objects/treeUser/treeUserValidator';
@@ -59,7 +60,7 @@ export class TreeUserLoader implements ITreeUserLoader {
                 // treeUserData.children = children as string[]
 
                 if (isValidTreeUser(treeUserData)) {
-                    const treeUser: IMutableSubscribableTreeUser =
+                    const treeUser: ISyncableMutableSubscribableTreeUser =
                         TreeUserDeserializer.deserialize({treeUserId, treeUserData})
                     me.storeSource.set(treeUserId, treeUser)
                     resolve(treeUserData)
