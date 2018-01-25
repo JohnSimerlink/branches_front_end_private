@@ -16,8 +16,11 @@ export class MutableSubscribableTreeLocationStore
     IMutableSubscribableTreeLocation {
         const treeLocation: ISyncableMutableSubscribableTreeLocation =
             TreeLocationDeserializer.deserialize({treeLocationData})
+        log('19: MutableSubscribableTreeLocationStore addAndSubscribeToItemFromData called!',
+            treeLocation, ' the storeSource inside of MutableSubscribableTreeLocationStore is',
+            this.storeSource, ' and that storesource has an id of ', this.storeSource['_id'])
         this.addAndSubscribeToItem(id, treeLocation)
-        return undefined;
+        return treeLocation;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes,
         TreeLocationPropertyNames>) {

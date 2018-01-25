@@ -25,10 +25,13 @@ export class SubscribableStoreSource<T> extends
     private update: ITypeAndIdAndValAndObjUpdates
     private type: ObjectDataTypes
     private hashmap: IHash<T>
+    private _id
     constructor(@inject(TYPES.SubscribableStoreSourceArgs){
         hashmap, type, updatesCallbacks
     }: SubscribableStoreSourceArgs ) {
         super({updatesCallbacks})
+        this._id = Math.random()
+        log('SubscribableStoreSource created! with type of', type, ' and id of ', this._id)
         this.type = type
         this.hashmap = hashmap
     }
@@ -42,7 +45,7 @@ export class SubscribableStoreSource<T> extends
     public set(id: string, obj: T & IValable) {
         this.hashmap[id] = obj
         this.update = {id, val: obj.val(), obj, type: this.type}
-        // log('storeSource set just called', this.update)
+        log('storeSource set just called', this.update, this['updatesCallbacks'])
         this.callCallbacks()
     }
     public entries(): Array<entry<T>> {

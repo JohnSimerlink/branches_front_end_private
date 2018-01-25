@@ -63,6 +63,8 @@ import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../component
 import newTree from '../components/newTree/newTree';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
+import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
+import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -121,10 +123,10 @@ test('App integration test 3 - create new Tree triggered by user' +
         // TYPES
     })
     const treeLocationStore: IMutableSubscribableTreeLocationStore
-        = partialInject<SubscribableContentStoreArgs>({
-        konstructor: MutableSubscribableContentStore,
+        = partialInject<SubscribableTreeLocationStoreArgs>({
+        konstructor: MutableSubscribableTreeLocationStore,
         constructorArgsType: TYPES.SubscribableContentStoreArgs,
-        injections: {contentStoreSource},
+        injections: {treeLocationStoreSource},
         container: myContainer,
         // TYPES
     })

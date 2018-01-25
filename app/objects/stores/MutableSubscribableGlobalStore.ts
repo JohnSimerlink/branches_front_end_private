@@ -112,8 +112,9 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             }
         }
     }
-    private addCreateMutation(mutation: ICreateMutation<any>): id {
-        log('MSGLobalStore addCreateMutation called. id is,', this._globalStoreId )
+    private addCreateMutation(mutation: ICreateMutation<any>): any /*but preferably id */ {
+        log('MSGLobalStore addCreateMutation called. id is,',
+            this._globalStoreId, 'and mutation objectType is', mutation.objectType)
         switch (mutation.objectType) {
             case ObjectTypes.CONTENT_USER: {
                 const id = mutation.id
@@ -127,6 +128,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             case ObjectTypes.CONTENT: {
                 const contentData: IContentData = mutation.data
                 const contentId = createContentId(contentData)
+                log('MutableSubscribableGlobalStore addCreateMutation ObjectTypes CONTENT', contentData)
                 this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData})
                 return contentId
             }
@@ -143,7 +145,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 const treeLocationData: ITreeLocationData = mutation.data
                 const id = mutation.id
                 this.treeLocationStore.addAndSubscribeToItemFromData({id, treeLocationData})
-                return id
+                return treeLocationData
             }
         }
     }

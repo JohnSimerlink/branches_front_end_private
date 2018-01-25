@@ -47,6 +47,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
                 ' until store has started publishing!')
         }
         this.storeSource.set(id, item)
+        log('SubscribableStore addAndSubscribeToItem just called')
         this.subscribeToItem(id, item)
         item.startPublishing()
         // throw new Error('Method not implemented.");
