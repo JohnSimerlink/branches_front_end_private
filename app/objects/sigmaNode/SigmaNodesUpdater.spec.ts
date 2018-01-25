@@ -39,7 +39,7 @@ test.beforeEach('init sigmaNodes', () => {
     sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
     sigmaNodesUpdater = new SigmaNodesUpdater(
-        {sigmaNodes, getSigmaIdsForContentId, sigmaRenderManager, refresh }
+        {sigmaNodes, getSigmaIdsForContentId, sigmaRenderManager, refresh, contentIdContentMap: {} }
     )
 })
 //

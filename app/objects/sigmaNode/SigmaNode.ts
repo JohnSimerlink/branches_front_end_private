@@ -33,6 +33,7 @@ export class SigmaNode implements ISigmaNode {
     public overdue: boolean;
 
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
+        log('sigmaNode receiveNewTreeData', tree)
         this.parentId = tree.parentId
         this.contentId = tree.contentId
         this.children = tree.children
@@ -59,6 +60,7 @@ export class SigmaNode implements ISigmaNode {
     }
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
+        log('sigmaNode receiveNewTreeLocationData', treeLocationData)
         this.x = treeLocationData.point.x
         this.y = treeLocationData.point.y
     }
@@ -94,7 +96,7 @@ export class SigmaNode implements ISigmaNode {
             contentUserData: undefined,
             proficiencyStats: undefined,
             label: undefined,
-            size: undefined,
+            size: 1,
             aggregationTimer: undefined,
             colorSlices: undefined,
             overdue: undefined,
@@ -105,10 +107,11 @@ export class SigmaNode implements ISigmaNode {
         this.children = children
         this.x = x
         this.y = y
+        this.proficiencyStats = proficiencyStats
         this.aggregationTimer = aggregationTimer
         this.content = content
         this.contentUserData = contentUserData
-        this.label = label
+        this.label = label || 'Default Node Label'
         this.size = size || 1
         this.colorSlices = colorSlices
         this.overdue = overdue

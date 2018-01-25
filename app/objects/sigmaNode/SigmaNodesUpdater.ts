@@ -7,7 +7,8 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    fGetSigmaIdsForContentId, ISigmaNodesUpdater, ISigmaRenderManager, ITypeAndIdAndValUpdates,
+    fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaNodesUpdater, ISigmaRenderManager,
+    ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
     ObjectDataTypes,
 } from '../interfaces';
@@ -22,17 +23,19 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private sigmaNodes: object;
     private sigmaRenderManager: ISigmaRenderManager
     private refresh: () => void
+    private contentIdContentMap: IHash<IContentData>
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId, sigmaNodes,
-        sigmaRenderManager, refresh}: SigmaNodesUpdaterArgs ) {
+        sigmaRenderManager, refresh, contentIdContentMap}: SigmaNodesUpdaterArgs ) {
         this.sigmaNodes = sigmaNodes
         this.getSigmaIdsForContentId = getSigmaIdsForContentId
         this.sigmaRenderManager = sigmaRenderManager
         this.refresh = refresh
+        this.contentIdContentMap = contentIdContentMap
     }
 
-    private getSigmaNodeIds(update: ITypeAndIdAndValUpdates) {
+    private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdates) {
         let sigmaIds = []
         const type: ObjectDataTypes = update.type
         switch (type) {
@@ -44,6 +47,8 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 break
             case ObjectDataTypes.CONTENT_DATA: {
                 const contentId = update.id
+                const contentData: IContentData = update.val
+                this.contentIdContentMap[contentId] = contentData
                 sigmaIds = this.getSigmaIdsForContentId(contentId)
                 break
             }
@@ -62,7 +67,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     // TODO: ensure that anything calling this has the sigmaNodes exist
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
         log('sigmaNodesUpdate handleUpdate called', update)
-        const sigmaIds: string[] = this.getSigmaNodeIds(update)
+        const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update)
         log('sigmaNodesUpdate sigmaIds are', sigmaIds)
         const me = this
         sigmaIds.forEach(sigmaId => {
@@ -82,7 +87,13 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         }) {
         switch (updateType) {
             case ObjectDataTypes.TREE_DATA:
+                log('updateSigmaNode TREE_DATA')
                 sigmaNode.receiveNewTreeData(data)
+                const contentData: IContentData = this.contentIdContentMap[data.contentId]
+                log('updateSigmaNode TREE_DATA contentData is ', contentData, this.contentIdContentMap[data.contentId])
+                if (contentData) {
+                    sigmaNode.receiveNewContentData(contentData)
+                }
                 this.sigmaRenderManager.markTreeDataLoaded(sigmaId)
                 break
             case ObjectDataTypes.TREE_LOCATION_DATA:
@@ -110,4 +121,5 @@ export class SigmaNodesUpdaterArgs {
     @inject(TYPES.Object) public sigmaNodes;
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
     @inject(TYPES.Function) public refresh;
+    @inject(TYPES.Object) public contentIdContentMap;
 }

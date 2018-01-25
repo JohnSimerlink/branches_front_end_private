@@ -88,7 +88,8 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
             sigmaNodes,
             sigmaRenderManager,
             getSigmaIdsForContentId: () => void 0,
-            refresh: () => void 0
+            refresh: () => void 0,
+            contentIdContentMap: {},
         })
 
     // TODO: do full dep injection for this store
