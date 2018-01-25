@@ -26,7 +26,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     /* TODO: edge case - what if a content data is received before the tree data,
     meaning the content data may not have a sigma id to be applied to? */
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
-        // log('StoreSourceUpdateListenerCore receiveUpdate CALLED!!!', update)
+        log('StoreSourceUpdateListenerCore receiveUpdate CALLED!!!', update)
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA: {

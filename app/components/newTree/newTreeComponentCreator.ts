@@ -108,8 +108,8 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     const titleFormatted = title && title.trim() || ''
                     const questionFormatted = question && question.trim() || ''
                     const answerFormatted = answer && answer.trim() || ''
-                    const childX = this.parentX + 10
-                    const childY = this.parentY + 10
+                    const childX: number = +this.parentX + 10
+                    const childY: number = +this.parentY + 10
                     const newChildTreeArgs: INewChildTreeArgs = {
                         parentTreeId: this.parentId,
                         timestamp: Date.now(),
