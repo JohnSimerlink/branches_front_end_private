@@ -16,6 +16,7 @@ import {
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
+import {SyncableMutableSubscribableContent} from '../../content/SyncableMutableSubscribableContent';
 
 test('MutableSubscribableContentStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
@@ -25,7 +26,7 @@ test('MutableSubscribableContentStore > addMutation::::addMutation' +
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
     const answer = new MutableSubscribableField<string>({field: 'Columbus'})
     const title = new MutableSubscribableField<string>({field: ''})
-    const content = new MutableSubscribableContent({
+    const content = new SyncableMutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
 
@@ -67,7 +68,7 @@ test('MutableSubscribableContentStore > addMutation::::addMutation' +
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
     const answer = new MutableSubscribableField<string>({field: 'Columbus'})
     const title = new MutableSubscribableField<string>({field: ''})
-    const content = new MutableSubscribableContent({
+    const content = new SyncableMutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
 

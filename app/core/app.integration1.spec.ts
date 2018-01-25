@@ -43,6 +43,9 @@ import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../test
 import {App} from './app';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../objects/contentUser/SyncableMutableSubscribableContentUser';
+import {SyncableMutableSubscribableContent} from '../objects/content/SyncableMutableSubscribableContent';
+import {SyncableMutableSubscribableTreeLocation} from '../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
+import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
@@ -139,7 +142,7 @@ test('Adding a mutation into the global stores for a content data,' +
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
     const answer = new MutableSubscribableField<string>({field: 'Columbus'})
     const title = new MutableSubscribableField<string>({field: ''})
-    const content = new MutableSubscribableContent({
+    const content = new SyncableMutableSubscribableContent({
         type, question, answer, title, updatesCallbacks: [],
     })
     const contentUserStore: IMutableSubscribableContentUserStore = (() => {
@@ -235,7 +238,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
     const aggregationTimerVal = 54
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal})
     const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal})
-    const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
+    const treeUser = new SyncableMutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer})
 
     const contentUserStore: IMutableSubscribableContentUserStore =
         myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
@@ -311,7 +314,7 @@ test('Adding a mutation into the global stores for a tree location data,' +
     const point: IMutableSubscribablePoint
         = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
-    const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+    const treeLocation = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
     const contentUserStore: IMutableSubscribableContentUserStore =
         myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)

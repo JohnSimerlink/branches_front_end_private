@@ -18,6 +18,7 @@ import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringS
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
+import {SyncableMutableSubscribableTree} from '../../tree/SyncableMutableSubscribableTree';
 
 test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' +
     ' should call addMutation on the appropriate item,' +
@@ -27,7 +28,7 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
     const parentId = new MutableSubscribableField<string>({field: 'adf12356' })
     const children = new SubscribableMutableStringSet()
     const id = TREE_ID
-    const tree = new MutableSubscribableTree({
+    const tree = new SyncableMutableSubscribableTree({
         id, contentId, parentId, children, updatesCallbacks: [],
     })
 

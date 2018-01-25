@@ -10,7 +10,7 @@ import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
     IFirebaseRef, IMutableSubscribableContent, ISubscribableContentStoreSource,
     IContentData,
-    IContentLoader, CONTENT_TYPES
+    IContentLoader, CONTENT_TYPES, ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import Reference = firebase.database.Reference;
@@ -48,7 +48,7 @@ test('ContentLoader:::Should mark an id as loaded if test exists in the injected
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
 
     const contentId = '1234'
-    const content = myContainer.get<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent)
+    const content = myContainer.get<ISyncableMutableSubscribableContent>(TYPES.ISyncableMutableSubscribableContent)
     const firebaseRef: Reference =  new MockFirebase()
     storeSource.set(contentId, content)
 
@@ -208,7 +208,7 @@ test('ContentLoader:::GetData on an existing content should return the content',
         title: null,
     }
     const expectedContentData = sampleContentData
-    const sampleContent: IMutableSubscribableContent =
+    const sampleContent: ISyncableMutableSubscribableContent =
         ContentDeserializer.deserialize({contentId, contentData: sampleContentData})
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)

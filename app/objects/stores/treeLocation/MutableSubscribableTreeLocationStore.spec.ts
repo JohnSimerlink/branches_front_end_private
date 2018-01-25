@@ -18,6 +18,7 @@ import {MutableSubscribablePoint} from '../../point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscribableTreeLocation';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
+import {SyncableMutableSubscribableTreeLocation} from '../../treeLocation/SyncableMutableSubscribableTreeLocation';
 
 test('MutableSubscribableTreeLocationStore > addMutation::::' +
     'addMutation to storeSource should call addMutation on the appropriate item,' +
@@ -29,7 +30,7 @@ test('MutableSubscribableTreeLocationStore > addMutation::::' +
     const point: IMutableSubscribablePoint
         = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
-    const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+    const treeLocation = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
     const storeSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>

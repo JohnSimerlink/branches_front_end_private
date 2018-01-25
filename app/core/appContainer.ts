@@ -3,14 +3,11 @@ import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {
     IApp, IContentLoader, IContentUserLoader, IHash, IVueComponentCreator, IMutable, IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
-    IMutableSubscribableTree,
-    IMutableSubscribableTreeLocation,
     IMutableSubscribableTreeUserStore, IOneToManyMap,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigma, ISigmaEventListener, ISigmaNode,
     ISigmaRenderManager, ISigmaUpdater, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore,
     ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
-    ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
     ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator, IObjectFirebaseAutoSaver,
@@ -18,8 +15,6 @@ import {
 } from '../objects/interfaces';
 
 import firebase from 'firebase'
-import {ISubscribableContentStore} from '../objects/interfaces';
-import {ISubscribableContentUserStore} from '../objects/interfaces';
 import {IMutableSubscribableGlobalStore} from '../objects/interfaces';
 import {
     fGetSigmaIdsForContentId, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
@@ -79,6 +74,9 @@ import {AutoSaveMutableSubscribableContentUserStore} from '../objects/stores/con
 import {ContentUserLoaderAndAutoSaver} from '../loaders/contentUser/ContentUserLoaderAndAutoSaver';
 import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCreator';
+import {ContentLoaderAndAutoSaver} from '../loaders/content/ContentLoaderAndAutoSaver';
+import {TreeLoaderAndAutoSaver} from '../loaders/tree/TreeLoaderAndAutoSaver';
+import {TreeLocationLoaderAndAutoSaver} from '../loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
 
 configureSigma(sigma)
 
@@ -115,17 +113,8 @@ export class AppContainer {
         const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
             (TYPES.ISubscribableTreeLocationStoreSource)
-        const treeLoader: ITreeLoader =
-            new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
-        const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
-        const specialTreeLoader: ITreeLoader =
-            new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
-        const treeLocationLoader: ITreeLocationLoader =
-            new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
         const treeUserLoader: ITreeUserLoader =
             new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
-        const contentLoader: IContentLoader =
-            new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
         // const objectAutoFirebaseSaver: IObjectFirebaseAutoSaver =
             // new ObjectFirebaseAutoSaver({})
         const contentUserLoader: IContentUserLoader = new ContentUserLoader({
@@ -138,11 +127,33 @@ export class AppContainer {
                     firebaseRef: firebaseContentUsersRef, contentUserLoader
                 })
 
+        const contentLoader: IContentLoader =
+            new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
         const contentLoaderAndAutoSaver: IContentLoader =
             new ContentLoaderAndAutoSaver(
                 {
-                    firebaseRef: firebaseContentRef, storeSource: contentStoreSource
+                    firebaseRef: firebaseContentRef, contentLoader
                 })
+        const treeLoader: ITreeLoader =
+            new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
+        const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+        const specialTreeLoader: ITreeLoader =
+            new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
+        const treeLoaderAndAutoSaver: ITreeLoader =
+            new TreeLoaderAndAutoSaver(
+                {
+                    firebaseRef: firebaseTreesRef, treeLoader: specialTreeLoader
+                })
+
+        const treeLocationLoader: ITreeLocationLoader =
+            new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+        const treeLocationLoaderAndAutoSaver: ITreeLocationLoader =
+            new TreeLocationLoaderAndAutoSaver(
+                {
+                    treeLocationsFirebaseRef: firebaseTreeLocationsRef,
+                    treeLocationLoader,
+                })
+
         const treeStore: IMutableSubscribableTreeStore =
             new MutableSubscribableTreeStore({storeSource: treeStoreSource, updatesCallbacks: [] })
 
@@ -252,9 +263,9 @@ export class AppContainer {
         const knawledgeMapCreator: IVueComponentCreator =
             new KnawledgeMapCreator({
                     store,
-                    specialTreeLoader,
-                    treeLocationLoader,
-                    contentLoader,
+                    specialTreeLoader: treeLoaderAndAutoSaver,
+                    treeLocationLoader: treeLocationLoaderAndAutoSaver,
+                    contentLoader: contentLoaderAndAutoSaver,
                     contentUserLoader: contentUserLoaderAndAutoSaver,
                     userId
                 })
