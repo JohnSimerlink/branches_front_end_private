@@ -13,7 +13,7 @@ export class MutableSubscribableTreeLocationStore
     extends SubscribableTreeLocationStore
     implements IMutableSubscribableTreeLocationStore {
     public addAndSubscribeToItemFromData({id, treeLocationData}: { id: string; treeLocationData: ITreeLocationData }):
-    IMutableSubscribableTreeLocation {
+    ISyncableMutableSubscribableTreeLocation {
         const treeLocation: ISyncableMutableSubscribableTreeLocation =
             TreeLocationDeserializer.deserialize({treeLocationData})
         log('19: MutableSubscribableTreeLocationStore addAndSubscribeToItemFromData called!',

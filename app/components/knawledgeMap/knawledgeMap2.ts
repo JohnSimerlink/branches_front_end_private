@@ -57,6 +57,12 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 me.treeLocationLoader.downloadData(ANOTHER_ID)
                 me.contentLoader.downloadData(ANOTHER_CONTENT_ID)
                 me.contentUserLoader.downloadData({userId: me.userId, contentId: ANOTHER_CONTENT_ID})
+
+                const newCategoryId = 'b6f78c9ac8c2d79a97993d8459a7836e'
+                const newCategory_Content_id = ''
+                me.specialTreeLoader.downloadData(newCategoryId)
+                me.treeLocationLoader.downloadData(newCategoryId)
+
                 // TreeLoader.downLoadData(1)
                 log('about to initialized sigma')
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
