@@ -182,7 +182,10 @@ import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from './app/loaders/
 import {TreeLocationLoaderAndAutoSaverArgs} from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
 import {ContentLoaderAndAutoSaverArgs} from './app/loaders/content/ContentLoaderAndAutoSaver';
 import {ContentUserLoaderAndAutoSaverArgs} from './app/loaders/contentUser/ContentUserLoaderAndAutoSaver';
-import {AutoSaveMutableSubscribableContentStore} from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
+import {
+    AutoSaveMutableSubscribableContentStore,
+    AutoSaveMutableSubscribableContentStoreArgs
+} from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -256,6 +259,14 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<Reference>(TYPES.FirebaseReference)
         .toConstantValue(contentRef)
         .whenInjectedInto(AutoSaveMutableSubscribableContentStore)
+
+    myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
+        .to(ContentLoaderAndAutoSaverArgs)
+
+    // AutoSave Stores
+    // AutoSaveMutableSubscribableContentStoreArgs
+    myContainer.bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
+        .to(AutoSaveMutableSubscribableContentStoreArgs)
 
     function numNodes({store}) {
         // TODO: LOL. Massive violation of Law of Demeter
