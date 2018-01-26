@@ -1,13 +1,7 @@
 
 ObjectFirebaseAutoSaver is used in ContentUserLoaderAndAutoSaver, AutoSaveMutableSubscribableContentUserStore
 
-
 -when a new contentUser item is created how does it get saved? How does the interaction with contentUserLoaderAndAutoSaver work?
-
-
-
-
-
 
 scenario 2
 so a content is received by sigmaNodesUpdater
@@ -15,3 +9,13 @@ But no tree is received yet that has that contentId
 	so we temporarily store that content in contentIdContentMap
 
 So when a tree(s) is received that has the contentId it will check the contentIdContentMap[contentId] and automatically call receiveNewContent with that content value
+
+app integration 4
+-we need to mak eit so that we can just swap out the firebaseTrees ref, swap out the store2.ts injection, fetch the appContainer. . . run appContainer.start(), then run store.commit(MUTATION_NAMES.CHANGE_PARENT_ID, {parentTreeId, childTreeid}) and see that the spy gets called on the appropriate child ref
+
+--so intermediate step is get it so that bootstrap.ts simply just fetches appContainer, then calls appContainer.start()
+
+firebaseContentRef is injected into
+	-ContentLoader as the firebaseRef property
+	-ContentLoader and AutoSaver as the firebaseRef property
+	-AutoSaveMutableSubscribableContentStore as the contentFirebaseRef property

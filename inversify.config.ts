@@ -177,6 +177,12 @@ import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutabl
 import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
 import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/SyncableMutableSubscribableTreeUser';
+import {SpecialTreeLoader} from './app/loaders/tree/specialTreeLoader';
+import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from './app/loaders/tree/TreeLoaderAndAutoSaver';
+import {TreeLocationLoaderAndAutoSaverArgs} from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
+import {ContentLoaderAndAutoSaverArgs} from './app/loaders/content/ContentLoaderAndAutoSaver';
+import {ContentUserLoaderAndAutoSaverArgs} from './app/loaders/contentUser/ContentUserLoaderAndAutoSaver';
+import {AutoSaveMutableSubscribableContentStore} from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -208,14 +214,16 @@ const sigmaInstance /*: Sigma*/ = new sigma({
 //     messagingSenderId: '354929800016'
 // }
 firebase.initializeApp(firebaseConfig)
-const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
-const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
-const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
-const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
-const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
+export const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
+export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
+export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
+export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
+export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
+    myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
+        .whenInjectedInto(TreeLoaderAndAutoSaver)
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
@@ -224,6 +232,7 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
     myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs)
     myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs)
+
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenInjectedInto(TreeLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
@@ -234,6 +243,33 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
         .whenInjectedInto(ContentUserLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
         .whenInjectedInto(TreeUserLoaderArgs)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
+        .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
+        .whenInjectedInto(TreeLocationLoaderAndAutoSaverArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
+        .whenInjectedInto(ContentLoaderAndAutoSaverArgs)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
+        .whenInjectedInto(ContentUserLoaderAndAutoSaverArgs)
+    // TreeLoaderAndAutoSaverArgs
+    myContainer.bind<Reference>(TYPES.FirebaseReference)
+        .toConstantValue(contentRef)
+        .whenInjectedInto(AutoSaveMutableSubscribableContentStore)
+
+    function numNodes({store}) {
+        // TODO: LOL. Massive violation of Law of Demeter
+        return store.state.sigmaInstance.graph.nodes().length
+    }
+    function thereIsOneNodeAndItContains({store, question, answer, type}): boolean {
+        // TODO: LOL. Massive violation of Law of Demeter below
+        const node: ISigmaNode = store.state.sigmaInstance.graph.nodes()[0]
+        return node.content
+            && node.content.question === question
+            && node.content.answer === answer
+            && node.content.type === CONTENT_TYPES.FACT
+    }
+
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
     = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})

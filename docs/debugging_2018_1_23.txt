@@ -12,4 +12,4 @@ TODO: Type all constructor arguments
 TODO: finish tests for other global store create mutations
 
 
-store source .98
+store source .98 . . . type is unfortunately content DATA
