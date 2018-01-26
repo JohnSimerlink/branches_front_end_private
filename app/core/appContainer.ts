@@ -57,7 +57,7 @@ import {MutableSubscribableContentStore} from '../objects/stores/content/Mutable
 import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
-import {ContentLoader} from '../loaders/content/ContentLoader';
+import {ContentLoader, ContentLoaderArgs} from '../loaders/content/ContentLoader';
 const sigmaAny: any = sigma
 import clonedeep from 'lodash.clonedeep'
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
@@ -77,10 +77,14 @@ import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCre
 import {ContentLoaderAndAutoSaver} from '../loaders/content/ContentLoaderAndAutoSaver';
 import {TreeLoaderAndAutoSaver} from '../loaders/tree/TreeLoaderAndAutoSaver';
 import {TreeLocationLoaderAndAutoSaver} from '../loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
-import {AutoSaveMutableSubscribableContentStore} from '../objects/stores/content/AutoSaveMutableSubscribableContentStore';
+import {
+    AutoSaveMutableSubscribableContentStore,
+    AutoSaveMutableSubscribableContentStoreArgs
+} from '../objects/stores/content/AutoSaveMutableSubscribableContentStore';
 import {AutoSaveMutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
 import {AutoSaveMutableSubscribableTreeUserStore} from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
 import {AutoSaveMutableSubscribableTreeStore} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
+import {partialInject} from '../testHelpers/partialInject';
 
 configureSigma(sigma)
 
@@ -100,7 +104,7 @@ export class AppContainer {
     */
     public async start() {
 
-        const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
+        // const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
         const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
         const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
         const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
@@ -132,12 +136,24 @@ export class AppContainer {
                 })
 
         const contentLoader: IContentLoader =
-            new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
+            partialInject<ContentLoaderArgs>({
+                constructorArgsType: TYPES.ContentLoaderArgs,
+                konstructor: ContentLoader,
+                injections: {storeSource: contentStoreSource},
+                container: myContainer
+            })
+            // new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
         const contentLoaderAndAutoSaver: IContentLoader =
-            new ContentLoaderAndAutoSaver(
-                {
-                    firebaseRef: firebaseContentRef, contentLoader
-                })
+            // new ContentLoaderAndAutoSaver(
+            //     {
+            //         firebaseRef: firebaseContentRef, contentLoader
+            //     })
+            partialInject<IContentLoader>({
+                konstructor: ContentLoaderAndAutoSaver,
+                constructorArgsType: TYPES.ContentLoaderAndAutoSaverArgs,
+                injections: {contentLoader},
+                container: myContainer
+            })
         const treeLoader: ITreeLoader =
             new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
         const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
@@ -182,11 +198,17 @@ export class AppContainer {
             // myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const contentStore: IMutableSubscribableContentStore =
-            new AutoSaveMutableSubscribableContentStore({
-                storeSource: contentStoreSource,
-                updatesCallbacks: [],
-                contentFirebaseRef: firebaseContentRef
+            partialInject<AutoSaveMutableSubscribableContentStoreArgs>({
+                konstructor: AutoSaveMutableSubscribableContentStore,
+                constructorArgsType: TYPES.AutoSaveMutableSubscribableContentStoreArgs,
+                injections: {storeSource: contentStoreSource},
+                container: myContainer
             })
+            // new AutoSaveMutableSubscribableContentStore({
+            //     storeSource: contentStoreSource,
+            //     updatesCallbacks: [],
+            //     contentFirebaseRef: firebaseContentRef
+            // })
             // myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const contentUserStore: IMutableSubscribableContentUserStore =
