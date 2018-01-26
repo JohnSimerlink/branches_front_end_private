@@ -8,7 +8,7 @@ import {
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
     IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
-    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs
+    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -43,6 +43,7 @@ export enum MUTATION_NAMES {
     ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
     CHANGE_USER_ID = 'changeUserId',
     NEW_CHILD_TREE = 'new_child_tree',
+    ADD_CHILD_TO_PARENT = ' add_child_to_parent'
 }
 
 const getters = {
@@ -169,9 +170,24 @@ const mutations = {
         }
         const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
+        mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
 
         return treeIdString
         },
+    [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state,
+     {
+         parentTreeId, childTreeId,
+     }) {
+
+        const globalStoreMutation: IIdProppedDatedMutation<SetMutationTypes, TreePropertyNames> = {
+            id: parentTreeId,
+            timestamp: Date.now(),
+            type: SetMutationTypes.ADD,
+            propertyName: TreePropertyNames.PARENT_ID,
+            data: childTreeId,
+        }
+        state.globalDataStore.addMutation(globalStoreMutation)
+    },
     [MUTATION_NAMES.CREATE_CONTENT](state, {
         type, question, answer, title
     }: IContentDataEither): id {
@@ -227,7 +243,7 @@ const mutations = {
         return treeLocationData
     },
 }
-
+// TODO: DO I even use these mutation?
 mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
     if (state.sigmaInitialized) {
         log('sigma was already initialized . .. adding node', node)
