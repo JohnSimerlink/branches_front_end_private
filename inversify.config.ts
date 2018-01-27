@@ -186,6 +186,7 @@ import {
     AutoSaveMutableSubscribableContentStore,
     AutoSaveMutableSubscribableContentStoreArgs
 } from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
+import {AutoSaveMutableSubscribableContentUserStoreArgs} from './app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -262,11 +263,17 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
 
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
         .to(ContentLoaderAndAutoSaverArgs)
+    myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
+        .to(ContentUserLoaderAndAutoSaverArgs)
 
     // AutoSave Stores
     // AutoSaveMutableSubscribableContentStoreArgs
     myContainer.bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
         .to(AutoSaveMutableSubscribableContentStoreArgs)
+
+    myContainer.bind<AutoSaveMutableSubscribableContentUserStoreArgs>
+    (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
+        .to(AutoSaveMutableSubscribableContentUserStoreArgs)
 
     function numNodes({store}) {
         // TODO: LOL. Massive violation of Law of Demeter
