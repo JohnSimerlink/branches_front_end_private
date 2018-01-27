@@ -3,7 +3,7 @@ export const TYPES = {
     AppArgs: Symbol('AppArgs'),
     Array: Symbol('Array'),
     AutoSaveMutableSubscribableContentStoreArgs: Symbol('AutoSaveMutableSubscribableContentStoreArgs'),
-    AutoSaveMutableSubscribableContentUserStoreArgs: Symbol('AutoSaveMutableSubscribableContentStoreArgs'),
+    AutoSaveMutableSubscribableContentUserStoreArgs: Symbol('AutoSaveMutableSubscribableContentUserStoreArgs'),
     AutoSaveMutableSubscribableTreeStoreArgs: Symbol('AutoSaveMutableSubscribableTreeStoreArgs'),
     AutoSaveMutableSubscribableTreeLocationStoreArgs: Symbol('AutoSaveMutableSubscribableTreeLocationStoreArgs'),
     AutoSaveMutableSubscribableTreeUserStoreArgs: Symbol('AutoSaveMutableSubscribableTreeUserStoreArgs'),

@@ -3,13 +3,14 @@ import {
     IMutableSubscribableTreeLocationStore,
     IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
 } from '../../interfaces';
-import {inject} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
 
+@injectable()
 export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscribableTreeLocationStore
     implements IMutableSubscribableTreeLocationStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
@@ -41,6 +42,7 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
         return treeLocation
     }
 }
+@injectable()
 export class AutoSaveMutableSubscribableTreeLocationStoreArgs {
     @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;

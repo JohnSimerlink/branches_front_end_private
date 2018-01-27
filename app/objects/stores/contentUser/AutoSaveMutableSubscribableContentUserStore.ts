@@ -3,7 +3,7 @@ import {
     IContentUserData,
     IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableContentUser,
 } from '../../interfaces';
-import {inject} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
@@ -11,6 +11,7 @@ import {getContentId, getUserId} from '../../../loaders/contentUser/ContentUserL
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
+@injectable()
 export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
@@ -44,6 +45,7 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
         return contentUser
     }
 }
+@injectable()
 export class AutoSaveMutableSubscribableContentUserStoreArgs {
     @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;

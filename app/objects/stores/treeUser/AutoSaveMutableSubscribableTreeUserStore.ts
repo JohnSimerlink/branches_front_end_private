@@ -3,7 +3,7 @@ import {
     IMutableSubscribableTreeUserStore,
     IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeUser, ITreeUserData,
 } from '../../interfaces';
-import {inject} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
@@ -11,6 +11,7 @@ import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
 import {TreeUserDeserializer} from '../../../loaders/treeUser/TreeUserDeserializer';
 
+@injectable()
 export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribableTreeUserStore
     implements IMutableSubscribableTreeUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
@@ -42,6 +43,7 @@ export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribabl
         return treeUser
     }
 }
+@injectable()
 export class AutoSaveMutableSubscribableTreeUserStoreArgs {
     @inject(TYPES.ISubscribableTreeUserStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
