@@ -18,4 +18,4 @@ app integration 4
 firebaseContentRef is injected into
 	-ContentLoader as the firebaseRef property
 	-ContentLoader and AutoSaver as the firebaseRef property
-	-AutoSaveMutableSubscribableContentStore as the contentFirebaseRef property
+	-AutoSaveMutableSubscribableContentStore as the contentFirebaseRef propertys

@@ -1,0 +1,9 @@
+we want all the connections and listenings to be the same across the app and integration tests . . . 
+
+so literally integration tests should be
+
+	-unbind this one component and replace it with a local component
+	-appContainer = myContainer.get<IAppContainer>(TYPES.IAppContainer)
+	-appContainer.start()
+	-thisOneComponent.method()
+	-expect(thisOtherComponentMethodSpy.callCount).to.deep.equal(1) and be calledWith
