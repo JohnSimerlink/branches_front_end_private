@@ -81,7 +81,7 @@ import {
 import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCreator';
 import {ContentLoaderAndAutoSaver, ContentLoaderAndAutoSaverArgs} from '../loaders/content/ContentLoaderAndAutoSaver';
-import {TreeLoaderAndAutoSaver} from '../loaders/tree/TreeLoaderAndAutoSaver';
+import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from '../loaders/tree/TreeLoaderAndAutoSaver';
 import {TreeLocationLoaderAndAutoSaver} from '../loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
 import {
     AutoSaveMutableSubscribableContentStore,
@@ -89,7 +89,7 @@ import {
 } from '../objects/stores/content/AutoSaveMutableSubscribableContentStore';
 import {AutoSaveMutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
 import {AutoSaveMutableSubscribableTreeUserStore} from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
-import {AutoSaveMutableSubscribableTreeStore} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
+import {AutoSaveMutableSubscribableTreeStore, AutoSaveMutableSubscribableTreeStoreArgs} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 import {partialInject} from '../testHelpers/partialInject';
 
 configureSigma(sigma)
@@ -112,7 +112,7 @@ export class AppContainer {
 
         // const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
         // const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
-        const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
+        // const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
         const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
         const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
         const contentStoreSource: ISubscribableContentStoreSource
@@ -195,10 +195,18 @@ export class AppContainer {
             })
             // new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
         const treeLoaderAndAutoSaver: ITreeLoader =
-            new TreeLoaderAndAutoSaver(
-                {
-                    firebaseRef: firebaseTreesRef, treeLoader: specialTreeLoader
-                })
+            partialInject<TreeLoaderAndAutoSaverArgs>({
+                konstructor: TreeLoaderAndAutoSaver,
+                constructorArgsType: TYPES.TreeLoaderAndAutoSaverArgs,
+                injections: {
+                    treeLoader: specialTreeLoader
+                },
+                container: myContainer,
+            })
+            // new TreeLoaderAndAutoSaver(
+            //     {
+            //         firebaseRef: firebaseTreesRef, treeLoader: specialTreeLoader
+            //     })
 
         const treeLocationLoader: ITreeLocationLoader =
             new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
@@ -210,11 +218,19 @@ export class AppContainer {
                 })
 
         const treeStore: IMutableSubscribableTreeStore =
-            new AutoSaveMutableSubscribableTreeStore({
-                storeSource: treeStoreSource,
-                updatesCallbacks: [],
-                treesFirebaseRef: firebaseTreesRef,
+            partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
+                konstructor: AutoSaveMutableSubscribableTreeStore,
+                constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeStoreArgs,
+                injections: {
+                    storeSource: treeStoreSource,
+                },
+                container: myContainer,
             })
+            // new AutoSaveMutableSubscribableTreeStore({
+            //     storeSource: treeStoreSource,
+            //     updatesCallbacks: [],
+            //     treesFirebaseRef: firebaseTreesRef,
+            // })
 
         const treeUserStore: IMutableSubscribableTreeUserStore =
             new AutoSaveMutableSubscribableTreeUserStore({
