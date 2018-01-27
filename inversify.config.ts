@@ -177,7 +177,7 @@ import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutabl
 import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
 import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/SyncableMutableSubscribableTreeUser';
-import {SpecialTreeLoader} from './app/loaders/tree/specialTreeLoader';
+import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './app/loaders/tree/specialTreeLoader';
 import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from './app/loaders/tree/TreeLoaderAndAutoSaver';
 import {TreeLocationLoaderAndAutoSaverArgs} from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
 import {ContentLoaderAndAutoSaverArgs} from './app/loaders/content/ContentLoaderAndAutoSaver';
@@ -226,9 +226,24 @@ export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
-    myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
-        .whenInjectedInto(TreeLoaderAndAutoSaver)
+
+    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
+
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
+        .whenInjectedInto(SpecialTreeLoaderArgs)
+
+    myContainer.bind<SpecialTreeLoaderArgs>(TYPES.SpecialTreeLoaderArgs)
+        .to(SpecialTreeLoaderArgs)
+
+    myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
+        .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
+
+    myContainer.bind<TreeLoaderAndAutoSaverArgs>(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs)
+
+    myContainer.bind<ITreeLoader>(TYPES.ITreeLoader)
+        .to(TreeLoaderAndAutoSaver)
+        .whenInjectedInto(KnawledgeMapCreatorArgs)
+
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
     myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)

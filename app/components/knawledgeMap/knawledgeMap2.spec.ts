@@ -65,7 +65,9 @@ test.afterEach(t => {
     myContainer.snapshot()
 })
 test('KnawledgeMap::::create knawledgeMap should work', (t) => {
-    const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+    const treeLoader: ITreeLoader = {
+        downloadData() {}
+    }  as any as ITreeLoader
     const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const specialTreeLoader: ITreeLoader = new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
     const treeLoaderDownloadDataSpy = sinon.spy(treeLoader, 'downloadData')
@@ -108,8 +110,14 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
 test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => {
     const contentId = 'abc123'
     const userId = 'bdd123'
-    const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
-    const specialTreeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+    // const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
+
+    const treeLoader: ITreeLoader = {
+        downloadData() {}
+    }  as any as ITreeLoader
+    const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+    const specialTreeLoader: ITreeLoader = new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
+
     const treeLocationLoader: ITreeLocationLoader = myContainer.get<ITreeLocationLoader>(TYPES.ITreeLocationLoader)
     const contentLoader: IContentLoader = myContainer.get<IContentLoader>(TYPES.IContentLoader)
     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
