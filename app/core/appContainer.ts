@@ -1,5 +1,5 @@
 // for now, this is where we will inject all the dependencies
-import {TreeLoader} from '../loaders/tree/TreeLoader';
+import {TreeLoader, TreeLoaderArgs} from '../loaders/tree/TreeLoader';
 import {
     IApp, IContentLoader, IContentUserLoader, IHash, IVueComponentCreator, IMutable, IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
@@ -69,7 +69,7 @@ import ItemHistory from '../components/itemHistory/itemHistory'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // import NewTree from ''
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
-import {SpecialTreeLoader} from '../loaders/tree/specialTreeLoader';
+import {SpecialTreeLoader, SpecialTreeLoaderArgs} from '../loaders/tree/specialTreeLoader';
 import {
     AutoSaveMutableSubscribableContentUserStore,
     AutoSaveMutableSubscribableContentUserStoreArgs
@@ -178,13 +178,22 @@ export class AppContainer {
                 container: myContainer
             })
         const treeLoader: ITreeLoader =
-            // partialInject<TreeLoaderArgs>({
-            //
-            // })
-            new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
+            partialInject<TreeLoaderArgs>({
+                konstructor: TreeLoader,
+                constructorArgsType: TYPES.TreeLoaderArgs,
+                injections: {storeSource: treeStoreSource},
+                container: myContainer,
+            })
+            // new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
         const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
         const specialTreeLoader: ITreeLoader =
-            new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
+            partialInject<SpecialTreeLoaderArgs>({
+                konstructor: SpecialTreeLoader,
+                constructorArgsType: TYPES.SpecialTreeLoaderArgs,
+                injections: {treeLoader, contentIdSigmaIdsMap},
+                container: myContainer,
+            })
+            // new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
         const treeLoaderAndAutoSaver: ITreeLoader =
             new TreeLoaderAndAutoSaver(
                 {
