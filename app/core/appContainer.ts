@@ -31,7 +31,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {Store} from 'vuex';
 import {myContainer} from '../../inversify.config';
-import {KnawledgeMapCreator} from '../components/knawledgeMap/knawledgeMap2';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from '../components/knawledgeMap/knawledgeMap2';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
@@ -287,7 +287,7 @@ export class AppContainer {
         // = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
         const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
-        const userId = JOHN_USER_ID // 'abc1234'
+        // const userId = JOHN_USER_ID // 'abc1234'
 
         const treeComponentCreator: ITree3Creator =
             new Tree3Creator({store})
@@ -303,14 +303,27 @@ export class AppContainer {
         Vue.component('newtree', NewTree)
 
         const knawledgeMapCreator: IVueComponentCreator =
-            new KnawledgeMapCreator({
-                    store,
-                    specialTreeLoader: treeLoaderAndAutoSaver,
-                    treeLocationLoader: treeLocationLoaderAndAutoSaver,
-                    contentLoader: contentLoaderAndAutoSaver,
-                    contentUserLoader: contentUserLoaderAndAutoSaver,
-                    userId
-                })
+            // new KnawledgeMapCreator({
+            //         store,
+            //         specialTreeLoader: treeLoaderAndAutoSaver,
+            //         treeLocationLoader: treeLocationLoaderAndAutoSaver,
+            //         contentLoader: contentLoaderAndAutoSaver,
+            //         contentUserLoader: contentUserLoaderAndAutoSaver,
+            //         userId
+            //     })
+        partialInject<KnawledgeMapCreatorArgs>({
+            konstructor: KnawledgeMapCreator,
+            constructorArgsType: TYPES.KnawledgeMapCreatorArgs,
+            injections: {
+                store,
+                specialTreeLoader: treeLoaderAndAutoSaver,
+                treeLocationLoader: treeLocationLoaderAndAutoSaver,
+                contentLoader: contentLoaderAndAutoSaver,
+                contentUserLoader: contentUserLoaderAndAutoSaver,
+            },
+            container: myContainer
+        })
+
         const KnawledgeMap = knawledgeMapCreator.create()
         const routes = [
             { path: '/', component: KnawledgeMap, props: true }

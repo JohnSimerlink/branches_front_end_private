@@ -34,6 +34,7 @@ export const TYPES = {
     IContentLoader: Symbol('IContentLoader'),
     IContentUserLoader: Symbol('IContentUserLoader'),
     IContentUserData: Symbol('IContentUserData'),
+    Id: Symbol('Id'),
     IDatabaseAutoSaver: Symbol('IDatabaseAutoSaver'),
     IDBSubscriber: Symbol('IDBSubscriber'),
     IDBSubscriberToTreeLocation: Symbol('IDBSubscriberToTreeLocation'),

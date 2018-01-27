@@ -41,7 +41,7 @@ import {
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
-    ISyncableMutableSubscribableContent,
+    ISyncableMutableSubscribableContent, id,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -509,11 +509,14 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
     // bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 
     bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
+    bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
+        .whenInjectedInto(KnawledgeMapCreatorArgs)
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<Tree3CreatorArgs>(TYPES.Tree3CreatorArgs).to(Tree3CreatorArgs)
     bind<ITree3Creator>(TYPES.ITree3CreatorClone).to(Tree3Creator)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
+
 })
 // app
 

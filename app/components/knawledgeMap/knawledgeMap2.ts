@@ -8,7 +8,7 @@ import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID}
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
-    IVuexStore, IKnawledgeMapCreator
+    IVuexStore, IKnawledgeMapCreator, id
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
@@ -27,7 +27,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private contentLoader: IContentLoader
     private contentUserLoader: IContentUserLoader
     private store: Store<any>
-    private userId: string
+    private userId: id
 
     /* TODO: Each of these loaders should have baked into them certain auth cookies
      that determine whether or not they are actually permitted to load the data
@@ -97,5 +97,5 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore) public store: BranchesStore
-    @inject(TYPES.StringNotEmpty) public userId: string
+    @inject(TYPES.Id) public userId: id
 }
