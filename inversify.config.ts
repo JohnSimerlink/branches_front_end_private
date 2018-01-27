@@ -187,6 +187,10 @@ import {
     AutoSaveMutableSubscribableContentStoreArgs
 } from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
 import {AutoSaveMutableSubscribableContentUserStoreArgs} from './app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
+import {
+    AutoSaveMutableSubscribableTreeStore,
+    AutoSaveMutableSubscribableTreeStoreArgs
+} from './app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -271,10 +275,15 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
         .whenInjectedInto(ContentLoaderAndAutoSaverArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
         .whenInjectedInto(ContentUserLoaderAndAutoSaverArgs)
-    // TreeLoaderAndAutoSaverArgs
+
+    // AutoSave stores
     myContainer.bind<Reference>(TYPES.FirebaseReference)
         .toConstantValue(contentRef)
         .whenInjectedInto(AutoSaveMutableSubscribableContentStore)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference)
+        .toConstantValue(treesRef)
+        .whenInjectedInto(AutoSaveMutableSubscribableTreeStore)
 
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
         .to(ContentLoaderAndAutoSaverArgs)
@@ -282,7 +291,10 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
         .to(ContentUserLoaderAndAutoSaverArgs)
 
     // AutoSave Stores
-    // AutoSaveMutableSubscribableContentStoreArgs
+
+    myContainer.bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeStoreArgs)
+
     myContainer.bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
         .to(AutoSaveMutableSubscribableContentStoreArgs)
 
