@@ -123,7 +123,7 @@ export class AppContainer {
         // const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
         // const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
         // const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
-        const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
+        // const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
         const contentStoreSource: ISubscribableContentStoreSource
             = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
         const contentUserStoreSource: ISubscribableContentUserStoreSource
