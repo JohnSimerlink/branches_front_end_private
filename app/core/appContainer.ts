@@ -142,7 +142,7 @@ export class AppContainer {
                 konstructor: AutoSaveMutableSubscribableTreeStore,
                 constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeStoreArgs,
                 injections: {
-                    storeSource: treeStoreSource,
+                    // storeSource: treeStoreSource,
                 },
                 container: myContainer,
             })
@@ -152,7 +152,7 @@ export class AppContainer {
                 konstructor: AutoSaveMutableSubscribableTreeUserStore,
                 constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs,
                 injections: {
-                    storeSource: treeUserStoreSource,
+                    // storeSource: treeUserStoreSource,
                 },
                 container: myContainer,
             })
@@ -161,7 +161,9 @@ export class AppContainer {
             partialInject<AutoSaveMutableSubscribableTreeLocationStoreArgs>({
                 konstructor: AutoSaveMutableSubscribableTreeLocationStore,
                 constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs,
-                injections: {storeSource: treeLocationStoreSource},
+                injections: {
+                    // storeSource: treeLocationStoreSource
+                },
                 container: myContainer
             })
 
@@ -169,7 +171,9 @@ export class AppContainer {
             partialInject<AutoSaveMutableSubscribableContentStoreArgs>({
                 konstructor: AutoSaveMutableSubscribableContentStore,
                 constructorArgsType: TYPES.AutoSaveMutableSubscribableContentStoreArgs,
-                injections: {storeSource: contentStoreSource},
+                injections: {
+                    // storeSource: contentStoreSource
+                },
                 container: myContainer
             })
 
@@ -177,7 +181,9 @@ export class AppContainer {
             partialInject<AutoSaveMutableSubscribableContentUserStoreArgs>({
                 konstructor: AutoSaveMutableSubscribableContentUserStore,
                 constructorArgsType: TYPES.AutoSaveMutableSubscribableContentUserStoreArgs,
-                injections: {storeSource: contentUserStoreSource},
+                injections: {
+                    // storeSource: contentUserStoreSource
+                },
                 container: myContainer,
             })
 
