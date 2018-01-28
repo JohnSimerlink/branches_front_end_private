@@ -216,26 +216,26 @@ export class AppContainer {
             //         firebaseRef: firebaseTreesRef, treeLoader: specialTreeLoader
             //     })
 
-        const treeLocationLoader: ITreeLocationLoader =
-            // new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
-            partialInject<TreeLocationLoaderArgs>({
-                konstructor: TreeLocationLoader,
-                constructorArgsType: TYPES.TreeLocationLoaderArgs,
-                injections: {
-                    storeSource: treeLocationStoreSource,
-                },
-                container: myContainer,
-            })
-
-        const treeLocationLoaderAndAutoSaver: ITreeLocationLoader =
-            partialInject<TreeLocationLoaderAndAutoSaverArgs>({
-                konstructor: TreeLocationLoaderAndAutoSaver,
-                constructorArgsType: TYPES.TreeLocationLoaderAndAutoSaverArgs,
-                injections: {
-                    treeLocationLoader,
-                },
-                container: myContainer,
-            })
+        // const treeLocationLoader: ITreeLocationLoader =
+        //     // new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+        //     partialInject<TreeLocationLoaderArgs>({
+        //         konstructor: TreeLocationLoader,
+        //         constructorArgsType: TYPES.TreeLocationLoaderArgs,
+        //         injections: {
+        //             storeSource: treeLocationStoreSource,
+        //         },
+        //         container: myContainer,
+        //     })
+        //
+        // const treeLocationLoaderAndAutoSaver: ITreeLocationLoader =
+        //     partialInject<TreeLocationLoaderAndAutoSaverArgs>({
+        //         konstructor: TreeLocationLoaderAndAutoSaver,
+        //         constructorArgsType: TYPES.TreeLocationLoaderAndAutoSaverArgs,
+        //         injections: {
+        //             treeLocationLoader,
+        //         },
+        //         container: myContainer,
+        //     })
             // new TreeLocationLoaderAndAutoSaver(
             //     {
             //         treeLocationsFirebaseRef: firebaseTreeLocationsRef,
@@ -413,7 +413,7 @@ export class AppContainer {
             injections: {
                 store,
                 specialTreeLoader: treeLoaderAndAutoSaver,
-                treeLocationLoader: treeLocationLoaderAndAutoSaver,
+                // treeLocationLoader: treeLocationLoaderAndAutoSaver,
                 // contentLoader: contentLoaderAndAutoSaver,
                 // contentUserLoader: contentUserLoaderAndAutoSaver,
             },
