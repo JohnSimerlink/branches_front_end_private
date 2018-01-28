@@ -95,7 +95,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public specialTreeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
-    @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
+    @inject(TYPES.IContentLoader) @tagged(TAGS.AUTO_SAVER, true) public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader) @tagged(TAGS.AUTO_SAVER, true) public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore) public store: BranchesStore
     @inject(TYPES.Id) public userId: id
