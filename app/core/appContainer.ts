@@ -137,60 +137,62 @@ export class AppContainer {
         = myContainer.get<ISubscribableTreeLocationStoreSource>
             (TYPES.ISubscribableTreeLocationStoreSource)
 
-        const treeStore: IMutableSubscribableTreeStore =
-            partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
-                konstructor: AutoSaveMutableSubscribableTreeStore,
-                constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeStoreArgs,
-                injections: {
-                    // storeSource: treeStoreSource,
-                },
-                container: myContainer,
-            })
+        // const treeStore: IMutableSubscribableTreeStore =
+        //     partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
+        //         konstructor: AutoSaveMutableSubscribableTreeStore,
+        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeStoreArgs,
+        //         injections: {
+        //             // storeSource: treeStoreSource,
+        //         },
+        //         container: myContainer,
+        //     })
 
-        const treeUserStore: IMutableSubscribableTreeUserStore =
-            partialInject<AutoSaveMutableSubscribableTreeUserStoreArgs>( {
-                konstructor: AutoSaveMutableSubscribableTreeUserStore,
-                constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs,
-                injections: {
-                    // storeSource: treeUserStoreSource,
-                },
-                container: myContainer,
-            })
+        // const treeUserStore: IMutableSubscribableTreeUserStore =
+        //     partialInject<AutoSaveMutableSubscribableTreeUserStoreArgs>( {
+        //         konstructor: AutoSaveMutableSubscribableTreeUserStore,
+        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs,
+        //         injections: {
+        //             // storeSource: treeUserStoreSource,
+        //         },
+        //         container: myContainer,
+        //     })
 
-        const treeLocationStore: IMutableSubscribableTreeLocationStore =
-            partialInject<AutoSaveMutableSubscribableTreeLocationStoreArgs>({
-                konstructor: AutoSaveMutableSubscribableTreeLocationStore,
-                constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs,
-                injections: {
-                    // storeSource: treeLocationStoreSource
-                },
-                container: myContainer
-            })
+        // const treeLocationStore: IMutableSubscribableTreeLocationStore =
+        //     partialInject<AutoSaveMutableSubscribableTreeLocationStoreArgs>({
+        //         konstructor: AutoSaveMutableSubscribableTreeLocationStore,
+        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs,
+        //         injections: {
+        //             // storeSource: treeLocationStoreSource
+        //         },
+        //         container: myContainer
+        //     })
 
-        const contentStore: IMutableSubscribableContentStore =
-            partialInject<AutoSaveMutableSubscribableContentStoreArgs>({
-                konstructor: AutoSaveMutableSubscribableContentStore,
-                constructorArgsType: TYPES.AutoSaveMutableSubscribableContentStoreArgs,
-                injections: {
-                    // storeSource: contentStoreSource
-                },
-                container: myContainer
-            })
+        // const contentStore: IMutableSubscribableContentStore =
+        //     partialInject<AutoSaveMutableSubscribableContentStoreArgs>({
+        //         konstructor: AutoSaveMutableSubscribableContentStore,
+        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableContentStoreArgs,
+        //         injections: {
+        //             // storeSource: contentStoreSource
+        //         },
+        //         container: myContainer
+        //     })
 
-        const contentUserStore: IMutableSubscribableContentUserStore =
-            partialInject<AutoSaveMutableSubscribableContentUserStoreArgs>({
-                konstructor: AutoSaveMutableSubscribableContentUserStore,
-                constructorArgsType: TYPES.AutoSaveMutableSubscribableContentUserStoreArgs,
-                injections: {
-                    // storeSource: contentUserStoreSource
-                },
-                container: myContainer,
-            })
+        // const contentUserStore: IMutableSubscribableContentUserStore =
+        //     partialInject<AutoSaveMutableSubscribableContentUserStoreArgs>({
+        //         konstructor: AutoSaveMutableSubscribableContentUserStore,
+        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableContentUserStoreArgs,
+        //         injections: {
+        //             // storeSource: contentUserStoreSource
+        //         },
+        //         container: myContainer,
+        //     })
 
+        log('appContainer 190, MutableSubscribableGlobalStore about to be created')
         const globalStore: IMutableSubscribableGlobalStore =
-            // myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
-            new MutableSubscribableGlobalStore(
-                {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
+            myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
+        log('appContainer 193, MutableSubscribableGlobalStore just created', globalStore['_globalStoreId'])
+            // new MutableSubscribableGlobalStore(
+            //     {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
         const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
         const store: Store<any> = new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
@@ -247,12 +249,16 @@ export class AppContainer {
         const newTreeComponentCreator: INewTreeComponentCreator =
             new NewTreeComponentCreator({store})
         const NewTree = newTreeComponentCreator.create()
+
+        log('appContainer 253, MutableSubscribableGlobalStore has been called yet?')
         Vue.component('tree', Tree)
 
         Vue.component('studyMenu', StudyMenu)
         Vue.component('itemHistory', ItemHistory)
         Vue.component('proficiencySelector', ProficiencySelector)
         Vue.component('newtree', NewTree)
+
+        log('appContainer 261, MutableSubscribableGlobalStore has been called yet?')
 
         const knawledgeMapCreator: IVueComponentCreator =
             // new KnawledgeMapCreator({
@@ -272,6 +278,7 @@ export class AppContainer {
             },
             container: myContainer
         })
+        log('appContainer 280, has MutableSubscribableGlobalStore constructor been called yet?')
 
         const KnawledgeMap = knawledgeMapCreator.create()
         const routes = [
@@ -287,6 +294,7 @@ export class AppContainer {
         })
         const treeIdToDownload = 1
         app.start()
+
         // For now, new Vue must be called after app.start()
         const vm = new Vue({
             el: '#branches-app',

@@ -18,6 +18,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
         storeSource, updatesCallbacks, treesFirebaseRef,
     }: AutoSaveMutableSubscribableTreeStoreArgs) {
         super({storeSource, updatesCallbacks})
+        log('328pm AutoSaverMutableSubscribableTreeStore created')
         this.treesFirebaseRef = treesFirebaseRef
     }
     public addAndSubscribeToItemFromData(

@@ -31,6 +31,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     }: MutableSubscribableGlobalStoreArgs) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
         this._globalStoreId = Math.random()
+        log('328pm mutablesubscribableglobalstore just created', this._globalStoreId)
     }
     private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
         // log('MSGlobalStore addEditMutation called',)
@@ -151,7 +152,9 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         }
     }
     public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
-        log('global store addMutation is', mutation)
+        log('MutableSubscribableGlobalStore, addMutation ', this['_globalStoreId'],
+            this['contentUserStore'],
+            this['contentUserStore']['addMutation'] /*global store addMutation is', mutation*/)
         // log('MSGLobalStore addMutation called 1', mutation.type, STORE_MUTATION_TYPES.CREATE_ITEM)
         if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
             // log('MSGLobalStore addMutation called: about to call addCreateMutation 2 ')

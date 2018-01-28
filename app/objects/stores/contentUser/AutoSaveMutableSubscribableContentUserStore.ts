@@ -20,6 +20,7 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
         storeSource, updatesCallbacks, contentUsersFirebaseRef,
     }: AutoSaveMutableSubscribableContentUserStoreArgs) {
         super({storeSource, updatesCallbacks})
+        log('328pm AutoSaverMutableSubscribableContentUserStore created')
         this.contentUsersFirebaseRef = contentUsersFirebaseRef
     }
     public addAndSubscribeToItemFromData(

@@ -42,6 +42,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
         this.contentLoader = contentLoader
         this.contentUserLoader = contentUserLoader
         this.userId = userId
+        log('knawledgeMap 45: MutableSubscribableGlobalStore End of knawledgeMap constructor called')
     }
     public create() {
         const me = this
