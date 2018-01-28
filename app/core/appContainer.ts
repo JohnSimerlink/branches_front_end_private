@@ -136,32 +136,6 @@ export class AppContainer {
         const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
             (TYPES.ISubscribableTreeLocationStoreSource)
-        // const treeLoader: ITreeLoader =
-        //     partialInject<TreeLoaderArgs>({
-        //         konstructor: TreeLoader,
-        //         constructorArgsType: TYPES.TreeLoaderArgs,
-        //         injections: {storeSource: treeStoreSource},
-        //         container: myContainer,
-        //     })
-            // new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
-        // const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
-        // const specialTreeLoader: ITreeLoader =
-        //     partialInject<SpecialTreeLoaderArgs>({
-        //         konstructor: SpecialTreeLoader,
-        //         constructorArgsType: TYPES.SpecialTreeLoaderArgs,
-        //         injections: {treeLoader, contentIdSigmaIdsMap},
-        //         container: myContainer,
-        //     })
-        //     // new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
-        // const treeLoaderAndAutoSaver: ITreeLoader =
-        //     partialInject<TreeLoaderAndAutoSaverArgs>({
-        //         konstructor: TreeLoaderAndAutoSaver,
-        //         constructorArgsType: TYPES.TreeLoaderAndAutoSaverArgs,
-        //         injections: {
-        //             treeLoader: specialTreeLoader
-        //         },
-        //         container: myContainer,
-        //     })
 
         const treeStore: IMutableSubscribableTreeStore =
             partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
