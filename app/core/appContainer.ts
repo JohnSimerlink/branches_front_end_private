@@ -33,7 +33,7 @@ import {Store} from 'vuex';
 import {myContainer} from '../../inversify.config';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from '../components/knawledgeMap/knawledgeMap2';
 import {FIREBASE_PATHS} from '../loaders/paths';
-import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
+import {TreeLocationLoader, TreeLocationLoaderArgs} from '../loaders/treeLocation/TreeLocationLoader';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
@@ -88,7 +88,10 @@ import {
     AutoSaveMutableSubscribableContentStoreArgs
 } from '../objects/stores/content/AutoSaveMutableSubscribableContentStore';
 import {AutoSaveMutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
-import {AutoSaveMutableSubscribableTreeUserStore} from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
+import {
+    AutoSaveMutableSubscribableTreeUserStore,
+    AutoSaveMutableSubscribableTreeUserStoreArgs
+} from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
 import {AutoSaveMutableSubscribableTreeStore, AutoSaveMutableSubscribableTreeStoreArgs} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 import {partialInject} from '../testHelpers/partialInject';
 
@@ -113,7 +116,7 @@ export class AppContainer {
         // const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
         // const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
         // const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
-        const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
+        // const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
         const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
         const contentStoreSource: ISubscribableContentStoreSource
             = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
@@ -127,8 +130,6 @@ export class AppContainer {
         const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
             (TYPES.ISubscribableTreeLocationStoreSource)
-        const treeUserLoader: ITreeUserLoader =
-            new TreeUserLoader({firebaseRef: firebaseTreeUsersRef, storeSource: treeUserStoreSource})
         // const objectAutoFirebaseSaver: IObjectFirebaseAutoSaver =
             // new ObjectFirebaseAutoSaver({})
         const contentUserLoader: IContentUserLoader
@@ -209,7 +210,16 @@ export class AppContainer {
             //     })
 
         const treeLocationLoader: ITreeLocationLoader =
-            new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+            // new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+            partialInject<TreeLocationLoaderArgs>({
+                konstructor: TreeLocationLoader,
+                constructorArgsType: TYPES.TreeLocationLoaderArgs,
+                injections: {
+                    storeSource: treeLocationStoreSource,
+                },
+                container: myContainer,
+            })
+
         const treeLocationLoaderAndAutoSaver: ITreeLocationLoader =
             new TreeLocationLoaderAndAutoSaver(
                 {
@@ -233,11 +243,19 @@ export class AppContainer {
             // })
 
         const treeUserStore: IMutableSubscribableTreeUserStore =
-            new AutoSaveMutableSubscribableTreeUserStore({
-                storeSource: treeUserStoreSource,
-                updatesCallbacks: [],
-                treeUsersFirebaseRef: firebaseTreeUsersRef,
+            partialInject<AutoSaveMutableSubscribableTreeUserStoreArgs>( {
+                konstructor: AutoSaveMutableSubscribableTreeUserStore,
+                constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs,
+                injections: {
+                    storeSource: treeUserStoreSource,
+                },
+                container: myContainer,
             })
+            // new AutoSaveMutableSubscribableTreeUserStore({
+            //     storeSource: treeUserStoreSource,
+            //     updatesCallbacks: [],
+            //     treeUsersFirebaseRef: firebaseTreeUsersRef,
+            // })
             // myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore =

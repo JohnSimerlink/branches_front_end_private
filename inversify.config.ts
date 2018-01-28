@@ -191,6 +191,7 @@ import {
     AutoSaveMutableSubscribableTreeStore,
     AutoSaveMutableSubscribableTreeStoreArgs
 } from './app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
+import {AutoSaveMutableSubscribableTreeUserStoreArgs} from './app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -292,6 +293,9 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
 
     myContainer.bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
         .to(AutoSaveMutableSubscribableTreeStoreArgs)
+
+    myContainer.bind<AutoSaveMutableSubscribableTreeUserStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeUserStoreArgs)
 
     myContainer.bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
         .to(AutoSaveMutableSubscribableContentStoreArgs)
