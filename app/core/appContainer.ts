@@ -136,55 +136,6 @@ export class AppContainer {
         const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
             (TYPES.ISubscribableTreeLocationStoreSource)
-        // const objectAutoFirebaseSaver: IObjectFirebaseAutoSaver =
-            // new ObjectFirebaseAutoSaver({})
-        // const contentUserLoader: IContentUserLoader
-        // //     = new ContentUserLoader({
-        // //     firebaseRef: firebaseContentUsersRef,
-        // //     storeSource: contentUserStoreSource
-        // // })
-        //     = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
-        // = partialInject<ContentUserLoaderArgs>({
-        //     konstructor: ContentUserLoader,
-        //     constructorArgsType: TYPES.ContentUserLoaderArgs,
-        //     injections: {
-        //         storeSource: contentUserStoreSource
-        //     },
-        //     container: myContainer
-        // })
-        //
-
-        // const contentUserLoaderAndAutoSaver: IContentUserLoader =
-        //     // new ContentUserLoaderAndAutoSaver(
-        //     //     {
-        //     //         firebaseRef: firebaseContentUsersRef, contentUserLoader
-        //     //     })
-        // partialInject<ContentUserLoaderAndAutoSaverArgs>({
-        //     konstructor: ContentUserLoaderAndAutoSaver,
-        //     constructorArgsType: TYPES.ContentUserLoaderAndAutoSaverArgs,
-        //     injections: {contentUserLoader},
-        //     container: myContainer,
-        // })
-
-        // const contentLoader: IContentLoader =
-        //     partialInject<ContentLoaderArgs>({
-        //         constructorArgsType: TYPES.ContentLoaderArgs,
-        //         konstructor: ContentLoader,
-        //         injections: {storeSource: contentStoreSource},
-        //         container: myContainer
-        //     })
-        //     // new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
-        // const contentLoaderAndAutoSaver: IContentLoader =
-        //     // new ContentLoaderAndAutoSaver(
-        //     //     {
-        //     //         firebaseRef: firebaseContentRef, contentLoader
-        //     //     })
-        //     partialInject<ContentLoaderAndAutoSaverArgs>({
-        //         konstructor: ContentLoaderAndAutoSaver,
-        //         constructorArgsType: TYPES.ContentLoaderAndAutoSaverArgs,
-        //         injections: {contentLoader},
-        //         container: myContainer
-        //     })
         const treeLoader: ITreeLoader =
             partialInject<TreeLoaderArgs>({
                 konstructor: TreeLoader,
@@ -211,36 +162,6 @@ export class AppContainer {
                 },
                 container: myContainer,
             })
-            // new TreeLoaderAndAutoSaver(
-            //     {
-            //         firebaseRef: firebaseTreesRef, treeLoader: specialTreeLoader
-            //     })
-
-        // const treeLocationLoader: ITreeLocationLoader =
-        //     // new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
-        //     partialInject<TreeLocationLoaderArgs>({
-        //         konstructor: TreeLocationLoader,
-        //         constructorArgsType: TYPES.TreeLocationLoaderArgs,
-        //         injections: {
-        //             storeSource: treeLocationStoreSource,
-        //         },
-        //         container: myContainer,
-        //     })
-        //
-        // const treeLocationLoaderAndAutoSaver: ITreeLocationLoader =
-        //     partialInject<TreeLocationLoaderAndAutoSaverArgs>({
-        //         konstructor: TreeLocationLoaderAndAutoSaver,
-        //         constructorArgsType: TYPES.TreeLocationLoaderAndAutoSaverArgs,
-        //         injections: {
-        //             treeLocationLoader,
-        //         },
-        //         container: myContainer,
-        //     })
-            // new TreeLocationLoaderAndAutoSaver(
-            //     {
-            //         treeLocationsFirebaseRef: firebaseTreeLocationsRef,
-            //         treeLocationLoader,
-            //     })
 
         const treeStore: IMutableSubscribableTreeStore =
             partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
@@ -251,11 +172,6 @@ export class AppContainer {
                 },
                 container: myContainer,
             })
-            // new AutoSaveMutableSubscribableTreeStore({
-            //     storeSource: treeStoreSource,
-            //     updatesCallbacks: [],
-            //     treesFirebaseRef: firebaseTreesRef,
-            // })
 
         const treeUserStore: IMutableSubscribableTreeUserStore =
             partialInject<AutoSaveMutableSubscribableTreeUserStoreArgs>( {
@@ -266,12 +182,6 @@ export class AppContainer {
                 },
                 container: myContainer,
             })
-            // new AutoSaveMutableSubscribableTreeUserStore({
-            //     storeSource: treeUserStoreSource,
-            //     updatesCallbacks: [],
-            //     treeUsersFirebaseRef: firebaseTreeUsersRef,
-            // })
-            // myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
 
         const treeLocationStore: IMutableSubscribableTreeLocationStore =
             partialInject<AutoSaveMutableSubscribableTreeLocationStoreArgs>({
@@ -280,12 +190,6 @@ export class AppContainer {
                 injections: {storeSource: treeLocationStoreSource},
                 container: myContainer
             })
-            // new AutoSaveMutableSubscribableTreeLocationStore({
-            //     storeSource: treeLocationStoreSource,
-            //     updatesCallbacks: [],
-            //     treeLocationsFirebaseRef: firebaseTreeLocationsRef,
-            // })
-            // myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
         const contentStore: IMutableSubscribableContentStore =
             partialInject<AutoSaveMutableSubscribableContentStoreArgs>({
@@ -294,12 +198,6 @@ export class AppContainer {
                 injections: {storeSource: contentStoreSource},
                 container: myContainer
             })
-            // new AutoSaveMutableSubscribableContentStore({
-            //     storeSource: contentStoreSource,
-            //     updatesCallbacks: [],
-            //     contentFirebaseRef: firebaseContentRef
-            // })
-            // myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
         const contentUserStore: IMutableSubscribableContentUserStore =
             partialInject<AutoSaveMutableSubscribableContentUserStoreArgs>({
@@ -308,11 +206,6 @@ export class AppContainer {
                 injections: {storeSource: contentUserStoreSource},
                 container: myContainer,
             })
-            // new AutoSaveMutableSubscribableContentUserStore({
-            //     storeSource: contentUserStoreSource,
-            //     updatesCallbacks: [],
-            //     contentUsersFirebaseRef: firebaseContentUsersRef,
-            // })
 
         const globalStore: IMutableSubscribableGlobalStore =
             new MutableSubscribableGlobalStore(
@@ -321,24 +214,6 @@ export class AppContainer {
         const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
         const store: Store<any> = new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
 
-        const getSigmaIdsForContentId: fGetSigmaIdsForContentId = () => {
-            return []
-        }
-
-        // const camera = sigmaInstance.cameras[0]
-        // function focusNode(node) {
-        //     if (!node) {
-        //         error('Tried to go to node');
-        //         error(node);
-        //         return;
-        //     }
-        //     const cameraCoord = {
-        //         x: node['read_cam0:x'],
-        //         y: node['read_cam0:y'],
-        //         ratio: 0.20
-        //     };
-        //     camera.goTo(cameraCoord);
-        // }
         const sigmaUpdater: ISigmaUpdater =
             new SigmaUpdater({
                 store
@@ -413,9 +288,6 @@ export class AppContainer {
             injections: {
                 store,
                 specialTreeLoader: treeLoaderAndAutoSaver,
-                // treeLocationLoader: treeLocationLoaderAndAutoSaver,
-                // contentLoader: contentLoaderAndAutoSaver,
-                // contentUserLoader: contentUserLoaderAndAutoSaver,
             },
             container: myContainer
         })
