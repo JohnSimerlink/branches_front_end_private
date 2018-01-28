@@ -192,6 +192,7 @@ import {
     AutoSaveMutableSubscribableTreeStoreArgs
 } from './app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 import {AutoSaveMutableSubscribableTreeUserStoreArgs} from './app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
+import {AutoSaveMutableSubscribableTreeLocationStoreArgs} from './app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -290,12 +291,19 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
         .to(ContentLoaderAndAutoSaverArgs)
     myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
         .to(ContentUserLoaderAndAutoSaverArgs)
+    myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>(TYPES.TreeLocationLoaderAndAutoSaverArgs)
+        .to(TreeLocationLoaderAndAutoSaverArgs)
+    // myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>
 
     myContainer.bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
         .to(AutoSaveMutableSubscribableTreeStoreArgs)
 
     myContainer.bind<AutoSaveMutableSubscribableTreeUserStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
         .to(AutoSaveMutableSubscribableTreeUserStoreArgs)
+
+    myContainer.bind<AutoSaveMutableSubscribableTreeLocationStoreArgs>
+    (TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeLocationStoreArgs)
 
     myContainer.bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
         .to(AutoSaveMutableSubscribableContentStoreArgs)
