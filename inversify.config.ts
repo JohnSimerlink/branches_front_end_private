@@ -290,8 +290,6 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
         .to(ContentUserLoaderAndAutoSaverArgs)
 
-    // AutoSave Stores
-
     myContainer.bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
         .to(AutoSaveMutableSubscribableTreeStoreArgs)
 
