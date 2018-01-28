@@ -1,4 +1,4 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {
     IContentData, IContentLoader, id, IFirebaseRef, IMutableSubscribableContent, IObjectFirebaseAutoSaver,
     ISubscribableContentStoreSource, ISyncableMutableSubscribableContent
@@ -9,6 +9,7 @@ import {log} from '../../core/log'
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
+import {TAGS} from '../../objects/tags';
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
@@ -56,6 +57,6 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
 
 @injectable()
 export class ContentLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
 }

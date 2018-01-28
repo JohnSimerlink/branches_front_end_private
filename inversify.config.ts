@@ -192,13 +192,22 @@ import {
     AutoSaveMutableSubscribableContentStore,
     AutoSaveMutableSubscribableContentStoreArgs
 } from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
-import {AutoSaveMutableSubscribableContentUserStoreArgs} from './app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
+import {
+    AutoSaveMutableSubscribableContentUserStore,
+    AutoSaveMutableSubscribableContentUserStoreArgs
+} from './app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
 import {
     AutoSaveMutableSubscribableTreeStore,
     AutoSaveMutableSubscribableTreeStoreArgs
 } from './app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
-import {AutoSaveMutableSubscribableTreeUserStoreArgs} from './app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
-import {AutoSaveMutableSubscribableTreeLocationStoreArgs} from './app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
+import {
+    AutoSaveMutableSubscribableTreeUserStore,
+    AutoSaveMutableSubscribableTreeUserStoreArgs
+} from './app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
+import {
+    AutoSaveMutableSubscribableTreeLocationStore,
+    AutoSaveMutableSubscribableTreeLocationStoreArgs
+} from './app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
 import {TAGS} from './app/objects/tags';
 // import {SigmaJs} from 'sigmajs';
 
@@ -285,35 +294,50 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
 
     // loaders
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
-        .whenInjectedInto(TreeLoaderArgs)
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
-        .whenInjectedInto(TreeLocationLoaderArgs)
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
-        .whenInjectedInto(ContentLoaderArgs)
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
-        .whenInjectedInto(ContentUserLoaderArgs)
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
-        .whenInjectedInto(TreeUserLoaderArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
+    //     .whenInjectedInto(TreeLoaderArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
+    //     .whenInjectedInto(TreeLocationLoaderArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
+    //     .whenInjectedInto(ContentLoaderArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
+    //     .whenInjectedInto(ContentUserLoaderArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
+    //     .whenInjectedInto(TreeUserLoaderArgs)
 
     // loader auto savers
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
-        .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
+        .whenTargetTagged(TAGS.TREES_REF, true)
+
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
-        .whenInjectedInto(TreeLocationLoaderAndAutoSaverArgs)
+        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
+        .whenTargetTagged(TAGS.TREE_USERS_REF, true)
+
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
-        .whenInjectedInto(ContentLoaderAndAutoSaverArgs)
+        .whenTargetTagged(TAGS.CONTENT_REF, true)
+
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
-        .whenInjectedInto(ContentUserLoaderAndAutoSaverArgs)
+        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+
+        // .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
+
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
+    //     .whenInjectedInto(TreeLocationLoaderAndAutoSaverArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
+    //     .whenInjectedInto(ContentLoaderAndAutoSaverArgs)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
+    //     .whenInjectedInto(ContentUserLoaderAndAutoSaverArgs)
 
     // AutoSave stores
-    myContainer.bind<Reference>(TYPES.FirebaseReference)
-        .toConstantValue(contentRef)
-        .whenInjectedInto(AutoSaveMutableSubscribableContentStore)
-
-    myContainer.bind<Reference>(TYPES.FirebaseReference)
-        .toConstantValue(treesRef)
-        .whenInjectedInto(AutoSaveMutableSubscribableTreeStore)
+    // myContainer.bind<Reference>(TYPES.FirebaseReference)
+    //     .toConstantValue(contentRef)
+    //     .whenInjectedInto(AutoSaveMutableSubscribableContentStore)
+    //
+    // myContainer.bind<Reference>(TYPES.FirebaseReference)
+    //     .toConstantValue(treesRef)
+    //     .whenInjectedInto(AutoSaveMutableSubscribableTreeStore)
 
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
         .to(ContentLoaderAndAutoSaverArgs)
@@ -321,7 +345,6 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
         .to(ContentUserLoaderAndAutoSaverArgs)
     myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>(TYPES.TreeLocationLoaderAndAutoSaverArgs)
         .to(TreeLocationLoaderAndAutoSaverArgs)
-    // myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>
 
     myContainer.bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
         .to(AutoSaveMutableSubscribableTreeStoreArgs)
@@ -340,18 +363,6 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
         .to(AutoSaveMutableSubscribableContentUserStoreArgs)
 
-    function numNodes({store}) {
-        // TODO: LOL. Massive violation of Law of Demeter
-        return store.state.sigmaInstance.graph.nodes().length
-    }
-    function thereIsOneNodeAndItContains({store, question, answer, type}): boolean {
-        // TODO: LOL. Massive violation of Law of Demeter below
-        const node: ISigmaNode = store.state.sigmaInstance.graph.nodes()[0]
-        return node.content
-            && node.content.question === question
-            && node.content.answer === answer
-            && node.content.type === CONTENT_TYPES.FACT
-    }
 
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
@@ -392,14 +403,19 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         .to(SubscribableTreeLocationStoreArgs)
 
     bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
+        .whenTargetIsDefault()
     bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
         .to(MutableSubscribableTreeUserStore)
+        .whenTargetIsDefault()
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
         .to(MutableSubscribableTreeLocationStore)
+        .whenTargetIsDefault()
     bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
         .to(MutableSubscribableContentStore)
+        .whenTargetIsDefault()
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(MutableSubscribableContentUserStore)
+        .whenTargetIsDefault()
 
     bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
         .to(SubscribableStoreSourceArgs)
@@ -444,6 +460,27 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         .to(SyncableMutableSubscribableContentUser)
     bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
     bind<BranchesStore>(TYPES.BranchesStore).to(BranchesStore)
+
+    // auto save stores
+    bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
+        .to(AutoSaveMutableSubscribableTreeStore)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+
+    bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
+        .to(AutoSaveMutableSubscribableTreeLocationStore)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+
+    bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+        .to(AutoSaveMutableSubscribableTreeUserStore)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+
+    bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+        .to(AutoSaveMutableSubscribableContentStore)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+
+    bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
+        .to(AutoSaveMutableSubscribableContentUserStore)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
 
 })
 //

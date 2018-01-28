@@ -54,6 +54,6 @@ export class TreeLoaderAndAutoSaver implements ITreeLoader {
 
 @injectable()
 export class TreeLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.TREES_REF, true) public firebaseRef: Reference
     @inject(TYPES.ITreeLoader) @tagged(TAGS.SPECIAL_TREE_LOADER, true) public treeLoader: ITreeLoader
 }
