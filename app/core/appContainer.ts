@@ -23,9 +23,9 @@ import {
     ISubscribableTreeUserStoreSource,
 } from '../objects/interfaces';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
-import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {App} from './app';
-import BranchesStore, {MUTATION_NAMES} from './store2'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -35,7 +35,7 @@ import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from '../components/knawle
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLocationLoader, TreeLocationLoaderArgs} from '../loaders/treeLocation/TreeLocationLoader';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
-import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
+import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
 import {INITIAL_ID_TO_DOWNLOAD, JOHN_USER_ID} from './globals';
 import {log, error} from './log'
@@ -195,7 +195,14 @@ export class AppContainer {
             //     {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
         const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
-        const store: Store<any> = new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
+        const store: Store<any> =
+            // new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
+            partialInject<BranchesStoreArgs>({
+                konstructor: BranchesStore,
+                constructorArgsType: TYPES.BranchesStoreArgs,
+                injections: {globalDataStore: globalStore},
+                container: myContainer,
+            })
 
         const sigmaUpdater: ISigmaUpdater =
             new SigmaUpdater({
@@ -204,6 +211,14 @@ export class AppContainer {
         const sigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
         = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
+        // = partialInject<RenderedNodesManagerCoreArgs>({
+        //     konstructor: RenderedNodesManagerCore,
+        //     constructorArgsType: TYPES.RenderedNodesManagerCoreArgs,
+        //     injections: {
+        //         addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)
+        //     },
+        //     container: myContainer,
+        // })
         const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         renderedNodesManager.subscribe(sigmaRenderManager)
@@ -213,6 +228,16 @@ export class AppContainer {
             store.commit(MUTATION_NAMES.REFRESH)
         }
         const sigmaNodesUpdater: ISigmaNodesUpdater
+        // = partialInject<SigmaNodesUpdaterArgs>({
+        //     konstructor: SigmaNodesUpdater,
+        //     constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+        //     injections: {
+        //         sigmaRenderManager,
+        //         getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
+        //         refresh,
+        //     },
+        //     container: myContainer,
+        // })
         = new SigmaNodesUpdater(
             {
                 sigmaRenderManager,
