@@ -14,9 +14,14 @@ test('RenderedNodesManagerCore::::addToRenderList should add to RenderList', (t)
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNodes = {}
     sigmaNodes[sigmaId] = sigmaNode
-    const addNodeToSigma = sinon.spy()
+    const sigmaUpdater = {
+        addNode() {}
+    }
+    const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode')
     const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma})
+        = new RenderedNodesManagerCore(
+            {sigmaNodes, sigmaUpdater}
+            )
 
     renderedNodesManagerCore.addToRenderList(sigmaId)
     expect(addNodeToSigma.callCount).to.deep.equal(1)

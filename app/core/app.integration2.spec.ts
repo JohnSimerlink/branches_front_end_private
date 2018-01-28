@@ -104,7 +104,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const storeSourceUpdateListener: IStoreSourceUpdateListener
         = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
     const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
+        = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
     const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
     renderedNodesManager.subscribe(sigmaRenderManager)
 
