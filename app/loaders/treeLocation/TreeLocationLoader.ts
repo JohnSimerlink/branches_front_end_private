@@ -1,4 +1,4 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
@@ -10,6 +10,7 @@ import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
+import {TAGS} from '../../objects/tags';
 @injectable()
 export class TreeLocationLoader implements ITreeLocationLoader {
     private storeSource: ISubscribableStoreSource<ISyncableMutableSubscribableTreeLocation>
@@ -66,7 +67,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
 }
 @injectable()
 export class TreeLocationLoaderArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.TREE_LOCATIONS_REF, true) public firebaseRef: Reference
 
     @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource: ISubscribableTreeLocationStoreSource
 }

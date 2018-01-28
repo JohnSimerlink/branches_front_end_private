@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree,
@@ -11,6 +11,7 @@ import {isValidTree} from '../../objects/tree/treeValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
+import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class TreeLoader implements ITreeLoader {
@@ -81,6 +82,6 @@ export class TreeLoader implements ITreeLoader {
 
 @injectable()
 export class TreeLoaderArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.TREES_REF, true) public firebaseRef: Reference
     @inject(TYPES.ISubscribableTreeStoreSource) public storeSource: ISubscribableTreeStoreSource
 }

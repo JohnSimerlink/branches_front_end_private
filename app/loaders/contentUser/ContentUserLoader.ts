@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
@@ -11,6 +11,7 @@ import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {setToStringArray} from '../../core/newUtils';
 import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
+import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class ContentUserLoader implements IContentUserLoader {
@@ -107,6 +108,6 @@ export class ContentUserLoader implements IContentUserLoader {
 
 @injectable()
 export class ContentUserLoaderArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_USERS_REF, true) public firebaseRef: Reference
     @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource: ISubscribableContentUserStoreSource
 }

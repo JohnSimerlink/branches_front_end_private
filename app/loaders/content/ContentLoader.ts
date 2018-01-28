@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     ISubscribableContentStoreSource,
@@ -9,6 +9,7 @@ import {isValidContent} from '../../objects/content/contentValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentDeserializer} from './ContentDeserializer';
+import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class ContentLoader implements IContentLoader {
@@ -85,6 +86,6 @@ export class ContentLoader implements IContentLoader {
 
 @injectable()
 export class ContentLoaderArgs {
-    @inject(TYPES.FirebaseReference) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference
     @inject(TYPES.ISubscribableContentStoreSource) public storeSource: ISubscribableContentStoreSource
 }

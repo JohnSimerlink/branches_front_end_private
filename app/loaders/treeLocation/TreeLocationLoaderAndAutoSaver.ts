@@ -1,4 +1,4 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {
     ITreeLocationData, ITreeLocationLoader, IFirebaseRef, IMutableSubscribableTreeLocation, IObjectFirebaseAutoSaver,
     ISubscribableTreeLocationStoreSource, ISyncableMutableSubscribableTreeLocation, id
@@ -8,6 +8,7 @@ import {log} from '../../core/log'
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
+import {TAGS} from '../../objects/tags';
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
@@ -53,6 +54,6 @@ export class TreeLocationLoaderAndAutoSaver implements ITreeLocationLoader {
 
 @injectable()
 export class TreeLocationLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) public treeLocationsFirebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.TREE_LOCATIONS_REF, true) public treeLocationsFirebaseRef: Reference
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
 }

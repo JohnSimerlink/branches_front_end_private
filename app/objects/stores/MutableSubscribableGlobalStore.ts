@@ -1,4 +1,4 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     AllPropertyMutationTypes, ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
@@ -14,6 +14,7 @@ import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {createContentId} from '../content/contentUtils';
 import {createTreeId} from '../tree/TreeUtils';
+import {TAGS} from '../tags';
 
 @injectable()
 // TODO: the fact that this class changes the types of variables
@@ -180,10 +181,26 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
 
 @injectable()
 export class MutableSubscribableGlobalStoreArgs extends SubscribableGlobalStoreArgs {
-    @inject(TYPES.Array) public updatesCallbacks: Array<IUpdatesCallback<any>>;
-    @inject(TYPES.IMutableSubscribableTreeStore) public treeStore: IMutableSubscribableTreeStore
-    @inject(TYPES.IMutableSubscribableTreeUserStore) public treeUserStore: IMutableSubscribableTreeUserStore
-    @inject(TYPES.IMutableSubscribableTreeLocationStore) public treeLocationStore: IMutableSubscribableTreeLocationStore
-    @inject(TYPES.IMutableSubscribableContentStore) public contentStore: IMutableSubscribableContentStore
-    @inject(TYPES.IMutableSubscribableContentUserStore) public contentUserStore: IMutableSubscribableContentUserStore
+    @inject(TYPES.Array)
+        public updatesCallbacks: Array<IUpdatesCallback<any>>;
+
+    @inject(TYPES.IMutableSubscribableTreeStore)
+    @tagged(TAGS.AUTO_SAVER, true)
+        public treeStore: IMutableSubscribableTreeStore
+
+    @inject(TYPES.IMutableSubscribableTreeUserStore)
+    @tagged(TAGS.AUTO_SAVER, true)
+        public treeUserStore: IMutableSubscribableTreeUserStore
+
+    @inject(TYPES.IMutableSubscribableTreeLocationStore)
+    @tagged(TAGS.AUTO_SAVER, true)
+        public treeLocationStore: IMutableSubscribableTreeLocationStore
+
+    @inject(TYPES.IMutableSubscribableContentStore)
+    @tagged(TAGS.AUTO_SAVER, true)
+        public contentStore: IMutableSubscribableContentStore
+
+    @inject(TYPES.IMutableSubscribableContentUserStore)
+    @tagged(TAGS.AUTO_SAVER, true)
+        public contentUserStore: IMutableSubscribableContentUserStore
 }
