@@ -138,32 +138,33 @@ export class AppContainer {
             (TYPES.ISubscribableTreeLocationStoreSource)
         // const objectAutoFirebaseSaver: IObjectFirebaseAutoSaver =
             // new ObjectFirebaseAutoSaver({})
-        const contentUserLoader: IContentUserLoader
-        //     = new ContentUserLoader({
-        //     firebaseRef: firebaseContentUsersRef,
-        //     storeSource: contentUserStoreSource
+        // const contentUserLoader: IContentUserLoader
+        // //     = new ContentUserLoader({
+        // //     firebaseRef: firebaseContentUsersRef,
+        // //     storeSource: contentUserStoreSource
+        // // })
+        //     = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
+        // = partialInject<ContentUserLoaderArgs>({
+        //     konstructor: ContentUserLoader,
+        //     constructorArgsType: TYPES.ContentUserLoaderArgs,
+        //     injections: {
+        //         storeSource: contentUserStoreSource
+        //     },
+        //     container: myContainer
         // })
-        = partialInject<ContentUserLoaderArgs>({
-            konstructor: ContentUserLoader,
-            constructorArgsType: TYPES.ContentUserLoaderArgs,
-            injections: {
-                storeSource: contentUserStoreSource
-            },
-            container: myContainer
-        })
         //
 
-        const contentUserLoaderAndAutoSaver: IContentUserLoader =
-            // new ContentUserLoaderAndAutoSaver(
-            //     {
-            //         firebaseRef: firebaseContentUsersRef, contentUserLoader
-            //     })
-        partialInject<ContentUserLoaderAndAutoSaverArgs>({
-            konstructor: ContentUserLoaderAndAutoSaver,
-            constructorArgsType: TYPES.ContentUserLoaderAndAutoSaverArgs,
-            injections: {contentUserLoader},
-            container: myContainer,
-        })
+        // const contentUserLoaderAndAutoSaver: IContentUserLoader =
+        //     // new ContentUserLoaderAndAutoSaver(
+        //     //     {
+        //     //         firebaseRef: firebaseContentUsersRef, contentUserLoader
+        //     //     })
+        // partialInject<ContentUserLoaderAndAutoSaverArgs>({
+        //     konstructor: ContentUserLoaderAndAutoSaver,
+        //     constructorArgsType: TYPES.ContentUserLoaderAndAutoSaverArgs,
+        //     injections: {contentUserLoader},
+        //     container: myContainer,
+        // })
 
         const contentLoader: IContentLoader =
             partialInject<ContentLoaderArgs>({
@@ -414,7 +415,7 @@ export class AppContainer {
                 specialTreeLoader: treeLoaderAndAutoSaver,
                 treeLocationLoader: treeLocationLoaderAndAutoSaver,
                 contentLoader: contentLoaderAndAutoSaver,
-                contentUserLoader: contentUserLoaderAndAutoSaver,
+                // contentUserLoader: contentUserLoaderAndAutoSaver,
             },
             container: myContainer
         })

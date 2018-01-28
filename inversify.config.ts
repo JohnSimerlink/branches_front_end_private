@@ -181,7 +181,10 @@ import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './app/loaders/tree/speci
 import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from './app/loaders/tree/TreeLoaderAndAutoSaver';
 import {TreeLocationLoaderAndAutoSaverArgs} from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
 import {ContentLoaderAndAutoSaverArgs} from './app/loaders/content/ContentLoaderAndAutoSaver';
-import {ContentUserLoaderAndAutoSaverArgs} from './app/loaders/contentUser/ContentUserLoaderAndAutoSaver';
+import {
+    ContentUserLoaderAndAutoSaver,
+    ContentUserLoaderAndAutoSaverArgs
+} from './app/loaders/contentUser/ContentUserLoaderAndAutoSaver';
 import {
     AutoSaveMutableSubscribableContentStore,
     AutoSaveMutableSubscribableContentStoreArgs
@@ -193,6 +196,7 @@ import {
 } from './app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 import {AutoSaveMutableSubscribableTreeUserStoreArgs} from './app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
 import {AutoSaveMutableSubscribableTreeLocationStoreArgs} from './app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
+import {TAGS} from './app/objects/tags';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -232,6 +236,9 @@ export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
+        .whenTargetIsDefault()
+    myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndAutoSaver)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
 
     // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
 
@@ -258,6 +265,7 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs)
     myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs)
 
+    // loaders
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenInjectedInto(TreeLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
@@ -269,6 +277,7 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
         .whenInjectedInto(TreeUserLoaderArgs)
 
+    // loader auto savers
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
