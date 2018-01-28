@@ -166,25 +166,25 @@ export class AppContainer {
         //     container: myContainer,
         // })
 
-        const contentLoader: IContentLoader =
-            partialInject<ContentLoaderArgs>({
-                constructorArgsType: TYPES.ContentLoaderArgs,
-                konstructor: ContentLoader,
-                injections: {storeSource: contentStoreSource},
-                container: myContainer
-            })
-            // new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
-        const contentLoaderAndAutoSaver: IContentLoader =
-            // new ContentLoaderAndAutoSaver(
-            //     {
-            //         firebaseRef: firebaseContentRef, contentLoader
-            //     })
-            partialInject<ContentLoaderAndAutoSaverArgs>({
-                konstructor: ContentLoaderAndAutoSaver,
-                constructorArgsType: TYPES.ContentLoaderAndAutoSaverArgs,
-                injections: {contentLoader},
-                container: myContainer
-            })
+        // const contentLoader: IContentLoader =
+        //     partialInject<ContentLoaderArgs>({
+        //         constructorArgsType: TYPES.ContentLoaderArgs,
+        //         konstructor: ContentLoader,
+        //         injections: {storeSource: contentStoreSource},
+        //         container: myContainer
+        //     })
+        //     // new ContentLoader({firebaseRef: firebaseContentRef, storeSource: contentStoreSource})
+        // const contentLoaderAndAutoSaver: IContentLoader =
+        //     // new ContentLoaderAndAutoSaver(
+        //     //     {
+        //     //         firebaseRef: firebaseContentRef, contentLoader
+        //     //     })
+        //     partialInject<ContentLoaderAndAutoSaverArgs>({
+        //         konstructor: ContentLoaderAndAutoSaver,
+        //         constructorArgsType: TYPES.ContentLoaderAndAutoSaverArgs,
+        //         injections: {contentLoader},
+        //         container: myContainer
+        //     })
         const treeLoader: ITreeLoader =
             partialInject<TreeLoaderArgs>({
                 konstructor: TreeLoader,
@@ -414,7 +414,7 @@ export class AppContainer {
                 store,
                 specialTreeLoader: treeLoaderAndAutoSaver,
                 treeLocationLoader: treeLocationLoaderAndAutoSaver,
-                contentLoader: contentLoaderAndAutoSaver,
+                // contentLoader: contentLoaderAndAutoSaver,
                 // contentUserLoader: contentUserLoaderAndAutoSaver,
             },
             container: myContainer

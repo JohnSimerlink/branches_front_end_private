@@ -180,7 +180,7 @@ import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/Syncab
 import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './app/loaders/tree/specialTreeLoader';
 import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from './app/loaders/tree/TreeLoaderAndAutoSaver';
 import {TreeLocationLoaderAndAutoSaverArgs} from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
-import {ContentLoaderAndAutoSaverArgs} from './app/loaders/content/ContentLoaderAndAutoSaver';
+import {ContentLoaderAndAutoSaverArgs, ContentLoaderAndAutoSaver} from './app/loaders/content/ContentLoaderAndAutoSaver';
 import {
     ContentUserLoaderAndAutoSaver,
     ContentUserLoaderAndAutoSaverArgs
@@ -234,7 +234,12 @@ export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
 export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
 export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
+        .whenTargetIsDefault()
+    myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoaderAndAutoSaver)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
         .whenTargetIsDefault()
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndAutoSaver)
