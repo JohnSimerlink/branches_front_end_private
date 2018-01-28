@@ -11,3 +11,11 @@ so literally integration tests should be
 
 -------- container binding issue ----
 we need to be able to do a straight up 
+
+so globalStore is used in
+	-store/BranchesStore
+	-app
+so store is used in 
+	-SigmaUpdater
+	-Tree3Creator
+	-NewTreeComponentCreator
