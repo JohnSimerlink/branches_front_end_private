@@ -183,7 +183,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
 }
 
 @injectable()
-export class MutableSubscribableGlobalStoreArgs extends SubscribableGlobalStoreArgs {
+export class MutableSubscribableGlobalStoreArgs /* extends SubscribableGlobalStoreArgs */ {
     @inject(TYPES.Array)
         public updatesCallbacks: Array<IUpdatesCallback<any>>;
 
