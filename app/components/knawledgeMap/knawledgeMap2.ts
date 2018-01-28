@@ -1,6 +1,6 @@
 // import template from './views/knawledgeMap.html'
 // import register from 'ignore-styles'
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
@@ -17,6 +17,7 @@ if (env === 'test') {
     register(['.html', '.less'])
 }
 import './knawledgeMap.less'
+import {TAGS} from '../../objects/tags';
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
@@ -95,7 +96,7 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ITreeLoader) public specialTreeLoader: ITreeLoader
     @inject(TYPES.ITreeLocationLoader) public treeLocationLoader: ITreeLocationLoader
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
-    @inject(TYPES.IContentUserLoader) public contentUserLoader: IContentUserLoader
+    @inject(TYPES.IContentUserLoader) @tagged(TAGS.AUTO_SAVER, true) public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore) public store: BranchesStore
     @inject(TYPES.Id) public userId: id
 }
