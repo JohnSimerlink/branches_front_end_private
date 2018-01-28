@@ -19,6 +19,7 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
         storeSource, updatesCallbacks, treeLocationsFirebaseRef,
     }: AutoSaveMutableSubscribableTreeLocationStoreArgs) {
         super({storeSource, updatesCallbacks})
+        log('328pm AutoSaverMutableSubscribableTreeLocationStore created')
         this.treeLocationsFirebaseRef = treeLocationsFirebaseRef
     }
     public addAndSubscribeToItemFromData(

@@ -256,9 +256,14 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
 }
 const actions = {}
 
+let initialized = false
 @injectable()
 export default class BranchesStore {
     constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, state}) {
+        if (initialized) {
+            return {} as Store<any>
+            // DON"T let the store singleton be messed up
+        }
         const stateArg = {
             ...state,
             globalDataStore
@@ -273,6 +278,10 @@ export default class BranchesStore {
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         store['_id'] = Math.random()
         log('BranchesStore just created. BranchesStore id', store['_id'])
+        log('BranchesStore just created.' +
+            ' It\'s MutableSubscribableGlobalStore is', globalDataStore['_globalStoreId'])
+        // . BranchesStore id', store['_id'])
+        initialized = true
         return store
     }
 }
