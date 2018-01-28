@@ -7,3 +7,7 @@ so literally integration tests should be
 	-appContainer.start()
 	-thisOneComponent.method()
 	-expect(thisOtherComponentMethodSpy.callCount).to.deep.equal(1) and be calledWith
+
+
+-------- container binding issue ----
+we need to be able to do a straight up 
