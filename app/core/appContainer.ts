@@ -188,6 +188,7 @@ export class AppContainer {
             })
 
         const globalStore: IMutableSubscribableGlobalStore =
+            // myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
             new MutableSubscribableGlobalStore(
                 {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
