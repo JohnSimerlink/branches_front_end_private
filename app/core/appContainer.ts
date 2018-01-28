@@ -210,7 +210,7 @@ export class AppContainer {
             })
         const sigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)})
+        = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
         // = partialInject<RenderedNodesManagerCoreArgs>({
         //     konstructor: RenderedNodesManagerCore,
         //     constructorArgsType: TYPES.RenderedNodesManagerCoreArgs,
