@@ -394,6 +394,9 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind<IMutableSubscribableGlobalStore>
     (TYPES.IMutableSubscribableGlobalStore).to(MutableSubscribableGlobalStore)
 
+    bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
+        .to(MutableSubscribableGlobalStoreArgs)
+
     bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
         .to(SubscribableContentUserStoreArgs)
     bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)
@@ -420,8 +423,6 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
         .to(SubscribableStoreSourceArgs)
 
-    bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
-        .to(MutableSubscribableGlobalStoreArgs)
 
     bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
 
