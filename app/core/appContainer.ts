@@ -120,24 +120,24 @@ export class AppContainer {
             store.commit(MUTATION_NAMES.REFRESH)
         }
         const sigmaNodesUpdater: ISigmaNodesUpdater
-        // = partialInject<SigmaNodesUpdaterArgs>({
-        //     konstructor: SigmaNodesUpdater,
-        //     constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
-        //     injections: {
-        //         sigmaRenderManager,
-        //         getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
-        //         refresh,
-        //     },
-        //     container: myContainer,
-        // })
-        = new SigmaNodesUpdater(
-            {
+        = partialInject<SigmaNodesUpdaterArgs>({
+            konstructor: SigmaNodesUpdater,
+            constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+            injections: {
                 sigmaRenderManager,
-                sigmaNodes,
                 getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
                 refresh,
-                contentIdContentMap: {},
-            })
+            },
+            container: myContainer,
+        })
+        // = new SigmaNodesUpdater(
+        //     {
+        //         sigmaRenderManager,
+        //         sigmaNodes,
+        //         getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
+        //         refresh,
+        //         contentIdContentMap: {},
+        //     })
 
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
             = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
