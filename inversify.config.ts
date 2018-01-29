@@ -499,6 +499,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({})
     bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
+        .whenTargetIsDefault()
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
     bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
 
@@ -518,11 +519,12 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<RenderedNodesManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderedNodesManagerArgs)
     bind<RenderedNodesManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderedNodesManagerCoreArgs)
     bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
-    bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
+    // bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
 
     bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
+        .whenTargetIsDefault()
     bind<TooltipRendererArgs>(TYPES.TooltipRendererArgs).to(TooltipRendererArgs)
     bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer)
     bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs)
@@ -720,8 +722,17 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
 
     const contentIdSigmaIdMapSingletonGet
         = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton)
-    bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(contentIdSigmaIdMapSingletonGet)
+    bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
         .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+
+    const sigmaRenderManagerSingletonArgs: SigmaRenderManagerArgs
+    = myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs)
+
+    const sigmaRenderManagerSingleton: ISigmaRenderManager
+    = new SigmaRenderManager(sigmaRenderManagerSingletonArgs)
+
+    bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        .toConstantValue(sigmaRenderManagerSingleton).whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 
 })
 

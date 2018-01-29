@@ -4,7 +4,7 @@
 // subscribe to stores. on stores update parse object type and id
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaNodes, ISigmaNodesUpdater,
@@ -19,6 +19,7 @@ import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {SigmaNode} from './SigmaNode';
 import {MUTATION_NAMES} from '../../core/store2';
 import {Store} from 'vuex';
+import {TAGS} from '../tags';
 
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
@@ -125,9 +126,13 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 }
 @injectable()
 export class SigmaNodesUpdaterArgs {
-    @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId: fGetSigmaIdsForContentId;
+    @inject(TYPES.fGetSigmaIdsForContentId)
+    @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+        public getSigmaIdsForContentId: fGetSigmaIdsForContentId;
     @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes;
-    @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager: ISigmaRenderManager;
+    @inject(TYPES.ISigmaRenderManager)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaRenderManager: ISigmaRenderManager;
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
     @inject(TYPES.BranchesStore) public store: Store<any>;
 }
