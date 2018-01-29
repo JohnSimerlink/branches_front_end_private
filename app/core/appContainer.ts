@@ -97,8 +97,8 @@ export class AppContainer {
             // new SigmaUpdater({
             //     store
             // })
-        const sigmaNodes: ISigmaNodes =
-            myContainer.get<ISigmaNodes>(TYPES.ISigmaNodes)// {}
+        // const sigmaNodes: ISigmaNodes =
+        //     myContainer.get<ISigmaNodes>(TYPES.ISigmaNodes)// {}
         // const renderedNodesManagerCore: IRenderedNodesManagerCore
         // = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
         // = partialInject<RenderedNodesManagerCoreArgs>({
@@ -140,7 +140,16 @@ export class AppContainer {
         //     })
 
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-            = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
+            // = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
+            = partialInject<IStoreSourceUpdateListenerCore>({
+            konstructor: StoreSourceUpdateListenerCore,
+            constructorArgsType: TYPES.IStoreSourceUpdateListenerCore,
+            injections: {
+                sigmaNodesUpdater,
+                contentIdSigmaIdMap,
+            },
+            container: myContainer,
+        })
         const storeSourceUpdateListener: IStoreSourceUpdateListener
             = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
 
