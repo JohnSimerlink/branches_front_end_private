@@ -212,6 +212,10 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
+import Vue from 'vue';
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
 
@@ -460,7 +464,6 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
         .to(SyncableMutableSubscribableContentUser)
     bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
-    bind<BranchesStore>(TYPES.BranchesStore).to(BranchesStore)
 
     // auto save stores
     bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
@@ -674,7 +677,7 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
     )
 })
 
-const globalStore = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const globalStoreSingletonArgs = myContainer.get<MutableSubscribableGlobalStoreArgs>
     (TYPES.MutableSubscribableGlobalStoreArgs)
 
@@ -683,6 +686,15 @@ const globalStore = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
     bind<IMutableSubscribableGlobalStore>
     (TYPES.IMutableSubscribableGlobalStore).toConstantValue(globalStoreSingleton)
+
+    const branchesStoreArgs =
+        myContainer.get<BranchesStoreArgs>
+        (TYPES.BranchesStoreArgs)
+
+    const branchesStoreSingleton: BranchesStore
+        = new BranchesStore(branchesStoreArgs)
+
+    bind<BranchesStore>(TYPES.BranchesStore).toConstantValue(branchesStoreSingleton)
 
 })
 
@@ -693,6 +705,6 @@ myContainer.load(components)
 myContainer.load(dataObjects)
 myContainer.load(app)
 myContainer.load(misc)
-myContainer.load(globalStore)
+myContainer.load(storeSingletons)
 
 export {myContainer}

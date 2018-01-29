@@ -1,8 +1,6 @@
 // for now, this is where we will inject all the dependencies
-import {TreeLoader, TreeLoaderArgs} from '../loaders/tree/TreeLoader';
 import {
     IApp, IContentLoader, IContentUserLoader, IHash, IVueComponentCreator, IMutable, IMutableSubscribableContentStore,
-    IMutableSubscribableContentUserStore,
     IMutableSubscribableTreeUserStore, IOneToManyMap,
     IRenderedNodesManager,
     IRenderedNodesManagerCore, ISigma, ISigmaEventListener, ISigmaNode,
@@ -14,10 +12,7 @@ import {
     INewTreeComponentCreator
 } from '../objects/interfaces';
 
-import firebase from 'firebase'
-import {IMutableSubscribableGlobalStore} from '../objects/interfaces';
 import {
-    fGetSigmaIdsForContentId, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     ISigmaNodesUpdater,
     IUI,
     ISubscribableTreeUserStoreSource,
@@ -32,73 +27,24 @@ import VueRouter from 'vue-router';
 import {Store} from 'vuex';
 import {myContainer} from '../../inversify.config';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from '../components/knawledgeMap/knawledgeMap2';
-import {FIREBASE_PATHS} from '../loaders/paths';
-import {TreeLocationLoader, TreeLocationLoaderArgs} from '../loaders/treeLocation/TreeLocationLoader';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
-import {INITIAL_ID_TO_DOWNLOAD, JOHN_USER_ID} from './globals';
 import {log, error} from './log'
-import studyMenu from '../components/studyMenu/studyMenu'
 import BranchesFooter from '../components/footer/branchesFooter'
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-// import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
-// import Sigma = SigmaJs.Sigma;
-// import {SigmaJs} from 'sigmajs';
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdateListenerCore';
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
-import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
-import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
-import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
-import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
-import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
-import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
-import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
-import {TreeUserLoader} from '../loaders/treeUser/TreeUserLoader';
-import {ContentLoader, ContentLoaderArgs} from '../loaders/content/ContentLoader';
 const sigmaAny: any = sigma
-import clonedeep from 'lodash.clonedeep'
-import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
-import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
-import {ContentUserLoader, ContentUserLoaderArgs} from '../loaders/contentUser/ContentUserLoader';
 import StudyMenu from '../components/studyMenu/studyMenu'
 import {Tree2ComponentCreator} from '../components/tree2Component/treeComponent'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 // import NewTree from ''
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
-import {SpecialTreeLoader, SpecialTreeLoaderArgs} from '../loaders/tree/specialTreeLoader';
-import {
-    AutoSaveMutableSubscribableContentUserStore,
-    AutoSaveMutableSubscribableContentUserStoreArgs
-} from '../objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
-import {
-    ContentUserLoaderAndAutoSaver,
-    ContentUserLoaderAndAutoSaverArgs
-} from '../loaders/contentUser/ContentUserLoaderAndAutoSaver';
-import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCreator';
-import {ContentLoaderAndAutoSaver, ContentLoaderAndAutoSaverArgs} from '../loaders/content/ContentLoaderAndAutoSaver';
-import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from '../loaders/tree/TreeLoaderAndAutoSaver';
-import {
-    TreeLocationLoaderAndAutoSaver,
-    TreeLocationLoaderAndAutoSaverArgs
-} from '../loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
-import {
-    AutoSaveMutableSubscribableContentStore,
-    AutoSaveMutableSubscribableContentStoreArgs
-} from '../objects/stores/content/AutoSaveMutableSubscribableContentStore';
-import {
-    AutoSaveMutableSubscribableTreeLocationStore,
-    AutoSaveMutableSubscribableTreeLocationStoreArgs
-} from '../objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
-import {
-    AutoSaveMutableSubscribableTreeUserStore,
-    AutoSaveMutableSubscribableTreeUserStoreArgs
-} from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
-import {AutoSaveMutableSubscribableTreeStore, AutoSaveMutableSubscribableTreeStoreArgs} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 import {partialInject} from '../testHelpers/partialInject';
 import {inject, injectable} from 'inversify';
 
@@ -135,26 +81,17 @@ export class AppContainer {
 
     */
     public async start() {
-
-
-        log('appContainer 190, MutableSubscribableGlobalStore about to be created')
-        // const globalStore: IMutableSubscribableGlobalStore =
-        //     myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
-        // log('appContainer 193, MutableSubscribableGlobalStore just created', globalStore['_globalStoreId'])
-            // new MutableSubscribableGlobalStore(
-            //     {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
-
-        const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
         const store: Store<any> =
+            myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
             // new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
-            partialInject<BranchesStoreArgs>({
-                konstructor: BranchesStore,
-                constructorArgsType: TYPES.BranchesStoreArgs,
-                injections: {
-                    // globalDataStore: globalStore
-                },
-                container: myContainer,
-            })
+            // partialInject<BranchesStoreArgs>({
+            //     konstructor: BranchesStore,
+            //     constructorArgsType: TYPES.BranchesStoreArgs,
+            //     injections: {
+            //         // globalDataStore: globalStore
+            //     },
+            //     container: myContainer,
+            // })
 
         const sigmaUpdater: ISigmaUpdater =
             new SigmaUpdater({
