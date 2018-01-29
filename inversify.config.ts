@@ -717,7 +717,7 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
 
     const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs)
 
-    bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
+    bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).toConstantValue(contentIdSigmaIdMapSingleton)
         .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
 
     const contentIdSigmaIdMapSingletonGet

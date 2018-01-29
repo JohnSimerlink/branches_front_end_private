@@ -107,7 +107,7 @@ export class AppContainer {
             constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
             injections: {
                 // sigmaRenderManager: this.sigmaRenderManager,
-                getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
+                // getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
             },
             container: myContainer,
         })
@@ -119,7 +119,7 @@ export class AppContainer {
             constructorArgsType: TYPES.IStoreSourceUpdateListenerCore,
             injections: {
                 sigmaNodesUpdater,
-                contentIdSigmaIdMap,
+                // contentIdSigmaIdMap,
             },
             container: myContainer,
         })
