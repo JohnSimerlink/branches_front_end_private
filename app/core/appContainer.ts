@@ -106,7 +106,7 @@ export class AppContainer {
             konstructor: SigmaNodesUpdater,
             constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
             injections: {
-                sigmaRenderManager: this.sigmaRenderManager,
+                // sigmaRenderManager: this.sigmaRenderManager,
                 getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
             },
             container: myContainer,
