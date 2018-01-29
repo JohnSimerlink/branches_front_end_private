@@ -41,7 +41,7 @@ import {
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
-    ISyncableMutableSubscribableContent, id, ISigmaNodes,
+    ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -214,6 +214,7 @@ import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 
 import Vue from 'vue';
 import Vuex from 'vuex'
+import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -622,14 +623,17 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
     // bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
     // bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 
-    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
     bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
         .whenInjectedInto(KnawledgeMapCreatorArgs)
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<Tree3CreatorArgs>(TYPES.Tree3CreatorArgs).to(Tree3CreatorArgs)
     bind<ITree3Creator>(TYPES.ITree3CreatorClone).to(Tree3Creator)
+    bind<ITree3Creator>(TYPES.ITree3Creator).to(Tree3Creator)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
+
+    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
+    bind<KnawledgeMapCreator>(TYPES.KnawledgeMapCreator).to(KnawledgeMapCreator)
 
 })
 // app
@@ -676,6 +680,9 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
         state
     )
+    bind<IVueConfigurer>(TYPES.IVueConfigurer).to(VueConfigurer)
+    bind<VueConfigurerArgs>(TYPES.VueConfigurerArgs).to(VueConfigurerArgs)
+
 })
 
 const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {

@@ -273,6 +273,11 @@ export interface IMutableField<T> extends IMutable<IDatedMutation<FieldMutationT
 export interface ISubscribableMutableField<T> extends ISubscribable<IDetailedUpdates>, IMutableField<T> {
 }
 
+// misc
+export interface IVueConfigurer {
+    configure()
+}
+
 // MathUtils
 
 export type radian = number // between 0 and 2 pi

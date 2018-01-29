@@ -117,6 +117,7 @@ export const TYPES = {
     ITooltipRendererFunction: Symbol('ITooltipRendererFunction'),
     ITree: Symbol('ITree'),
     ITree2ComponentCreator: Symbol('ITree2ComponentCreator'),
+    ITree3Creator: Symbol('ITree3Creator'),
     ITree3CreatorClone: Symbol('ITree3Creator'),
     ITreeComponentCreator: Symbol('ITreeComponentCreator'),
     ITreeComponentCreator2: Symbol('ITreeComponentCreator2'),
@@ -125,6 +126,7 @@ export const TYPES = {
     ITreeLocationLoader: Symbol('ITreeLocationLoader'),
     ITreeUser: Symbol('ITree'),
     ITreeUserLoader: Symbol('ITreeUserLoader'),
+    IVueConfigurer: Symbol('IVueConfigurer'),
     IVuexStore: Symbol('IVuexStore'),
     KnawledgeMapCreator: Symbol('KnawledgeMapCreator'),
     KnawledgeMapCreatorClone: Symbol('Tree3Creator'),
@@ -194,6 +196,7 @@ export const TYPES = {
     TreeLocationLoaderAndAutoSaverArgs: Symbol('TreeLocationLoaderAndAutoSaverArgs'),
     TreeUserLoaderArgs: Symbol('TreeUserLoaderArgs'),
     UIColor: Symbol('UIColor'),
+    VueConfigurerArgs: Symbol('VueConfigurerArgs'),
     fGetSigmaIdsForContentId: Symbol('fGetSigmaIdsForContentId'),
     radian: Symbol('radian'),
 }
