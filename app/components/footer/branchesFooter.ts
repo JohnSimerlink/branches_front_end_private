@@ -9,7 +9,10 @@ import {log} from '../../core/log'
 
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
-    const register = require('ignore-styles')
+    let register = require('ignore-styles').default
+    if (!register) {
+        register = require('ignore-styles')
+    }
     log('configure is ', register)
     register(['.html'])
 }
