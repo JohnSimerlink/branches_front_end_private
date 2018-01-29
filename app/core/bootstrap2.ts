@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     log('NODE ENV IS ' + process.env.NODE_ENV)
 }
-Vue.use(Vuex)
 Vue.use(VueRouter);
 const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
 // const appContainer = new AppContainer()
