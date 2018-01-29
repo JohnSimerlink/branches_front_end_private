@@ -41,7 +41,7 @@ import {
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
-    ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer,
+    ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -683,6 +683,7 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
     bind<string>(TYPES.String).toConstantValue('')
     bind<string>(TYPES.StringNotEmpty).toConstantValue('abc123')
     bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
+        .whenTargetIsDefault()
 // tslint:disable-next-line ban-types
     bind<Number>(TYPES.Number).toConstantValue(0)
     bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
@@ -745,6 +746,10 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
         .toConstantValue(sigmaNodeUpdaterSingleton)
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+
+    const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
+    bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
+        .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true)
 
 })
 

@@ -1,9 +1,10 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {
     IApp, IMutableSubscribableGlobalStore,
     IUI
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';
+import {TAGS} from '../objects/tags';
 @injectable()
 export class App implements IApp {
     private UIs: IUI[]
@@ -26,6 +27,8 @@ export class App implements IApp {
 
 @injectable()
 export class AppArgs {
-    @inject(TYPES.Array) public UIs
-    @inject(TYPES.IMutableSubscribableGlobalStore) public store
+    @inject(TYPES.Array)
+    @tagged(TAGS.DEFAULT_UIS_ARRAY, true)
+        public UIs: IUI[]
+    @inject(TYPES.IMutableSubscribableGlobalStore) public store: IMutableSubscribableGlobalStore
 }

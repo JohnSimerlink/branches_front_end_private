@@ -88,7 +88,7 @@ export class AppContainer {
             konstructor: App,
             constructorArgsType: TYPES.IApp,
             injections: {
-                UIs: [canvasUI]
+                // UIs: [canvasUI]
             },
             container: myContainer,
         })
