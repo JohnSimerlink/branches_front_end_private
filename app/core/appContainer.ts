@@ -118,7 +118,7 @@ export class AppContainer {
             konstructor: StoreSourceUpdateListenerCore,
             constructorArgsType: TYPES.IStoreSourceUpdateListenerCore,
             injections: {
-                sigmaNodesUpdater,
+                // sigmaNodesUpdater,
                 // contentIdSigmaIdMap,
             },
             container: myContainer,
@@ -132,7 +132,11 @@ export class AppContainer {
         storeSourceUpdateListener.subscribe(this.contentStoreSource)
         storeSourceUpdateListener.subscribe(this.contentUserStoreSource)
 
-        const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
+        const canvasUI: IUI =
+            myContainer.get<CanvasUI>(TYPES.CanvasUI)
+            // new CanvasUI(
+            // {sigmaNodesUpdater}
+            // )
         // const
         // DataLoader.start()
 
