@@ -138,9 +138,9 @@ export class AppContainer {
 
 
         log('appContainer 190, MutableSubscribableGlobalStore about to be created')
-        const globalStore: IMutableSubscribableGlobalStore =
-            myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
-        log('appContainer 193, MutableSubscribableGlobalStore just created', globalStore['_globalStoreId'])
+        // const globalStore: IMutableSubscribableGlobalStore =
+        //     myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
+        // log('appContainer 193, MutableSubscribableGlobalStore just created', globalStore['_globalStoreId'])
             // new MutableSubscribableGlobalStore(
             //     {updatesCallbacks: [], contentUserStore, treeStore, treeLocationStore, treeUserStore, contentStore})
 
@@ -150,7 +150,9 @@ export class AppContainer {
             partialInject<BranchesStoreArgs>({
                 konstructor: BranchesStore,
                 constructorArgsType: TYPES.BranchesStoreArgs,
-                injections: {globalDataStore: globalStore},
+                injections: {
+                    // globalDataStore: globalStore
+                },
                 container: myContainer,
             })
 
@@ -215,7 +217,16 @@ export class AppContainer {
         // const globalStore: IMutableSubscribableGlobalStore
         // = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
         // const app: IApp = myContainer.get<IApp>(TYPES.IApp)
-        const app: IApp = new App({store: globalStore, UIs: [canvasUI]})
+        const app: IApp =
+            // new App({store: globalStore, UIs: [canvasUI]})
+        partialInject<IApp>({
+            konstructor: App,
+            constructorArgsType: TYPES.IApp,
+            injections: {
+                UIS: [canvasUI]
+            },
+            container: myContainer,
+        })
         // const userId = JOHN_USER_ID // 'abc1234'
 
         const treeComponentCreator: ITree3Creator =
