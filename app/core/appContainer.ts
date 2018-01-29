@@ -136,73 +136,6 @@ export class AppContainer {
     */
     public async start() {
 
-        // const firebaseContentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
-        // const firebaseContentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
-        // const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
-        // const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
-        // const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
-        // const contentStoreSource: ISubscribableContentStoreSource
-        //     = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
-        // const contentUserStoreSource: ISubscribableContentUserStoreSource
-        //     = myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
-        // const treeStoreSource: ISubscribableTreeStoreSource
-        // = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
-        // const treeUserStoreSource: ISubscribableTreeUserStoreSource
-        //     = myContainer.get<ISubscribableTreeUserStoreSource>
-        // (TYPES.ISubscribableTreeUserStoreSource)
-        // const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
-        // = myContainer.get<ISubscribableTreeLocationStoreSource>
-        //     (TYPES.ISubscribableTreeLocationStoreSource)
-
-        // const treeStore: IMutableSubscribableTreeStore =
-        //     partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
-        //         konstructor: AutoSaveMutableSubscribableTreeStore,
-        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeStoreArgs,
-        //         injections: {
-        //             // storeSource: treeStoreSource,
-        //         },
-        //         container: myContainer,
-        //     })
-
-        // const treeUserStore: IMutableSubscribableTreeUserStore =
-        //     partialInject<AutoSaveMutableSubscribableTreeUserStoreArgs>( {
-        //         konstructor: AutoSaveMutableSubscribableTreeUserStore,
-        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs,
-        //         injections: {
-        //             // storeSource: treeUserStoreSource,
-        //         },
-        //         container: myContainer,
-        //     })
-
-        // const treeLocationStore: IMutableSubscribableTreeLocationStore =
-        //     partialInject<AutoSaveMutableSubscribableTreeLocationStoreArgs>({
-        //         konstructor: AutoSaveMutableSubscribableTreeLocationStore,
-        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs,
-        //         injections: {
-        //             // storeSource: treeLocationStoreSource
-        //         },
-        //         container: myContainer
-        //     })
-
-        // const contentStore: IMutableSubscribableContentStore =
-        //     partialInject<AutoSaveMutableSubscribableContentStoreArgs>({
-        //         konstructor: AutoSaveMutableSubscribableContentStore,
-        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableContentStoreArgs,
-        //         injections: {
-        //             // storeSource: contentStoreSource
-        //         },
-        //         container: myContainer
-        //     })
-
-        // const contentUserStore: IMutableSubscribableContentUserStore =
-        //     partialInject<AutoSaveMutableSubscribableContentUserStoreArgs>({
-        //         konstructor: AutoSaveMutableSubscribableContentUserStore,
-        //         constructorArgsType: TYPES.AutoSaveMutableSubscribableContentUserStoreArgs,
-        //         injections: {
-        //             // storeSource: contentUserStoreSource
-        //         },
-        //         container: myContainer,
-        //     })
 
         log('appContainer 190, MutableSubscribableGlobalStore about to be created')
         const globalStore: IMutableSubscribableGlobalStore =
@@ -303,14 +236,6 @@ export class AppContainer {
         log('appContainer 261, MutableSubscribableGlobalStore has been called yet?')
 
         const knawledgeMapCreator: IVueComponentCreator =
-            // new KnawledgeMapCreator({
-            //         store,
-            //         specialTreeLoader: treeLoaderAndAutoSaver,
-            //         treeLocationLoader: treeLocationLoaderAndAutoSaver,
-            //         contentLoader: contentLoaderAndAutoSaver,
-            //         contentUserLoader: contentUserLoaderAndAutoSaver,
-            //         userId
-            //     })
         partialInject<KnawledgeMapCreatorArgs>({
             konstructor: KnawledgeMapCreator,
             constructorArgsType: TYPES.KnawledgeMapCreatorArgs,

@@ -392,11 +392,10 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         .toConstantValue(subscribableContentUserStoreSourceSingleton)
 
     bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
-    bind<IMutableSubscribableGlobalStore>
-    (TYPES.IMutableSubscribableGlobalStore).to(MutableSubscribableGlobalStore)
 
     bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
         .to(MutableSubscribableGlobalStoreArgs)
+
 
     bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
         .to(SubscribableContentUserStoreArgs)
@@ -675,6 +674,18 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
     )
 })
 
+const globalStore = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    const globalStoreSingletonArgs = myContainer.get<MutableSubscribableGlobalStoreArgs>
+    (TYPES.MutableSubscribableGlobalStoreArgs)
+
+    const globalStoreSingleton: IMutableSubscribableGlobalStore
+        = new MutableSubscribableGlobalStore(globalStoreSingletonArgs)
+
+    bind<IMutableSubscribableGlobalStore>
+    (TYPES.IMutableSubscribableGlobalStore).toConstantValue(globalStoreSingleton)
+
+})
+
 myContainer.load(stores)
 myContainer.load(loaders)
 myContainer.load(rendering)
@@ -682,5 +693,6 @@ myContainer.load(components)
 myContainer.load(dataObjects)
 myContainer.load(app)
 myContainer.load(misc)
+myContainer.load(globalStore)
 
 export {myContainer}
