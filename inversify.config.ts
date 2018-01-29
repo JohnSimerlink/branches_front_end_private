@@ -724,6 +724,8 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
         = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton)
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
         .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+    contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
+    log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
 
     const sigmaRenderManagerSingletonArgs: SigmaRenderManagerArgs
     = myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs)

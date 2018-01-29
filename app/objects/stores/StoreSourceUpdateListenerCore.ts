@@ -1,4 +1,4 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IOneToManyMap, ISigmaNodes,
@@ -8,6 +8,7 @@ import {
 import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {TAGS} from '../tags';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
@@ -84,5 +85,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 export class StoreSourceUpdateListenerCoreArgs {
     @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
     @inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater: ISigmaNodesUpdater
-    @inject(TYPES.IOneToManyMap) public contentIdSigmaIdMap: IOneToManyMap<string>
+    @inject(TYPES.IOneToManyMap)
+    @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+        public contentIdSigmaIdMap: IOneToManyMap<string>
 }
