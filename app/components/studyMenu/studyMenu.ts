@@ -12,7 +12,10 @@ const defaultStudySettings = {
 }
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
-    const register = require('ignore-styles')
+    let register = require('ignore-styles').default
+    if (!register) {
+        register = require('ignore-styles')
+    }
     register(['.html'])
 }
 // tslint:disable-next-line no-var-requires
