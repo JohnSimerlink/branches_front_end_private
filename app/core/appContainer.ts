@@ -97,9 +97,10 @@ export class AppContainer {
             // new SigmaUpdater({
             //     store
             // })
-        const sigmaNodes: ISigmaNodes = {}
-        const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
+        const sigmaNodes: ISigmaNodes =
+            myContainer.get<ISigmaNodes>(TYPES.ISigmaNodes)// {}
+        // const renderedNodesManagerCore: IRenderedNodesManagerCore
+        // = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
         // = partialInject<RenderedNodesManagerCoreArgs>({
         //     konstructor: RenderedNodesManagerCore,
         //     constructorArgsType: TYPES.RenderedNodesManagerCoreArgs,
@@ -108,7 +109,9 @@ export class AppContainer {
         //     },
         //     container: myContainer,
         // })
-        const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
+        const renderedNodesManager: IRenderedNodesManager
+            // = new RenderedNodesManager({renderedNodesManagerCore})
+            = myContainer.get<IRenderedNodesManager>(TYPES.IRenderedNodesManager)
         const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         renderedNodesManager.subscribe(sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
