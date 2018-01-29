@@ -71,7 +71,7 @@ export class AppContainer {
         this.app.start()
         this.vueConfigurer.configure()
 
-        // For now, new Vue must be called after app.start()
+        // For now, Vue configure must be called after app.start()
     }
 
 }
