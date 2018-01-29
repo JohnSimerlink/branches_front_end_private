@@ -82,15 +82,6 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const sigmaNodes: IHash<ISigmaNode> = {}
 
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater
-        = new SigmaNodesUpdater(
-        {
-            sigmaNodes,
-            sigmaRenderManager,
-            getSigmaIdsForContentId: () => void 0,
-            refresh: () => void 0,
-            contentIdContentMap: {},
-        })
 
     // TODO: do full dep injection for this store
     const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
@@ -98,6 +89,15 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
     )
+    const sigmaNodesUpdater: ISigmaNodesUpdater
+        = new SigmaNodesUpdater(
+        {
+            sigmaNodes,
+            sigmaRenderManager,
+            getSigmaIdsForContentId: () => void 0,
+            store,
+            contentIdContentMap: {},
+        })
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})

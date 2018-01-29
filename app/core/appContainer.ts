@@ -46,6 +46,7 @@ import {Tree3Creator} from '../components/tree3Component/tree3Component';
 import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCreator';
 import {partialInject} from '../testHelpers/partialInject';
 import {inject, injectable} from 'inversify';
+import {TAGS} from '../objects/tags';
 
 configureSigma(sigma)
 
@@ -94,7 +95,9 @@ export class AppContainer {
         // const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         this.renderedNodesManager.subscribe(this.sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
-        const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+        const contentIdSigmaIdMap: IOneToManyMap<string>
+            // = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+            = myContainer.getTagged<IOneToManyMap<string>>(TYPES.IOneToManyMap, TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
         // const me = this
         const refresh = () => this.store.commit(MUTATION_NAMES.REFRESH)
         const sigmaNodesUpdater: ISigmaNodesUpdater
@@ -104,7 +107,6 @@ export class AppContainer {
             injections: {
                 sigmaRenderManager: this.sigmaRenderManager,
                 getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
-                refresh,
             },
             container: myContainer,
         })

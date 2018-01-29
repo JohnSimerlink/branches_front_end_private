@@ -7,4 +7,5 @@ export const TAGS = {
     CONTENT_REF: Symbol('content_ref'),
     CONTENT_USERS_REF: Symbol('content_users_ref'),
     TREE_USERS_REF: Symbol('tree_users_ref'),
+    CONTENT_ID_SIGMA_IDS_MAP: Symbol('contentIdSigmaIdsMap'),
 }

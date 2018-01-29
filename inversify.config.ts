@@ -527,6 +527,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer)
     bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs)
     bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener)
+
+    // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
+    //
+    // )
 })
 //
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -571,6 +575,20 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 //
     bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
+        // .whenTargetIsDefault()
+    //
+    // const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs = myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs)
+    //
+    // const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs)
+    //
+    // bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
+    //     .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+    //
+    // const contentIdSigmaIdMapSingletonGet
+    //     = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton)
+    // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(contentIdSigmaIdMapSingletonGet)
+    //     .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+
     bind<SubscribableMutableStringSetArgs>
     (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
     bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)

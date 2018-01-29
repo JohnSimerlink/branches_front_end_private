@@ -46,6 +46,7 @@ import {SyncableMutableSubscribableContentUser} from '../objects/contentUser/Syn
 import {SyncableMutableSubscribableContent} from '../objects/content/SyncableMutableSubscribableContent';
 import {SyncableMutableSubscribableTreeLocation} from '../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
+import {Store} from 'vuex';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
@@ -60,7 +61,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, refresh: () => void 0, contentIdContentMap: {} })
+            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
 
     // contentUserStore
     const contentId = CONTENT_ID
@@ -134,7 +135,7 @@ test('Adding a mutation into the global stores for a content data,' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, refresh: () => void 0, contentIdContentMap: {} })
+            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
 
     // contentStore
     const contentId = CONTENT_ID
@@ -218,7 +219,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, refresh: () => void 0, contentIdContentMap: {} })
+            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
 
     // contentStore
     const proficiencyStatsVal: IProficiencyStats = {
@@ -302,7 +303,7 @@ test('Adding a mutation into the global stores for a tree location data,' +
     const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
         {
             getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, refresh: () => void 0, contentIdContentMap: {} })
+            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
 
     const treeId = TREE_ID
     const FIRST_POINT_VALUE = {x: 5, y: 7}
