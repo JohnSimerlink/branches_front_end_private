@@ -45,7 +45,7 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 import {Tree3Creator} from '../components/tree3Component/tree3Component';
 import {NewTreeComponentCreator} from '../components/newTree/newTreeComponentCreator';
 import {partialInject} from '../testHelpers/partialInject';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TAGS} from '../objects/tags';
 
 configureSigma(sigma)
@@ -175,5 +175,7 @@ export class AppContainerArgs {
     @inject(TYPES.BranchesStore)
         public store: Store<any>
     @inject(TYPES.IRenderedNodesManager) public renderedNodesManager: IRenderedNodesManager
-    @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager: ISigmaRenderManager
+    @inject(TYPES.ISigmaRenderManager)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaRenderManager: ISigmaRenderManager
 }
