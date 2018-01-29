@@ -1,7 +1,7 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../objects/types';
 import {IKnawledgeMapCreator, INewTreeComponentCreator, ITree3Creator, IVueConfigurer} from '../objects/interfaces';
-import Vue from 'vue'
+import Vue, {ComponentOptions} from 'vue'
 // import VueRouter from 'vue-router'
 let VueRouter = require('vue-router').default;
 if (!VueRouter) {
@@ -44,6 +44,7 @@ export class VueConfigurer implements IVueConfigurer {
         Vue.component('newtree', NewTree)
         Vue.component('branchesFooter', BranchesFooter)
 
+        Vue.use(VueRouter);
         const routes = [
             { path: '/', component: KnawledgeMap, props: true }
         ]
@@ -72,7 +73,7 @@ export class VueConfigurer implements IVueConfigurer {
             },
             store: this.store,
             router
-        })
+        } as ComponentOptions<Vue>)
     }
 }
 

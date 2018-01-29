@@ -77,6 +77,7 @@ import {ContentUserLoaderArgs} from '../loaders/contentUser/ContentUserLoader';
 import {ContentLoaderAndAutoSaverArgs} from '../loaders/content/ContentLoaderAndAutoSaver';
 import {TreeUserLoaderArgs} from '../loaders/treeUser/TreeUserLoader';
 import {ContentUserLoaderAndAutoSaverArgs} from '../loaders/contentUser/ContentUserLoaderAndAutoSaver';
+import {AppContainer} from './appContainer';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -123,6 +124,8 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
 
     const parentTreeChildrenPropertyRefUpdateSpy = sinon.spy(parentTreeChildrenPropertyRef, 'update')
+    const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
+    appContainer.start()
     store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId})
 
     expect(parentTreeChildrenPropertyRefUpdateSpy.callCount).to.deep.equal(1)
