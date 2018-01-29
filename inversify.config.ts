@@ -521,6 +521,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
     // bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
+        .whenTargetIsDefault()
 
     bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
@@ -735,6 +736,15 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
 
     bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         .toConstantValue(sigmaRenderManagerSingleton).whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+
+    const sigmaNodesUpdaterSingletonArgs: SigmaNodesUpdaterArgs
+        = myContainer.get<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs)
+    const sigmaNodeUpdaterSingleton: ISigmaNodesUpdater
+        = new SigmaNodesUpdater(sigmaNodesUpdaterSingletonArgs)
+
+    bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
+        .toConstantValue(sigmaNodeUpdaterSingleton)
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 
 })
 
