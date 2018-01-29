@@ -4,6 +4,7 @@ import './other_imports/sigmaConfigurations'
 import sigma from './other_imports/sigma/sigma.core.js'
 import {Container, ContainerModule, interfaces} from 'inversify'
 import 'reflect-metadata'
+import {MockFirebase} from 'firebase-mock'
 import {App, AppArgs} from './app/core/app';
 import {FIREBASE_PATHS} from './app/loaders/paths';
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
@@ -212,8 +213,14 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
-import Vue from 'vue';
-import Vuex from 'vuex'
+let Vue = require('vue').default
+if (!Vue) {
+    Vue = require('vue')
+}
+let Vuex = require('vuex').default
+if (!Vuex) {
+    Vuex = require('vuex')
+}
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
 Vue.use(Vuex)
 
@@ -248,9 +255,46 @@ const sigmaInstance /*: Sigma*/ = new sigma({
 firebase.initializeApp(firebaseConfig)
 export const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
 export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
+export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
 export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
-export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
+export const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
+export const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
+export const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS)
+export const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
+export const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
+export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
+        .whenTargetTagged(TAGS.TREES_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
+        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
+        .whenTargetTagged(TAGS.TREE_USERS_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
+        .whenTargetTagged(TAGS.CONTENT_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
+        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+})
+export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreesRef)
+        .whenTargetTagged(TAGS.TREES_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeLocationsRef)
+        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeUsersRef)
+        .whenTargetTagged(TAGS.TREE_USERS_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentRef)
+        .whenTargetTagged(TAGS.CONTENT_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
+        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+})
 const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
@@ -300,51 +344,10 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
 
     // loaders
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
-    //     .whenInjectedInto(TreeLoaderArgs)
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
-    //     .whenInjectedInto(TreeLocationLoaderArgs)
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
-    //     .whenInjectedInto(ContentLoaderArgs)
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
-    //     .whenInjectedInto(ContentUserLoaderArgs)
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
-    //     .whenInjectedInto(TreeUserLoaderArgs)
 
     // loader auto savers
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
-        .whenTargetTagged(TAGS.TREES_REF, true)
-
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
-        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true)
-
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
-        .whenTargetTagged(TAGS.TREE_USERS_REF, true)
-
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
-        .whenTargetTagged(TAGS.CONTENT_REF, true)
-
-    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
-        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
 
         // .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
-
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
-    //     .whenInjectedInto(TreeLocationLoaderAndAutoSaverArgs)
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
-    //     .whenInjectedInto(ContentLoaderAndAutoSaverArgs)
-    // myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
-    //     .whenInjectedInto(ContentUserLoaderAndAutoSaverArgs)
-
-    // AutoSave stores
-    // myContainer.bind<Reference>(TYPES.FirebaseReference)
-    //     .toConstantValue(contentRef)
-    //     .whenInjectedInto(AutoSaveMutableSubscribableContentStore)
-    //
-    // myContainer.bind<Reference>(TYPES.FirebaseReference)
-    //     .toConstantValue(treesRef)
-    //     .whenInjectedInto(AutoSaveMutableSubscribableTreeStore)
-
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
         .to(ContentLoaderAndAutoSaverArgs)
     myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
@@ -368,7 +371,6 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
     myContainer.bind<AutoSaveMutableSubscribableContentUserStoreArgs>
     (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
         .to(AutoSaveMutableSubscribableContentUserStoreArgs)
-
 
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
@@ -401,7 +403,6 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
         .to(MutableSubscribableGlobalStoreArgs)
 
-
     bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
         .to(SubscribableContentUserStoreArgs)
     bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)
@@ -427,7 +428,6 @@ const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
 
     bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
         .to(SubscribableStoreSourceArgs)
-
 
     bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
 
@@ -754,6 +754,7 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
 })
 
 myContainer.load(stores)
+myContainer.load(firebaseReferences)
 myContainer.load(loaders)
 myContainer.load(rendering)
 myContainer.load(components)
