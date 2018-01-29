@@ -12,15 +12,11 @@ import {
     IUI,
     ISubscribableTreeUserStoreSource,
 } from '../objects/interfaces';
-import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
-import {App} from './app';
 import {Store} from 'vuex';
-import {myContainer} from '../../inversify.config';
 import {TYPES} from '../objects/types';
 import {log, error} from './log'
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
 import sigma from '../../other_imports/sigma/sigma.core.js'
-import {partialInject} from '../testHelpers/partialInject';
 import {inject, injectable, tagged} from 'inversify';
 import {TAGS} from '../objects/tags';
 
@@ -64,15 +60,6 @@ export class AppContainer {
         this.storeSourceUpdateListener = storeSourceUpdateListener
         this.app = app
     }
-    // this should be the only place where I have new statements
-    // and I should only have new statements here . . .
-    // and one start statement that starts off the initialization/download / logic process
-    /* TODO: have an appContainerContainer that does
-    const myAppContainer = myContainer.get<IAppContainerContainer>(TYPES.IAppContainerContainer).
-     Have that file be put as the root in webpack
-     And then have AppContainer have all its objects injected in its args
-
-    */
     public async start() {
         this.renderedNodesManager.subscribe(this.sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
@@ -83,18 +70,6 @@ export class AppContainer {
         this.storeSourceUpdateListener.subscribe(this.contentStoreSource)
         this.storeSourceUpdateListener.subscribe(this.contentUserStoreSource)
 
-        // const canvasUI: IUI =
-        //     myContainer.get<CanvasUI>(TYPES.CanvasUI)
-        // const app: IApp =
-        //     // new App({store: globalStore, UIs: [canvasUI]})
-        // partialInject<IApp>({
-        //     konstructor: App,
-        //     constructorArgsType: TYPES.IApp,
-        //     injections: {
-        //         // UIs: [canvasUI]
-        //     },
-        //     container: myContainer,
-        // })
         this.app.start()
         this.vueConfigurer.configure()
 
