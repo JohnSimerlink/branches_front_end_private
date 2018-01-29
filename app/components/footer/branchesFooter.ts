@@ -10,7 +10,7 @@ import {log} from '../../core/log'
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
     const register = require('ignore-styles')
-    log('register is ', register)
+    log('configure is ', register)
     register(['.html'])
 }
 // tslint:disable-next-line no-var-requires

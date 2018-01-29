@@ -9,7 +9,7 @@ import {
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
     ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator, IObjectFirebaseAutoSaver,
-    INewTreeComponentCreator, ISigmaNodes
+    INewTreeComponentCreator, ISigmaNodes, IVueConfigurer
 } from '../objects/interfaces';
 
 import {
@@ -31,7 +31,6 @@ import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from '../objects/sigmaNode/RenderedNodesManagerCore';
 import {TYPES} from '../objects/types';
 import {log, error} from './log'
-import BranchesFooter from '../components/footer/branchesFooter'
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
 import sigma from '../../other_imports/sigma/sigma.core.js'
@@ -50,7 +49,6 @@ import {inject, injectable} from 'inversify';
 
 configureSigma(sigma)
 
-Vue.component('branchesFooter', BranchesFooter)
 @injectable()
 export class AppContainer {
     private contentStoreSource: ISubscribableContentStoreSource
@@ -58,18 +56,21 @@ export class AppContainer {
     private treeStoreSource: ISubscribableTreeStoreSource
     private treeLocationStoreSource: ISubscribableTreeLocationStoreSource
     private treeUserStoreSource: ISubscribableTreeUserStoreSource
+    private vueConfigurer: IVueConfigurer
     constructor(@inject(TYPES.AppContainerArgs){
         contentStoreSource,
         contentUserStoreSource,
         treeStoreSource,
         treeUserStoreSource,
-        treeLocationStoreSource
+        treeLocationStoreSource,
+        vueConfigurer
    }: AppContainerArgs) {
         this.contentStoreSource = contentStoreSource
         this.contentUserStoreSource = contentUserStoreSource
         this.treeStoreSource = treeStoreSource
         this.treeUserStoreSource = treeUserStoreSource
         this.treeLocationStoreSource = treeLocationStoreSource
+        this.vueConfigurer = vueConfigurer
     }
     // this should be the only place where I have new statements
     // and I should only have new statements here . . .
@@ -176,70 +177,10 @@ export class AppContainer {
             },
             container: myContainer,
         })
-        // const userId = JOHN_USER_ID // 'abc1234'
-
-        const treeComponentCreator: ITree3Creator =
-            new Tree3Creator({store})
-        const Tree = treeComponentCreator.create()
-        const newTreeComponentCreator: INewTreeComponentCreator =
-            new NewTreeComponentCreator({store})
-        const NewTree = newTreeComponentCreator.create()
-
-        log('appContainer 253, MutableSubscribableGlobalStore has been called yet?')
-        Vue.component('tree', Tree)
-
-        Vue.component('studyMenu', StudyMenu)
-        Vue.component('itemHistory', ItemHistory)
-        Vue.component('proficiencySelector', ProficiencySelector)
-        Vue.component('newtree', NewTree)
-
-        log('appContainer 261, MutableSubscribableGlobalStore has been called yet?')
-
-        const knawledgeMapCreator: IVueComponentCreator =
-        partialInject<KnawledgeMapCreatorArgs>({
-            konstructor: KnawledgeMapCreator,
-            constructorArgsType: TYPES.KnawledgeMapCreatorArgs,
-            injections: {
-                store,
-                // specialTreeLoader: treeLoaderAndAutoSaver,
-            },
-            container: myContainer
-        })
-        log('appContainer 280, has MutableSubscribableGlobalStore constructor been called yet?')
-
-        const KnawledgeMap = knawledgeMapCreator.create()
-        const routes = [
-            { path: '/', component: KnawledgeMap, props: true }
-        ]
-
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
-        const router = new VueRouter({
-            routes, // short for `routes: routes`
-            mode: 'history',
-        })
-        const treeIdToDownload = 1
         app.start()
+        this.vueConfigurer.configure()
 
         // For now, new Vue must be called after app.start()
-        const vm = new Vue({
-            el: '#branches-app',
-            created() {
-                // log('Vue instance created')
-                return void 0
-            },
-            data() {
-                return {
-                }
-            },
-            computed: {
-            },
-            methods: {
-            },
-            store,
-            router
-        })
 
         // TODO: don't make the app container container be fetched thorugh dependency injection until we have the UI
         // manually wired and up
@@ -257,4 +198,6 @@ export class AppContainerArgs {
     @inject(TYPES.ISubscribableTreeUserStoreSource) public treeUserStoreSource: ISubscribableTreeUserStoreSource
     @inject(TYPES.ISubscribableTreeLocationStoreSource)
         public treeLocationStoreSource: ISubscribableTreeLocationStoreSource
+    @inject(TYPES.IVueConfigurer)
+        public vueConfigurer: IVueConfigurer
 }

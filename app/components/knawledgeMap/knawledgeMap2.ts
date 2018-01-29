@@ -1,5 +1,5 @@
 // import template from './views/knawledgeMap.html'
-// import register from 'ignore-styles'
+// import configure from 'ignore-styles'
 import {inject, injectable, tagged} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
