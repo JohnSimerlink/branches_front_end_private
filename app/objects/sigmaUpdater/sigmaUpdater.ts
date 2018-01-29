@@ -8,11 +8,12 @@ import {ISigmaUpdater} from '../interfaces';
 // import Node = SigmaJs.Node
 import {log, error} from '../../core/log'
 import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
+import {Store} from 'vuex';
 // import {SigmaJs} from 'sigmajs';
 
 @injectable()
 export class SigmaUpdater implements ISigmaUpdater {
-    private store // : BranchesStore // : Graph
+    private store: Store<any> // : BranchesStore // : Graph
     // private refresh: () => void
     // private focusNode: (node: Node) => void
     constructor(@inject(TYPES.SigmaUpdaterArgs){store}: SigmaUpdaterArgs) {
@@ -37,7 +38,7 @@ export class SigmaUpdater implements ISigmaUpdater {
 export class SigmaUpdaterArgs {
     // @inject(TYPES.Function) public refresh: () => void
     // @inject(TYPES.Function) public focusNode: (node: Node) => void
-    @inject(TYPES.Object) public store // : Graph
+    @inject(TYPES.BranchesStore) public store: Store<any> // : Graph
 }
 
 // function focusNode(camera, node) {

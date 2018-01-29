@@ -41,7 +41,7 @@ import {
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
-    ISyncableMutableSubscribableContent, id,
+    ISyncableMutableSubscribableContent, id, ISigmaNodes,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -495,6 +495,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
         .to(CanvasUIArgs)
 
+    bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({})
     bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)

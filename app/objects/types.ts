@@ -73,6 +73,7 @@ export const TYPES = {
     ISigmaNodeCreatorCore: Symbol('ISigmaNodeCreatorCore'),
     ISigmaNodeCreatorCaller: Symbol('IStoreSourceUpdateListener'),
     ISigmaNodeData: Symbol('ISigmaNodeData'),
+    ISigmaNodes: Symbol('ISigmaNodes'),
     ISigmaNodesUpdater: Symbol('ISigmaNodesUpdater'),
     ISigmaRenderManager: Symbol('ISigmaRenderManager'),
     ISigmaUpdater: Symbol('ISigmaUpdater'),

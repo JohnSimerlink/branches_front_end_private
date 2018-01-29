@@ -2,7 +2,7 @@
 // tslint:disable no-namespace
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
-import {SigmaNodeArgs} from './sigmaNode/SigmaNode';
+import {SigmaNode, SigmaNodeArgs} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
 // import {SigmaJs} from 'sigmajs';
 
@@ -425,6 +425,7 @@ export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
 
+export type ISigmaNodes = IHash<SigmaNode>
 export type ISigma = any
 // export interface ISigma {
 //     graph?: any,

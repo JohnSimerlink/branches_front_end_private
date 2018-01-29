@@ -93,10 +93,10 @@ export class AppContainer {
             //     container: myContainer,
             // })
 
-        const sigmaUpdater: ISigmaUpdater =
-            new SigmaUpdater({
-                store
-            })
+        const sigmaUpdater: ISigmaUpdater = myContainer.get<ISigmaUpdater>(TYPES.ISigmaUpdater)
+            // new SigmaUpdater({
+            //     store
+            // })
         const sigmaNodes: IHash<ISigmaNode> = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
         = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
