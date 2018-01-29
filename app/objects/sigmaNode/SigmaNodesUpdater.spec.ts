@@ -14,7 +14,7 @@ import {
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
-import {SigmaNodesUpdater} from './SigmaNodesUpdater';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
 
 import test from 'ava'
 import {
@@ -22,6 +22,7 @@ import {
     TREE_ID2
 } from '../../testHelpers/testHelpers';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {partialInject} from '../../testHelpers/partialInject';
 function refresh() {}
 
 let sigmaNodes
@@ -38,9 +39,24 @@ test.beforeEach('init sigmaNodes', () => {
     sigmaNodes[SIGMA_ID2] = sigmaNode2
     sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
-    sigmaNodesUpdater = new SigmaNodesUpdater(
-        {sigmaNodes, getSigmaIdsForContentId, sigmaRenderManager, refresh, contentIdContentMap: {} }
-    )
+    sigmaNodesUpdater = partialInject<SigmaNodesUpdaterArgs>({
+        konstructor: SigmaNodesUpdater,
+        constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+        injections: {
+            getSigmaIdsForContentId,
+            sigmaRenderManager,
+        },
+        container: myContainer
+    })
+    // sigmaNodesUpdater = new SigmaNodesUpdater(
+    //     {
+    //         sigmaNodes,
+    //         getSigmaIdsForContentId,
+    //         sigmaRenderManager,
+    //         refresh,
+    //         contentIdContentMap: {}
+    //     }
+    // )
 })
 //
 test('SigmaNodesUpdater:::A Tree Update should call the correct method' +

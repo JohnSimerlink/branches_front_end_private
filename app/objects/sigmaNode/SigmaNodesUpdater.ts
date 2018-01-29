@@ -17,6 +17,8 @@ import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {SigmaNode} from './SigmaNode';
+import {MUTATION_NAMES} from '../../core/store2';
+import {Store} from 'vuex';
 
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
@@ -25,15 +27,20 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private sigmaRenderManager: ISigmaRenderManager
     private refresh: () => void
     private contentIdContentMap: IHash<IContentData>
+    public store: Store<any>;
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
-        getSigmaIdsForContentId, sigmaNodes,
-        sigmaRenderManager, refresh, contentIdContentMap}: SigmaNodesUpdaterArgs ) {
+        getSigmaIdsForContentId,
+        sigmaNodes,
+        sigmaRenderManager,
+        contentIdContentMap,
+        store
+    }: SigmaNodesUpdaterArgs ) {
         this.sigmaNodes = sigmaNodes
         this.getSigmaIdsForContentId = getSigmaIdsForContentId
         this.sigmaRenderManager = sigmaRenderManager
-        this.refresh = refresh
         this.contentIdContentMap = contentIdContentMap
+        this.store = store
     }
 
     private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdates) {
@@ -113,14 +120,14 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
             default:
                 throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(ObjectDataTypes))
         }
-        this.refresh()
+        this.store.commit(MUTATION_NAMES.REFRESH)
     }
 }
 @injectable()
 export class SigmaNodesUpdaterArgs {
-    @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
+    @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId: fGetSigmaIdsForContentId;
     @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes;
     @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager: ISigmaRenderManager;
-    @inject(TYPES.Function) public refresh;
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
+    @inject(TYPES.BranchesStore) public store: Store<any>;
 }
