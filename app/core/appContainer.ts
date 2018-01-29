@@ -9,7 +9,6 @@ import {
 } from '../objects/interfaces';
 
 import {
-    IUI,
     ISubscribableTreeUserStoreSource,
 } from '../objects/interfaces';
 import {Store} from 'vuex';
@@ -19,8 +18,6 @@ import {configureSigma} from '../objects/sigmaNode/configureSigma';
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {inject, injectable, tagged} from 'inversify';
 import {TAGS} from '../objects/tags';
-
-configureSigma(sigma)
 
 @injectable()
 export class AppContainer {
@@ -61,6 +58,7 @@ export class AppContainer {
         this.app = app
     }
     public async start() {
+        configureSigma(sigma)
         this.renderedNodesManager.subscribe(this.sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
 
