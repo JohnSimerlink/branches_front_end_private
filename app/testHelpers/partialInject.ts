@@ -12,12 +12,7 @@ export function partialInject<constructorArgsClass>(
         constructorArgsType,
         injections,
         container,
-    }: {
-        konstructor: Constructor,
-        constructorArgsType: symbol,
-        injections: object,
-        container: Container,
-    } ) {
+    }: IPartialInjectArgs ) {
 
     // const args = {...injections}
     const args = container.get<constructorArgsClass>(constructorArgsType)
@@ -30,6 +25,12 @@ export function partialInject<constructorArgsClass>(
 
     const obj = new konstructor(args)
     return obj
+}
+export interface IPartialInjectArgs {
+    konstructor: Constructor,
+    constructorArgsType: symbol,
+    injections: object,
+    container: Container,
 }
 
 // /*

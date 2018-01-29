@@ -20,6 +20,11 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodes = sigmaNodes
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
+        log('StoreSourceUpdateListenerCore sigmaNodes is', this.sigmaNodes, sigmaNodes,
+            this.contentIdSigmaIdMap, contentIdSigmaIdMap,
+            this.sigmaNodesUpdater, sigmaNodesUpdater)
+        this['_id'] = Math.random()
+        log('StoreSourceUpdateListenerCore id is', this['_id'])
     }
     // private receiveUpdate
 
@@ -27,7 +32,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     meaning the content data may not have a sigma id to be applied to? */
     /* ^^^ This is handled in SigmaNodesUpdater ^^^^ */
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
-        log('StoreSourceUpdateListenerCore receiveUpdate CALLED!!!', update)
+        log('StoreSourceUpdateListenerCore, with id of ', this['_id'],' receiveUpdate CALLED!!!', update, this.sigmaNodes,
+            this.sigmaNodesUpdater, this.contentIdSigmaIdMap)
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA: {
