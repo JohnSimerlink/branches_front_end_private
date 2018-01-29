@@ -84,7 +84,9 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 @injectable()
 export class StoreSourceUpdateListenerCoreArgs {
     @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
-    @inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater: ISigmaNodesUpdater
+    @inject(TYPES.ISigmaNodesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaNodesUpdater: ISigmaNodesUpdater
     @inject(TYPES.IOneToManyMap)
     @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
         public contentIdSigmaIdMap: IOneToManyMap<string>

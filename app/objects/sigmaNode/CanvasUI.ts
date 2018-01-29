@@ -5,10 +5,11 @@
 // subscribe to stores. on stores update parse object type and id
 // and get the correct tree id from either those two properties or from the result of a map lookup
 
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {ISigmaNodesUpdater, ITypeAndIdAndValUpdates} from '../interfaces';
 import {ISubscribable, IUI} from '../interfaces';
 import {TYPES} from '../types';
+import {TAGS} from '../tags';
 
 @injectable()
 export class CanvasUI implements IUI  {
@@ -24,5 +25,7 @@ export class CanvasUI implements IUI  {
 
 @injectable()
 export class CanvasUIArgs {
-    @inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater
+    @inject(TYPES.ISigmaNodesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaNodesUpdater
 }
