@@ -7,7 +7,8 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaNodesUpdater, ISigmaRenderManager,
+    fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaNodes, ISigmaNodesUpdater,
+    ISigmaRenderManager,
     ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
     ObjectDataTypes,
@@ -20,7 +21,7 @@ import {SigmaNode} from './SigmaNode';
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
-    private sigmaNodes: object;
+    private sigmaNodes: ISigmaNodes;
     private sigmaRenderManager: ISigmaRenderManager
     private refresh: () => void
     private contentIdContentMap: IHash<IContentData>
@@ -118,8 +119,8 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 @injectable()
 export class SigmaNodesUpdaterArgs {
     @inject(TYPES.fGetSigmaIdsForContentId) public getSigmaIdsForContentId;
-    @inject(TYPES.Object) public sigmaNodes;
-    @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager;
+    @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes;
+    @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager: ISigmaRenderManager;
     @inject(TYPES.Function) public refresh;
-    @inject(TYPES.Object) public contentIdContentMap;
+    @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
 }

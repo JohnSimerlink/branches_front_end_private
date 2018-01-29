@@ -9,7 +9,7 @@ import {
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ITooltipOpener,
     ITreeLoader, ITreeLocationLoader, ITreeUserLoader, ITreeComponentCreator2, ITree3Creator, IObjectFirebaseAutoSaver,
-    INewTreeComponentCreator
+    INewTreeComponentCreator, ISigmaNodes
 } from '../objects/interfaces';
 
 import {
@@ -97,7 +97,7 @@ export class AppContainer {
             // new SigmaUpdater({
             //     store
             // })
-        const sigmaNodes: IHash<ISigmaNode> = {}
+        const sigmaNodes: ISigmaNodes = {}
         const renderedNodesManagerCore: IRenderedNodesManagerCore
         = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
         // = partialInject<RenderedNodesManagerCoreArgs>({

@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
-import {IAddNodeToSigma, IRenderedNodesManagerCore, ISigmaNode, ISigmaUpdater} from '../interfaces';
+import {IAddNodeToSigma, IRenderedNodesManagerCore, ISigmaNode, ISigmaNodes, ISigmaUpdater} from '../interfaces';
 import {TYPES} from '../types';
 // import {SigmaJs} from 'sigmajs';
 
@@ -25,7 +25,7 @@ export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
 }
 @injectable()
 export class RenderedNodesManagerCoreArgs {
-    @inject(TYPES.Object) public sigmaNodes: object
+    @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
     @inject(TYPES.ISigmaUpdater) public sigmaUpdater: ISigmaUpdater
     // @inject(TYPES.Function) public addNodeToSigma: IAddNodeToSigma
 }
