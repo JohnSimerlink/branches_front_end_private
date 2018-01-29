@@ -11,6 +11,7 @@ import * as sinon from 'sinon'
 import {error} from '../../core/log'
 import BranchesStore, {MUTATION_NAMES} from '../../core/store2'
 import {log} from '../../core/log'
+import {Store} from 'vuex';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import {SigmaJs} from 'sigmajs';
@@ -32,7 +33,7 @@ test('AddNode should call store.commit with add node mutation', (t) => {
     const store = {
         commit(mutationName, arg) {
         }
-    }
+    } as Store<any>
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
         )
