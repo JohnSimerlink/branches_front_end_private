@@ -695,7 +695,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         })
         PubSub.subscribe('canvas.clickEdge', (eventName, eventData) => {
             const edge = eventData.edge
-            if (edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
+            if (edge.type === EDGE_TYPES.SUGGESTED_CONNECTION){
                 click_SUGGESTED_CONNECTION(edge)
                 return
             }
@@ -780,7 +780,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         window.scalingOffset = 20
     }
     setInterval(() => {
-        if (typeof window == 'undefined'){
+        if (typeof window === 'undefined'){
             return
         }
         if (!window.awaitingEdgeConnection && !window.awaitingDisconnectConfirmation){
@@ -825,7 +825,7 @@ function initKnawledgeMap(treeIdToJumpTo){
 
     function showPossibleEdges(parentlessNode){
         var nodesOnScreen = s.graph.nodes().filter(node => node.onScreen) //>>>>> seems to be returning nothing >>// s.camera.quadtree.area(s.camera.getRectangle(s.width, s.height))
-        var headingsOnScreen = nodesOnScreen.filter(node => node.content.type == 'heading')// node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
+        var headingsOnScreen = nodesOnScreen.filter(node => node.content.type === 'heading')// node.content.type == 'heading' && node['renderer1:x'] > 0 && node['renderer1:y'] > 0)
 
         headingsOnScreen
             .forEach(node => {
@@ -869,7 +869,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         console.log("update tree Position called");
         let {newX, newY, treeId} = data;
 
-        if (!s.graph.nodes().find(node => node.id == treeId && node.type === 'tree')){
+        if (!s.graph.nodes().find(node => node.id === treeId && node.type === 'tree')){
             return; //node isn't an actual node in the db - its like a shadow node or helper node
         }
         const MINIMUM_DISTANCE_TO_UPDATE_COORDINATES = .1

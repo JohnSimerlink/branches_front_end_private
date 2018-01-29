@@ -57,13 +57,19 @@ export class AppContainer {
     private treeLocationStoreSource: ISubscribableTreeLocationStoreSource
     private treeUserStoreSource: ISubscribableTreeUserStoreSource
     private vueConfigurer: IVueConfigurer
+    private store: Store<any>
+    private renderedNodesManager: IRenderedNodesManager
+    private sigmaRenderManager: ISigmaRenderManager
     constructor(@inject(TYPES.AppContainerArgs){
         contentStoreSource,
         contentUserStoreSource,
         treeStoreSource,
         treeUserStoreSource,
         treeLocationStoreSource,
-        vueConfigurer
+        vueConfigurer,
+        store,
+        renderedNodesManager,
+        sigmaRenderManager,
    }: AppContainerArgs) {
         this.contentStoreSource = contentStoreSource
         this.contentUserStoreSource = contentUserStoreSource
@@ -71,6 +77,9 @@ export class AppContainer {
         this.treeUserStoreSource = treeUserStoreSource
         this.treeLocationStoreSource = treeLocationStoreSource
         this.vueConfigurer = vueConfigurer
+        this.store = store
+        this.renderedNodesManager = renderedNodesManager
+        this.sigmaRenderManager = sigmaRenderManager
     }
     // this should be the only place where I have new statements
     // and I should only have new statements here . . .
@@ -82,63 +91,23 @@ export class AppContainer {
 
     */
     public async start() {
-        const store: Store<any> =
-            myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
-            // new BranchesStore({globalDataStore: globalStore, state}) as Store<any>
-            // partialInject<BranchesStoreArgs>({
-            //     konstructor: BranchesStore,
-            //     constructorArgsType: TYPES.BranchesStoreArgs,
-            //     injections: {
-            //         // globalDataStore: globalStore
-            //     },
-            //     container: myContainer,
-            // })
-
-        const sigmaUpdater: ISigmaUpdater = myContainer.get<ISigmaUpdater>(TYPES.ISigmaUpdater)
-            // new SigmaUpdater({
-            //     store
-            // })
-        // const sigmaNodes: ISigmaNodes =
-        //     myContainer.get<ISigmaNodes>(TYPES.ISigmaNodes)// {}
-        // const renderedNodesManagerCore: IRenderedNodesManagerCore
-        // = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
-        // = partialInject<RenderedNodesManagerCoreArgs>({
-        //     konstructor: RenderedNodesManagerCore,
-        //     constructorArgsType: TYPES.RenderedNodesManagerCoreArgs,
-        //     injections: {
-        //         addNodeToSigma: sigmaUpdater.addNode.bind(sigmaUpdater)
-        //     },
-        //     container: myContainer,
-        // })
-        const renderedNodesManager: IRenderedNodesManager
-            // = new RenderedNodesManager({renderedNodesManagerCore})
-            = myContainer.get<IRenderedNodesManager>(TYPES.IRenderedNodesManager)
-        const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        renderedNodesManager.subscribe(sigmaRenderManager)
+        // const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        this.renderedNodesManager.subscribe(this.sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
         const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
-        function refresh() {
-            store.commit(MUTATION_NAMES.REFRESH)
-        }
+        // const me = this
+        const refresh = () => this.store.commit(MUTATION_NAMES.REFRESH)
         const sigmaNodesUpdater: ISigmaNodesUpdater
         = partialInject<SigmaNodesUpdaterArgs>({
             konstructor: SigmaNodesUpdater,
             constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
             injections: {
-                sigmaRenderManager,
+                sigmaRenderManager: this.sigmaRenderManager,
                 getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
                 refresh,
             },
             container: myContainer,
         })
-        // = new SigmaNodesUpdater(
-        //     {
-        //         sigmaRenderManager,
-        //         sigmaNodes,
-        //         getSigmaIdsForContentId: contentIdSigmaIdMap.get.bind(contentIdSigmaIdMap),
-        //         refresh,
-        //         contentIdContentMap: {},
-        //     })
 
         const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
             // = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
@@ -200,4 +169,8 @@ export class AppContainerArgs {
         public treeLocationStoreSource: ISubscribableTreeLocationStoreSource
     @inject(TYPES.IVueConfigurer)
         public vueConfigurer: IVueConfigurer
+    @inject(TYPES.BranchesStore)
+        public store: Store<any>
+    @inject(TYPES.IRenderedNodesManager) public renderedNodesManager: IRenderedNodesManager
+    @inject(TYPES.ISigmaRenderManager) public sigmaRenderManager: ISigmaRenderManager
 }
