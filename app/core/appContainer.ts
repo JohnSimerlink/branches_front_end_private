@@ -92,7 +92,8 @@ export class AppContainer {
 
     */
     public async start() {
-        // const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        // const sigmaRenderManager: ISigmaRenderManager =
+        // myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         this.renderedNodesManager.subscribe(this.sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
         const contentIdSigmaIdMap: IOneToManyMap<string>
