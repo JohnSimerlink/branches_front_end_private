@@ -209,6 +209,7 @@ import {
     AutoSaveMutableSubscribableTreeLocationStoreArgs
 } from './app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
 import {TAGS} from './app/objects/tags';
+import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
 const firebaseConfig = firebaseDevConfig
@@ -633,6 +634,8 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
 const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<IApp>(TYPES.IApp).to(App)
     bind<AppArgs>(TYPES.AppArgs).to(AppArgs)
+    bind<AppContainer>(TYPES.AppContainer).to(AppContainer)
+    bind<AppContainerArgs>(TYPES.AppContainerArgs).to(AppContainerArgs)
 })
 
 export const state: {

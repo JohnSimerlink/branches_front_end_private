@@ -1,5 +1,7 @@
 export const TYPES = {
     Any: Symbol('Any'),
+    AppContainer: Symbol('AppContainer'),
+    AppContainerArgs: Symbol('AppContainerArgs'),
     AppArgs: Symbol('AppArgs'),
     Array: Symbol('Array'),
     AutoSaveMutableSubscribableContentStoreArgs: Symbol('AutoSaveMutableSubscribableContentStoreArgs'),

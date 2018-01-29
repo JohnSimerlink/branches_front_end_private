@@ -100,13 +100,30 @@ import {
 } from '../objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
 import {AutoSaveMutableSubscribableTreeStore, AutoSaveMutableSubscribableTreeStoreArgs} from '../objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
 import {partialInject} from '../testHelpers/partialInject';
+import {inject, injectable} from 'inversify';
 
 configureSigma(sigma)
 
 Vue.component('branchesFooter', BranchesFooter)
+@injectable()
 export class AppContainer {
-    constructor() {
-
+    private contentStoreSource: ISubscribableContentStoreSource
+    private contentUserStoreSource: ISubscribableContentUserStoreSource
+    private treeStoreSource: ISubscribableTreeStoreSource
+    private treeLocationStoreSource: ISubscribableTreeLocationStoreSource
+    private treeUserStoreSource: ISubscribableTreeUserStoreSource
+    constructor(@inject(TYPES.AppContainerArgs){
+        contentStoreSource,
+        contentUserStoreSource,
+        treeStoreSource,
+        treeUserStoreSource,
+        treeLocationStoreSource
+   }: AppContainerArgs) {
+        this.contentStoreSource = contentStoreSource
+        this.contentUserStoreSource = contentUserStoreSource
+        this.treeStoreSource = treeStoreSource
+        this.treeUserStoreSource = treeUserStoreSource
+        this.treeLocationStoreSource = treeLocationStoreSource
     }
     // this should be the only place where I have new statements
     // and I should only have new statements here . . .
@@ -124,18 +141,18 @@ export class AppContainer {
         // const firebaseTreesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
         // const firebaseTreeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
         // const firebaseTreeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
-        const contentStoreSource: ISubscribableContentStoreSource
-            = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
-        const contentUserStoreSource: ISubscribableContentUserStoreSource
-            = myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
-        const treeStoreSource: ISubscribableTreeStoreSource
-        = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
-        const treeUserStoreSource: ISubscribableTreeUserStoreSource
-            = myContainer.get<ISubscribableTreeUserStoreSource>
-        (TYPES.ISubscribableTreeUserStoreSource)
-        const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
-        = myContainer.get<ISubscribableTreeLocationStoreSource>
-            (TYPES.ISubscribableTreeLocationStoreSource)
+        // const contentStoreSource: ISubscribableContentStoreSource
+        //     = myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+        // const contentUserStoreSource: ISubscribableContentUserStoreSource
+        //     = myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
+        // const treeStoreSource: ISubscribableTreeStoreSource
+        // = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        // const treeUserStoreSource: ISubscribableTreeUserStoreSource
+        //     = myContainer.get<ISubscribableTreeUserStoreSource>
+        // (TYPES.ISubscribableTreeUserStoreSource)
+        // const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
+        // = myContainer.get<ISubscribableTreeLocationStoreSource>
+        //     (TYPES.ISubscribableTreeLocationStoreSource)
 
         // const treeStore: IMutableSubscribableTreeStore =
         //     partialInject<AutoSaveMutableSubscribableTreeStoreArgs>( {
@@ -252,11 +269,11 @@ export class AppContainer {
         const storeSourceUpdateListener: IStoreSourceUpdateListener
             = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
 
-        storeSourceUpdateListener.subscribe(treeStoreSource)
-        storeSourceUpdateListener.subscribe(treeLocationStoreSource)
-        storeSourceUpdateListener.subscribe(treeUserStoreSource)
-        storeSourceUpdateListener.subscribe(contentStoreSource)
-        storeSourceUpdateListener.subscribe(contentUserStoreSource)
+        storeSourceUpdateListener.subscribe(this.treeStoreSource)
+        storeSourceUpdateListener.subscribe(this.treeLocationStoreSource)
+        storeSourceUpdateListener.subscribe(this.treeUserStoreSource)
+        storeSourceUpdateListener.subscribe(this.contentStoreSource)
+        storeSourceUpdateListener.subscribe(this.contentUserStoreSource)
 
         const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
         // const
@@ -344,4 +361,15 @@ export class AppContainer {
         // and running with db saves and everything. Then define the dependency graph inside of the inversify config
     }
 
+}
+
+@injectable()
+export class AppContainerArgs {
+    @inject(TYPES.ISubscribableContentStoreSource) public contentStoreSource: ISubscribableContentStoreSource
+    @inject(TYPES.ISubscribableContentUserStoreSource)
+        public contentUserStoreSource: ISubscribableContentUserStoreSource
+    @inject(TYPES.ISubscribableTreeStoreSource) public treeStoreSource: ISubscribableTreeStoreSource
+    @inject(TYPES.ISubscribableTreeUserStoreSource) public treeUserStoreSource: ISubscribableTreeUserStoreSource
+    @inject(TYPES.ISubscribableTreeLocationStoreSource)
+        public treeLocationStoreSource: ISubscribableTreeLocationStoreSource
 }
