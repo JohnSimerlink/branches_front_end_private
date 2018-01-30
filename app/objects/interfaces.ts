@@ -43,10 +43,10 @@ export interface IContentItem {
 //     deserializeFromDB(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
 // }
 export interface ITreeLoader {
-    getData(treeId): ITreeDataWithoutId
-    getItem(treeId): ISyncableMutableSubscribableTree
-    downloadData(treeId): Promise<ITreeDataWithoutId>
-    isLoaded(treeId): boolean
+    getData(treeId: id): ITreeDataWithoutId
+    getItem(treeId: id): ISyncableMutableSubscribableTree
+    downloadData(treeId: id): Promise<ITreeDataWithoutId>
+    isLoaded(treeId: id): boolean
 }
 // export interface ISpecialTreeLoader extends ITreeLoader {}
 // export interface ITreeLocationLoaderCore {
@@ -54,10 +54,10 @@ export interface ITreeLoader {
 //     deserializeFromDB(treeId, treeLocationData: ITreeLocationData): IMutableSubscribableTreeLocation
 // }
 export interface ITreeLocationLoader {
-    getData(treeId): ITreeLocationData
-    getItem(treeId): ISyncableMutableSubscribableTreeLocation
-    downloadData(treeId): Promise<ITreeLocationData>
-    isLoaded(treeId): boolean
+    getData(treeId: id): ITreeLocationData
+    getItem(treeId: id): ISyncableMutableSubscribableTreeLocation
+    downloadData(treeId: id): Promise<ITreeLocationData>
+    isLoaded(treeId: id): boolean
 }
 export interface ITreeUserLoader {
     getData({treeId, userId}): ITreeUserData
@@ -67,10 +67,10 @@ export interface ITreeUserLoader {
 }
 
 export interface IContentLoader {
-    getData(contentId): IContentData
-    getItem(contentId): ISyncableMutableSubscribableContent
-    downloadData(contentId): Promise<IContentData>
-    isLoaded(contentId): boolean
+    getData(contentId: id): IContentData
+    getItem(contentId: id): ISyncableMutableSubscribableContent
+    downloadData(contentId: id): Promise<IContentData>
+    isLoaded(contentId: id): boolean
 }
 
 export interface IContentUserLoader {

@@ -2,6 +2,7 @@ import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
+    id,
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree,
     ITreeDataFromFirebase,
     ITreeDataWithoutId,
@@ -22,7 +23,7 @@ export class TreeLoader implements ITreeLoader {
         this.firebaseRef = firebaseRef
     }
 
-    public getData(treeId): ITreeDataWithoutId {
+    public getData(treeId: id): ITreeDataWithoutId {
         const tree = this.storeSource.get(treeId)
         if (!tree) {
             throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
@@ -31,7 +32,7 @@ export class TreeLoader implements ITreeLoader {
         // TODO: fix violoation of law of demeter
     }
 
-    public getItem(treeId): ISyncableMutableSubscribableTree {
+    public getItem(treeId: id): ISyncableMutableSubscribableTree {
         const tree = this.storeSource.get(treeId)
         if (!tree) {
             throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
@@ -41,7 +42,7 @@ export class TreeLoader implements ITreeLoader {
 
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
-    public async downloadData(treeId: string): Promise<ITreeDataWithoutId> {
+    public async downloadData(treeId: id): Promise<ITreeDataWithoutId> {
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {

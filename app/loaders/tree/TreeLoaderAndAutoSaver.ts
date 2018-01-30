@@ -26,7 +26,7 @@ export class TreeLoaderAndAutoSaver implements ITreeLoader {
     }
 
     public getItem(treeId: id): ISyncableMutableSubscribableTree {
-        return this.treeLoader.getItem({treeId})
+        return this.treeLoader.getItem(treeId)
     }
 
     public isLoaded(treeId: id): boolean {
