@@ -21,6 +21,7 @@ import {AppContainer} from './appContainer';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {
+    id,
     IMutableSubscribableTreeStore,
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
     ObjectDataTypes
@@ -29,6 +30,7 @@ import {SubscribableTreeStoreSource, SubscribableTreeStoreSourceArgs} from '../o
 import {TreeDeserializer} from '../loaders/tree/TreeDeserializer';
 import {ContainerModule, interfaces} from 'inversify';
 import {TAGS} from '../objects/tags';
+import {createTreeId} from '../objects/tree/TreeUtils';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -48,23 +50,23 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     // myContainer.unbind(TYPES.FirebaseReference)
     log('This is after start of app integration 4')
 
-    const parentTreeId = '1934879abcd19823'
-    const childTreeId = '12498732578'
+    // const parentTreeId = '1934879abcd19823'
 
-    const newContentId = '4324234'
-    const newParentId = '4344324234'
-    const newChildren = ['45344324234', 'aabc321', 'abcd43132']
-    const treeDataWithoutId: ITreeDataWithoutId = {
-        children: newChildren,
-        contentId: newContentId,
-        parentId: newParentId,
+    // const newContentId = '4324234'
+    const children = ['sampleChildId1', 'sampleChildId2']
+    const parentTreeData: ITreeDataWithoutId = {
+        children,
+        contentId: 'sampleContentId',
+        parentId: 'sapleParentId', // newParentId,
     }
+    const parentTreeId = createTreeId(parentTreeData)
     const tree: ISyncableMutableSubscribableTree
-        = TreeDeserializer.deserializeWithoutId({treeDataWithoutId, treeId: newParentId})
+        = TreeDeserializer.deserializeWithoutId({treeDataWithoutId: parentTreeData, treeId: parentTreeId})
+    const aChildId: id = 'ChildIdToAdd31209845abcabca'
 
     const parentTreeRef = mockTreesRef.child(parentTreeId)
-    log('mockTreesRef inside of app integration 4 spec is ', mockTreesRef)
-    log('parentTreeRef inside of app integration 4 spec is ', parentTreeRef)
+    // log('mockTreesRef inside of app integration 4 spec is ', mockTreesRef)
+    // log('parentTreeRef inside of app integration 4 spec is ', parentTreeRef)
     const parentTreeChildrenPropertyRef = parentTreeRef.child('children')
     // const
     // log('GlobalDataStore just created')
@@ -89,11 +91,11 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     /**
      * get data in the store source and with syncers
      */
-    store.commit(MUTATION_NAMES.CREATE_TREE, treeDataWithoutId )
+    store.commit(MUTATION_NAMES.CREATE_TREE, parentTreeData )
     /**
      * Do the actual commit we are testing
      */
-    store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId})
+    store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: aChildId})
 
     expect(parentTreeChildrenPropertyRefUpdateSpy.callCount).to.deep.equal(1)
 
