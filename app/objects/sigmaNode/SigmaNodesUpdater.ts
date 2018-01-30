@@ -43,7 +43,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         this.contentIdContentMap = contentIdContentMap
         this.store = store
 
-        log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', this.getSigmaIdsForContentId['_id'])
+        // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', this.getSigmaIdsForContentId['_id'])
 
     }
 

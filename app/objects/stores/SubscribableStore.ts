@@ -33,7 +33,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         super({updatesCallbacks})
         this.storeSource = storeSource
         this._id = Math.random()
-        log('new SubscribableStore just created', this._id)
+        // log('new SubscribableStore just created', this._id)
     }
     protected callbackArguments(): IIdAndValUpdates {
         return this.update
@@ -47,7 +47,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
                 ' until store has started publishing!')
         }
         this.storeSource.set(id, item)
-        log('SubscribableStore addAndSubscribeToItem just called')
+        log('SubscribableStore addAndSubscribeToItem just called', id, item)
         this.subscribeToItem(id, item)
         item.startPublishing()
         // throw new Error('Method not implemented.");

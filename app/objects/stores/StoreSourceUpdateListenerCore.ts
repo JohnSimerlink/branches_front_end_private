@@ -21,11 +21,11 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodes = sigmaNodes
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
-        log('StoreSourceUpdateListenerCore sigmaNodes is', this.sigmaNodes, sigmaNodes,
-            this.contentIdSigmaIdMap, contentIdSigmaIdMap,
-            this.sigmaNodesUpdater, sigmaNodesUpdater)
+        // log('StoreSourceUpdateListenerCore sigmaNodes is', this.sigmaNodes, sigmaNodes,
+        //     this.contentIdSigmaIdMap, contentIdSigmaIdMap,
+        //     this.sigmaNodesUpdater, sigmaNodesUpdater)
         this['_id'] = Math.random()
-        log('StoreSourceUpdateListenerCore id is', this['_id'])
+        // log('StoreSourceUpdateListenerCore id is', this['_id'])
     }
     // private receiveUpdate
 
@@ -33,8 +33,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     meaning the content data may not have a sigma id to be applied to? */
     /* ^^^ This is handled in SigmaNodesUpdater ^^^^ */
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
-        log('StoreSourceUpdateListenerCore, with id of ', this['_id'],' receiveUpdate CALLED!!!', update, this.sigmaNodes,
-            this.sigmaNodesUpdater, this.contentIdSigmaIdMap)
+        // log('StoreSourceUpdateListenerCore, with id of ', this['_id'],' receiveUpdate CALLED!!!', update, this.sigmaNodes,
+        //     this.sigmaNodesUpdater, this.contentIdSigmaIdMap)
         const type: ObjectDataTypes = update.type
         switch (type) {
             case ObjectDataTypes.TREE_DATA: {
@@ -69,8 +69,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
-                log('StoreSourceUpdateListenerCore sigmaIds in content ' +
-                    'user data are', sigmaIds, this.contentIdSigmaIdMap)
+                // log('StoreSourceUpdateListenerCore sigmaIds in content ' +
+                //     'user data are', sigmaIds, this.contentIdSigmaIdMap)
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }

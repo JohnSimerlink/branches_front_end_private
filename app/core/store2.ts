@@ -179,7 +179,8 @@ const mutations = {
          parentTreeId, childTreeId,
      }) {
 
-        const globalStoreMutation: IIdProppedDatedMutation<SetMutationTypes, TreePropertyNames> = {
+        const globalStoreMutation: ITypeIdProppedDatedMutation<SetMutationTypes> = {
+            objectType: ObjectTypes.TREE,
             id: parentTreeId,
             timestamp: Date.now(),
             type: SetMutationTypes.ADD,
@@ -277,9 +278,9 @@ export default class BranchesStore {
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         store['_id'] = Math.random()
-        log('BranchesStore just created. BranchesStore id', store['_id'])
-        log('BranchesStore just created.' +
-            ' It\'s MutableSubscribableGlobalStore is', globalDataStore['_globalStoreId'])
+        // log('BranchesStore just created. BranchesStore id', store['_id'])
+        // log('BranchesStore just created.' +
+        //     ' It\'s MutableSubscribableGlobalStore is', globalDataStore['_globalStoreId'])
         // . BranchesStore id', store['_id'])
         initialized = true
         return store

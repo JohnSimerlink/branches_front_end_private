@@ -2,6 +2,7 @@ export const TAGS = {
     AUTO_SAVER: Symbol('auto_saver'),
     SPECIAL_TREE_LOADER: Symbol('special_tree_loader'),
     DEFAULT: Symbol('default'),
+    MAIN_APP: Symbol('main_app'),
     TREES_REF: Symbol('trees_ref'),
     TREE_LOCATIONS_REF: Symbol('tree_locations_ref'),
     CONTENT_REF: Symbol('content_ref'),

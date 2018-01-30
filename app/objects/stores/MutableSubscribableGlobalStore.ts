@@ -31,9 +31,11 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     }: MutableSubscribableGlobalStoreArgs) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
         this._globalStoreId = Math.random()
-        log('328pm mutablesubscribableglobalstore just created', this._globalStoreId)
+        // log('/**/328pm mutablesubscribableglobalstore just created', this._globalStoreId)
     }
     private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
+        log('MSGLobalStore addEditMutation called. id is,',
+            this._globalStoreId, 'and mutation objectType is', mutation.objectType)
         // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
             case ObjectTypes.TREE: {

@@ -20,14 +20,14 @@ import {Store} from 'vuex';
 let template = require('./newTree.html').default
 if (!template) {
     template = require('./newTree.html')
-    log('newTreeComponentCreator template was not created from .default', template)
+    // log('newTreeComponentCreator template was not created from .default', template)
 } else {
-    log('newTreeComponentCreator template was created from .default', template)
+    // log('newTreeComponentCreator template was created from .default', template)
 }
 if (!template || !Object.keys(template).length) {
     template = '<div>BLANK TEMPLATE</div>'
 }
-log('template in newTreeComponent Creator is', template)
+// log('template in newTreeComponent Creator is', template)
 // TODO: TEMPLATES still seem to load completely empty during tests . . . ^^
 // import {Store} from 'vuex';
 // import {MUTATION_NAMES} from '../../core/store2';
@@ -58,7 +58,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
        store
    }: NewTreeComponentCreatorArgs) {
         this.store = store
-        log('the BRANCHES_STORE store id created in newTreeComponentCreator is', this.store['_id'])
+        // log('the BRANCHES_STORE store id created in newTreeComponentCreator is', this.store['_id'])
     }
     public create() {
         const me = this
@@ -66,8 +66,8 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
             template,
             props: ['parentId', 'parentX', 'parentY', 'primaryparenttreecontenturi'],
             created() {
-                log('newTree component created props are ',
-                    this.parentId, this.primaryparenttreecontenturi, this.parentX, this.parentY)
+                // log('newTree component created props are ',
+                //     this.parentId, this.primaryparenttreecontenturi, this.parentX, this.parentY)
             },
             data() {
                 return {
@@ -104,7 +104,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 createNewTree(
                     {question, answer, title, type}
                     = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
-                    log('newtree: createNewTree called', question, answer, title, type)
+                    // log('newtree: createNewTree called', question, answer, title, type)
                     const titleFormatted = title && title.trim() || ''
                     const questionFormatted = question && question.trim() || ''
                     const answerFormatted = answer && answer.trim() || ''

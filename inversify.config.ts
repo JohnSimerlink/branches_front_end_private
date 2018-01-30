@@ -295,7 +295,7 @@ export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
         .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
 })
-const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
         .whenTargetIsDefault()
@@ -375,6 +375,7 @@ const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.U
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
     = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
+log('SubscribableTreeStoreSource id is ', subscribableTreeStoreSourceSingleton['_id'])
 const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
     = new SubscribableTreeLocationStoreSource(
         {hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_LOCATION_DATA})
@@ -386,11 +387,17 @@ const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStore
     = new SubscribableContentUserStoreSource
 ({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.CONTENT_USER_DATA})
 
-const stores = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
-        .toConstantValue(subscribableTreeLocationStoreSourceSingleton)
+export const treeStoreSourceSingletonModule
+    = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
         .toConstantValue(subscribableTreeStoreSourceSingleton)
+        .whenTargetTagged(TAGS.MAIN_APP, true)
+})
+
+export const stores =
+    new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
+        .toConstantValue(subscribableTreeLocationStoreSourceSingleton)
     bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
         .toConstantValue(subscribableTreeUserStoreSourceSingleton)
     bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
@@ -626,7 +633,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 })
-const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     // bind<TreeComponentCreatorArgs>(TYPES.TreeComponentCreatorArgs).to(TreeComponentCreatorArgs)
     // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
     // bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
@@ -647,7 +654,7 @@ const components = new ContainerModule((bind: interfaces.Bind, unbind: interface
 })
 // app
 
-const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+export const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<IApp>(TYPES.IApp).to(App)
     bind<AppArgs>(TYPES.AppArgs).to(AppArgs)
     bind<AppContainer>(TYPES.AppContainer).to(AppContainer)
@@ -676,7 +683,7 @@ export const state: {
     globalDataStore: null,
     userId: JOHN_USER_ID,
 };
-const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)
     bind<any>(TYPES.Any).toConstantValue(null)
     bind<boolean>(TYPES.Boolean).toConstantValue(false)
@@ -695,7 +702,7 @@ const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbi
 
 })
 
-const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const globalStoreSingletonArgs = myContainer.get<MutableSubscribableGlobalStoreArgs>
     (TYPES.MutableSubscribableGlobalStoreArgs)
 
@@ -727,7 +734,7 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
         .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
     contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
-    log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
+    // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
 
     const sigmaRenderManagerSingletonArgs: SigmaRenderManagerArgs
     = myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs)
@@ -753,6 +760,7 @@ const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: inte
 
 })
 
+myContainer.load(treeStoreSourceSingletonModule)
 myContainer.load(stores)
 myContainer.load(firebaseReferences)
 myContainer.load(loaders)

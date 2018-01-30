@@ -13,7 +13,7 @@ if (env === 'test') {
     if (!register) {
         register = require('ignore-styles')
     }
-    log('configure is ', register)
+    // log('configure is ', register)
     register(['.html'])
 }
 // tslint:disable-next-line no-var-requires

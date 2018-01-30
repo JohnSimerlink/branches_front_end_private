@@ -1,7 +1,11 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../objects/types';
 import {IKnawledgeMapCreator, INewTreeComponentCreator, ITree3Creator, IVueConfigurer} from '../objects/interfaces';
-import Vue, {ComponentOptions} from 'vue'
+import {ComponentOptions} from 'vue'
+let Vue = require('vue').default
+if (!Vue) {
+    Vue = require('vue')
+}
 // import VueRouter from 'vue-router'
 let VueRouter = require('vue-router').default;
 if (!VueRouter) {
@@ -73,7 +77,7 @@ export class VueConfigurer implements IVueConfigurer {
             },
             store: this.store,
             router
-        } as ComponentOptions<Vue>)
+        } as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/)
     }
 }
 

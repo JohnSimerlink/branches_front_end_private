@@ -16,7 +16,7 @@ export class SubscribableTreeLocationStore
         @inject(TYPES.SubscribableTreeLocationStoreArgs){
             storeSource, updatesCallbacks}: SubscribableTreeLocationStoreArgs ) {
         super({updatesCallbacks, storeSource})
-        log('SubscribableTreeLocationStore constructor just called!. the storeSource in the args is', storeSource)
+        // log('SubscribableTreeLocationStore constructor just called!. the storeSource in the args is', storeSource)
     }
 }
 
