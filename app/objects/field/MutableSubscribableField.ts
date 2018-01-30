@@ -54,6 +54,7 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         return this._mutations;
     }
 }
+// TODO: type the args so that field must be type of T
 @injectable()
 export class MutableSubscribableFieldArgs {
     @inject(TYPES.Array) public updatesCallbacks? = []

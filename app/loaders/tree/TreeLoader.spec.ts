@@ -76,11 +76,17 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
     const childFirebaseRef = firebaseRef.child(treeId)
 
     const sampleTreeData: ITreeDataFromFirebase = {
-        contentId: '12345532',
-        parentId: '493284',
+        contentId: {
+            val: '12345532',
+        },
+        parentId: {
+            val: '493284'
+        },
         children: {
-            2948: true,
-            2947: true,
+            val: {
+                2948: true,
+                2947: true,
+            }
         }
     }
 
@@ -108,11 +114,17 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
     const contentId = '12345532'
     const parentId = '493284'
     const sampleTreeData: ITreeDataFromFirebase = {
-        contentId,
-        parentId,
+        contentId: {
+            val: contentId
+        },
+        parentId: {
+            val: parentId
+        },
         children: {
-            2948: true,
-            2947: true
+            val: {
+                2948: true,
+                2947: true
+            }
         }
     }
     const expectedTreeData: ITreeDataWithoutId = {
@@ -146,11 +158,17 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
     const childFirebaseRef = firebaseRef.child(treeId)
 
     const sampleTreeData: ITreeDataFromFirebase = {
-        contentId: '12345532',
-        parentId: '493284',
+        contentId: {
+            val: '12345532',
+        },
+        parentId: {
+            val: '493284',
+        },
         children: {
-            2948: true,
-            2947: true,
+            val: {
+                2948: true,
+                2947: true,
+            }
         }
     }
     const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
@@ -172,14 +190,20 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
     const contentId = '12345532'
     const parentId = '493284'
     const sampleTreeData: ITreeDataFromFirebase = {
-        contentId,
-        parentId,
+        contentId: {
+            val: contentId,
+        },
+        parentId: {
+            val: parentId,
+        },
         children: {
-            2948: true,
-            2947: true,
+            val: {
+                2948: true,
+                2947: true,
+            }
         }
     }
-    const childrenArray = setToStringArray(sampleTreeData.children)
+    const childrenArray = setToStringArray(sampleTreeData.children.val)
     const expectedTreeData: ITreeDataWithoutId = {
         contentId,
         parentId,

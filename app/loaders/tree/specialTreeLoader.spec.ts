@@ -5,7 +5,7 @@ import test from 'ava'
 import {myContainer} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {
-    IHash, IOneToManyMap, ISubscribableTreeStoreSource, ITreeDataFromFirebase,
+    IOneToManyMap, ITreeDataFromFirebase,
     ITreeLoader
 } from '../../objects/interfaces';
 import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './specialTreeLoader';
@@ -13,16 +13,6 @@ import {FIREBASE_PATHS} from '../paths';
 import {expect} from 'chai'
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {partialInject} from '../../testHelpers/partialInject';
-import {injectionWorks} from '../../testHelpers/testHelpers';
-// test('DI works', (t) => {
-//     const injects = injectionWorks<SpecialTreeLoaderArgs, ISpecialTreeLoader>({
-//         container: myContainer,
-//         argsType: TYPES.SpecialTreeLoaderArgs,
-//         interfaceType: TYPES.ISpecialTreeLoader,
-//     })
-//     expect(injects).to.equal(true)
-//     t.pass()
-// })
 test('SpecialTreeLoader', async (t) => {
     const treeId = '1234'
     const sigmaId = treeId
@@ -31,11 +21,17 @@ test('SpecialTreeLoader', async (t) => {
 
     const contentId = '12345532'
     const sampleTreeData: ITreeDataFromFirebase = {
-        contentId,
-        parentId: '493284',
+        contentId: {
+            val: contentId
+        },
+        parentId: {
+            val: '493284'
+        },
         children: {
+            val: {
             2948: true,
             2947: true,
+            }
         }
     }
     const treeLoader: ITreeLoader = partialInject<TreeLoaderArgs>(
