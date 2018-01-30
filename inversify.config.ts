@@ -772,10 +772,23 @@ export function myContainerLoadAllModules() {
     myContainer.load(misc)
     myContainer.load(storeSingletons)
 }
-export function myContainerLoadAllModulesExceptTreeStoreSourceSingleton() {
+export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs() {
     // myContainer.load(treeStoreSourceSingletonModule)
     myContainer.load(stores)
-    myContainer.load(firebaseReferences)
+    // myContainer.load(firebaseReferences)
+    myContainer.load(loaders)
+    myContainer.load(rendering)
+    myContainer.load(components)
+    myContainer.load(dataObjects)
+    myContainer.load(app)
+    myContainer.load(misc)
+    myContainer.load(storeSingletons)
+}
+
+export function myContainerLoadAllModulesExceptFirebaseRefs() {
+    myContainer.load(treeStoreSourceSingletonModule)
+    myContainer.load(stores)
+    // myContainer.load(firebaseReferences)
     myContainer.load(loaders)
     myContainer.load(rendering)
     myContainer.load(components)
