@@ -26,7 +26,7 @@ export class TreeLocationLoaderAndAutoSaver implements ITreeLocationLoader {
     }
 
     public getItem(treeLocationId: id): ISyncableMutableSubscribableTreeLocation {
-        return this.treeLocationLoader.getItem({treeLocationId})
+        return this.treeLocationLoader.getItem(treeLocationId)
     }
 
     public isLoaded(treeLocationId: id): boolean {
