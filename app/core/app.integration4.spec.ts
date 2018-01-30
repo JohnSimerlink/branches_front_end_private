@@ -34,6 +34,10 @@ import {TAGS} from '../objects/tags';
 test('App integration test 4 - BranchesStore mutation add new child treeId to parent' +
     ' children set should update the value in the appropriate firebase ref', async (t) => {
 
+    const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
+        = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
+    log('The subscribableTreeStoreSourceSingleton created in app integration 4 id is ',
+        subscribableTreeStoreSourceSingleton['_id'])
     myContainer.load(
         new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
         bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
@@ -65,10 +69,6 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     const parentTreeId = '1934879abcd19823'
     const childTreeId = '12498732578'
 
-    const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
-        = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
-    log('The subscribableTreeStoreSourceSingleton created in app integration 4 id is ',
-        subscribableTreeStoreSourceSingleton['_id'])
 
     const newContentId = '4324234'
     const newParentId = '4344324234'
