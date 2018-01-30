@@ -239,13 +239,6 @@ export interface IDetailedUpdates {
     pushes?: object
 }
 
-export interface IFirebaseRef extends IPushable {
-    update(updates: object),
-    child(path: string): IFirebaseRef,
-    on(eventName: string, callback: (ISnapshot) => void)
-    once(eventName: string, callback: (ISnapshot) => void)
-}
-
 export interface ISyncable {
     getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }

@@ -6,9 +6,8 @@ import * as firebase from 'firebase'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
-import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
-    IFirebaseRef, IMutableSubscribableTreeUser, IProficiencyStats, ISubscribableStoreSource,
+    IMutableSubscribableTreeUser, IProficiencyStats, ISubscribableStoreSource,
     ISubscribableTreeUserStoreSource, ISyncableMutableSubscribableTreeUser,
     ITreeUserData,
     ITreeUserLoader

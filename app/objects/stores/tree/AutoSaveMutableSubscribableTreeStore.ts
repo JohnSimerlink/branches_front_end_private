@@ -33,6 +33,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
         log('tree just created is', treeItem)
         const treeItemFirebaseRef = this.treesFirebaseRef.child(treeId)
         // const treeItemFirebaseRef = treeFirebaseRef.child(userId)
+        log('treesFirebaseRef and treeItemFirebaseRef are', this.treesFirebaseRef, treeItemFirebaseRef)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: treeItem,
             syncableObjectFirebaseRef: treeItemFirebaseRef
@@ -49,5 +50,7 @@ export class AutoSaveMutableSubscribableTreeStoreArgs {
     @tagged(TAGS.MAIN_APP, true)
         public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.IFirebaseRef) public treesFirebaseRef: Reference;
+    @inject(TYPES.FirebaseReference)
+    @tagged(TAGS.TREES_REF, true)
+        public treesFirebaseRef: Reference;
 }

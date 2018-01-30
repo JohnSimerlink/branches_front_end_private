@@ -5,9 +5,8 @@ import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
-import {FirebaseRef} from '../../objects/dbSync/FirebaseRef';
 import {
-    IFirebaseRef, IMutableSubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
+    IMutableSubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISyncableMutableSubscribableTreeLocation,
     ITreeLocationData,
 } from '../../objects/interfaces';

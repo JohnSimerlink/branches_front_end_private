@@ -1,4 +1,3 @@
-import {IFirebaseRef} from '../../objects/interfaces';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 

@@ -15,7 +15,6 @@ import {
     SubscribableContentUser,
     SubscribableContentUserArgs
 } from './app/objects/contentUser/SubscribableContentUser';
-import {FirebaseRef} from './app/objects/dbSync/FirebaseRef';
 import {PropertyFirebaseSaverArgs} from './app/objects/dbSync/PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver, PropertyAutoFirebaseSaverArgs} from './app/objects/dbSync/PropertyAutoFirebaseSaver';
 import {
@@ -27,7 +26,7 @@ import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
-    IFirebaseRef, IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser,
+    IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser,
     INewTreeComponentCreator, IOneToManyMap,
     IProficiencyStats,
     IProppedDatedMutation,
@@ -629,7 +628,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 // TODO: maybe only use this constant binding for a test container. . . Not production container
 
     bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
-    bind<IFirebaseRef>(TYPES.IFirebaseRef).to(FirebaseRef)
 
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
 })

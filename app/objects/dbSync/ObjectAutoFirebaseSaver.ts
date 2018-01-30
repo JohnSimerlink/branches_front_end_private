@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {
-    IDatabaseAutoSaver, IDatabaseSaver, IFirebaseRef, IObjectFirebaseAutoSaver, ISyncableValable,
+    IDatabaseAutoSaver, IDatabaseSaver, IObjectFirebaseAutoSaver, ISyncableValable,
 } from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
@@ -31,6 +31,7 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
             }
         }
         log('initialSave ObjectAutoFirebaseSaver val is', saveVal)
+        log('initialSave ObjectAutoFirebaseSaver syncableObjectFirebaseRef is', this.syncableObjectFirebaseRef)
         this.syncableObjectFirebaseRef.update(saveVal)
     }
     public start() {
@@ -52,5 +53,5 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
 @injectable()
 export class ObjectFirebaseAutoSaverArgs {
     @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncableValable
-    @inject(TYPES.IFirebaseRef) public syncableObjectFirebaseRef: Reference
+    @inject(TYPES.FirebaseReference) public syncableObjectFirebaseRef: Reference
 }

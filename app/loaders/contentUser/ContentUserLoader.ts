@@ -3,7 +3,7 @@ import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
-    IContentUserLoader, IContentUserData, IContentUserDataFromDB, IFirebaseRef, ISyncableMutableSubscribableContentUser
+    IContentUserLoader, IContentUserData, IContentUserDataFromDB, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/contentUserValidator';
 import Reference = firebase.database.Reference;
@@ -52,7 +52,7 @@ export class ContentUserLoader implements IContentUserLoader {
         if (this.isLoaded({contentId, userId})) {
             return this.getData({contentId, userId})
         }
-        const contentUserRef: IFirebaseRef =
+        const contentUserRef: Reference =
             getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId})
         log('contentUserLoader downloadData called', contentId, userId)
         const me = this
