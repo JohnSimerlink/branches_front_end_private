@@ -38,8 +38,10 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     /* TODO: make the test super easy to set up . . .
      e.g. I don't have to set up the subscriptions myself and can just call instance.method() */
     // myContainer.unload(firebaseReferences)
+    log('This is start of app integration 4')
     myContainer.unbind(TYPES.FirebaseReference)
     myContainer.load(mockFirebaseReferences)
+    log('This is after start of app integration 4')
 
     const parentTreeId = '1934879abcd19823'
     const childTreeId = '12498732578'
@@ -62,11 +64,12 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
 
     subscribableTreeStoreSourceSingleton.set(parentTreeId, tree)
     // myContainer.unload(treeStoreSourceSingletonModule)
-    // myContainer.unbind(TYPES.ISubscribableTreeStoreSource)
+    myContainer.unbind(TYPES.ISubscribableTreeStoreSource)
     // // myContainer
-    // // myContainer.bind<ISubscribableTreeStoreSource>
-    // //     (TYPES.ISubscribableTreeStoreSource)
-    // //     .toConstantValue(subscribableTreeStoreSourceSingleton)
+    myContainer.bind<ISubscribableTreeStoreSource>
+        (TYPES.ISubscribableTreeStoreSource)
+        .toConstantValue(subscribableTreeStoreSourceSingleton)
+        .whenTargetTagged(TAGS.MAIN_APP, true)
     //
     // myContainer.load(
     //     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
