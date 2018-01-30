@@ -30,12 +30,12 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
                 val: property.val()
             }
         }
-        log('initialSave ObjectAutoFirebaseSaver val is', saveVal)
-        log('initialSave ObjectAutoFirebaseSaver syncableObjectFirebaseRef is', this.syncableObjectFirebaseRef)
+        // log('initialSave ObjectAutoFirebaseSaver val is', saveVal)
+        // log('initialSave ObjectAutoFirebaseSaver syncableObjectFirebaseRef is', this.syncableObjectFirebaseRef)
         this.syncableObjectFirebaseRef.update(saveVal)
     }
     public start() {
-        log('ObjectAutoFirebaseSaver start called for', this.syncableObject, this.syncableObjectFirebaseRef)
+        // log('ObjectAutoFirebaseSaver start called for', this.syncableObject, this.syncableObjectFirebaseRef)
         const propertiesToSync = this.syncableObject.getPropertiesToSync()
         for (const [propName, property] of Object.entries(propertiesToSync)) {
             const propertyFirebaseRef = this.syncableObjectFirebaseRef.child(propName)
@@ -43,9 +43,9 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
             const propertyAutoFirebaseSaver: IDatabaseAutoSaver = new PropertyAutoFirebaseSaver({
                 saveUpdatesToDBFunction: propertyFirebaseSaver.save.bind(propertyFirebaseSaver)
             })
-            log('ObjectAutoFirebaseSaver ', propName, property, ' about to get subscribed to')
+            // log('ObjectAutoFirebaseSaver ', propName, property, ' about to get subscribed to')
             propertyAutoFirebaseSaver.subscribe(property)
-            log('ObjectAutoFirebaseSaver ', propName, property, ' just got subscribed to')
+            // log('ObjectAutoFirebaseSaver ', propName, property, ' just got subscribed to')
         }
     }
 }
