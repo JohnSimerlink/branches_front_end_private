@@ -9,7 +9,7 @@ import * as sinon from 'sinon'
 import {
     myContainer,
     mockTreesRef,
-    mockFirebaseReferences,
+    mockFirebaseReferences, treeStoreSourceSingletonModule,
 } from '../../inversify.config';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 import {TYPES} from '../objects/types';
@@ -19,6 +19,14 @@ import {Store} from 'vuex';
 import {AppContainer} from './appContainer';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
+import {
+    ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
+    ObjectDataTypes
+} from '../objects/interfaces';
+import {SubscribableTreeStoreSource, SubscribableTreeStoreSourceArgs} from '../objects/stores/SubscribableStoreSource';
+import {TreeDeserializer} from '../loaders/tree/TreeDeserializer';
+import {ContainerModule, interfaces} from 'inversify';
+import {TAGS} from '../objects/tags';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -35,10 +43,49 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
 
     const parentTreeId = '1934879abcd19823'
     const childTreeId = '12498732578'
+
+    const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
+        = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
+    log('The subscribableTreeStoreSourceSingleton created in app integration 4 id is ',
+        subscribableTreeStoreSourceSingleton['_id'])
+
+    const newContentId = '4324234'
+    const newParentId = '4344324234'
+    const newChildren = ['45344324234', 'aabc321', 'abcd43132']
+    const treeDataWithoutId: ITreeDataWithoutId = {
+        children: newChildren,
+        contentId: newContentId,
+        parentId: newParentId,
+    }
+    const tree: ISyncableMutableSubscribableTree
+        = TreeDeserializer.deserializeWithoutId({treeDataWithoutId, treeId: newParentId})
+
+    subscribableTreeStoreSourceSingleton.set(parentTreeId, tree)
+    // myContainer.unload(treeStoreSourceSingletonModule)
+    // myContainer.unbind(TYPES.ISubscribableTreeStoreSource)
+    // // myContainer
+    // // myContainer.bind<ISubscribableTreeStoreSource>
+    // //     (TYPES.ISubscribableTreeStoreSource)
+    // //     .toConstantValue(subscribableTreeStoreSourceSingleton)
+    //
+    // myContainer.load(
+    //     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    //     bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+    //         .toConstantValue(subscribableTreeStoreSourceSingleton)
+    //         .whenTargetTagged(TAGS.MAIN_APP, true)
+    //     bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
+    //     .to(SubscribableTreeStoreSourceArgs)
+    //     })
+    // )
+
+    // subscribableTreeStoreSourceSingleton
+
+    // myContainer.unbind()
+
     const parentTreeRef = mockTreesRef.child(parentTreeId)
     const parentTreeChildrenPropertyRef = parentTreeRef.child('children')
     // const
-    log('GlobalDataStore just created')
+    // log('GlobalDataStore just created')
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
 
     const parentTreeChildrenPropertyRefUpdateSpy = sinon.spy(parentTreeChildrenPropertyRef, 'update')

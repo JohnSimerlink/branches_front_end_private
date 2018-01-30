@@ -83,6 +83,7 @@ export class AppContainerArgs {
     @inject(TYPES.ISubscribableContentUserStoreSource)
         public contentUserStoreSource: ISubscribableContentUserStoreSource
     @inject(TYPES.ISubscribableTreeStoreSource)
+    @tagged(TAGS.MAIN_APP, true)
         public treeStoreSource: ISubscribableTreeStoreSource
     @inject(TYPES.ISubscribableTreeUserStoreSource)
         public treeUserStoreSource: ISubscribableTreeUserStoreSource

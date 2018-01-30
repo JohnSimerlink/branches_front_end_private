@@ -10,6 +10,7 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types'
 import {SubscribableTree} from './SubscribableTree';
+import {log} from '../../core/log'
 
 @injectable()
 export class MutableSubscribableTree extends SubscribableTree implements IMutableSubscribableTree {
@@ -24,6 +25,7 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
     public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
         // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
+        log('MutableSubscribableTree addMutation is ', mutation)
         const propertyName: TreePropertyNames = mutation.propertyName
         const propertyMutation: IDatedMutation<TreePropertyMutationTypes> = {
             data: mutation.data,

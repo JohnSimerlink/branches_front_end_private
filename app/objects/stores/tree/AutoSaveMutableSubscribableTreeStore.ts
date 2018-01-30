@@ -2,12 +2,13 @@ import {log} from '../../../core/log'
 import {
     IMutableSubscribableTreeStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
 } from '../../interfaces';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
+import {TAGS} from '../../tags';
 
 @injectable()
 export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTreeStore
@@ -18,7 +19,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
         storeSource, updatesCallbacks, treesFirebaseRef,
     }: AutoSaveMutableSubscribableTreeStoreArgs) {
         super({storeSource, updatesCallbacks})
-        log('328pm AutoSaverMutableSubscribableTreeStore created')
+        // log('328pm AutoSaverMutableSubscribableTreeStore created')
         this.treesFirebaseRef = treesFirebaseRef
     }
     public addAndSubscribeToItemFromData(
@@ -44,7 +45,9 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
 }
 @injectable()
 export class AutoSaveMutableSubscribableTreeStoreArgs {
-    @inject(TYPES.ISubscribableTreeStoreSource) public storeSource;
+    @inject(TYPES.ISubscribableTreeStoreSource)
+    @tagged(TAGS.MAIN_APP, true)
+        public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.IFirebaseRef) public treesFirebaseRef: Reference;
 }

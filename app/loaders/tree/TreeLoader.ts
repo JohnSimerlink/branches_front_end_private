@@ -82,6 +82,10 @@ export class TreeLoader implements ITreeLoader {
 
 @injectable()
 export class TreeLoaderArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.TREES_REF, true) public firebaseRef: Reference
-    @inject(TYPES.ISubscribableTreeStoreSource) public storeSource: ISubscribableTreeStoreSource
+    @inject(TYPES.FirebaseReference)
+    @tagged(TAGS.TREES_REF, true)
+        public firebaseRef: Reference
+    @inject(TYPES.ISubscribableTreeStoreSource)
+    @tagged(TAGS.MAIN_APP, true)
+        public storeSource: ISubscribableTreeStoreSource
 }

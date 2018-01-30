@@ -34,7 +34,7 @@ export class SubscribableStoreSource<T> extends
     }: SubscribableStoreSourceArgs ) {
         super({updatesCallbacks})
         this._id = Math.random()
-        log('SubscribableStoreSource created! with type of', type, ' and id of ', this._id)
+        // log('SubscribableStoreSource created! with type of', type, ' and id of ', this._id)
         this.type = type
         this.hashmap = hashmap
     }

@@ -138,7 +138,7 @@ test('App integration test 3 - create new Tree triggered by user' +
         container: myContainer,
         // TYPES
     })
-    log('GlobalDataStore about to be created')
+    // log('GlobalDataStore about to be created')
     const globalDataStore: IMutableSubscribableGlobalStore = partialInject<MutableSubscribableGlobalStoreArgs>({
         konstructor: MutableSubscribableGlobalStore,
         constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,

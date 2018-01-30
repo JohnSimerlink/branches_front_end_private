@@ -7,6 +7,7 @@ import {
 } from '../../interfaces';
 import {SubscribableTreeStore} from './SubscribableTreeStore';
 import {TreeDeserializer} from '../../../loaders/tree/TreeDeserializer';
+import {log} from '../../../core/log'
 
 export class MutableSubscribableTreeStore
     extends SubscribableTreeStore
@@ -23,12 +24,14 @@ export class MutableSubscribableTreeStore
         // const treeId = mutation.id
         // treeId && this.stores[treeId].addMutation
         // mutation.id
+        log('MutableSubscribableTreeStore addMutation ', mutation)
 
         const id = mutation.id
         const tree: IMutableSubscribableTree
             = this.storeSource.get(id)
         if (!tree) {
-            throw new RangeError('Couldn\'t find tree for treeId: ' + id)
+            throw new RangeError('Couldn\'t find tree for treeId: ' + id + ' in the following storeSource '
+                + this.storeSource + ' ' + this.storeSource['_id'])
         }
 
         const proppedDatedMutation:
