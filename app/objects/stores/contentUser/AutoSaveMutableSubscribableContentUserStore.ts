@@ -49,8 +49,10 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
 }
 @injectable()
 export class AutoSaveMutableSubscribableContentUserStoreArgs {
-    @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource;
-    @inject(TYPES.Array) public updatesCallbacks;
+    @inject(TYPES.ISubscribableContentUserStoreSource)
+        public storeSource;
+    @inject(TYPES.Array)
+        public updatesCallbacks;
     @inject(TYPES.FirebaseReference)
     @tagged(TAGS.CONTENT_USERS_REF, true)
         public contentUsersFirebaseRef: Reference;

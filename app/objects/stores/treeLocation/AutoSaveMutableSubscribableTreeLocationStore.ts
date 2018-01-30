@@ -3,7 +3,7 @@ import {
     IMutableSubscribableTreeLocationStore,
     IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
 } from '../../interfaces';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
@@ -49,6 +49,6 @@ export class AutoSaveMutableSubscribableTreeLocationStoreArgs {
     @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.FirebaseReference)
-    @inject(TAGS.TREE_LOCATIONS_REF)
+    @tagged(TAGS.TREE_LOCATIONS_REF, true)
         public treeLocationsFirebaseRef: Reference;
 }
