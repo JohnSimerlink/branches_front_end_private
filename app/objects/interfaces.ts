@@ -667,9 +667,15 @@ export interface ITreeDataWithoutId {
     children: string[];
 }
 export interface ITreeDataFromFirebase {
-    contentId: string;
-    parentId: string;
-    children: IHash<boolean>;
+    contentId: {
+        val: string
+    },
+    parentId: {
+        val: string
+    },
+    children: {
+        val: IHash<boolean>
+    },
 }
 export interface ITreeData extends ITreeDataWithoutId {
     id: string;

@@ -20,9 +20,15 @@ test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', 
     const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
 
     const treeData: ITreeDataFromFirebase = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenSet,
+        contentId: {
+            val: contentIdVal,
+        } ,
+        parentId: {
+            val: parentIdVal,
+        } ,
+        children: {
+            val: childrenSet
+        }
     }
     const treeId = '092384'
 
@@ -46,9 +52,15 @@ test('TreeDeserializer::: convert sets to arrays should work', (t) => {
     const childrenSet: IHash<boolean> = stringArrayToSet(childrenVal)
 
     const treeData: ITreeDataFromFirebase = {
-        contentId: contentIdVal,
-        parentId: parentIdVal,
-        children: childrenSet,
+        contentId: {
+            val: contentIdVal,
+        } ,
+        parentId: {
+            val: parentIdVal,
+        } ,
+        children: {
+            val: childrenSet
+        }
     }
     const expectedConvertedTreeData: ITreeDataWithoutId = {
         contentId: contentIdVal,
