@@ -38,52 +38,43 @@ import {createTreeId} from '../objects/tree/TreeUtils';
 test('App integration test 4 - BranchesStore mutation add new child treeId to parent' +
     ' children set should update the value in the appropriate firebase ref', async (t) => {
 
+    /** Swap out actual firebase refs with Mock firebase refs.
+     *
+     */
     myContainer.load(mockFirebaseReferences)
-
     myContainerLoadAllModulesExceptFirebaseRefs()
-    // TODO: use fake firebaseRefs
-    // myContainer.unbind<)
-    /* TODO: make the test super easy to set up . . .
-     e.g. I don't have to set up the subscriptions myself and can just call instance.method() */
-    // myContainer.unload(firebaseReferences)
-    log('This is start of app integration 4')
-    // myContainer.unbind(TYPES.FirebaseReference)
-    log('This is after start of app integration 4')
-
-    // const parentTreeId = '1934879abcd19823'
-
-    // const newContentId = '4324234'
-    const children = ['sampleChildId1', 'sampleChildId2']
+    /**
+     * Set up data for the test
+     */
+    const sampleChildId1 = 'sampleChildId1'
+    const sampleChildId2 = 'sampleChildId2'
+    const children = [sampleChildId1, sampleChildId2]
     const parentTreeData: ITreeDataWithoutId = {
         children,
         contentId: 'sampleContentId',
         parentId: 'sapleParentId', // newParentId,
     }
     const parentTreeId = createTreeId(parentTreeData)
-    const tree: ISyncableMutableSubscribableTree
-        = TreeDeserializer.deserializeWithoutId({treeDataWithoutId: parentTreeData, treeId: parentTreeId})
     const aChildId: id = 'ChildIdToAdd31209845abcabca'
 
-    const parentTreeRef = mockTreesRef.child(parentTreeId)
-    // log('mockTreesRef inside of app integration 4 spec is ', mockTreesRef)
-    // log('parentTreeRef inside of app integration 4 spec is ', parentTreeRef)
-    const parentTreeChildrenPropertyRef = parentTreeRef.child('children')
-    // const
-    // log('GlobalDataStore just created')
     /**
-     * Grab the store singleton
+     * Grab the store singleton with which we will create the action
      * @type {Store<any>}
      */
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
-
-    // store.commit(MUTATION_NAMES.CREATE_TREE, {
-    //
-    // })
-
+    /**
+     * Set up spy - spy on the firebase ref.
+     * the action on the store should trigger a database update on this firebase ref
+     */
+    const parentTreeRef = mockTreesRef.child(parentTreeId)
+    const parentTreeChildrenPropertyRef = parentTreeRef.child('children')
     const parentTreeChildrenPropertyRefUpdateSpy = sinon.spy(parentTreeChildrenPropertyRef, 'update')
+
+    /**
+     * Start the app
+     */
     const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
     appContainer.start()
-    // const autoSaveMutableSubscribableTreEStore: IMutableSubscribableTreeStore = appContainer['']
     /**
      * initialize sigma to avoid refresh on null error
      */
@@ -98,6 +89,15 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: aChildId})
 
     expect(parentTreeChildrenPropertyRefUpdateSpy.callCount).to.deep.equal(1)
+    const calledWith = parentTreeChildrenPropertyRefUpdateSpy.getCall(0).args[0]
+    const expectedCalledWith = {
+        val: {
+            [aChildId]: true,
+            [sampleChildId1]: true,
+            [sampleChildId2]: true,
+        }
+    }
+    expect(calledWith).to.deep.equal(expectedCalledWith)
 
     t.pass()
 })

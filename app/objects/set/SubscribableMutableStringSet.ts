@@ -10,6 +10,7 @@ import {
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log'
+var clonedeep = require('lodash.clonedeep')
 
 /*
 Decided to not implement IUndoable on this class, because undo/redo add/remove aren't
@@ -51,8 +52,9 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
             )
         }
         this.set[member] = true
-        this.updates.val = {}
-        this.updates.val[member] = true
+        const valPartOfUpdates = clonedeep(this.set)
+        this.updates.val = valPartOfUpdates
+        // this.updates.val[member] = true
         // TODO: Fix Violation of Law of Demeter ^^
     }
 
