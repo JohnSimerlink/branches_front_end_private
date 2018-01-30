@@ -21,6 +21,7 @@ import {AppContainer} from './appContainer';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {
+    IMutableSubscribableTreeStore,
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
     ObjectDataTypes
 } from '../objects/interfaces';
@@ -69,7 +70,6 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     const parentTreeId = '1934879abcd19823'
     const childTreeId = '12498732578'
 
-
     const newContentId = '4324234'
     const newParentId = '4344324234'
     const newChildren = ['45344324234', 'aabc321', 'abcd43132']
@@ -108,11 +108,31 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     const parentTreeChildrenPropertyRef = parentTreeRef.child('children')
     // const
     // log('GlobalDataStore just created')
+    /**
+     * Grab the store singleton
+     * @type {Store<any>}
+     */
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
+
+    // store.commit(MUTATION_NAMES.CREATE_TREE, {
+    //
+    // })
 
     const parentTreeChildrenPropertyRefUpdateSpy = sinon.spy(parentTreeChildrenPropertyRef, 'update')
     const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
     appContainer.start()
+    // const autoSaveMutableSubscribableTreEStore: IMutableSubscribableTreeStore = appContainer['']
+    /**
+     * initialize sigma to avoid refresh on null error
+     */
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    /**
+     * get data in the store source and with syncers
+     */
+    store.commit(MUTATION_NAMES.CREATE_TREE, treeDataWithoutId )
+    /**
+     * Do the actual commit we are testing
+     */
     store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId})
 
     expect(parentTreeChildrenPropertyRefUpdateSpy.callCount).to.deep.equal(1)
