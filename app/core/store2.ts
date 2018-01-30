@@ -184,10 +184,12 @@ const mutations = {
             id: parentTreeId,
             timestamp: Date.now(),
             type: SetMutationTypes.ADD,
-            propertyName: TreePropertyNames.PARENT_ID,
+            propertyName: TreePropertyNames.CHILDREN,
             data: childTreeId,
         }
         state.globalDataStore.addMutation(globalStoreMutation)
+
+        // TODO: a second mutation that sets the parentId of the child? or is that handled in another mutation?
     },
     [MUTATION_NAMES.CREATE_CONTENT](state, {
         type, question, answer, title
