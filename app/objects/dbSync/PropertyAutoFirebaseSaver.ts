@@ -3,6 +3,7 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {IDatabaseAutoSaver, IDetailedUpdates, ISaveUpdatesToDBFunction, ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
+import {log} from '../../core/log'
 
 @injectable()
 export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {
@@ -12,6 +13,7 @@ export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {
     }
 
     public subscribe(obj: ISubscribable<IDetailedUpdates>) {
+        log('PropertyAutoFirebaseSaver called', obj)
         obj.onUpdate(this.saveUpdatesToDBFunction)
     }
 }

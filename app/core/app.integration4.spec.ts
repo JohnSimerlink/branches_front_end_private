@@ -9,7 +9,8 @@ import * as sinon from 'sinon'
 import {
     myContainer,
     mockTreesRef,
-    mockFirebaseReferences, treeStoreSourceSingletonModule, myContainerLoadAllModulesExceptTreeStoreSourceSingleton,
+    // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
+    myContainerLoadAllModulesExceptFirebaseRefs, mockFirebaseReferences,
 } from '../../inversify.config';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 import {TYPES} from '../objects/types';
@@ -34,19 +35,20 @@ import {TAGS} from '../objects/tags';
 test('App integration test 4 - BranchesStore mutation add new child treeId to parent' +
     ' children set should update the value in the appropriate firebase ref', async (t) => {
 
-    const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
-        = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
-    log('The subscribableTreeStoreSourceSingleton created in app integration 4 id is ',
-        subscribableTreeStoreSourceSingleton['_id'])
-    myContainer.load(
-        new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-        bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
-            .toConstantValue(subscribableTreeStoreSourceSingleton)
-            .whenTargetTagged(TAGS.MAIN_APP, true)
-        bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
-        .to(SubscribableTreeStoreSourceArgs)
-        })
-    )
+    // const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
+    //     = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
+    // log('The subscribableTreeStoreSourceSingleton created in app integration 4 id is ',
+    //     subscribableTreeStoreSourceSingleton['_id'])
+    // myContainer.load(
+    //     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    //     bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+    //         .toConstantValue(subscribableTreeStoreSourceSingleton)
+    //         .whenTargetTagged(TAGS.MAIN_APP, true)
+    //     bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
+    //     .to(SubscribableTreeStoreSourceArgs)
+    //     })
+    // )
+    myContainer.load(mockFirebaseReferences)
 
         // bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
         //     .toConstantValue(subscribableTreeStoreSourceSingleton)
@@ -54,16 +56,14 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
         // bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
         // .to(SubscribableTreeStoreSourceArgs)
         // })
-
-    myContainerLoadAllModulesExceptTreeStoreSourceSingleton()
+    myContainerLoadAllModulesExceptFirebaseRefs()
     // TODO: use fake firebaseRefs
     // myContainer.unbind<)
     /* TODO: make the test super easy to set up . . .
      e.g. I don't have to set up the subscriptions myself and can just call instance.method() */
     // myContainer.unload(firebaseReferences)
     log('This is start of app integration 4')
-    myContainer.unbind(TYPES.FirebaseReference)
-    myContainer.load(mockFirebaseReferences)
+    // myContainer.unbind(TYPES.FirebaseReference)
     log('This is after start of app integration 4')
 
     const parentTreeId = '1934879abcd19823'
@@ -81,7 +81,7 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     const tree: ISyncableMutableSubscribableTree
         = TreeDeserializer.deserializeWithoutId({treeDataWithoutId, treeId: newParentId})
 
-    subscribableTreeStoreSourceSingleton.set(parentTreeId, tree)
+    // subscribableTreeStoreSourceSingleton.set(parentTreeId, tree)
     // myContainer.unload(treeStoreSourceSingletonModule)
     // myContainer.unbind(TYPES.ISubscribableTreeStoreSource)
     // // myContainer
