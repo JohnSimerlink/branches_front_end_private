@@ -9,6 +9,7 @@ import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
+import {TAGS} from '../../tags';
 
 @injectable()
 export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscribableTreeLocationStore
@@ -47,5 +48,7 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
 export class AutoSaveMutableSubscribableTreeLocationStoreArgs {
     @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.IFirebaseRef) public treeLocationsFirebaseRef: Reference;
+    @inject(TYPES.FirebaseReference)
+    @inject(TAGS.TREE_LOCATIONS_REF)
+        public treeLocationsFirebaseRef: Reference;
 }

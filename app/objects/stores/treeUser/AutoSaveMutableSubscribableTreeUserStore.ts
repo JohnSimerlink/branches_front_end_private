@@ -3,13 +3,14 @@ import {
     IMutableSubscribableTreeUserStore,
     IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeUser, ITreeUserData,
 } from '../../interfaces';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
 import {TreeUserDeserializer} from '../../../loaders/treeUser/TreeUserDeserializer';
+import {TAGS} from '../../tags';
 
 @injectable()
 export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribableTreeUserStore
@@ -48,5 +49,7 @@ export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribabl
 export class AutoSaveMutableSubscribableTreeUserStoreArgs {
     @inject(TYPES.ISubscribableTreeUserStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.IFirebaseRef) public treeUsersFirebaseRef: Reference;
+    @inject(TYPES.FirebaseReference)
+    @tagged(TAGS.TREE_USERS_REF, true)
+        public treeUsersFirebaseRef: Reference;
 }

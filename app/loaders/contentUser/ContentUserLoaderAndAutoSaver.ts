@@ -1,6 +1,6 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
-    IContentUserData, IContentUserLoader, IFirebaseRef, IMutableSubscribableContentUser, IObjectFirebaseAutoSaver,
+    IContentUserData, IContentUserLoader, IMutableSubscribableContentUser, IObjectFirebaseAutoSaver,
     ISubscribableContentUserStoreSource, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';

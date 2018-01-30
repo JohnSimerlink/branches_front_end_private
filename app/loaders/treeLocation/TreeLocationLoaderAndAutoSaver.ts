@@ -1,6 +1,6 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
-    ITreeLocationData, ITreeLocationLoader, IFirebaseRef, IMutableSubscribableTreeLocation, IObjectFirebaseAutoSaver,
+    ITreeLocationData, ITreeLocationLoader, IMutableSubscribableTreeLocation, IObjectFirebaseAutoSaver,
     ISubscribableTreeLocationStoreSource, ISyncableMutableSubscribableTreeLocation, id
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';

@@ -4,9 +4,10 @@ import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
-import {IDetailedUpdates, IFirebaseRef} from '../interfaces';
+import {IDetailedUpdates, } from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
+import {MockFirebase} from 'firebase-mock'
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 let firebaseRef
@@ -15,7 +16,7 @@ let firebaseRefChildSpy
 let propertyFirebaseSaver
 let updatesObj: IDetailedUpdates
 test.beforeEach(() => {
-    firebaseRef = myContainer.get<IFirebaseRef>(TYPES.IFirebaseRef)
+    firebaseRef = new MockFirebase()
     firebaseRefUpdateSpy = sinon.spy(firebaseRef, 'update')
     firebaseRefChildSpy = sinon.spy(firebaseRef, 'child')
     // const saveUpdatesToDBFunction = myContainer.val<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)

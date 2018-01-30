@@ -42,7 +42,6 @@ export const TYPES = {
     IDBSubscriberToTreeLocation: Symbol('IDBSubscriberToTreeLocation'),
     IDBSubscriberToTree: Symbol('IDBSubscriberToTree'),
     IDatedMutation: Symbol('IDatedMutation'),
-    IFirebaseRef: Symbol('IFirebaseRef'),
     IKnawledgeMapCreator: Symbol('IVueComponentCreator'),
     IKnawledgeMapCreatorClone: Symbol('IKnawledgeMapCreatorClone'),
     IManagedSigmaNodeCreatorCore: Symbol('IManagedSigmaNodeCreatorCore'),

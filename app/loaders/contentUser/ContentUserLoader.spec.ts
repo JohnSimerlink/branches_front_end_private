@@ -7,7 +7,7 @@ import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
 import {myContainer} from '../../../inversify.config';
 import {
-    IFirebaseRef, IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
+    IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserData,
     IContentUserLoader, ISyncableMutableSubscribableContentUser, IContentUserDataFromDB
 } from '../../objects/interfaces';
@@ -36,7 +36,6 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 //     const storeSource: ISubscribableContentUserStoreSource =
 //         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
 //
-//     const treeLocationsFirebaseRef: IFirebaseRef =  new MockFirebase()
 //
 //     const contentUserLoader = new ContentUserLoader({ storeSource, treeLocationsFirebaseRef})
 //     expect(contentUserLoader['storeSource']).to.deep.equal(storeSource)
@@ -52,7 +51,6 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 //     const contentUserId = getContentUserId({contentId, userId})
 //     const contentUser = myContainer.get<ISyncableMutableSubscribableContentUser>
 //     (TYPES.ISyncableMutableSubscribableContentUser)
-//     const treeLocationsFirebaseRef: IFirebaseRef =  new MockFirebase()
 //     storeSource.set(contentUserId, contentUser)
 //
 //     const contentUserLoader = new ContentUserLoader({storeSource, treeLocationsFirebaseRef})
@@ -68,7 +66,6 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 //     const nonExistentContentUserContentId = '0123bdefa52344'
 //     const nonExistentContentUserUserId = '0123bdefa5234abc4'
 //     const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
-//     const treeLocationsFirebaseRef: IFirebaseRef = new MockFirebase()
 //
 //     const contentUserLoader = new ContentUserLoader({storeSource, treeLocationsFirebaseRef})
 //     const isLoaded =

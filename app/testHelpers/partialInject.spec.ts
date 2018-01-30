@@ -1,7 +1,6 @@
 import {injectFakeDom} from './injectFakeDom';
 injectFakeDom()
 import {
-    IFirebaseRef,
     ISubscribableContentStoreSource
 } from '../objects/interfaces';
 import {myContainer} from '../../inversify.config';
@@ -9,7 +8,6 @@ import {TYPES} from '../objects/types';
 import test from 'ava'
 import {partialInject} from './partialInject';
 import {expect} from 'chai'
-import {FirebaseRef} from '../objects/dbSync/FirebaseRef';
 import {ContentLoader, ContentLoaderArgs} from '../loaders/content/ContentLoader';
 import {MockFirebase} from 'firebase-mock'
 import * as firebase from 'firebase';

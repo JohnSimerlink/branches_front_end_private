@@ -3,12 +3,13 @@ import {
     IContentData,
     IMutableSubscribableContentStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableContent,
 } from '../../interfaces';
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
+import {TAGS} from '../../tags';
 
 export class AutoSaveMutableSubscribableContentStore extends MutableSubscribableContentStore
     implements IMutableSubscribableContentStore {
@@ -46,5 +47,7 @@ export class AutoSaveMutableSubscribableContentStore extends MutableSubscribable
 export class AutoSaveMutableSubscribableContentStoreArgs {
     @inject(TYPES.ISubscribableContentStoreSource) public storeSource;
     @inject(TYPES.Array) public updatesCallbacks;
-    @inject(TYPES.IFirebaseRef) public contentFirebaseRef: Reference;
+    @inject(TYPES.FirebaseReference)
+    @tagged(TAGS.CONTENT_REF, true)
+        public contentFirebaseRef: Reference;
 }
