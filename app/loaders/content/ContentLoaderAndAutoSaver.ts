@@ -22,7 +22,7 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
         this.firebaseRef = firebaseRef
     }
 
-    public getData(contentId): IContentData {
+    public getData(contentId: id): IContentData {
         return this.contentLoader.getData(contentId)
     }
 

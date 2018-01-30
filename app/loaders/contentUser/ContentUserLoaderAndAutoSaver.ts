@@ -49,7 +49,8 @@ export class ContentUserLoaderAndAutoSaver implements IContentUserLoader {
         const contentUserFirebaseRef = getContentUserRef({contentId, userId, contentUsersRef: this.firebaseRef})
         const contentUserAutoSaver: IObjectFirebaseAutoSaver =
             new ObjectFirebaseAutoSaver({
-                    syncableObjectFirebaseRef: contentUserFirebaseRef, syncableObject: contentUser
+                syncableObjectFirebaseRef: contentUserFirebaseRef,
+                syncableObject: contentUser
             })
         log('contentUser.proficiency before autosaver start', contentUser.proficiency)
         contentUserAutoSaver.start()
