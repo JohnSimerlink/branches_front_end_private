@@ -760,15 +760,29 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
 
 })
 
-myContainer.load(treeStoreSourceSingletonModule)
-myContainer.load(stores)
-myContainer.load(firebaseReferences)
-myContainer.load(loaders)
-myContainer.load(rendering)
-myContainer.load(components)
-myContainer.load(dataObjects)
-myContainer.load(app)
-myContainer.load(misc)
-myContainer.load(storeSingletons)
+export function myContainerLoadAllModules() {
+    myContainer.load(treeStoreSourceSingletonModule)
+    myContainer.load(stores)
+    myContainer.load(firebaseReferences)
+    myContainer.load(loaders)
+    myContainer.load(rendering)
+    myContainer.load(components)
+    myContainer.load(dataObjects)
+    myContainer.load(app)
+    myContainer.load(misc)
+    myContainer.load(storeSingletons)
+}
+export function myContainerLoadAllModulesExceptTreeStoreSourceSingleton() {
+    // myContainer.load(treeStoreSourceSingletonModule)
+    myContainer.load(stores)
+    myContainer.load(firebaseReferences)
+    myContainer.load(loaders)
+    myContainer.load(rendering)
+    myContainer.load(components)
+    myContainer.load(dataObjects)
+    myContainer.load(app)
+    myContainer.load(misc)
+    myContainer.load(storeSingletons)
+}
 
 export {myContainer}

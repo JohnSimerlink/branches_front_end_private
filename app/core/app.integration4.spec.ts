@@ -9,7 +9,7 @@ import * as sinon from 'sinon'
 import {
     myContainer,
     mockTreesRef,
-    mockFirebaseReferences, treeStoreSourceSingletonModule,
+    mockFirebaseReferences, treeStoreSourceSingletonModule, myContainerLoadAllModulesExceptTreeStoreSourceSingleton,
 } from '../../inversify.config';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 import {TYPES} from '../objects/types';
@@ -33,6 +33,25 @@ import {TAGS} from '../objects/tags';
 
 test('App integration test 4 - BranchesStore mutation add new child treeId to parent' +
     ' children set should update the value in the appropriate firebase ref', async (t) => {
+
+    myContainer.load(
+        new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+        bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+            .toConstantValue(subscribableTreeStoreSourceSingleton)
+            .whenTargetTagged(TAGS.MAIN_APP, true)
+        bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
+        .to(SubscribableTreeStoreSourceArgs)
+        })
+    )
+
+        // bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        //     .toConstantValue(subscribableTreeStoreSourceSingleton)
+        //     .whenTargetTagged(TAGS.MAIN_APP, true)
+        // bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
+        // .to(SubscribableTreeStoreSourceArgs)
+        // })
+
+    myContainerLoadAllModulesExceptTreeStoreSourceSingleton()
     // TODO: use fake firebaseRefs
     // myContainer.unbind<)
     /* TODO: make the test super easy to set up . . .
@@ -64,12 +83,12 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
 
     subscribableTreeStoreSourceSingleton.set(parentTreeId, tree)
     // myContainer.unload(treeStoreSourceSingletonModule)
-    myContainer.unbind(TYPES.ISubscribableTreeStoreSource)
+    // myContainer.unbind(TYPES.ISubscribableTreeStoreSource)
     // // myContainer
-    myContainer.bind<ISubscribableTreeStoreSource>
-        (TYPES.ISubscribableTreeStoreSource)
-        .toConstantValue(subscribableTreeStoreSourceSingleton)
-        .whenTargetTagged(TAGS.MAIN_APP, true)
+    // myContainer.bind<ISubscribableTreeStoreSource>
+    //     (TYPES.ISubscribableTreeStoreSource)
+    //     .toConstantValue(subscribableTreeStoreSourceSingleton)
+    //     .whenTargetTagged(TAGS.MAIN_APP, true)
     //
     // myContainer.load(
     //     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
