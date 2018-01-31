@@ -5,7 +5,7 @@ import {expect} from 'chai'
 import 'reflect-metadata'
 import {
     IMutableSubscribableTreeLocation,
-    ITreeLocationData,
+    ITreeLocationData, ITreeLocationDataFromFirebase,
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from '../../objects/treeLocation/MutableSubscribableTreeLocation';
@@ -18,7 +18,7 @@ test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank
         x: 5,
         y: 9,
     }
-    const treeLocationData: ITreeLocationData = {
+    const treeLocationDataFromFirebase: ITreeLocationDataFromFirebase = {
         point: {
             val: pointVal
         }
@@ -28,7 +28,7 @@ test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank
     const expectedTreeLocation: IMutableSubscribableTreeLocation
         = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
     const deserializedTreeLocation: IMutableSubscribableTreeLocation
-        = TreeLocationDeserializer.deserialize({treeLocationData})
+        = TreeLocationDeserializer.deserializeFromFirebase({treeLocationDataFromFirebase})
     expect(deserializedTreeLocation).to.deep.equal(expectedTreeLocation)
     t.pass()
 })

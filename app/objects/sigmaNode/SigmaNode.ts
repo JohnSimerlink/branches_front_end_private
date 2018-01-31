@@ -61,7 +61,7 @@ export class SigmaNode implements ISigmaNode {
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
         log('sigmaNode receiveNewTreeLocationData', treeLocationData)
-        const pointVal = treeLocationData.point.val
+        const pointVal: ICoordinate = treeLocationData.point
         this.x = pointVal.x
         this.y = pointVal.y
     }

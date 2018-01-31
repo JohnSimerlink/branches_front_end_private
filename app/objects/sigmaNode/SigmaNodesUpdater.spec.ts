@@ -90,10 +90,8 @@ test('SigmaNodesUpdater:::A Tree Location Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
     const val: ITreeLocationData = {
         point: {
-            val: {
-                x: 5,
-                y: 9,
-            }
+            x: 5,
+            y: 9,
         },
     }
     const update: ITypeAndIdAndValUpdates = {
@@ -206,10 +204,8 @@ test('SigmaNodesUpdater:::A receive tree data and receive tree location data sho
 
     const treeLocationData: ITreeLocationData = {
         point: {
-            val: {
-                x: 5,
-                y: 9,
-            }
+            x: 5,
+            y: 9,
         },
     }
     const treeLocationDataUpdate: ITypeAndIdAndValUpdates = {

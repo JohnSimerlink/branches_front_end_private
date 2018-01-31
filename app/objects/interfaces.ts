@@ -780,6 +780,10 @@ export interface IMutableSubscribableTreeLocation
         IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
 
 export interface ITreeLocationData {
+    point: ICoordinate
+}
+
+export interface ITreeLocationDataFromFirebase {
     point: {
         val: ICoordinate
     },
