@@ -10,7 +10,10 @@ import {myContainer} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
-import {IOneToManyMap, ISigma, ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData} from '../objects/interfaces';
+import {
+    IOneToManyMap, ISigma, ISigmaUpdater, ITreeDataWithoutId, ITreeLocationData,
+    ITreeLocationDataFromFirebase
+} from '../objects/interfaces';
 import {
     IRenderedNodesManager,
     IStoreSourceUpdateListener
@@ -58,7 +61,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         children: ['2948, 2947']
     }
 
-    const sampleTreeLocationData: ITreeLocationData = {
+    const sampleTreeLocationData: ITreeLocationDataFromFirebase = {
         point: {
             val: {
                 x: 5,

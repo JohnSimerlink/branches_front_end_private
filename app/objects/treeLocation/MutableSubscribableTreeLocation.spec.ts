@@ -22,9 +22,7 @@ test('MutableSubscribableTreeLocation::::.val() should work after constructor', 
     const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
     const expectedTreeLocationData: ITreeLocationData = {
-        point: {
-            val: FIRST_POINT_VALUE
-        }
+        point: FIRST_POINT_VALUE
     }
     const treeLocationData: ITreeLocationData = treeLocation.val()
     expect(treeLocationData).to.deep.equal(expectedTreeLocationData)
@@ -42,9 +40,7 @@ test('MutableSubscribableTreeLocation::::.val() should give appropriate value af
 
     const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
     const expectedTreeLocationData: ITreeLocationData = {
-        point: {
-            val: SECOND_POINT_VALUE
-        }
+        point: SECOND_POINT_VALUE
     }
     const mutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames> = {
         data: {delta: MUTATION_VALUE},

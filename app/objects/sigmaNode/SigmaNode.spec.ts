@@ -99,10 +99,8 @@ test('sigmaNode:::receive new TreeLocation', (t) => {
     const y = 7
     const location: ITreeLocationData = {
         point: {
-            val: {
-                x,
-                y
-            }
+            x,
+            y
         },
     }
     /* QUESTION / TODO: Doesn't this entire test seem useless?

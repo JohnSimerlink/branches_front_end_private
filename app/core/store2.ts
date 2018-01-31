@@ -242,7 +242,7 @@ const mutations = {
             objectType: ObjectTypes.TREE_LOCATION,
             data: {
                 point: {
-                    val: {x, y}
+                    x, y,
                 },
             },
             id: treeId

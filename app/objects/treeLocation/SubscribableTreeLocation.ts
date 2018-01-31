@@ -18,9 +18,7 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
     // TODO: should the below three objects be private?
     public val(): ITreeLocationData {
         return {
-            point: {
-                val: this.point.val()
-            }
+            point: this.point.val()
         }
     }
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
