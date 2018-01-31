@@ -5,7 +5,7 @@ import {
     ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
     ITreeLocationLoader
 } from '../../objects/interfaces';
-import {isValidTreeLocation} from '../../objects/treeLocation/treeLocationValidator';
+import {isValidTreeLocationData} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import * as firebase from 'firebase';
@@ -48,7 +48,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {
                 const treeLocationData: ITreeLocationData = snapshot.val()
-                if (isValidTreeLocation(treeLocationData)) {
+                if (isValidTreeLocationData(treeLocationData)) {
                     const tree: ISyncableMutableSubscribableTreeLocation =
                         TreeLocationDeserializer.deserialize({treeLocationData})
                     me.storeSource.set(treeId, tree)

@@ -19,7 +19,9 @@ test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank
         y: 9,
     }
     const treeLocationData: ITreeLocationData = {
-        point: pointVal
+        point: {
+            val: pointVal
+        }
     }
 
     const point = new MutableSubscribablePoint({...pointVal})
