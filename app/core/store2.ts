@@ -8,7 +8,7 @@ import {
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
     IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
-    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes
+    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -16,7 +16,7 @@ import {TYPES} from '../objects/types';
 import {inject, injectable} from 'inversify';
 import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
-import {state} from '../../inversify.config';
+import {myContainer, state} from '../../inversify.config';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -93,7 +93,9 @@ const mutations = {
                     store,
                     tooltipsConfig,
                 })
-        const sigmaEventListener: ISigmaEventListener = new SigmaEventListener({tooltipOpener, sigmaInstance})
+        const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader)
+        const sigmaEventListener: ISigmaEventListener
+            = new SigmaEventListener({tooltipOpener, sigmaInstance, familyLoader})
         sigmaEventListener.startListening()
     },
     [MUTATION_NAMES.REFRESH](state) {

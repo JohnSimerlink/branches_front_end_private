@@ -53,7 +53,7 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
         const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId)
         this.sigmaIdLoadDataPromiseMap[sigmaId] = dataPromise
 
-        const data = await this.sigmaNodeLoaderCore.load(sigmaId)
+        const data = await dataPromise
         this.sigmaIdLoadDataMap[sigmaId] = data
         delete this.sigmaIdLoadDataPromiseMap[sigmaId]
         return dataPromise

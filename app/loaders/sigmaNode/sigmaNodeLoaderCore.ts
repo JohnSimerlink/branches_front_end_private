@@ -9,6 +9,7 @@ import {
 import {Store} from 'vuex';
 import {TYPES} from '../../objects/types';
 import {TAGS} from '../../objects/tags';
+import {log} from '../../core/log'
 
 @injectable()
 export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
@@ -39,9 +40,11 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
     }
 
     public async load(sigmaId: id): Promise<ISigmaLoadData> {
+        log('sigmaNodeLoader called for', sigmaId)
         const treeId = sigmaId
         const treeLocationPromise: Promise<ITreeLocationData> = this.treeLocationLoader.downloadData(treeId)
         const treeDataWithoutId: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId)
+        log('the treeDataWithoutId from treeLoader.downloadData is', treeDataWithoutId)
         const contentDataPromise: Promise<IContentData> = this.contentLoader.downloadData(treeDataWithoutId.contentId)
         const contentUserDataPromise: Promise<IContentUserData> = this.contentUserLoader.downloadData({
             contentId: treeDataWithoutId.contentId,

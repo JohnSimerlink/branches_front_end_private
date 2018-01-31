@@ -1,41 +1,25 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../objects/types';
 import {
-    IFamilyLoader, ISigmaNodeLoader, ISubscribableTreeStoreSource, id,
-    ISyncableMutableSubscribableTree, ITreeDataWithoutId
+    IFamilyLoader, id,
+    IFamilyLoaderCore
 } from '../../objects/interfaces';
-import {Store} from 'vuex';
+import {log} from '../../core/log'
 
 @injectable()
 export class FamilyLoader implements IFamilyLoader {
-    private sigmaNodeLoader: ISigmaNodeLoader
-    private store: Store<any>
-    private treeStoreSource: ISubscribableTreeStoreSource
+    private familyLoaderCore: IFamilyLoaderCore
     constructor(@inject(TYPES.FamilyLoaderArgs){
-        sigmaNodeLoader,
-        store,
-        treeStoreSource,
-    }: FamilyLoaderArgs) {
-        this.sigmaNodeLoader = sigmaNodeLoader
-        this.store = store
-        this.treeStoreSource = treeStoreSource
+        familyLoaderCore
+   }: FamilyLoaderArgs) {
+        this.familyLoaderCore = familyLoaderCore
     }
-    public loadFamily(sigmaId: id) {
-        const treeId = sigmaId
-        const tree: ISyncableMutableSubscribableTree = this.treeStoreSource.get(treeId)
-        const treeDataWithoutId: ITreeDataWithoutId = tree.val()
-        const children: id[] = treeDataWithoutId.children
-        const sigmaIds = [...children, treeDataWithoutId.parentId]
-        const load = this.sigmaNodeLoader.loadIfNotLoaded.bind(this.sigmaNodeLoader)
-        sigmaIds.forEach(load)
+    public loadFamilyIfNotLoaded(sigmaId: id) {
+        this.familyLoaderCore.loadFamily(sigmaId)
     }
-
 }
 
 @injectable()
 export class FamilyLoaderArgs {
-    @inject(TYPES.ISigmaNodeLoader) public sigmaNodeLoader: ISigmaNodeLoader
-    @inject(TYPES.BranchesStore) public store: Store<any>
-    @inject(TYPES.ISubscribableTreeStoreSource) public treeStoreSource: ISubscribableTreeStoreSource
-
+    @inject(TYPES.IFamilyLoaderCore) public familyLoaderCore: IFamilyLoaderCore
 }
