@@ -82,16 +82,8 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
         commit() {}
     }
     const storeCommitSpy = sinon.spy(store, 'commit')
-    const knawledgeMapCreator: IVueComponentCreator
-        = new KnawledgeMapCreator(
-            {
-                specialTreeLoader,
-                treeLocationLoader,
-                contentLoader,
-                contentUserLoader,
-                userId,
-                store
-            })
+    const knawledgeMapCreator: IKnawledgeMapCreator
+        = myContainer.get<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator)
     const knawledgeMap = knawledgeMapCreator.create()
 
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(0)
@@ -123,14 +115,15 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const contentUserLoader: IContentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader)
     const store: BranchesStore = myContainer.get<BranchesStore>(TYPES.BranchesStore)
     const knawledgeMapCreator: IKnawledgeMapCreator
-        = new KnawledgeMapCreator({
-        specialTreeLoader,
-        treeLocationLoader,
-        contentLoader,
-        contentUserLoader,
-        store,
-        userId
-    })
+        = myContainer.get<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator)
+    //     = new KnawledgeMapCreator({
+    //     specialTreeLoader,
+    //     treeLocationLoader,
+    //     contentLoader,
+    //     contentUserLoader,
+    //     store,
+    //     userId
+    // })
     const KnawledgeMapComponent = knawledgeMapCreator.create()
     const Constructor = Vue.extend(KnawledgeMapComponent)
     const propsData = {

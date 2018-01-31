@@ -41,7 +41,7 @@ import {
     ITreeUserLoader, IVuexStore,
     radian,
     TreePropertyNames,
-    ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI,
+    ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -221,6 +221,8 @@ if (!Vuex) {
     Vuex = require('vuex')
 }
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
+import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
+import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -370,6 +372,11 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<AutoSaveMutableSubscribableContentUserStoreArgs>
     (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
         .to(AutoSaveMutableSubscribableContentUserStoreArgs)
+
+    myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs)
+    myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
+    myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs)
+    myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
 
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
@@ -690,6 +697,7 @@ export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
         .whenTargetIsDefault()
 // tslint:disable-next-line ban-types
+    bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
     bind<Number>(TYPES.Number).toConstantValue(0)
     bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
