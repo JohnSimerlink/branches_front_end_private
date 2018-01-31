@@ -42,6 +42,8 @@ import {
     radian,
     TreePropertyNames,
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
+    IFamilyLoader,
+    IFamilyLoaderCore,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -223,7 +225,8 @@ if (!Vuex) {
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
-import {FamilyLoader} from './app/loaders/sigmaNode/familyLoader';
+import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
+import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -380,6 +383,9 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
 
     myContainer.bind<IFamilyLoader>(TYPES.IFamilyLoader).to(FamilyLoader)
+    myContainer.bind<FamilyLoaderArgs>(TYPES.FamilyLoaderArgs).to(FamilyLoaderArgs)
+    myContainer.bind<IFamilyLoaderCore>(TYPES.IFamilyLoaderCore).to(FamilyLoaderCore)
+    myContainer.bind<FamilyLoaderCoreArgs>(TYPES.FamilyLoaderCoreArgs).to(FamilyLoaderCoreArgs)
 
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource

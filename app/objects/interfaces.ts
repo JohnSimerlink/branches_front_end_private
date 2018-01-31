@@ -94,6 +94,9 @@ export interface ISigmaLoadData  {
     contentUserData: IContentUserData
 }
 export interface IFamilyLoader {
+    loadFamilyIfNotLoaded(sigmaId: id)
+}
+export interface IFamilyLoaderCore {
     loadFamily(sigmaId: id)
 }
 
