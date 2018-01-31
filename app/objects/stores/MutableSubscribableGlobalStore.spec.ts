@@ -314,7 +314,9 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
     const y = 60
     const point = {x, y}
     const treeLocationData: ITreeLocationData = {
-        point
+        point: {
+            val: point
+        }
     }
     const id = treeId
     const createMutation: ICreateMutation<ITreeLocationData> = {

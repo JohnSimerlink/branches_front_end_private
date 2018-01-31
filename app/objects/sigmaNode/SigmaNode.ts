@@ -61,8 +61,9 @@ export class SigmaNode implements ISigmaNode {
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
         log('sigmaNode receiveNewTreeLocationData', treeLocationData)
-        this.x = treeLocationData.point.x
-        this.y = treeLocationData.point.y
+        const pointVal = treeLocationData.point.val
+        this.x = pointVal.x
+        this.y = pointVal.y
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance

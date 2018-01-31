@@ -229,7 +229,9 @@ test('Store::::' +
     const y = 13214
     const point = { x, y}
     const treeLocationData: ITreeLocationData = {
-        point
+        point: {
+            val: point
+        }
     }
     const createMutation: ICreateMutation<ITreeLocationData> = {
         objectType: ObjectTypes.TREE_LOCATION,

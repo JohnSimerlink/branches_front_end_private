@@ -60,8 +60,10 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     const sampleTreeLocationData: ITreeLocationData = {
         point: {
-            x: 5,
-            y: 8,
+            val: {
+                x: 5,
+                y: 8,
+            }
         }
     }
 

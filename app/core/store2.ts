@@ -240,7 +240,11 @@ const mutations = {
         const createMutation: ICreateMutation<ITreeLocationData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.TREE_LOCATION,
-            data: {point: {x, y}},
+            data: {
+                point: {
+                    val: {x, y}
+                },
+            },
             id: treeId
         }
         const treeLocationData = state.globalDataStore.addMutation(createMutation)

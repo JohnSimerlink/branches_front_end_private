@@ -1,5 +1,13 @@
-import {ITreeLocationData} from '../interfaces';
+import {ICoordinate, ITreeLocationData} from '../interfaces';
 
-export function isValidTreeLocation(treeLocation: ITreeLocationData) {
-    return treeLocation && treeLocation.point
+/**
+ *
+ * These functions are for typechecking data that came from the database
+ */
+export function isValidTreeLocationData(treeLocation: ITreeLocationData) {
+    return treeLocation && treeLocation.point && isValidCoordinate(treeLocation.point.val)
+}
+
+export function isValidCoordinate(coordinate: ICoordinate) {
+    return coordinate && coordinate.x && coordinate.y
 }

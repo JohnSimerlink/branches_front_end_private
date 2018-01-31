@@ -90,8 +90,10 @@ test('treeLocationLoader:::Should mark an id as loaded after being loaded', asyn
 
     const sampleTreeLocationData: ITreeLocationData = {
         point: {
-            x: 5,
-            y: 8,
+            val: {
+                x: 5,
+                y: 8,
+            }
         }
     }
 
@@ -119,8 +121,10 @@ test('treeLocationLoader:::DownloadData should return the data', async (t) => {
 
     const sampleTreeLocationData: ITreeLocationData = {
         point: {
-            x: 5,
-            y: 8,
+            val: {
+                x: 5,
+                y: 8,
+            }
         }
     }
     const storeSource: ISubscribableTreeLocationStoreSource =
@@ -142,8 +146,10 @@ test('treeLocationLoader:::DownloadData should have the side effect' +
 
     const sampleTreeLocationData: ITreeLocationData = {
         point: {
-            x: 5,
-            y: 8,
+            val: {
+                x: 5,
+                y: 8,
+            }
         }
     }
     const sampleTreeLocation: IMutableSubscribableTreeLocation =
@@ -164,8 +170,10 @@ test('treeLocationLoader:::GetData on an existing tree should return the tree', 
 
     const sampleTreeLocationData: ITreeLocationData = {
         point: {
-            x: 5,
-            y: 8,
+            val: {
+                x: 5,
+                y: 8,
+            }
         }
     }
     const sampleTreeLocation: ISyncableMutableSubscribableTreeLocation =
