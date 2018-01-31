@@ -42,6 +42,9 @@ export interface IContentItem {
 //     download(treeId): Promise<ITreeDataWithoutId>
 //     deserializeFromDB(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
 // }
+export interface ISigmaNodeLoader {
+    loadIfNotLoaded(sigmaid: id)
+}
 export interface ITreeLoader {
     getData(treeId: id): ITreeDataWithoutId
     getItem(treeId: id): ISyncableMutableSubscribableTree
@@ -78,6 +81,17 @@ export interface IContentUserLoader {
     getItem({contentUserId}): ISyncableMutableSubscribableContentUser
     downloadData({contentId, userId}): Promise<IContentUserData>
     isLoaded({contentId, userId}): boolean
+}
+
+export interface ISigmaNodeLoaderCore {
+    load(sigmaId: id):
+        Promise<ISigmaLoadData>
+}
+export interface ISigmaLoadData  {
+    treeDataWithoutId: ITreeDataWithoutId,
+    treeLocationData: ITreeLocationData,
+    contentData: IContentData,
+    contentUserData: IContentUserData
 }
 
 // content

@@ -19,3 +19,6 @@ so store is used in
 	-SigmaUpdater
 	-Tree3Creator
 	-NewTreeComponentCreator
+	-KnawledgeMapCreator
+	-vm = new Vue
+	
