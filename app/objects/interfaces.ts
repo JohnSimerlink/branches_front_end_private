@@ -143,6 +143,20 @@ export interface IContentData {
     answer?: string;
     title?: string;
 }
+export interface IContentDataFromDB {
+    type: {
+        val: CONTENT_TYPES;
+    },
+    question?: {
+        val: string
+    },
+    answer?: {
+        val: string
+    },
+    title?: {
+        val: string
+    }
+}
 
 export enum ContentPropertyNames {
     TYPE = 'TYPE',

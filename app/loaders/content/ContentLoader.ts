@@ -3,9 +3,9 @@ import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     ISubscribableContentStoreSource,
-    IContentLoader, IContentData, ISyncableMutableSubscribableContent
+    IContentLoader, IContentData, ISyncableMutableSubscribableContent, IContentDataFromDB
 } from '../../objects/interfaces';
-import {isValidContent} from '../../objects/content/contentValidator';
+import {isValidContent, isValidContentDataFromDB} from '../../objects/content/contentValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentDeserializer} from './ContentDeserializer';
@@ -48,9 +48,9 @@ export class ContentLoader implements IContentLoader {
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(contentId).once('value', (snapshot) => {
-                const contentData: IContentData = snapshot.val()
-                log('contentLoader data received', contentData)
-                if (!contentData) {
+                const contentDataFromDB: IContentDataFromDB = snapshot.val()
+                log('contentLoader data received', contentDataFromDB)
+                if (!contentDataFromDB) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
@@ -60,18 +60,20 @@ export class ContentLoader implements IContentLoader {
                        as the promise will actually get resolved in ideally a few more (dozen) milliseconds
                        */
                 }
-                // let children = contentData.children || {}
+                // let children = contentDataFromDB.children || {}
                 // children = setToStringArray(children)
-                // contentData.children = children as string[]
+                // contentDataFromDB.children = children as string[]
 
-                if (isValidContent(contentData)) {
+                if (isValidContentDataFromDB(contentDataFromDB)) {
                     const content: ISyncableMutableSubscribableContent =
-                        ContentDeserializer.deserialize({contentId, contentData})
+                        ContentDeserializer.deserializeFromDB({contentId, contentDataFromDB})
                     log('Content storeSource about to be set with ', contentId, content, content.val())
+                    const contentData: IContentData
+                        = ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB})
                     me.storeSource.set(contentId, content)
                     resolve(contentData)
                 } else {
-                    reject('contentData is invalid! ! ' + JSON.stringify(contentData))
+                    reject('contentDataFromDB is invalid! ! ' + JSON.stringify(contentDataFromDB))
                 }
             })
         }) as Promise<IContentData>
