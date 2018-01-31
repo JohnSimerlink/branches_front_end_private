@@ -223,6 +223,7 @@ if (!Vuex) {
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
+import {FamilyLoader} from './app/loaders/sigmaNode/familyLoader';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -377,6 +378,8 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
     myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs)
     myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
+
+    myContainer.bind<IFamilyLoader>(TYPES.IFamilyLoader).to(FamilyLoader)
 
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource

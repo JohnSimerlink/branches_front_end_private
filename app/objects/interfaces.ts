@@ -93,6 +93,9 @@ export interface ISigmaLoadData  {
     contentData: IContentData,
     contentUserData: IContentUserData
 }
+export interface IFamilyLoader {
+    loadFamily(sigmaId: id)
+}
 
 // content
 
@@ -676,9 +679,9 @@ export interface ITree {
     children: IMutableStringSet;
 }
 export interface ITreeDataWithoutId {
-    contentId: string;
-    parentId: string;
-    children: string[];
+    contentId: id;
+    parentId: id;
+    children: id[];
 }
 export interface ITreeDataFromFirebase {
     contentId: {

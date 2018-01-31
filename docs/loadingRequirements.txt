@@ -4,6 +4,7 @@ PRESENT
 
 FamilyLoader
 	-store
+	-treeStoreSource
 	-loadFamily(treeId) {
 		load its children and its parent
 		needs access to treeStoreSource so that it can fetch the tree using treeStoreSource.get(treeId). using that it will get the parentId and children ids of of the tree. Then it will call sigmaNodeLoader on all of those ids.
