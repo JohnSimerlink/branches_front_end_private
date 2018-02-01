@@ -15,6 +15,7 @@ import StudyMenu from '../components/studyMenu/studyMenu'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import BranchesFooter from '../components/footer/branchesFooter'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
+import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
 import {Store} from 'vuex';
 
 @injectable()
@@ -50,7 +51,8 @@ export class VueConfigurer implements IVueConfigurer {
 
         Vue.use(VueRouter);
         const routes = [
-            { path: '/', component: KnawledgeMap, props: true }
+            { path: '/', component: KnawledgeMap, props: true },
+            { path: '/ebbinghaus', component: Ebbinghaus, props: true }
         ]
 
 // 3. Create the router instance and pass the `routes` option
