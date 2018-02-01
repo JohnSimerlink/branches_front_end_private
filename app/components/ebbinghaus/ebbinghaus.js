@@ -8,7 +8,7 @@ const STATES = {
 const TIME_SHOWING = 16000 //00000
 const TIME_SUBTRACTING_BY_7 = 32000 //64000
 export default {
-    template: require('./ebbinghaus.html'),
+    template: require('./ebbinghaus.html').default,
     created () {
         const numTriplets = 3
         this.triplets = []

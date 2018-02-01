@@ -544,6 +544,10 @@ export type Constructor = {
     new (...args: any[]): any;
 }
 
+// newLocationCalculator
+
+export type fXYField = (coord: ICoordinate) => number
+
 // stores
 
 export interface IMutableSubscribableGlobalStore

@@ -1,0 +1,7 @@
+System to determine where to add the child by default
+
+NewChildLocationDeterminer
+	+DetermineLocation(treeId)
+
+NewChildLocationCalculator
+	+calculateLocation(currentChildLocations, parentLocation, allLocations)
