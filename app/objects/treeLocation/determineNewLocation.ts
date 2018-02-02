@@ -4,20 +4,21 @@ import {A_BIG_NUMBER, determineObstacleVectorField, determinePreferenceField} fr
 // determineNewLocationAfterNewObstacle({preferenceField, coordinateField, obstacle})
 // determineNewLocationAfterParentMove({
 // until performance sucks, just recalculate the entire field every time
-// for now preferenceField should be cleared before the function is called, and all 2DArrays should be created with correct dimensions
+// for now preferenceField should be cleared before the function is called,
+// and all 2DArrays should be created with correct dimensions
+const r = 10
 export function determineNewLocation(
-    {squareSideSize, parentCoordinate, obstacles, preferredRadius, preferenceField, coordinateField}: {
-    squareSideSize: number
+    {parentCoordinate, obstacles,  preferenceField, coordinateField}: {
+    // squareSideSize: number
     parentCoordinate: ICoordinate
     obstacles: ICoordinate[],
-    preferredRadius: number,
+    // preferredRadius: number,
     preferenceField: number[/*squareSideSize*/][/*squareSideSize*/] // square
     coordinateField: ICoordinate[/*squareSideSize*/][/*squareSideSize*/],
 }): ICoordinate {
-
     // addPreferenceField
-    const preferenceFieldFunction: fXYField = determinePreferenceField({parentCoordinate})
-    const obstacleFields = obstacles.map(determineObstacleVectorField)
+    const preferenceFieldFunction: fXYField = determinePreferenceField({parentCoordinate, r})
+    const obstacleFields = obstacles.map(obstacle => determineObstacleVectorField({obstacleCoordinate: obstacle, r}))
     const fields = [preferenceFieldFunction, ...obstacleFields]
     for (const field of fields) {
         addFieldToPreferenceField({field, coordinateField, preferenceField})

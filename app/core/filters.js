@@ -16,6 +16,15 @@ Vue.filter('sortByNextReviewTime', arr => {
     return arr.sort((a,b) => a.nextReviewTime > b.nextReviewTime)
 })
 Vue.filter('truncate', Math.floor)
+Vue.filter('mult10', x => Math.floor(10 * x) )
+Vue.filter('pad0', (str) => {
+    // console.log('pad0, str ', str, ' lenght is', str.length)
+    if ((""+str).length == 1) {
+        return "0" + str
+    } else {
+        return str
+    }
+})
 export function secondsToPretty(seconds=0) {
     let minutes = Math.floor(seconds / 60)
         seconds = seconds % 60
