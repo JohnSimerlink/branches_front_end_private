@@ -1,8 +1,11 @@
 import {fXYField, ICoordinate} from '../interfaces';
+import {log} from '../../core/log'
 
 export const A_BIG_NUMBER = 99999999999
+const OBSTACLE_AVOIDANCE_FACTOR = 5
+const CIRCLE_PREFERENCE_FACTOR = 10
 
-export function determineObstacleVectorField(obstacleCoordinate: ICoordinate): fXYField {
+export function determineObstacleVectorField({obstacleCoordinate, r}: {obstacleCoordinate: ICoordinate, r: number}): fXYField {
     let vectorField: fXYField
     /* the closer the object is to the obstacle, the more negative a value the field should return.
      * As the object approaches infinite distance from the obstacle, the field should
@@ -10,19 +13,29 @@ export function determineObstacleVectorField(obstacleCoordinate: ICoordinate): f
      */
     function field({x, y}: ICoordinate): number {
         const d = distance({x1: obstacleCoordinate.x, y1: obstacleCoordinate.y, x2: x, y2: y})
+        // log('obstacleField called', {x, y}, d)
         let howBadIsTheLocation: number
+        if (d >= r) {
+
+            return 0 // field has no effect after a distance of r
+        }
         if (d === 0) { // prevent div by 0 error
+            // log('obstacleField called d is 0' )
             howBadIsTheLocation = 1 * A_BIG_NUMBER
         } else {
-            howBadIsTheLocation = 1 / d // farther away you are from obstacle, less bad of a location it is
+            // log('obstacleField called d is NOT 0', d )
+            const percentEscapedFromField = d / r
+            const percentInField = 1 - percentEscapedFromField
+            howBadIsTheLocation = OBSTACLE_AVOIDANCE_FACTOR * percentInField
+            // farther away you are from obstacle,
+            // less bad of a location it is. but should be zero by the time you are r away
         }
+        // log('obstacleField end', howBadIsTheLocation)
         return -1 * howBadIsTheLocation
     }
     vectorField = field
     return vectorField
 }
-
-const CIRCLE_PREFERENCE_FACTOR = 10
 
 /**
  * There is an ideal place that a child should be in terms of the parent location.
@@ -35,39 +48,58 @@ const CIRCLE_PREFERENCE_FACTOR = 10
  * @param {any} r
  * @returns {fXYField}
  */
-const r = 10
-export function determinePreferenceField({parentCoordinate}: {parentCoordinate: ICoordinate}): fXYField {
+export function determinePreferenceField({parentCoordinate, r}: {parentCoordinate: ICoordinate, r: number}): fXYField {
     let vectorField: fXYField
     function field({x, y}: ICoordinate): number {
-        const inside = !inCircle({center: {x: parentCoordinate.x, y: parentCoordinate.y}, r, x, y})
+        const inside = inCircle({center: {x: parentCoordinate.x, y: parentCoordinate.y}, r, x, y})
         const distanceFromCenter = distance({x1: parentCoordinate.x, y1: parentCoordinate.y, x2: x, y2: y})
         let howGoodIsTheLocation: number
         if (inside) {
             // more close to center the worse of an idea it is, so we should give the field a lower value
+            const percentOfRadiusLength = distanceFromCenter / r
+            howGoodIsTheLocation =  CIRCLE_PREFERENCE_FACTOR * percentOfRadiusLength
+            log('preferenceField ', {x, y}, distanceFromCenter, r, percentOfRadiusLength, howGoodIsTheLocation)
 
-            const value = Math.E ** distanceFromCenter - 1
+            // howGoodIsTheLocation = Math.E ** distanceFromCenter - 1
+            /* this will make a distanceFromCenter of 0 give howGoodIsTheLocation
+             a value of 0, because e^0 is 1, and 1 - 1 is 0. */
             /* if r <=1, this value might end up being negative,
             suggesting that this is a horrible place to put a node which would be right.
             We'd be trying to place a node less than one unit away from it's parent node
             */
+            /** TODO: we also need to make something just inside the circle essentially
+             * have the same value as something on the circle
+             * . . . I think right now we have a non-continuous piecewise function
+             * So we should on the circle be CIRCLE PREFERENCE FACTOR
+             * Make center of the circle be 0. And the values drop linearly by r from
+             */
 
         } else {
+            // log('determineNewLocationUtils ,', {x, y, parentCoordinate, r}, ' NOT inside circle')
             const distanceFromCircle = distanceFromCenter - r
-            howGoodIsTheLocation = CIRCLE_PREFERENCE_FACTOR / distanceFromCircle
-            return howGoodIsTheLocation
+            if (distanceFromCircle === 0) {
+                howGoodIsTheLocation = CIRCLE_PREFERENCE_FACTOR
+            }
+            const DECAY_SLOWDOWN_FACTOR = 20
+            // needs to be like CIRCLE_PREFERENCE_FACTOR - epsilon when we are an infinitesimal away from the circle
+            // when we are really far from the circle it needs to be 0
+            // so CIRCLE_PREFERENCE_FACTOR * e^-x should do that for us
+            howGoodIsTheLocation =
+                CIRCLE_PREFERENCE_FACTOR * Math.E ** (-1 * distanceFromCircle / DECAY_SLOWDOWN_FACTOR)
         }
-
+        return howGoodIsTheLocation
     }
     vectorField = field
 
     return vectorField
 }
-function inCircle({center, r, x, y}: {center: {x: number, y: number}, r: number, x: number, y: number}): boolean {
+export function inCircle({center, r, x, y}: {center: {x: number, y: number}, r: number, x: number, y: number}): boolean {
     const d = distance({x1: x, y1: y, x2: center.x, y2: center.y})
+    // log('the distance inside of inCircle is ', {center, r, x, y}, d)
     return d < r
 }
 
-function distance({x1, y1, x2, y2}) {
+export function distance({x1, y1, x2, y2}) {
     const deltaX = x2 - x1
     const deltaY = y2 - y1
     const discriminant = deltaX ** 2 + deltaY ** 2
