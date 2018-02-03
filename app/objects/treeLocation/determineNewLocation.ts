@@ -46,6 +46,8 @@ export function getBestLocation({preferenceField}: {preferenceField: number[][]}
             tempValue = preferenceField[row][column]
             if (tempValue > bestValue) {
                 bestLocation = {row, column}
+                bestValue = tempValue
+                // tempValue = best
             }
         }
     }

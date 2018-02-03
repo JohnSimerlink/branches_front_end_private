@@ -108,8 +108,8 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     const titleFormatted = title && title.trim() || ''
                     const questionFormatted = question && question.trim() || ''
                     const answerFormatted = answer && answer.trim() || ''
-                    const childX: number = +this.parentX + 10
-                    const childY: number = +this.parentY + 10
+                    // const childX: number = +this.parentX + 10
+                    // const childY: number = +this.parentY + 10
                     const newChildTreeArgs: INewChildTreeArgs = {
                         parentTreeId: this.parentId,
                         timestamp: Date.now(),
@@ -117,8 +117,10 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         question: questionFormatted,
                         answer: answerFormatted,
                         title: titleFormatted,
-                        x: childX,
-                        y: childY,
+                        parentX: this.parentX,
+                        parentY: this.parentY,
+                        // x: childX,
+                        // y: childY,
                     }
                     log('new child tree args being passed into commit are', newChildTreeArgs)
                     log('newTreeComponentCreator . createNewTree() me.store._id is', me.store['_id'])

@@ -9,7 +9,7 @@ import {
     ITreeDataWithoutId, ITreeLocationData, IVuexStore,
     ObjectTypes, STORE_MUTATION_TYPES
 } from '../objects/interfaces';
-import {myContainer} from '../../inversify.config';
+import {mockFirebaseReferences, myContainer, myContainerLoadAllModulesExceptFirebaseRefs} from '../../inversify.config';
 import {TYPES} from '../objects/types';
 import {expect} from 'chai'
 import test from 'ava'

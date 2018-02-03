@@ -690,7 +690,7 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 }
 export type id = string
 export interface INewChildTreeArgs {
-    parentTreeId, timestamp, contentType, question, answer, title, x, y
+    parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
 }
 // tree
 export interface ITree {

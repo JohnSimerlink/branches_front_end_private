@@ -112,7 +112,9 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
  * @return {sigma.renderers.canvas}         Returns the instance itself.
  */
 sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
+    console.log('sigma canvas render called')
     // console.log("sigma renderers canvas width and height are :", this.width, this.height, ' and this is ', this)
+
     options = options || {};
     dontPublish = dontPublish || false
 
@@ -181,15 +183,16 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     var A_BIG_NUMBER = 999999999
     // window.mostCenteredNodeId = null
     // window.mostCenteredNodeDistance = A_BIG_NUMBER
-    // var nodesOnScreen = this.camera.quadtree.area(rect)
-    var nodesOnScreen = this.graph.nodes()
+    var nodesOnScreen = this.camera.quadtree.area(rect)
+    // var nodesOnScreen = this.graph.nodes()
+    console.log("nodesOnScreen and nodesOnScreen2", nodesOnScreen)
     // console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
-    nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
+    // nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
     nodesOnScreen.forEach(node => {
         // console.log('a node on screen is ', node)
-        if (node.type !== NODE_TYPES.TREE) {
-            return
-        }
+        // if (node.type !== NODE_TYPES.TREE) {
+        //     return
+        // }
         node.onScreen = true
         // node.distanceFromCenter = Math.sqrt(Math.pow(node["renderer1:x"] - window.xCenter, 2) + Math.pow(node["renderer1:y"] -  window.yCenter, 2))
         // if (node.distanceFromCenter < mostCenteredNodeDistance){
@@ -197,6 +200,12 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
         //   window.mostCenteredNodeDistance = node.distanceFromCenter
         // }
     })
+
+    this.graph.nodes().forEach(node => {
+        console.log("node => ", node.onScreen)
+        // delete node.distanceFromCenter
+    })
+    // console.log("nodesOn")
     // if (!window.previousMostCenteredNodeId || window.mostCenteredNodeId !== window.previousMostCenteredNodeId){
     //     // !dontPublish && PubSub.publish('mostCenteredNodeId', window.mostCenteredNodeId)
     // }

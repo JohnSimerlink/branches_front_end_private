@@ -20,8 +20,11 @@ export default {
         this.preferenceField = preferenceField
         const parentCoordinate = {x: 50, y: 50}
         this.parentCoordinate =  parentCoordinate
-        // const obstacles = [{x: 50, y: 60}, {x: 60, y: 50}]
-        const obstacles = [{x: 80, y: 80}]
+        const obstacles = [
+            {x: 50, y: 60}, {x: 60, y: 50}, {x: 40, y: 50}, {x: 45, y: 50}, {x: 80, y: 80},
+            {x: 50, y: 40}
+        ]
+        // const obstacles = []
         // const obstacles = []
         this.obstacles = obstacles
 
@@ -84,7 +87,7 @@ function valueToColor(value): string {
         value = 100
     }
     value = Math.floor(value)
-    log('value in valueToColor is', value)
+    // log('value in valueToColor is', value)
     // value = value + 50
     let red = 75 - value
     if (red < 0) red = 0

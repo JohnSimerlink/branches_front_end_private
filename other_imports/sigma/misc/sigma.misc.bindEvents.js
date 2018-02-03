@@ -20,6 +20,7 @@ sigma.misc.bindEvents = function (prefix) {
         self = this;
 
     function getNodes(e) {
+        // console.log('sigma getNodes called')
         if (e) {
             mX = 'x' in e.data ? e.data.x : mX;
             mY = 'y' in e.data ? e.data.y : mY;
@@ -83,6 +84,7 @@ sigma.misc.bindEvents = function (prefix) {
 
 
     function getEdges(e) {
+        // console.log('sigma getEdges called')
         if (!self.settings('enableEdgeHovering')) {
             // No event if the setting is off:
             return [];
@@ -129,8 +131,12 @@ sigma.misc.bindEvents = function (prefix) {
             var nodesOnScreen = self.camera.quadtree.area(
                 self.camera.getRectangle(self.width, self.height)
             );
-            for (a = nodesOnScreen, i = 0, l = a.length; i < l; i++)
+            // console.log('nodesOnScreen is ', nodesOnScreen)
+            for (a = nodesOnScreen, i = 0, l = a.length; i < l; i++){
+
                 nodeIndex[a[i].id] = a[i];
+
+            }
         }
 
         if (self.camera.edgequadtree !== undefined) {
