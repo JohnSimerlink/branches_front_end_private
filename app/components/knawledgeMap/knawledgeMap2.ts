@@ -44,7 +44,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 log('KnawledgeMap about to load ', INITIAL_ID_TO_DOWNLOAD)
                 me.sigmaNodeLoader.loadIfNotLoaded(INITIAL_ID_TO_DOWNLOAD)
                 log('KnawledgeMap just did load ', INITIAL_ID_TO_DOWNLOAD)
-                me.sigmaNodeLoader.loadIfNotLoaded(ANOTHER_ID)
+                // me.sigmaNodeLoader.loadIfNotLoaded(ANOTHER_ID)
                 // // TODO: Maybe all of these download actions should be done via Vuex Store actions
                 // me.specialTreeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
                 // me.treeLocationLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
