@@ -8,7 +8,7 @@ import {
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
     IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
-    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader
+    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -17,6 +17,8 @@ import {inject, injectable} from 'inversify';
 import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
 import {myContainer, state} from '../../inversify.config';
+import {distance} from '../objects/treeLocation/determineNewLocationUtils';
+import {determineNewLocation} from '../objects/treeLocation/determineNewLocation';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -150,11 +152,12 @@ const mutations = {
     [MUTATION_NAMES.NEW_CHILD_TREE](
         state,
         {
-            parentTreeId, timestamp, contentType, question, answer, title, x, y,
+            parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
         }: INewChildTreeArgs
     ): id {
         // TODO: UNIT / INT TEST
-        log('NEW CHILD TREE MUTATION CALLED!', parentTreeId, timestamp, contentType, question, answer, title, x, y, )
+        log('NEW CHILD TREE MUTATION CALLED!', parentTreeId, timestamp,
+            contentType, question, answer, title, parentX, parentY)
         log('NEW CHILD TREE MUTATION CALLED! THE STORE IT IS CREATED ON IS!', getters.getStore()['_id'])
         const contentId = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
             question, answer, title, type: contentType
@@ -167,9 +170,45 @@ const mutations = {
         const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
         const treeIdString = treeId as any as id
 
-        const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
-            treeId: treeIdString, x, y
+        const r = 20
+        // get obstacle nodes for the node with parentId and a certain radius 20
+        const obstacles: ICoordinate[] =
+            getNeighboringNodesCoordinates({sigmaInstance: state.sigmaInstance, r, point: {x: parentX, y: parentY}})
+
+        const fieldWidth = 2 * r + 1
+        const preferenceField = create2DArrayWith0s(fieldWidth)
+        /* need to get the parentX and Y and set those values equal to the 0+rth index.
+        so [0, 0] is [parentY - r, parentX - r] and [0, 1] is [parentY - r, parentX - r + 1
+         . . . and [0, 2 * r] is [parentY - r, parentX - r + 2r]
+        *
+        */
+        // const coordinateField = create2DArrayWith0s(fieldWidth)
+        const coordinateField = new Array(fieldWidth)
+        for (let i = 0; i < fieldWidth; i++) {
+            coordinateField[i] = new Array(fieldWidth)
+            // const row = new Array(fieldWidth)
+            for (let j = 0; j < fieldWidth; j++) {
+                coordinateField[i][j] = [parentY - r + i, parentX - r + j]
+            }
         }
+
+        const parentCoordinate = {
+            x: parentX,
+            y: parentY,
+        }
+        // getNewLocation using that list of obstacles and parentId
+        const newLocation = determineNewLocation({
+            parentCoordinate,
+            obstacles,
+            preferenceField,
+            coordinateField,
+        })
+        log('the newLocation just created is ', newLocation)
+
+        const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
+            treeId: treeIdString, x: newLocation.x, y: newLocation.y
+        }
+
         const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
         mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
@@ -298,4 +337,34 @@ export default class BranchesStore {
 export class BranchesStoreArgs {
     @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore
     @inject(TYPES.BranchesStoreState) public state
+}
+
+export function getNeighboringNodesCoordinates(
+    {sigmaInstance, r, point}: {sigmaInstance, r: number, point: ICoordinate}): ICoordinate[] {
+    const nodes = sigmaInstance.graph.nodes()
+    const neighboringNodesCoordinates: ICoordinate[] = []
+    /* TODO: use some sort of hashmap or sorted metric 1d hilbert space for a
+    more O(1) or O(log(n)) algorithm rather than O(n)
+    */
+    for (const node of nodes) {
+        const d = distance(
+            {x1: node.x, x2: node.x, y1: point.x, y2: point.y}
+        )
+        if (d < r) {
+            neighboringNodesCoordinates.push({x: node.x, y: node.y})
+        }
+    }
+    return neighboringNodesCoordinates
+
+}
+
+export function create2DArrayWith0s(width): number[][] {
+    const matrix = new Array(width)
+    for (let i = 0; i < width; i++) {
+        matrix[i] = new Array(width)
+        for (let j = 0; j < width; j++) {
+            matrix[i][j] = 0
+        }
+    }
+    return matrix
 }

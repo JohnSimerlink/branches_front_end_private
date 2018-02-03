@@ -56,7 +56,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                     me.storeSource.set(treeId, tree)
                     resolve(treeLocationData)
                 } else {
-                    reject('treeLocationData for ' + treeId + ' invalid!', )
+                    reject('treeLocationData for ' + treeId + ' invalid!' + treeLocationDataFromFirebase )
                 }
             })
         }) as Promise<ITreeLocationData>

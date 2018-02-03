@@ -5,6 +5,8 @@ export const A_BIG_NUMBER = 99999999999
 const OBSTACLE_AVOIDANCE_FACTOR = 5
 const CIRCLE_PREFERENCE_FACTOR = 10
 
+// shout out to archit
+// he da man
 export function determineObstacleVectorField({obstacleCoordinate, r}: {obstacleCoordinate: ICoordinate, r: number}): fXYField {
     let vectorField: fXYField
     /* the closer the object is to the obstacle, the more negative a value the field should return.
@@ -58,7 +60,7 @@ export function determinePreferenceField({parentCoordinate, r}: {parentCoordinat
             // more close to center the worse of an idea it is, so we should give the field a lower value
             const percentOfRadiusLength = distanceFromCenter / r
             howGoodIsTheLocation =  CIRCLE_PREFERENCE_FACTOR * percentOfRadiusLength
-            log('preferenceField ', {x, y}, distanceFromCenter, r, percentOfRadiusLength, howGoodIsTheLocation)
+            // log('preferenceField ', {x, y}, distanceFromCenter, r, percentOfRadiusLength, howGoodIsTheLocation)
 
             // howGoodIsTheLocation = Math.E ** distanceFromCenter - 1
             /* this will make a distanceFromCenter of 0 give howGoodIsTheLocation

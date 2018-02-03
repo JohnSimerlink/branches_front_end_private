@@ -211,21 +211,6 @@ test('App integration test 3 - create new Tree triggered by user' +
             answer
         })
     expect(nodeCorrect).to.equal(true)
-    // configureSigma(sigma)
-    // const treeIdToDownload = TREE_ID
-    //
-    // const sampleTreeData: ITreeDataWithoutId = {
-    //     contentId: '12345532',
-    //     parentId: '493284',
-    //     children: ['2948, 2947']
-    // }
-    //
-    // const sampleTreeLocationData: ITreeLocationData = {
-    //     point: {
-    //         x: 5,
-    //         y: 8,
-    //     }
-    // }
 
     t.pass()
 })
