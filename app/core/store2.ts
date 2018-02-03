@@ -18,7 +18,7 @@ import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
 import {myContainer, state} from '../../inversify.config';
 import {distance} from '../objects/treeLocation/determineNewLocationUtils';
-import {determineNewLocation} from '../objects/treeLocation/determineNewLocation';
+import {determineNewLocation, obtainNewLocation} from '../objects/treeLocation/determineNewLocation';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -159,50 +159,29 @@ const mutations = {
         log('NEW CHILD TREE MUTATION CALLED!', parentTreeId, timestamp,
             contentType, question, answer, title, parentX, parentY)
         log('NEW CHILD TREE MUTATION CALLED! THE STORE IT IS CREATED ON IS!', getters.getStore()['_id'])
+        /**
+         * Create Content
+         */
         const contentId = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
             question, answer, title, type: contentType
         })
         const contentIdString = contentId as any as id // TODO: Why do I have to do this casting?
 
+        /**
+         * Create Tree
+         */
         const createTreeMutationArgs: ICreateTreeMutationArgs = {
             parentId: parentTreeId, contentId: contentIdString
         }
         const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
         const treeIdString = treeId as any as id
 
+        /**
+         * Create TreeLocation
+         */
         const r = 20
-        // get obstacle nodes for the node with parentId and a certain radius 20
-        const obstacles: ICoordinate[] =
-            getNeighboringNodesCoordinates({sigmaInstance: state.sigmaInstance, r, point: {x: parentX, y: parentY}})
-
-        const fieldWidth = 2 * r + 1
-        const preferenceField = create2DArrayWith0s(fieldWidth)
-        /* need to get the parentX and Y and set those values equal to the 0+rth index.
-        so [0, 0] is [parentY - r, parentX - r] and [0, 1] is [parentY - r, parentX - r + 1
-         . . . and [0, 2 * r] is [parentY - r, parentX - r + 2r]
-        *
-        */
-        // const coordinateField = create2DArrayWith0s(fieldWidth)
-        const coordinateField = new Array(fieldWidth)
-        for (let i = 0; i < fieldWidth; i++) {
-            coordinateField[i] = new Array(fieldWidth)
-            // const row = new Array(fieldWidth)
-            for (let j = 0; j < fieldWidth; j++) {
-                coordinateField[i][j] = [parentY - r + i, parentX - r + j]
-            }
-        }
-
-        const parentCoordinate = {
-            x: parentX,
-            y: parentY,
-        }
-        // getNewLocation using that list of obstacles and parentId
-        const newLocation = determineNewLocation({
-            parentCoordinate,
-            obstacles,
-            preferenceField,
-            coordinateField,
-        })
+        const newLocation: ICoordinate =
+            obtainNewLocation({r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentX, y: parentY}})
         log('the newLocation just created is ', newLocation)
 
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
@@ -211,6 +190,9 @@ const mutations = {
 
         const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
+        /**
+         * Add the newly created tree as a child of the parent Tree
+         */
         mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
 
         return treeIdString
