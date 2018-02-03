@@ -1,5 +1,6 @@
 import {fXYField, ICoordinate} from '../interfaces';
 import {A_BIG_NUMBER, determineObstacleVectorField, determinePreferenceField} from './determineNewLocationUtils';
+import {create2DArrayWith0s, getNeighboringNodesCoordinates} from '../../core/store2';
 
 // determineNewLocationAfterNewObstacle({preferenceField, coordinateField, obstacle})
 // determineNewLocationAfterParentMove({
@@ -52,4 +53,51 @@ export function getBestLocation({preferenceField}: {preferenceField: number[][]}
         }
     }
     return bestLocation
+}
+
+export function obtainNewLocation({r, sigmaInstance, parentCoordinate}): ICoordinate {
+    const obstacles: ICoordinate[] =
+        getNeighboringNodesCoordinates({sigmaInstance, r, point: parentCoordinate})
+
+    const fieldWidth = 2 * r + 1
+    const preferenceField = create2DArrayWith0s(fieldWidth)
+    /* need to get the parentX and Y and set those values equal to the 0+rth index.
+    so [0, 0] is [parentY - r, parentX - r] and [0, 1] is [parentY - r, parentX - r + 1
+     . . . and [0, 2 * r] is [parentY - r, parentX - r + 2r]
+    *
+    */
+    const coordinateField = createCoordinateField({fieldWidth, centerCoordinate: parentCoordinate, r})
+    const newLocation = determineNewLocation({
+        parentCoordinate,
+        obstacles,
+        preferenceField,
+        coordinateField,
+    })
+
+    return newLocation
+}
+
+/**
+ *
+ * @param {number} fieldWidth
+ * @param {ICoordinate} centerCoordinate
+ * @param {number} r
+ * @returns {ICoordinate[][]}: A coordinate field.
+ *  A 2-D array that contains {x, y} values of real coordinates on the map given inputs i and j.
+ *  This is necessary if you have a coordinate field where when [j, i] = [0, 0], {x, y} doesn't necessarily equal {0, 0}. E.g. a coordinate field centered around [10, 10]
+ *  A coordinate field with a center coordinate of {r, r} would always have {j, i} = {x, y}
+ */
+function createCoordinateField({fieldWidth, centerCoordinate, r}: {fieldWidth: number, centerCoordinate: ICoordinate, r: number}): ICoordinate[][] {
+    const coordinateField = new Array(fieldWidth)
+    for (let i = 0; i < fieldWidth; i++) {
+        coordinateField[i] = new Array(fieldWidth)
+        // const row = new Array(fieldWidth)
+        for (let j = 0; j < fieldWidth; j++) {
+            coordinateField[i][j] = {
+                y: centerCoordinate.y - r + i,
+                x: centerCoordinate.x - r + j,
+            }
+        }
+    }
+    return coordinateField
 }
