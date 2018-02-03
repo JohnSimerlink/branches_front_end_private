@@ -29,7 +29,6 @@ export class FamilyLoaderCore implements IFamilyLoaderCore {
         const children: id[] = treeDataWithoutId.children
         const sigmaIds = [...children, treeDataWithoutId.parentId]
         const load = this.sigmaNodeLoader.loadIfNotLoaded.bind(this.sigmaNodeLoader)
-        log('loadFamilyIfNotLoaded. The children going to be loaded ', children, 'the parentId going to be loaded', treeDataWithoutId.parentId)
         sigmaIds.forEach(load)
     }
 

@@ -78,9 +78,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     // Assumes the sigmaNodes that the update affects already exist
     // TODO: ensure that anything calling this has the sigmaNodes exist
     public handleUpdate(update: ITypeAndIdAndValUpdates) {
-        log('sigmaNodesUpdate handleUpdate called', update)
         const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update)
-        log('sigmaNodesUpdate sigmaIds are', sigmaIds)
         const me = this
         sigmaIds.forEach(sigmaId => {
             let sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId]
@@ -99,10 +97,8 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         }) {
         switch (updateType) {
             case ObjectDataTypes.TREE_DATA:
-                log('updateSigmaNode TREE_DATA')
                 sigmaNode.receiveNewTreeData(data)
                 const contentData: IContentData = this.contentIdContentMap[data.contentId]
-                log('updateSigmaNode TREE_DATA contentData is ', contentData, this.contentIdContentMap[data.contentId])
                 if (contentData) {
                     sigmaNode.receiveNewContentData(contentData)
                 }

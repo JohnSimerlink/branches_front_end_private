@@ -13,11 +13,11 @@ import {AppContainer} from './appContainer';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {TYPES} from '../objects/types';
 
-if (process.env.NODE_ENV === 'production') {
-   log('NODE ENV IS PROD')
-} else {
-    log('NODE ENV IS ' + process.env.NODE_ENV)
-}
+// if (process.env.NODE_ENV === 'production') {
+//    log('NODE ENV IS PROD')
+// } else {
+//     log('NODE ENV IS ' + process.env.NODE_ENV)
+// }
 myContainerLoadAllModules()
 const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
 // const appContainer = new AppContainer()

@@ -101,7 +101,6 @@ const mutations = {
         sigmaEventListener.startListening()
     },
     [MUTATION_NAMES.REFRESH](state) {
-        log('store mutation refresh called', state)
         state.sigmaInstance.refresh()
     },
     [MUTATION_NAMES.CHANGE_USER_ID](state, userId) {
@@ -156,9 +155,6 @@ const mutations = {
         }: INewChildTreeArgs
     ): id {
         // TODO: UNIT / INT TEST
-        log('NEW CHILD TREE MUTATION CALLED!', parentTreeId, timestamp,
-            contentType, question, answer, title, parentX, parentY)
-        log('NEW CHILD TREE MUTATION CALLED! THE STORE IT IS CREATED ON IS!', getters.getStore()['_id'])
         /**
          * Create Content
          */
@@ -182,7 +178,6 @@ const mutations = {
         const r = 20
         const newLocation: ICoordinate =
             obtainNewLocation({r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentX, y: parentY}})
-        log('the newLocation just created is ', newLocation)
 
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
             treeId: treeIdString, x: newLocation.x, y: newLocation.y
@@ -191,7 +186,7 @@ const mutations = {
         const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
         /**
-         * Add the newly created tree as a child of the parent Tree
+         * Add the newly created tree as a child of the parent
          */
         mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
 
@@ -222,9 +217,7 @@ const mutations = {
             objectType: ObjectTypes.CONTENT,
             data: {type, question, answer, title},
         }
-        log('BRANCHES_STORE store2.ts CREATE_CONTENT_MUTATION, branchesStore id is', )
         const contentId = state.globalDataStore.addMutation(createMutation)
-        log('contentId created from CREATE_CONTENT MUTATION', contentId)
         return contentId
     },
     [MUTATION_NAMES.CREATE_TREE](state, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
@@ -234,7 +227,6 @@ const mutations = {
             data: {parentId, contentId, children},
         }
         const treeId = state.globalDataStore.addMutation(createMutation)
-        log('treeId created in create tree mutation', treeId)
         return treeId
     },
     // [MUTATION_NAMES.CREATE_TREE](
@@ -269,17 +261,14 @@ const mutations = {
             id: treeId
         }
         const treeLocationData = state.globalDataStore.addMutation(createMutation)
-        log('treeLocationData created in create tree mutation', treeLocationData)
         return treeLocationData
     },
 }
 // TODO: DO I even use these mutation?
 mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
     if (state.sigmaInitialized) {
-        log('sigma was already initialized . .. adding node', node)
         state.graph.addNode(node)
         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
-        log('STORE 2 TS ADD NODE. THIS STORE is ', getters.getStore())
     } else {
         state.graphData.nodes.push(node)
     }
@@ -307,10 +296,6 @@ export default class BranchesStore {
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         store['_id'] = Math.random()
-        // log('BranchesStore just created. BranchesStore id', store['_id'])
-        // log('BranchesStore just created.' +
-        //     ' It\'s MutableSubscribableGlobalStore is', globalDataStore['_globalStoreId'])
-        // . BranchesStore id', store['_id'])
         initialized = true
         return store
     }

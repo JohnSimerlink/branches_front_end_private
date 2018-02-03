@@ -18,9 +18,7 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.familyLoader = familyLoader
     }
     public startListening() {
-        log('sigmaEventListener called')
         this.sigmaInstance.bind('clickNode', (event) => {
-            log('clickNode eventListener called!!!!!')
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id
             const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
@@ -29,7 +27,6 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.sigmaInstance.bind('overNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id
-            log('overNode eventListener called!!!!!', nodeId)
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)
         })
         // debugger;

@@ -15,7 +15,6 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
     public addAndSubscribeToItemFromData(
         {id, contentData}:
             { id: string; contentData: IContentData; }): ISyncableMutableSubscribableContent {
-        log('MutableSubscribableContentStore addAndSubscribeToItemFromData called!', id, contentData)
         // content
         const content: ISyncableMutableSubscribableContent =
             ContentDeserializer.deserialize({contentId: id, contentData})

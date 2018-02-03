@@ -28,11 +28,9 @@ export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribabl
         {id, treeUserData}:
         { id: string; treeUserData: ITreeUserData; })
     : ISyncableMutableSubscribableTreeUser {
-        log('AutoSaveMutableSubscribableTreeUserStore addAndSubscribeToItemFromData', id, treeUserData)
         const treeUserId = id
         const treeUser: ISyncableMutableSubscribableTreeUser =
             super.addAndSubscribeToItemFromData({id, treeUserData})
-        log('treeUser just created is', treeUser)
         const treeUserFirebaseRef = this.treeUsersFirebaseRef.child(treeUserId)
         // const treeUserFirebaseRef = treeUserFirebaseRef.child(userId)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({

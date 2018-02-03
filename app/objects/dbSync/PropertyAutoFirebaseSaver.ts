@@ -13,7 +13,6 @@ export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {
     }
 
     public subscribe(obj: ISubscribable<IDetailedUpdates>) {
-        log('PropertyAutoFirebaseSaver called', obj)
         obj.onUpdate(this.saveUpdatesToDBFunction)
     }
 }

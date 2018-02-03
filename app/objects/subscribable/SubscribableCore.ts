@@ -28,10 +28,8 @@ export abstract class SubscribableCore<UpdatesType> implements ISubscribable<Upd
     protected abstract callbackArguments(): UpdatesType
 
     protected callCallbacks() {
-        log('SubscribableCore callCallbacks called for ', this.updatesCallbacks, this)
         const me = this
         this.updatesCallbacks.forEach(callback => {
-            log('the callbackArguments is', me.callbackArguments())
             callback(me.callbackArguments())
         })
     }

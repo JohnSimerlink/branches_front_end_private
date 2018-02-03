@@ -18,13 +18,10 @@ export class SpecialTreeLoader implements ITreeLoader {
     }
 
     public async downloadData(treeId: string): Promise<ITreeDataWithoutId> {
-        log('specialTreeLoader download called')
         const treeDataWithoutId: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId)
-        log('treeLoader download finishedcalled')
         const contentId = treeDataWithoutId.contentId
         const sigmaId = treeId
         this.contentIdSigmaIdsMap.set(contentId, sigmaId)
-        log('specialTreeLoader download called finished', this.contentIdSigmaIdsMap)
         return treeDataWithoutId
     }
 

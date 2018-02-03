@@ -31,7 +31,6 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     }: KnawledgeMapCreatorArgs) {
         this.sigmaNodeLoader = sigmaNodeLoader
         this.store = store
-        // log('knawledgeMap 45: MutableSubscribableGlobalStore End of knawledgeMap constructor called')
     }
     public create() {
         const me = this
@@ -39,11 +38,8 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             props: [],
             template,
             mounted() {
-                log('KnawledgeMap mounted')
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
-                log('KnawledgeMap about to load ', INITIAL_ID_TO_DOWNLOAD)
                 me.sigmaNodeLoader.loadIfNotLoaded(INITIAL_ID_TO_DOWNLOAD)
-                log('KnawledgeMap just did load ', INITIAL_ID_TO_DOWNLOAD)
                 // me.sigmaNodeLoader.loadIfNotLoaded(ANOTHER_ID)
                 // // TODO: Maybe all of these download actions should be done via Vuex Store actions
                 // me.specialTreeLoader.downloadData(INITIAL_ID_TO_DOWNLOAD)
