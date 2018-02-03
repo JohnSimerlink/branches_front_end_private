@@ -28,3 +28,13 @@ then with that list of obstacleNodes, we pass it in into the pure function getNe
 ----7pm-----
 currently treeLocation is not being created in db.
 also treeLocation is not being added to the new sigmanode that was just created
+
+
+
+2pm saturday 
+--- color change doesn't work on things already loaded
+--- when creating a new category node, need to make obstacle radii much larger, and circle of preference on parent Node larger too
+
+change linear descent to expontential descent
+
+spacing algorithm doesn't always even seem to get called
