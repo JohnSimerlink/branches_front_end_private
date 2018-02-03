@@ -787,7 +787,7 @@ export interface ISubscribableTreeLocationCore extends ITreeLocation {
 }
 
 export enum TreeLocationPropertyNames {
-    POINT = 'POINT',
+    POINT = 'point',
 }
 
 export interface ISubscribableTreeLocation extends

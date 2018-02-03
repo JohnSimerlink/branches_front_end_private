@@ -1,3 +1,5 @@
+import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom()
 import {
     mockFirebaseReferences, mockTreeLocationsRef, myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
@@ -6,7 +8,7 @@ import {Store} from 'vuex';
 import BranchesStore, {MUTATION_NAMES} from './store2';
 import {TYPES} from '../objects/types';
 import * as sinon from 'sinon'
-import {ITreeLocationData, TreeLocationPropertyNames} from '../objects/interfaces';
+import {ICreateTreeLocationMutationArgs, ITreeLocationData, TreeLocationPropertyNames} from '../objects/interfaces';
 import {AppContainer} from './appContainer';
 import {expect} from 'chai'
 import test from 'ava'
@@ -18,11 +20,10 @@ test('store create location should call correct firebaseRef', t => {
     const treeId = '123abcde3'
     const x = 5
     const y = 7
-    const treeLocationData: ITreeLocationData = {
-        point: {
-            x,
-            y
-        }
+    const treeLocationData: ICreateTreeLocationMutationArgs = {
+        x,
+        y,
+        treeId,
     }
     /** Swap out actual firebase refs with Mock firebase refs.
      *
@@ -39,8 +40,7 @@ test('store create location should call correct firebaseRef', t => {
      * the action on the store should trigger a database update on this firebase ref
      */
     const treeLocationRef = mockTreeLocationsRef.child(treeId)
-    const treeLocationPointPropertyRef = treeLocationRef.child(TreeLocationPropertyNames.POINT)
-    const treeLocationPointPropertyRefUpdateSpy = sinon.spy(treeLocationPointPropertyRef, 'update')
+    const treeLocationRefUpdateSpy = sinon.spy(treeLocationRef, 'update')
 
     /**
      * Start the app
@@ -56,12 +56,14 @@ test('store create location should call correct firebaseRef', t => {
      */
     store.commit(MUTATION_NAMES.CREATE_TREE_LOCATION, treeLocationData )
 
-    expect(treeLocationPointPropertyRefUpdateSpy.callCount).to.deep.equal(1)
-    const calledWith = treeLocationPointPropertyRefUpdateSpy.getCall(0).args[0]
+    expect(treeLocationRefUpdateSpy.callCount).to.deep.equal(1)
+    const calledWith = treeLocationRefUpdateSpy.getCall(0).args[0]
     const expectedCalledWith = {
-        val: {
-            x,
-            y
+        point: {
+            val: {
+                x,
+                y
+            }
         }
     }
     expect(calledWith).to.deep.equal(expectedCalledWith)

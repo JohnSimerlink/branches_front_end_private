@@ -1,28 +1,37 @@
-
+const env = process.env.NODE_ENV || 'development'
+if (env === 'test') {
+    const register = require('ignore-styles').default
+    register(['.html', '.less'])
+}
 const STATES = {
-    SHOWING: "showing",
-    SUBTRACTING_BY_7: "subtracting_by_7",
-    QUIZZING: "quizzing",
-    ANSWER: "answer",
+    SHOWING: 'showing',
+    SUBTRACTING_BY_7: 'subtracting_by_7',
+    QUIZZING: 'quizzing',
+    ANSWER: 'answer',
 }
 const TIME_SHOWING = 16000 //00000
 const TIME_SUBTRACTING_BY_7 = 32000 //64000
+let template = require('./ebbinghaus.html').default
+if (!template) {
+    template = require('./ebbinghaus.html')
+}
+
 export default {
-    template: require('./ebbinghaus.html').default,
-    created () {
+    template,
+    created() {
         const numTriplets = 3
         this.triplets = []
         for (let i = 0; i < numTriplets; i++){
             const triplet = randomMeaninglessTriplet()
             this.triplets.push(triplet)
         }
-        this.state= STATES.SHOWING
-        setTimeout(() =>{
+        this.state = STATES.SHOWING
+        setTimeout(() => {
             this.state = STATES.SUBTRACTING_BY_7
-        },TIME_SHOWING)
-        setTimeout(() =>{
+        }, TIME_SHOWING)
+        setTimeout(() => {
             this.state = STATES.QUIZZING
-        },TIME_SHOWING + TIME_SUBTRACTING_BY_7 )
+        }, TIME_SHOWING + TIME_SUBTRACTING_BY_7 )
 
     },
     data () {
