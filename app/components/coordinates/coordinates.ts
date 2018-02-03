@@ -1,3 +1,8 @@
+const env = process.env.NODE_ENV || 'development'
+if (env === 'test') {
+    const register = require('ignore-styles').default
+    register(['.html', '.less'])
+}
 import {log} from '../../core/log'
 import './coordinates.less'
 import {determineNewLocation} from '../../objects/treeLocation/determineNewLocation';
