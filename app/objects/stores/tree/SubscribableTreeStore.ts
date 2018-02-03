@@ -13,7 +13,6 @@ export class SubscribableTreeStore extends SubscribableStore<ISubscribableTreeCo
 
     constructor(@inject(TYPES.SubscribableTreeStoreArgs){ storeSource, updatesCallbacks}: SubscribableTreeStoreArgs ) {
         super({updatesCallbacks, storeSource})
-        log('SubscribableTreeStore just called . . . The id of the storeSource is ', storeSource['_id'])
     }
 }
 

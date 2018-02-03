@@ -25,9 +25,7 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
         const saveVal = {}
 
         const propertiesToSync = this.syncableObject.getPropertiesToSync()
-        log('Object auto firebase saver initialSave properties to sync are', propertiesToSync)
         for (const [propName, property] of Object.entries(propertiesToSync)) {
-            log('Object auto firebase saver for loop propName and property are', propName, property)
             saveVal[propName] = {
                 val: property.val()
             }
@@ -36,7 +34,6 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
     }
     public start() {
         const propertiesToSync = this.syncableObject.getPropertiesToSync()
-        log('Object auto firebase saver start() properties to sync are', propertiesToSync)
         for (const [propName, property] of Object.entries(propertiesToSync)) {
             const propertyFirebaseRef = this.syncableObjectFirebaseRef.child(propName)
             const propertyFirebaseSaver: IDatabaseSaver = new PropertyFirebaseSaver({firebaseRef: propertyFirebaseRef})

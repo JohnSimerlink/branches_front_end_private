@@ -6,7 +6,7 @@ import {
 import {TYPES} from '../../objects/types';
 import {ContentUserLoader} from './ContentUserLoader';
 import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
-import {log} from '../../core/log'
+import {log, error} from '../../core/log'
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
@@ -40,7 +40,7 @@ export class ContentUserLoaderAndAutoSaver implements IContentUserLoader {
 
     public async downloadData({contentId, userId}: { contentId: any; userId: any }): Promise<IContentUserData> {
         if (this.isLoaded({contentId, userId})) {
-            log('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again')
+            error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again')
             return
         }
         const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({contentId, userId})
@@ -52,10 +52,7 @@ export class ContentUserLoaderAndAutoSaver implements IContentUserLoader {
                 syncableObjectFirebaseRef: contentUserFirebaseRef,
                 syncableObject: contentUser
             })
-        log('contentUser.proficiency before autosaver start', contentUser.proficiency)
         contentUserAutoSaver.start()
-        log('contentUser.proficiency after autosaver start', contentUser.proficiency)
-        log('contentUserAutoSaver start just called')
 
         return contentUserData
     }

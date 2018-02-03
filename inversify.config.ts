@@ -390,7 +390,6 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
     = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_DATA})
-log('SubscribableTreeStoreSource id is ', subscribableTreeStoreSourceSingleton['_id'])
 const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
     = new SubscribableTreeLocationStoreSource(
         {hashmap: {}, updatesCallbacks: [], type: ObjectDataTypes.TREE_LOCATION_DATA})

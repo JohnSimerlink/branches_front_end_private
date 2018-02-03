@@ -34,8 +34,6 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         // log('/**/328pm mutablesubscribableglobalstore just created', this._globalStoreId)
     }
     private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
-        log('MSGLobalStore addEditMutation called. id is,',
-            this._globalStoreId, 'and mutation objectType is', mutation.objectType)
         // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
             case ObjectTypes.TREE: {
@@ -132,12 +130,10 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             case ObjectTypes.CONTENT: {
                 const contentData: IContentData = mutation.data
                 const contentId = createContentId(contentData)
-                log('MutableSubscribableGlobalStore addCreateMutation ObjectTypes CONTENT', contentData)
                 this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData})
                 return contentId
             }
             case ObjectTypes.TREE: {
-                log('MUTATION CREATE TREE in GLOBAL STORE data is', mutation.data)
                 const treeDataWithoutId: ITreeDataWithoutId = mutation.data
                 const id = createTreeId(treeDataWithoutId)
                 this.treeStore.addAndSubscribeToItemFromData({id, treeDataWithoutId})
@@ -154,15 +150,11 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         }
     }
     public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
-        log('MutableSubscribableGlobalStore, addMutation ', this['_globalStoreId'],
-            this['contentUserStore'],
-            this['contentUserStore']['addMutation'] /*global store addMutation is', mutation*/)
         // log('MSGLobalStore addMutation called 1', mutation.type, STORE_MUTATION_TYPES.CREATE_ITEM)
         if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
             // log('MSGLobalStore addMutation called: about to call addCreateMutation 2 ')
             return this.addCreateMutation(mutation)
         } else {
-            log('MSGLobalStore addMutation called: about to call addEditMutation 2')
             return this.addEditMutation(mutation)
         }
     }
@@ -174,7 +166,6 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         throw new Error('Method not implemented.');
     }
     public startPublishing() {
-        log('globalstore startPublishing called')
         this.treeStore.startPublishing()
         this.contentStore.startPublishing()
         this.treeUserStore.startPublishing()

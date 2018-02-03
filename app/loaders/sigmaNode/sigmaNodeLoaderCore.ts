@@ -40,7 +40,6 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
     }
 
     public async load(sigmaId: id): Promise<ISigmaLoadData> {
-        log('sigmaNodeLoader called for', sigmaId)
         const treeId = sigmaId
         const treeLocationPromise: Promise<ITreeLocationData> = this.treeLocationLoader.downloadData(treeId)
         const treeDataWithoutId: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId)
@@ -49,7 +48,6 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
             return
         }
 
-        log('the treeDataWithoutId from treeLoader.downloadData is', treeDataWithoutId)
         const contentDataPromise: Promise<IContentData> = this.contentLoader.downloadData(treeDataWithoutId.contentId)
         const contentUserDataPromise: Promise<IContentUserData> = this.contentUserLoader.downloadData({
             contentId: treeDataWithoutId.contentId,

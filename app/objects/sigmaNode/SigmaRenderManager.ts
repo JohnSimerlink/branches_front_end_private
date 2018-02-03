@@ -31,12 +31,9 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> imple
     }
 
     private broadcastIfRenderable(treeId: string) {
-        log('broadCastIfRenderable called ', treeId)
         if (this.canRender(treeId)) {
-            log('broadCastIfRenderable called, canRender is true ', treeId)
             this.broadcastUpdate(treeId)
         } else {
-            log('broadCastIfRenderable called, canRender is false ', treeId)
         }
     }
     private canRender(treeId: string) {
@@ -53,5 +50,5 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaIdToRender> imple
 export class SigmaRenderManagerArgs {
     @inject(TYPES.Object) public treeDataLoadedIdsSet: IHash<boolean>
     @inject(TYPES.Object) public treeLocationDataLoadedIdsSet: IHash<boolean>
-    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
+    @inject(TYPES.Array) public updatesCallbacks: Function[]
 }

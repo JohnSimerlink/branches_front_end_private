@@ -41,7 +41,6 @@ export class ContentLoader implements IContentLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData(contentId: string): Promise<IContentData> {
-        log('contentLoader downloadData called')
         if (this.isLoaded(contentId)) {
             return this.getData(contentId)
         }
@@ -49,7 +48,6 @@ export class ContentLoader implements IContentLoader {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(contentId).once('value', (snapshot) => {
                 const contentDataFromDB: IContentDataFromDB = snapshot.val()
-                log('contentLoader data received', contentDataFromDB)
                 if (!contentDataFromDB) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -67,7 +65,6 @@ export class ContentLoader implements IContentLoader {
                 if (isValidContentDataFromDB(contentDataFromDB)) {
                     const content: ISyncableMutableSubscribableContent =
                         ContentDeserializer.deserializeFromDB({contentId, contentDataFromDB})
-                    log('Content storeSource about to be set with ', contentId, content, content.val())
                     const contentData: IContentData
                         = ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB})
                     me.storeSource.set(contentId, content)
