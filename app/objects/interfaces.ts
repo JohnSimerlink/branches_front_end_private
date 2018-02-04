@@ -706,13 +706,16 @@ export interface ITreeDataWithoutId {
 }
 export interface ITreeDataFromFirebase {
     contentId: {
-        val: string
+        val: string,
+        mutations?
     },
     parentId: {
-        val: string
+        val: string,
+        mutations?
     },
     children: {
-        val: IHash<boolean>
+        val: IHash<boolean>,
+        mutations?
     },
 }
 export interface ITreeData extends ITreeDataWithoutId {

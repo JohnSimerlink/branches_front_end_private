@@ -154,6 +154,7 @@ const mutations = {
             parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
         }: INewChildTreeArgs
     ): id {
+        log("NEW CHILD TREE CALLED. parentX and parentY are ", parentX, parentY)
         // TODO: UNIT / INT TEST
         /**
          * Create Content
@@ -175,7 +176,7 @@ const mutations = {
         /**
          * Create TreeLocation
          */
-        const r = 20
+        const r = 30
         const newLocation: ICoordinate =
             obtainNewLocation({r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentX, y: parentY}})
 
@@ -306,32 +307,3 @@ export class BranchesStoreArgs {
     @inject(TYPES.BranchesStoreState) public state
 }
 
-export function getNeighboringNodesCoordinates(
-    {sigmaInstance, r, point}: {sigmaInstance, r: number, point: ICoordinate}): ICoordinate[] {
-    const nodes = sigmaInstance.graph.nodes()
-    const neighboringNodesCoordinates: ICoordinate[] = []
-    /* TODO: use some sort of hashmap or sorted metric 1d hilbert space for a
-    more O(1) or O(log(n)) algorithm rather than O(n)
-    */
-    for (const node of nodes) {
-        const d = distance(
-            {x1: node.x, x2: node.x, y1: point.x, y2: point.y}
-        )
-        if (d < r) {
-            neighboringNodesCoordinates.push({x: node.x, y: node.y})
-        }
-    }
-    return neighboringNodesCoordinates
-
-}
-
-export function create2DArrayWith0s(width): number[][] {
-    const matrix = new Array(width)
-    for (let i = 0; i < width; i++) {
-        matrix[i] = new Array(width)
-        for (let j = 0; j < width; j++) {
-            matrix[i][j] = 0
-        }
-    }
-    return matrix
-}

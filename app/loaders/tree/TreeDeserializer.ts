@@ -60,7 +60,7 @@ export class TreeDeserializer {
    public static convertSetsToArrays(
        {treeData, }: {treeData: ITreeDataFromFirebase, }
    ): ITreeDataWithoutId {
-       const childrenArray = treeData.children ?
+       const childrenArray = treeData.children && treeData.children.val ?
            setToStringArray(treeData.children.val) :
            []
        return {

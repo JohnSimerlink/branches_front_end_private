@@ -59,13 +59,17 @@ export class ContentUserLoader implements IContentUserLoader {
             contentUserRef.once('value', (snapshot) => {
                 const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val()
                 if (!contentUserDataFromDB) {
-                    throw new Error('contentUserDataFromDB doesn\'t exist')
+                    return
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
                      Often this first snapshot is null, if firebase hasn't called the network yet,
                       or if the FirebaseMock hasn't flushed a mocked a fake event yet
                       Therefore we just return without resolving,
                        as the promise will actually get resolved in ideally a few more (dozen) milliseconds
+                       Additionally it could be that we aren't in testing mode, and that rather no contentUserData
+                        exists for this id . . .
+                        in which case we should end this method
+                         and not call the contentUserDeserializer any way
                        */
                 } else {
                 }

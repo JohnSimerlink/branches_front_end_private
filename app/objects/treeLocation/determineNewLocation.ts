@@ -1,7 +1,7 @@
 import {fXYField, ICoordinate} from '../interfaces';
 import {A_BIG_NUMBER, determineObstacleVectorField, determinePreferenceField} from './determineNewLocationUtils';
-import {create2DArrayWith0s, getNeighboringNodesCoordinates} from '../../core/store2';
-
+import {create2DArrayWith0s, getNeighboringNodesCoordinates} from './determineNewLocationUtils';
+import {log} from '../../core/log'
 // determineNewLocationAfterNewObstacle({preferenceField, coordinateField, obstacle})
 // determineNewLocationAfterParentMove({
 // until performance sucks, just recalculate the entire field every time
@@ -56,8 +56,10 @@ export function getBestLocation({preferenceField}: {preferenceField: number[][]}
 }
 
 export function obtainNewLocation({r, sigmaInstance, parentCoordinate}): ICoordinate {
+    log('obtainNewLOcation', {r, sigmaInstance, parentCoordinate})
     const obstacles: ICoordinate[] =
-        getNeighboringNodesCoordinates({sigmaInstance, r, point: parentCoordinate})
+        getNeighboringNodesCoordinates({nodes: sigmaInstance.graph.nodes(), r, point: parentCoordinate})
+    log('obstacles in obtainNewLocation are', obstacles)
 
     const fieldWidth = 2 * r + 1
     const preferenceField = create2DArrayWith0s(fieldWidth)
@@ -87,7 +89,9 @@ export function obtainNewLocation({r, sigmaInstance, parentCoordinate}): ICoordi
  *  This is necessary if you have a coordinate field where when [j, i] = [0, 0], {x, y} doesn't necessarily equal {0, 0}. E.g. a coordinate field centered around [10, 10]
  *  A coordinate field with a center coordinate of {r, r} would always have {j, i} = {x, y}
  */
-function createCoordinateField({fieldWidth, centerCoordinate, r}: {fieldWidth: number, centerCoordinate: ICoordinate, r: number}): ICoordinate[][] {
+function createCoordinateField(
+    {fieldWidth, centerCoordinate, r}:
+        {fieldWidth: number, centerCoordinate: ICoordinate, r: number}): ICoordinate[][] {
     const coordinateField = new Array(fieldWidth)
     for (let i = 0; i < fieldWidth; i++) {
         coordinateField[i] = new Array(fieldWidth)

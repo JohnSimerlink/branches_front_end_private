@@ -101,10 +101,54 @@ export function inCircle({center, r, x, y}: {center: {x: number, y: number}, r: 
     return d < r
 }
 
-export function distance({x1, y1, x2, y2}) {
+// sometimes the arguments are fed strings . .
+export function distance({x1, y1, x2, y2}: {x1: number, x2: number, y1: number, y2: number}) {
+    // x1 = parseInt('' + x1)
+    // x2 = parseInt('' + x2)
+    // y1 = parseInt('' + y1)
+    // y2 = parseInt('' + y2)
     const deltaX = x2 - x1
     const deltaY = y2 - y1
     const discriminant = deltaX ** 2 + deltaY ** 2
     const d = Math.sqrt(discriminant)
+    // log('distance vals are ', x1, x2, y1, y2, deltaX, deltaY, discriminant, d)
     return d
 }
+
+// O(n), where n = num nodes. We could actually make this O(logn) maybe O(1)
+export function getNeighboringNodesCoordinates(
+    {nodes, r, point}: {nodes: ICoordinate[], r: number, point: ICoordinate}): ICoordinate[] {
+    // log('getNeighboringNodesCoordinates called ', sigmaInstance, r, point)
+    log('getNeighboringNodesCoordinates called . all nodes are ', nodes)
+    const neighboringNodesCoordinates: ICoordinate[] = []
+    /* TODO: use some sort of hashmap or sorted metric 1d hilbert space for a
+    more O(1) or O(log(n)) algorithm rather than O(n)
+    */
+    for (const node of nodes) {
+        log('getNeighboringNodesCoordinates node is', node)
+        const d = distance(
+            {x1: node.x, y1: node.y, x2: point.x, y2: point.y}
+        )
+        log('getNeighboringNodesCoordinates distance is ', d)
+        if (d < r) {
+            neighboringNodesCoordinates.push({x: node.x, y: node.y})
+            log('getNeighboringNodesCoordinates distance is less than r')
+        } else {
+            log('getNeighboringNodesCoordinates distance is NOT less than r')
+        }
+    }
+    return neighboringNodesCoordinates
+
+}
+
+export function create2DArrayWith0s(width): number[][] {
+    const matrix = new Array(width)
+    for (let i = 0; i < width; i++) {
+        matrix[i] = new Array(width)
+        for (let j = 0; j < width; j++) {
+            matrix[i][j] = 0
+        }
+    }
+    return matrix
+}
+

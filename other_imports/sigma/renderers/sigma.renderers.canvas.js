@@ -112,7 +112,7 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
  * @return {sigma.renderers.canvas}         Returns the instance itself.
  */
 sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
-    console.log('sigma canvas render called')
+    // console.log('sigma canvas render called')
     // console.log("sigma renderers canvas width and height are :", this.width, this.height, ' and this is ', this)
 
     options = options || {};
@@ -185,7 +185,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // window.mostCenteredNodeDistance = A_BIG_NUMBER
     var nodesOnScreen = this.camera.quadtree.area(rect)
     // var nodesOnScreen = this.graph.nodes()
-    console.log("nodesOnScreen and nodesOnScreen2", nodesOnScreen)
+    // console.log("nodesOnScreen and nodesOnScreen2", nodesOnScreen)
     // console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
     // nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
     nodesOnScreen.forEach(node => {
@@ -202,7 +202,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     })
 
     this.graph.nodes().forEach(node => {
-        console.log("node => ", node.onScreen)
+        // console.log("node => ", node.onScreen)
         // delete node.distanceFromCenter
     })
     // console.log("nodesOn")
