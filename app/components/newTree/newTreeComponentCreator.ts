@@ -17,6 +17,7 @@ import {
 import {TYPES} from '../../objects/types';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {Store} from 'vuex';
+import Vue from 'vue';
 let template = require('./newTree.html').default
 if (!template) {
     template = require('./newTree.html')
@@ -74,7 +75,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     question: '',
                     answer: '',
                     title: '',
-                    type: 'fact'
+                    type: CONTENT_TYPES.FACT
                 }
             },
             computed: {
@@ -117,27 +118,52 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         question: questionFormatted,
                         answer: answerFormatted,
                         title: titleFormatted,
-                        parentX: this.parentX,
-                        parentY: this.parentY,
+                        parentX: parseInt(this.parentX),
+                        parentY: parseInt(this.parentY),
                         // x: childX,
                         // y: childY,
                     }
                     log('new child tree args being passed into commit are', newChildTreeArgs)
                     log('newTreeComponentCreator . createNewTree() me.store._id is', me.store['_id'])
-                    log('newTreeComponentCreator . createNewTree() store\'s globalStore id is', me.store['globalDataStore']['_globalStoreId'])
+                    log('newTreeComponentCreator . createNewTree() store\'s globalStore id is',
+                        me.store['globalDataStore']['_globalStoreId'])
                     me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs)
                 },
-                setTypeToHeading() {
+                submitForm() {
+                    this.createNewTree({
+                        question: this.question,
+                        answer: this.answer,
+                        title: this.title,
+                        type: this.type
+                    })
+                    // clear form
+                    this.question = ''
+                    this.answer = ''
+                    this.title = ''
+                    // focus cursor
+                    switch (this.type) {
+                        case CONTENT_TYPES.FACT:
+                            this.$refs.question.focus()
+                            break
+                        case CONTENT_TYPES.CATEGORY:
+                            this.$refs.category.focus()
+                            break
+                    }
+                },
+                async setTypeToHeading() {
                     this.type = CONTENT_TYPES.CATEGORY
+                    await Vue.nextTick()
+                    this.$refs.category.focus()
                     // this.type = 'heading'
                 },
-                setTypeToFact() {
+                async setTypeToFact() {
                     this.type = CONTENT_TYPES.FACT
+                    await Vue.nextTick()
+                    this.$refs.question.focus()
                     // this.type = 'fact'
                 },
                 setTypeToSkill() {
                     this.type = CONTENT_TYPES.SKILL
-                    this.type = 'skill'
                 }
             }
         }

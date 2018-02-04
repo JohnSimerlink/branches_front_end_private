@@ -82,7 +82,7 @@ export class Tree3Creator implements ITree3Creator {
                     // content: {}, // this.content
                     editing: false,
                     showHistory: false,
-                    addingChild: false,
+                    addingChild: true,
                     user: {},
                     contentUserDataLocal: null,
                     contentUserDataLoaded: false,
