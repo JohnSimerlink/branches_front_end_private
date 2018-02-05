@@ -37,10 +37,22 @@ export class TooltipRenderer implements ITooltipRenderer {
         const contentId = node.contentId
         const userId = this.userId()
         const contentUserId = getContentUserId({contentId, userId})
+        log('contentEscaped is', contentId, contentEscaped)
         log('renderer contentUserDataEscaped is', contentId, userId, contentUserDataEscaped)
         // log('tooltips config called', node, template, node.content, contentEscaped,
         //     ' and contentUserId is', contentUserId,
         //     ' and contentUserData is ', contentUserDataEscaped)
+        // generate html via DOM API to prevent generating it via a string and running into escape attribute errors
+        const resultElement = document.createElement('div')
+        const tree = document.createElement('tree')
+        tree.setAttribute('x', `${node.x}`)
+        tree.setAttribute('y', `${node.y}`)
+        tree.setAttribute('parentid', node.parentId)
+        tree.setAttribute('contentid', node.contentId)
+        tree.setAttribute('content-string', `${node.content}`)
+        tree.setAttribute('content-user-data-string', `${node.contentUserData}`)
+        tree.setAttribute('content-user-id', `${contentUserId}`)
+        resultElement.appendChild(tree)
         const result: string =
             `<div id="vue">
             <tree
