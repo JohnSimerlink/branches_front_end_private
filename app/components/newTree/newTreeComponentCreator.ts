@@ -69,6 +69,14 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
             created() {
                 // log('newTree component created props are ',
                 //     this.parentId, this.primaryparenttreecontenturi, this.parentX, this.parentY)
+                switch (this.type) {
+                    case CONTENT_TYPES.CATEGORY:
+                        this.setTypeToCategoryUILogic()
+                        break;
+                    case CONTENT_TYPES.FACT:
+                        this.setTypeToFactUILogic()
+                        break;
+                }
             },
             data() {
                 return {
@@ -152,15 +160,22 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 },
                 async setTypeToHeading() {
                     this.type = CONTENT_TYPES.CATEGORY
-                    await Vue.nextTick()
-                    this.$refs.category.focus()
-                    // this.type = 'heading'
+                    this.setTypeToCategoryUILogic()
                 },
                 async setTypeToFact() {
                     this.type = CONTENT_TYPES.FACT
-                    await Vue.nextTick()
+                    await this.setTypeToAnythingLogic()
+                },
+                async setTypeToAnythingLogic() {
+                    await Vue.nextTick
+                },
+                async setTypeToFactUILogic() {
+                    await this.setTypeToAnythingLogic()
                     this.$refs.question.focus()
-                    // this.type = 'fact'
+                },
+                async setTypeToCategoryUILogic() {
+                    await this.setTypeToAnythingLogic()
+                    this.$refs.category.focus()
                 },
                 setTypeToSkill() {
                     this.type = CONTENT_TYPES.SKILL
