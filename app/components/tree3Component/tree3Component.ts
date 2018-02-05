@@ -110,10 +110,9 @@ export class Tree3Creator implements ITree3Creator {
                     if (!this.contentString) {
                         return {}
                     }
-                    const decoded = decodeURIComponent(this.contentString)
-                    log('decoded is ', decoded)
+                    // log('decoded is ', decoded)
                     // const content
-                    const content = JSON.parse(decoded)
+                    const content = JSON.parse(this.contentString)
                     log('parsed is', content)
 
                     return content
@@ -128,10 +127,8 @@ export class Tree3Creator implements ITree3Creator {
                     if (!this.contentUserDataString) {
                         return {}
                     }
-                    const decoded = decodeURIComponent(this.contentUserDataString)
-                    log('contentUserData decoded is ', decoded)
                     // const content
-                    const contentUserData: IContentUserData = JSON.parse(decoded)
+                    const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
                     log('contentUserData parsed is', contentUserData)
 
                     this.proficiencyInput = contentUserData.proficiency

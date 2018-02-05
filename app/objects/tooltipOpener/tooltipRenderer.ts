@@ -28,7 +28,7 @@ export class TooltipRenderer implements ITooltipRenderer {
     private userId(): string {
         return this.store.state.userId
     }
-    public renderer(node: ISigmaNodeData, template) {
+    public renderer(node: ISigmaNodeData, template): string {
         // var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
         // switch (node.type) {
         //     case 'tree':
@@ -39,33 +39,40 @@ export class TooltipRenderer implements ITooltipRenderer {
         const contentUserId = getContentUserId({contentId, userId})
         log('contentEscaped is', contentId, contentEscaped)
         log('renderer contentUserDataEscaped is', contentId, userId, contentUserDataEscaped)
-        // log('tooltips config called', node, template, node.content, contentEscaped,
-        //     ' and contentUserId is', contentUserId,
-        //     ' and contentUserData is ', contentUserDataEscaped)
+        log('tooltips config called', node, template, node.content, contentEscaped,
+            ' and contentUserId is', contentUserId,
+            ' and contentUserData is ', contentUserDataEscaped)
         // generate html via DOM API to prevent generating it via a string and running into escape attribute errors
+        const contentString = JSON.stringify(node.content)
+        const contentUserDataString = node.contentUserData ?
+            JSON.stringify(node.contentUserData) : ''
         const resultElement = document.createElement('div')
+        resultElement.setAttribute('id', 'vue')
         const tree = document.createElement('tree')
         tree.setAttribute('x', `${node.x}`)
         tree.setAttribute('y', `${node.y}`)
         tree.setAttribute('parentid', node.parentId)
         tree.setAttribute('contentid', node.contentId)
-        tree.setAttribute('content-string', `${node.content}`)
-        tree.setAttribute('content-user-data-string', `${node.contentUserData}`)
+        tree.setAttribute('content-string', contentString)
+        tree.setAttribute('content-user-data-string', contentUserDataString)
         tree.setAttribute('content-user-id', `${contentUserId}`)
         resultElement.appendChild(tree)
-        const result: string =
-            `<div id="vue">
-            <tree
-                x='${node.x}'
-                y='${node.y}'
-                parentid='${node.parentId}'
-                contentid='${node.contentId}'
-                content-string='${contentEscaped}'
-                content-user-data-string='${contentUserDataEscaped}'
-                content-user-id='${contentUserId}'
-                id='${node.id}'>
-            </tree>
-        </div>`;
+        const result: string = resultElement.outerHTML
+        // const result: string =
+        //     `<div id="vue">
+        //     <tree
+        //         x='${node.x}'
+        //         y='${node.y}'
+        //         parentid='${node.parentId}'
+        //         contentid='${node.contentId}'
+        //         content-string='${contentEscaped}'
+        //         content-user-data-string='${contentUserDataEscaped}'
+        //         content-user-id='${contentUserId}'
+        //         id='${node.id}'>
+        //     </tree>
+        // </div>`;
+        log('the result string of tooltip renderer is', result)
+
         return result
     }
     public getTooltipsConfig() {
