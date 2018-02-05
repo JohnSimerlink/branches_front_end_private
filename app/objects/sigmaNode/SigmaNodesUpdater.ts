@@ -7,7 +7,8 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaNodes, ISigmaNodesUpdater,
+    fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaEdgesUpdater, ISigmaEdgeUpdater, ISigmaNodes,
+    ISigmaNodesUpdater,
     ISigmaRenderManager,
     ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
@@ -26,16 +27,16 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private getSigmaIdsForContentId: fGetSigmaIdsForContentId
     private sigmaNodes: ISigmaNodes;
     private sigmaRenderManager: ISigmaRenderManager
-    private refresh: () => void
     private contentIdContentMap: IHash<IContentData>
-    private sigmaEdgeUpdater
-    public store: Store<any>;
+    private sigmaEdgesUpdater: ISigmaEdgesUpdater
+    private store: Store<any>;
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId,
         sigmaNodes,
         sigmaRenderManager,
         contentIdContentMap,
+        sigmaEdgesUpdater,
         store
     }: SigmaNodesUpdaterArgs ) {
         this.sigmaNodes = sigmaNodes
@@ -43,7 +44,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         this.sigmaRenderManager = sigmaRenderManager
         this.contentIdContentMap = contentIdContentMap
         this.store = store
-
+        this.sigmaEdgesUpdater = sigmaEdgesUpdater
         // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', this.getSigmaIdsForContentId['_id'])
 
     }
@@ -117,6 +118,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 break;
             case ObjectDataTypes.CONTENT_USER_DATA:
                 sigmaNode.receiveNewContentUserData(data)
+                this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
+                    treeId: sigmaId,
+                    contentUserProficiency: data.proficiency
+                })
                 break;
             default:
                 throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(ObjectDataTypes))
@@ -135,4 +140,5 @@ export class SigmaNodesUpdaterArgs {
         public sigmaRenderManager: ISigmaRenderManager;
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
     @inject(TYPES.BranchesStore) public store: Store<any>;
+    @inject(TYPES.ISigmaEdgesUpdater) public sigmaEdgesUpdater: ISigmaEdgesUpdater
 }

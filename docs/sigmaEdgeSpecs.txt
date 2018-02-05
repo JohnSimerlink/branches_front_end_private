@@ -6,7 +6,7 @@ class SigmaEdgeUpdater
 // requires that the node with id of treeId is renderable (e.g. has a parentId (or a parentId of 'nothing'))
 +updateParentEdgeColorLeaf(treeId, contentUserProficiency) {
   const sigmaGraph = store.getters.sigmaGraph
-  const treeNode = this.sigmaInstanceGraph.nodes(treeId)
+  const treeNode = sigmaGraph.nodes(treeId)
   if (!treeNode) {
     throw new Error('SigmaInstanceGraphNode with id of ', treeNode, ' could not be found')
     return
