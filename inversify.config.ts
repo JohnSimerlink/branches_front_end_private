@@ -43,7 +43,7 @@ import {
     TreePropertyNames,
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
-    IFamilyLoaderCore,
+    IFamilyLoaderCore, ISigmaEdgesUpdater,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -227,6 +227,7 @@ import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigm
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
 import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
+import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgeUpdater';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -551,6 +552,9 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer)
     bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs)
     bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener)
+
+    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater).to(SigmaEdgesUpdater)
+    bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs)
 
     // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
     //

@@ -465,6 +465,10 @@ export interface ISigmaUpdater {
     // refresh(): void
     addNode(node/*: SigmaJs.Node*/): void
 }
+export interface ISigmaEdgesUpdater {
+    // refresh(): void
+    updateParentEdgeColorLeaf({treeId, contentUserProficiency}: {treeId: id, contentUserProficiency: PROFICIENCIES})
+}
 export type fGetSigmaIdsForContentId = (id: string) => string[]
 export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdates)

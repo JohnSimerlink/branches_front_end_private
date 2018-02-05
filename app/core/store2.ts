@@ -328,6 +328,5 @@ export default class BranchesStore {
 @injectable()
 export class BranchesStoreArgs {
     @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore
-    @inject(TYPES.ISigmaEdgeUpdater) public sigmaEdgeUpdater: ISigmaEdgeUpdater
     @inject(TYPES.BranchesStoreState) public state
 }
