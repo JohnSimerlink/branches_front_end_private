@@ -4,6 +4,7 @@ import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
 import {SigmaNode, SigmaNodeArgs} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
+import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -447,6 +448,18 @@ export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUp
 }
 
 // sigmaNode
+export interface ISigmaEdgeUpdater {
+    addEdge()
+}
+
+export interface IAddNodeMutationArgs {
+    node: ISigmaNodeData,
+}
+export interface IAddParentEdgeMutationArgs {
+    parentId,
+    treeId,
+    color: UIColor
+}
 
 export interface ISigmaUpdater {
     // refresh(): void
@@ -504,6 +517,14 @@ export interface ISigmaNodeData {
     proficiencyStats: IProficiencyStats;
     proficiency: PROFICIENCIES;
     overdue: boolean;
+}
+export interface ISigmaEdgeData {
+    id: string,
+    source: string,
+    target: string,
+    size: number,
+    color: UIColor,
+    type: EDGE_TYPES,
 }
 
 // SigmaNodeCreator

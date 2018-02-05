@@ -28,6 +28,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private sigmaRenderManager: ISigmaRenderManager
     private refresh: () => void
     private contentIdContentMap: IHash<IContentData>
+    private sigmaEdgeUpdater
     public store: Store<any>;
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
