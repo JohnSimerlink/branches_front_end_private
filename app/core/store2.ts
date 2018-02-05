@@ -8,7 +8,8 @@ import {
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
     IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
-    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate
+    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
+    IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -19,6 +20,7 @@ import {ContentUserData} from '../objects/contentUser/ContentUserData';
 import {myContainer, state} from '../../inversify.config';
 import {distance} from '../objects/treeLocation/determineNewLocationUtils';
 import {determineNewLocation, obtainNewLocation} from '../objects/treeLocation/determineNewLocation';
+import {createParentSigmaEdge} from '../objects/sigmaEdge/sigmaEdge';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -45,11 +47,18 @@ export enum MUTATION_NAMES {
     ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
     CHANGE_USER_ID = 'changeUserId',
     NEW_CHILD_TREE = 'new_child_tree',
-    ADD_CHILD_TO_PARENT = ' add_child_to_parent'
+    ADD_CHILD_TO_PARENT = ' add_child_to_parent',
+    ADD_PARENT_EDGE_NO_REFRESH = 'add_parent_edge_no_refresh',
 }
 
 const getters = {
-    getStore() {} // Will redefine later
+    getStore() {}, // Will redefine later during store constructor
+    sigmaGraph(state, getters) {
+        if (!state.sigmaInitialized) {
+            throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized')
+        }
+        return state.sigmaInstance.graph
+    }
 }
 const mutations = {
     initializeSigmaInstance() {
@@ -264,9 +273,23 @@ const mutations = {
         const treeLocationData = state.globalDataStore.addMutation(createMutation)
         return treeLocationData
     },
+    [MUTATION_NAMES.ADD_PARENT_EDGE_NO_REFRESH](state, {parentId, treeId, color}: IAddParentEdgeMutationArgs) {
+        const edge: ISigmaEdgeData = createParentSigmaEdge({parentId, treeId, color})
+        if (state.sigmaInitialized) {
+            state.graph.addEdge(edge)
+        } else {
+            state.graphData.edges.push(edge)
+        }
+
+    }
 }
 // TODO: DO I even use these mutation?
-mutations[MUTATION_NAMES.ADD_NODE] = (state, node) => {
+mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {
+    const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
+        parentId: node.parentId,
+        treeId: node.id,
+        color: node.co
+    }
     if (state.sigmaInitialized) {
         state.graph.addNode(node)
         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
@@ -279,7 +302,7 @@ const actions = {}
 let initialized = false
 @injectable()
 export default class BranchesStore {
-    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, state}) {
+    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, sigmaEdgeUpdater}) {
         if (initialized) {
             return {} as Store<any>
             // DON"T let the store singleton be messed up
@@ -296,6 +319,7 @@ export default class BranchesStore {
         } ) as Store<any>
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
+        store['sigmaEdgeUpdater'] = sigmaEdgeUpdater
         store['_id'] = Math.random()
         initialized = true
         return store
@@ -304,6 +328,6 @@ export default class BranchesStore {
 @injectable()
 export class BranchesStoreArgs {
     @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore
+    @inject(TYPES.ISigmaEdgeUpdater) public sigmaEdgeUpdater: ISigmaEdgeUpdater
     @inject(TYPES.BranchesStoreState) public state
 }
-

@@ -23,7 +23,7 @@ export class SigmaUpdater implements ISigmaUpdater {
         // this.focusNode = focusNode
     }
     public addNode(node: Node): void {
-        this.store.commit(MUTATION_NAMES.ADD_NODE, node)
+        this.store.commit(MUTATION_NAMES.ADD_NODE, {node})
         /* TODO: LOL. DO i even need this class any more? seems like maybe an uncessary level of indirection.
          unless i actually am going to use the stuff I am commenting out
           */
