@@ -6,6 +6,7 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
+    CONTENT_TYPES,
     IContentUserData,
     ITree3Creator
 } from '../../objects/interfaces';
@@ -75,6 +76,12 @@ export class Tree3Creator implements ITree3Creator {
                 // this.startTimer()
                 // this.tree.sortLeavesByStudiedAndStrength()
 
+                if (this.typeIsHeading) {
+                    this.addingChild = true
+                }
+                log('adding child is', this.addingChild)
+            },
+            mounted() {
             },
             data() {
                 return {
@@ -82,7 +89,7 @@ export class Tree3Creator implements ITree3Creator {
                     // content: {}, // this.content
                     editing: false,
                     showHistory: false,
-                    addingChild: true,
+                    addingChild: false,
                     user: {},
                     contentUserDataLocal: null,
                     contentUserDataLoaded: false,
