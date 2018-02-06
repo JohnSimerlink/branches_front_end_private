@@ -274,45 +274,62 @@ const mutations = {
         const treeLocationData = state.globalDataStore.addMutation(createMutation)
         return treeLocationData
     },
-    [MUTATION_NAMES.ADD_PARENT_EDGE_NO_REFRESH](state, {parentId, treeId, color}: IAddParentEdgeMutationArgs) {
-        const edge: ISigmaEdgeData = createParentSigmaEdge({parentId, treeId, color})
+    // [MUTATION_NAMES.ADD_PARENT_EDGE_NO_REFRESH](state, {parentId, treeId, color}: IAddParentEdgeMutationArgs) {
+    //     const edge: ISigmaEdgeData = createParentSigmaEdge({parentId, treeId, color})
+    //     if (state.sigmaInitialized) {
+    //         state.graph.addEdge(edge)
+    //     } else {
+    //         state.graphData.edges.push(edge)
+    //     }
+    //
+    // },
+    [MUTATION_NAMES.ADD_NODE](state, {node}: IAddNodeMutationArgs) {
+        // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
+        //     parentId: node.parentId,
+        //     treeId: node.id,
+        //     // color: nod
+        // }
         if (state.sigmaInitialized) {
-            state.graph.addEdges(edge)
+            state.graph.addNode(node)
+            mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
         } else {
-            state.graphData.edges.push(edge)
+            state.graphData.nodes.push(node)
         }
-
+    },
+    [MUTATION_NAMES.ADD_EDGES](state, {edges}: IAddEdgeMutationArgs) {
+        // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
+        //     parentId: node.parentId,
+        //     treeId: node.id,
+        //     // color: nod
+        // }
+        // log('inside of mutation add edges graph is',
+        //     state.graph, state.sigmaInstance.graph, state.graph.addEdge,
+        //     state.graph.addNode, state.sigmaInstance.graph.addEdge,
+        //     state.sigmaInstance.graph.addNode)
+        if (state.sigmaInitialized) {
+            for (const edge of edges){
+                state.graph.addEdge(edge)
+            }
+            mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+        } else {
+            state.graphData.edges.push(...edges)
+        }
     }
 }
 // TODO: DO I even use these mutation? << YES
-mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {
-    // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
-    //     parentId: node.parentId,
-    //     treeId: node.id,
-    //     // color: nod
-    // }
-    if (state.sigmaInitialized) {
-        state.graph.addNode(node)
-        mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
-    } else {
-        state.graphData.nodes.push(node)
-    }
-}
-mutations[MUTATION_NAMES.ADD_EDGES] = (state, {edges}: IAddEdgeMutationArgs) => {
-    // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
-    //     parentId: node.parentId,
-    //     treeId: node.id,
-    //     // color: nod
-    // }
-    if (state.sigmaInitialized) {
-        for (const edge of edges){
-            state.graph.addEgde(edge)
-        }
-        mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
-    } else {
-        state.graphData.edges.push(...edges)
-    }
-}
+// mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {
+//     // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
+//     //     parentId: node.parentId,
+//     //     treeId: node.id,
+//     //     // color: nod
+//     // }
+//     if (state.sigmaInitialized) {
+//         state.graph.addNode(node)
+//         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+//     } else {
+//         state.graphData.nodes.push(node)
+//     }
+// }
 const actions = {}
 
 let initialized = false

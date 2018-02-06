@@ -6,6 +6,8 @@ export const ANOTHER_CONTENT_ID: string = '6cc727081ac4baa0e9a08dfb034698b8'
 export const JOHN_USER_ID: string = 'svyioFSkuqPTf1gjmHYGIsi42IA3'
 export const RENDERER_PREFIX = 'renderer2:'
 export const DEFAULT_FONT_SIZE = 24
+export const DEFAULT_EDGE_SIZE = 0.5
+export const DEFAULT_NODE_SIZE = 2
 export const COMBINED_ID_SEPARATOR = '__'
 export const Globals = {
     colors: {

@@ -1,8 +1,8 @@
 import {IContentUserData} from '../interfaces';
+import {DEFAULT_NODE_SIZE} from '../../core/globals';
 
-export const REGULAR_SIZE = 1
 export class ContentUserDataUtils {
     public static getSizeFromContentUserData(userContentData: IContentUserData) {
-        return REGULAR_SIZE
+        return DEFAULT_NODE_SIZE
     }
 }

@@ -148,6 +148,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 if (!edge) {
                     const color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
                     edge = createParentSigmaEdge({parentId, treeId, color})
+                    log('edge just created in sigmNodesUpdater as ', edge)
                     this.sigmaEdges[edgeId] = edge
                     this.sigmaRenderManager.addWaitingEdge(edgeId)
                     // this.sigmaEdgeRenderManager.markNodeL
@@ -155,7 +156,8 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 }
 
                 this.sigmaRenderManager.markTreeDataLoaded(sigmaId)
-                // ^ the above method will also search for any edges that now can be loaded now that that treeData is loaded . . . and publishes an update for that edge to be added.
+                // ^ the above method will also search for any edges that now can be loaded now
+                // that that treeData is loaded . . . and publishes an update for that edge to be added.
                 break
             case ObjectDataTypes.TREE_LOCATION_DATA:
                 sigmaNode.receiveNewTreeLocationData(data)

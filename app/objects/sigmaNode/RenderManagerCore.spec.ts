@@ -16,7 +16,7 @@ test('RenderedNodesManagerCore::::addNodeToRenderList should add to RenderList',
     sigmaNodes[sigmaId] = sigmaNode
     const sigmaUpdater = {
         addNode() {},
-        addEdge() {},
+        addEdges() {},
     }
     const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode')
     const renderedNodesManagerCore: IRenderedNodesManagerCore

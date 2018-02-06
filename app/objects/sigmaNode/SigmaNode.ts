@@ -11,6 +11,7 @@ import {
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {DEFAULT_NODE_SIZE} from '../../core/globals';
 
 @injectable()
 export class SigmaNode implements ISigmaNode {
@@ -93,7 +94,7 @@ export class SigmaNode implements ISigmaNode {
             contentUserData: undefined,
             proficiencyStats: undefined,
             label: undefined,
-            size: 1,
+            size: undefined,
             aggregationTimer: undefined,
             colorSlices: undefined,
             overdue: undefined,
@@ -109,7 +110,7 @@ export class SigmaNode implements ISigmaNode {
         this.content = content
         this.contentUserData = contentUserData
         this.label = label || 'Default Node Label'
-        this.size = size || 1
+        this.size = size || DEFAULT_NODE_SIZE
         this.colorSlices = colorSlices
         this.overdue = overdue
     }
