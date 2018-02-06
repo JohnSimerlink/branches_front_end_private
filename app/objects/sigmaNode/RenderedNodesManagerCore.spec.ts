@@ -9,21 +9,22 @@ import {TYPES} from '../types';
 import {RenderedNodesManagerCore} from './RenderedNodesManagerCore';
 import * as sinon from 'sinon'
 
-test('RenderedNodesManagerCore::::addToRenderList should add to RenderList', (t) => {
+test('RenderedNodesManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNodes = {}
     sigmaNodes[sigmaId] = sigmaNode
     const sigmaUpdater = {
-        addNode() {}
+        addNode() {},
+        addEdge() {},
     }
     const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode')
     const renderedNodesManagerCore: IRenderedNodesManagerCore
         = new RenderedNodesManagerCore(
-            {sigmaNodes, sigmaUpdater}
+            {sigmaNodes, sigmaEdges: {}, sigmaUpdater}
             )
 
-    renderedNodesManagerCore.addToRenderList(sigmaId)
+    renderedNodesManagerCore.addNodeToRenderList(sigmaId)
     expect(addNodeToSigma.callCount).to.deep.equal(1)
     const calledWith = addNodeToSigma.getCall(0).args[0]
     expect(calledWith).to.deep.equal(sigmaNode)

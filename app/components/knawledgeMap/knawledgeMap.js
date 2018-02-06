@@ -504,7 +504,7 @@ function initKnawledgeMap(treeIdToJumpTo){
         if (uri){
             contentId = await UriContentMap.get(uri)
         }
-        console.log('KNAWLEDGE map', window.location.pathname, contentId,)
+        console.log('KNAWLEDGE sourceMap', window.location.pathname, contentId,)
         if (contentId){
             // stores.commit('enterExploringMode')
             store.commit('hoverOverItemId', contentId)
@@ -845,7 +845,7 @@ function initKnawledgeMap(treeIdToJumpTo){
 
     }
     function removeSuggestedEdges(){
-        const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id) //map(e => e.id).forEach(s.graph.dropEdge)
+        const edgeIdsToRemove = s.graph.edges().filter(e => e.type === EDGE_TYPES.SUGGESTED_CONNECTION).map(e => e.id) //sourceMap(e => e.id).forEach(s.graph.dropEdge)
         edgeIdsToRemove.forEach(id => {
             s.graph.dropEdge(id)
         })

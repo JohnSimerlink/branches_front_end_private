@@ -26,7 +26,7 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
+            // Since sass-loader (weirdly) has SCSS as its default parse mode, we sourceMap
             // the "scss" and "sass" values for the lang attribute to the right configs here.
             // other preprocessors should work out of the box, no loader config like this necessary.
             'scss': 'vue-style-loader!css-loader!sass-loader',
@@ -76,7 +76,7 @@ module.exports = {
   performance: {
     hints: 'warning'
   },
-  devtool: '#eval-source-map',
+  devtool: '#eval-source-sourceMap',
 // plugins: [new webpack.]
   plugins: [
     new LessHintPlugin({
@@ -88,7 +88,7 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  module.exports.devtool = '#source-sourceMap'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.optimize.UglifyJsPlugin(), //minify everything

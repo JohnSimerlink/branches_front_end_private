@@ -71,6 +71,8 @@ export const TYPES = {
     ISaveUpdatesToDBFunction: Symbol('ISaveUpdatesToDBFunction'),
     ISampleComponentCreator: Symbol('ITree2ComponentCreator'),
     ISigma: Symbol('ISigma'),
+    ISigmaEdge: Symbol('ISigmaEdge'),
+    ISigmaEdges: Symbol('ISigmaEdges'),
     ISigmaEdgesUpdater: Symbol('ISigmaEdgesUpdater'),
     ISigmaNode: Symbol('ISigmaNode'),
     ISigmaNodeCreator: Symbol('ISigmaNodeCreator'),

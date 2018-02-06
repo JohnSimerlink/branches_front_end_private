@@ -693,7 +693,7 @@ describe('Kitchen Sink', function(){
               return Cypress.$(el).text()
             })
 
-            // jquery map returns jquery object
+            // jquery sourceMap returns jquery object
             // and .get() convert this to simple array
             texts = texts.get()
 
@@ -1266,7 +1266,7 @@ describe('Kitchen Sink', function(){
     })
 
     it('Cypress._.method() - call a lodash method', function(){
-      // use the _.chain, _.map, _.take, and _.value functions
+      // use the _.chain, _.sourceMap, _.take, and _.value functions
       // https://on.cypress.io/_
       cy.request('https://jsonplaceholder.typicode.com/users')
         .then(function(response){

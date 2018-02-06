@@ -27,7 +27,7 @@ const Bar = { template: '<div>bar</div>' }
 
 const Buy = { template: '<div> Give us ur monee</div>'}
 // 2. Define some routes
-// Each route should map to a component. The "component" can
+// Each route should sourceMap to a component. The "component" can
 // either be an actual component constructor created via
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.

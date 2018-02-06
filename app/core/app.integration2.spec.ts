@@ -28,12 +28,12 @@ import {ISigmaRenderManager,
     ISubscribableTreeStoreSource} from '../objects/interfaces';
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
-import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import BranchesStore, {MUTATION_NAMES} from './store2'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdateListenerCore';
 import {TYPES} from '../objects/types';
-import {TREE_ID} from '../testHelpers/testHelpers';
+import {getSigmaIdsForContentId, TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import {error} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
@@ -44,6 +44,7 @@ import {OneToManyMap} from '../objects/oneToManyMap/oneToManyMap';
 import * as Vue from 'vue';
 import * as Vuex from 'vuex'
 import {Store} from 'vuex';
+import {partialInject} from '../testHelpers/partialInject';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -95,21 +96,33 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         {store}
     )
     const sigmaNodesUpdater: ISigmaNodesUpdater
-        = new SigmaNodesUpdater(
-        {
+    = partialInject<SigmaNodesUpdaterArgs>({
+        constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+        konstructor: SigmaNodesUpdater,
+        injections: {
+            getSigmaIdsForContentId,
             sigmaNodes,
             sigmaRenderManager,
-            getSigmaIdsForContentId: () => void 0,
-            store,
-            contentIdContentMap: {},
-        })
+            store: {} as Store<any>,
+            contentIdContentMap: {}
+        },
+        container: myContainer,
+    })
+        // = new SigmaNodesUpdater(
+        // {
+        //     sigmaNodes,
+        //     sigmaRenderManager,
+        //     getSigmaIdsForContentId: () => void 0,
+        //     store,
+        //     contentIdContentMap: {},
+        // })
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
     const storeSourceUpdateListener: IStoreSourceUpdateListener
         = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
     const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater})
+        = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater, sigmaEdges: {}})
     const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
     renderedNodesManager.subscribe(sigmaRenderManager)
 

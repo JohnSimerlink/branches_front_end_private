@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
-import {ISigmaUpdater} from '../interfaces';
+import {ISigmaEdgeData, ISigmaNodeData, ISigmaUpdater} from '../interfaces';
 // import GraphData = SigmaJs.GraphData;
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
@@ -22,7 +22,7 @@ export class SigmaUpdater implements ISigmaUpdater {
         // this.graph = graph
         // this.focusNode = focusNode
     }
-    public addNode(node: Node): void {
+    public addNode(node: ISigmaNodeData): void {
         this.store.commit(MUTATION_NAMES.ADD_NODE, {node})
         /* TODO: LOL. DO i even need this class any more? seems like maybe an uncessary level of indirection.
          unless i actually am going to use the stuff I am commenting out
@@ -30,6 +30,11 @@ export class SigmaUpdater implements ISigmaUpdater {
         // this.graph.addNode(node)
         // this.focusNode(node)
         // this.refresh()
+    }
+
+    public addEdge(edge: ISigmaEdgeData): void {
+        this.store.commit(MUTATION_NAMES.ADD_EDGE, {edge})
+        // throw new Error('Method not implemented.');
     }
 
 }

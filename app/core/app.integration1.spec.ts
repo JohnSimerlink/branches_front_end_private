@@ -30,7 +30,7 @@ import {
 import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
-import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
+import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
@@ -47,6 +47,7 @@ import {SyncableMutableSubscribableContent} from '../objects/content/SyncableMut
 import {SyncableMutableSubscribableTreeLocation} from '../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {Store} from 'vuex';
+import {partialInject} from '../testHelpers/partialInject';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
@@ -58,10 +59,19 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     sigmaNodes[SIGMA_ID1] = sigmaNode1
     sigmaNodes[SIGMA_ID2] = sigmaNode2
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
-        {
-            getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
+    const sigmaNodesUpdater: ISigmaNodesUpdater =
+        partialInject<SigmaNodesUpdaterArgs>({
+            constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+            konstructor: SigmaNodesUpdater,
+            injections: {
+                getSigmaIdsForContentId,
+                sigmaNodes,
+                sigmaRenderManager,
+                store: {} as Store<any>,
+                contentIdContentMap: {}
+            },
+            container: myContainer,
+        })
 
     // contentUserStore
     const contentId = CONTENT_ID
@@ -132,10 +142,19 @@ test('Adding a mutation into the global stores for a content data,' +
     sigmaNodes[SIGMA_ID1] = sigmaNode1
     sigmaNodes[SIGMA_ID2] = sigmaNode2
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
-        {
-            getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
+    const sigmaNodesUpdater: ISigmaNodesUpdater =
+        partialInject<SigmaNodesUpdaterArgs>({
+            constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+            konstructor: SigmaNodesUpdater,
+            injections: {
+                getSigmaIdsForContentId,
+                sigmaNodes,
+                sigmaRenderManager,
+                store: {} as Store<any>,
+                contentIdContentMap: {}
+            },
+            container: myContainer,
+        })
 
     // contentStore
     const contentId = CONTENT_ID
@@ -216,10 +235,19 @@ test('Adding a mutation into the global stores for a tree user data,' +
     const SIGMA_ID = TREE_ID
     sigmaNodes[SIGMA_ID] = sigmaNode1
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
-        {
-            getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
+    const sigmaNodesUpdater: ISigmaNodesUpdater =
+        partialInject<SigmaNodesUpdaterArgs>({
+            constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+            konstructor: SigmaNodesUpdater,
+            injections: {
+                getSigmaIdsForContentId,
+                sigmaNodes,
+                sigmaRenderManager,
+                store: {} as Store<any>,
+                contentIdContentMap: {}
+            },
+            container: myContainer,
+        })
 
     // contentStore
     const proficiencyStatsVal: IProficiencyStats = {
@@ -300,10 +328,19 @@ test('Adding a mutation into the global stores for a tree location data,' +
     const SIGMA_ID = TREE_ID
     sigmaNodes[SIGMA_ID] = sigmaNode1
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater = new SigmaNodesUpdater(
-        {
-            getSigmaIdsForContentId, sigmaNodes,
-            sigmaRenderManager, store: {} as Store<any>, contentIdContentMap: {} })
+    const sigmaNodesUpdater: ISigmaNodesUpdater =
+        partialInject<SigmaNodesUpdaterArgs>({
+            constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+            konstructor: SigmaNodesUpdater,
+            injections: {
+                getSigmaIdsForContentId,
+                sigmaNodes,
+                sigmaRenderManager,
+                store: {} as Store<any>,
+                contentIdContentMap: {}
+            },
+            container: myContainer,
+        })
 
     const treeId = TREE_ID
     const FIRST_POINT_VALUE = {x: 5, y: 7}

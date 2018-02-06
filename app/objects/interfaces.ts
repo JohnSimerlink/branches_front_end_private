@@ -455,6 +455,9 @@ export interface ISigmaEdgeUpdater {
 export interface IAddNodeMutationArgs {
     node: ISigmaNodeData,
 }
+export interface IAddEdgeMutationArgs {
+    edge: ISigmaEdgeData,
+}
 export interface IAddParentEdgeMutationArgs {
     parentId,
     treeId,
@@ -463,7 +466,8 @@ export interface IAddParentEdgeMutationArgs {
 
 export interface ISigmaUpdater {
     // refresh(): void
-    addNode(node/*: SigmaJs.Node*/): void
+    addNode(node: ISigmaNodeData/*: SigmaJs.Node*/): void
+    addEdge(edge: ISigmaEdgeData/*: SigmaJs.Node*/): void
 }
 export interface ISigmaEdgesUpdater {
     // refresh(): void
@@ -473,8 +477,11 @@ export type fGetSigmaIdsForContentId = (id: string) => string[]
 export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdates)
 }
+export interface ISigmaEdge extends ISigmaEdgeData {
 
+}
 export type ISigmaNodes = IHash<SigmaNode>
+export type ISigmaEdges = IHash<ISigmaEdge>
 export type ISigma = any
 // export interface ISigma {
 //     graph?: any,
@@ -549,14 +556,16 @@ export interface IStoreSourceUpdateListener extends ISubscriber<ITypeAndIdAndVal
 export interface IStoreSourceUpdateListenerCore {
     receiveUpdate(update: ITypeAndIdAndValUpdates)
 }
-export interface ISigmaRenderManager extends ISubscribable<ISigmaIdToRender> {
+export interface ISigmaRenderManager extends ISubscribable<ISigmaRenderUpdate> {
     markTreeDataLoaded(treeId)
     markTreeLocationDataLoaded(treeId)
+    addWaitingEdge(edgeId)
 }
 export interface IRenderedNodesManagerCore {
-    addToRenderList(sigmaId: string)
+    addNodeToRenderList(sigmaId: string)
+    addEdgeToRenderList(edgeId: string)
 }
-export interface IRenderedNodesManager extends ISubscriber<ISigmaIdToRender> {}
+export interface IRenderedNodesManager extends ISubscriber<ISigmaRenderUpdate> {}
 
 export type ITooltipRendererFunction = (node: ISigmaNode, template) => any
 export interface ITooltipRenderer {
@@ -672,8 +681,25 @@ export interface ISubscriber<UpdateObjectType> {
 export interface IDescendantPublisher {
     startPublishing()
 }
-export interface ISigmaIdToRender {
-    sigmaIdToRender: string
+/* TODO: make the sigmaRenderingMechanism stateless,
+ whereby this update contains the data that needs to be rendered,
+ rather than the subscriber to the update having to fetch the data from an object */
+export type ISigmaRenderUpdate = ISigmaRenderUpdateCore & (ISigmaRenderUpdateNewNode | ISigmaRenderUpdateNewEdge)
+
+export enum RenderUpdateTypes {
+    NEW_NODE = 'new_node',
+    NEW_EDGE = 'new_edge',
+}
+export interface ISigmaRenderUpdateCore {
+    type: RenderUpdateTypes
+}
+export interface ISigmaRenderUpdateNewNode {
+    sigmaNodeIdToRender: id
+    sigmaEdgeIdToRender?: id // << should be blank
+}
+export interface ISigmaRenderUpdateNewEdge {
+    sigmaNodeIdToRender?: id // << should be blank
+    sigmaEdgeIdToRender: id
 }
 
 export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
