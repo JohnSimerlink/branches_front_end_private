@@ -456,7 +456,7 @@ export interface IAddNodeMutationArgs {
     node: ISigmaNodeData,
 }
 export interface IAddEdgeMutationArgs {
-    edge: ISigmaEdgeData,
+    edges: ISigmaEdgeData[],
 }
 export interface IAddParentEdgeMutationArgs {
     parentId,
@@ -467,7 +467,7 @@ export interface IAddParentEdgeMutationArgs {
 export interface ISigmaUpdater {
     // refresh(): void
     addNode(node: ISigmaNodeData/*: SigmaJs.Node*/): void
-    addEdge(edge: ISigmaEdgeData/*: SigmaJs.Node*/): void
+    addEdges(edges: ISigmaEdgeData[]/*: SigmaJs.Node*/): void
 }
 export interface ISigmaEdgesUpdater {
     // refresh(): void
@@ -563,7 +563,7 @@ export interface ISigmaRenderManager extends ISubscribable<ISigmaRenderUpdate> {
 }
 export interface IRenderedNodesManagerCore {
     addNodeToRenderList(sigmaId: string)
-    addEdgeToRenderList(edgeId: string)
+    addEdgesToRenderList(edgeIds: string[])
 }
 export interface IRenderedNodesManager extends ISubscriber<ISigmaRenderUpdate> {}
 
@@ -695,11 +695,11 @@ export interface ISigmaRenderUpdateCore {
 }
 export interface ISigmaRenderUpdateNewNode {
     sigmaNodeIdToRender: id
-    sigmaEdgeIdToRender?: id // << should be blank
+    sigmaEdgeIdsToRender?: id[] // << should be blank
 }
 export interface ISigmaRenderUpdateNewEdge {
     sigmaNodeIdToRender?: id // << should be blank
-    sigmaEdgeIdToRender: id
+    sigmaEdgeIdsToRender: id[]
 }
 
 export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |

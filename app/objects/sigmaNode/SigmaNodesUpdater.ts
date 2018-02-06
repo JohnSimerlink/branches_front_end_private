@@ -169,10 +169,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 break;
             case ObjectDataTypes.CONTENT_USER_DATA:
                 sigmaNode.receiveNewContentUserData(data)
-                this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
-                    treeId: sigmaId,
-                    contentUserProficiency: data.proficiency
-                })
+                // this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
+                //     treeId: sigmaId,
+                //     contentUserProficiency: data.proficiency
+                // })
                 break;
             default:
                 throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(ObjectDataTypes))

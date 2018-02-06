@@ -425,10 +425,10 @@ graph.addMethod('addNode', function (node) {
  * @param  {object} edge The edge to add.
  * @return {object}      The graph instance.
  */
-graph.addMethod('addEdge', function (edge) {
+graph.addMethod('addEdges', function (edge) {
     // Check that the edge is an object and has an id:
     if (Object(edge) !== edge || arguments.length !== 1)
-        throw 'addEdge: Wrong arguments.';
+        throw 'addEdges: Wrong arguments.';
 
     if (typeof edge.id !== 'string' && typeof edge.id !== 'number')
         throw 'The edge must have a string or number id.';
@@ -669,7 +669,7 @@ graph.addMethod('clear', function () {
 
 /**
  * This method reads an object and adds the nodes and edges, through the
- * proper methods "addNode" and "addEdge".
+ * proper methods "addNode" and "addEdges".
  *
  * Here is an example:
  *
@@ -707,7 +707,7 @@ graph.addMethod('read', function (g) {
 
     a = g.edges || [];
     for (i = 0, l = a.length; i < l; i++)
-        this.addEdge(a[i]);
+        this.addEdges(a[i]);
 
     return this;
 });

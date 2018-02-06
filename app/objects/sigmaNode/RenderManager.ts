@@ -18,7 +18,7 @@ export class RenderedNodesManager implements IRenderedNodesManager {
                     me.renderedNodesManagerCore.addNodeToRenderList(update.sigmaNodeIdToRender)
                     break;
                 case RenderUpdateTypes.NEW_EDGE:
-                    me.renderedNodesManagerCore.addEdgeToRenderList(update.sigmaEdgeIdToRender)
+                    me.renderedNodesManagerCore.addEdgesToRenderList(update.sigmaEdgeIdsToRender)
                     break;
             }
         })

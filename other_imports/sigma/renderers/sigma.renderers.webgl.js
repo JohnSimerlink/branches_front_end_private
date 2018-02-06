@@ -189,7 +189,7 @@ import conrad from '../conrad'
           !graph.nodes(a[i].source).hidden &&
           !graph.nodes(a[i].target).hidden
         )
-          renderer.addEdge(
+          renderer.addEdges(
             a[i],
             graph.nodes(a[i].source),
             graph.nodes(a[i].target),
@@ -672,7 +672,7 @@ import conrad from '../conrad'
    *
    * {number}   POINTS      The number of points required to draw an edge.
    * {number}   ATTRIBUTES  The number of attributes needed to draw one point.
-   * {function} addEdge     A function that adds an edge to the data stack that
+   * {function} addEdges     A function that adds an edge to the data stack that
    *                        will be given to the buffer. Here is the arguments:
    *                        > {object}       edge
    *                        > {object}       source
