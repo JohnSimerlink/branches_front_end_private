@@ -87,8 +87,8 @@ import {
     CanvasUIArgs
 } from './app/objects/sigmaNode/CanvasUI';
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderedNodesManager';
-import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderedNodesManagerCore';
+import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderManager';
+import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderManagerCore';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';

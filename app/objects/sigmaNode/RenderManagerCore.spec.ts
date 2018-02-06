@@ -6,7 +6,7 @@ import {myContainer} from '../../../inversify.config';
 import {TREE_ID} from '../../testHelpers/testHelpers';
 import {IRenderedNodesManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
-import {RenderedNodesManagerCore} from './RenderedNodesManagerCore';
+import {RenderedNodesManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
 
 test('RenderedNodesManagerCore::::addNodeToRenderList should add to RenderList', (t) => {

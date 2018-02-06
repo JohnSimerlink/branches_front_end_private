@@ -26,8 +26,8 @@ import {
 import {ISigmaRenderManager,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource} from '../objects/interfaces';
-import {RenderedNodesManager} from '../objects/sigmaNode/RenderedNodesManager';
-import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderedNodesManagerCore';
+import {RenderedNodesManager} from '../objects/sigmaNode/RenderManager';
+import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import BranchesStore, {MUTATION_NAMES} from './store2'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
