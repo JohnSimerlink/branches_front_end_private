@@ -5,7 +5,7 @@ import {injectionWorks} from '../../testHelpers/testHelpers';
 import {myContainer} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
-import {ISigmaUpdater} from '../interfaces';
+import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {error} from '../../core/log'
@@ -28,7 +28,7 @@ test('DI constructor should work', (t) => {
 })
 
 test('AddNode should call store.commit with add node mutation', (t) => {
-    const node /*: SigmaJs.Node */ = {id: '53234'} /* as SigmaJs.Node */
+    const node /*: SigmaJs.Node */ = {id: '53234'} as ISigmaNodeData /* as SigmaJs.Node */
     // const store = new BranchesStore()
     const store = {
         commit(mutationName, arg) {

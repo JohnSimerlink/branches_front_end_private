@@ -7,6 +7,7 @@ import {OneToManyMap, OneToManyMapArgs} from './oneToManyMap';
 import {myContainer} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {expect} from 'chai'
+import {partialInject} from '../../testHelpers/partialInject';
 test('DI works', (t) => {
     const injects = injectionWorks<OneToManyMapArgs, IOneToManyMap<string>>({
         container: myContainer,
@@ -21,7 +22,16 @@ test('get returns the item, as an array', (t) => {
     const mapSource = {
         jeff: expectedArray
     }
-    const map = new OneToManyMap({map: mapSource})
+    const map =
+        partialInject<OneToManyMapArgs>({
+            konstructor: OneToManyMap,
+            constructorArgsType: TYPES.OneToManyMapArgs,
+            injections: {
+                sourceMap: mapSource,
+            },
+            container: myContainer
+        })
+        // new OneToManyMap({sourceMap: mapSource})
     const array = map.get('jeff')
     expect(array).to.deep.equal(expectedArray)
     t.pass()
@@ -30,7 +40,17 @@ test('get returns an empty array if item not found', (t) => {
     const expectedArray = []
     const mapSource = {
     }
-    const map = new OneToManyMap({map: mapSource})
+    const map =
+    partialInject<OneToManyMapArgs>({
+        konstructor: OneToManyMap,
+        constructorArgsType: TYPES.OneToManyMapArgs,
+        injections: {
+            sourceMap: mapSource,
+        },
+        container: myContainer
+    })
+
+
     const array = map.get('jeff')
     expect(array).to.deep.equal(expectedArray)
     t.pass()
@@ -40,7 +60,17 @@ test('get returns multiple items, as an array', (t) => {
     const mapSource = {
         jeff: expectedArray
     }
-    const map = new OneToManyMap({map: mapSource})
+
+    const map =
+        partialInject<OneToManyMapArgs>({
+            konstructor: OneToManyMap,
+            constructorArgsType: TYPES.OneToManyMapArgs,
+            injections: {
+                sourceMap: mapSource,
+            },
+            container: myContainer
+        })
+
     const array = map.get('jeff')
     expect(array).to.deep.equal(expectedArray)
     t.pass()
@@ -49,7 +79,15 @@ test('set works', (t) => {
     const expected = ['kelsie']
     const mapSource = {
     }
-    const map = new OneToManyMap({map: mapSource})
+    const map =
+        partialInject<OneToManyMapArgs>({
+            konstructor: OneToManyMap,
+            constructorArgsType: TYPES.OneToManyMapArgs,
+            injections: {
+                sourceMap: mapSource,
+            },
+            container: myContainer
+        })
     map.set('mike', 'kelsie')
     const array = map.get('mike')
     expect(array).to.deep.equal(expected)

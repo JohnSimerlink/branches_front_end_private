@@ -43,7 +43,7 @@ import {
     TreePropertyNames,
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
-    IFamilyLoaderCore, ISigmaEdgesUpdater,
+    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -518,7 +518,9 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
         .to(CanvasUIArgs)
 
+    // TODO: fix these bindings for if we have multiple sigma instances.
     bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({})
+    bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({})
     bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
         .whenTargetIsDefault()
@@ -604,6 +606,8 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
         .whenTargetIsDefault()
+    // bind<IOneToManyMap<id>>(TYPES.IOneToManyMap).to(OneToManyMap)
+    //     .whenTargetIsDefault()
 
     bind<SubscribableMutableStringSetArgs>
     (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
@@ -751,7 +755,7 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton)
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
         .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
-    contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
+    // contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
     // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
 
     const sigmaRenderManagerSingletonArgs: SigmaRenderManagerArgs

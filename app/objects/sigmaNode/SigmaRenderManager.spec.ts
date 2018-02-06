@@ -5,9 +5,10 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {ISigmaIdToRender, ISigmaRenderManager} from '../interfaces';
+import {ISigmaRenderUpdate, ISigmaRenderManager, RenderUpdateTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './SigmaRenderManager';
+import {partialInject} from '../../testHelpers/partialInject';
 
 test('SigmaRenderManager::::DI constructor works', (t) => {
 
@@ -24,13 +25,21 @@ test('SigmaRenderManager::::should broadcast an update listing the id as rendera
     const treeDataLoadedIdsSet = {}
     const treeLocationDataLoadedIdsSet = {}
     const callback = sinon.spy()
-    const sigmaRenderManager: ISigmaRenderManager = new SigmaRenderManager(
-        {
-            treeDataLoadedIdsSet, treeLocationDataLoadedIdsSet, updatesCallbacks: [callback]
+    const sigmaRenderManager: ISigmaRenderManager =
+        partialInject<SigmaRenderManagerArgs>({
+            konstructor: SigmaRenderManager,
+            constructorArgsType: TYPES.SigmaRenderManagerArgs,
+            injections: {
+                treeDataLoadedIdsSet,
+                treeLocationDataLoadedIdsSet,
+                updatesCallbacks: [callback],
+            },
+            container: myContainer
         })
     const treeId = '12354'
-    const expectedCalledWith: ISigmaIdToRender = {
-        sigmaIdToRender: treeId
+    const expectedCalledWith: ISigmaRenderUpdate = {
+        sigmaNodeIdToRender: treeId,
+        type: RenderUpdateTypes.NEW_NODE,
     }
     expect(callback.callCount).to.equal(0)
     sigmaRenderManager.markTreeDataLoaded(treeId)
@@ -49,8 +58,9 @@ test('SigmaRenderManager::::should broadcast an update listing the id as rendera
     const treeId = '12354'
 
     sigmaRenderManager.onUpdate(callback)
-    const expectedCalledWith: ISigmaIdToRender = {
-        sigmaIdToRender: treeId
+    const expectedCalledWith: ISigmaRenderUpdate = {
+        sigmaNodeIdToRender: treeId,
+        type: RenderUpdateTypes.NEW_NODE,
     }
     expect(callback.callCount).to.equal(0)
     sigmaRenderManager.markTreeDataLoaded(treeId)

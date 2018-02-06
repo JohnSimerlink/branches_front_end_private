@@ -475,7 +475,7 @@ export default class ContentItem {
         //4. userStrengthMap
         this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
         this.userStrengthMap[user.get()] = this.lastRecordedStrength
-        //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
+        //user review time sourceMap //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
         const millisecondsTilNextReview = 1000 * calculateSecondsTilCriticalReviewTime(currentInteractionStrength)
         this.nextReviewTime = timestamp + millisecondsTilNextReview
 

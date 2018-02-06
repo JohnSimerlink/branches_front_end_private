@@ -18,7 +18,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     constructor(
         @inject(TYPES.StoreSourceUpdateListenerCoreArgs){
             sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap}: StoreSourceUpdateListenerCoreArgs) {
-        this.sigmaNodes = sigmaNodes
+        // this.sigmaNodes = sigmaNodes
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
         // log('StoreSourceUpdateListenerCore sigmaNodes is', this.sigmaNodes, sigmaNodes,
@@ -40,18 +40,18 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
             case ObjectDataTypes.TREE_DATA: {
                 const sigmaId = update.id
                 const contentId = update.val.contentId
-                if (!this.sigmaNodes[sigmaId]) {
-                    this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
-                }
+                // if (!this.sigmaNodes[sigmaId]) {
+                //     this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
+                // }
                 this.contentIdSigmaIdMap.set(contentId, sigmaId)
                 this.sigmaNodesUpdater.handleUpdate(update)
                 break;
             }
             case ObjectDataTypes.TREE_LOCATION_DATA: {
-                const sigmaId = update.id
-                if (!this.sigmaNodes[sigmaId]) {
-                    this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
-                }
+                // const sigmaId = update.id
+                // if (!this.sigmaNodes[sigmaId]) {
+                //     this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
+                // }
                 this.sigmaNodesUpdater.handleUpdate(update)
                 break;
             }

@@ -85,7 +85,7 @@ export function obtainNewLocation({r, sigmaInstance, parentCoordinate}): ICoordi
  * @param {ICoordinate} centerCoordinate
  * @param {number} r
  * @returns {ICoordinate[][]}: A coordinate field.
- *  A 2-D array that contains {x, y} values of real coordinates on the map given inputs i and j.
+ *  A 2-D array that contains {x, y} values of real coordinates on the sourceMap given inputs i and j.
  *  This is necessary if you have a coordinate field where when [j, i] = [0, 0], {x, y} doesn't necessarily equal {0, 0}. E.g. a coordinate field centered around [10, 10]
  *  A coordinate field with a center coordinate of {r, r} would always have {j, i} = {x, y}
  */

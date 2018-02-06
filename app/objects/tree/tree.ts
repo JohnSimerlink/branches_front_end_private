@@ -129,10 +129,10 @@
 //         })
 //     }
 //     public getChildTreePromises() {
-//         return this.getChildIds().map(Trees.get) // childId => {
+//         return this.getChildIds().sourceMap(Trees.get) // childId => {
 //     }
 //     public getChildTrees() {
-//         return Promise.all(this.getChildTreePromises().map(async childPromise => await childPromise))
+//         return Promise.all(this.getChildTreePromises().sourceMap(async childPromise => await childPromise))
 //     }
 //     /**
 //      * Add a child tree to this tree
@@ -178,8 +178,8 @@
 //         log(this.id, 'remove about to be called for', JSON.stringify(this.treeData.children))
 //         const removeChildPromises = this.treeData.children ?
 //             Object.keys(this.treeData.children)
-//             .map(Trees.get)
-//             .map(async (childPromise: Promise<Tree>) => {
+//             .sourceMap(Trees.get)
+//             .sourceMap(async (childPromise: Promise<Tree>) => {
 //                 const child: Tree = await childPromise
 //                 log(this.id, 'child just received is ', child, child.id)
 //                 child.remove()
@@ -221,7 +221,7 @@
 //
 //         // update for all the children as well
 //         const childUpdatePromises = this.getChildIds()
-//             .map(async childId => {
+//             .sourceMap(async childId => {
 //             const childTree = await Trees.get(childId)
 //             return childTree.updatePrimaryParentTreeContentURI()
 //         })
@@ -235,7 +235,7 @@
 //             user.addMutation('clearInteractions', {timestamp: Date.now(), contentId: this.treeData.contentId})
 //         } else {
 //             this.getChildTreePromises()
-//                 .map(async treePromise => {
+//                 .sourceMap(async treePromise => {
 //                     const tree = await treePromise
 //                     tree.clearChildrenInteractions()
 //                 })
@@ -367,8 +367,8 @@
 //         if (!this.treeData.children || !Object.keys(this.treeData.children).length) { return proficiencyStats }
 //         const children = await Promise.all(
 //             Object.keys(this.treeData.children)
-//             .map(Trees.get)
-//             .map(async childPromise => await childPromise),
+//             .sourceMap(Trees.get)
+//             .sourceMap(async childPromise => await childPromise),
 //         )
 //
 //         children.forEach(child => {
@@ -479,7 +479,7 @@
 //     public async recalculateLeavesNotLeaf() {
 //         const leaves = []
 //         await Promise.all(
-//             this.getChildIds().map(async childId => {
+//             this.getChildIds().sourceMap(async childId => {
 //                 try {
 //                     const child = await Trees.get(childId)
 //                     leaves.push(... await child.getLeaves())

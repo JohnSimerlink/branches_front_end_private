@@ -75,7 +75,7 @@ export default {
                 var input = me.tags.getInput();
 
                 $(input).autocomplete({
-                    source: Object.keys(me.breadcrumbIdMap), //me.items.map( x => x.breadcrumb),
+                    source: Object.keys(me.breadcrumbIdMap), //me.items.sourceMap( x => x.breadcrumb),
                     appendTo: container,
                     position: { at: 'left bottom', of: container },
                     select: function(e, v) {

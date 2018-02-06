@@ -9,7 +9,7 @@ import {
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
     IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
-    IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs
+    IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -38,6 +38,7 @@ export enum MUTATION_NAMES {
     JUMP_TO = 'jump_to',
     REFRESH = 'refresh',
     ADD_NODE = 'add_node',
+    ADD_EDGE = 'add_edge',
     CREATE_CONTENT_USER_DATA = 'create_content_user_data',
     CREATE_CONTENT = 'create_content',
     CREATE_TREE_LOCATION = 'create_tree_location',
@@ -283,13 +284,13 @@ const mutations = {
 
     }
 }
-// TODO: DO I even use these mutation?
+// TODO: DO I even use these mutation? << YES
 mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {
-    const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
-        parentId: node.parentId,
-        treeId: node.id,
-        color: node.co
-    }
+    // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
+    //     parentId: node.parentId,
+    //     treeId: node.id,
+    //     // color: nod
+    // }
     if (state.sigmaInitialized) {
         state.graph.addNode(node)
         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
@@ -297,12 +298,25 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {
         state.graphData.nodes.push(node)
     }
 }
+mutations[MUTATION_NAMES.ADD_EDGE] = (state, {edge}: IAddEdgeMutationArgs) => {
+    // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
+    //     parentId: node.parentId,
+    //     treeId: node.id,
+    //     // color: nod
+    // }
+    if (state.sigmaInitialized) {
+        state.graph.addEgde(edge)
+        mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+    } else {
+        state.graphData.edges.push(edge)
+    }
+}
 const actions = {}
 
 let initialized = false
 @injectable()
 export default class BranchesStore {
-    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, sigmaEdgeUpdater}) {
+    constructor(@inject(TYPES.BranchesStoreArgs){globalDataStore, state}: BranchesStoreArgs) {
         if (initialized) {
             return {} as Store<any>
             // DON"T let the store singleton be messed up
@@ -319,7 +333,6 @@ export default class BranchesStore {
         } ) as Store<any>
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
-        store['sigmaEdgeUpdater'] = sigmaEdgeUpdater
         store['_id'] = Math.random()
         initialized = true
         return store

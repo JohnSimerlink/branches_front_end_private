@@ -8,7 +8,7 @@ import {TYPES} from '../types';
 import {log} from '../../core/log'
 import {myContainer, } from '../../../inversify.config';
 
-test('RenderedNodesManager::::subscribe should add RenderedNodesManagerCore.addToRenderList' +
+test('RenderedNodesManager::::subscribe should add RenderedNodesManagerCore.addNodeToRenderList' +
     ' to obj\'s callback list', (t) => {
     // log('html element is', HTMLElement)
     // expect(sample('5')).to.equal(false)

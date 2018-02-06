@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {
-    IRenderedNodesManager, IRenderedNodesManagerCore, ISigmaIdToRender, ISubscribable,
+    IRenderedNodesManager, IRenderedNodesManagerCore, ISigmaRenderUpdate, ISubscribable, RenderUpdateTypes,
 } from '../interfaces';
 import {TYPES} from '../types';
 
@@ -10,10 +10,17 @@ export class RenderedNodesManager implements IRenderedNodesManager {
     constructor(@inject(TYPES.RenderedNodesManagerArgs){renderedNodesManagerCore}: RenderedNodesManagerArgs) {
         this.renderedNodesManagerCore =  renderedNodesManagerCore
     }
-    public subscribe(obj: ISubscribable<ISigmaIdToRender>) {
+    public subscribe(obj: ISubscribable<ISigmaRenderUpdate>) {
         const me = this
         obj.onUpdate(update => {
-            me.renderedNodesManagerCore.addToRenderList(update.sigmaIdToRender)
+            switch (update.type) {
+                case RenderUpdateTypes.NEW_NODE:
+                    me.renderedNodesManagerCore.addNodeToRenderList(update.sigmaNodeIdToRender)
+                    break;
+                case RenderUpdateTypes.NEW_EDGE:
+                    me.renderedNodesManagerCore.addEdgeToRenderList(update.sigmaEdgeIdToRender)
+                    break;
+            }
         })
     }
 }
