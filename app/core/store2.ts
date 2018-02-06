@@ -38,7 +38,7 @@ export enum MUTATION_NAMES {
     JUMP_TO = 'jump_to',
     REFRESH = 'refresh',
     ADD_NODE = 'add_node',
-    ADD_EDGE = 'add_edge',
+    ADD_EDGES = 'add_edges',
     CREATE_CONTENT_USER_DATA = 'create_content_user_data',
     CREATE_CONTENT = 'create_content',
     CREATE_TREE_LOCATION = 'create_tree_location',
@@ -277,7 +277,7 @@ const mutations = {
     [MUTATION_NAMES.ADD_PARENT_EDGE_NO_REFRESH](state, {parentId, treeId, color}: IAddParentEdgeMutationArgs) {
         const edge: ISigmaEdgeData = createParentSigmaEdge({parentId, treeId, color})
         if (state.sigmaInitialized) {
-            state.graph.addEdge(edge)
+            state.graph.addEdges(edge)
         } else {
             state.graphData.edges.push(edge)
         }
@@ -298,17 +298,19 @@ mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {
         state.graphData.nodes.push(node)
     }
 }
-mutations[MUTATION_NAMES.ADD_EDGE] = (state, {edge}: IAddEdgeMutationArgs) => {
+mutations[MUTATION_NAMES.ADD_EDGES] = (state, {edges}: IAddEdgeMutationArgs) => {
     // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
     //     parentId: node.parentId,
     //     treeId: node.id,
     //     // color: nod
     // }
     if (state.sigmaInitialized) {
-        state.graph.addEgde(edge)
+        for (const edge of edges){
+            state.graph.addEgde(edge)
+        }
         mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
     } else {
-        state.graphData.edges.push(edge)
+        state.graphData.edges.push(...edges)
     }
 }
 const actions = {}

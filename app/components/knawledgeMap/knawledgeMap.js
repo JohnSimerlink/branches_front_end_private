@@ -268,7 +268,7 @@ export function connectTreeToParent(tree,content){
         if(!initialized){
             g.edges.push(edge);
         } else {
-            s.graph.addEdge(edge)
+            s.graph.addEdges(edge)
         }
     } else {
     }
@@ -305,7 +305,7 @@ export function connectTreeToParent(tree,content){
 //         color: getTreeColor(content),
 //         type: EDGE_TYPES.HIERARCHICAL,
 //     }
-//     s.graph.addEdge(newEdge)
+//     s.graph.addEdges(newEdge)
 //
 //     s.refresh();
 //     return newTree;
@@ -758,7 +758,7 @@ function initKnawledgeMap(treeIdToJumpTo){
             color: edge.color,
             size: edge.size,
         }
-        s.graph.addEdge(permanentEdge)
+        s.graph.addEdges(permanentEdge)
         window.awaitingEdgeConnectionNodeId = null
         window.awaitingEdgeConnection = false
         removeSuggestedEdges()
@@ -837,7 +837,7 @@ function initKnawledgeMap(treeIdToJumpTo){
                     color: parentlessNode.color,
                     type: EDGE_TYPES.SUGGESTED_CONNECTION
                 }
-                s.graph.addEdge(edge)
+                s.graph.addEdges(edge)
                 s.refresh()
 
             })
@@ -935,7 +935,7 @@ function addTrailingDots(treeId){
         color: 'black',
         type: EDGE_TYPES.TRAILING_DOTS,
     }
-    s.graph.addEdge(edge)
+    s.graph.addEdges(edge)
     s.refresh()
 }
 if (typeof window !== 'undefined') {

@@ -32,8 +32,8 @@ export class SigmaUpdater implements ISigmaUpdater {
         // this.refresh()
     }
 
-    public addEdge(edge: ISigmaEdgeData): void {
-        this.store.commit(MUTATION_NAMES.ADD_EDGE, {edge})
+    public addEdges(edges: ISigmaEdgeData[]): void {
+        this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges})
         // throw new Error('Method not implemented.');
     }
 
