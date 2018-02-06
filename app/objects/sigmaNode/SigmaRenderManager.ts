@@ -87,11 +87,17 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
                 edgeIdsToCreate.push(edgeId)
             }
         }
-        this.broadcastNewEdgesUpdate(edgeIdsToCreate)
+        log('renderable edges are ', edgeIdsToCreate)
+        if (edgeIdsToCreate.length) {
+            this.broadcastNewEdgesUpdate(edgeIdsToCreate)
+        }
     }
     private broadcastNewEdgesForEdgesWaitingOnNode(treeId: id) {
-        const edgesForTreeId: id[] = this.treeIdEdgeIdsMap[treeId] || []
-        this.broadcastIfEdgesRenderable(edgesForTreeId)
+        const edgesForTreeId: id[] = this.treeIdEdgeIdsMap.get(treeId)
+        if (edgesForTreeId.length) {
+            log('edges for treeId ', treeId, 'are ', edgesForTreeId)
+            this.broadcastIfEdgesRenderable(edgesForTreeId)
+        }
     }
     private canRenderNode(treeId: id) {
         return this.treeLocationDataLoadedIdsSet[treeId]  && this.treeDataLoadedIdsSet[treeId]
