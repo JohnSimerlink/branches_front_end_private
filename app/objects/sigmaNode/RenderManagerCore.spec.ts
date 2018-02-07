@@ -2,13 +2,14 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TREE_ID} from '../../testHelpers/testHelpers';
 import {IRenderedNodesManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {RenderedNodesManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
 
+myContainerLoadAllModules()
 test('RenderedNodesManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)

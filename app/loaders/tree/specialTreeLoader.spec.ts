@@ -2,7 +2,7 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {MockFirebase} from 'firebase-mock'
 import test from 'ava'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {
     IOneToManyMap, ITreeDataFromFirebase,
@@ -13,6 +13,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {expect} from 'chai'
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {partialInject} from '../../testHelpers/partialInject';
+myContainerLoadAllModules()
 test('SpecialTreeLoader', async (t) => {
     const treeId = '1234'
     const sigmaId = treeId

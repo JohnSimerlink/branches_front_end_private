@@ -2,7 +2,7 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {CONTENT_TYPES, ITreeLocationData} from '../interfaces';
@@ -15,6 +15,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 
+myContainerLoadAllModules()
 test('sigmaNode:::receive new tree', (t) => {
     const parentId = '12345'
     const contentId = '12312345'

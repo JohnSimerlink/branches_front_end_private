@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     ISubscribable, ISubscribableGlobalStore,
     ITypeAndIdAndValUpdates
@@ -11,6 +11,7 @@ import {
 import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
 
+myContainerLoadAllModules()
 test('CanvasUI:::should subscribe to the onUpdate method of a subscribable obj passed to it', (t) => {
     const canvasUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
 

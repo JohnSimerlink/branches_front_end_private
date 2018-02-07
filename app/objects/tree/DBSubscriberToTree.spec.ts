@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     IDatabaseAutoSaver, IDBSubscriber, IDBSubscriberToTree, ISubscribableTree,
     ISubscribableTreeCore
@@ -11,6 +11,8 @@ import {
 import {TYPES} from '../types';
 import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './DBSubscriberToTree';
 import {injectionWorks} from '../../testHelpers/testHelpers';
+
+myContainerLoadAllModules()
 let subscribableTree
 let contentIdSyncer
 let parentIdSyncer
@@ -34,6 +36,7 @@ test.beforeEach('constructor', () => {
 })
 test('IDBSubscriber > DBSubscriberToTree::::subscribe' +
     ' DI constructor should work', (t) => {
+    
     const injects = injectionWorks<DBSubscriberToTreeArgs, IDBSubscriberToTree>({
         container: myContainer,
         argsType: TYPES.DBSubscriberToTreeArgs,
@@ -44,6 +47,7 @@ test('IDBSubscriber > DBSubscriberToTree::::subscribe' +
 })
 test('IDBSubscriber > DBSubscriberToTree::::' +
     'subscribe should call subscribe on each of the database syncers', (t) => {
+    
     const contentIdSyncerSubscribeSpy = sinon.spy(contentIdSyncer, 'subscribe')
     const parentIdSyncerSubscribeSpy = sinon.spy(parentIdSyncer, 'subscribe')
     const childrenSyncerSubscribeSpy = sinon.spy(childrenSyncer, 'subscribe')

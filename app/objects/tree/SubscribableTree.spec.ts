@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     ISubscribableMutableField,
     ISubscribableMutableStringSet,
@@ -11,7 +11,9 @@ import {
 import {TYPES} from '../types';
 import {SubscribableTree} from './SubscribableTree';
 
+myContainerLoadAllModules()
 test('SubscribableTree:::constructor should set all the subscribable properties', (t) => {
+    
     const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
@@ -24,6 +26,7 @@ test('SubscribableTree:::constructor should set all the subscribable properties'
     t.pass()
 })
 test('SubscribableTree:::.val() should display the value of the object', (t) => {
+    
     const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
@@ -38,6 +41,7 @@ test('SubscribableTree:::.val() should display the value of the object', (t) => 
     t.pass()
 })
 test('SubscribableTree:::.getId() should display the id of the object', (t) => {
+    
     const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
@@ -48,6 +52,7 @@ test('SubscribableTree:::.getId() should display the id of the object', (t) => {
 })
 test('SubscribableTree:::startPublishing() should call the onUpdate' +
     ' methods of all member Subscribable properties', (t) => {
+    
     const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)

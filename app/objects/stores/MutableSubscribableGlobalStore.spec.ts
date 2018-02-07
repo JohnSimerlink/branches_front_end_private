@@ -4,7 +4,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID2, injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
@@ -45,6 +45,7 @@ import {MutableSubscribableTreeUser} from '../treeUser/MutableSubscribableTreeUs
 import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
 
+myContainerLoadAllModules()
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
         container: myContainer,

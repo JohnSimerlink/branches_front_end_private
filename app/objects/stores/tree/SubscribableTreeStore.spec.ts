@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeCore, ISubscribableTreeStore,
@@ -13,6 +13,7 @@ import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringS
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 
+myContainerLoadAllModules()
 test('SubscribableTreeStore > addAndSubscribeToItem::::' +
     'An update in a member tree should be published to a subscriber of the tree data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.

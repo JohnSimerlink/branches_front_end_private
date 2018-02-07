@@ -3,12 +3,13 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {FieldMutationTypes, IDatedMutation} from '../interfaces';
 import {ISubscribableMutableField} from '../interfaces';
 import {TYPES} from '../types';
 import {MutableSubscribableField} from './MutableSubscribableField';
 
+myContainerLoadAllModules()
 test('MutableSubscribableField > Subscribable::::Adding a mutation,' +
     ' should trigger an update for one of the subscribers [is this an integration test?]', (t) => {
     // const subscribableMutableId: ISubscribableMutableField =

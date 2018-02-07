@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     CONTENT_TYPES, ContentPropertyNames, FieldMutationTypes, IDatedMutation,
@@ -12,6 +12,7 @@ import {
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
+myContainerLoadAllModules()
 test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
@@ -65,6 +66,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
 test('MutableSubscribableContent:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
+
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
     const answer = new MutableSubscribableField<string>({field: 'Columbus'})

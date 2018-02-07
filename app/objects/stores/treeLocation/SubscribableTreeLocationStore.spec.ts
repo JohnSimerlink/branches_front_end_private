@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
     FieldMutationTypes, IMutableSubscribablePoint, IProficiencyStats, IProppedDatedMutation,
@@ -14,6 +14,7 @@ import {MutableSubscribablePoint} from '../../point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscribableTreeLocation';
 import {TYPES} from '../../types';
 
+myContainerLoadAllModules()
 test('SubscribableTreeLocationStore > addAndSubscribeToItem:::' +
     'An update in a member treeLocation should be published to a subscriber of the treeLocation data stores', (t) => {
     const treeId = TREE_ID

@@ -6,7 +6,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
 import * as sinon from 'sinon'
-import {myContainer} from '../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
@@ -69,6 +69,7 @@ import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocati
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
 
+myContainerLoadAllModules()
 test('App integration test 3 - create new Tree triggered by user' +
     ' should create a new sigmaNode with the correct properties', async (t) => {
     // TODO: use fake firebaseRefs

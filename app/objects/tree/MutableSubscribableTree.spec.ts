@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {FieldMutationTypes, IDatedMutation, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
@@ -12,9 +12,11 @@ import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
 
+myContainerLoadAllModules()
 test('MutableSubscribableTree:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
+    
     const contentId = new MutableSubscribableField<string>()
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
@@ -39,6 +41,7 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
 test('MutableSubscribableTree:::a mutation in one of the subscribable properties' +
     ' should NOT publish an update of the entire object\'s value'
     + ' before startPublishing has been called', (t) => {
+    
     const contentId = new MutableSubscribableField<string>()
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
@@ -60,6 +63,7 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
 test('MutableSubscribableTree:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
+    
     const contentId = new MutableSubscribableField<string>()
     const parentId = new MutableSubscribableField<string>()
     const children = new SubscribableMutableStringSet()

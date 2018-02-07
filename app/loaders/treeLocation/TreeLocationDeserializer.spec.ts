@@ -10,7 +10,9 @@ import {
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from '../../objects/treeLocation/MutableSubscribableTreeLocation';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
     ' (besides the mutation from creation)', (t) => {
 

@@ -4,10 +4,11 @@ import test from 'ava'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {IOneToManyMap} from '../interfaces';
 import {OneToManyMap, OneToManyMapArgs} from './oneToManyMap';
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {expect} from 'chai'
 import {partialInject} from '../../testHelpers/partialInject';
+myContainerLoadAllModules()
 test('DI works', (t) => {
     const injects = injectionWorks<OneToManyMapArgs, IOneToManyMap<string>>({
         container: myContainer,

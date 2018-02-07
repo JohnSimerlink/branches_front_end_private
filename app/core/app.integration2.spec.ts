@@ -6,7 +6,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
 import * as sinon from 'sinon'
-import {myContainer} from '../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
@@ -49,9 +49,11 @@ import {partialInject} from '../testHelpers/partialInject';
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
 
+myContainerLoadAllModules()
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
+
     Vue.use(Vuex)
     // configureSigma(sigma)
     const treeIdToDownload = TREE_ID

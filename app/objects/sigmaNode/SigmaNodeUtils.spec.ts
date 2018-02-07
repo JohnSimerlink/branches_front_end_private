@@ -8,7 +8,9 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 
 import {INITIAL_START_RADIANS, SigmaNodeUtils} from './SigmaNodeUtils';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('Get Color Slices from Proficiency Stats::::' +
     'should do one hundred percent COLOR_ONE for one item proficiency ONE and zero items everything else', (t) => {
     const proficiencyStats: IProficiencyStats = {

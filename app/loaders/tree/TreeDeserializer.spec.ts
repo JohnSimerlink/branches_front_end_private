@@ -12,7 +12,9 @@ import {
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const contentIdVal = '1234'
     const parentIdVal = '041234'
@@ -45,6 +47,7 @@ test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', 
     expect(deserializedTree).to.deep.equal(expectedTree)
     t.pass()
 })
+myContainerLoadAllModules()
 test('TreeDeserializer::: convert sets to arrays should work', (t) => {
     const contentIdVal = '1234'
     const parentIdVal = '041234'

@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     IContentUserData,
@@ -16,6 +16,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SubscribableContentUser} from './SubscribableContentUser';
 
+myContainerLoadAllModules()
 test('SubscribableContentUser:::constructor should set all the subscribable properties', (t) => {
     const contentUserId = 'abcde12345_defgh1234567'
     const overdue = new MutableSubscribableField<boolean>({field: false})

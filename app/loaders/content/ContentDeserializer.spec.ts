@@ -12,7 +12,9 @@ import {
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableContent} from '../../objects/content/MutableSubscribableContent';
 import {ContentDeserializer} from './ContentDeserializer';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const typeVal = CONTENT_TYPES.FACT
     const questionVal = 'What is the Capital of Ohio?'

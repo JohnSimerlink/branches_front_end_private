@@ -5,7 +5,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../objects/field/MutableSubscribableField';
@@ -49,6 +49,7 @@ import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableM
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
+myContainerLoadAllModules()
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
     ' should update the sigma node instance for all sigma nodes containing that content id', t => {
@@ -136,6 +137,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
 test('Adding a mutation into the global stores for a content data,' +
     ' should update the sigma node instance for all sigma nodes containing that content id', t => {
     // canvasUI
+
     const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNode2 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNodes = {}
@@ -229,6 +231,7 @@ test('Adding a mutation into the global stores for a content data,' +
 test('Adding a mutation into the global stores for a tree user data,' +
     ' should update the sigma node instance for the sigma node for that tree Id', t => {
     // canvasUI
+
     const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNodes = {}
     const TREE_ID = 'babababa'
@@ -322,6 +325,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
 test('Adding a mutation into the global stores for a tree location data,' +
     ' should update the sigma node instance for the sigma node for that tree Id', t => {
     // canvasUI
+
     const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNodes = {}
     const TREE_ID = 'babababa'

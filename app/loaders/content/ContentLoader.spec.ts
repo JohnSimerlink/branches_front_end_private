@@ -5,7 +5,7 @@ import {expect} from 'chai'
 import * as firebase from 'firebase'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     IMutableSubscribableContent, ISubscribableContentStoreSource,
     IContentData,
@@ -19,6 +19,7 @@ import {ContentDeserializer} from './ContentDeserializer';
 import {ContentLoader, ContentLoaderArgs} from './ContentLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import * as sinon from 'sinon'
+myContainerLoadAllModules()
 test('ContentLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<ContentLoaderArgs, IContentLoader>({
         container: myContainer,

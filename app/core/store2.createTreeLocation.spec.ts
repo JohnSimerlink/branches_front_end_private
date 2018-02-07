@@ -14,6 +14,11 @@ import {expect} from 'chai'
 import test from 'ava'
 
 test('store create location should call correct firebaseRef', t => {
+    /** Swap out actual firebase refs with Mock firebase refs.
+     *
+     */
+    myContainer.load(mockFirebaseReferences)
+    myContainerLoadAllModulesExceptFirebaseRefs()
     /**
      * Set up data
      */
@@ -25,11 +30,6 @@ test('store create location should call correct firebaseRef', t => {
         y,
         treeId,
     }
-    /** Swap out actual firebase refs with Mock firebase refs.
-     *
-     */
-    myContainer.load(mockFirebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs()
     /**
      * Grab the store singleton with which we will create the action
      * @type {Store<any>}

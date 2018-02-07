@@ -10,7 +10,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SigmaNodeUtils} from '../SigmaNode/SigmaNodeUtils';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {escape, TooltipRenderer, TooltipRendererArgs} from './tooltipRenderer';
-import {myContainer, state} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules, state} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {expect} from 'chai'
 import clonedeep = require('lodash.clonedeep')
@@ -18,7 +18,10 @@ import BranchesStore from '../../core/store2';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
+
+myContainerLoadAllModules()
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {
+    
     const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({
         container: myContainer,
         argsType: TYPES.TooltipRendererArgs,
@@ -29,6 +32,7 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 })
 
 test('tooltips renderer content should escape', t => {
+    
     const contentId = '452340985'
     const userId = 'abdcede13'
     const proficiencyStats: IProficiencyStats = {

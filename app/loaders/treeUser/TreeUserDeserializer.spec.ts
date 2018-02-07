@@ -11,6 +11,7 @@ import {
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
 test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const proficiencyStatsVal = {

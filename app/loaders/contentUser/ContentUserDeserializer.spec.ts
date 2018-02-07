@@ -13,7 +13,9 @@ import {MutableSubscribableContentUser} from '../../objects/contentUser/MutableS
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {SyncableMutableSubscribableContentUser} from '../../objects/contentUser/SyncableMutableSubscribableContentUser';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const overdueVal = true
     const lastRecordedStrengthVal = 30

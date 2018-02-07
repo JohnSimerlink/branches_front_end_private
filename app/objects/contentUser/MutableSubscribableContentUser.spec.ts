@@ -12,11 +12,14 @@ import {
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('MutableSubscribableContentUser:::.val() should work after constructor', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
+
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const overdueVal = true
@@ -54,6 +57,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
+
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const newRecordedStrengthVal = 48
@@ -99,6 +103,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
+
     const lastRecordedStrengthVal = 45
     const overdueVal = true
     const newOverdueVal = false
@@ -146,6 +151,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
+
     const contentUserId = 'abc_123'
     const lastRecordedStrengthVal = 45
     const overdueVal = true
