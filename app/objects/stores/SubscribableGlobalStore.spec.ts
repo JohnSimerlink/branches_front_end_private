@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
@@ -26,7 +26,9 @@ import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
+myContainerLoadAllModules()
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
+    
     const expectedProperties = Object.getOwnPropertyNames
     (myContainer.get<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs))
     const store: ISubscribableGlobalStore =
@@ -38,6 +40,7 @@ test('ISubscribableGlobalStore::::Dependency injection should set all properties
 })
 test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
     ' should call onUpdate on each of the component Stores', (t) => {
+    
     const contentId = new MutableSubscribableField<string>()
     const parentId = new MutableSubscribableField<string>()
     const children = new SubscribableMutableStringSet()
@@ -84,6 +87,7 @@ test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
     + ' when one of its component stores (treeStore) publishes an update', (t) => {
+    
     const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
     const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
     const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
@@ -156,6 +160,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
     + ' when one of its component stores (contentUserStore) publishes an update', (t) => {
+    
     const contentId = 'efa123'
     const userId = 'abcd12354'
 
@@ -233,6 +238,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 //
 test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore should NOT publish updates ' +
     ' when one of its component stores publishes an update', (t) => {
+    
     const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
     const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
     const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()

@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes, IProficiencyStats, IProppedDatedMutation, ISubscribableTreeUserStore,
@@ -13,6 +13,7 @@ import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
 
+myContainerLoadAllModules()
 test('SubscribableTreeUserStore > addAndSubscribeToItem:::' +
     'An update in a member treeUser should be published to a subscriber of the treeUser data stores', (t) => {
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>()

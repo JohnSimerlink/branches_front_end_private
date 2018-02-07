@@ -4,7 +4,7 @@ injectFakeDom()
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {log} from '../../../app/core/log'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {CONTENT_TYPES, ISigmaNodesUpdater, ISigmaRenderManager, ITreeLocationData} from '../interfaces';
 import {ObjectDataTypes} from '../interfaces';
 import {ITypeAndIdAndValUpdates} from '../interfaces';
@@ -24,6 +24,7 @@ import {
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
 function refresh() {}
+myContainerLoadAllModules()
 
 let sigmaNodes
 let sigmaNode1

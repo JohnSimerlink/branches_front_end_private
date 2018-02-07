@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../../content/MutableSubscribableContent';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
@@ -15,6 +15,7 @@ import {
 import {TYPES} from '../../types';
 import {SubscribableContentStore} from './SubscribableContentStore';
 
+myContainerLoadAllModules()
 test('SubscribableContentStore > addAndSubscribeToItem:::An update' +
     ' in a member content should be published to a subscriber of the content data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.

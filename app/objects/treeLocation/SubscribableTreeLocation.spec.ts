@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {
     ICoordinate,
@@ -15,7 +15,9 @@ import {TYPES} from '../types';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
 import {SubscribableTreeLocationArgs} from './SubscribableTreeLocation';
 
+myContainerLoadAllModules()
 test('SubscribableTreeLocation:::DI constructor works', (t) => {
+    
     const injects = injectionWorks<SubscribableTreeLocationArgs, ISubscribableTreeLocation>({
         container: myContainer,
         argsType: TYPES.SubscribableTreeLocationArgs,
@@ -25,6 +27,7 @@ test('SubscribableTreeLocation:::DI constructor works', (t) => {
     t.pass()
 })
 test('SubscribableTreeLocation:::constructor should set all the subscribable properties', (t) => {
+    
     const FIRST_POINT_VALUE: ICoordinate = {x: 5, y: 7}
     const point: IMutableSubscribablePoint
         = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
@@ -34,6 +37,7 @@ test('SubscribableTreeLocation:::constructor should set all the subscribable pro
     t.pass()
 })
 test('SubscribableTreeLocation:::.val() should display the value of the object', (t) => {
+    
     const FIRST_POINT_VALUE: ICoordinate = {x: 5, y: 7}
     const point: IMutableSubscribablePoint
         = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
@@ -49,6 +53,7 @@ test('SubscribableTreeLocation:::.val() should display the value of the object',
 })
 test('SubscribableTreeLocation:::startPublishing() should call the' +
     ' onUpdate methods of all member Subscribable properties', (t) => {
+    
     const FIRST_POINT_VALUE: ICoordinate = {x: 5, y: 7}
     const point: IMutableSubscribablePoint
         = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})

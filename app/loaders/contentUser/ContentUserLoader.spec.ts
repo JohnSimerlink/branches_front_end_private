@@ -5,7 +5,7 @@ import {expect} from 'chai'
 import * as firebase from 'firebase'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserData,
@@ -73,6 +73,7 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 //     expect(isLoaded).to.deep.equal(false)
 //     t.pass()
 // })
+myContainerLoadAllModules()
 test('ContentUserLoader:::Should mark an id as loaded after being loaded', async (t) => {
     const contentId = '423487'
     const userId = '12476'
@@ -225,7 +226,6 @@ test('ContentUserLoader:::DownloadData should have the side effect' +
     t.pass()
 })
 test('ContentUserLoader:::GetData on an existing contentUser should return the contentUser', async (t) => {
-
     const contentId = '423487234'
     const userId = '12476abc'
     const contentUserId = getContentUserId({contentId, userId})

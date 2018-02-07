@@ -4,11 +4,12 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
 
+myContainerLoadAllModules()
 // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
 // const po = new Point({x:5, y:6})
 const FIRST_MEMBER_ID = 'abc123'

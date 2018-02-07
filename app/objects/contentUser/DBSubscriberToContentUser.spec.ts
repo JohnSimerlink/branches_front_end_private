@@ -3,11 +3,12 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatabaseAutoSaver, IDBSubscriber, ISubscribableContentUser} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToContentUser} from './DBSubscriberToContentUser';
 
+myContainerLoadAllModules()
 let subscribableContentUser
 let overdueSyncer: IDatabaseAutoSaver
 let proficiencySyncer: IDatabaseAutoSaver
@@ -35,6 +36,7 @@ test.beforeEach('constructor', () => {
 })
 test('IDBSubscriber > DBSubscriberToContentUser::::subscribe' +
     ' should call subscribe on each of the database syncers', (t) => {
+
     const overdueSyncerSubscribeSpy = sinon.spy(overdueSyncer, 'subscribe')
     const proficiencySyncerSubscribeSpy = sinon.spy(proficiencySyncer, 'subscribe')
     const lastRecordedStrengthSyncerSubscribeSpy = sinon.spy(lastRecordedStrengthSyncer, 'subscribe')

@@ -6,8 +6,9 @@ import * as sinon from 'sinon'
 import {IRenderedNodesManager, ISigmaRenderManager} from '../interfaces';
 import {TYPES} from '../types';
 import {log} from '../../core/log'
-import {myContainer, } from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules,} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('RenderedNodesManager::::subscribe should add RenderedNodesManagerCore.addNodeToRenderList' +
     ' to obj\'s callback list', (t) => {
     // log('html element is', HTMLElement)

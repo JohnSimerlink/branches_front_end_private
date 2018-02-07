@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     IMutableSubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISyncableMutableSubscribableTreeLocation,
@@ -17,6 +17,7 @@ import {TreeLocationLoader} from './TreeLocationLoader';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
+myContainerLoadAllModules()
 test('treeLocationLoader:::DI Constructor should work', (t) => {
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)

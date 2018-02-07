@@ -5,7 +5,7 @@ import {expect} from 'chai'
 import * as firebase from 'firebase'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     IHash, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
     ISyncableMutableSubscribableTree,
@@ -19,6 +19,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+myContainerLoadAllModules()
 test('TreeLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
         container: myContainer,

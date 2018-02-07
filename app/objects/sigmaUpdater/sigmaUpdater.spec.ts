@@ -2,7 +2,7 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import test from 'ava'
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
 import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
@@ -12,6 +12,7 @@ import {error} from '../../core/log'
 import BranchesStore, {MUTATION_NAMES} from '../../core/store2'
 import {log} from '../../core/log'
 import {Store} from 'vuex';
+myContainerLoadAllModules()
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import {SigmaJs} from 'sigmajs';

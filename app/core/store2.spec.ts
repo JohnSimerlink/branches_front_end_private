@@ -9,7 +9,10 @@ import {
     ITreeDataWithoutId, ITreeLocationData, IVuexStore,
     ObjectTypes, STORE_MUTATION_TYPES
 } from '../objects/interfaces';
-import {mockFirebaseReferences, myContainer, myContainerLoadAllModulesExceptFirebaseRefs} from '../../inversify.config';
+import {
+    mockFirebaseReferences, myContainer, myContainerLoadAllModules,
+    myContainerLoadAllModulesExceptFirebaseRefs
+} from '../../inversify.config';
 import {TYPES} from '../objects/types';
 import {expect} from 'chai'
 import test from 'ava'
@@ -24,6 +27,8 @@ import {ContentUserData} from '../objects/contentUser/ContentUserData';
 // NOTE don't worry about the injection works for store2
 test('Store::: ' +
     ' DI constructor should work', (t) => {
+
+    myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     const injects = injectionWorks<BranchesStoreArgs, BranchesStore>({
         container: myContainer,
@@ -35,6 +40,7 @@ test('Store::: ' +
 })
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT_USER_DATA', (t) => {
+    myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript object and sinon spy that I don't know . . .
@@ -91,6 +97,8 @@ test('Store::::' +
 })
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT: should call globalDataStore with the correct args', (t) => {
+
+    myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript object and sinon spy that I don't know . . .
@@ -149,6 +157,8 @@ test('Store::::' +
 })
 test('Store::::' +
     ' MUTATIONS CREATE_TREE: should call globalDataStore with the correct args', (t) => {
+
+    myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript object and sinon spy that I don't know . . .
@@ -199,6 +209,8 @@ test('Store::::' +
 })
 test('Store::::' +
     ' MUTATIONS CREATE_TREE_LOCATION: should call globalDataStore with the correct args', (t) => {
+
+    myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript object and sinon spy that I don't know . . .

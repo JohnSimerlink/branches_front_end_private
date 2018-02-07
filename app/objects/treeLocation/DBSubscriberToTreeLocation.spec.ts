@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {
@@ -13,6 +13,7 @@ import {
 import {TYPES} from '../types';
 import {DBSubscriberToTreeLocation, DBSubscriberToTreeLocationArgs} from './DBSubscriberToTreeLocation';
 
+myContainerLoadAllModules()
 let subscribableTreeLocation
 let pointSyncer: IDatabaseAutoSaver
 let dbSubscriberToTreeLocation: IDBSubscriber
@@ -30,6 +31,7 @@ test.beforeEach('constructor', () => {
 })
 test('IDBSubscriber > DBSubscriberToTreeLocation::::subscribe' +
     ' DI constructor should work', (t) => {
+    
     const injects = injectionWorks<DBSubscriberToTreeLocationArgs, IDBSubscriberToTreeLocation>({
         container: myContainer,
         argsType: TYPES.DBSubscriberToTreeLocationArgs,
@@ -40,6 +42,7 @@ test('IDBSubscriber > DBSubscriberToTreeLocation::::subscribe' +
 })
 test('IDBSubscriber > DBSubscriberToTreeLocation::::subscribe' +
     ' should call subscribe on each of the database syncers', (t) => {
+    
     const pointSyncerSubscribeSpy = sinon.spy(pointSyncer, 'subscribe')
     expect(pointSyncerSubscribeSpy.callCount).to.equal(0)
 

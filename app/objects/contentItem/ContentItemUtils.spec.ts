@@ -6,6 +6,8 @@ import {expect} from 'chai'
 import {IContentData} from '../interfaces';
 import {CONTENT_TYPES} from '../interfaces';
 import {ContentItemUtils, QUESTION_ANSWER_LABEL_SEPARATOR} from './ContentItemUtils';
+import {myContainerLoadAllModules} from '../../../inversify.config';
+myContainerLoadAllModules()
 test('ContentItemUtils:::Should properly return title for Category', (t) => {
     const A_TITLE = 'History'
     const contentData: IContentData = {
@@ -24,7 +26,7 @@ test('ContentItemUtils:::Should properly return title for skill', (t) => {
     expect(ContentItemUtils.getLabelFromContent(contentData)).to.equal(A_TITLE)
     t.pass()
 })
-test('ContentItemUtils:::Should properly return title for skill', (t) => {
+test('ContentItemUtils:::Should properly return title for question', (t) => {
     const question = 'What is capital of Ohio?'
     const answer = 'Columbus'
     const contentData: IContentData = {
@@ -33,6 +35,6 @@ test('ContentItemUtils:::Should properly return title for skill', (t) => {
         type: CONTENT_TYPES.FACT,
     }
     const expectedTitle = question + QUESTION_ANSWER_LABEL_SEPARATOR + answer
-    expect(ContentItemUtils.getLabelFromContent(contentData)).to.equal(expectedTitle)
+    expect(ContentItemUtils.getLabelFromContent(contentData)).to.equal(question)
     t.pass()
 })

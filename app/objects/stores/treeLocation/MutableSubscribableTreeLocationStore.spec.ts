@@ -4,7 +4,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {log} from '../../../core/log'
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
@@ -20,10 +20,10 @@ import {TYPES} from '../../types';
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
 import {SyncableMutableSubscribableTreeLocation} from '../../treeLocation/SyncableMutableSubscribableTreeLocation';
 
+myContainerLoadAllModules()
 test('MutableSubscribableTreeLocationStore > addMutation::::' +
     'addMutation to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
-
     const treeId = TREE_ID
     const FIRST_POINT_VALUE = {x: 5, y: 7}
     const MUTATION_VALUE = {delta: {x: 3, y: 4}}

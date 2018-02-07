@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {
     ISigmaNodeCreator, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
@@ -12,7 +12,9 @@ import {
 import {TYPES} from '../types';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
 
+myContainerLoadAllModules()
 test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
+    
     const injects = injectionWorks<StoreSourceUpdateListenerArgs, IStoreSourceUpdateListener>({
         container: myContainer,
         argsType: TYPES.StoreSourceUpdateListenerArgs,
@@ -22,6 +24,7 @@ test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
     t.pass()
 })
 test('StoreSourceUpdateListener:::subscribe', (t) => {
+    
     const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = {
         onUpdate() {
         }

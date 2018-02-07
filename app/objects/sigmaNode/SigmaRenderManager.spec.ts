@@ -3,15 +3,15 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {ISigmaRenderUpdate, ISigmaRenderManager, RenderUpdateTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './SigmaRenderManager';
 import {partialInject} from '../../testHelpers/partialInject';
 
+myContainerLoadAllModules()
 test('SigmaRenderManager::::DI constructor works', (t) => {
-
     const injects = injectionWorks<SigmaRenderManagerArgs, ISigmaRenderManager>({
         container: myContainer,
         argsType: TYPES.SigmaRenderManagerArgs,
@@ -52,7 +52,6 @@ test('SigmaRenderManager::::should broadcast an update listing the id as rendera
 })
 test('SigmaRenderManager::::should broadcast an update listing the id as renderable after marking tree' +
     ' and treelocation data added [DI constructor]', (t) => {
-
     const callback = sinon.spy()
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
     const treeId = '12354'

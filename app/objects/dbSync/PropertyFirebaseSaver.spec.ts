@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDetailedUpdates, } from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
@@ -32,6 +32,7 @@ todo that I could 1) check if numSubscribers on the ISubscribable increases afte
   but that would be unit testing a private method . . .
 */
 
+myContainerLoadAllModules()
 test(`IDatabaseSaver > PropertyFirebaseSaver::::save updates with updates and no pushes should call the propertyFirebaseSaver's
      update method once, and child().push() method 0 times`, (t) => {
     updatesObj = {updates: {val: 5}}

@@ -6,7 +6,7 @@ import * as firebase from 'firebase';
 import {MockFirebase} from 'firebase-mock'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
@@ -35,6 +35,7 @@ if (!Vue) {
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
+myContainerLoadAllModules()
 test('Tree3Component DI constructor should work', t => {
     const injects = injectionWorks<Tree3CreatorArgs, ITree3Creator >({
         container: myContainer,

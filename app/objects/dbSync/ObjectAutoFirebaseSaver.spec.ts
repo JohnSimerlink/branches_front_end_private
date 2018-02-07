@@ -8,7 +8,9 @@ import {ObjectFirebaseAutoSaver} from './ObjectAutoFirebaseSaver';
 import * as sinon from 'sinon'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
+import {myContainerLoadAllModules} from '../../../inversify.config';
 
+myContainerLoadAllModules()
 test('start', (t) => {
 
     // onUpdate on each of the 4 properties should get called

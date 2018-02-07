@@ -2,7 +2,7 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
     IOneToManyMap,
@@ -17,6 +17,7 @@ import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from '
 import test from 'ava'
 import {partialInject} from '../../testHelpers/partialInject';
 
+myContainerLoadAllModules()
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
     const injects = injectionWorks<StoreSourceUpdateListenerCoreArgs, IStoreSourceUpdateListenerCore>({
         container: myContainer,
@@ -27,6 +28,7 @@ test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
     t.pass()
 })
 test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent node and call sigmaNodesUpdate', (t) => {
+
     const newContentId = '4324234'
     const newParentId = '4344324234'
     const newChildren = ['45344324234', 'aabc321', 'abcd43132']

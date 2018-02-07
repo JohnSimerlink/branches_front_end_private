@@ -7,7 +7,7 @@ import {MockFirebase} from 'firebase-mock'
 import {Container, interfaces} from 'inversify';
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {FIREBASE_PATHS} from '../../loaders/paths';
@@ -32,7 +32,7 @@ if (!Vue) {
 }
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
-
+myContainerLoadAllModules()
 test('knawledeMap DI constructor should work', t => {
     const injects = injectionWorks<KnawledgeMapCreatorArgs, KnawledgeMapCreator >({
         container: myContainer,

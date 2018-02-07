@@ -2,12 +2,13 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatabaseAutoSaver, IDBSubscriber, ISubscribableContent} from '../interfaces';
 import {TYPES} from '../types';
 import {DBSubscriberToContent} from './DBSubscriberToContent';
 import test from 'ava'
 
+myContainerLoadAllModules()
 let subscribableContent
 let typeSyncer: IDatabaseAutoSaver
 let titleSyncer: IDatabaseAutoSaver

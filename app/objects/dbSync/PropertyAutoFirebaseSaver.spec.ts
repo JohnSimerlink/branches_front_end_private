@@ -2,7 +2,7 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDetailedUpdates, ISaveUpdatesToDBFunction} from '../interfaces';
 import {ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
@@ -12,6 +12,7 @@ import test from 'ava'
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 
+myContainerLoadAllModules()
 test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdate method to add the subscriber\'s
  callback method to the Subscribable\'s callback list`, (t) => {
     const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)

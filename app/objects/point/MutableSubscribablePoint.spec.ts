@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, IMutableSubscribablePoint, PointMutationTypes} from '../interfaces';
 import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './MutableSubscribablePoint'
 import {injectionWorks} from '../../testHelpers/testHelpers';
@@ -61,8 +61,8 @@ const FIRST_MUTATION_INDEX = 0
 const SECOND_MUTATION_INDEX = 1
 const THIRD_MUTATION_INDEX = 2
 const FOURTH_MUTATION_INDEX = 3
+myContainerLoadAllModules()
 test('Point DI constructor works', (t) => {
-
     const injects = injectionWorks<MutableSubscribablePointArgs, IMutableSubscribablePoint>({
         container: myContainer,
         argsType: TYPES.MutableSubscribablePointArgs,

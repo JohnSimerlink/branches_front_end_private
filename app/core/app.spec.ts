@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer} from '../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {
     IApp, IMutable,
     IMutableSubscribableGlobalStore, IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
@@ -14,7 +14,10 @@ import {TYPES} from '../objects/types';
 import {injectionWorks} from '../testHelpers/testHelpers';
 import {App, AppArgs} from './app';
 
+myContainerLoadAllModules()
 test('App:::: DI Constructor works', (t) => {
+
+
     const injects = injectionWorks<AppArgs, IApp>({
         container: myContainer,
         argsType: TYPES.AppArgs,
@@ -24,6 +27,7 @@ test('App:::: DI Constructor works', (t) => {
     t.pass()
 })
 test('App:::::Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', (t) => {
+
     const UI1mock: IUI = {
         subscribe() {}
     }

@@ -3,7 +3,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
     IMutableSubscribableTree, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
@@ -12,8 +12,10 @@ import {
 import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
 
+myContainerLoadAllModules()
 test('SubscribableStoreSource - IMutableSubscribableTree -' +
     ' Dependency injection should set all properties in constructor', (t) => {
+    
     const injects: boolean = injectionWorks<SubscribableStoreSourceArgs,
         ISubscribableStoreSource<IMutableSubscribableTree>>({
         container: myContainer,
@@ -24,6 +26,7 @@ test('SubscribableStoreSource - IMutableSubscribableTree -' +
     t.pass()
 })
 test('SubscribableStoreSource - get should work', (t) => {
+    
     const tree: IMutableSubscribableTree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
     const hashmap = {}
     const type = ObjectDataTypes.TREE_DATA
@@ -35,6 +38,7 @@ test('SubscribableStoreSource - get should work', (t) => {
     t.pass()
 })
 test('SubscribableStoreSource - set should work', (t) => {
+    
     const tree: IMutableSubscribableTree =
         myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
     const hashmap = {}
@@ -47,6 +51,7 @@ test('SubscribableStoreSource - set should work', (t) => {
     t.pass()
 })
 test('SubscribableStoreSource - set should call callbacks', (t) => {
+    
     const callback = sinon.spy()
     const tree: IMutableSubscribableTree =
         myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)

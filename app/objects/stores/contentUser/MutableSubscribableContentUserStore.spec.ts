@@ -4,7 +4,7 @@ injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {myContainer} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
@@ -23,6 +23,7 @@ import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserD
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../../contentUser/SyncableMutableSubscribableContentUser';
 
+myContainerLoadAllModules()
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
@@ -68,7 +69,6 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
     ' it either, should throw a RangeError', (t) => {
-
     const userId = 'abcd_1234'
     const contentId = CONTENT_ID2
     const contentUserId = getContentUserId({userId, contentId})
@@ -106,7 +106,6 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 
 test('MutableSubscribableContentUserStore > addItem::::addMutation' +
     ' should call set() on storeSource', (t) => {
-
     const userId = 'abcd_1234'
     const contentId = CONTENT_ID2
     const contentUserId = getContentUserId({userId, contentId})
