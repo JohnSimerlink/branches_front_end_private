@@ -11,6 +11,7 @@ import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribableP
 import {MutableSubscribableTreeLocation} from '../../objects/treeLocation/MutableSubscribableTreeLocation';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 
 myContainerLoadAllModules()
 test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
@@ -28,7 +29,7 @@ test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank
 
     const point = new MutableSubscribablePoint({...pointVal})
     const expectedTreeLocation: IMutableSubscribableTreeLocation
-        = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+        = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
     const deserializedTreeLocation: IMutableSubscribableTreeLocation
         = TreeLocationDeserializer.deserializeFromFirebase({treeLocationDataFromFirebase})
     expect(deserializedTreeLocation).to.deep.equal(expectedTreeLocation)
