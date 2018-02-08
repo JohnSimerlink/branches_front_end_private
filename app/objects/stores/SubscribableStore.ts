@@ -60,8 +60,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         })
     }
     private subscribeToExistingItems() {
-        for (let [id, item] of this.storeSource.entries()) {
-            item = item
+        for (const [id, item] of this.storeSource.entries()) {
             this.subscribeToItem(id, item)
             item.startPublishing()
         }

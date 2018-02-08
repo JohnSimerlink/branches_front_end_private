@@ -29,7 +29,9 @@ test('SubscribableTreeUserStore > addAndSubscribeToItem:::' +
     treeUserStore.onUpdate(callback2)
     treeUserStore.onUpdate(callback1)
     treeUserStore.startPublishing()
+    expect(callback1.callCount).to.equal(0)
     treeUserStore.addAndSubscribeToItem(TREE_ID, treeUser)
+    expect(callback1.callCount).to.equal(0)
 
     const sampleMutation: IProppedDatedMutation<FieldMutationTypes, TreeUserPropertyNames> = {
         data: PROFICIENCIES.TWO,
