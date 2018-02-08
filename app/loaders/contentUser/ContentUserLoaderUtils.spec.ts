@@ -1,3 +1,6 @@
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom()
+
 import test from 'ava'
 import {getUserId, separator} from './ContentUserLoaderUtils';
 import {expect} from 'chai'
