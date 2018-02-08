@@ -16,6 +16,8 @@ import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava'
 import {partialInject} from '../../testHelpers/partialInject';
+import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
+import {Store} from 'vuex';
 
 myContainerLoadAllModules()
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
@@ -43,7 +45,7 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
         val,
     }
     const sigmaNodes = {}
-    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+    // const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
     const sigmaNodesUpdater: ISigmaNodesUpdater = partialInject<SigmaNodesUpdaterArgs>({
         constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
         konstructor: SigmaNodesUpdater, container: myContainer,
@@ -54,6 +56,8 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
     const sigmaNodesUpdaterHandleUpdateSpy = sinon.spy(sigmaNodesUpdater, 'handleUpdate')
+    const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
 
     storeSourceUpdateListenerCore.receiveUpdate(update)
 

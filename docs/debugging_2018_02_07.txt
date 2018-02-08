@@ -2,7 +2,6 @@ store source it was searching was .4927
 
 tests failing
 app integration 1, 2, 3,
-SubscribableGLobalStore > after calling startPUblishing, globalStore should publish updates when one of its componetn stores (treeStore) publishes and update
 storeSourceUpdateListenerCore DI Constructor and others
 MutableSubscribableGlobalStore
 SigmaUpdater

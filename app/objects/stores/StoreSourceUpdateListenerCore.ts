@@ -12,12 +12,12 @@ import {TAGS} from '../tags';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
-    private sigmaNodes: ISigmaNodes
+    // private sigmaNodes: ISigmaNodes
     private sigmaNodesUpdater: ISigmaNodesUpdater
     private contentIdSigmaIdMap: IOneToManyMap<string>
     constructor(
         @inject(TYPES.StoreSourceUpdateListenerCoreArgs){
-            sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap}: StoreSourceUpdateListenerCoreArgs) {
+            sigmaNodesUpdater, contentIdSigmaIdMap}: StoreSourceUpdateListenerCoreArgs) {
         // this.sigmaNodes = sigmaNodes
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
@@ -83,7 +83,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 }
 @injectable()
 export class StoreSourceUpdateListenerCoreArgs {
-    @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
+    // @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
     @inject(TYPES.ISigmaNodesUpdater)
     @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
         public sigmaNodesUpdater: ISigmaNodesUpdater
