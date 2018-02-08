@@ -2,18 +2,15 @@ store source it was searching was .4927
 
 tests failing
 app integration 1, 2, 3,
-ObjectAutoFirebaseSaver
 TreeUserLoader
 TreeuserDeseriallizer
-TreeLocationLOader
-TreeLocationDesereailzire
 TreeLOader
 ContentuesrLOaderUtils
 ContentLoader
 ContentDeserializer
 store 2tsgs
 
-
+TREEUSERLOADER spec STALLS OUT!!!
 remove unused imports using webstorm code analysis tool
 and remove all the console . logs . . . <<< I should just replae those with unit tests ??
 Simplify renderManager object graph after edge updates and node updates correctly get worked out
