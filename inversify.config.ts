@@ -43,7 +43,7 @@ import {
     TreePropertyNames,
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
-    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges,
+    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -569,6 +569,12 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
     })
+    bind<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation).toConstantValue({
+        data: '12345',
+        timestamp: Date.now(),
+        type: SetMutationTypes.ADD,
+    })
+    // ^^ really for unit tests only
     bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
     (TYPES.IProppedDatedMutation).toConstantValue({
         data: {id: TREE_ID3},
