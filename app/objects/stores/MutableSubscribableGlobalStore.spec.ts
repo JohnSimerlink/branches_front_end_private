@@ -44,6 +44,7 @@ import {createTreeId} from '../tree/TreeUtils';
 import {MutableSubscribableTreeUser} from '../treeUser/MutableSubscribableTreeUser';
 import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
+import {TAGS} from '../tags';
 
 myContainerLoadAllModules()
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
@@ -68,8 +69,8 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
     })
 
     const storeSource: ISubscribableTreeStoreSource
-        = myContainer.get<ISubscribableTreeStoreSource>
-    (TYPES.ISubscribableTreeStoreSource)
+        = myContainer.getTagged<ISubscribableTreeStoreSource>
+    (TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     storeSource.set(TREE_ID, tree)
     const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
         storeSource,
