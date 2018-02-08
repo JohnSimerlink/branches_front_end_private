@@ -27,6 +27,7 @@ TreeLOader
 ContentuesrLOaderUtils
 ContentLoader
 ContentDeserializer
-store 2ts
+store 2tsgs
+
 
 and remove all the console . logs . . . <<< I should just replae those with unit tests ??

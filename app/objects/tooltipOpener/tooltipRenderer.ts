@@ -55,8 +55,8 @@ export class TooltipRenderer implements ITooltipRenderer {
         tree.setAttribute('parent-id', node.parentId)
         tree.setAttribute('content-id', node.contentId)
         tree.setAttribute('content-string', contentString)
-        tree.setAttribute('content-user-data-string', contentUserDataString)
         tree.setAttribute('content-user-id', contentUserId)
+        tree.setAttribute('content-user-data-string', contentUserDataString)
         resultElement.appendChild(tree)
         const result: string = resultElement.outerHTML
         // const result: string =
