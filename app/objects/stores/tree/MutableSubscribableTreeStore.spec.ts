@@ -19,6 +19,7 @@ import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 import {SyncableMutableSubscribableTree} from '../../tree/SyncableMutableSubscribableTree';
+import {TAGS} from '../../tags';
 
 myContainerLoadAllModules()
 test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' +
@@ -34,8 +35,7 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
     })
 
     const storeSource: ISubscribableTreeStoreSource
-        = myContainer.get<ISubscribableTreeStoreSource>
-    (TYPES.ISubscribableTreeStoreSource)
+        = myContainer.getTagged(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     storeSource.set(TREE_ID, tree)
 
     const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
@@ -71,8 +71,7 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation' +
     const nonExistentId = 'abdf1295'
 
     const storeSource: ISubscribableTreeStoreSource
-        = myContainer.get<ISubscribableTreeStoreSource>
-    (TYPES.ISubscribableTreeStoreSource)
+        = myContainer.getTagged(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
 
     const treeStore: IMutableSubscribableTreeStore = new MutableSubscribableTreeStore({
         storeSource,
