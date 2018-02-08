@@ -62,6 +62,6 @@ test('SubscribableStoreSource - set should call callbacks', (t) => {
     subscribableStoreSource.set(TREE_ID, tree)
     expect(callback.callCount).to.equal(1)
     const calledWith: ITypeAndIdAndValUpdates = callback.getCall(0).args[0]
-    expect(calledWith).to.deep.equal({id: TREE_ID, val: tree.val(), type})
+    expect(calledWith).to.deep.equal({id: TREE_ID, val: tree.val(), obj: tree, type})
     t.pass()
 })
