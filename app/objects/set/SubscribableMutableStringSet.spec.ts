@@ -174,7 +174,7 @@ test('SubscribableMutableStringSet > Subscribable:::Adding a mutation, ' +
     'should trigger an update for one of the subscribers ', (t) => {
     const subscribableMutableStringSet = new SubscribableMutableStringSet()
     const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
-    const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedMutation)
+    const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation)
     subscribableMutableStringSet.onUpdate(callback)
     subscribableMutableStringSet.addMutation(sampleMutation)
     expect(callback.callCount).to.equal(1)
@@ -185,7 +185,7 @@ test('SubscribableMutableStringSet > Subscribable:::Adding a mutation,' +
     const subscribableMutableStringSet = new SubscribableMutableStringSet()
     const callback1 = sinon.spy() // (updates: IDetailedUpdates) => void 0
     const callback2 = sinon.spy() // (updates: IDetailedUpdates) => void 0
-    const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedMutation)
+    const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation)
     subscribableMutableStringSet.onUpdate(callback1)
     subscribableMutableStringSet.onUpdate(callback2)
     subscribableMutableStringSet.addMutation(sampleMutation)
