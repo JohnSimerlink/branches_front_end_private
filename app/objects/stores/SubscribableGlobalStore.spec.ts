@@ -154,8 +154,6 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     globalStore.onUpdate(callback1)
 
     globalStore.startPublishing()
-    // contentUserStore.startPublishing()
-    // contentUser.startPublishing()
 
     contentUserStore.addItem(contentId, contentUser)
 
@@ -183,9 +181,6 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 //
 test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore should NOT publish updates ' +
     ' when one of its component stores publishes an update', (t) => {
-    // const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
-    // const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
-    // const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
 
     const tree: IMutableSubscribableTree =
