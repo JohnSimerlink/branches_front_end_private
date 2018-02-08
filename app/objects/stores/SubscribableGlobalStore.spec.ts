@@ -25,6 +25,7 @@ import {SubscribableTree} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {partialInject} from '../../testHelpers/partialInject';
 
 myContainerLoadAllModules()
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
@@ -252,28 +253,26 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
     })
 
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
-
-    const treeUserStore: ISubscribableTreeUserStore
-        = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
-
-    const treeLocationStore: ISubscribableTreeLocationStore
-        = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
-
-    const contentStore: ISubscribableContentStore
-        = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
-
-    const contentUserStore: ISubscribableContentUserStore
-        = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
-    const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
-        {
-            contentStore,
-            contentUserStore,
+    const globalStore: ISubscribableGlobalStore
+        = partialInject<SubscribableGlobalStoreArgs>({
+        konstructor: SubscribableGlobalStore,
+        constructorArgsType: TYPES.SubscribableGlobalStoreArgs,
+        injections: {
             treeStore,
-            treeLocationStore,
-            treeUserStore,
-            updatesCallbacks: [],
-        }
-    )
+        },
+        container: myContainer,
+    })
+
+    //     = new SubscribableGlobalStore(
+    //     {
+    //         contentStore,
+    //         contentUserStore,
+    //         treeStore,
+    //         treeLocationStore,
+    //         treeUserStore,
+    //         updatesCallbacks: [],
+    //     }
+    // )
 
     const callback1 = sinon.spy()
     const callback2 = sinon.spy()
