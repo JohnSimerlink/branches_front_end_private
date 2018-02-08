@@ -18,3 +18,4 @@ store 2tsgs
 
 remove unused imports using webstorm code analysis tool
 and remove all the console . logs . . . <<< I should just replae those with unit tests ??
+Simplify renderManager object graph after edge updates and node updates correctly get worked out

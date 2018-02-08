@@ -7,6 +7,7 @@ import {IRenderedNodesManager, ISigmaRenderManager} from '../interfaces';
 import {TYPES} from '../types';
 import {log} from '../../core/log'
 import {myContainer, myContainerLoadAllModules,} from '../../../inversify.config';
+import {TAGS} from '../tags';
 
 myContainerLoadAllModules()
 test('RenderedNodesManager::::subscribe should add RenderedNodesManagerCore.addNodeToRenderList' +
@@ -14,7 +15,7 @@ test('RenderedNodesManager::::subscribe should add RenderedNodesManagerCore.addN
     // log('html element is', HTMLElement)
     // expect(sample('5')).to.equal(false)
     // t.pass()
-    const subscribable = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+    const subscribable = myContainer.getTagged<ISigmaRenderManager>(TYPES.ISigmaRenderManager, TAGS.MAIN_SIGMA_INSTANCE, true)
     const renderedNodesManager: IRenderedNodesManager
         = myContainer.get<IRenderedNodesManager>(TYPES.IRenderedNodesManager)
     const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate')
