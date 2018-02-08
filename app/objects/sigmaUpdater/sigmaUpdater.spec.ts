@@ -45,7 +45,7 @@ test('AddNode should call store.commit with add node mutation', (t) => {
     const mutationName = storeCommitSpy.getCall(0).args[0]
     const commitArg = storeCommitSpy.getCall(0).args[1]
     expect(mutationName).to.deep.equal(MUTATION_NAMES.ADD_NODE)
-    expect(commitArg).to.deep.equal(node)
+    expect(commitArg).to.deep.equal({node})
     t.pass()
 
 })
