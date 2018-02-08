@@ -9,7 +9,7 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {
     IMutableSubscribableContent, ISubscribableContentStoreSource,
     IContentData,
-    IContentLoader, CONTENT_TYPES, ISyncableMutableSubscribableContent
+    IContentLoader, CONTENT_TYPES, ISyncableMutableSubscribableContent, IContentDataFromDB
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import Reference = firebase.database.Reference;
@@ -82,6 +82,17 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
         question: questionVal,
         answer: answerVal,
     }
+    const sampleContentDataFromDB: IContentDataFromDB = {
+        type: {
+            val: typeVal,
+        },
+        question: {
+            val: questionVal,
+        },
+        answer: {
+            val: answerVal
+        },
+    }
 
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
@@ -90,7 +101,7 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
     let isLoaded = contentLoader.isLoaded(contentId)
     expect(isLoaded).to.equal(false)
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB)
     const contentLoaderPromise = contentLoader.downloadData(contentId)
     childFirebaseRef.flush()
 
@@ -114,6 +125,17 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
         question: questionVal,
         answer: answerVal,
     }
+    const sampleContentDataFromDB: IContentDataFromDB = {
+        type: {
+            val: typeVal,
+        },
+        question: {
+            val: questionVal,
+        },
+        answer: {
+            val: answerVal
+        },
+    }
     const expectedContentData: IContentData = sampleContentData
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
@@ -122,7 +144,7 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
 
     // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB)
     const contentDataPromise = contentLoader.downloadData(contentId)
     const wrappedPromise = makeQuerablePromise(contentDataPromise)
     // log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
@@ -132,7 +154,9 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     const contentData = await contentDataPromise
     // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
-    expect(contentData).to.deep.equal(expectedContentData)
+    expect(contentData.type).to.deep.equal(expectedContentData.type)
+    expect(contentData.question).to.deep.equal(expectedContentData.question)
+    expect(contentData.answer).to.deep.equal(expectedContentData.answer)
     t.pass()
 })
 test('ContentLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
@@ -148,12 +172,23 @@ test('ContentLoader:::DownloadData should have the side effect of storing the da
         question: questionVal,
         answer: answerVal,
     }
-    const sampleContent: IMutableSubscribableContent =
+    const sampleContentDataFromDB: IContentDataFromDB = {
+        type: {
+            val: typeVal,
+        },
+        question: {
+            val: questionVal,
+        },
+        answer: {
+            val: answerVal
+        },
+    }
+    const sampleContent: ISyncableMutableSubscribableContent =
         ContentDeserializer.deserialize({contentId, contentData: sampleContentData})
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB)
     const contentLoadPromise = contentLoader.downloadData(contentId)
     childFirebaseRef.flush()
 
@@ -175,12 +210,23 @@ test('ContentLoader:::DownloadData twice in a row on the same contentId' +
         question: questionVal,
         answer: answerVal,
     }
-    const sampleContent: IMutableSubscribableContent =
+    const sampleContentDataFromDB: IContentDataFromDB = {
+        type: {
+            val: typeVal,
+        },
+        question: {
+            val: questionVal,
+        },
+        answer: {
+            val: answerVal
+        },
+    }
+    const sampleContent: ISyncableMutableSubscribableContent =
         ContentDeserializer.deserialize({contentId, contentData: sampleContentData})
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
     const contentLoader = new ContentLoader({storeSource, firebaseRef})
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentData)
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB)
     const contentLoaderGetDataSpy = sinon.spy(contentLoader, 'getData')
     let contentLoadPromise = contentLoader.downloadData(contentId)
     childFirebaseRef.flush()
