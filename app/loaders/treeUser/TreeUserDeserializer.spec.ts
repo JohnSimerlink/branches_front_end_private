@@ -12,7 +12,9 @@ import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutabl
 import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
+myContainerLoadAllModules()
 test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const proficiencyStatsVal = {
         ONE: 3,
@@ -27,7 +29,7 @@ test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properl
 
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal})
     const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal})
-    const expectedTreeUser: IMutableSubscribableTreeUser = new MutableSubscribableTreeUser(
+    const expectedTreeUser: IMutableSubscribableTreeUser = new SyncableMutableSubscribableTreeUser(
         {updatesCallbacks: [], proficiencyStats, aggregationTimer}
     )
     const deserializedTreeUser: IMutableSubscribableTreeUser
