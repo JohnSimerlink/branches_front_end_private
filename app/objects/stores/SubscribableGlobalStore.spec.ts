@@ -42,40 +42,22 @@ test('ISubscribableGlobalStore::::Dependency injection should set all properties
 })
 test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
     ' should call onUpdate on each of the component Stores', (t) => {
-    
-    const contentId = new MutableSubscribableField<string>()
-    const parentId = new MutableSubscribableField<string>()
-    const children = new SubscribableMutableStringSet()
-    const TREE_ID = 'efa123'
-    const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-    // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
-    // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
-    /* const treeStore = myContainer.get<ISubscribableStore<ISubscribableTreeCore>>
-    (TYPES.ISubscribableStore_ISubscribableTreeCore)
-    */
-    // TODO: ^^ The above dependency injection fails . . . So I am using constructor manually
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
-
-    const treeUserStore: ISubscribableTreeUserStore
-        = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
-
-    const treeLocationStore: ISubscribableTreeLocationStore
-        = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
-
-    const contentStore: ISubscribableContentStore
-        = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
 
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
 
-    const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore({
-        treeStore,
-        treeUserStore,
-        treeLocationStore,
-        contentUserStore,
-        contentStore,
-        updatesCallbacks: []
-    })
+    const globalStore: ISubscribableGlobalStore =
+        partialInject<SubscribableGlobalStoreArgs>({
+            konstructor: SubscribableGlobalStore,
+            constructorArgsType: TYPES.SubscribableGlobalStoreArgs,
+            injections: {
+                treeStore,
+                contentUserStore,
+            },
+            container: myContainer,
+        })
+
     const treeStoreOnUpdateSpy = sinon.spy(treeStore, 'onUpdate')
     const contentUserStoreOnUpdateSpy = sinon.spy(contentUserStore, 'onUpdate')
 
