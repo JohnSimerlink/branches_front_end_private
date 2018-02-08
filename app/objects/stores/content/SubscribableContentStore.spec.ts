@@ -16,7 +16,7 @@ import {TYPES} from '../../types';
 import {SubscribableContentStore} from './SubscribableContentStore';
 
 myContainerLoadAllModules()
-test('SubscribableContentStore > addAndSubscribeToItem:::An update' +
+test('SubscribableContentStore > addItem:::An update' +
     ' in a member content should be published to a subscriber of the content data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.
     It might be that some of these modules are designed poorly, being the reason
@@ -49,7 +49,7 @@ test('SubscribableContentStore > addAndSubscribeToItem:::An update' +
     contentStore.startPublishing()
     /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
      */
-    contentStore.addAndSubscribeToItem(contentId, content)
+    contentStore.addItem(contentId, content)
 
     const sampleMutation: IProppedDatedMutation<FieldMutationTypes, ContentPropertyNames> = {
         data: 'Sacramento',

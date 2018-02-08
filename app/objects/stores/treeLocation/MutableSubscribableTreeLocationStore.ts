@@ -19,7 +19,7 @@ export class MutableSubscribableTreeLocationStore
         log('19: MutableSubscribableTreeLocationStore addAndSubscribeToItemFromData called!',
             treeLocation, ' the storeSource inside of MutableSubscribableTreeLocationStore is',
             this.storeSource, ' and that storesource has an id of ', this.storeSource['_id'])
-        this.addAndSubscribeToItem(id, treeLocation)
+        this.addItem(id, treeLocation)
         return treeLocation;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreeLocationPropertyMutationTypes,

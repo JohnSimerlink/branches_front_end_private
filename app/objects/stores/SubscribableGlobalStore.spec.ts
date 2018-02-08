@@ -140,7 +140,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     globalStore.startPublishing()
     treeStore.startPublishing()
 
-    treeStore.addAndSubscribeToItem(TREE_ID, tree)
+    treeStore.addItem(TREE_ID, tree)
 
     const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
         TreePropertyNames>>(TYPES.IProppedDatedMutation)
@@ -212,7 +212,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     contentUserStore.startPublishing()
     contentUser.startPublishing()
 
-    contentUserStore.addAndSubscribeToItem(contentId, contentUser)
+    contentUserStore.addItem(contentId, contentUser)
 
     const sampleMutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
         data: PROFICIENCIES.THREE,
@@ -283,7 +283,7 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
 
     treeStore.startPublishing()
 
-    treeStore.addAndSubscribeToItem(TREE_ID, tree)
+    treeStore.addItem(TREE_ID, tree)
 
     const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
         TreePropertyNames>>(TYPES.IProppedDatedMutation)

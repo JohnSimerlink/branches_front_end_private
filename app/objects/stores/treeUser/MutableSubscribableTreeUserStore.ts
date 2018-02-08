@@ -19,7 +19,7 @@ export class MutableSubscribableTreeUserStore
         log('19: MutableSubscribableTreeUserStore addAndSubscribeToItemFromData called!',
             treeUser, ' the storeSource inside of MutableSubscribableTreeUserStore is',
             this.storeSource, ' and that storesource has an id of ', this.storeSource['_id'])
-        this.addAndSubscribeToItem(id, treeUser)
+        this.addItem(id, treeUser)
         return treeUser;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>) {

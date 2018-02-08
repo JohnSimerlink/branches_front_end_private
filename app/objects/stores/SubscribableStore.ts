@@ -38,7 +38,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
     protected callbackArguments(): IIdAndValUpdates {
         return this.update
     }
-    public addAndSubscribeToItem(
+    public addItem(
         id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
     ) {
         // TODO: make the arg type cleaner!
@@ -47,9 +47,9 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
                 ' until store has started publishing!')
         }
         this.storeSource.set(id, item)
-        log('SubscribableStore addAndSubscribeToItem just called', id, item)
-        this.subscribeToItem(id, item)
-        item.startPublishing()
+        // log('SubscribableStore addItem just called', id, item)
+        // this.subscribeToItem(id, item)
+        // item.startPublishing()
         // throw new Error('Method not implemented.");
     }
     private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface) {

@@ -14,7 +14,7 @@ import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 
 myContainerLoadAllModules()
-test('SubscribableTreeStore > addAndSubscribeToItem::::' +
+test('SubscribableTreeStore > addItem::::' +
     'An update in a member tree should be published to a subscriber of the tree data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.
     It might be that some of these modules are designed poorly, being the reason
@@ -38,7 +38,7 @@ test('SubscribableTreeStore > addAndSubscribeToItem::::' +
     treeStore.startPublishing()
     /* TODO: add test to put subscribeToAllItems() before the onUpdates to show it works irrespective of order
      */
-    treeStore.addAndSubscribeToItem(TREE_ID, tree)
+    treeStore.addItem(TREE_ID, tree)
 
     const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
         TreePropertyNames>>(TYPES.IProppedDatedMutation)
