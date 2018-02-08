@@ -19,6 +19,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+import {TAGS} from '../../objects/tags';
 myContainerLoadAllModules()
 test('TreeLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
@@ -34,7 +35,7 @@ test('TreeLoader:::DI constructor should work', (t) => {
 // })
 test('TreeLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
 
     const firebaseRef: Reference =  new MockFirebase()
 
@@ -45,7 +46,7 @@ test('TreeLoader:::Should set the treeLocationsFirebaseRef and storeSource for t
 })
 test('TreeLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
 
     const treeId = '1234'
     const tree = myContainer.get<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree)
@@ -59,7 +60,7 @@ test('TreeLoader:::Should mark an id as loaded if test exists in the injected st
 })
 test('TreeLoader:::Should mark an id as not loaded if test does not exist in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
 
     const treeId = '1234'
     const nonExistentTreeId = '0123bdefa52344'
@@ -92,7 +93,7 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
     }
 
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
 
     let isLoaded = treeLoader.isLoaded(treeId)
@@ -134,7 +135,7 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
         children: ['2947', '2948']
     }
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     // childFirebaseRef.flush()
     const treeLoader = new TreeLoader({ storeSource, firebaseRef})
 
@@ -174,7 +175,7 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
     }
     const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
     const treeLoadPromise = treeLoader.downloadData(treeId)
@@ -213,7 +214,7 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
     const sampleTree: ISyncableMutableSubscribableTree
         = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     storeSource.set(treeId, sampleTree)
 
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
@@ -227,7 +228,7 @@ test('TreeLoader:::GetData on a non existing tree should throw a RangeError', as
     const firebaseRef: Reference = new MockFirebase(FIREBASE_PATHS.TREES)
 
     const storeSource: ISubscribableTreeStoreSource =
-        myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
 
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
 
