@@ -1,8 +1,15 @@
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom()
+/* ^^ TODO: BAD_DESIGN: Why do I have to import injectFakeDom and run it to make my test pass????
+ This unit test should have NOTHING TODO with the DOM.
+  I must have some poorly designed dependency injection or something
+ */
 import 'reflect-metadata'
 import test from 'ava'
 import {
     IDetailedUpdates, IObjectFirebaseAutoSaver, ISubscribable, ISyncableValable,
-    IValable
+    IValable,
+    ISyncable, IValObject, IHash,
 } from '../interfaces';
 import {ObjectFirebaseAutoSaver} from './ObjectAutoFirebaseSaver';
 import * as sinon from 'sinon'
@@ -22,19 +29,13 @@ test('start', (t) => {
         onUpdate() {},
         val() { return 24}
     }
-    const person: ISyncableValable = {
+    const person: ISyncable = {
         getPropertiesToSync() {
             return {
                 name,
                 age,
             }
         },
-        val() {
-            return {
-                name: name.val(),
-                age: age.val(),
-            }
-        }
     }
 
     const personFirebaseRef = new MockFirebase('people/1')
@@ -65,18 +66,20 @@ test('initialSave', (t) => {
         onUpdate() {},
         val() { return 24}
     }
-    const person: ISyncableValable = {
+    const person: ISyncable = {
         getPropertiesToSync() {
             return {
                 name,
                 age,
             }
         },
-        val() {
-            return {
-                name: name.val(),
-                age: age.val(),
-            }
+    }
+    const personInitialSaveValue: IHash<IValObject> = {
+        name: {
+            val: name.val(),
+        },
+        age: {
+            val: age.val(),
         }
     }
 
@@ -92,7 +95,7 @@ test('initialSave', (t) => {
 
     expect(personFirebaseRefOnUpdateSpy.callCount).to.equal(1)
     const calledWith = personFirebaseRefOnUpdateSpy.getCall(0).args[0]
-    expect(calledWith).to.deep.equal(person.val())
+    expect(calledWith).to.deep.equal(personInitialSaveValue)
     t.pass()
 
 })
