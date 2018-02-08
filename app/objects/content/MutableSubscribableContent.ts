@@ -12,7 +12,7 @@ import {TYPES} from '../types'
 import {SubscribableContent, SubscribableContentArgs} from './SubscribableContent';
 
 @injectable()
-class MutableSubscribableContent extends SubscribableContent implements IMutableSubscribableContent {
+export class MutableSubscribableContent extends SubscribableContent implements IMutableSubscribableContent {
 
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentArgs) {
@@ -59,4 +59,3 @@ class MutableSubscribableContent extends SubscribableContent implements IMutable
     }
 }
 
-export {MutableSubscribableContent}

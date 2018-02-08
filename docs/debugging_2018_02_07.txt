@@ -2,10 +2,6 @@ store source it was searching was .4927
 
 tests failing
 app integration 1, 2, 3,
-SubscribableTreelocationstore addAndSubscribeToItem
-subscribabletreestore > addAndSubscribeToItem
-MutableSubscribableTreeStore > addMutation shoudl call addMutation on appropriate item, addMUtation to storeSource that doesn't contain the item should throw range error
-SubscribableStoreSource should call callbacks
 SubscribableGLobalStore > after calling startPUblishing, globalStore should publish updates when one of its componetn stores (treeStore) publishes and update
 storeSourceUpdateListenerCore DI Constructor and others
 MutableSubscribableGlobalStore
@@ -28,4 +24,5 @@ ContentDeserializer
 store 2tsgs
 
 
+remove unused imports using webstorm code analysis tool
 and remove all the console . logs . . . <<< I should just replae those with unit tests ??
