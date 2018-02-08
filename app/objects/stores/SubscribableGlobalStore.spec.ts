@@ -138,7 +138,6 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     globalStore.onUpdate(callback1)
 
     globalStore.startPublishing()
-    treeStore.startPublishing()
 
     treeStore.addItem(TREE_ID, tree)
 
@@ -209,8 +208,8 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     globalStore.onUpdate(callback1)
 
     globalStore.startPublishing()
-    contentUserStore.startPublishing()
-    contentUser.startPublishing()
+    // contentUserStore.startPublishing()
+    // contentUser.startPublishing()
 
     contentUserStore.addItem(contentId, contentUser)
 
