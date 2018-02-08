@@ -9,7 +9,7 @@ import {
     TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {TYPES} from '../types'
-import {SubscribableTree} from './SubscribableTree';
+import {SubscribableTree, SubscribableTreeArgs} from './SubscribableTree';
 import {log} from '../../core/log'
 
 @injectable()
@@ -52,13 +52,4 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
     public mutations(): Array<IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
         throw new Error('Not Implemented!')
     }
-}
-
-@injectable()
-export class SubscribableTreeArgs {
-    @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.String) public id
-    @inject(TYPES.ISubscribableMutableString) public contentId
-    @inject(TYPES.ISubscribableMutableString) public parentId
-    @inject(TYPES.ISubscribableMutableStringSet) public children
 }

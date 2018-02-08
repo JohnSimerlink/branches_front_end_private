@@ -60,7 +60,7 @@ export class SubscribableTree extends Subscribable<IValUpdates> implements ISubs
 export class SubscribableTreeArgs {
     @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.String) public id: id
-    @inject(TYPES.ISubscribableMutableString) public contentId: ISubscribableMutableField<string>
-    @inject(TYPES.ISubscribableMutableString) public parentId: ISubscribableMutableField<string>
+    @inject(TYPES.ISubscribableMutableString) public contentId: ISubscribableMutableField<id>
+    @inject(TYPES.ISubscribableMutableString) public parentId: ISubscribableMutableField<id>
     @inject(TYPES.ISubscribableMutableStringSet) public children: ISubscribableMutableStringSet
 }

@@ -21,7 +21,7 @@ import {ObjectDataTypes} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
-import {SubscribableTree} from '../tree/SubscribableTree';
+import {SubscribableTree, SubscribableTreeArgs} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
@@ -238,19 +238,28 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 //
 test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore should NOT publish updates ' +
     ' when one of its component stores publishes an update', (t) => {
-    
-    const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
-    const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
-    const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
+    // const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
+    // const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
+    // const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
 
-    const tree: IMutableSubscribableTree = new MutableSubscribableTree({
-        children,
-        contentId,
-        id: TREE_ID,
-        parentId,
-        updatesCallbacks: [],
-    })
+    const tree: IMutableSubscribableTree =
+        partialInject<SubscribableTreeArgs>({
+            konstructor: MutableSubscribableTree,
+            constructorArgsType: TYPES.SubscribableTreeArgs,
+            injections: {
+                id: TREE_ID
+            },
+            container: myContainer
+        })
+        // myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
+    //     new MutableSubscribableTree({
+    //     children,
+    //     contentId,
+    //     id: TREE_ID,
+    //     parentId,
+    //     updatesCallbacks: [],
+    // })
 
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
     const globalStore: ISubscribableGlobalStore
