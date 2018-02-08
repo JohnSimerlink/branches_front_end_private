@@ -4,8 +4,6 @@ tests failing
 app integration 1, 2, 3,
 TreeUserLoader
 TreeuserDeseriallizer
-ContentuesrLOaderUtils
-ContentLoader
 ContentDeserializer
 store 2tsgs
 
