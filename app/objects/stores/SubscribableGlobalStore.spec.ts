@@ -26,6 +26,7 @@ import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
+import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
 
 myContainerLoadAllModules()
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
@@ -88,50 +89,29 @@ test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
     + ' when one of its component stores (treeStore) publishes an update', (t) => {
-    
-    const contentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
-    const parentId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
-    const children: ISubscribableMutableStringSet = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
 
-    const tree: IMutableSubscribableTree = new MutableSubscribableTree({
-        children,
-        contentId,
-        id: TREE_ID,
-        parentId,
-        updatesCallbacks: [],
+    const tree: IMutableSubscribableTree
+        = partialInject<SubscribableTreeArgs>({
+        konstructor: MutableSubscribableTree,
+        constructorArgsType: TYPES.SubscribableTreeArgs,
+        injections: {
+            id: TREE_ID,
+        },
+        container: myContainer,
     })
-    /* const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>
-    (TYPES.ISubscribableTreeStore)
-    TODO: ^^^^ Using DI for treeStore causes some sort of error where
-     a canvasUI tries to subscribe to the tree storeSource
-     . . . how does that even happen?? how is there knowledge of a canvasUI storeSource? */
 
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
 
-    const treeUserStore: ISubscribableTreeUserStore
-        = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
-
-    const treeLocationStore: ISubscribableTreeLocationStore
-        = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
-
-    const contentStore: ISubscribableContentStore
-        = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
-
-    const contentUserStore: ISubscribableContentUserStore
-        = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
-
-    // TODO FINISH UPDATING THIS FILE
-    const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
-        {
-            contentStore,
-            contentUserStore,
-            treeStore,
-            treeLocationStore,
-            treeUserStore,
-            updatesCallbacks: [],
-        }
-    )
+    const globalStore: ISubscribableGlobalStore =
+        partialInject<SubscribableGlobalStoreArgs>({
+            konstructor: SubscribableGlobalStore,
+            constructorArgsType: TYPES.SubscribableGlobalStoreArgs,
+            injections: {
+                treeStore,
+            },
+            container: myContainer,
+        })
 
     const callback1 = sinon.spy()
     const callback2 = sinon.spy()
@@ -160,48 +140,31 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
     + ' when one of its component stores (contentUserStore) publishes an update', (t) => {
-    
     const contentId = 'efa123'
     const userId = 'abcd12354'
 
     const contentUserId = getContentUserId({contentId, userId})
-    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>()
-    const lastRecordedStrength: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
-    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
-    const contentUser: IMutableSubscribableContentUser = new MutableSubscribableContentUser({
-        id: contentUserId,
-        lastRecordedStrength,
-        overdue,
-        proficiency,
-        timer,
-        updatesCallbacks: [],
+    const contentUser: IMutableSubscribableContentUser
+        = partialInject<SubscribableContentUserArgs>({
+        konstructor: MutableSubscribableContentUser,
+        constructorArgsType: TYPES.SubscribableContentUserArgs,
+        injections: {
+            id: contentUserId,
+        },
+        container: myContainer
     })
-
-    const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
-
-    const treeUserStore: ISubscribableTreeUserStore
-        = myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore)
-
-    const treeLocationStore: ISubscribableTreeLocationStore
-        = myContainer.get<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore)
-
-    const contentStore: ISubscribableContentStore
-        = myContainer.get<ISubscribableContentStore>(TYPES.ISubscribableContentStore)
-
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
 
-    const globalStore: ISubscribableGlobalStore = new SubscribableGlobalStore(
-        {
-            contentStore,
-            contentUserStore,
-            treeStore,
-            treeLocationStore,
-            treeUserStore,
-            updatesCallbacks: [],
-        }
-    )
+    const globalStore: ISubscribableGlobalStore =
+        partialInject<SubscribableGlobalStoreArgs>({
+            konstructor: SubscribableGlobalStore,
+            constructorArgsType: TYPES.SubscribableGlobalStoreArgs,
+            injections: {
+                contentUserStore,
+            },
+            container: myContainer,
+        })
 
     const callback1 = sinon.spy()
     const callback2 = sinon.spy()
@@ -252,14 +215,6 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
             },
             container: myContainer
         })
-        // myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
-    //     new MutableSubscribableTree({
-    //     children,
-    //     contentId,
-    //     id: TREE_ID,
-    //     parentId,
-    //     updatesCallbacks: [],
-    // })
 
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
     const globalStore: ISubscribableGlobalStore
@@ -271,17 +226,6 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
         },
         container: myContainer,
     })
-
-    //     = new SubscribableGlobalStore(
-    //     {
-    //         contentStore,
-    //         contentUserStore,
-    //         treeStore,
-    //         treeLocationStore,
-    //         treeUserStore,
-    //         updatesCallbacks: [],
-    //     }
-    // )
 
     const callback1 = sinon.spy()
     const callback2 = sinon.spy()
