@@ -15,7 +15,9 @@ test('RenderedNodesManager::::subscribe should add RenderedNodesManagerCore.addN
     // log('html element is', HTMLElement)
     // expect(sample('5')).to.equal(false)
     // t.pass()
-    const subscribable = myContainer.getTagged<ISigmaRenderManager>(TYPES.ISigmaRenderManager, TAGS.MAIN_SIGMA_INSTANCE, true)
+    const subscribable = myContainer.getTagged<ISigmaRenderManager>(
+        TYPES.ISigmaRenderManager, TAGS.MAIN_SIGMA_INSTANCE, true
+    )
     const renderedNodesManager: IRenderedNodesManager
         = myContainer.get<IRenderedNodesManager>(TYPES.IRenderedNodesManager)
     const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate')

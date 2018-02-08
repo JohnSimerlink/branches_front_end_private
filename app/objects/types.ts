@@ -39,6 +39,7 @@ export const TYPES = {
     IContentUserLoader: Symbol('IContentUserLoader'),
     IContentUserData: Symbol('IContentUserData'),
     Id: Symbol('Id'),
+    IDatedSetMutation: Symbol('IDatedSetMutation'),
     IDatabaseAutoSaver: Symbol('IDatabaseAutoSaver'),
     IDBSubscriber: Symbol('IDBSubscriber'),
     IDBSubscriberToTreeLocation: Symbol('IDBSubscriberToTreeLocation'),
