@@ -788,6 +788,9 @@ export interface ISubscribableTreeCore extends ITree {
 export interface IValable {
     val()
 }
+export interface IValObject {
+    val: any
+}
 
 export enum TreePropertyNames {
     CONTENT_ID = 'CONTENT_ID',

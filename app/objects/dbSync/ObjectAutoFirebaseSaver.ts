@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {
-    IDatabaseAutoSaver, IDatabaseSaver, IObjectFirebaseAutoSaver, ISyncableValable,
+    IDatabaseAutoSaver, IDatabaseSaver, IHash, IObjectFirebaseAutoSaver, ISyncable, ISyncableValable, IValObject,
 } from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
@@ -11,7 +11,7 @@ import Reference = firebase.database.Reference;
 
 @injectable()
 export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
-    private syncableObject: ISyncableValable
+    private syncableObject: ISyncable
     private syncableObjectFirebaseRef: Reference
 
     constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){
@@ -22,12 +22,12 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
     }
 
     public initialSave() {
-        const saveVal = {}
+        const saveVal: IHash<IValObject> = {}
 
         const propertiesToSync = this.syncableObject.getPropertiesToSync()
         for (const [propName, property] of Object.entries(propertiesToSync)) {
             saveVal[propName] = {
-                val: property.val()
+                val: property.val(),
             }
         }
         this.syncableObjectFirebaseRef.update(saveVal)
@@ -47,6 +47,6 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
 
 @injectable()
 export class ObjectFirebaseAutoSaverArgs {
-    @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncableValable
+    @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncable
     @inject(TYPES.FirebaseReference) public syncableObjectFirebaseRef: Reference
 }

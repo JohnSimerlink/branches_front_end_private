@@ -2,8 +2,6 @@ store source it was searching was .4927
 
 tests failing
 app integration 1, 2, 3,
-RenderManager
-SubscribableMutableStringSet
 ObjectAutoFirebaseSaver
 TreeUserLoader
 TreeuserDeseriallizer
