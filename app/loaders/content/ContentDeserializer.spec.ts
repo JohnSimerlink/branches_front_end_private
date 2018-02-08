@@ -7,12 +7,13 @@ import {stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
     IHash, IMutableSubscribableContent, IContent, IContentData,
-    CONTENT_TYPES
+    CONTENT_TYPES, ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableContent} from '../../objects/content/MutableSubscribableContent';
 import {ContentDeserializer} from './ContentDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
 
 myContainerLoadAllModules()
 test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
@@ -36,7 +37,7 @@ test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
-    const expectedContent: IMutableSubscribableContent = new MutableSubscribableContent(
+    const expectedContent: ISyncableMutableSubscribableContent = new SyncableMutableSubscribableContent(
         {updatesCallbacks: [], type, question, answer, title}
     )
     const deserializedContent: IMutableSubscribableContent = ContentDeserializer.deserialize({contentData, contentId})
