@@ -18,7 +18,7 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
         // content
         const content: ISyncableMutableSubscribableContent =
             ContentDeserializer.deserialize({contentId: id, contentData})
-        this.addAndSubscribeToItem(id, content)
+        this.addItem(id, content)
         return content
     }
     public mutations(): Array<IIdProppedDatedMutation<FieldMutationTypes, ContentPropertyNames>> {

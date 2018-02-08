@@ -593,7 +593,7 @@ export interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndVal
 }
 
 export interface ICoreSubscribableStore<UpdatesType, ObjectType> extends IDescendantPublisher {
-    addAndSubscribeToItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
+    addItem(id: any, item: ISubscribable<UpdatesType> & ObjectType)
 }
 
 export interface IMutableSubscribableTreeStore

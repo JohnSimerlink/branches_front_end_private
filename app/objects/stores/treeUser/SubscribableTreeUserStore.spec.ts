@@ -14,7 +14,7 @@ import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTre
 import {TYPES} from '../../types';
 
 myContainerLoadAllModules()
-test('SubscribableTreeUserStore > addAndSubscribeToItem:::' +
+test('SubscribableTreeUserStore > addItem:::' +
     'An update in a member treeUser should be published to a subscriber of the treeUser data stores', (t) => {
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>()
     const aggregationTimer = new MutableSubscribableField<number>()
@@ -30,7 +30,7 @@ test('SubscribableTreeUserStore > addAndSubscribeToItem:::' +
     treeUserStore.onUpdate(callback1)
     treeUserStore.startPublishing()
     expect(callback1.callCount).to.equal(0)
-    treeUserStore.addAndSubscribeToItem(TREE_ID, treeUser)
+    treeUserStore.addItem(TREE_ID, treeUser)
     expect(callback1.callCount).to.equal(0)
 
     const sampleMutation: IProppedDatedMutation<FieldMutationTypes, TreeUserPropertyNames> = {

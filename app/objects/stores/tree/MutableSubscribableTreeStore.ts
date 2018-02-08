@@ -17,7 +17,7 @@ export class MutableSubscribableTreeStore
     ISyncableMutableSubscribableTree {
         const tree: ISyncableMutableSubscribableTree =
             TreeDeserializer.deserializeWithoutId({treeId: id, treeDataWithoutId})
-        this.addAndSubscribeToItem(id, tree)
+        this.addItem(id, tree)
         return tree;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>) {

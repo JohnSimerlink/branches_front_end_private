@@ -15,7 +15,7 @@ import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscri
 import {TYPES} from '../../types';
 
 myContainerLoadAllModules()
-test('SubscribableTreeLocationStore > addAndSubscribeToItem:::' +
+test('SubscribableTreeLocationStore > addItem:::' +
     'An update in a member treeLocation should be published to a subscriber of the treeLocation data stores', (t) => {
     const treeId = TREE_ID
     const FIRST_POINT_VALUE = {x: 5, y: 7}
@@ -34,7 +34,7 @@ test('SubscribableTreeLocationStore > addAndSubscribeToItem:::' +
     treeLocationStore.onUpdate(callback2)
     treeLocationStore.onUpdate(callback1)
     treeLocationStore.startPublishing()
-    treeLocationStore.addAndSubscribeToItem(treeId, treeLocation)
+    treeLocationStore.addItem(treeId, treeLocation)
 
     const sampleMutation: IProppedDatedMutation<PointMutationTypes, TreeLocationPropertyNames> = {
         data: MUTATION_VALUE,

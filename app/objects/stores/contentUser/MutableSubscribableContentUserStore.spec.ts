@@ -124,7 +124,7 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
         storeSource,
         updatesCallbacks: []
     })
-    const contentUserStoreAddAndSubscribeToItemSpy = sinon.spy(contentUserStore, 'addAndSubscribeToItem')
+    const contentUserStoreAddAndSubscribeToItemSpy = sinon.spy(contentUserStore, 'addItem')
     contentUserStore.startPublishing()
     contentUserStore.addAndSubscribeToItemFromData({id: contentUserId, contentUserData})
     expect(contentUserStoreAddAndSubscribeToItemSpy.callCount).to.deep.equal(1)
