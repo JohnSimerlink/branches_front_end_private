@@ -59,6 +59,9 @@ const getters = {
             throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized')
         }
         return state.sigmaInstance.graph
+    },
+    userId(state, getters) {
+        return state.userId
     }
 }
 const mutations = {

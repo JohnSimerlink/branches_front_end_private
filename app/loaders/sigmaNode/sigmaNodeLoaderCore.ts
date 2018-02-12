@@ -22,21 +22,18 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
     private contentLoader: IContentLoader
     private contentUserLoader: IContentUserLoader
     private store: Store<any>
-    private userId: id
     constructor(@inject(TYPES.SigmaNodeLoaderCoreArgs){
         specialTreeLoader,
         treeLocationLoader,
         contentLoader,
         contentUserLoader,
         store,
-        userId,
   }: SigmaNodeLoaderCoreArgs) {
         this.treeLoader = specialTreeLoader
         this.treeLocationLoader = treeLocationLoader
         this.contentLoader = contentLoader
         this.contentUserLoader = contentUserLoader
         this.store = store
-        this.userId = userId
     }
 
     public async load(sigmaId: id): Promise<ISigmaLoadData> {
@@ -51,7 +48,7 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
         const contentDataPromise: Promise<IContentData> = this.contentLoader.downloadData(treeDataWithoutId.contentId)
         const contentUserDataPromise: Promise<IContentUserData> = this.contentUserLoader.downloadData({
             contentId: treeDataWithoutId.contentId,
-            userId: this.userId
+            userId: this.store.getters.userId
         })
         const [treeLocationData, contentData, contentUserData]
             = await Promise.all([treeLocationPromise, contentDataPromise, contentUserDataPromise])
@@ -81,8 +78,8 @@ export class SigmaNodeLoaderCoreArgs {
         public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore)
         public store: Store<any>
-    @inject(TYPES.Id)
-        public userId: id
+    // @inject(TYPES.Id)
+    //     public userId: id
     // @inject(TYPES.ITreeLoader)
     //     private treeLoader: ITreeLoader
     // private treeLocationLoader: ITreeLocationLoader

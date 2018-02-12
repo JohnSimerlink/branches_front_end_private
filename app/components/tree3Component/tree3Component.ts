@@ -16,7 +16,6 @@ if (env === 'test') {
     const register = require('ignore-styles').default
     register(['.html', '.less'])
 }
-import './knawledgeMap.less'
 import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires

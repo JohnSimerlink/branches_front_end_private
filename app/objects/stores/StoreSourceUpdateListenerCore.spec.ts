@@ -54,7 +54,7 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
         // = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
+        = new StoreSourceUpdateListenerCore({sigmaNodesUpdater, contentIdSigmaIdMap})
     const sigmaNodesUpdaterHandleUpdateSpy = sinon.spy(sigmaNodesUpdater, 'handleUpdate')
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
     store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)

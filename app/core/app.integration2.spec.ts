@@ -31,7 +31,10 @@ import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import BranchesStore, {MUTATION_NAMES} from './store2'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
-import {StoreSourceUpdateListenerCore} from '../objects/stores/StoreSourceUpdateListenerCore';
+import {
+    StoreSourceUpdateListenerCore,
+    StoreSourceUpdateListenerCoreArgs
+} from '../objects/stores/StoreSourceUpdateListenerCore';
 import {TYPES} from '../objects/types';
 import {getSigmaIdsForContentId, TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
@@ -120,7 +123,16 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         // })
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
+        // = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
+        = partialInject<StoreSourceUpdateListenerCoreArgs>({
+        konstructor: StoreSourceUpdateListener,
+        constructorArgsType: TYPES.StoreSourceUpdateListenerCoreArgs,
+        injections: {
+            sigmaNodesUpdater,
+            contentIdSigmaIdMap
+        },
+        container: myContainer
+    })
     const storeSourceUpdateListener: IStoreSourceUpdateListener
         = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
     const renderedNodesManagerCore: IRenderedNodesManagerCore

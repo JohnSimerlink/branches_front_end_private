@@ -708,6 +708,7 @@ export const state: {
     graph: null,
     sigmaInitialized: false,
     globalDataStore: null,
+    // userId: null, // JOHN_USER_ID,
     userId: JOHN_USER_ID,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {

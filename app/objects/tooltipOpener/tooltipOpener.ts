@@ -16,23 +16,24 @@ export function escape(str) {
 }
 /* If we ever have a feature where someone can essentially masquerade
  as another user and open a tooltip with a different userId,
- we will have to instantiate another tooltipOpener object */
+ we will have to instantiate another tooltipOpener object.
+  with the way we currently have this set up */
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
     private tooltips
     private store: Store<any>
     private tooltipsConfig: object
-    private userId: string
+    // private userId: string
     constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store, tooltipsConfig}: TooltipOpenerArgs ) {
         this.tooltipsConfig = tooltipsConfig
         this.tooltips = tooltips
         this.store = store
         // TODO: maybe set up this watch outside of constructor?
-        this.store.watch(
-            state => state.userId,
-            (newValue, oldValue) => {
-                this.userId = newValue
-            })
+        // this.store.watch(
+        //     state => state.userId,
+        //     (newValue, oldValue) => {
+        //         this.userId = newValue
+        //     })
     }
     public openTooltip(node: ISigmaNode) {
         const me = this
