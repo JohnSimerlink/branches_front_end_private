@@ -11,6 +11,8 @@ let VueRouter = require('vue-router').default;
 if (!VueRouter) {
     VueRouter = require('vue-router')
 }
+import Main from '../components/main/main'
+import SignUp from '../components/signUp/signUp'
 import StudyMenu from '../components/studyMenu/studyMenu'
 import ItemHistory from '../components/itemHistory/itemHistory'
 import BranchesFooter from '../components/footer/branchesFooter'
@@ -42,7 +44,9 @@ export class VueConfigurer implements IVueConfigurer {
         const Tree = this.treeComponentCreator.create()
         const NewTree = this.newTreeComponentCreator.create()
         const KnawledgeMap = this.knawledgeMapCreator.create()
+        Vue.component('knawledgeMap', KnawledgeMap)
         Vue.component('tree', Tree)
+        Vue.component('signUp', SignUp)
 
         Vue.component('studyMenu', StudyMenu)
         Vue.component('itemHistory', ItemHistory)
@@ -52,7 +56,7 @@ export class VueConfigurer implements IVueConfigurer {
 
         Vue.use(VueRouter);
         const routes = [
-            { path: '/', component: KnawledgeMap, props: true },
+            { path: '/', component: Main, props: true },
             { path: '/ebbinghaus', component: Ebbinghaus, props: true },
             { path: '/coordinates', component: Coordinates, props: true },
         ]

@@ -1,11 +1,11 @@
 store source it was searching was .4927
-
-tests failing
+FAILING TESTS
 app integration 1, 2, 3,
 TreeUserLoader
 TreeuserDeseriallizer
-ContentDeserializer
+TreeDeserializer
 store 2tsgs
+sigmaNodesUpdater
 
 TREEUSERLOADER spec STALLS OUT!!!
 remove unused imports using webstorm code analysis tool
