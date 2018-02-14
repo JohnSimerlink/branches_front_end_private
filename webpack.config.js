@@ -2,6 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
 var LessHintPlugin = require('lesshint-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 var ProductionAndTestConfig = require('./webpack.config.productionandtest.rules.js')
 module.exports = {
   entry: {
@@ -101,7 +102,11 @@ if (process.env.NODE_ENV === 'production') {
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
       minRatio: 0.8
-    })
+    }),
+    new CopyWebpackPlugin([{
+        from: 'app/static',
+        to: '',
+    }])
 
     // new webpack.DefinePlugin({
     //   'process.env': {

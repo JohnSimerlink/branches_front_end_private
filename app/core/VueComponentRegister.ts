@@ -20,7 +20,8 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
 import Coordinates from '../components/coordinates/coordinates'
 import {Store} from 'vuex';
-
+import { StripeCheckout } from 'vue-stripe'
+import BranchesStripe from '../components/giveUsUrMonee/branches-stripe';
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
     public treeComponentCreator: ITree3Creator
@@ -44,19 +45,24 @@ export class VueConfigurer implements IVueConfigurer {
         const Tree = this.treeComponentCreator.create()
         const NewTree = this.newTreeComponentCreator.create()
         const KnawledgeMap = this.knawledgeMapCreator.create()
+
+        const Buy = { template: require('../components/giveUsUrMonee/branches-stripe.html')};
+
         Vue.component('knawledgeMap', KnawledgeMap)
         Vue.component('tree', Tree)
         Vue.component('signUp', SignUp)
-
+        Vue.component('stripeCheckout', StripeCheckout);
         Vue.component('studyMenu', StudyMenu)
         Vue.component('itemHistory', ItemHistory)
         Vue.component('proficiencySelector', ProficiencySelector)
         Vue.component('newtree', NewTree)
         Vue.component('branchesFooter', BranchesFooter)
+        Vue.component('branchesStripe', BranchesStripe)
 
         Vue.use(VueRouter);
         const routes = [
             { path: '/', component: Main, props: true },
+            { path: '/buy', component: BranchesStripe, props: true },
             { path: '/ebbinghaus', component: Ebbinghaus, props: true },
             { path: '/coordinates', component: Coordinates, props: true },
         ]
