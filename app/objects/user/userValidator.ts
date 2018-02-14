@@ -1,5 +1,6 @@
 import {IUserDataFromDB} from '../interfaces';
 
 export function isValidUserDataFromDB(userDataFromDB: IUserDataFromDB) {
-    return userDataFromDB && userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val
+    return true
+    // return userDataFromDB && userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val
 }

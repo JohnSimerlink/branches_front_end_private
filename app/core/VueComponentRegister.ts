@@ -11,6 +11,10 @@ let VueRouter = require('vue-router').default;
 if (!VueRouter) {
     VueRouter = require('vue-router')
 }
+let AsyncComputed = require('vue-async-computed').default
+if (!AsyncComputed ) {
+    AsyncComputed = require('vue-async-computed')
+}
 import Main from '../components/main/main'
 import SignUp from '../components/signUp/signUp'
 import StudyMenu from '../components/studyMenu/studyMenu'
@@ -22,6 +26,7 @@ import Coordinates from '../components/coordinates/coordinates'
 import {Store} from 'vuex';
 import { StripeCheckout } from 'vue-stripe'
 import BranchesStripe from '../components/giveUsUrMonee/branches-stripe';
+import AsyncComputed from 'vue-async-computed'
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
     public treeComponentCreator: ITree3Creator
@@ -60,6 +65,7 @@ export class VueConfigurer implements IVueConfigurer {
         Vue.component('branchesStripe', BranchesStripe)
 
         Vue.use(VueRouter);
+        Vue.use(AsyncComputed)
         const routes = [
             { path: '/', component: Main, props: true },
             { path: '/buy', component: BranchesStripe, props: true },

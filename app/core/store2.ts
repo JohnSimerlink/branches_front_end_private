@@ -29,6 +29,7 @@ import {IProppedDatedMutation} from '../objects/interfaces';
 import {UserPropertyNames} from '../objects/interfaces';
 import {TAGS} from '../objects/tags';
 import * as firebase from 'firebase';
+import {UserDeserializer} from '../loaders/user/UserDeserializer';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -42,6 +43,7 @@ const sigmaAny: any = sigma
 Vue.use(Vuex)
 
 export enum MUTATION_NAMES {
+    CREATE_USER_OR_LOGIN = 'create_user_or_login',
     LOGIN = 'login',
     INITIALIZE_SIGMA_INSTANCE = 'initializeSigmaInstance',
     JUMP_TO = 'jump_to',
@@ -80,8 +82,16 @@ const getters = {
     loggedIn(state: IState, getters): boolean {
         return !!state.userId
     },
-    hasAccess(state: IState, getters): boolean {
-        return false
+    async hasAccess(state: IState, getters): Promise<boolean> {
+        return await getters.userHasAccess(state.userId)
+    },
+    async userHasAccess(state: IState, getters) {
+        return async (userId: id): Promise<boolean> => {
+            const user: ISyncableMutableSubscribableUser = state.users[userId]
+                || await state.userLoader.downloadUser(userId)
+            const expirationTime = user.membershipExpirationDate.val()
+            return expirationTime >= Date.now()
+        }
     }
 }
 const mutations = {
@@ -353,6 +363,7 @@ const mutations = {
         // be it our own user object or someone else's we should sync that object with an Object Syncer,
         // in case we end up changing anything on that object
         const user: ISyncableMutableSubscribableUser = await state.userLoader.downloadUser(userId)
+
             // state.userManager.getUserObject()
         // sync any future user changes with DB
 
@@ -367,6 +378,12 @@ const mutations = {
         //     store.commit(MUTATION_NAMES.SET_USER_DATA, {userData: newUserData, userId})
         // })
         user.startPublishing()
+    },
+    [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState) {
+        // first check if user exists
+        // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
+        const user: IMutableSubscribableUser = UserDeserializer.
+
     },
     [MUTATION_NAMES.SET_USER_DATA](state: IState, {userId, userData}: ISetUserDataMutationArgs) {
         state.usersData[userId] = userData
@@ -391,9 +408,10 @@ const mutations = {
     },
     [MUTATION_NAMES.LOGIN_WITH_FACEBOOK](state: IState) {
         const provider = new firebase.auth.FacebookAuthProvider();
+        const store: Store<any> = getters.getStore()
         firebase.auth().signInWithPopup(provider).then( (result) => {
             const userId = result.user.uid
-            this.store.commit(MUTATION_NAMES.LOGIN, {userId})
+            store.commit(MUTATION_NAMES.LOGIN, {userId})
             log('login result', result)
         }).catch((error) => {
             // Handle Errors here.
@@ -403,7 +421,7 @@ const mutations = {
             const email = error.email
             // The firebase.auth.AuthCredential type that was used.
             const credential = error.credential
-            error('There was an error ', errorCode, errorMessage, email, credential)
+            console.error('There was an error ', errorCode, errorMessage, email, credential)
         });
 
     }

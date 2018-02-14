@@ -36,7 +36,7 @@
     "reflect-metadata": "^0.1.10",
     "stripe": "^5.4.0",
     "vue": "^2.3.4",
-    "vue-async-computed": "^3.2.1",
+    "vue-async-computed": "^3.3.1",
     "vue-stripe": "^0.1.52",
     "vuefire": "^1.4.3",
     "vuex-typescript": "^2.0.1"
