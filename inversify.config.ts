@@ -137,13 +137,13 @@ import {
     SubscribableTreeUserStoreArgs
 } from './app/objects/stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
+// import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
-import {
-    DBSubscriberToTreeLocation,
-    DBSubscriberToTreeLocationArgs
-} from './app/objects/treeLocation/DBSubscriberToTreeLocation';
+// import {
+//     DBSubscriberToTreeLocation,
+//     DBSubscriberToTreeLocationArgs
+// } from './app/objects/treeLocation/DBSubscriberToTreeLocation';
 import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
 import {
     SubscribableTreeLocation,
@@ -597,9 +597,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         type: FieldMutationTypes.SET,
     })
     bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
-    bind<DBSubscriberToTreeArgs>(TYPES.DBSubscriberToTreeArgs).to(DBSubscriberToTreeArgs)
-    bind<DBSubscriberToTreeLocationArgs>(TYPES.DBSubscriberToTreeLocationArgs)
-        .to(DBSubscriberToTreeLocationArgs)
 
     bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
     bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs)
@@ -653,8 +650,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
     bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
     bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver)
-    bind<IDBSubscriberToTree>(TYPES.IDBSubscriberToTree).to(DBSubscriberToTree)
-    bind<IDBSubscriberToTreeLocation>(TYPES.IDBSubscriberToTreeLocation).to(DBSubscriberToTreeLocation)
     bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
 
     bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
