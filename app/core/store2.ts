@@ -78,6 +78,18 @@ const getters = {
         }
         return state.sigmaInstance.graph
     },
+    sampleGetter() {
+        return num => num * 5
+    },
+    sampleAsyncGetter() {
+        return num => {
+            return new Promise( (resolve, reject) => {
+                setTimeout(() => {
+                    resolve(num * 5)
+                }, 1000)
+            })
+        }
+    },
     userId(state: IState, getters): id {
         return state.userId
     },
@@ -85,10 +97,14 @@ const getters = {
         return !!state.userId
     },
     async hasAccess(state: IState, getters): Promise<boolean> {
-        return await getters.userHasAccess(state.userId)
+        return false
+        // return await getters.userHasAccess(state.userId)
     },
-    async userHasAccess(state: IState, getters) {
+    userHasAccess(state: IState, getters) {
         return async (userId: id): Promise<boolean> => {
+            if (!userId) {
+                return false
+            }
             const user: ISyncableMutableSubscribableUser = state.users[userId]
                 || await state.userLoader.downloadUser(userId)
             const expirationTime = user.membershipExpirationDate.val()

@@ -1,6 +1,9 @@
 <div>
     <!--<div>{{userId}}</div>-->
     <!--<div>{{userId}}</div>-->
+    {{sample}}
+    {{sampleAsync}}
+    ---- {{hasAccess}}
     <knawledge-map v-if="hasAccess"></knawledge-map>
     <sign-up v-if="!hasAccess"></sign-up>
 </div>

@@ -16,13 +16,19 @@ export default {
     async created() {
     },
     computed: {
+        sample() {
+            return this.$store.getters.sampleGetter(4)
+        }
     },
     asyncComputed: {
-        async hasAccess() {
-            const has: boolean = this.$store.getters.hasAccess
+        hasAccess() {
+            const has: boolean = this.$store.getters.userHasAccess(this.$store.state.userId)
             log('has is ', has) // << should actually be a promise
             return has
 
+        },
+        sampleAsync() {
+            return this.$store.getters.sampleAsyncGetter(6)
         }
     },
     data() {
