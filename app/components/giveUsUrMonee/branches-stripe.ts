@@ -1,5 +1,6 @@
 import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
+import './branches-stripe.less'
 
 let template = require('./branches-stripe.html').default
 if (!template) {
