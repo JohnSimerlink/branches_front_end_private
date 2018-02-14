@@ -9,18 +9,26 @@ import {TreeDeserializer} from '../tree/TreeDeserializer';
 
 export class UserDeserializer {
    public static deserialize(
-       {userData, userId}: {userData: IUserData, userId: string}
+       {userData}: {userData: IUserData}
        ): ISyncableMutableSubscribableUser {
-       const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: userData.membershipExpirationDate})
+       const membershipExpirationDate
+           = new MutableSubscribableField<timestamp>({field: userData.membershipExpirationDate})
+       const everActivatedMembership = new MutableSubscribableField<boolean>({field: userData.everActivatedMembership})
        const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
-           {updatesCallbacks: [], membershipExpirationDate}
-           )
+           {
+               updatesCallbacks: [],
+               membershipExpirationDate,
+               everActivatedMembership,
+           })
        return user
    }
    public static convertUserDataFromDBToApp(
        {userDataFromDB}: {userDataFromDB: IUserDataFromDB}): IUserData {
       const userData: IUserData = {
-          membershipExpirationDate: userDataFromDB.membershipExpirationDate.val,
+          membershipExpirationDate:
+            userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val || 0,
+          everActivatedMembership:
+            userDataFromDB.everActivatedMembership && userDataFromDB.everActivatedMembership.val || false,
           // TODO: ensure that when a user is created,
           // that this field gets set in the DB to some value (e.g. 10 years ago,
           // or maybe even a 24 hour trial <<< NAH FOO )
@@ -36,7 +44,7 @@ export class UserDeserializer {
        }
        const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB})
        const user: ISyncableMutableSubscribableUser
-            = UserDeserializer.deserialize({userData, userId})
+            = UserDeserializer.deserialize({userData})
        return user
     }
 }

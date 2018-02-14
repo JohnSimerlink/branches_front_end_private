@@ -12,6 +12,8 @@ import {TYPES} from '../types'
 
 @injectable()
 export class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISubscribableTreeLocation {
+    // TODO: inject the publishing variable via dependency injection into constructor.
+    // this could prove useful if we store the objects (with their updatesCallbacks callbacks array) in local storage
     private publishing = false
     public point: IMutableSubscribablePoint
 
