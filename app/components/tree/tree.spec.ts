@@ -1,12 +1,7 @@
 import test from 'ava'
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
-import {injectionWorks} from '../../testHelpers/testHelpers';
-import {IDBSubscriberToTreeLocation, ITreeComponentCreator, ITreeComponentCreator2} from '../../objects/interfaces';
-import {myContainer} from '../../../inversify.config';
-import {TYPES} from '../../objects/types';
 import {expect} from 'chai'
-import {DBSubscriberToTreeLocationArgs} from '../../objects/treeLocation/DBSubscriberToTreeLocation';
 test('TreeComponentCreator::DI constructor should work', (t) => {
     // // const injects = injectionWorks<DBSubscriberToTreeLocationArgs, IDBSubscriberToTreeLocation>({
     // //     container: myContainer,
