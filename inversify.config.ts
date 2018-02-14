@@ -43,7 +43,7 @@ import {
     TreePropertyNames,
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
-    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes,
+    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -228,6 +228,7 @@ import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaN
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
 import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
 import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgeUpdater';
+import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -264,11 +265,13 @@ export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCA
 export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
 export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
+export const usersRef = firebase.database().ref(FIREBASE_PATHS.USERS)
 export const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
 export const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
 export const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS)
 export const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
 export const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
+export const mockUsersRef = new MockFirebase(FIREBASE_PATHS.USERS)
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenTargetTagged(TAGS.TREES_REF, true)
@@ -284,6 +287,8 @@ export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, un
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
         .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(usersRef)
+        .whenTargetTagged(TAGS.USERS_REF, true)
 })
 export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreesRef)
@@ -300,9 +305,12 @@ export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
         .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockUsersRef)
+        .whenTargetTagged(TAGS.USERS_REF, true)
 })
 export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
+    myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
         .whenTargetIsDefault()
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
@@ -339,7 +347,6 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
     //     .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
 
-    myContainer.bind<TreeLoaderAndAutoSaverArgs>(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs)
 
     // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader)
     //     .to(TreeLoaderAndAutoSaver)
@@ -347,11 +354,18 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
 
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs)
-    myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
+
+    myContainer.bind<IUserLoader>(TYPES.IUserLoader).to(UserLoader)
+    myContainer.bind<UserLoaderArgs>(TYPES.UserLoaderArgs).to(UserLoaderArgs)
+    myContainer.bind<IUserLoader>(TYPES.IUserLoader)
+        .to(UserLoader)
+        .whenTargetTagged(TAGS.USERS_REF, true)
 
     // loaders
 
     // loader auto savers
+
+    myContainer.bind<TreeLoaderAndAutoSaverArgs>(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs)
 
         // .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
@@ -688,16 +702,8 @@ export const app = new ContainerModule((bind: interfaces.Bind, unbind: interface
     bind<AppContainerArgs>(TYPES.AppContainerArgs).to(AppContainerArgs)
 })
 
-export const state: {
-    uri: string,
-    centeredTreeId: string,
-    sigmaInstance: ISigma,
-    graphData: object,
-    graph: object,
-    sigmaInitialized: boolean,
-    globalDataStore: IMutableSubscribableGlobalStore,
-    userId: string,
-} = {
+export const state: IState
+ = {
     uri: null,
     centeredTreeId: ROOT_ID,
     sigmaInstance: null,
@@ -708,8 +714,11 @@ export const state: {
     graph: null,
     sigmaInitialized: false,
     globalDataStore: null,
-    userId: null, // JOHN_USER_ID,
-    // userId: JOHN_USER_ID,
+    userLoader: null,
+    // userId: null, // JOHN_USER_ID,
+    usersData: {},
+    users: {},
+    userId: JOHN_USER_ID,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)

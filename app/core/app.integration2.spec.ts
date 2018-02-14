@@ -29,7 +29,7 @@ import {ISigmaRenderManager,
 import {RenderedNodesManager} from '../objects/sigmaNode/RenderManager';
 import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {MUTATION_NAMES} from './store2'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -96,7 +96,16 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     // TODO: do full dep injection for this store
     const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
-    const store: Store<any> = new BranchesStore({globalDataStore: {}, state}) as Store<any>
+    const store: Store<any> =
+        partialInject<BranchesStoreArgs>({
+            konstructor: BranchesStore,
+            constructorArgsType: TYPES.BranchesStoreArgs,
+            injections: {
+                state
+            },
+            container: myContainer
+        })
+        // new BranchesStore({globalDataStore: {}, state}) as Store<any>
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
     )

@@ -15,6 +15,11 @@ export default {
     props: [],
     async created() {
     },
+    computed: {
+        hasAccess() {
+            // return this.$store.state.
+        }
+    },
     data() {
         return {
             userId: this.$store.state.userId
