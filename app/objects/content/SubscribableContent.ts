@@ -12,7 +12,7 @@ import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-class SubscribableContent extends Subscribable<IValUpdates> implements ISubscribableContent {
+export class SubscribableContent extends Subscribable<IValUpdates> implements ISubscribableContent {
     private publishing = false
     public type: ISubscribableMutableField<CONTENT_TYPES>;
     public question: ISubscribableMutableField<string>;
@@ -54,12 +54,10 @@ class SubscribableContent extends Subscribable<IValUpdates> implements ISubscrib
 }
 
 @injectable()
-class SubscribableContentArgs {
+export class SubscribableContentArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[]
     @inject(TYPES.ISubscribableMutableContentType) public type
     @inject(TYPES.ISubscribableMutableString) public question: ISubscribableMutableField<string>
     @inject(TYPES.ISubscribableMutableString) public answer: ISubscribableMutableField<string>
     @inject(TYPES.ISubscribableMutableString) public title: ISubscribableMutableField<string>
 }
-
-export {SubscribableContent, SubscribableContentArgs}

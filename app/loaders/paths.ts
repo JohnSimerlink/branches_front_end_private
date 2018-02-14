@@ -4,4 +4,5 @@ export const FIREBASE_PATHS = {
     TREE_USERS: 'treeUsers',
     CONTENT: 'content',
     CONTENT_USERS: 'contentUsers',
+    USERS: 'users',
 }

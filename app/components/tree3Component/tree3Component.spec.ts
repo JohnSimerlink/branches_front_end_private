@@ -7,7 +7,7 @@ import {MockFirebase} from 'firebase-mock'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {BranchesStoreArgs, default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
@@ -28,6 +28,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {Store} from 'vuex';
+import {partialInject} from '../../testHelpers/partialInject';
 let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
@@ -128,7 +129,16 @@ test('Tree3Component::::trying to create and mount component VueJS style', (t) =
         }
     )
     const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
-    const store: Store<any> = new BranchesStore({globalDataStore, state}) as Store<any>
+    const store: Store<any> =
+        partialInject<BranchesStoreArgs>({
+            konstructor: BranchesStore,
+            constructorArgsType: TYPES.BranchesStoreArgs,
+            injections: {
+                globalDataStore,
+            },
+            container: myContainer
+        })
+        // new BranchesStore({globalDataStore, state}) as Store<any>
     const storeCommitSpy = sinon.spy(store, 'commit')
     const tree3CreatorCreator: ITree3Creator
         = new Tree3Creator(

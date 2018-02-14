@@ -1,5 +1,6 @@
 <div>
     <img class='infographic' src="/dist/images/infographic-mobile.jpg">
-    <branches-stripe button="Get Beta Access #2" ></branches-stripe>
+    <branches-stripe v-if="loggedIn" button="Get Beta Access #2" ></branches-stripe>
     <!--<login></login> -->
+    <button class="footer login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Click to Login via Facebook </button>
 </div>

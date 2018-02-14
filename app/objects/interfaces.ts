@@ -83,6 +83,9 @@ export interface IContentUserLoader {
     downloadData({contentId, userId}): Promise<IContentUserData>
     isLoaded({contentId, userId}): boolean
 }
+export interface IUserLoader {
+    downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser>
+}
 
 export interface ISigmaNodeLoaderCore {
     load(sigmaId: id):
@@ -223,6 +226,10 @@ export interface ISyncableMutableSubscribableTreeUser extends
     IMutableSubscribableTreeUser, ISyncable {
     getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
+export interface ISyncableMutableSubscribableUser extends
+    IMutableSubscribableUser, ISyncable {
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+}
 
 export interface IContentUserData {
     id: string,
@@ -289,10 +296,6 @@ export interface IPushable {
 
 // field
 
-export enum FieldMutationTypes {
-    SET = 'FIELD_MUTATION_TYPES_SET',
-    INCREMENT = 'FIELD_MUTATION_TYPES_INCREMENT',
-}
 export interface IField<T> {
     val(): T;
 }
@@ -376,12 +379,18 @@ export enum PointMutationTypes {
     SHIFT = 'PointMutationTypes_SHIFT'
 }
 
+export enum FieldMutationTypes {
+    SET = 'FIELD_MUTATION_TYPES_SET',
+    INCREMENT = 'FIELD_MUTATION_TYPES_INCREMENT',
+}
 export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 export type TreeUserPropertyMutationTypes = FieldMutationTypes
 export type TreeLocationPropertyMutationTypes = PointMutationTypes
 export type ContentUserPropertyMutationTypes = FieldMutationTypes
 export type ContentPropertyMutationTypes = FieldMutationTypes
-export type AllPropertyMutationTypes = TreePropertyMutationTypes
+export type UserPropertyMutationTypes = FieldMutationTypes
+export type AllPropertyMutationTypes =
+    TreePropertyMutationTypes
     | TreeUserPropertyMutationTypes
     | TreeLocationPropertyMutationTypes
     | ContentUserPropertyMutationTypes
@@ -401,6 +410,41 @@ export enum ObjectTypes {
     CONTENT = 'CONTENT',
     CONTENT_USER = 'CONTENT_USER',
 }
+export type timestamp = number
+
+// user object
+export interface IUser {
+    membershipExpirationDate: IMutableField<timestamp>
+    // question: IMutableField<string>
+    // answer: IMutableField<string>
+    // title: IMutableField<string>
+}
+export interface ISubscribableUserCore extends IUser {
+    membershipExpirationDate: ISubscribableMutableField<timestamp>
+    val(): IUserData
+}
+
+export interface IUserData {
+    membershipExpirationDate: timestamp
+}
+export interface IUserDataFromDB {
+    membershipExpirationDate: {
+        val: timestamp;
+    },
+}
+
+export enum UserPropertyNames {
+    MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
+}
+
+export interface ISubscribableUser extends
+    ISubscribable<IValUpdates>, ISubscribableUserCore, IDescendantPublisher {}
+
+export interface IMutableSubscribableUser
+    extends ISubscribableUser,
+        IMutable<IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>> {}
+
+
 
 // UI Manager objects
 export interface ITooltipOpener {
@@ -582,6 +626,12 @@ export type Constructor = {
 
 export type fXYField = (coord: ICoordinate) => number
 
+// mutationArgs
+export interface ISetUserDataMutationArgs {
+    userData: IUserData,
+    userId: id,
+}
+
 // stores
 
 export interface IMutableSubscribableGlobalStore
@@ -731,6 +781,29 @@ export interface ISubscribableContentStoreSource
     extends IMap<ISyncableMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
 export interface ISubscribableContentUserStoreSource
     extends IMap<ISyncableMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
+
+// store
+export interface ISigmaGraph {
+    addNode(node: ISigmaNodeData)
+    addEdge(edge: ISigmaEdgeData)
+}
+export interface ISigmaGraphData {
+    nodes: ISigmaNodeData[]
+    edges: ISigmaEdgeData[]
+}
+export interface IState {
+    uri: string,
+    centeredTreeId: string,
+    sigmaInstance: ISigma,
+    graphData: ISigmaGraphData,
+    graph: ISigmaGraph,
+    sigmaInitialized: boolean,
+    globalDataStore: IMutableSubscribableGlobalStore,
+    userId: string,
+    userLoader: IUserLoader
+    usersData: IHash<IUserData>,
+    users: IHash<ISyncableMutableSubscribableUser>
+}
 
 // components
 export interface ITreeComponentCreator extends IVueComponentCreator {
