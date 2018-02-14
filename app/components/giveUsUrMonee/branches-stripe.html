@@ -1,0 +1,19 @@
+<div class="payments-container">
+    <!--<h2>Branches Beta Access $2</h2>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--<span class="not-released">NOT RELEASED</span>-->
+            <!--<span class="released">Uses spatial mapping to strengthen memory formation</span>-->
+            <!--<span class="released">Uses spatial mapping to strengthen memory formation</span>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <
+    <form action="#" v-if="stripekey">
+        <stripe-checkout
+            :stripe-key="stripekey"
+            :product="subscription"
+            on-success="broadcast"
+        >
+        </stripe-checkout>
+    </form>
+</div>
