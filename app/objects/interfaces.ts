@@ -415,21 +415,27 @@ export type timestamp = number
 // user object
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
+    everActivatedMembership: IMutableField<boolean>
     // question: IMutableField<string>
     // answer: IMutableField<string>
     // title: IMutableField<string>
 }
 export interface ISubscribableUserCore extends IUser {
     membershipExpirationDate: ISubscribableMutableField<timestamp>
+    everActivatedMembership: ISubscribableMutableField<boolean>
     val(): IUserData
 }
 
 export interface IUserData {
     membershipExpirationDate: timestamp
+    everActivatedMembership: boolean
 }
 export interface IUserDataFromDB {
     membershipExpirationDate: {
         val: timestamp;
+    },
+    everActivatedMembership: {
+        val: boolean;
     },
 }
 
@@ -444,7 +450,10 @@ export interface IMutableSubscribableUser
     extends ISubscribableUser,
         IMutable<IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>> {}
 
-
+export interface IUserUtils {
+    userExists(userId: id): Promise<boolean>
+    createUser(userId: id)
+}
 
 // UI Manager objects
 export interface ITooltipOpener {
@@ -803,6 +812,7 @@ export interface IState {
     userLoader: IUserLoader
     usersData: IHash<IUserData>,
     users: IHash<ISyncableMutableSubscribableUser>
+    userUtils: IUserUtils,
 }
 
 // components

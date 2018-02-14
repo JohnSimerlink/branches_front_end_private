@@ -11,7 +11,7 @@ import {
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
-    IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph,
+    IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -30,6 +30,8 @@ import {UserPropertyNames} from '../objects/interfaces';
 import {TAGS} from '../objects/tags';
 import * as firebase from 'firebase';
 import {UserDeserializer} from '../loaders/user/UserDeserializer';
+import {UserLoader} from '../loaders/user/UserLoader';
+import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -198,7 +200,7 @@ const mutations = {
             parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
         }: INewChildTreeArgs
     ): id {
-        log("NEW CHILD TREE CALLED. parentX and parentY are ", parentX, parentY)
+        log('NEW CHILD TREE CALLED. parentX and parentY are ', parentX, parentY)
         // TODO: UNIT / INT TEST
         /**
          * Create Content
@@ -238,7 +240,7 @@ const mutations = {
         return treeIdString
         },
     [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState,
-     {
+                                         {
          parentTreeId, childTreeId,
      }) {
 
@@ -357,7 +359,6 @@ const mutations = {
             throw new Error('Can\'t log user with id of ' + userId
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
-        state.userId = userId
         // put a lot of this logic in some separate object that gets injected into BranchesStore
         // any time we fetch a user object,
         // be it our own user object or someone else's we should sync that object with an Object Syncer,
@@ -378,11 +379,21 @@ const mutations = {
         //     store.commit(MUTATION_NAMES.SET_USER_DATA, {userData: newUserData, userId})
         // })
         user.startPublishing()
+        state.userId = userId
     },
-    [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState) {
+    async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId}) {
+        const userExists = await state.userUtils.userExists(userId)
+        if (!userExists) {
+            const user = state.userUtils.createUser(userId)
+            user.startPublishing() // idk if anything subscribes to this
+            state.users[userId] = user
+            state.userId = userId
+        } else {
+            mutations[MUTATION_NAMES.LOGIN](state, {userId})
+        }
         // first check if user exists
         // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
-        const user: IMutableSubscribableUser = UserDeserializer.
+        // const user: IMutableSubscribableUser = UserDeserializer.
 
     },
     [MUTATION_NAMES.SET_USER_DATA](state: IState, {userId, userData}: ISetUserDataMutationArgs) {
@@ -411,7 +422,7 @@ const mutations = {
         const store: Store<any> = getters.getStore()
         firebase.auth().signInWithPopup(provider).then( (result) => {
             const userId = result.user.uid
-            store.commit(MUTATION_NAMES.LOGIN, {userId})
+            store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, {userId})
             log('login result', result)
         }).catch((error) => {
             // Handle Errors here.
@@ -449,6 +460,7 @@ export default class BranchesStore {
         globalDataStore,
         state,
         userLoader,
+        userUtils,
     }: BranchesStoreArgs) {
         if (initialized) {
             return {} as Store<any>
@@ -458,6 +470,7 @@ export default class BranchesStore {
             ...state,
             globalDataStore,
             userLoader,
+            userUtils
         }
         const store = new Store({
             state: stateArg,
@@ -468,6 +481,7 @@ export default class BranchesStore {
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         store['userLoader'] = userLoader // added just to pass injectionWorks test
+        store['userUtils'] = userUtils // added just to pass injectionWorks test
         store['_id'] = Math.random()
         initialized = true
         return store
@@ -479,4 +493,5 @@ export class BranchesStoreArgs {
     @inject(TYPES.IUserLoader)
     @tagged(TAGS.AUTO_SAVER, true) public userLoader: IUserLoader
     @inject(TYPES.BranchesStoreState) public state: IState
+    @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }

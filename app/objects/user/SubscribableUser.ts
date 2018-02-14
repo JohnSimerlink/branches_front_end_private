@@ -2,8 +2,7 @@
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    CONTENT_TYPES,
-    IUserData, ISubscribable,
+    IUserData,
     ISubscribableUser,
     ISubscribableMutableField,
     IValUpdates, timestamp,
@@ -15,17 +14,22 @@ import {TYPES} from '../types'
 export class SubscribableUser extends Subscribable<IValUpdates> implements ISubscribableUser {
     private publishing = false
     public membershipExpirationDate: ISubscribableMutableField<timestamp>;
+    public everActivatedMembership: ISubscribableMutableField<boolean>;
 
     constructor(@inject(TYPES.SubscribableUserArgs) {
-        updatesCallbacks, membershipExpirationDate
+        updatesCallbacks,
+        membershipExpirationDate,
+        everActivatedMembership,
     }: SubscribableUserArgs ) {
         super({updatesCallbacks})
         this.membershipExpirationDate = membershipExpirationDate
+        this.everActivatedMembership = everActivatedMembership
     }
     // TODO: should the below three objects be private?
     public val(): IUserData {
         return {
             membershipExpirationDate: this.membershipExpirationDate.val(),
+            everActivatedMembership: this.everActivatedMembership.val(),
         }
     }
     protected callbackArguments(): IValUpdates {
@@ -45,4 +49,5 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
 export class SubscribableUserArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[]
     @inject(TYPES.ISubscribableMutableNumber) public membershipExpirationDate: ISubscribableMutableField<timestamp>
+    @inject(TYPES.ISubscribableMutableBoolean) public everActivatedMembership: ISubscribableMutableField<boolean>
 }

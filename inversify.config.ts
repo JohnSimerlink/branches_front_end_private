@@ -43,7 +43,7 @@ import {
     TreePropertyNames,
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
-    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader,
+    IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -229,6 +229,7 @@ import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/fa
 import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
 import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgeUpdater';
 import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
+import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -360,6 +361,8 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<IUserLoader>(TYPES.IUserLoader)
         .to(UserLoader)
         .whenTargetTagged(TAGS.USERS_REF, true)
+    myContainer.bind<UserUtilsArgs>(TYPES.UserUtilsArgs).to(UserUtilsArgs)
+    myContainer.bind<IUserUtils>(TYPES.IUserUtils).to(UserUtils)
 
     // loaders
 
@@ -714,6 +717,7 @@ export const state: IState
     users: {},
     // userId: JOHN_USER_ID,
     userId: null, // JOHN_USER_ID,
+    userUtils: null,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)
