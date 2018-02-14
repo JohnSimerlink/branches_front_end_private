@@ -1,6 +1,6 @@
 <div>
     <!--<div>{{userId}}</div>-->
     <!--<div>{{userId}}</div>-->
-    <knawledge-map v-if="userId"></knawledge-map>
-    <sign-up v-if="!userId"></sign-up>
+    <knawledge-map v-if="hasAccess"></knawledge-map>
+    <sign-up v-if="!hasAccess"></sign-up>
 </div>

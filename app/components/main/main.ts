@@ -16,8 +16,13 @@ export default {
     async created() {
     },
     computed: {
-        hasAccess() {
-            // return this.$store.state.
+    },
+    asyncComputed: {
+        async hasAccess() {
+            const has: boolean = this.$store.getters.hasAccess
+            log('has is ', has) // << should actually be a promise
+            return has
+
         }
     },
     data() {

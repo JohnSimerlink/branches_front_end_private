@@ -715,10 +715,10 @@ export const state: IState
     sigmaInitialized: false,
     globalDataStore: null,
     userLoader: null,
-    // userId: null, // JOHN_USER_ID,
     usersData: {},
     users: {},
-    userId: JOHN_USER_ID,
+    // userId: JOHN_USER_ID,
+    userId: null, // JOHN_USER_ID,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)

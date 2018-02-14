@@ -27,9 +27,14 @@ export default {
         return {
         }
     },
+    computed: {
+        loggedIn() {
+            return this.$store.getters.loggedIn
+        }
+    },
     // TODO: loggedIn getter
     methods: {
-        login() {
+        loginWithFacebook() {
             this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK)
         }
     }
