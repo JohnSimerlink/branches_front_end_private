@@ -29,7 +29,7 @@ export default {
             this.selectedItemIds.push(this.contentItemId)
         }
         this.tags = null
-        //TODO: replace with Vuex/redux store . . . or maybe a routing system
+        //TODO: replace with Vuex/redux stores . . . or maybe a routing system
         if (this.exerciseToReplaceId){
             const exercise = await Exercises.get(this.exerciseToReplaceId)
             me.question = exercise.question
@@ -75,7 +75,7 @@ export default {
                 var input = me.tags.getInput();
 
                 $(input).autocomplete({
-                    source: Object.keys(me.breadcrumbIdMap), //me.items.map( x => x.breadcrumb),
+                    source: Object.keys(me.breadcrumbIdMap), //me.items.sourceMap( x => x.breadcrumb),
                     appendTo: container,
                     position: { at: 'left bottom', of: container },
                     select: function(e, v) {

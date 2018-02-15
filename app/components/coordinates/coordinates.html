@@ -1,0 +1,8 @@
+<div class="coordinates">
+    This is coordinates.html
+    <li class="row" v-for="row in preferenceField">
+        <span v-for="cell in row">
+            <span v-bind:style="{ color: cell.color}">{{ cell.value | mult10 | pad0 }} </span>
+        </span>
+    </li>
+</div>

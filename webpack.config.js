@@ -2,11 +2,12 @@ var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require("compression-webpack-plugin");
 var LessHintPlugin = require('lesshint-webpack-plugin');
-var CodeAndTestConfig = require('./webpack.config.codeandtest.rules.js')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+var ProductionAndTestConfig = require('./webpack.config.productionandtest.rules.js')
 module.exports = {
   entry: {
     regenerator: 'babel-regenerator-runtime',
-    build: './app/core/bootstrap.js',
+    build: './app/core/bootstrap2.ts',
     vendor: './vendor.js',
   },
   output: {
@@ -20,13 +21,13 @@ module.exports = {
   // },
   module: {
     rules: [
-      ...CodeAndTestConfig.rules,
+      ...ProductionAndTestConfig.rules,
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           loaders: {
-            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
+            // Since sass-loader (weirdly) has SCSS as its default parse mode, we sourceMap
             // the "scss" and "sass" values for the lang attribute to the right configs here.
             // other preprocessors should work out of the box, no loader config like this necessary.
             'scss': 'vue-style-loader!css-loader!sass-loader',
@@ -40,7 +41,7 @@ module.exports = {
       },
       {
           test: /\.html$/,
-          loader: 'html-loader',
+          loader: 'html-loader?exportAsEs6Default',
           exclude: /node_modules/
       },
       {
@@ -63,18 +64,20 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     },
-    extensions: CodeAndTestConfig.extensions
+    extensions: ProductionAndTestConfig.extensions
   },
   devServer: {
     historyApiFallback: true,
     noInfo: true,
     inline: true,
-    overlay: true,
+    overlay: {
+      errors: true,
+    }
   },
   performance: {
-    hints: false
+    hints: 'warning'
   },
-  devtool: '#eval-source-map',
+  devtool: '#eval-source-sourceMap',
 // plugins: [new webpack.]
   plugins: [
     new LessHintPlugin({
@@ -86,16 +89,11 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  module.exports.devtool = '#source-sourceMap'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
-
-
-      new webpack.optimize.UglifyJsPlugin(), //minify everything
+    new webpack.optimize.UglifyJsPlugin(), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
-
-
-
       // Added as the last plugin
       // Not sure if it's worth gzipping old_index.html - no harm no foul
     new CompressionPlugin({
@@ -104,7 +102,11 @@ if (process.env.NODE_ENV === 'production') {
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
       minRatio: 0.8
-    })
+    }),
+    new CopyWebpackPlugin([{
+        from: 'app/static',
+        to: '',
+    }])
 
     // new webpack.DefinePlugin({
     //   'process.env': {

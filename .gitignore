@@ -9,3 +9,4 @@ branches.pem
 .deploy-configured
 .coveralls.yml
 .nyc_output
+coverage

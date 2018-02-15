@@ -1,7 +1,6 @@
 console.log(".5: user.js just called", calculateLoadTimeSoFar(Date.now()))
 
 import firebase from './firebaseService.js'
-import {clearInteractionsForHeadings} from "../fixData";
 import LocalForage from 'localforage'
 import Users from './users'
 let userLoggedIn = false
@@ -50,7 +49,7 @@ class User {
               userLoggedIn = true
               me.fbData = user;
               localStorage.setItem('userId', me.getId())
-              // LocalForage.setItem('userId', me.getId())
+              // LocalForage.setItem('userId', me.val())
               if(!me.dataGoingToBeLoaded){
                   PubSub.publish('userId')
                   await me.loadBranchesData()
@@ -103,7 +102,7 @@ class User {
   //   let updates = {
   //     items: this.branchesData.items
   //   }
-  //   firebase.database().ref('users/' + this.getId()).update(updates)
+  //   firebase.database().ref('users/' + this.val()).update(updates)
   // }
   addInteraction(contentItemId,interaction, addChangeToDB){
       const item = this.branchesData.items[contentItemId] || {}
@@ -195,15 +194,15 @@ class User {
     }
 
     async applyDataPatches(){
-        if (!this.branchesData.patches.headingInteractions){
-            await clearInteractionsForHeadings()
-            this.branchesData.patches.headingInteractions = true
-            var updates = {
-                patches: this.branchesData.patches
-            }
-            firebase.database().ref('users/' + this.getId() + '/').update(updates)
-        } else {
-        }
+        // if (!this.branchesData.patches.headingInteractions){
+        //     // await clearInteractionsForHeadings()
+        //     this.branchesData.patches.headingInteractions = true
+        //     var updates = {
+        //         patches: this.branchesData.patches
+        //     }
+        //     firebase.database().ref('users/' + this.val() + '/').update(updates)
+        // } else {
+        // }
 
     }
     async applyUpdates(updates){
@@ -290,4 +289,5 @@ Object.freeze(singleton);
 
 // module.exports = singleton;
 // const user = new User()
-export let user = new User()
+// export let user = new User()
+export let user = singleton.instance

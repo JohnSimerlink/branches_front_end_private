@@ -1,0 +1,41 @@
+PRESENT
+	- mousing over a node with id of treeId should loadFamily(treeId) 
+	- dragging/zooming a node to the centerMostNode of the screen should loadFamily(treeId)
+
+FamilyLoader
+	-store
+	-treeStoreSource
+	-loadFamily(treeId) {
+		load its children and its parent
+		needs access to treeStoreSource so that it can fetch the tree using treeStoreSource.get(treeId). using that it will get the parentId and children ids of of the tree. Then it will call sigmaNodeLoader on all of those ids.
+		-may very well be calling sigmaNodeLoader.load(treeId) on an already loaded parentId . . . sigmaNodeLoader will need a check to see if loaded already
+		-store.commit(TOUCHED_ITEM, treeId)
+			- will add to some sort of local treeUserData the fact that they've seen the item before - and this will change the gray circle to a white circle
+				-- maybe the white circle will return back to a gray circle over time via a forgetting curve
+	}
+	-loadFamilyIfNotYetLoaded(treeId)
+		accesses a treeIdFamilyLoadedMap
+
+SigmaNodeLoader
+	-treeloader, treelocationLoader, treeUserLoader, contentLoader, contentUserLoader
+	+loadIfNotYetLoaded(treeId: id)
+	-treeIdLoadedMap: IHash<boolean>
+	-load(treeId:id)
+		-will need access to the tree that was just loaded, so we can get the content id to do contentLoader and contentUserLoader
+
+System to Capture the sigmaEvent of mouseOverNode(treeId).
+	- should have two listeners
+		- FamilyLoader.loadFamily(treeId)
+		- Some UI system to show that the node is loading
+			-- flashing white circle around the node to show its family is loading (or an expanding/flashing white circle with a larger diameter every few milliseconds expanding
+			-- before mousing over the node, there is a subtle gray boundary circle to show that the family isn't yet loaded
+			-- after mousing over, call
+
+
+NEAR FUTURE
+	-url navigation
+	-have different maps (one main public one. Then infinite public ones, and infinite private ones with Google-Doc-esque sharing priveleges). this may or may not mean different sigma Instances
+
+FUTURE
+-cache: autoload from cache upon visiting webapp
+	-autoload the sigma g.nodes and g.edges from a cache and auto load a MutationHandler that can handle/record any store mutations while the rest of the app is loading, and then can play the mutations as soon as the app is finished loading

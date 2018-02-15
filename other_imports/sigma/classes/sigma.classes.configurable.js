@@ -1,16 +1,15 @@
-;(function() {
-  'use strict';
+import sigma from '../sigma.core'
 
-  /**
-   * This utils aims to facilitate the manipulation of each instance setting.
-   * Using a function instead of an object brings two main advantages: First,
-   * it will be easier in the future to catch settings updates through a
-   * function than an object. Second, giving it a full object will "merge" it
-   * to the settings object properly, keeping us to have to always add a loop.
-   *
-   * @return {configurable} The "settings" function.
-   */
-  var configurable = function() {
+/**
+ * This utils aims to facilitate the manipulation of each instance setting.
+ * Using a function instead of an object brings two main advantages: First,
+ * it will be easier in the future to catch settings updates through a
+ * function than an object. Second, giving it a full object will "merge" it
+ * to the settings object properly, keeping us to have to always add a loop.
+ *
+ * @return {configurable} The "settings" function.
+ */
+var configurable = function () {
     var i,
         l,
         data = {},
@@ -48,32 +47,32 @@
      *  > settings({mySetting: 'abc'}, 'mySetting');  // Logs: 'abc'
      *  > settings({hisSetting: 'abc'}, 'mySetting'); // Logs: 456
      */
-    var settings = function(a1, a2) {
-      var o,
-          i,
-          l,
-          k;
+    var settings = function (a1, a2) {
+        var o,
+            i,
+            l,
+            k;
 
-      if (arguments.length === 1 && typeof a1 === 'string') {
-        if (data[a1] !== undefined)
-          return data[a1];
-        for (i = 0, l = datas.length; i < l; i++)
-          if (datas[i][a1] !== undefined)
-            return datas[i][a1];
-        return undefined;
-      } else if (typeof a1 === 'object' && typeof a2 === 'string') {
-        return (a1 || {})[a2] !== undefined ? a1[a2] : settings(a2);
-      } else {
-        o = (typeof a1 === 'object' && a2 === undefined) ? a1 : {};
+        if (arguments.length === 1 && typeof a1 === 'string') {
+            if (data[a1] !== undefined)
+                return data[a1];
+            for (i = 0, l = datas.length; i < l; i++)
+                if (datas[i][a1] !== undefined)
+                    return datas[i][a1];
+            return undefined;
+        } else if (typeof a1 === 'object' && typeof a2 === 'string') {
+            return (a1 || {})[a2] !== undefined ? a1[a2] : settings(a2);
+        } else {
+            o = (typeof a1 === 'object' && a2 === undefined) ? a1 : {};
 
-        if (typeof a1 === 'string')
-          o[a1] = a2;
+            if (typeof a1 === 'string')
+                o[a1] = a2;
 
-        for (i = 0, k = Object.keys(o), l = k.length; i < l; i++)
-          data[k[i]] = o[k[i]];
+            for (i = 0, k = Object.keys(o), l = k.length; i < l; i++)
+                data[k[i]] = o[k[i]];
 
-        return this;
-      }
+            return this;
+        }
     };
 
     /**
@@ -83,34 +82,27 @@
      * @return {function} Returns the function. Check its documentation to know
      *                    more about how it works.
      */
-    settings.embedObjects = function() {
-      var args = datas.concat(
-        data
-      ).concat(
-        Array.prototype.splice.call(arguments, 0)
-      );
+    settings.embedObjects = function () {
+        var args = datas.concat(
+            data
+        ).concat(
+            Array.prototype.splice.call(arguments, 0)
+        );
 
-      return configurable.apply({}, args);
+        return configurable.apply({}, args);
     };
 
     // Initialize
     for (i = 0, l = arguments.length; i < l; i++)
-      settings(arguments[i]);
+        settings(arguments[i]);
 
     return settings;
-  };
+};
 
-  /**
-   * EXPORT:
-   * *******
-   */
-  if (typeof this.sigma !== 'undefined') {
-    this.sigma.classes = this.sigma.classes || {};
-    this.sigma.classes.configurable = configurable;
-  } else if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports)
-      exports = module.exports = configurable;
-    exports.configurable = configurable;
-  } else
-    this.configurable = configurable;
-}).call(window);
+/**
+ * EXPORT:
+ * *******
+ */
+sigma.classes = sigma.classes || {};
+sigma.classes.configurable = configurable;
+module.exports.configurable = configurable;

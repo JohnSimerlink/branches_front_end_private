@@ -1,0 +1,51 @@
+System to determine where to add the child by default
+
+NewChildLocationDeterminer
+	+DetermineLocation(treeId)
+
+NewChildLocationCalculator
+	+calculateLocation(currentChildLocations, parentLocation, allLocations)
+
+
+need to get all the nodes in a certain rectangle around the node . .. and then we can just call the determineNewLocation method
+	- this only gets called everytime we call the determineNewLocation method.
+	- to do this loop through all the nodes, calculating the distance from each node to the parent node, and appending it to the result list if greater than some distance
+
+
+for entire 
+
+
+give every node a hilbert number calculated from x and y
+
+goal - a method to get all nodes within a radius of r (in our case 20) of a certain coordinate.
+
+so the store calls
+so something calls something which has a reference to sigmaInstance. this allows us to get all the nodes within a certain distance from hte parent node.
+
+then with that list of obstacleNodes, we pass it in into the pure function getNewLocation
+
+
+----7pm-----
+currently treeLocation is not being created in db.
+also treeLocation is not being added to the new sigmanode that was just created
+
+
+
+2pm saturday 
+--- color change doesn't work on things already loaded
+--- when creating a new category node, need to make obstacle radii much larger, and circle of preference on parent Node larger too
+
+change linear descent to expontential descent
+
+spacing algorithm doesn't always even seem to get called
+
+hugs, heroism, and the greater good
+
+
+we dont need anything. . . .anyone . .. lie here . .. if i just lay here . .. would you lie with me and just forget the world . . . i dont quite know . .. how to say
+
+
+receive firebase update on /classrooms/1/queue
+	convert the set to an array
+	call MUTATION_NAMES.loadClassroom1QueueData(state, queue)
+		changes state which affects getters which should affect the teacherView

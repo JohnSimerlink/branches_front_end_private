@@ -1,9 +1,5 @@
-;(function(undefined) {
-  'use strict';
-
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
+import sigma from '../sigma.core'
+import conrad from '../conrad'
   // Initialize packages:
   sigma.utils.pkg('sigma.renderers');
 
@@ -498,7 +494,7 @@
    * finally appends it to the container.
    *
    * @param  {string}   tag   The label tag.
-   * @param  {string}   id    The id of the element (to store it in
+   * @param  {string}   id    The id of the element (to stores it in
    *                          "domElements").
    * @param  {?boolean} webgl Will init the WebGL context if true.
    */
@@ -714,4 +710,3 @@
    * node, the renderer and a settings function.
    */
   sigma.utils.pkg('sigma.canvas.labels');
-}).call(window);

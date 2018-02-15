@@ -59,7 +59,7 @@ function processContentData(contentData, resolve, reject, contentId){
 export default class ContentItems {
     static get(contentId) {
         if(!contentId){
-            throw "Content.get(contentId) error! contentId empty!"
+            throw "Content.val(contentId) error! contentId empty!"
         }
         return new Promise((resolve, reject) => {
             if (content[contentId]){
@@ -165,7 +165,7 @@ function processSnapshot(snapshot){
         .filter(contentDatumKey => {
             return removeBadContentKeys(contentData, contentDatumKey)
         })
-    console.log("the number of filtered KEys in get headings processSnapshot is", filteredKeys.length)
+    console.log("the number of filtered KEys in val headings processSnapshot is", filteredKeys.length)
 
     filteredKeys.forEach(contentDatumKey => {
         createContentObjectAndAddToCache(contentDatumKey, contentData)

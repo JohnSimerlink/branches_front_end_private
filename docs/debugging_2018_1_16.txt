@@ -1,0 +1,154 @@
+when i do import Vue from 'vue' in store.ts, Vue loads fine in webpack/web  . . .. but not in ava-ts tests . . .
+
+-----
+
+
+
+
+
+DONE get knawledgeMap DI working
+DONE check if knawledemap mounting can work
+GOAL get treecomponent official mounting working so we can test with props
+
+
+
+studyMenu spec test with a method doesn't work. this is probably because there is a vue warning stating template or render function not defined....
+	. . . . but we get that same warning on knawledgeMap2.spec.ts . . . where a test with a method DOES work
+
+[1] lets try cloning knawledgemap into a different folder and running the same spec.
+	-- so it worked
+	-- then i replaced its innards with study menus
+	-- still worked
+
+[2] lets replace knawledgemapclone's innards with treeComponents innards
+	-- works great!
+[3] lets slowly rename everything from knawledgemapclone to treeComponet. . .. tree3Component haha?
+
+
+
+==========
+1/17/2018
+// FINISH tooltipRenderer/opener so that store can compile so that I can test partial dependency injection tool
+//DONE Write Partial Dependency Injection tool
+// [] get tooltipRenderer.spec.ts working
+	- get store.watch working
+// Rewrite a bunch of the global store tests to use the partial inject tool
+// Make tooltipRenderer and tooltipOpener classes
+// Get tooltip opener to pass in correct contentUserId
+// Get app to generate a random initial userId
+// Get correct contentUserId to be sent to the contentuserstoreMutation center
+// TODO: if contentUser does not yet exist in the DB create it.
+mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION]
+
+
+GET A DEV and PRODUCTION DATABASE GOING
+
+====specialTreeLoader debugging =====
+
+
+
+
+======
+so color needs to be determined from ProficiencyOutput
+
+proficiencyInput by default gets set to contentUserData.proficiency or PROFICIENCIES.UNKNOWN if contentUserDataLoaded does not exist
+	-it is not a computed Property though . .. because it needs to get set by the proficiency-selector-component
+
+proficiencyInput model is synced with proficiencySelector
+	proficiencySelector onChange triggers ProficiencySelected event, which will call a mutation that fluxes through the system and updates the contentUserData in sigmaNode that tooltipRenderer uses to pass props into the vue template.
+	so as designed right now, contentUserData will stay null/undefined after user interactions if it started off null, unless the user closes the vue template and rerenders it from the updatedSigmaNode
+
+
+public addMutation() {
+	if (mutation.objectType){
+		this.addEditMutation
+private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) . . . 
+private addCreateMutation(mutation: ICreationMutation) {
+	
+}
+
+===== <<interface>> ISyncableObject ===== (eh don't like the name all the way . . . oh well)
++_getPropertiesToSync(): IHash<<ISubscribable<IDetailedUpdates>>>
+e.g. have a SyncableMutableSubscribableContentUser class which extends 
+===== ObjectFirebaseAutoSaver ====
+@injectable()
+class ObjectFirebaseAutoSaver {
+	private syncableObject: ISyncableObject
+	constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){syncableObject, syncableObjectFirebaseRef}) {
+		this.syncableObject = syncableObject
+		this.syncableObjectFirebaseRef = this.syncableObjectFirebaseRef
+	}
+	startAutoSave() {
+		
+		
+
+
+constructor({syncableObject, syncableObjectFirebaseRef})
++startAutoSave()
+	-needs to know the firebase ref of the root object - e.g. the contentUser object
+	-will then construct firebaseRefs for each of the child properties
+		--to do this we need the names of each of the properties
+	-will then construct a firebaseSaver for each of those refs
+	-and will then construct a DBSyncer using that firebaseSavers.save function
+	-and will then subscribe each prop of the propertiesToSync from _getPropertiesToSync() with the DBSyncer.subscribe(prop)
+		-- so obviously for this we need the actual prop as well as a mapping with its name so that we can subscribe the correct dbsyncer with correct prop
+
+const firebaseAutoSave = new FirebaseAutoSaver({
+	syncableObject: contentUser,
+	syncableObjectFirebaseRef: contentUserFirebaseRef (created from CONTENT_USERS_FIREBASE_REF.child(contentUserId)
+	})
+
+firebaseAutoSave.startAutoSave() // will ensure that any mutations call on properties of the syncableObject will have their side effects saved in the database
+==================junkyard====================
+so tooltipOpener needs to use tooltips to call this.tooltips.open. it also needs to have a getTooltipsConfig method
+
+well getTooltipsConfig method needs a reference to a renderer method, so it would make sence if it were a method on the getTooltipRenderer class, or if getTooltipsConfig had a renderer argument
+
+well getTooltipRenderer doesn't actually depend on anything. so we'll create taht first
+
+
+    private getTooltipsConfig() {
+        const tooltipsConfig = {
+            node: [
+                {
+                    show: 'rightClickNode',
+                    cssClass: 'sigma-tooltip',
+                    position: 'center',
+                    template: '',
+                    renderer: this.renderer
+                }],
+        };
+        return tooltipsConfig
+    }
+
+
+we need a property called contentUserData
+	it gets set from contentUserDataString which is a prop
+	it also gets set from contentUserDataInput - which gets set from the result the add_content_interaction_if_no_content_user_data commit
+
+so component we init contentUserDataInput to null
+and we have contentUserData be a computed property that returns contentUserDataInput if exists
+else returns the descaping of contentUserDataString
+=================need a function to save the contentUserData into
+
+
+======so when new contentUserDataItems are created the contentUserStore.addAndSubscribeToItemFromData will be called ======
+
+maybe i should make 
+
+
+====TODO: when items are loaded, are they subscribed to???
+
+esterel
+tla+
+
+
+0 1516494034641
+  1516494035768
+
+this method calls this.storeSource.set(id, item) and then this.subscribeToItem(id, item).
+
+we need a way where any time the storeSource calls .set (whether called from the Loader or from the storeSource), that the store notes that, and subscribes the item for updates, if it hasn't already
+
+function to load all children
+function to determine center node in screen
