@@ -25,8 +25,9 @@ export class UserUtils implements IUserUtils {
     public async userExistsInDB(userId: string): Promise<boolean> {
         const userRef = this.usersFirebaseRef.child(userId)
         return new Promise((resolve, reject) => {
-            userRef.on('value', snapshot => {
+            userRef.once('value', snapshot => {
                 const userVal = snapshot.val()
+                console.log('userExists in DB val is', userVal)
                 if (userVal) {
                     resolve(true)
                 } else {
@@ -35,23 +36,26 @@ export class UserUtils implements IUserUtils {
             })
         }) as Promise<boolean>
     }
-    public async createUserInDB(userId: string) {
+    public async createUserInDB(userId: string): Promise<ISyncableMutableSubscribableUser> {
         const userExists = await this.userExistsInDB(userId)
-        if (!userExists) {
-            const userData: IUserData = {
-                everActivatedMembership: false,
-                membershipExpirationDate: null
-            }
-            const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData})
-            const userFirebaseRef = this.usersFirebaseRef.child(userId)
-            const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
-                syncableObject: user,
-                syncableObjectFirebaseRef: userFirebaseRef
-            })
-            objectFirebaseAutoSaver.initialSave()
-            objectFirebaseAutoSaver.start()
-
+        if (userExists) {
+            console.error('not creating user. user already existsb')
+            return
         }
+        const userData: IUserData = {
+            everActivatedMembership: false,
+            membershipExpirationDate: 1496340000  // Jun 1st 2017. <<< Already expired
+        }
+        const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData})
+        const userFirebaseRef = this.usersFirebaseRef.child(userId)
+        const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
+            syncableObject: user,
+            syncableObjectFirebaseRef: userFirebaseRef
+        })
+        console.log('about to call objectFirebaseAutoSaver initial Save for user of ', user, ' with id of ', userId)
+        objectFirebaseAutoSaver.initialSave()
+        objectFirebaseAutoSaver.start()
+        return user
     }
 }
 

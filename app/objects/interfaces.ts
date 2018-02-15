@@ -454,7 +454,7 @@ export interface IMutableSubscribableUser
 
 export interface IUserUtils {
     userExistsInDB(userId: id): Promise<boolean>
-    createUserInDB(userId: id)
+    createUserInDB(userId: id): Promise<ISyncableMutableSubscribableUser>
 }
 
 // UI Manager objects
@@ -819,6 +819,7 @@ export interface IState {
     usersData: IHash<IUserData>,
     users: IHash<ISyncableMutableSubscribableUser>
     userUtils: IUserUtils,
+    usersDataHashmapUpdated: number
 }
 
 // components
