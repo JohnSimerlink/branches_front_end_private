@@ -441,6 +441,7 @@ export interface IUserDataFromDB {
 
 export enum UserPropertyNames {
     MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
+    EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
 }
 
 export interface ISubscribableUser extends

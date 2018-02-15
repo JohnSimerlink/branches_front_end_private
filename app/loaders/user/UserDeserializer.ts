@@ -36,11 +36,10 @@ export class UserDeserializer {
       return userData
    }
     public static deserializeFromDB(
-        {userDataFromDB, userId}: {userDataFromDB: IUserDataFromDB, userId: string}
+        {userDataFromDB }: {userDataFromDB: IUserDataFromDB}
     ): ISyncableMutableSubscribableUser {
        if (!isValidUserDataFromDB(userDataFromDB)) {
-           throw new Error('Cannot deserialize user from db with id of ' + userId
-               + ' and value of ' + userDataFromDB)
+           throw new Error('Cannot deserialize user from db with  value of ' + userDataFromDB)
        }
        const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB})
        const user: ISyncableMutableSubscribableUser

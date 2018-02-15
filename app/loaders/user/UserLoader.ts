@@ -26,7 +26,7 @@ export class UserLoader implements IUserLoader {
 
                 if (isValidUserDataFromDB(userDataFromDB)) {
                     const user: ISyncableMutableSubscribableUser =
-                        UserDeserializer.deserializeFromDB({userId, userDataFromDB})
+                        UserDeserializer.deserializeFromDB({userDataFromDB})
                     resolve(user)
                 } else {
                     reject('userDataFromDB is invalid! ! ' + JSON.stringify(userDataFromDB))

@@ -6,63 +6,56 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
-    CONTENT_TYPES,
+    CONTENT_TYPES, ISyncableMutableSubscribableUser, timestamp,
 } from '../interfaces';
-import {SubscribableContent} from './SubscribableUser';
+import {SubscribableUser} from './SubscribableUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
 
 myContainerLoadAllModules()
-test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
-    const title = new MutableSubscribableField<string>({field: ''})
-    const content = new SubscribableContent({
-        type, question, answer, title, updatesCallbacks: [],
-    })
-    expect(content.type).to.deep.equal(type)
-    expect(content.question).to.deep.equal(question)
-    expect(content.answer).to.deep.equal(answer)
-    expect(content.title).to.deep.equal(title)
+test('SubscribableUser:::constructor should set all the subscribable properties', (t) => {
+    const timestampToday = Date.now()
+    const everBeenActivatedValue: boolean = false
+    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
+    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
+    const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
+        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
+    )
+    expect(user.membershipExpirationDate).to.deep.equal(membershipExpirationDate)
+    expect(user.everActivatedMembership).to.deep.equal(everActivatedMembership)
     t.pass()
 })
-test('SubscribableContent:::.val() should display the value of the object', (t) => {
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
-    const title = new MutableSubscribableField<string>({field: ''})
-    const content = new SubscribableContent({
-        title, question, answer, type, updatesCallbacks: [],
-    })
+test('SubscribableUser:::.val() should display the value of the object', (t) => {
+    const timestampToday = Date.now()
+    const everBeenActivatedValue: boolean = false
+    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
+    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
+    const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
+        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
+    )
 
     const expectedVal = {
-        title: title.val(),
-        type: type.val(),
-        answer: answer.val(),
-        question: question.val(),
+        membershipExpirationDate: membershipExpirationDate.val(),
+        everActivatedMembership: everActivatedMembership.val(),
     }
 
-    expect(content.val()).to.deep.equal(expectedVal)
+    expect(user.val()).to.deep.equal(expectedVal)
     t.pass()
 })
-test('SubscribableContent:::startPublishing() should call the onUpdate methods of' +
+test('SubscribableUser:::startPublishing() should call the onUpdate methods of' +
     ' all member Subscribable properties', (t) => {
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
-    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
-    const answer = new MutableSubscribableField<string>({field: 'Columbus'})
-    const title = new MutableSubscribableField<string>({field: ''})
-    const content = new SubscribableContent({
-        title, question, answer, type, updatesCallbacks: [],
-    })
-    const titleOnUpdateSpy = sinon.spy(title, 'onUpdate')
-    const typeOnUpdateSpy = sinon.spy(type, 'onUpdate')
-    const answerOnUpdateSpy = sinon.spy(answer, 'onUpdate')
-    const questionOnUpdateSpy = sinon.spy(question, 'onUpdate')
+    const timestampToday = Date.now()
+    const everBeenActivatedValue: boolean = false
+    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
+    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
+    const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
+        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
+    )
 
-    content.startPublishing()
-    expect(questionOnUpdateSpy.callCount).to.deep.equal(1)
-    expect(titleOnUpdateSpy.callCount).to.deep.equal(1)
-    expect(typeOnUpdateSpy.callCount).to.deep.equal(1)
-    expect(answerOnUpdateSpy.callCount).to.deep.equal(1)
+    const membershipExpirationDateOnUpdateSpy = sinon.spy(membershipExpirationDate, 'onUpdate')
+    const everActivatedMembershipOnUpdateSpy = sinon.spy(everActivatedMembership, 'onUpdate')
+    user.startPublishing()
+    expect(membershipExpirationDateOnUpdateSpy.callCount).to.deep.equal(1)
+    expect(everActivatedMembershipOnUpdateSpy.callCount).to.deep.equal(1)
     t.pass()
 })
