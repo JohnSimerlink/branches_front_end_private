@@ -12,6 +12,7 @@ import {TYPES} from '../types'
 
 @injectable()
 export class SubscribableUser extends Subscribable<IValUpdates> implements ISubscribableUser {
+    // TODO: dependeny inject the publishing field
     private publishing = false
     public membershipExpirationDate: ISubscribableMutableField<timestamp>;
     public everActivatedMembership: ISubscribableMutableField<boolean>;

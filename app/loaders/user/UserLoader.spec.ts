@@ -29,10 +29,14 @@ test('UserLoader:::DownloadUser should return the user', async (t) => {
     const childFirebaseRef = firebaseRef.child(userId)
     const membershipExpirationDateVal = Date.now()
 
+    const everBeenActivatedValue: boolean = false
     const sampleUserDataFromDB: IUserDataFromDB = {
         membershipExpirationDate: {
             val: membershipExpirationDateVal,
         },
+        everActivatedMembership: {
+            val: everBeenActivatedValue
+        }
     }
     const userLoader = new UserLoader({firebaseRef})
 
