@@ -6,6 +6,7 @@ import {
 import {SyncableMutableSubscribableUser} from '../../objects/user/SyncableMutableSubscribableUser';
 import {isValidUserDataFromDB} from '../../objects/user/userValidator';
 import {TreeDeserializer} from '../tree/TreeDeserializer';
+import {log} from '../../core/log'
 
 export class UserDeserializer {
    public static deserialize(
@@ -42,6 +43,7 @@ export class UserDeserializer {
            throw new Error('Cannot deserialize user from db with  value of ' + userDataFromDB)
        }
        const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB})
+       log('userData from db is', userData)
        const user: ISyncableMutableSubscribableUser
             = UserDeserializer.deserialize({userData})
        return user

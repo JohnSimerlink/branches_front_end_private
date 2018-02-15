@@ -22,7 +22,7 @@ export class UserUtils implements IUserUtils {
     }: UserUtilsArgs ) {
         this.usersFirebaseRef = firebaseRef
     }
-    public async userExists(userId: string): Promise<boolean> {
+    public async userExistsInDB(userId: string): Promise<boolean> {
         const userRef = this.usersFirebaseRef.child(userId)
         return new Promise((resolve, reject) => {
             userRef.on('value', snapshot => {
@@ -35,8 +35,8 @@ export class UserUtils implements IUserUtils {
             })
         }) as Promise<boolean>
     }
-    public async createUser(userId: string) {
-        const userExists = await this.userExists(userId)
+    public async createUserInDB(userId: string) {
+        const userExists = await this.userExistsInDB(userId)
         if (!userExists) {
             const userData: IUserData = {
                 everActivatedMembership: false,
