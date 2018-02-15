@@ -48,6 +48,7 @@ export class ContentLoader implements IContentLoader {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(contentId).once('value', (snapshot) => {
                 const contentDataFromDB: IContentDataFromDB = snapshot.val()
+                log('the contentDataFromDB for ' + contentId + ' is ' + contentDataFromDB)
                 if (!contentDataFromDB) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which

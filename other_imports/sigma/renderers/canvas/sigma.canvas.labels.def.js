@@ -16,6 +16,9 @@ var packageData = {
 var xOffset = 50
 var rowHeight = sigma.settings.defaultLabelSize * 1.75
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', function (event) {
+    initializePackageData()
+})
+function initializePackageData() {
     var graphContainer = document.querySelector('#graph-container')
     if (!graphContainer) return //e.g. a user is not on the knowledgeMap page
     packageData.width = graphContainer.clientWidth
@@ -26,7 +29,8 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
     packageData.columnWidth = packageData.width / packageData.numColumnsOnScreen
     packageData.initialized = true
     clearLabelKnowledge()
-})
+
+}
 
 var A_BIG_NUMBER = 9001
 
@@ -57,12 +61,18 @@ function resetLabelData() {
 // window.resetLabelData = resetLabelData
 //assumes fixed label size
 function determineSection(node, prefix) {
+    // TODO: if the if branching costs performance, after init, just replace the function with a non branching one
+    if (!packageData.initialized) {
+        initializePackageData()
+        console.log('INITIALIZING PACKAGE DATA')
+    }
     var x = node[prefix + 'x']
     var y = node[prefix + 'y']
     var column = Math.floor(x / packageData.columnWidth)
     var row = Math.floor(y / packageData.rowHeight)
     // console.log('determineSection', node, node[prefix + 'x'], node[prefix + 'y'], x, y, column, row)
     var section = {row, column}
+    // console.log ('section determined for ', node, ' was ', section)
     return section
 }
 

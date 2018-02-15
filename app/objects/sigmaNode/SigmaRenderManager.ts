@@ -72,6 +72,8 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
     private broadcastIfNodeRenderable(treeId: id) {
         if (!this.canRenderNode(treeId)) {
             return
+        } else {
+            log('node with id of ' + treeId + ' is renderable!', this.treeDataLoadedIdsSet, this.treeLocationDataLoadedIdsSet)
         }
         this.broadcastNewNodeUpdate(treeId)
         this.broadcastNewEdgesForEdgesWaitingOnNode(treeId)
