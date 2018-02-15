@@ -1,6 +1,8 @@
 import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
 import './branches-stripe.less'
+import {MUTATION_NAMES} from '../../core/store2';
+import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
 
 let template = require('./branches-stripe.html').default
 if (!template) {
@@ -21,6 +23,13 @@ export default {
         }
         Bus.$on('vue-stripe.success', payload => {
             console.log('Success: ', payload);
+            const now = Date.now()
+            const thirtyDaysFromNow = now + 1000 * 60 * 60 * 24 * 30
+            const mutationArgs: ISetMembershipExpirationDateArgs = {
+                membershipExpirationDate: thirtyDaysFromNow,
+                userId: this.$store.state.userId
+            }
+            this.$store.commit(MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE, mutationArgs)
         });
         Bus.$on('vue-stripe.error', payload => {
             console.log('Error: ', payload);
