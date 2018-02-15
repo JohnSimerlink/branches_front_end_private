@@ -12,6 +12,7 @@ import {
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
+    ISetMembershipExpirationDateArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -101,14 +102,20 @@ const getters = {
         // return await getters.userHasAccess(state.userId)
     },
     userHasAccess(state: IState, getters) {
-        return async (userId: id): Promise<boolean> => {
-            if (!userId) {
+        return (userId: id): boolean => {
+            const userData: IUserData = state.usersData[userId]
+            if (!userData) {
                 return false
+            } else {
+                return userData.membershipExpirationDate >= Date.now()
             }
-            const user: ISyncableMutableSubscribableUser = state.users[userId]
-                || await state.userLoader.downloadUser(userId)
-            const expirationTime = user.membershipExpirationDate.val()
-            return expirationTime >= Date.now()
+            // if (!userId) {
+            //     return false
+            // }
+            // const user: ISyncableMutableSubscribableUser = state.users[userId]
+            //     || await state.userLoader.downloadUser(userId)
+            // const expirationTime = user.membershipExpirationDate.val()
+            // return expirationTime >= Date.now()
         }
     }
 }
@@ -375,35 +382,13 @@ const mutations = {
             throw new Error('Can\'t log user with id of ' + userId
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
-        // put a lot of this logic in some separate object that gets injected into BranchesStore
-        // any time we fetch a user object,
-        // be it our own user object or someone else's we should sync that object with an Object Syncer,
-        // in case we end up changing anything on that object
         const user: ISyncableMutableSubscribableUser = await state.userLoader.downloadUser(userId)
-
-            // state.userManager.getUserObject()
-        // sync any future user changes with DB
-
-        // sync any future user changes with the store
-            // do this because really all store changes should be done through time travelable mutations
-            // and because all UI should be rendered directly from store state and no other methods
-        state.users[userId] = user
-        // state.user = user //
-        // but this should never be acessed by a component . . . only accessed by the store like globalDataStore is
-        // user.onUpdate((newUserData: IUserData) => {
-        //     const store: Store<any> = getters.getStore()
-        //     store.commit(MUTATION_NAMES.SET_USER_DATA, {userData: newUserData, userId})
-        // })
-        user.startPublishing()
-        state.userId = userId
     },
     async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId}) {
         const userExists = await state.userUtils.userExists(userId)
         if (!userExists) {
             const user = state.userUtils.createUser(userId)
-            user.startPublishing() // idk if anything subscribes to this
-            state.users[userId] = user
-            state.userId = userId
+            storeUserInState({user, userId, state})
         } else {
             mutations[MUTATION_NAMES.LOGIN](state, {userId})
         }
@@ -415,7 +400,8 @@ const mutations = {
     [MUTATION_NAMES.SET_USER_DATA](state: IState, {userId, userData}: ISetUserDataMutationArgs) {
         state.usersData[userId] = userData
     },
-    [MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE](state: IState, {membershipExpirationDate, userId}) {
+    [MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE](
+        state: IState, {membershipExpirationDate, userId}: ISetMembershipExpirationDateArgs) {
         const user: IMutableSubscribableUser = state.users[userId]
         const mutation: IProppedDatedMutation<FieldMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.MEMBERSHIP_EXPIRATION_DATE,
@@ -430,6 +416,7 @@ const mutations = {
             userId,
             userData
         }
+        // TODO: just have an onUpdate to user trigger store mutation rather than directly calling this mutation
         store.commit(MUTATION_NAMES.SET_USER_DATA, mutationArgs)
         // this will trigger the
     },
@@ -510,4 +497,17 @@ export class BranchesStoreArgs {
     @tagged(TAGS.AUTO_SAVER, true) public userLoader: IUserLoader
     @inject(TYPES.BranchesStoreState) public state: IState
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
+}
+
+function storeUserInState({user, state, userId}: {user: ISyncableMutableSubscribableUser, state: IState, userId: id}) {
+    user.startPublishing() // << idk if necessary
+    state.users[userId] = user
+    state.usersData[userId] = user.val()
+    state.userId = userId
+
+    // user.onUpdate((newUserData: IUserData) => {
+    //     const store: Store<any> = getters.getStore()
+    //     store.commit(MUTATION_NAMES.SET_USER_DATA, {userData: newUserData, userId})
+    // })
+
 }

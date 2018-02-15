@@ -516,6 +516,10 @@ export interface IAddParentEdgeMutationArgs {
     treeId,
     color: UIColor
 }
+export interface ISetMembershipExpirationDateArgs {
+    membershipExpirationDate: timestamp
+    userId: id
+}
 
 export interface ISigmaUpdater {
     // refresh(): void
