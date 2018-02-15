@@ -722,6 +722,7 @@ export const state: IState
     // userId: JOHN_USER_ID,
     userId: null, // JOHN_USER_ID,
     userUtils: null,
+    usersDataHashmapUpdated: .5242
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)

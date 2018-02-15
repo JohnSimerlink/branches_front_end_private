@@ -93,7 +93,20 @@ const getters = {
         }
     },
     userId(state: IState, getters): id {
+        console.log('userId getter called')
         return state.userId
+    },
+    userData(state: IState, getters) {
+        console.log('userData getter called')
+        return (userId: id) => {
+            console.log('userData getter inside called')
+            var reactive = state.usersDataHashmapUpdated
+            var obj = {
+                reactive: state.usersDataHashmapUpdated,
+                ...state.usersData[userId]
+            }
+            return obj
+        }
     },
     loggedIn(state: IState, getters): boolean {
         const loggedIn = !!state.userId
@@ -105,8 +118,10 @@ const getters = {
         // return await getters.userHasAccess(state.userId)
     },
     userHasAccess(state: IState, getters) {
+        console.log('userHasAccess getter called')
         return (userId: id): boolean => {
-            const userData: IUserData = state.usersData[userId]
+            const userData: IUserData = getters.userData(userId)
+            console.log('userHasAccess getter inside function called. userData is', userData)
             if (!userData) {
                 return false
             } else {
@@ -388,9 +403,10 @@ const mutations = {
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
         const userExistsInDB = await state.userUtils.userExistsInDB(userId)
+        console.log('store2.ts userExistsInDB is', userExistsInDB)
         let user: ISyncableMutableSubscribableUser
         if (!userExistsInDB) {
-            user = state.userUtils.createUserInDB(userId)
+            user = await state.userUtils.createUserInDB(userId)
         } else {
             user = await state.userLoader.downloadUser(userId)
         }
@@ -399,7 +415,10 @@ const mutations = {
 
     },
     [MUTATION_NAMES.SET_USER_DATA](state: IState, {userId, userData}: ISetUserDataMutationArgs) {
-        state.usersData[userId] = userData
+        Vue.set(state.usersData, userId, userData)
+        // state.usersData[userId] = userData
+        console.log('set_user_data mutation called', state.usersData, state.usersData[userId], userData)
+        Vue.set(state, 'usersDataHashmapUpdated', Math.random())
     },
     [MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE](
         state: IState, {membershipExpirationDate, userId}: ISetMembershipExpirationDateArgs) {
@@ -410,7 +429,6 @@ const mutations = {
             type: FieldMutationTypes.SET,
             data: membershipExpirationDate
         }
-        user.addMutation(membershipDateMutation)
         const activatedMutation: IProppedDatedMutation<FieldMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.EVER_ACTIVATED_MEMBERSHIP,
             timestamp: Date.now(),
@@ -419,6 +437,7 @@ const mutations = {
         }
         user.addMutation(membershipDateMutation)
         user.addMutation(activatedMutation)
+        console.log('activatedMutation and membershipDateMutation just added')
         const userData: IUserData = user.val()
         const store: Store<any> = getters.getStore()
         const mutationArgs: ISetUserDataMutationArgs = {

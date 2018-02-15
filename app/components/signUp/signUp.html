@@ -1,7 +1,11 @@
-<div>
-    <div>loggedin: {{loggedIn}}</div>
+<div class="sign-up">
+    <div>
+        <button class="login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Click to Login via Facebook </button>
+    </div>
     <img class='infographic' src="/dist/images/infographic-mobile.jpg">
     <branches-stripe v-if="loggedIn" button="Get Beta Access #2" ></branches-stripe>
     <!--<login></login> -->
-    <button class="login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Click to Login via Facebook </button>
+    <div>
+        <button class="login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Click to Login via Facebook </button>
+    </div>
 </div>

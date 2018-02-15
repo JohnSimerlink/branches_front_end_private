@@ -36,11 +36,14 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
             case UserPropertyNames.MEMBERSHIP_EXPIRATION_DATE:
                 this.membershipExpirationDate.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
+            case UserPropertyNames.EVER_ACTIVATED_MEMBERSHIP:
+                this.everActivatedMembership.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
                     + ' does not exist as a property. The allowed propertyNames are '
-                    + UserPropertyNames.MEMBERSHIP_EXPIRATION_DATE)
+                    + UserPropertyNames)
         }
     }
 

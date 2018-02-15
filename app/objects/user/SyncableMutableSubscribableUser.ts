@@ -13,7 +13,8 @@ export class SyncableMutableSubscribableUser
     extends MutableSubscribableUser implements ISyncableMutableSubscribableUser {
     public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable> {
         return {
-            membershipExpirationDate: this.membershipExpirationDate
+            membershipExpirationDate: this.membershipExpirationDate,
+            everActivatedMembership: this.everActivatedMembership
         }
     }
 }

@@ -16,8 +16,18 @@ export default {
     async created() {
     },
     computed: {
+        userDataString() {
+            log ('userDataString computed called')
+            const userDataString = this.$store.getters.userData(this.$store.getters.userId)
+            return userDataString
+        },
         sample() {
             return this.$store.getters.sampleGetter(4)
+        },
+        userHasAccess() {
+            const has: boolean = this.$store.getters.userHasAccess(this.$store.getters.userId)
+            log('has is ', has) // << should actually be a promise
+            return has
         }
     },
     asyncComputed: {
