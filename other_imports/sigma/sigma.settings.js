@@ -1,13 +1,9 @@
-;(function(undefined) {
-  'use strict';
+import sigma from './sigma.core'
+// Packages initialization:
+sigma.utils.pkg('sigma.settings');
+sigma.settings = sigma.settings || {}
 
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
-  // Packages initialization:
-  sigma.utils.pkg('sigma.settings');
-
-  var settings = {
+var settings = {
     /**
      * GRAPH SETTINGS:
      * ***************
@@ -121,8 +117,6 @@
     webglEdgesBatchSize: 1000,
 
 
-
-
     /**
      * RESCALE SETTINGS:
      * *****************
@@ -143,8 +137,6 @@
     maxEdgeSize: 0, //1
     minNodeSize: 0, //1
     maxNodeSize: 0, //8
-
-
 
 
     /**
@@ -208,7 +200,7 @@
     // {boolean} If set to false, the nodes cannot be hovered.
     enableHovering: true,
     // {boolean} If set to true, the edges can be hovered.
-    enableEdgeHovering: true,
+    enableEdgeHovering: false,
     // {number} The size of the area around the edges to activate hovering.
     edgeHoverPrecision: 5,
     // {boolean} If set to true, the rescale middleware will ignore node sizes
@@ -235,8 +227,7 @@
      */
     // {number} The default animation time.
     animationsTime: 200
-  };
+};
 
-  // Export the previously designed settings:
-  sigma.settings = sigma.utils.extend(sigma.settings || {}, settings);
-}).call(window);
+// Export the previously designed settings:
+sigma.settings = sigma.utils.extend(sigma.settings || {}, settings);

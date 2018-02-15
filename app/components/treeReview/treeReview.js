@@ -5,7 +5,7 @@ import ContentItems from "../../objects/contentItems";
 import Snack from '../../../node_modules/snack.js/dist/snack'
 import './treeReview.less'
 
-import {PROFICIENCIES} from '../proficiencyEnum.ts'
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum'
 import invert from 'invert-object'
 import {Trees} from "../../objects/trees";
 

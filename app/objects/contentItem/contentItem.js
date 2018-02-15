@@ -7,7 +7,6 @@ if (typeof window !== 'undefined') {
 }
 import {user} from '../user'
 import {calculateMillisecondsTilNextReview} from '../../components/reviewAlgorithm/review'
-import {PROFICIENCIES, proficiencyToColor} from "../../components/proficiencyEnum.ts";
 import {Trees} from '../trees'
 import {
     measurePreviousStrength, estimateCurrentStrength,
@@ -32,23 +31,23 @@ export default class ContentItem {
         this.trees = args.trees || {}
 
         this.userTimeMap = args.userTimeMap || {} ;
-        this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.getId()] || 0
+        this.timer = user.loggedIn && this.userTimeMap && this.userTimeMap[user.get()] || 0
         this.timerId = null;
 
         this.userProficiencyMap = args.userProficiencyMap || {}
-        this.proficiency = user.loggedIn && this.userProficiencyMap[user.getId()] || PROFICIENCIES.UNKNOWN
+        this.proficiency = user.loggedIn && this.userProficiencyMap[user.get()] || PROFICIENCIES.UNKNOWN
 
         this.userInteractionsMap = args.userInteractionsMap || {}
-        this.interactions = user.loggedIn && this.userInteractionsMap[user.getId()] || []
+        this.interactions = user.loggedIn && this.userInteractionsMap[user.get()] || []
 
         this.userStrengthMap = args.userStrengthMap || {}
-        this.lastRecordedStrength = this.userStrengthMap[user.getId()] || INITIAL_LAST_RECORDED_STRENGTH
+        this.lastRecordedStrength = this.userStrengthMap[user.get()] || INITIAL_LAST_RECORDED_STRENGTH
 
         this.userReviewTimeMap = args.userReviewTimeMap || {}
-        this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.getId()] || 0
+        this.nextReviewTime = user.loggedIn && this.userReviewTimeMap[user.get()] || 0
 
         this.userOverdueMap = args.userOverdueMap || {}
-        this.overdue = user.loggedIn && this.userOverdueMap[user.getId()] || false
+        this.overdue = user.loggedIn && this.userOverdueMap[user.get()] || false
         if (!this.overdue && this.hasInteractions()){
             if(this.determineIfOverdueNow()){
                 this.setOverdue(true)
@@ -58,7 +57,7 @@ export default class ContentItem {
         }
 
         this.studiers = args.studiers || {}
-        this.inStudyQueue = user.loggedIn && this.studiers[user.getId()]
+        this.inStudyQueue = user.loggedIn && this.studiers[user.get()]
 
         this.exercises = args.exercises || {}
 
@@ -142,7 +141,7 @@ export default class ContentItem {
         // console.log(this.id, "setOverdue called with parameter of ", overdue)
         this.overdue = overdue
 
-        this.userOverdueMap[user.getId()] = this.overdue
+        this.userOverdueMap[user.get()] = this.overdue
 
         if (!updateInDB){
             return
@@ -170,7 +169,7 @@ export default class ContentItem {
     markOverdue(){
         this.clearOverdueTimeout()
         this.setOverdue(true)
-        const colorForMessage = proficiencyToColor(this.proficiency)
+        const colorForMessage = ProficiencyUtils.getColor(this.proficiency)
         message(
             {
                 text: "Click to review " + getLabelFromContent(this),
@@ -178,7 +177,7 @@ export default class ContentItem {
                 duration: 10000,
                 onclick: (snack) => {
                     store.commit('openReview', this.id)
-                    // store.commit('openNode', this.getTreeId())
+                    // stores.commit('openNode', this.getTreeId())
                     snack.hide()
                 }
             }
@@ -252,7 +251,7 @@ export default class ContentItem {
     }
 
     saveTimer(){
-        this.userTimeMap[user.getId()] = this.timer
+        this.userTimeMap[user.get()] = this.timer
 
         var updates = {
             userTimeMap: this.userTimeMap
@@ -308,25 +307,25 @@ export default class ContentItem {
     }
     clearInteractions(addChangeToDB){
         const me = this
-        delete this.studiers[user.getId()]
+        delete this.studiers[user.get()]
 
         this.proficiency = PROFICIENCIES.UNKNOWN
-        delete this.userProficiencyMap[user.getId()]
+        delete this.userProficiencyMap[user.get()]
 
         this.interactions = []
-        delete this.userInteractionsMap[user.getId()]
+        delete this.userInteractionsMap[user.get()]
 
         this.lastRecordedStrength = INITIAL_LAST_RECORDED_STRENGTH
-        delete this.userStrengthMap[user.getId()]
+        delete this.userStrengthMap[user.get()]
 
         this.nextReviewTime = 0
-        delete this.userReviewTimeMap[user.getId()]
+        delete this.userReviewTimeMap[user.get()]
 
         this.overdue = false
-        delete this.userOverdueMap[user.getId()]
+        delete this.userOverdueMap[user.get()]
 
         this.timer = 0
-        delete this.userTimeMap[user.getId()]
+        delete this.userTimeMap[user.get()]
 
         this.calculateAggregationTimerForTreeChain()
         this.recalculateProficiencyAggregationForTreeChain(addChangeToDB)
@@ -404,7 +403,7 @@ export default class ContentItem {
         const treeId = this.getTreeId()
         const tree = await Trees.get(treeId)
 
-        let parentId = tree.parentId;
+        let parentId = tree.treeData.parentId;
         let parent
         let num = 1
         while (parentId) {
@@ -412,7 +411,7 @@ export default class ContentItem {
             store.commit('syncGraphWithNode', parentId)
             // PubSub.publish('syncGraphWithNode', parentId)
             parent = await Trees.get(parentId)
-            parentId = parent.parentId
+            parentId = parent.treeData.parentId
             num++
         }
     }
@@ -446,7 +445,7 @@ export default class ContentItem {
 
         //content
         //1. userProficiencyMap
-        this.userProficiencyMap[user.getId()] = this.proficiency
+        this.userProficiencyMap[user.get()] = this.proficiency
 
         //interactions
 
@@ -463,31 +462,31 @@ export default class ContentItem {
 
         const interaction = {timestamp: nowMilliseconds, timeSpent: this.timer, millisecondsSinceLastInteraction, proficiency: this.proficiency, previousInteractionStrength, currentInteractionStrength}
         this.interactions.push(interaction)
-        //store user interactions under content
-        this.userInteractionsMap[user.getId()] = this.interactions
+        //stores user interactions under content
+        this.userInteractionsMap[user.get()] = this.interactions
 
         //2. userInteractions
 
-        //store contentItem interaction under users
+        //stores contentItem interaction under users
         //3. user addInteraction
         user.addInteraction(this.id, interaction, addChangeToDB)
 
-        //store contentItem strength and timestamp under userStrengthMap
+        //stores contentItem strength and timestamp under userStrengthMap
         //4. userStrengthMap
         this.lastRecordedStrength = {value: currentInteractionStrength, timestamp}
-        this.userStrengthMap[user.getId()] = this.lastRecordedStrength
-        //user review time map //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
+        this.userStrengthMap[user.get()] = this.lastRecordedStrength
+        //user review time sourceMap //<<<duplicate some of the information in the user database <<< we should really start using a graph or relational db to avoid this . . .
         const millisecondsTilNextReview = 1000 * calculateSecondsTilCriticalReviewTime(currentInteractionStrength)
         this.nextReviewTime = timestamp + millisecondsTilNextReview
 
         //5. userReviewTimeMap
-        this.userReviewTimeMap[user.getId()] = this.nextReviewTime
+        this.userReviewTimeMap[user.get()] = this.nextReviewTime
 
         this.setOverdueTimeout()
 
         this.resortTrees()
         // user.addMutation('itemStudied', this.id)
-        // store.commit('itemStudied', this.id)
+        // stores.commit('itemStudied', this.id)
 
         if (!addChangeToDB) {
             return
@@ -570,7 +569,7 @@ export default class ContentItem {
         const sign = decibelIncrease >= 0 ? "+" : "" // when less than 0 the JS num will already have a "-" sign
         const msg = sign + Math.round(decibelIncrease) + text + whenToReview
         // const color = getColor
-        const color = proficiencyToColor(this.proficiency)
+        const color = ProficiencyUtils.getColor(this.proficiency)
         message({text: msg, color})
     }
     getLabel(){

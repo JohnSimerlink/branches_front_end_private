@@ -2,7 +2,7 @@ const uriContentMap = {} //cache
 if (typeof window !== 'undefined'){
     window.uriContentMap = uriContentMap
 }
-//URI contentId map
+//URI contentId sourceMap
 export default class UriContentMap {
     static get(uri) {
         uri = 'null/Everything' + uri
@@ -10,7 +10,7 @@ export default class UriContentMap {
         if(!uri){
             throw "UriContentMap.get(uri) error! uri empty!"
         }
-        console.log('uri content map get is', uri)
+        console.log('uri content sourceMap get is', uri)
         return new Promise((resolve, reject) => {
             if (uriContentMap[uri]){
                 resolve(uriContentMap[uri])

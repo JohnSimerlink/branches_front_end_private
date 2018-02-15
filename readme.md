@@ -11,7 +11,7 @@
 
 - `npm install`
 - `npm run dev`
-- `npm run test-watch`
+- `./node_modules/.bin/gulp coverage`
 
 ## Documents
 - [The Secret Master Plan](http://branches-app.com/theplan)

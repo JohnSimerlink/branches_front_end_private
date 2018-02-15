@@ -1,0 +1,30 @@
+1) when a new leaf sigmaNode is added, a sigmaEdge with the color of that sigmaNode, must be added to that node's parent . ..  unless that node does not have a parent (e.g. it is the root node of the map)
+2) when a sigmaNode's userContentData is modified, the sigmaNode's color may change. This means it's parent connecting edge must change too. This means whenever SigmaNodesUpdater calls sigmaNode.receiveNewContentUserData, some other object or mutation must get called to handle the sigmaEdgeUpdates
+
+class SigmaEdgeUpdater
+-sigmaInstanceGraph (which has a .edges() property)
+// requires that the node with id of treeId is renderable (e.g. has a parentId (or a parentId of 'nothing'))
++updateParentEdgeColorLeaf(treeId, contentUserProficiency) {
+  const sigmaGraph = store.getters.sigmaGraph
+  const treeNode = sigmaGraph.nodes(treeId)
+  if (!treeNode) {
+    throw new Error('SigmaInstanceGraphNode with id of ', treeNode, ' could not be found')
+    return
+  }
+  const edgeId = createEdgeId({
+    parentId: treeNode.parentId,
+    treeId,
+  })
+  const edge = sigmaGraph.edges(edgeId)
+  if (!edge) {
+    throw new Error('SigmaInstanceGraphEdge with id of ', edgeId, ' could not be found')
+    return
+  }
+  const color = ProficiencyUtils.getColor(contentUserProficiency)
+}
+
+
+// what about when it's a category node -- solve this later
+
+
+// problem with this is sigmaEdgeUpdater needs access to sigmaInstance, which isn't initialized until after the object graph is . . . . . so to solve this, we will pass the sigmaInstance in somehow. . . Hmm we'll just access sigmaInstance through the store.state object . . . . but we're not supposed to be able to access state through the store object . ..  Store is only for commits . . . If we want to access an object it has to be through getters .. . i guess we will have sigmaEdgeUpdate access it through store.getters.sigmaGraph

@@ -1,10 +1,6 @@
-var PROFICIENCIES = {
-    UNKNOWN: 0,
-    ONE: 12.5,
-    TWO: 37.5,
-    THREE: 62.5,
-    FOUR: 87.5,// DON"T make this 100. bc 100/100 is 1. and log of 1 is 0. and n/0 is undefined, which is what was happening in our math.
-}
+import sigma from '../../sigma.core'
+import {ProficiencyUtils} from '../../../../app/objects/proficiency/ProficiencyUtils'
+import {PROFICIENCIES} from "../../../../app/objects/proficiency/proficiencyEnum";
 
 const NODE_TYPES = {
     SHADOW_NODE: 9100,
@@ -29,9 +25,6 @@ function proficiencyToColor(proficiency){
     if (proficiency > PROFICIENCIES.UNKNOWN) return Globals.colors.proficiency_1;
     return Globals.colors.proficiency_unknown;
 }
-;(function() {
-  'use strict';
-
   sigma.utils.pkg('sigma.canvas.nodes');
 
   /**
@@ -42,16 +35,17 @@ function proficiencyToColor(proficiency){
    * @param  {configurable}             settings The settings function.
    */
   sigma.canvas.nodes.def = function(node, context, settings) {
+      // console.log("canvas nodes def called", node, context, settings)
       if (node.type === NODE_TYPES.SHADOW_NODE){
           return
       }
-      if (node.trailingDots){
-          renderTrailingDots(node, context, settings)
-      }
-      if (node.content.type === 'heading') {
-          renderHeading(node, context, settings)
-          return
-      }
+      // if (node.trailingDots){
+      //     renderTrailingDots(node, context, settings)
+      // }
+      // if (node.content && node.content.type === 'heading') {
+      //     renderHeading(node, context, settings)
+      //     return
+      // }
 
       var prefix = settings('prefix') || '';
 
@@ -59,36 +53,89 @@ function proficiencyToColor(proficiency){
       context.fillStyle = node.color || settings('defaultNodeColor');
       var x = node[prefix + 'x']
       var y = node[prefix + 'y']
-      if (window.awaitingEdgeConnection){
-        if (node.content.type !== 'heading' && node.state !== 'awaitingEdgeConnection'){
-            context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), 0)
-            // size = size * 1.5
-        }
-      }
+      // if (window.awaitingEdgeConnection){
+      //   if (node.content.type !== 'heading' && node.state !== 'awaitingEdgeConnection'){
+      //       context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), 0)
+      //       // size = size * 1.5
+      //   }
+      // }
       context.font="Fredoka One"
-      if (node.state == 'awaitingEdgeConnection'){
-           // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-           var haloSize = size * window.haloSizeScalingFactor
+      // if (node.state == 'awaitingEdgeConnection'){
+      //      // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
+      //      var haloSize = size * window.haloSizeScalingFactor
+      //
+      //      context.beginPath()
+      //      // context.fillStyle = 'black'
+      //      context.strokeStyle = 'black'
+      //      context.arc(x, y,haloSize,0,Math.PI * 2,true );
+      //      context.stroke()
+      // }
 
-           context.beginPath()
-           // context.fillStyle = 'black'
-           context.strokeStyle = 'black'
-           context.arc(x, y,haloSize,0,Math.PI * 2,true );
-           context.stroke()
+      // console.log("node, render called ", node, node.colorSlices)
+      // if (node.colorSlices && node.colorSlices.length) {
+      //     console.log("render Node has colorSlices")
+      //     for (let {color, start, end} in node.colorSlices) {
+      //         context.beginPath()
+      //         context.fillStyle = color
+      //         context.arc(x, y, size, start, end, true)
+      //         console.log('render context for this slice is', context)
+      //     }
+      //     context.closePath()
+      //     context.fill()
+      // } else {
+      // const colorSlices =[
+      //   {
+      //     color: 'purple',
+      //     start: Math.PI * -1 /2,
+      //     end: 3 * Math.PI / 2,
+      //   },
+      if (node.colorSlices) {
+          for (let colorSlice of node.colorSlices) {
+              // console.log("render for loop", colorSlice)
+              context.fillStyle = colorSlice.color
+              context.beginPath()
+              context.arc(
+                  x,
+                  y,
+                  size,
+                  colorSlice.start,
+                  colorSlice.end,
+                  true
+              )
+              context.closePath()
+              context.fill()
+          }
+      } else {
+          context.fillStyle = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
+          context.beginPath()
+          context.arc(
+              x,
+              y,
+              size,
+              0,
+              2 * Math.PI,
+              true
+          )
+          context.closePath()
+          context.fill()
       }
-
-      context.beginPath();
-      context.arc(
-        x,
-        y,
-        size,
-        0,
-        Math.PI * 2,
-        true
-      );
-
-      context.closePath();
-      context.fill();
+      // ]
+          // console.log("render Node does not have colorSlices", node.colorSlices)
+          // context.fillStyle = 'purple'
+          // context.beginPath();
+          // context.arc(
+          //     x,
+          //     y,
+          //     size,
+          //     Math.PI / 2 * -1,
+          //     3 * Math.PI / 2,
+          //     true
+          // );
+          //
+          // context.closePath();
+          // context.fill();
+      // }
+      // console.log('NODE FINISHED DRAWING', node)
 
       if (node.overdue){
           var fontSize = Math.floor(size * 1.414)
@@ -109,19 +156,18 @@ function proficiencyToColor(proficiency){
       var lineWidth = context.lineWidth
       if (node.active){
           // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-          var haloSize = size  + 2
+          var haloSize = size + 2
 
           context.strokeStyle = 'blue'
           context.lineWidth = 4
           var center = context.beginPath()
           // context.fillStyle = 'black'
-          context.arc(x, y,haloSize,0,Math.PI * 2,true );
+          context.arc(x, y, haloSize, 0, Math.PI * 2, true);
           context.stroke()
       }
       context.lineWidth = lineWidth
 
   };
-})();
 
 function renderHeading(node,context,settings){
     var prefix = settings('prefix') || '';
@@ -137,15 +183,15 @@ function renderHeading(node,context,settings){
 
     var proficiencyStats = node.proficiencyStats
 
-    if(window.awaitingEdgeConnection){
-        var haloSize = size * window.haloSizeScalingFactor
-
-        var center = context.beginPath()
-        // context.fillStyle = 'black'
-        context.strokeStyle = 'white'
-        context.arc(x, y, haloSize, 0, Math.PI * 2, true);
-        context.stroke()
-    }
+    // if(window.awaitingEdgeConnection){
+    //     var haloSize = size * window.haloSizeScalingFactor
+    //
+    //     var center = context.beginPath()
+    //     // context.fillStyle = 'black'
+    //     context.strokeStyle = 'white'
+    //     context.arc(x, y, haloSize, 0, Math.PI * 2, true);
+    //     context.stroke()
+    // }
 
     if (! (proficiencyStats instanceof Object)){
 
@@ -265,19 +311,19 @@ function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color)
 }
 
 //in radians
-function getAngleFromCenter(x, y){
-    let width = x - window.xCenter
-    let height = y - window.yCenter
-
-    let reflect = false
-    if (width < 0){
-        width = width * -1
-        reflect = true
-    }
-    let angle = Math.atan(height / width)
-    if (reflect){
-        angle = Math.PI - angle
-    }
-    console.log('angleFromCenter', width, height, '->', angle)
-    return angle
-}
+// function getAngleFromCenter(x, y){
+//     let width = x - window.xCenter
+//     let height = y - window.yCenter
+//
+//     let reflect = false
+//     if (width < 0){
+//         width = width * -1
+//         reflect = true
+//     }
+//     let angle = Math.atan(height / width)
+//     if (reflect){
+//         angle = Math.PI - angle
+//     }
+//     console.log('angleFromCenter', width, height, '->', angle)
+//     return angle
+// }

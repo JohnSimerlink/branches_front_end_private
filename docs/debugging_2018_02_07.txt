@@ -1,0 +1,13 @@
+store source it was searching was .4927
+FAILING TESTS
+app integration 1, 2, 3,
+TreeUserLoader
+TreeuserDeseriallizer
+TreeDeserializer
+store 2tsgs
+sigmaNodesUpdater
+
+TREEUSERLOADER spec STALLS OUT!!!
+remove unused imports using webstorm code analysis tool
+and remove all the console . logs . . . <<< I should just replae those with unit tests ??
+Simplify renderManager object graph after edge updates and node updates correctly get worked out

@@ -1,20 +1,17 @@
-;(function(undefined) {
-  'use strict';
+import sigma from '../../sigma.core'
+import {DEFAULT_FONT_SIZE} from "../../../../app/core/globals";
+// Initialize packages:
+sigma.utils.pkg('sigma.canvas.hovers');
+sigma.canvas.hovers = sigma.canvas.hovers || {}
 
-  if (typeof sigma === 'undefined')
-    throw 'sigma is not declared';
-
-  // Initialize packages:
-  sigma.utils.pkg('sigma.canvas.hovers');
-
-  /**
-   * This hover renderer will basically display the label with a background.
-   *
-   * @param  {object}                   node     The node object.
-   * @param  {CanvasRenderingContext2D} context  The canvas context.
-   * @param  {configurable}             settings The settings function.
-   */
-  sigma.canvas.hovers.def = function(node, context, settings) {
+/**
+ * This hover renderer will basically display the label with a background.
+ *
+ * @param  {object}                   node     The node object.
+ * @param  {CanvasRenderingContext2D} context  The canvas context.
+ * @param  {configurable}             settings The settings function.
+ */
+sigma.canvas.hovers.def = function (node, context, settings) {
     var x,
         y,
         w,
@@ -23,26 +20,28 @@
         fontStyle = settings('hoverFontStyle') || settings('fontStyle'),
         prefix = settings('prefix') || '',
         size = node[prefix + 'size'],
-        // fontSize = (settings('labelSize') === 'fixed') ?
-        //   settings('defaultLabelSize') :
-        //   settings('labelSizeRatio') * size;
-        fontSize = window.getLabelFontSizeFromNode(node, settings)
+        fontSize = (settings('labelSize') === 'fixed') ?
+          settings('defaultLabelSize') :
+          settings('labelSizeRatio') * size;
+        fontSize = DEFAULT_FONT_SIZE
+        // fontSize = window.getLabelFontSizeFromNode(node, settings)
         // var fontSize =
 
-    // Label background:
-    context.font = (fontStyle ? fontStyle + ' ' : '') +
-      fontSize + 'px ' + (settings('hoverFont') || settings('font'));
+        // Label background:
+        context.font = (fontStyle ? fontStyle + ' ' : '') +
+        fontSize + 'px ' + (settings('hoverFont') || settings('font'));
+        fontSize = DEFAULT_FONT_SIZE
 
     context.beginPath();
     context.fillStyle = settings('labelHoverBGColor') === 'node' ?
-      (node.color || settings('defaultNodeColor')) :
-      settings('defaultHoverLabelBGColor');
+        (node.color || settings('defaultNodeColor')) :
+        settings('defaultHoverLabelBGColor');
 
     if (node.label && settings('labelHoverShadow')) {
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0;
-      context.shadowBlur = 8;
-      context.shadowColor = settings('labelHoverShadowColor');
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
+        context.shadowBlur = 8;
+        context.shadowColor = settings('labelHoverShadowColor');
     }
 
     // label textbox
@@ -74,18 +73,18 @@
     var font = context.font
     // Node border:
     if (settings('borderSize') > 0) {
-      context.strokeStyle= 'black'
-      context.font = '1px Fredoka One'
-      context.beginPath();
-      context.arc(
-        node[prefix + 'x'],
-        node[prefix + 'y'],
-        size + settings('borderSize'),
-        0,
-        2 * Math.PI,
-      );
-      // context.closePath();
-      context.stroke();
+        context.strokeStyle = 'black'
+        context.font = '1px Fredoka One'
+        context.beginPath();
+        context.arc(
+            node[prefix + 'x'],
+            node[prefix + 'y'],
+            size + settings('borderSize'),
+            0,
+            2 * Math.PI,
+        );
+        // context.closePath();
+        context.stroke();
     }
     context.font = font
 
@@ -95,16 +94,16 @@
     // Display the label:
 
     if (node.label && typeof node.label === 'string') {
-      context.shadowBlur = 0
-      context.fillStyle = (settings('labelHoverColor') === 'node') ?
-        (node.color || settings('defaultNodeColor')) :
-        settings('defaultLabelHoverColor');
+        context.shadowBlur = 0
+        context.fillStyle = (settings('labelHoverColor') === 'node') ?
+            (node.color || settings('defaultNodeColor')) :
+            settings('defaultLabelHoverColor');
+        fontSize = DEFAULT_FONT_SIZE
 
-      context.fillText(
-        node.label,
-        Math.round(node[prefix + 'x']),
-        Math.round(node[prefix + 'y'] + fontSize / 3)
-      );
+        context.fillText(
+            node.label,
+            Math.round(node[prefix + 'x']),
+            Math.round(node[prefix + 'y'] + fontSize / 3)
+        );
     }
-  };
-}).call(window);
+};

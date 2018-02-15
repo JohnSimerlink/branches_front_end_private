@@ -10,7 +10,11 @@
         "arrow-parens" : ["error", "as-needed"],
         "trailing-comma": false,
         "cyclomatic-complexity": [true, 12],
-        "member-ordering": false
+        "member-ordering": false,
+        "max-classes-per-file": false,
+        "object-literal-sort-keys": false,
+        "no-empty": false,
+        "ordered-imports": false
     },
     "rulesDirectory": [],
     "force": true

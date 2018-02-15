@@ -13,15 +13,15 @@
         </div>
         <p class="newTree-form">
             <p class="newTree-form tree-fact" v-if="contentIsFact">
-                <input type="hidden" class="newTree-parentId" v-model="parentid">
-                <span class="tree-label">Question:</span><input class='newTree-question' type='text' v-model="question"><br>
-                <span class="tree-label">Answer:</span> <input class='newTree-answer' type='text' v-model="answer"><br>
-                <button class='newTree-create-button' v-on:click="createNewTree">Create</button>
+                <input type="hidden" class="newTree-parentId" v-model="parentId">
+                <span class="tree-label">Question:</span><input class='newTree-question' type='text' ref="question" v-model="question" autofocus><br>
+                <span class="tree-label">Answer:</span> <input class='newTree-answer' type='text' v-model="answer" v-on:keyup.enter="submitForm"><br>
+                <button class='newTree-create-button' v-on:click="submitForm">Create</button>
             </p>
             <p class="newTree-form tree-heading" v-if="contentIsHeading">
-                <input type="hidden" class="newTree-parentId" v-model="parentid">
-                <span class="tree-label">Category:</span> <input class='newTree-heading' type='text' v-model="title"><br>
-                <button class='newTree-create-button' v-on:click="createNewTree">Create</button>
+                <input type="hidden" class="newTree-parentId" v-model="parentId">
+                <span class="tree-label" >Category:</span> <input class='newTree-heading' ref="category" type='text' v-model="title" v-on:keyup.enter="submitForm"><br>
+                <button class='newTree-create-button'  v-on:click="submitForm">Create</button>
             </p>
             <!--<p class="newTree-form tree-skill" v-if="contentIsSkill">-->
                 <!--<input type="hidden" class="newTree-parentId" v-model="parentid">-->

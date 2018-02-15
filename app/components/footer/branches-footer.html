@@ -1,7 +1,8 @@
 <div id="footer-container" class="footer-container">
-    <button class="footer login-button" v-on:click="login" v-if="!loggedIn">Click to Login via Facebook </button>
-    <span class='footer' v-if="loggedIn">
-        {{title}}
+    <div>Branches</div>
+    <!--<button class="footer login-button" v-on:click="login" v-if="!loggedIn">Click to Login via Facebook </button>-->
+    <!--<span class='footer' v-if="loggedIn">-->
+        <!--{{title}}-->
         <!--<a class="footer-createExercise" v-on:click='goToExerciseCreator' title="Create an Exercise">-->
             <!--<i class="fa fa-plus-square-o" aria-hidden="true"></i>-->
         <!--</a>-->
@@ -32,5 +33,5 @@
         <!--<img class='footer-photo' :src="photoURL" &lt;!&ndash;v-on:click='toggleSettingsMenu' &ndash;&gt; v-if="loggedIn">-->
         <!--<img class='footer-photo' :src="photoURL" v-if="loggedIn">-->
         <!--<span class="footer-itemsMasteredPerMinute"> {{itemsMasteredPerMinute | truncate}} Items Mastered Per Minute</span>-->
-    </span>
+    <!--</span>-->
 </div>
