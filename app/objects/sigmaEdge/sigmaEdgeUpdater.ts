@@ -5,6 +5,7 @@ import {inject, injectable} from 'inversify';
 import {createEdgeId} from './sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {log} from '../../core/log'
 
 @injectable()
 export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
@@ -15,6 +16,7 @@ export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
     }
     public updateParentEdgeColorLeaf(
         {treeId, contentUserProficiency}: {treeId: id, contentUserProficiency: PROFICIENCIES}) {
+        log('updateParentEdgeColor Leaf called')
         const sigmaGraph = this.store.getters.sigmaGraph
         const treeNode = sigmaGraph.nodes(treeId)
         if (!treeNode) {

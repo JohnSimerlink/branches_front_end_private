@@ -107,6 +107,7 @@ export interface IFamilyLoaderCore {
 // content
 
 export enum CONTENT_TYPES {
+    LOADING = 'loading',
     SKILL = 'skill',
     CATEGORY = 'heading', // heading, bc of backwards compatability
     FACT = 'fact',

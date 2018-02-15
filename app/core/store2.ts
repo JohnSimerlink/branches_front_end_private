@@ -74,6 +74,7 @@ const getters = {
         return {} as Store<any>
     }, // Getter Will get redefined later during store constructor
     sigmaGraph(state: IState, getters): ISigmaGraph {
+        log ('getters sigmaGraph called')
         if (!state.sigmaInitialized) {
             throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized')
         }

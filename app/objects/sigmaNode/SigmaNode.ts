@@ -4,6 +4,7 @@ import {log} from '../../../app/core/log'
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {
+    CONTENT_TYPES,
     IColorSlice, IContentData,
     IContentUserData, ICoordinate, IProficiencyStats,
     ISigmaNode, ITreeDataWithoutId, ITreeLocationData, ITreeUserData
@@ -107,7 +108,11 @@ export class SigmaNode implements ISigmaNode {
         this.y = y
         this.proficiencyStats = proficiencyStats
         this.aggregationTimer = aggregationTimer
-        this.content = content
+        this.content = content || {
+            type: CONTENT_TYPES.LOADING,
+            title: 'loading . . .',
+            // '' // can't be simply undefined or else sigmajs will have trouble rendering a prope
+        }
         this.contentUserData = contentUserData
         this.label = label || 'Default Node Label'
         this.size = size || DEFAULT_NODE_SIZE
