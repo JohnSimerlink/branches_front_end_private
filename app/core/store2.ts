@@ -95,7 +95,9 @@ const getters = {
         return state.userId
     },
     loggedIn(state: IState, getters): boolean {
-        return !!state.userId
+        const loggedIn = !!state.userId
+        log('getter loggedIn is ', loggedIn)
+        return loggedIn
     },
     async hasAccess(state: IState, getters): Promise<boolean> {
         return false
@@ -375,6 +377,8 @@ const mutations = {
         }
     },
     async [MUTATION_NAMES.LOGIN](state: IState, {userId}) {
+    },
+    async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId}) {
         if (!userId) {
             throw new RangeError('UserId cannot be blank')
         }
@@ -382,19 +386,15 @@ const mutations = {
             throw new Error('Can\'t log user with id of ' + userId
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
-        const user: ISyncableMutableSubscribableUser = await state.userLoader.downloadUser(userId)
-    },
-    async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId}) {
-        const userExists = await state.userUtils.userExists(userId)
-        if (!userExists) {
-            const user = state.userUtils.createUser(userId)
-            storeUserInState({user, userId, state})
+        const userExistsInDB = await state.userUtils.userExistsInDB(userId)
+        let user: ISyncableMutableSubscribableUser
+        if (!userExistsInDB) {
+            user = state.userUtils.createUserInDB(userId)
         } else {
-            mutations[MUTATION_NAMES.LOGIN](state, {userId})
+            user = await state.userLoader.downloadUser(userId)
         }
-        // first check if user exists
+        storeUserInState({user, userId, state})
         // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
-        // const user: IMutableSubscribableUser = UserDeserializer.
 
     },
     [MUTATION_NAMES.SET_USER_DATA](state: IState, {userId, userData}: ISetUserDataMutationArgs) {
@@ -403,13 +403,21 @@ const mutations = {
     [MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE](
         state: IState, {membershipExpirationDate, userId}: ISetMembershipExpirationDateArgs) {
         const user: IMutableSubscribableUser = state.users[userId]
-        const mutation: IProppedDatedMutation<FieldMutationTypes, UserPropertyNames> = {
+        const membershipDateMutation: IProppedDatedMutation<FieldMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.MEMBERSHIP_EXPIRATION_DATE,
             timestamp: Date.now(),
             type: FieldMutationTypes.SET,
             data: membershipExpirationDate
         }
-        user.addMutation(mutation)
+        user.addMutation(membershipDateMutation)
+        const activatedMutation: IProppedDatedMutation<FieldMutationTypes, UserPropertyNames> = {
+            propertyName: UserPropertyNames.EVER_ACTIVATED_MEMBERSHIP,
+            timestamp: Date.now(),
+            type: FieldMutationTypes.SET,
+            data: true
+        }
+        user.addMutation(membershipDateMutation)
+        user.addMutation(activatedMutation)
         const userData: IUserData = user.val()
         const store: Store<any> = getters.getStore()
         const mutationArgs: ISetUserDataMutationArgs = {

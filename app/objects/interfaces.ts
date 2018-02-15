@@ -452,8 +452,8 @@ export interface IMutableSubscribableUser
         IMutable<IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>> {}
 
 export interface IUserUtils {
-    userExists(userId: id): Promise<boolean>
-    createUser(userId: id)
+    userExistsInDB(userId: id): Promise<boolean>
+    createUserInDB(userId: id)
 }
 
 // UI Manager objects

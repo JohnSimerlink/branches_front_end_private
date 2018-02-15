@@ -22,6 +22,7 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
         this.firebaseRef = firebaseRef
     }
     public async downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser> {
+        log('userLoaderAutoSaver download User called', userId)
         const user = await this.userLoader.downloadUser(userId)
 
         const userFirebaseRef = this.firebaseRef.child(userId)
@@ -31,6 +32,7 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
                 syncableObject: user
             })
         userAutoSaver.start()
+        log('userAuto saver just called')
 
         return user
     }
@@ -38,6 +40,6 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
 
 @injectable()
 export class UserLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
     @inject(TYPES.IUserLoader) public userLoader: IUserLoader
 }

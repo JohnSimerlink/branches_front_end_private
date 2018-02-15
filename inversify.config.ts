@@ -230,6 +230,7 @@ import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoad
 import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgeUpdater';
 import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
 import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
+import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -356,11 +357,14 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
     myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs)
 
-    myContainer.bind<IUserLoader>(TYPES.IUserLoader).to(UserLoader)
     myContainer.bind<UserLoaderArgs>(TYPES.UserLoaderArgs).to(UserLoaderArgs)
+    myContainer.bind<IUserLoader>(TYPES.IUserLoader).to(UserLoader)
+        .whenTargetIsDefault()
+    myContainer.bind<UserLoaderAndAutoSaverArgs>(TYPES.UserLoaderAndAutoSaverArgs)
+        .to(UserLoaderAndAutoSaverArgs)
     myContainer.bind<IUserLoader>(TYPES.IUserLoader)
-        .to(UserLoader)
-        .whenTargetTagged(TAGS.USERS_REF, true)
+        .to(UserLoaderAndAutoSaver)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true)
     myContainer.bind<UserUtilsArgs>(TYPES.UserUtilsArgs).to(UserUtilsArgs)
     myContainer.bind<IUserUtils>(TYPES.IUserUtils).to(UserUtils)
 
