@@ -7,7 +7,7 @@
             <!--<span class="released">Uses spatial mapping to strengthen memory formation</span>-->
         <!--</li>-->
     <!--</ul>-->
-    <form class='checkout-form' action="/api/pay/" method="POST" v-if="stripekey">
+    <form class='checkout-form' action="/api/pay/" method="POST" enctype='application/x-www-form-urlencoded'   v-if="stripekey">
         <stripe-checkout
             class='stripe-checkout-plugin'
             :stripe-key="stripekey"
