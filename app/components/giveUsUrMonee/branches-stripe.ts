@@ -34,7 +34,7 @@ export default {
                 const serverResultPromise = request({
                     method: 'POST',
                     uri,
-                    body: payload
+                    body: JSON.stringify(payload)
                 })
                 console.log('serverResultPromise is', serverResultPromise)
                 const serverResult = await serverResultPromise
