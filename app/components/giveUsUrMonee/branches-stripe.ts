@@ -24,8 +24,8 @@ export default {
                 // me.username = '';
         me.stripekey = 'pk_live_TB07uwuUxDQZdD2M77YiRy1O';
         me.subscription = {
-            name: 'Branches Subscription',
-            description: 'Monthly Branches Subscription',
+            name: 'Branches One Month Purchase',
+            description: 'Non-Recurring Purchase to Buy One Month of Branches Membership',
             amount: 199 // $19.99 in cents
         }
         Bus.$on('vue-stripe.success', async payload => {
