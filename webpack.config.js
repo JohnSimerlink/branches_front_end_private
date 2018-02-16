@@ -5,6 +5,11 @@ var LessHintPlugin = require('lesshint-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var ProductionAndTestConfig = require('./webpack.config.productionandtest.rules.js')
 module.exports = {
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+    },
   entry: {
     regenerator: 'babel-regenerator-runtime',
     build: './app/core/bootstrap2.ts',
