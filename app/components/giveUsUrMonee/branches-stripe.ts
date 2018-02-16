@@ -30,9 +30,10 @@ export default {
         Bus.$on('vue-stripe.success', async payload => {
             try {
                 console.log('Success: ', payload);
+                const uri = 'https://' + window.location.hostname + '/api/'
                 const serverResultPromise = request({
                     method: 'POST',
-                    uri: '/api/',
+                    uri,
                     body: payload
                 })
                 console.log('serverResultPromise is', serverResultPromise)
