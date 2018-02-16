@@ -3,7 +3,11 @@ import { Bus } from 'vue-stripe';
 import './branches-stripe.less'
 import {MUTATION_NAMES} from '../../core/store2';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
-import request from 'request-promise'
+let request = require('request-promise').default
+if (!request) {
+    request = require('request-promise')
+}
+// import request from 'request-promise'
 // const request = require('request')
 
 let template = require('./branches-stripe.html').default
@@ -26,11 +30,14 @@ export default {
         Bus.$on('vue-stripe.success', async payload => {
             try {
                 console.log('Success: ', payload);
-                await request({
+                const serverResultPromise = request({
                     method: 'POST',
                     uri: '/api/',
                     body: payload
                 })
+                console.log('serverResultPromise is', serverResultPromise)
+                const serverResult = await serverResultPromise
+                console.log('serverResult is', serverResult)
                 console.log("request to server successful!")
                 const now = Date.now()
                 const thirtyDaysFromNow = now + 1000 * 60 * 60 * 24 * 30
