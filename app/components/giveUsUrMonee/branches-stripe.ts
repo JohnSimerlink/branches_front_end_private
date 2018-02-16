@@ -3,10 +3,11 @@ import { Bus } from 'vue-stripe';
 import './branches-stripe.less'
 import {MUTATION_NAMES} from '../../core/store2';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
-let request = require('request-promise').default
-if (!request) {
-    request = require('request-promise')
-}
+// let request = require('request-promise').default
+// if (!request) {
+//     request = require('request-promise')
+// }
+let axios = require('axios').default || require('axios')
 // import request from 'request-promise'
 // const request = require('request')
 
@@ -31,12 +32,19 @@ export default {
             try {
                 console.log('Success: ', payload);
                 const uri = 'https://' + window.location.hostname + '/api/'
-                const serverResultPromise = request({
-                    method: 'POST',
-                    uri,
-                    body: payload,
-                    json: true,
-                })
+                const newPayload = new URLSearchParams()
+                newPayload.append('stripeEmail', payload.email)
+                newPayload.append('stripeToken', payload.token)
+                console.log('the server payload is ', newPayload)
+                const serverResultPromise =
+                    await axios.post(uri, newPayload)
+
+                //     request({
+                //     method: 'POST',
+                //     uri,
+                //     body: payload,
+                //     json: true,
+                // })
                 console.log('serverResultPromise is', serverResultPromise)
                 const serverResult = await serverResultPromise
                 console.log('serverResult is', serverResult)
@@ -50,6 +58,7 @@ export default {
                 this.$store.commit(MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE, mutationArgs)
             } catch (error) {
                 console.error("request to server FAILED!!!!", error)
+                // TODO: I think this still allows for a user's membership to be added even if the request fails
             }
         });
         Bus.$on('vue-stripe.error', payload => {
