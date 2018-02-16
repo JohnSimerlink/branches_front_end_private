@@ -7,12 +7,12 @@
             <!--<span class="released">Uses spatial mapping to strengthen memory formation</span>-->
         <!--</li>-->
     <!--</ul>-->
-    <form class='checkout-form' action="/api/" method="POST" enctype='application/x-www-form-urlencoded'   v-if="stripekey">
+    <form class='checkout-form' v-if="stripekey">
         <stripe-checkout
             class='stripe-checkout-plugin'
             :stripe-key="stripekey"
             :product="subscription"
-            on-success="submit"
+            on-success="broadcast"
             button="Get Beta Access $1.99"
             button-class="btn btn-primary purchase-btn"
         >

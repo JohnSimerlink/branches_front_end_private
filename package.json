@@ -34,6 +34,7 @@
     "object.entries": "^1.0.4",
     "pubsub-js": "^1.5.7",
     "reflect-metadata": "^0.1.10",
+    "request-promise": "^4.2.2",
     "stripe": "^5.4.0",
     "vue": "^2.3.4",
     "vue-async-computed": "^3.3.1",
