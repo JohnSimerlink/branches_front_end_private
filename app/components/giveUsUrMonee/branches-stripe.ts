@@ -40,7 +40,7 @@ export default {
                 }
                 this.$store.commit(MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE, mutationArgs)
             } catch (error) {
-                console.error("request to server FAILED!!!!")
+                console.error("request to server FAILED!!!!", error)
             }
         });
         Bus.$on('vue-stripe.error', payload => {
