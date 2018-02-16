@@ -22,7 +22,7 @@ export default {
         // me.loggedIn = false;
             // me.user = {};
                 // me.username = '';
-        me.stripekey = 'pk_test_5ohxWhILJDRRiruf88n3Tnzw';
+        me.stripekey = 'pk_live_TB07uwuUxDQZdD2M77YiRy1O';
         me.subscription = {
             name: 'Branches Subscription',
             description: 'Monthly Branches Subscription',
