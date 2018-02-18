@@ -8,7 +8,6 @@ import {Store} from 'vuex';
 @injectable()
 
 export class AuthListener implements IAuthListener {
-
     private store: Store<any>
     constructor(@inject(TYPES.AuthListenerArgs) {
         store
@@ -17,14 +16,11 @@ export class AuthListener implements IAuthListener {
     }
     public start() {
         firebase.auth().onAuthStateChanged((user) => {
-            console.log('firebase auth state changed! ' , user)
             const mutationArgs: CreateUserOrLoginMutationArgs = {
                 userId: user.uid
             }
             this.store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, mutationArgs)
-
         })
-
     }
 }
 

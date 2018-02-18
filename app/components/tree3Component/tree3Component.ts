@@ -116,7 +116,6 @@ export class Tree3Creator implements ITree3Creator {
                     return content
                 },
                 contentUserData() {
-                    log('ContentUserData updated!')
                     this.contentUserDataLoaded = false
                     if (this.contentUserDataLocal) {
                         log('ContentUserData updated. using contentUserDataLocal!')
