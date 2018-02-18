@@ -26,7 +26,6 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
     public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
     // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        log('contentUser addMutation called', mutation)
         const propertyName: ContentUserPropertyNames = mutation.propertyName
         const propertyMutation: IDatedMutation<ContentUserPropertyMutationTypes> = {
             data: mutation.data,
@@ -41,7 +40,6 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                 this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             case ContentUserPropertyNames.PROFICIENCY:
-                log('contentUser proficiency mutation about to be called', mutation)
                 this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             case ContentUserPropertyNames.TIMER:
