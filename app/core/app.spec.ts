@@ -13,6 +13,7 @@ import {
 import {TYPES} from '../objects/types';
 import {injectionWorks} from '../testHelpers/testHelpers';
 import {App, AppArgs} from './app';
+import {partialInject} from '../testHelpers/partialInject';
 
 myContainerLoadAllModules()
 test('App:::: DI Constructor works', (t) => {
@@ -41,7 +42,16 @@ test('App:::::Should subscribe the uis to the updates in the store (Non-DI for s
     const store: IMutableSubscribableGlobalStore
         = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
 
-    const app: IApp = new App({store, UIs})
+    const app: IApp =
+        partialInject<AppArgs>({
+            konstructor: App,
+            constructorArgsType: TYPES.AppArgs,
+            injections: {
+                UIs,
+                store
+            },
+            container: myContainer
+        })
     app.start()
     const UI1SubscribeSpyCalledWith = UI1SubscribeSpy.getCall(0).args[0]
     expect(UI1SubscribeSpyCalledWith).to.deep.equal(store)
