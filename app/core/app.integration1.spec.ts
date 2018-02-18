@@ -40,7 +40,7 @@ import {MutableSubscribableTreeLocation} from '../objects/treeLocation/MutableSu
 import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
-import {App} from './app';
+import {App, AppArgs} from './app';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../objects/contentUser/SyncableMutableSubscribableContentUser';
 import {SyncableMutableSubscribableContent} from '../objects/content/SyncableMutableSubscribableContent';
@@ -117,7 +117,16 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const UIs = [canvasUI]
 
     // create app
-    const app: IApp = new App({UIs, store})
+    const app: IApp =
+        partialInject<AppArgs>({
+            konstructor: App,
+            constructorArgsType: TYPES.AppArgs,
+            injections: {
+                UIs,
+                store
+            },
+            container: myContainer
+        })
 
     app.start()
     const mutation: ITypeIdProppedDatedMutation<ContentUserPropertyMutationTypes> = {
@@ -206,7 +215,16 @@ test('Adding a mutation into the global stores for a content data,' +
     const UIs = [canvasUI]
 
     // create app
-    const app: IApp = new App({UIs, store})
+    const app: IApp =
+        partialInject<AppArgs>({
+            konstructor: App,
+            constructorArgsType: TYPES.AppArgs,
+            injections: {
+                UIs,
+                store
+            },
+            container: myContainer
+        })
 
     app.start()
     const newAnswer = 'Columbus!!'
@@ -304,7 +322,16 @@ test('Adding a mutation into the global stores for a tree user data,' +
     const UIs = [canvasUI]
 
     // create app
-    const app: IApp = new App({UIs, store})
+    const app: IApp =
+        partialInject<AppArgs>({
+            konstructor: App,
+            constructorArgsType: TYPES.AppArgs,
+            injections: {
+                UIs,
+                store
+            },
+            container: myContainer
+        })
 
     app.start()
     const newAnswer = 'Columbus!!'
@@ -390,7 +417,16 @@ test('Adding a mutation into the global stores for a tree location data,' +
     const UIs = [canvasUI]
 
     // create app
-    const app: IApp = new App({UIs, store})
+    const app: IApp =
+        partialInject<AppArgs>({
+            konstructor: App,
+            constructorArgsType: TYPES.AppArgs,
+            injections: {
+                UIs,
+                store
+            },
+            container: myContainer
+        })
 
     app.start()
     const newAnswer = 'Columbus!!'

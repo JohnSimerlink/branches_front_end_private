@@ -953,6 +953,15 @@ export interface ITreeLocationDataFromFirebase {
         val: ICoordinate
     },
 }
+export interface CreateUserOrLoginMutationArgs {
 
+}
+
+export interface IStartable {
+    start()
+}
+// login
+export interface IAuthListener extends IStartable {
+}
 // ui
 export interface IUI extends ISubscriber<ITypeAndIdAndValUpdates> {}

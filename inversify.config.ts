@@ -44,6 +44,7 @@ import {
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
+    IAuthListener,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -231,6 +232,7 @@ import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/
 import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
 import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
 import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
+import {AuthListener, AuthListenerArgs} from './app/objects/authListener/authListener';
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -744,6 +746,11 @@ export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
 })
 
+export const login = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<AuthListenerArgs>(TYPES.AuthListenerArgs).to(AuthListenerArgs)
+    bind<IAuthListener>(TYPES.IAuthListener).to(AuthListener)
+})
+
 export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const globalStoreSingletonArgs = myContainer.get<MutableSubscribableGlobalStoreArgs>
     (TYPES.MutableSubscribableGlobalStoreArgs)
@@ -803,21 +810,23 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
 })
 
 export function myContainerLoadAllModules() {
-    myContainer.load(treeStoreSourceSingletonModule)
-    myContainer.load(stores)
+    myContainerLoadAllModulesExceptFirebaseRefsPart1()
     myContainer.load(firebaseReferences)
-    myContainer.load(loaders)
-    myContainer.load(rendering)
-    myContainer.load(components)
-    myContainer.load(dataObjects)
-    myContainer.load(app)
-    myContainer.load(misc)
-    myContainer.load(storeSingletons)
+    myContainerLoadAllModulesExceptFirebaseRefsPart2()
 }
 export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs() {
     // myContainer.load(treeStoreSourceSingletonModule)
     myContainer.load(stores)
     // myContainer.load(firebaseReferences)
+    myContainerLoadAllModulesExceptFirebaseRefs()
+}
+
+function myContainerLoadAllModulesExceptFirebaseRefsPart1() {
+    myContainer.load(login)
+    myContainer.load(treeStoreSourceSingletonModule)
+    myContainer.load(stores)
+}
+function myContainerLoadAllModulesExceptFirebaseRefsPart2() {
     myContainer.load(loaders)
     myContainer.load(rendering)
     myContainer.load(components)
@@ -826,18 +835,10 @@ export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFireba
     myContainer.load(misc)
     myContainer.load(storeSingletons)
 }
-
 export function myContainerLoadAllModulesExceptFirebaseRefs() {
-    myContainer.load(treeStoreSourceSingletonModule)
-    myContainer.load(stores)
+    myContainerLoadAllModulesExceptFirebaseRefsPart1()
     // myContainer.load(firebaseReferences)
-    myContainer.load(loaders)
-    myContainer.load(rendering)
-    myContainer.load(components)
-    myContainer.load(dataObjects)
-    myContainer.load(app)
-    myContainer.load(misc)
-    myContainer.load(storeSingletons)
+    myContainerLoadAllModulesExceptFirebaseRefsPart2()
 }
 
 export {myContainer}
