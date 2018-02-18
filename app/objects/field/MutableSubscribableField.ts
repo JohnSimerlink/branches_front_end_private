@@ -35,7 +35,6 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         this.updates.val = field
     }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {
-        log('subscribable mutable field add Mutation called called', mutation,)
         switch (mutation.type) {
             case FieldMutationTypes.SET:
                 this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?

@@ -158,21 +158,10 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             return this.addEditMutation(mutation)
         }
     }
-    public callCallbacks() {
-        super.callCallbacks()
-    }
 
     public mutations(): Array<ITypeIdProppedDatedMutation<AllPropertyMutationTypes>> {
         throw new Error('Method not implemented.');
     }
-    public startPublishing() {
-        this.treeStore.startPublishing()
-        this.contentStore.startPublishing()
-        this.treeUserStore.startPublishing()
-        this.contentUserStore.startPublishing()
-        this.treeLocationStore.startPublishing()
-    }
-
 }
 
 @injectable()
