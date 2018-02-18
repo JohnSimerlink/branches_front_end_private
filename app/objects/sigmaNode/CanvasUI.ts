@@ -19,7 +19,8 @@ export class CanvasUI implements IUI  {
         this.sigmaNodesUpdater = sigmaNodesUpdater
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        obj.onUpdate(this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater))
+        const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater)
+        obj.onUpdate(handleUpdate)
     }
 }
 
