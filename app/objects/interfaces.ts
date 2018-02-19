@@ -44,7 +44,7 @@ export interface IContentItem {
 //     deserializeFromDB(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
 // }
 export interface ISigmaNodeLoader {
-    loadIfNotLoaded(sigmaid: id)
+    loadIfNotLoaded(sigmaid: id): Promise<ISigmaLoadData>
 }
 export interface ITreeLoader {
     getData(treeId: id): ITreeDataWithoutId

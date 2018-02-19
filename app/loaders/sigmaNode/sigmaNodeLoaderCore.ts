@@ -44,7 +44,6 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
         if (!treeDataWithoutId) {
             return
         }
-
         const contentDataPromise: Promise<IContentData> = this.contentLoader.downloadData(treeDataWithoutId.contentId)
         const contentUserDataPromise: Promise<IContentUserData> = this.contentUserLoader.downloadData({
             contentId: treeDataWithoutId.contentId,
