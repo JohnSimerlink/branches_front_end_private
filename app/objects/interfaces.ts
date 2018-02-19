@@ -801,6 +801,7 @@ export interface ISubscribableContentUserStoreSource
 export interface ISigmaGraph {
     addNode(node: ISigmaNodeData)
     addEdge(edge: ISigmaEdgeData)
+    nodes(id: id): ISigmaNode
 }
 export interface ISigmaGraphData {
     nodes: ISigmaNodeData[]
@@ -863,6 +864,9 @@ export interface ITreeData extends ITreeDataWithoutId {
     id: string;
 }
 
+export interface IAddContentInteractionMutationArgs {
+   contentUserId, proficiency, timestamp
+}
 export interface ICreateTreeMutationArgs {
     parentId: id, contentId: id, children?: id[]
 }

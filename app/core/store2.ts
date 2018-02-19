@@ -12,7 +12,7 @@ import {
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
-    ISetMembershipExpirationDateArgs,
+    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -193,7 +193,9 @@ const mutations = {
         state.userId = userId
     },
 // TODO: if contentUser does not yet exist in the DB create it.
-    [MUTATION_NAMES.ADD_CONTENT_INTERACTION](state: IState, {contentUserId, proficiency, timestamp}) {
+    [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
+        state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
+    ) {
         const id = contentUserId
         const objectType = ObjectTypes.CONTENT_USER
         const propertyName = ContentUserPropertyNames.PROFICIENCY;
