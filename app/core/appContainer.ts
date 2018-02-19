@@ -57,7 +57,7 @@ export class AppContainer {
         this.storeSourceUpdateListener = storeSourceUpdateListener
         this.app = app
     }
-    public async start() {
+    public start() {
         configureSigma(sigma)
         this.renderedNodesManager.subscribe(this.sigmaRenderManager)
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something

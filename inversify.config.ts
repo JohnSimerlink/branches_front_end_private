@@ -384,27 +384,12 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>(TYPES.TreeLocationLoaderAndAutoSaverArgs)
         .to(TreeLocationLoaderAndAutoSaverArgs)
 
-    myContainer.bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
-        .to(AutoSaveMutableSubscribableTreeStoreArgs)
-
-    myContainer.bind<AutoSaveMutableSubscribableTreeUserStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
-        .to(AutoSaveMutableSubscribableTreeUserStoreArgs)
-
-    myContainer.bind<AutoSaveMutableSubscribableTreeLocationStoreArgs>
-    (TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
-        .to(AutoSaveMutableSubscribableTreeLocationStoreArgs)
-
-    myContainer.bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
-        .to(AutoSaveMutableSubscribableContentStoreArgs)
-
-    myContainer.bind<AutoSaveMutableSubscribableContentUserStoreArgs>
-    (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
-        .to(AutoSaveMutableSubscribableContentUserStoreArgs)
-
     myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs)
     myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
     myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs)
     myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
+        .inSingletonScope()
+        .whenTargetIsDefault()
 
     myContainer.bind<IFamilyLoader>(TYPES.IFamilyLoader).to(FamilyLoader)
     myContainer.bind<FamilyLoaderArgs>(TYPES.FamilyLoaderArgs).to(FamilyLoaderArgs)
@@ -512,6 +497,23 @@ export const stores =
     bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
 
     // auto save stores
+    bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeStoreArgs)
+
+    bind<AutoSaveMutableSubscribableTreeUserStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeUserStoreArgs)
+
+    bind<AutoSaveMutableSubscribableTreeLocationStoreArgs>
+    (TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeLocationStoreArgs)
+
+    bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
+        .to(AutoSaveMutableSubscribableContentStoreArgs)
+
+    bind<AutoSaveMutableSubscribableContentUserStoreArgs>
+    (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
+        .to(AutoSaveMutableSubscribableContentUserStoreArgs)
+
     bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
         .to(AutoSaveMutableSubscribableTreeStore)
         .whenTargetTagged(TAGS.AUTO_SAVER, true)
@@ -752,23 +754,18 @@ export const login = new ContainerModule((bind: interfaces.Bind, unbind: interfa
 })
 
 export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    const globalStoreSingletonArgs = myContainer.get<MutableSubscribableGlobalStoreArgs>
-    (TYPES.MutableSubscribableGlobalStoreArgs)
-
-    const globalStoreSingleton: IMutableSubscribableGlobalStore
-        = new MutableSubscribableGlobalStore(globalStoreSingletonArgs)
 
     bind<IMutableSubscribableGlobalStore>
-    (TYPES.IMutableSubscribableGlobalStore).toConstantValue(globalStoreSingleton)
+    (TYPES.IMutableSubscribableGlobalStore)
+        .to(MutableSubscribableGlobalStore)
+        .inSingletonScope()
+        .whenTargetIsDefault()
+        // .toConstantValue(globalStoreSingleton)
 
-    const branchesStoreArgs =
-        myContainer.get<BranchesStoreArgs>
-        (TYPES.BranchesStoreArgs)
-
-    const branchesStoreSingleton: BranchesStore
-        = new BranchesStore(branchesStoreArgs)
-
-    bind<BranchesStore>(TYPES.BranchesStore).toConstantValue(branchesStoreSingleton)
+    bind<BranchesStore>(TYPES.BranchesStore)
+        .to(BranchesStore)
+        .inSingletonScope()
+        .whenTargetIsDefault()
 
     // rendering singletons
     const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs = myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs)
@@ -785,22 +782,14 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
     // contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
     // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
 
-    const sigmaRenderManagerSingletonArgs: SigmaRenderManagerArgs
-    = myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs)
-
-    const sigmaRenderManagerSingleton: ISigmaRenderManager
-    = new SigmaRenderManager(sigmaRenderManagerSingletonArgs)
-
     bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        .toConstantValue(sigmaRenderManagerSingleton).whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
-
-    const sigmaNodesUpdaterSingletonArgs: SigmaNodesUpdaterArgs
-        = myContainer.get<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs)
-    const sigmaNodeUpdaterSingleton: ISigmaNodesUpdater
-        = new SigmaNodesUpdater(sigmaNodesUpdaterSingletonArgs)
+        .to(SigmaRenderManager)
+        .inSingletonScope()
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
-        .toConstantValue(sigmaNodeUpdaterSingleton)
+        .to(SigmaNodesUpdater)
+        .inSingletonScope()
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 
     const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
@@ -810,9 +799,8 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
 })
 
 export function myContainerLoadAllModules() {
-    myContainerLoadAllModulesExceptFirebaseRefsPart1()
     myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefsPart2()
+    myContainerLoadAllModulesExceptFirebaseRefs()
 }
 export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs() {
     // myContainer.load(treeStoreSourceSingletonModule)
@@ -822,18 +810,33 @@ export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFireba
 }
 
 function myContainerLoadAllModulesExceptFirebaseRefsPart1() {
+    myContainer.load(misc)
     myContainer.load(login)
     myContainer.load(treeStoreSourceSingletonModule)
     myContainer.load(stores)
 }
-function myContainerLoadAllModulesExceptFirebaseRefsPart2() {
-    myContainer.load(loaders)
-    myContainer.load(rendering)
-    myContainer.load(components)
+function loadDataObjects() {
     myContainer.load(dataObjects)
-    myContainer.load(app)
-    myContainer.load(misc)
+}
+function loadLoaders() {
+    myContainer.load(loaders)
+}
+function loadRendering() {
+    myContainer.load(rendering)
+}
+function loadStoreSingletons() {
     myContainer.load(storeSingletons)
+}
+function loadComponents() {
+    myContainer.load(components)
+}
+function myContainerLoadAllModulesExceptFirebaseRefsPart2() {
+    loadDataObjects()
+    loadRendering()
+    loadLoaders()
+    loadStoreSingletons()
+    loadComponents()
+    myContainer.load(app)
 }
 export function myContainerLoadAllModulesExceptFirebaseRefs() {
     myContainerLoadAllModulesExceptFirebaseRefsPart1()
