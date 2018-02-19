@@ -30,8 +30,8 @@ test('SpecialTreeLoader', async (t) => {
         },
         children: {
             val: {
-            2948: true,
-            2947: true,
+                2948: true,
+                2947: true,
             }
         }
     }
@@ -46,8 +46,8 @@ test('SpecialTreeLoader', async (t) => {
     const specialTreeLoader: ITreeLoader =
         new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap})
 
-    const treeDataPromise = specialTreeLoader.downloadData(treeId)
     childFirebaseRef.fakeEvent('value', undefined, sampleTreeData)
+    const treeDataPromise = specialTreeLoader.downloadData(treeId)
     childFirebaseRef.flush()
     setTimeout(() => {}, 0)
     await treeDataPromise
