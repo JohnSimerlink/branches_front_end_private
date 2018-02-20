@@ -1,0 +1,26 @@
+loaders must come before storesSingletons
+
+
+canvas UI must be loaded before storeSingletons container
+currently canvasUI is in rendering . .. so that would imply rendering must be loaded before storeSingletons container
+
+ACTION - so we just switched the order of loadDataObjects and loadRendering
+
+now loadStoreSingletons needs a binding for AUtoSaveMutableSubscribableTreeStoreArgs bound beforehand. we currently have that in loaders. which right now is after storeSingletons. . ..  let's put it in stores.
+
+----
+NOW LOADsTOREsingletons needs a binding for IUserLoader
+
+
+
+
+BranchKnowledgeWreckCollege
+
+
+94-97 --- opening
+98-151 --- creation of new child
+	105--contentId created with a766441
+	111/112 - treeId just created is dd69ae8, with a parentId of 3ffe40
+	111- tree initialSave val <<< YES IS CREATED IN DB
+	147 - initialSave for tree location << YES IS CREATED IN DB
+
