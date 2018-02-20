@@ -80,8 +80,6 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         if (this.broadcastedNodes[treeId]) {
             return
         }
-        log('node with id of ' + treeId + ' about to be broadcasted!',
-            this.treeDataLoadedIdsSet, this.treeLocationDataLoadedIdsSet)
         this.broadcastedNodes[treeId] = true
         this.broadcastNewNodeUpdate(treeId)
         this.broadcastNewEdgesForEdgesWaitingOnNode(treeId)
@@ -97,7 +95,6 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
                 edgeIdsToCreate.push(edgeId)
             }
         }
-        log('renderable edges are ', edgeIdsToCreate)
         if (edgeIdsToCreate.length) {
             this.broadcastNewEdgesUpdate(edgeIdsToCreate)
         }
@@ -105,7 +102,6 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
     private broadcastNewEdgesForEdgesWaitingOnNode(treeId: id) {
         const edgesForTreeId: id[] = this.treeIdEdgeIdsMap.get(treeId)
         if (edgesForTreeId.length) {
-            log('edges for treeId ', treeId, 'are ', edgesForTreeId)
             this.broadcastIfEdgesRenderable(edgesForTreeId)
         }
     }

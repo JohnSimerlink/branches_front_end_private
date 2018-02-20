@@ -261,7 +261,6 @@ const mutations = {
         }
         const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
         const treeIdString = treeId as any as id
-        console.log('J14F1 treeId just created is ', treeId)
 
         /**
          * Create TreeLocation
