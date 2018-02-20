@@ -14,6 +14,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
     private waitingEdgeIds: IHash<boolean>
     private treeIdEdgeIdsMap: IOneToManyMap<id>
     private renderUpdateType: RenderUpdateTypes
+    private broadcastedNodes: IHash<boolean>
     constructor(
         @inject(TYPES.SigmaRenderManagerArgs) {
             treeDataLoadedIdsSet,
@@ -21,6 +22,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
             edgeIdsToBroadcast,
             waitingEdgeIds,
             treeIdEdgeIdsMap,
+            broadcastedNodes,
             updatesCallbacks
         }: SigmaRenderManagerArgs) {
         super({updatesCallbacks})
@@ -29,6 +31,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         this.edgeIdsToBroadcast = edgeIdsToBroadcast
         this.waitingEdgeIds = waitingEdgeIds
         this.treeIdEdgeIdsMap = treeIdEdgeIdsMap
+        this.broadcastedNodes = broadcastedNodes
     }
 
     public addWaitingEdge(edgeId: any) {
@@ -60,21 +63,26 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 
     public markTreeDataLoaded(treeId: id) {
         this.treeDataLoadedIdsSet[treeId] = true
-        this.broadcastIfNodeRenderable(treeId)
+        this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId)
 
     }
 
     public markTreeLocationDataLoaded(treeId: id) {
         this.treeLocationDataLoadedIdsSet[treeId] = true
-        this.broadcastIfNodeRenderable(treeId)
+        this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId)
     }
 
-    private broadcastIfNodeRenderable(treeId: id) {
+    private broadcastIfNodeRenderableAndNotYetBroadcasted(treeId: id) {
         if (!this.canRenderNode(treeId)) {
             return
         } else {
-            log('node with id of ' + treeId + ' is renderable!', this.treeDataLoadedIdsSet, this.treeLocationDataLoadedIdsSet)
         }
+        if (this.broadcastedNodes[treeId]) {
+            return
+        }
+        log('node with id of ' + treeId + ' about to be broadcasted!',
+            this.treeDataLoadedIdsSet, this.treeLocationDataLoadedIdsSet)
+        this.broadcastedNodes[treeId] = true
         this.broadcastNewNodeUpdate(treeId)
         this.broadcastNewEdgesForEdgesWaitingOnNode(treeId)
         // whenever a node is renderable, we need to check if there were any edges
@@ -132,4 +140,5 @@ export class SigmaRenderManagerArgs {
     @inject(TYPES.Object) public waitingEdgeIds: IHash<boolean>
     @inject(TYPES.IOneToManyMap) public treeIdEdgeIdsMap: IOneToManyMap<id>
     @inject(TYPES.Array) public updatesCallbacks: Function[]
+    @inject(TYPES.Object) public broadcastedNodes: IHash<boolean>
 }
