@@ -51,6 +51,9 @@ export class MutableSubscribablePoint
     public val(): ICoordinate {
         return {x: this.x, y: this.y}
     }
+    public dbVal(): ICoordinate {
+        return this.val()
+    }
 
     private shift(delta: ICoordinate): ICoordinate {
         this.x += delta.x

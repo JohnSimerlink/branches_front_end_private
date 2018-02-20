@@ -8,10 +8,14 @@ import {Store} from 'vuex';
 import BranchesStore, {MUTATION_NAMES} from './store2';
 import {TYPES} from '../objects/types';
 import * as sinon from 'sinon'
-import {ICreateTreeLocationMutationArgs, ITreeLocationData, TreeLocationPropertyNames} from '../objects/interfaces';
+import {
+    ICreateTreeLocationMutationArgs, ITreeDataWithoutId, ITreeLocationData,
+    TreeLocationPropertyNames
+} from '../objects/interfaces';
 import {AppContainer} from './appContainer';
 import {expect} from 'chai'
 import test from 'ava'
+import {createTreeId} from '../objects/tree/TreeUtils';
 
 test('store create location should call correct firebaseRef', t => {
     /** Swap out actual firebase refs with Mock firebase refs.
@@ -55,6 +59,7 @@ test('store create location should call correct firebaseRef', t => {
      * test the actual mutation we are testing
      */
     store.commit(MUTATION_NAMES.CREATE_TREE_LOCATION, treeLocationData )
+
 
     expect(treeLocationRefUpdateSpy.callCount).to.deep.equal(1)
     const calledWith = treeLocationRefUpdateSpy.getCall(0).args[0]

@@ -27,6 +27,9 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
     public val(): T {
         return this.field
     }
+    public dbVal(): T {
+        return this.val()
+    }
     /* TODO: refactor this private method into another class,
      with it as a public method, and use that class internally via composition
      * That way we can test the set method in a unit test */

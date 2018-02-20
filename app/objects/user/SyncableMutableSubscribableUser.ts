@@ -2,6 +2,7 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
+    IDbValable,
     IDetailedUpdates, IHash,
     ISubscribable,
     ISyncableMutableSubscribableUser, IValable,
@@ -11,7 +12,7 @@ import {MutableSubscribableUser} from './MutableSubscribableUser';
 @injectable()
 export class SyncableMutableSubscribableUser
     extends MutableSubscribableUser implements ISyncableMutableSubscribableUser {
-    public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable> {
+    public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
         return {
             membershipExpirationDate: this.membershipExpirationDate,
             everActivatedMembership: this.everActivatedMembership

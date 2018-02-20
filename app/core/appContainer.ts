@@ -1,6 +1,6 @@
 import {
     IApp,
-    IRenderedNodesManager,
+    IRenderManager,
     ISigmaRenderManager, IStoreSourceUpdateListener,
     ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
     ISubscribableTreeLocationStoreSource,
@@ -28,7 +28,7 @@ export class AppContainer {
     private treeUserStoreSource: ISubscribableTreeUserStoreSource
     private vueConfigurer: IVueConfigurer
     private store: Store<any>
-    private renderedNodesManager: IRenderedNodesManager
+    private renderedNodesManager: IRenderManager
     private sigmaRenderManager: ISigmaRenderManager
     private storeSourceUpdateListener: IStoreSourceUpdateListener
     private app: IApp
@@ -94,7 +94,7 @@ export class AppContainerArgs {
     @inject(TYPES.BranchesStore)
         public store: Store<any>
     @inject(TYPES.IRenderedNodesManager)
-        public renderedNodesManager: IRenderedNodesManager
+        public renderedNodesManager: IRenderManager
     @inject(TYPES.ISigmaRenderManager)
     @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
         public sigmaRenderManager: ISigmaRenderManager

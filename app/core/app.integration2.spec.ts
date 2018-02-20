@@ -15,19 +15,19 @@ import {
     ITreeLocationDataFromFirebase
 } from '../objects/interfaces';
 import {
-    IRenderedNodesManager,
+    IRenderManager,
     IStoreSourceUpdateListener
 } from '../objects/interfaces';
 import {
     IHash,
-    IRenderedNodesManagerCore,
+    IRenderManagerCore,
     ISigmaNode, ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
 } from '../objects/interfaces';
 import {ISigmaRenderManager,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource} from '../objects/interfaces';
-import {RenderedNodesManager} from '../objects/sigmaNode/RenderManager';
-import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderManagerCore';
+import {RenderManager} from '../objects/sigmaNode/RenderManager';
+import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
@@ -144,9 +144,9 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     })
     const storeSourceUpdateListener: IStoreSourceUpdateListener
         = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
-    const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, sigmaUpdater, sigmaEdges: {}})
-    const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
+    const renderedNodesManagerCore: IRenderManagerCore
+        = new RenderManagerCore({sigmaNodes, sigmaUpdater, sigmaEdges: {}})
+    const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore})
     renderedNodesManager.subscribe(sigmaRenderManager)
 
     storeSourceUpdateListener.subscribe(treeStoreSource)

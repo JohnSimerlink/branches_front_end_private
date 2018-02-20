@@ -27,13 +27,10 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
         {id, treeLocationData}:
         { id: string; treeLocationData: ITreeLocationData; })
     : ISyncableMutableSubscribableTreeLocation {
-        log('AutoSaveMutableSubscribableTreeUserStore addAndSubscribeToItemFromData', id, treeLocationData)
         const treeLocationId = id
         const treeLocation: ISyncableMutableSubscribableTreeLocation =
             super.addAndSubscribeToItemFromData({id, treeLocationData})
-        log('treeLocation just created is', treeLocation)
         const treeLocationFirebaseRef = this.treeLocationsFirebaseRef.child(treeLocationId)
-        log('treeLocationFirebaseRef for this treeLocation is ', treeLocationFirebaseRef)
         // const treeLocationFirebaseRef = treeLocationFirebaseRef.child(userId)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: treeLocation,

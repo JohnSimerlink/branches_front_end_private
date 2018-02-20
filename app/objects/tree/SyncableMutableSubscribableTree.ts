@@ -2,6 +2,7 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
+    IDbValable,
     IDetailedUpdates, IHash,
     ISubscribable,
     ISyncableMutableSubscribableTree,
@@ -12,7 +13,7 @@ import {MutableSubscribableTree} from './MutableSubscribableTree';
 @injectable()
 export class SyncableMutableSubscribableTree
     extends MutableSubscribableTree implements ISyncableMutableSubscribableTree {
-    public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable> {
+    public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
         return {
             contentId: this.contentId,
             parentId: this.parentId,
