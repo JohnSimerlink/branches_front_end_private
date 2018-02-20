@@ -1,4 +1,6 @@
 import sigma from '../sigma.core'
+import {CustomSigmaEventNames} from "../../../app/objects/sigmaEventListener/customSigmaEvents";
+import {log} from '../../../app/core/log'
 
 /**
  * Dispatcher constructor.
@@ -9,6 +11,7 @@ var dispatcher = function () {
     Object.defineProperty(this, '_handlers', {
         value: {}
     });
+    this._handlers.id = 'ThesourceId123'
 };
 
 
@@ -26,7 +29,10 @@ dispatcher.prototype.bind = function (events, handler) {
         l,
         event,
         eArray;
-
+    var centeredNodeEvent = events === CustomSigmaEventNames.CENTERED_NODE
+    if (this._handlers[CustomSigmaEventNames.CENTERED_NODE]){
+        debugger;
+    }
     if (
         arguments.length === 1 &&
         typeof arguments[0] === 'object'
@@ -54,6 +60,11 @@ dispatcher.prototype.bind = function (events, handler) {
             this._handlers[event].push({
                 handler: handler
             });
+            if (event === CustomSigmaEventNames.CENTERED_NODE) {
+                this._handlers.id = Math.random()
+                log('bind for ' + CustomSigmaEventNames.CENTERED_NODE  +' just added id to handlers obj ')
+                log('bind for ' + CustomSigmaEventNames.CENTERED_NODE  +' called with ', events, handler, this._handlers[event], this._handlers)
+            }
         }
     } else
         throw 'bind: Wrong arguments.';
@@ -81,6 +92,7 @@ dispatcher.prototype.unbind = function (events, handler) {
         a,
         event,
         eArray = typeof events === 'string' ? events.split(' ') : events;
+    var centeredNodeEvent = events === CustomSigmaEventNames.CENTERED_NODE
 
     if (!arguments.length) {
         for (k in this._handlers)
@@ -134,31 +146,15 @@ dispatcher.prototype.dispatchEvent = function (events, data) {
 
     for (i = 0, n = eArray.length; i !== n; i += 1) {
         eventName = eArray[i];
-        var isClickNode = eventName === 'clickNode'
-        // if (isClickNode) {
-        //     console.log("dispatchEvent ", eventName, "called")
-        //     console.log('dispatchEvent handlers', JSON.stringify(this._handlers[eventName]))
-        //     console.log('dispatchEvent num handlers', this._handlers[eventName].length)
-        // }
-
         if (this._handlers[eventName]) {
-            if(isClickNode) {
-            }
 
             event = self.getEvent(eventName, data);
             a = [];
 
             for (j = 0, m = this._handlers[eventName].length; j !== m; j += 1) {
-                if (isClickNode) {
-                }
                 this._handlers[eventName][j].handler(event);
                 if (!this._handlers[eventName][j].one) {
                     a.push(this._handlers[eventName][j]);
-                    if (isClickNode) {
-                    }
-                } else {
-                    if (isClickNode) {
-                    }
                 }
             }
 

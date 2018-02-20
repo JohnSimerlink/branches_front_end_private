@@ -165,6 +165,7 @@ var sigma = function (conf) {
             'click',
             'rightClick',
             'clickStage',
+            'centeredNode', // custom
             'doubleClickStage',
             'rightClickStage',
             'clickNode',

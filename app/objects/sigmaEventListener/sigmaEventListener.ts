@@ -2,6 +2,7 @@ import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
 import {IFamilyLoader, ISigma, ISigmaEventListener, ITooltipOpener} from '../interfaces';
 import {log} from '../../core/log'
+import {CustomSigmaEventNames} from './customSigmaEvents';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -24,9 +25,16 @@ export class SigmaEventListener implements ISigmaEventListener {
             const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
             this.tooltipOpener.openTooltip(sigmaNode)
         })
+        // debugger;
         this.sigmaInstance.bind('overNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id
+            this.familyLoader.loadFamilyIfNotLoaded(nodeId)
+        })
+        // debugger;
+        this.sigmaInstance['renderers'][0].bind(CustomSigmaEventNames.CENTERED_NODE, (event) => {
+            const nodeId = event && event.data &&
+                event.data.centeredNodeId
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)
         })
         // debugger;
