@@ -29,6 +29,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
         const treeId = id
         const treeItem: ISyncableMutableSubscribableTree =
             super.addAndSubscribeToItemFromData({id, treeDataWithoutId})
+        log('the tree just created in addAndSubscribetoitemFromData was ', treeItem)
         const treeItemFirebaseRef = this.treesFirebaseRef.child(treeId)
         // const treeItemFirebaseRef = treeFirebaseRef.child(userId)
         // log('treesFirebaseRef and treeItemFirebaseRef are', this.treesFirebaseRef, treeItemFirebaseRef)

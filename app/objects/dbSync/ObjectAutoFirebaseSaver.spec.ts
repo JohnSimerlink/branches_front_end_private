@@ -9,7 +9,7 @@ import test from 'ava'
 import {
     IDetailedUpdates, IObjectFirebaseAutoSaver, ISubscribable, ISyncableValable,
     IValable,
-    ISyncable, IValObject, IHash,
+    ISyncable, IValObject, IHash, IDbValable,
 } from '../interfaces';
 import {ObjectFirebaseAutoSaver} from './ObjectAutoFirebaseSaver';
 import * as sinon from 'sinon'
@@ -21,13 +21,13 @@ myContainerLoadAllModules()
 test('start', (t) => {
 
     // onUpdate on each of the 4 properties should get called
-    const name: ISubscribable<IDetailedUpdates> & IValable = {
+    const name: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        val() { return 'Suzy'}
+        dbVal() { return 'Suzy'}
     }
-    const age: ISubscribable<IDetailedUpdates> & IValable = {
+    const age: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        val() { return 24}
+        dbVal() { return 24}
     }
     const person: ISyncable = {
         getPropertiesToSync() {
@@ -58,13 +58,13 @@ test('start', (t) => {
 test('initialSave', (t) => {
 
     // onUpdate on each of the 4 properties should get called
-    const name: ISubscribable<IDetailedUpdates> & IValable = {
+    const name: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        val() { return 'Suzy'}
+        dbVal() { return 'Suzy'}
     }
-    const age: ISubscribable<IDetailedUpdates> & IValable = {
+    const age: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        val() { return 24}
+        dbVal() { return 24}
     }
     const person: ISyncable = {
         getPropertiesToSync() {
@@ -76,10 +76,10 @@ test('initialSave', (t) => {
     }
     const personInitialSaveValue: IHash<IValObject> = {
         name: {
-            val: name.val(),
+            val: name.dbVal(),
         },
         age: {
-            val: age.val(),
+            val: age.dbVal(),
         }
     }
 
