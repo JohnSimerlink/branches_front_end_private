@@ -3,7 +3,7 @@
 // import {log} from '../../core/log'
 import {inject, injectable} from 'inversify';
 import {
-    IDatedMutation, IDetailedUpdates, IMutable,
+    IDatedMutation, IDetailedUpdates, IHash, IMutable,
     ISet,
     SetMutationTypes
 } from '../interfaces';
@@ -24,7 +24,7 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
 
     /* TODO: maybe this and the above should be inherited protected properties from a base class */
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
-    private set: object;
+    private set: IHash<boolean>;
     constructor(@inject(TYPES.SubscribableMutableStringSetArgs)
         {
             set = {},
@@ -42,6 +42,10 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
 
     public val(): string[] {
         return Object.keys(this.set)
+    }
+
+    public dbVal(): IHash<boolean> {
+        return this.set
     }
 
     // TODO: factor out these private methods into a separate testable class
@@ -96,7 +100,7 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
 }
 @injectable()
 export class SubscribableMutableStringSetArgs {
-    @inject(TYPES.Object) public set?;
+    @inject(TYPES.Object) public set?: IHash<boolean>;
     @inject(TYPES.Array) public mutations?;
     @inject(TYPES.Array) public updatesCallbacks?;
 }

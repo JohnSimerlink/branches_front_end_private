@@ -27,18 +27,19 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
         {id, treeLocationData}:
         { id: string; treeLocationData: ITreeLocationData; })
     : ISyncableMutableSubscribableTreeLocation {
-        log('AutoSaveMutableSubscribableTreeUserStore addAndSubscribeToItemFromData', id, treeLocationData)
+        log('J14F1 AutoSaveMutableSubscribableTreeUserStore addAndSubscribeToItemFromData', id, treeLocationData)
         const treeLocationId = id
         const treeLocation: ISyncableMutableSubscribableTreeLocation =
             super.addAndSubscribeToItemFromData({id, treeLocationData})
-        log('treeLocation just created is', treeLocation)
+        log('J14F1 treeLocation just created is', treeLocation)
         const treeLocationFirebaseRef = this.treeLocationsFirebaseRef.child(treeLocationId)
-        log('treeLocationFirebaseRef for this treeLocation is ', treeLocationFirebaseRef)
+        log('J14F1 treeLocationFirebaseRef for this treeLocation is ', treeLocationFirebaseRef.path)
         // const treeLocationFirebaseRef = treeLocationFirebaseRef.child(userId)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: treeLocation,
             syncableObjectFirebaseRef: treeLocationFirebaseRef
         })
+        log('J14F1 treeLocation initialSave aabout to be called ', treeLocation)
         objectFirebaseAutoSaver.initialSave()
         objectFirebaseAutoSaver.start()
         // TODO: this needs to add the actual value into the db

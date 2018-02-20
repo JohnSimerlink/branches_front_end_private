@@ -210,26 +210,20 @@ export interface IMutableSubscribableContentUser
         IMutable<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {}
 
 export interface ISyncableMutableSubscribableContentUser extends IMutableSubscribableContentUser, ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 
 export interface ISyncableMutableSubscribableContent extends IMutableSubscribableContent, ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 export interface ISyncableMutableSubscribableTree extends IMutableSubscribableTree, ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 export interface ISyncableMutableSubscribableTreeLocation extends IMutableSubscribableTreeLocation, ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 
 export interface ISyncableMutableSubscribableTreeUser extends
     IMutableSubscribableTreeUser, ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 export interface ISyncableMutableSubscribableUser extends
     IMutableSubscribableUser, ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
 }
 
 export interface IContentUserData {
@@ -283,7 +277,7 @@ export interface IDetailedUpdates {
 }
 
 export interface ISyncable {
-    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IValable>
+    getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable>
 }
 export interface ISyncableValable extends IValable, ISyncable {
 }
@@ -299,6 +293,7 @@ export interface IPushable {
 
 export interface IField<T> {
     val(): T;
+    dbVal(): T
 }
 export interface IMutableField<T> extends IMutable<IDatedMutation<FieldMutationTypes>>, IField<T> {}
 
@@ -474,6 +469,7 @@ export interface ICoordinate {
 
 export interface IPoint {
     val(): ICoordinate,
+    dbVal(): ICoordinate,
     // Points can have their coordinate shifted by another coordinate
 }
 export interface IUndoableMutablePoint extends IUndoableMutable<IDatedMutation<PointMutationTypes>>, IPoint { }
@@ -497,6 +493,7 @@ export interface IMutableStringSet extends IMutable<IDatedMutation<SetMutationTy
 
 export interface ISet<T> {
     val(): T[],
+    dbVal(): IHash<boolean> // hashmap of ids
 }
 
 export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUpdates>, IMutableStringSet {
@@ -831,7 +828,7 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 
 }
 export type id = string
-export interface INewChildTreeArgs {
+export interface INewChildTreeMutationArgs {
     parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
 }
 // tree
@@ -878,6 +875,9 @@ export interface ISubscribableTreeCore extends ITree {
     parentId: ISubscribableMutableField<string>
     children: ISubscribableMutableStringSet
     val(): ITreeDataWithoutId
+}
+export interface IDbValable {
+    dbVal()
 }
 export interface IValable {
     val()

@@ -7,7 +7,7 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-    IContentDataEither, IContentData, INewChildTreeArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
+    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
@@ -241,7 +241,7 @@ const mutations = {
         state: IState,
         {
             parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
-        }: INewChildTreeArgs
+        }: INewChildTreeMutationArgs
     ): id {
         log('NEW CHILD TREE CALLED. parentX and parentY are ', parentX, parentY)
         // TODO: UNIT / INT TEST
@@ -261,6 +261,7 @@ const mutations = {
         }
         const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
         const treeIdString = treeId as any as id
+        console.log('J14F1 treeId just created is ', treeId)
 
         /**
          * Create TreeLocation
