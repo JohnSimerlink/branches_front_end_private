@@ -18,6 +18,8 @@ export class SyncableMutableSubscribableContentUser
             timer: this.timer,
             lastRecordedStrength: this.lastRecordedStrength,
             proficiency: this.proficiency,
+            lastInteractionTime: this.lastInteractionTime,
+            nextReviewTime: this.nextReviewTime,
         }
     }
     // TODO: should the below three objects be private?

@@ -24,3 +24,15 @@ BranchKnowledgeWreckCollege
 	111- tree initialSave val <<< YES IS CREATED IN DB
 	147 - initialSave for tree location << YES IS CREATED IN DB
 
+outNode
+outNodes
+overNode
+overNodes
+click
+clickStage 
+
+
+setProficiency
+will also calculate lastRecordedStrength
+or better yet lastStrength, and lastMeasurement time
+when a contentUseritem is either loaded or when setProficiency is called . . . we register a setTimeout function that sets overdue equal to true

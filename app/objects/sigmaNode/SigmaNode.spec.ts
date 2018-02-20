@@ -14,6 +14,7 @@ import {
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
+import {linkSync} from 'fs';
 
 myContainerLoadAllModules()
 test('sigmaNode:::receive new tree', (t) => {
@@ -75,12 +76,16 @@ test('sigmaNode:::receive new ContentUserData', (t) => {
     const proficiency: PROFICIENCIES = PROFICIENCIES.THREE
     const timer = 40
     const contentUserId = 'abcde_12345'
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const contentUserData: IContentUserData = {
         id: contentUserId,
         lastRecordedStrength,
         overdue,
         proficiency,
         timer,
+        nextReviewTime: nextReviewTimeVal,
+        lastInteractionTime: lastInteractionTimeVal,
     }
     const size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
     /* QUESTION / TODO: Doesn't this entire test seem useless?

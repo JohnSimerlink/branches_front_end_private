@@ -220,6 +220,8 @@ const mutations = {
             timer: 0, // TODO: add timer to app
             lastRecordedStrength: null, // TODO: Add calculate strength to app,
             overdue: false, // TODO: add overdue functionality
+            lastInteractionTime: timestamp,
+            nextReviewTime: null, // TODO: add calculate nextReviewTime functionality
             proficiency,
         }
         mutations[MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData})
