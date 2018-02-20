@@ -10,7 +10,7 @@ import {log} from '../../core/log'
 // import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {inject, injectable} from 'inversify';
 import {
-    CONTENT_TYPES, INewChildTreeArgs,
+    CONTENT_TYPES, INewChildTreeMutationArgs,
     INewTreeComponentCreator,
     IVuexStore
 } from '../../objects/interfaces';
@@ -119,7 +119,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     const answerFormatted = answer && answer.trim() || ''
                     // const childX: number = +this.parentX + 10
                     // const childY: number = +this.parentY + 10
-                    const newChildTreeArgs: INewChildTreeArgs = {
+                    const newChildTreeArgs: INewChildTreeMutationArgs = {
                         parentTreeId: this.parentId,
                         timestamp: Date.now(),
                         contentType: type,

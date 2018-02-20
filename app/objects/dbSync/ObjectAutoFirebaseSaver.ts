@@ -27,10 +27,9 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
         const propertiesToSync = this.syncableObject.getPropertiesToSync()
         for (const [propName, property] of Object.entries(propertiesToSync)) {
             saveVal[propName] = {
-                val: property.val(),
+                val: property.dbVal(),
             }
         }
-        console.log('initialSave called. save val is ', saveVal)
         this.syncableObjectFirebaseRef.update(saveVal)
     }
     public start() {

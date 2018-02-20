@@ -33,6 +33,9 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
             everActivatedMembership: this.everActivatedMembership.val(),
         }
     }
+    public dbVal(): IUserData {
+        return this.val()
+    }
     protected callbackArguments(): IValUpdates {
         return this.val()
     }

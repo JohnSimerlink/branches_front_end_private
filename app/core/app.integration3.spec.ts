@@ -17,19 +17,19 @@ import {
     ITreeLocationData
 } from '../objects/interfaces';
 import {
-    IRenderedNodesManager,
+    IRenderManager,
     IStoreSourceUpdateListener
 } from '../objects/interfaces';
 import {
     IHash,
-    IRenderedNodesManagerCore,
+    IRenderManagerCore,
     ISigmaNode, ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
 } from '../objects/interfaces';
 import {ISigmaRenderManager,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource} from '../objects/interfaces';
-import {RenderedNodesManager} from '../objects/sigmaNode/RenderManager';
-import {RenderedNodesManagerCore} from '../objects/sigmaNode/RenderManagerCore';
+import {RenderManager} from '../objects/sigmaNode/RenderManager';
+import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
@@ -99,9 +99,9 @@ test('App integration test 3 - create new Tree triggered by user' +
     })
     const sigmaUpdater: ISigmaUpdater = myContainer.get<ISigmaUpdater>(TYPES.ISigmaUpdater)
     // new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
-    const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore({sigmaNodes, sigmaEdges: {}, sigmaUpdater})
-    const renderedNodesManager: IRenderedNodesManager = new RenderedNodesManager({renderedNodesManagerCore})
+    const renderedNodesManagerCore: IRenderManagerCore
+        = new RenderManagerCore({sigmaNodes, sigmaEdges: {}, sigmaUpdater})
+    const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore})
 
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
