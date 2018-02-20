@@ -23,7 +23,7 @@ import {
     ISubscribableStoreSource, ISubscribableTreeStoreSource,
     ObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES, IContentData,
     ITreeLocationData,
-    ITreeData, IProficiencyStats, ITreeUserData,
+    ITreeData, IProficiencyStats, ITreeUserData, timestamp, ISubscribableMutableField,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
@@ -116,13 +116,19 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
     // contentUserStore
     const contentId = CONTENT_ID
     const userId = '1239857'
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const contentUserId = contentId + userId
     const overdue = new MutableSubscribableField<boolean>({field: false})
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
+    const lastInteractionTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
@@ -228,12 +234,17 @@ test('MutableSubscribableGlobalStore:::adding a create contentuser' +
     const timer = 40
     const contentUserId = 'abcde_12345'
     const id = contentUserId
+    const lastInteractionTime = Date.now()
+    const nextReviewTime = Date.now() + 1000
+        // c`12;[]`
     const contentUserData: IContentUserData = {
         id,
         lastRecordedStrength,
         overdue,
         proficiency,
         timer,
+        lastInteractionTime,
+        nextReviewTime,
     }
     const createMutation: ICreateMutation<IContentUserData> = {
         id,

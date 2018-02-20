@@ -18,9 +18,12 @@ import {log} from '../../core/log'
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
+        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs ) {
-        super({updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength})
+        super({updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        lastInteractionTime, nextReviewTime})
+
     }
 
     public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>

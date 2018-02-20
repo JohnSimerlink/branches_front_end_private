@@ -14,7 +14,8 @@ import {
     IMutableSubscribableContentUser,
     IMutableSubscribableContentUserStore, IProppedDatedMutation, ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
-    ISubscribableStoreSource
+    ISubscribableStoreSource,
+    timestamp,
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
@@ -22,6 +23,7 @@ import {MutableSubscribableContentUserStore} from './MutableSubscribableContentU
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../../contentUser/SyncableMutableSubscribableContentUser';
+import {ISubscribableMutableField} from '../../interfaces';
 
 myContainerLoadAllModules()
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
@@ -30,12 +32,19 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     const userId = 'abcd_1234'
     const contentId = CONTENT_ID2
     const contentUserId = getContentUserId({userId, contentId})
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const overdue = new MutableSubscribableField<boolean>({field: false})
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
+    const lastInteractionTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency,
+        timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
@@ -73,12 +82,19 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     const contentId = CONTENT_ID2
     const contentUserId = getContentUserId({userId, contentId})
     const nonExistentId = 'abdf1295'
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const overdue = new MutableSubscribableField<boolean>({field: false})
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
+    const lastInteractionTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer,
+        lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
@@ -115,6 +131,8 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
         timer: 27,
         lastRecordedStrength: 50,
         overdue: false,
+        lastInteractionTime: Date.now(),
+        nextReviewTime: Date.now() + 1000 * 60,
     }
     const contentUser = ContentUserDeserializer.deserialize({id: contentUserId, contentUserData})
     const storeSource: ISubscribableContentUserStoreSource

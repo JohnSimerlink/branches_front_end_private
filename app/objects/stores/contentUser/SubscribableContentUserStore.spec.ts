@@ -9,7 +9,7 @@ import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscriba
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     ContentUserPropertyNames, FieldMutationTypes, IProppedDatedMutation,
-    ISubscribableContentUserStore
+    ISubscribableContentUserStore, ISubscribableMutableField, timestamp
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
@@ -28,11 +28,15 @@ test('SubscribableContentUserStore > addItem:::' +
     const userId = 'abc123'
     const contentUserId = getContentUserId({contentId, userId})
     const overdue = new MutableSubscribableField<boolean>({field: false})
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
+    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new MutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, updatesCallbacks: [],
+        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)

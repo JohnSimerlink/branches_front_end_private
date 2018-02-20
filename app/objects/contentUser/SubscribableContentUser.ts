@@ -5,7 +5,7 @@ import {
     IContentUserData,
     ISubscribableContentUser,
     ISubscribableMutableField,
-    IValUpdates,
+    IValUpdates, timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {Subscribable} from '../subscribable/Subscribable';
@@ -19,6 +19,8 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
     public timer: ISubscribableMutableField<number>;
     public proficiency: ISubscribableMutableField<PROFICIENCIES>;
     public lastRecordedStrength: ISubscribableMutableField<number>;
+    public lastInteractionTime: ISubscribableMutableField<timestamp>
+    public nextReviewTime: ISubscribableMutableField<timestamp>
 
     // TODO: should the below three objects be private?
     public val(): IContentUserData {
@@ -28,10 +30,13 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
             overdue: this.overdue.val(),
             proficiency: this.proficiency.val(),
             timer: this.timer.val(),
+            lastInteractionTime: this.lastInteractionTime.val(),
+            nextReviewTime: this.nextReviewTime.val()
         }
     }
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength
+        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs) {
         super({updatesCallbacks})
         this.id = id
@@ -39,6 +44,8 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.proficiency = proficiency
         this.timer = timer
         this.lastRecordedStrength = lastRecordedStrength
+        this.lastInteractionTime = lastInteractionTime
+        this.nextReviewTime = nextReviewTime
     }
     protected callbackArguments(): IValUpdates {
         return this.val()
@@ -53,6 +60,8 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.proficiency.onUpdate(boundCallCallbacks)
         this.timer.onUpdate(boundCallCallbacks)
         this.lastRecordedStrength.onUpdate(boundCallCallbacks)
+        this.lastInteractionTime.onUpdate(boundCallCallbacks)
+        this.nextReviewTime.onUpdate(boundCallCallbacks)
     }
 }
 
@@ -64,4 +73,6 @@ export class SubscribableContentUserArgs {
     @inject(TYPES.ISubscribableMutableBoolean) public overdue: ISubscribableMutableField<boolean>
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency: ISubscribableMutableField<PROFICIENCIES>
     @inject(TYPES.ISubscribableMutableNumber) public timer: ISubscribableMutableField<number>
+    @inject(TYPES.ISubscribableMutableNumber) public lastInteractionTime: ISubscribableMutableField<timestamp>
+    @inject(TYPES.ISubscribableMutableNumber) public nextReviewTime: ISubscribableMutableField<timestamp>
 }

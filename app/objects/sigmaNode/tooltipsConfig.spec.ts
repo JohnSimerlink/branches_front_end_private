@@ -20,12 +20,16 @@ test('tooltips renderer content should escape', t => {
         ONE: 2,
     } as IProficiencyStats
     const contentUserId = getContentUserId({contentId, userId})
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const contentUserData: IContentUserData = {
         id: contentUserId,
         overdue: false,
         timer: 30,
         proficiency: PROFICIENCIES.ONE,
         lastRecordedStrength: 40,
+        nextReviewTime: nextReviewTimeVal,
+        lastInteractionTime: lastInteractionTimeVal,
     }
     const node: ISigmaNodeData = {
          id: '1234',

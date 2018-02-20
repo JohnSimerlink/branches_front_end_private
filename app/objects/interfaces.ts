@@ -192,6 +192,8 @@ export interface ISubscribableContentUserCore extends IContentUser {
     timer: ISubscribableMutableField<number>
     proficiency: ISubscribableMutableField<PROFICIENCIES>
     lastRecordedStrength: ISubscribableMutableField<number>
+    lastInteractionTime: ISubscribableMutableField<timestamp>
+    nextReviewTime: ISubscribableMutableField<timestamp>
     val(): IContentUserData
 }
 
@@ -232,6 +234,8 @@ export interface IContentUserData {
     timer: number,
     proficiency: PROFICIENCIES,
     lastRecordedStrength: number,
+    lastInteractionTime: timestamp,
+    nextReviewTime: timestamp,
 }
 
 export interface IContentUserDataFromDB {
@@ -247,6 +251,12 @@ export interface IContentUserDataFromDB {
     },
     lastRecordedStrength: {
         val: number
+    },
+    lastInteractionTime: {
+        val: timestamp
+    },
+    nextReviewTime: {
+        val: timestamp
     }
 }
 
