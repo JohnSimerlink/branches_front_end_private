@@ -1,7 +1,24 @@
 import {NODE_TYPES} from "../../../app/core/globals.ts";
 import conrad from '../conrad'
 import sigma from '../sigma.core'
+import {CustomSigmaEventNames} from "../../../app/objects/sigmaEventListener/customSigmaEvents";
+import {log} from '../../../app/core/log'
 
+let xCenter
+let yCenter
+window.addEventListener('load', (event) => {
+    var w = window,
+        d = document,
+        e = d.documentElement,
+        b = d.getElementsByTagName('body')[0],
+        x = w.innerWidth || e.clientWidth || b.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| b.clientHeight;
+
+    // window.width = x
+    // window.height = y
+    xCenter = x /2
+    yCenter = y /2
+})
 sigma.canvas = sigma.canvas || {}
 // Initialize packages:
 sigma.utils.pkg('sigma.renderers');
@@ -144,6 +161,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
         embedSettings = this.settings.embedObjects(options, {
             prefix: this.options.prefix
         });
+    var self = this
 
     // Call the resize function:
     this.resize(false);
@@ -181,6 +199,8 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     })
     // console.log('sigma renderers canvas nodes is ', this.graph.nodes())
     var A_BIG_NUMBER = 999999999
+    let mostCenteredNodeId = null
+    let mostCenteredNodeDistance = A_BIG_NUMBER
     // window.mostCenteredNodeId = null
     // window.mostCenteredNodeDistance = A_BIG_NUMBER
     var nodesOnScreen = this.camera.quadtree.area(rect)
@@ -194,11 +214,20 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
         //     return
         // }
         node.onScreen = true
-        // node.distanceFromCenter = Math.sqrt(Math.pow(node["renderer1:x"] - window.xCenter, 2) + Math.pow(node["renderer1:y"] -  window.yCenter, 2))
-        // if (node.distanceFromCenter < mostCenteredNodeDistance){
-        //   window.mostCenteredNodeId = node.id
-        //   window.mostCenteredNodeDistance = node.distanceFromCenter
-        // }
+        const x = node[prefix + "x"]
+        const y = node[prefix + "y"]
+        const x2 = node[prefix + ":x"]
+        const y2 = node[prefix + ":y"]
+        node.distanceFromCenter = Math.sqrt(Math.pow(x - xCenter, 2) + Math.pow(y -  yCenter, 2))
+        if (node.distanceFromCenter < mostCenteredNodeDistance){
+          mostCenteredNodeId = node.id
+          mostCenteredNodeDistance = node.distanceFromCenter
+        }
+    })
+    // debugger;
+    //dispatches the event on the renderer canvas . . .but not the sigmaInstance as a whole.
+    this.dispatchEvent(CustomSigmaEventNames.CENTERED_NODE, {
+        centeredNodeId: mostCenteredNodeId
     })
 
     this.graph.nodes().forEach(node => {
