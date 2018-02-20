@@ -62,7 +62,7 @@ import {
     IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribableTree,
     IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IRenderedNodesManager, IRenderedNodesManagerCore,
+    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IRenderManager, IRenderManagerCore,
     ISigmaNodesUpdater,
     ISigmaRenderManager,
     IStoreSourceUpdateListener, ISubscribableContent,
@@ -88,8 +88,8 @@ import {
     CanvasUIArgs
 } from './app/objects/sigmaNode/CanvasUI';
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-import {RenderedNodesManager, RenderedNodesManagerArgs} from './app/objects/sigmaNode/RenderManager';
-import {RenderedNodesManagerCore, RenderedNodesManagerCoreArgs} from './app/objects/sigmaNode/RenderManagerCore';
+import {RenderManager, RenderManagerArgs} from './app/objects/sigmaNode/RenderManager';
+import {RenderManagerCore, RenderManagerCoreArgs} from './app/objects/sigmaNode/RenderManagerCore';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
@@ -563,10 +563,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
         .to(StoreSourceUpdateListenerCoreArgs)
     bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore)
 
-    bind<IRenderedNodesManager>(TYPES.IRenderedNodesManager).to(RenderedNodesManager)
-    bind<IRenderedNodesManagerCore>(TYPES.IRenderedNodesManagerCore).to(RenderedNodesManagerCore)
-    bind<RenderedNodesManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderedNodesManagerArgs)
-    bind<RenderedNodesManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderedNodesManagerCoreArgs)
+    bind<IRenderManager>(TYPES.IRenderedNodesManager).to(RenderManager)
+    bind<IRenderManagerCore>(TYPES.IRenderManagerCore).to(RenderManagerCore)
+    bind<RenderManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderManagerArgs)
+    bind<RenderManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderManagerCoreArgs)
     bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
     // bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)

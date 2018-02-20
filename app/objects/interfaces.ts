@@ -617,11 +617,11 @@ export interface ISigmaRenderManager extends ISubscribable<ISigmaRenderUpdate> {
     markTreeLocationDataLoaded(treeId)
     addWaitingEdge(edgeId)
 }
-export interface IRenderedNodesManagerCore {
+export interface IRenderManagerCore {
     addNodeToRenderList(sigmaId: string)
     addEdgesToRenderList(edgeIds: string[])
 }
-export interface IRenderedNodesManager extends ISubscriber<ISigmaRenderUpdate> {}
+export interface IRenderManager extends ISubscriber<ISigmaRenderUpdate> {}
 
 export type ITooltipRendererFunction = (node: ISigmaNode, template) => any
 export interface ITooltipRenderer {

@@ -4,13 +4,13 @@ import test from 'ava'
 import {expect} from 'chai'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TREE_ID} from '../../testHelpers/testHelpers';
-import {IRenderedNodesManagerCore, ISigmaNode} from '../interfaces';
+import {IRenderManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
-import {RenderedNodesManagerCore} from './RenderManagerCore';
+import {RenderManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
 
 myContainerLoadAllModules()
-test('RenderedNodesManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
+test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
     const sigmaNodes = {}
@@ -20,8 +20,8 @@ test('RenderedNodesManagerCore::::addNodeToRenderList should add to RenderList',
         addEdges() {},
     }
     const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode')
-    const renderedNodesManagerCore: IRenderedNodesManagerCore
-        = new RenderedNodesManagerCore(
+    const renderedNodesManagerCore: IRenderManagerCore
+        = new RenderManagerCore(
             {sigmaNodes, sigmaEdges: {}, sigmaUpdater}
             )
 

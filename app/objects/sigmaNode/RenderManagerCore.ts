@@ -1,14 +1,14 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IAddNodeToSigma, IRenderedNodesManagerCore, ISigmaEdges, ISigmaNode, ISigmaNodes,
+    IAddNodeToSigma, IRenderManagerCore, ISigmaEdges, ISigmaNode, ISigmaNodes,
     ISigmaUpdater
 } from '../interfaces';
 import {TYPES} from '../types';
 // import {SigmaJs} from 'sigmajs';
 
 @injectable()
-export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
+export class RenderManagerCore implements IRenderManagerCore {
     private sigmaNodes: ISigmaNodes
     private sigmaEdges: ISigmaEdges
     private addNodeToSigma: IAddNodeToSigma
@@ -16,7 +16,7 @@ export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
     constructor(
         @inject(TYPES.RenderedNodesManagerCoreArgs){
             sigmaNodes, sigmaEdges, sigmaUpdater
-        }: RenderedNodesManagerCoreArgs ) {
+        }: RenderManagerCoreArgs ) {
         this.sigmaNodes = sigmaNodes
         this.sigmaUpdater = sigmaUpdater
         this.sigmaEdges = sigmaEdges
@@ -45,7 +45,7 @@ export class RenderedNodesManagerCore implements IRenderedNodesManagerCore {
     }
 }
 @injectable()
-export class RenderedNodesManagerCoreArgs {
+export class RenderManagerCoreArgs {
     @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
     @inject(TYPES.ISigmaUpdater) public sigmaUpdater: ISigmaUpdater
     @inject(TYPES.ISigmaEdges) public sigmaEdges: ISigmaEdges
