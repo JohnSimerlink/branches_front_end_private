@@ -16,7 +16,6 @@ export class PropertyFirebaseSaver implements IDatabaseSaver {
         this.firebaseRef = firebaseRef
     }
     public save(updatesObj: IDetailedUpdates) {
-        log('property firebase saver called', JSON.stringify(updatesObj), this.firebaseRef.path)
         const updates = updatesObj.updates
         if (updates && Object.keys(updates)) {
             this.firebaseRef.update(updates)

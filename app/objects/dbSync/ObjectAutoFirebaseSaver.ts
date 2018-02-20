@@ -30,7 +30,6 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
                 val: property.dbVal(),
             }
         }
-        log('J14F1 initialSave called. save val is ', saveVal, this.syncableObjectFirebaseRef.path)
         this.syncableObjectFirebaseRef.update(saveVal)
     }
     public start() {
