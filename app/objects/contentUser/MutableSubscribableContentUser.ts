@@ -56,9 +56,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                 if (!lastInteractionTime) {
                     lastInteractionTime = mutation.timestamp - 1000 * 60 * 60 // an hour ago
                 }
-                log('J14H lastInteractionTime is', lastInteractionTime, moment(lastInteractionTime))
                 const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime
-                log('J14H millisecondsSinceLastInteraction', millisecondsSinceLastInteraction)
                 // this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
 
                 /* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
@@ -71,19 +69,16 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                         {estimatedPreviousStrength: this.lastEstimatedStrength.val(),
                             R: this.proficiency.val(),
                             t: millisecondsSinceLastInteraction / 1000}) || 0
-                log('J14H millisecondsSinceLastInteraction estimatedPreviousStrength vs  measuredPreviousStrength', this.lastEstimatedStrength.val(), previousInteractionStrength)
                 const currentEstimatedInteractionStrength =
                     estimateCurrentStrength({
                         previousInteractionStrengthDecibels: previousInteractionStrength,
                         currentProficiency: this.proficiency.val(),
                         secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000}) || 0
-                log('J14H currentEstimatedStrength', currentEstimatedInteractionStrength)
                 const nextReviewTime = calculateNextReviewTime(
                     {
                         lastInteractionTime,
                         lastInteractionEstimatedStrength: currentEstimatedInteractionStrength}
                     )
-                log('J14H nextReviewTime is', nextReviewTime, moment(nextReviewTime))
 
                 const strengthMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
