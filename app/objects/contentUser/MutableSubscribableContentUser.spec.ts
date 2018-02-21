@@ -15,7 +15,7 @@ import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
 myContainerLoadAllModules()
-test('MutableSubscribableContentUser:::.val() should work after constructor', (t) => {
+test('OverdueListener:::.val() should work after constructor', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
@@ -60,7 +60,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
     expect(contentUserData).to.deep.equal(expectedContentUserData)
     t.pass()
 })
-test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
+test('OverdueListener:::.val() should give appropiate value ' +
     'after ADD MUTATION SET lastEstimatedStrength', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
@@ -115,7 +115,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     t.pass()
 })
 
-test('MutableSubscribableContentUser:::.val() should give appropiate value after ADD MUTATION SET overdueVal', (t) => {
+test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET overdueVal', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
@@ -170,7 +170,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     t.pass()
 })
 
-test('MutableSubscribableContentUser:::.val() should give appropiate value' +
+test('OverdueListener:::.val() should give appropiate value' +
     ' after ADD MUTATION SET proficiency', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
@@ -225,7 +225,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value' +
     t.pass()
 })
 
-test('MutableSubscribableContentUser:::.val() should give appropiate value after ADD MUTATION SET timer', (t) => {
+test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET timer', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
@@ -278,7 +278,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value after
     t.pass()
 })
 
-test('MutableSubscribableContentUser:::a mutation in one of the subscribable properties' +
+test('OverdueListener:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
@@ -324,7 +324,7 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     t.pass()
 })
 
-test('MutableSubscribableContentUser:::a mutation in one of the subscribable properties' +
+test('OverdueListener:::a mutation in one of the subscribable properties' +
     ' should NOT publish an update of the entire object\'s value'
     + ' before startPublishing has been called', (t) => {
     const contentUserId = 'abc_123'
@@ -360,7 +360,7 @@ test('MutableSubscribableContentUser:::a mutation in one of the subscribable pro
     expect(callback.callCount).to.equal(0)
     t.pass()
 })
-test('MutableSubscribableContentUser:::addMutation ' +
+test('OverdueListener:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
     const contentUserId = 'abc_123'
