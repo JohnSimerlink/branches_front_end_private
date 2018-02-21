@@ -462,6 +462,10 @@ const mutations = {
     },
     [MUTATION_NAMES.LOGIN_WITH_FACEBOOK](state: IState) {
         const provider = new firebase.auth.FacebookAuthProvider();
+        // provider.setCustomParameters({
+        //     redirect_uri: window.location.protocol + '//' + window.location.hostname
+        //     // display: 'redirect'
+        // })
         const store: Store<any> = getters.getStore()
         firebase.auth().signInWithPopup(provider).then( (result) => {
             const userId = result.user.uid

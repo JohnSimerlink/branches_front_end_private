@@ -266,6 +266,9 @@ export type seconds = number
 export type percentage = number
 export type milliseconds = number
 
+export interface IOverdueListener extends IStartable {
+
+}
 // dbSync
 
 export interface IObjectFirebaseAutoSaver {
