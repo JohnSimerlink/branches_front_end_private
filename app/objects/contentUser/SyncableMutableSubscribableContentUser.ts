@@ -16,8 +16,10 @@ export class SyncableMutableSubscribableContentUser
             // TODO: change the property names from being harded coded to more like CONTENT_USER_PROPERTY_NAMES.OVERDUE
             overdue: this.overdue,
             timer: this.timer,
-            lastRecordedStrength: this.lastRecordedStrength,
+            lastRecordedStrength: this.lastEstimatedStrength,
             proficiency: this.proficiency,
+            lastInteractionTime: this.lastInteractionTime,
+            nextReviewTime: this.nextReviewTime,
         }
     }
     // TODO: should the below three objects be private?

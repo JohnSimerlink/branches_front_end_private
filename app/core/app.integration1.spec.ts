@@ -14,7 +14,7 @@ import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, FieldMutationTypes,
     IApp, ITypeIdProppedDatedMutation, IMutableSubscribableContentStore,
-     IMutableSubscribableContentUserStore,
+    IMutableSubscribableContentUserStore,
     IMutableSubscribableGlobalStore, IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
     IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUser, IMutableSubscribableTreeUserStore,
@@ -25,7 +25,7 @@ import {
     ISubscribableTreeStoreSource, ISubscribableTreeUserStoreSource,
     IUI,
     ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
-    TreeUserPropertyMutationTypes, TreeUserPropertyNames,
+    TreeUserPropertyMutationTypes, TreeUserPropertyNames, ISubscribableMutableField, timestamp,
 } from '../objects/interfaces';
 import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
@@ -78,13 +78,18 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const contentId = CONTENT_ID
     const userId = '1234567'
     const contentUserId = getContentUserId({contentId, userId})
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
+    // TODO: replace all this scaffolding code with a getTestContentUser()
     const overdue = new MutableSubscribableField<boolean>({field: false})
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
+    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
         id: contentUserId, lastRecordedStrength, overdue,
-        proficiency, timer, updatesCallbacks: [],
+        proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const contentUserStore: IMutableSubscribableContentUserStore = (() => {
         const storeSource: ISubscribableContentUserStoreSource

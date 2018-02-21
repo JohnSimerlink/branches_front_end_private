@@ -802,6 +802,11 @@ export function myContainerLoadAllModules() {
     myContainer.load(firebaseReferences)
     myContainerLoadAllModulesExceptFirebaseRefs()
 }
+export function myContainerUnloadAllModules() {
+    // myContainer.load(firebaseReferences)
+    // myContainerLoadAllModulesExceptFirebaseRefs()
+
+}
 export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs() {
     // myContainer.load(treeStoreSourceSingletonModule)
     myContainer.load(stores)

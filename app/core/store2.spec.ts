@@ -66,12 +66,16 @@ test('Store::::' +
     const timerVal = 30
     const id = 'abcde_12345'
 
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const contentUserData: IContentUserData = {
         id,
         overdue: overdueVal,
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
-        timer: timerVal
+        timer: timerVal,
+        nextReviewTime: nextReviewTimeVal,
+        lastInteractionTime: lastInteractionTimeVal,
     }
 
     const createMutation: ICreateMutation<ContentUserData> = {

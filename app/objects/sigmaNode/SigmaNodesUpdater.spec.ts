@@ -165,12 +165,16 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
     ' on the sigma Node with the correct args', (t) => {
     const userId = '12345'
     const contentUserId = getContentUserId({userId, contentId: CONTENT_ID})
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
     const val: IContentUserData = {
         id: contentUserId,
         lastRecordedStrength: 54, // TODO: this mig
         overdue: true,
         proficiency: PROFICIENCIES.ONE,
         timer: 432,
+        nextReviewTime: nextReviewTimeVal,
+        lastInteractionTime: lastInteractionTimeVal,
     }
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
     const update: ITypeAndIdAndValUpdates = {

@@ -45,7 +45,7 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //         overdue: false,
 //         timer: 30,
 //         proficiency: PROFICIENCIES.ONE,
-//         lastRecordedStrength: 40,
+//         lastEstimatedStrength: 40,
 //     }
 //     const content = {
 //         type: CONTENT_TYPES.FACT,
