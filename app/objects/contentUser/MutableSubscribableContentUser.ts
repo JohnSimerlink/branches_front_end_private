@@ -14,6 +14,11 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types'
 import {SubscribableContentUser, SubscribableContentUserArgs} from './SubscribableContentUser';
 import {log} from '../../core/log'
+import {
+    calculateNextReviewTime, calculateStrength, estimateCurrentStrength,
+    measurePreviousStrength
+} from '../../forgettingCurve';
+import moment = require('moment');
 @injectable()
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?
@@ -36,22 +41,88 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
             type: mutation.type,
         }
         switch (propertyName) {
-            case ContentUserPropertyNames.LAST_RECORDED_STRENGTH:
-                this.lastRecordedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+            case ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH:
+                this.lastEstimatedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             case ContentUserPropertyNames.OVERDUE:
                 this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             case ContentUserPropertyNames.PROFICIENCY:
                 this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+
+                // NOTE: no values are null in an edit mutation. They were set to a non-null/empty value during creation
+                const newInteractionTime = mutation.timestamp
+                const lastInteractionTime = this.lastInteractionTime.val()
+                log('J14H lastInteractionTime is', lastInteractionTime, moment(lastInteractionTime))
+                const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime
+                log('J14H millisecondsSinceLastInteraction', millisecondsSinceLastInteraction)
+                // this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+
+                /* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
+                 we can assume they have learned it before.
+                 We will simply assume that they last saw it/learned it an hour ago.
+                  (e.g. like in a lecture 1 hour ago).
+                 */
+                const previousInteractionStrength =
+                    measurePreviousStrength(
+                        {estimatedPreviousStrength: this.lastEstimatedStrength.val(),
+                            R: this.proficiency.val(),
+                            t: millisecondsSinceLastInteraction / 1000}) || 0
+                log('J14H millisecondsSinceLastInteraction estimatedPreviousStrength vs  measuredPreviousStrength', this.lastEstimatedStrength.val(), previousInteractionStrength)
+                const currentEstimatedInteractionStrength =
+                    estimateCurrentStrength({
+                        previousInteractionStrengthDecibels: previousInteractionStrength,
+                        currentProficiency: this.proficiency.val(),
+                        secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000}) || 0
+                log('J14H currentEstimatedStrength', currentEstimatedInteractionStrength)
+                const nextReviewTime = calculateNextReviewTime(
+                    {
+                        lastInteractionTime,
+                        lastInteractionEstimatedStrength: currentEstimatedInteractionStrength}
+                    )
+                log('J14H nextReviewTime is', nextReviewTime, moment(nextReviewTime))
+
+                const strengthMutation: IProppedDatedMutation<
+                    ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
+                    propertyName: ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH,
+                    timestamp: mutation.timestamp,
+                    type: FieldMutationTypes.SET,
+                    data: currentEstimatedInteractionStrength,
+                }
+                const interactionTimeMutation: IProppedDatedMutation<
+                    ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
+                    propertyName: ContentUserPropertyNames.LAST_INTERACTION_TIME,
+                    timestamp: mutation.timestamp,
+                    type: FieldMutationTypes.SET,
+                    data: newInteractionTime,
+                }
+                const nextReviewTimeMutation: IProppedDatedMutation<
+                    ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
+                    propertyName: ContentUserPropertyNames.NEXT_REVIEW_TIME,
+                    timestamp: mutation.timestamp,
+                    type: FieldMutationTypes.SET,
+                    data: nextReviewTime,
+                }
+
+                this.addMutation(strengthMutation)
+                this.addMutation(interactionTimeMutation)
+                this.addMutation(nextReviewTimeMutation)
+
+                // const strength = calculateStrength(proficiency, )
                 break
             case ContentUserPropertyNames.TIMER:
                 this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
+            case ContentUserPropertyNames.LAST_INTERACTION_TIME:
+                this.lastInteractionTime.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break
+            case ContentUserPropertyNames.NEXT_REVIEW_TIME:
+                this.nextReviewTime.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property ')
+                    + ' does not exist as a property on ' + JSON.stringify(ContentUserPropertyNames))
         }
     }
 

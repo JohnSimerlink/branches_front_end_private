@@ -139,17 +139,17 @@ export default {
             return t
         },
         sComputed() {
-            const computedStrength = calculateStrength(this.r, this.t)
+            const computedStrength = calculateStrength({R: this.r, t: this.t})
             log('computedStrength calculated to be ', this.r, this.t, '--->', computedStrength)
             return computedStrength
         },
         rComputed() {
-            const computedRecall = calculateRecall(this.s, this.t)
+            const computedRecall = calculateRecall({S: this.s, t: this.t})
             log('computedRecall calculated to be ', this.s, this.t, '--->', computedRecall)
             return computedRecall
         },
         tComputed() {
-            const computedTime = calculateTime(this.s, this.r / 100)
+            const computedTime = calculateTime({S: this.s, R: this.r / 100})
             log('computedTime calculated to be ', this.s, this.r / 100, '---->', computedTime)
             return computedTime
         },
