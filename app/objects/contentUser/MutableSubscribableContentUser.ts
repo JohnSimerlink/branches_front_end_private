@@ -52,7 +52,10 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 
                 // NOTE: no values are null in an edit mutation. They were set to a non-null/empty value during creation
                 const newInteractionTime = mutation.timestamp
-                const lastInteractionTime = this.lastInteractionTime.val()
+                let lastInteractionTime = this.lastInteractionTime.val()
+                if (!lastInteractionTime) {
+                    lastInteractionTime = mutation.timestamp - 1000 * 60 * 60 // an hour ago
+                }
                 log('J14H lastInteractionTime is', lastInteractionTime, moment(lastInteractionTime))
                 const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime
                 log('J14H millisecondsSinceLastInteraction', millisecondsSinceLastInteraction)
