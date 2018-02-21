@@ -462,12 +462,12 @@ const mutations = {
     },
     [MUTATION_NAMES.LOGIN_WITH_FACEBOOK](state: IState) {
         const provider = new firebase.auth.FacebookAuthProvider();
-        // provider.setCustomParameters({
+        provider.setCustomParameters({
         //     redirect_uri: window.location.protocol + '//' + window.location.hostname
-        //     // display: 'redirect'
-        // })
+            display: 'touch'
+        })
         const store: Store<any> = getters.getStore()
-        firebase.auth().signInWithPopup(provider).then( (result) => {
+        firebase.auth().signInWithRedirect(provider).then( (result) => {
             const userId = result.user.uid
             store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, {userId})
             log('login result', result)
@@ -481,6 +481,10 @@ const mutations = {
             const credential = error.credential
             console.error('There was an error ', errorCode, errorMessage, email, credential)
         });
+        firebase.auth().getRedirectResult().then(result => {
+            console.log('firebase result received!!!', result)
+
+        })
 
     }
 }
