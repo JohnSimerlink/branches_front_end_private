@@ -218,10 +218,20 @@ const mutations = {
         const contentUserData: IContentUserData = {
             id: contentUserId,
             timer: 0, // TODO: add timer to app
-            lastRecordedStrength: null, // TODO: Add calculate strength to app,
-            overdue: false, // TODO: add overdue functionality
+            lastRecordedStrength: null, // TODO: Add initial calculate strength to app,
+            overdue: false, // TODO: add initial overdue functionality
+            lastInteractionTime: timestamp,
+            nextReviewTime: null, // TODO: add initial calculate nextReviewTime functionality
             proficiency,
         }
+        /**
+         * logic for initial stuff up there ^^^^
+         *
+         if (this.proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
+                    millisecondsSinceLastInteraction = 60 * 60 * 1000
+                }
+         *
+         */
         mutations[MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData})
         mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {contentUserId, proficiency, timestamp})
         return contentUserData

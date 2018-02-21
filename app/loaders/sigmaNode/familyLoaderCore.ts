@@ -25,6 +25,10 @@ export class FamilyLoaderCore implements IFamilyLoaderCore {
     public loadFamily(sigmaId: id) {
         const treeId = sigmaId
         const tree: ISyncableMutableSubscribableTree = this.treeStoreSource.get(treeId)
+        if (!tree) {
+            console.error('tree with treeId of', treeId, ' could not be found in ', this.treeStoreSource)
+            return
+        }
         const treeDataWithoutId: ITreeDataWithoutId = tree.val()
         const children: id[] = treeDataWithoutId.children
         const sigmaIds = [...children, treeDataWithoutId.parentId]

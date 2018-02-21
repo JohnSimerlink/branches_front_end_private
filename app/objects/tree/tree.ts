@@ -513,8 +513,8 @@
 //            .filter(leaf => leaf.hasInteractions)
 //            .sort((a, b) => {
 //                 // lowest decibels first
-//                 return a.lastRecordedStrength.value > b.lastRecordedStrength.value ? 1
-//                     : a.lastRecordedStrength.value < b.lastRecordedStrength.value ? -1 : 0
+//                 return a.lastEstimatedStrength.value > b.lastEstimatedStrength.value ? 1
+//                     : a.lastEstimatedStrength.value < b.lastEstimatedStrength.value ? -1 : 0
 //            })
 //         const overdueLeaves = studiedLeaves.filter(leaf => leaf.overdue)
 //         const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.overdue)
@@ -524,7 +524,7 @@
 //         this.leaves = removeDuplicatesById(this.leaves)
 //         // log(this.id, " sortLeavesByStudiedAndStrength, this sortedLeaves are", this.sortedLeaves)
 //         this.leaves.forEach(leaf => {
-//             // log(this.id, " has a leaf ", leaf.id, " with strength of ", leaf.lastRecordedStrength.value)
+//             // log(this.id, " has a leaf ", leaf.id, " with strength of ", leaf.lastEstimatedStrength.value)
 //         })
 //         if (this.treeData.parentId) {
 //             const parent = await Trees.get(this.treeData.parentId)

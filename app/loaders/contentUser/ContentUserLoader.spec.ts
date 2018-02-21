@@ -20,6 +20,8 @@ import {ContentUserLoader, ContentUserLoaderArgs} from './ContentUserLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {getContentUserId} from './ContentUserLoaderUtils';
+import {sampleContentUserData1} from '../../objects/contentUser/ContentUserHelpers';
+import {sampleContentUserDataFromDB1} from '../../objects/contentUser/ContentUserHelpers';
 // test('ContentUserLoader:::DI constructor should work', (t) => {
 //     const injects = injectionWorks<ContentUserLoaderArgs, IContentUserLoader>({
 //         container: myContainer,
@@ -82,6 +84,8 @@ test('ContentUserLoader:::Should mark an id as loaded after being loaded', async
     const lastRecordedStrengthVal = 30
     const proficiencyVal = PROFICIENCIES.TWO
     const timerVal = 30
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
 
     const contentUserData: IContentUserDataFromDB = {
         id: contentUserId,
@@ -97,6 +101,13 @@ test('ContentUserLoader:::Should mark an id as loaded after being loaded', async
         timer: {
             val: timerVal
         },
+        nextReviewTime: {
+            val: nextReviewTimeVal
+        },
+        lastInteractionTime: {
+            val: lastInteractionTimeVal
+        }
+
     }
 
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
@@ -135,6 +146,8 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     const lastRecordedStrengthVal = 30
     const proficiencyVal = PROFICIENCIES.TWO
     const timerVal = 30
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
 
     const sampleContentUserDataFromDB: IContentUserDataFromDB = {
         id: contentUserId,
@@ -150,6 +163,12 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
         timer: {
             val: timerVal
         },
+        nextReviewTime: {
+            val: nextReviewTimeVal
+        },
+        lastInteractionTime: {
+            val: lastInteractionTimeVal
+        }
     }
     const sampleContentUserData: IContentUserData = {
         id: contentUserId,
@@ -157,6 +176,8 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
         lastRecordedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
         timer: timerVal,
+        nextReviewTime: nextReviewTimeVal,
+        lastInteractionTime: lastInteractionTimeVal,
     }
 
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
@@ -191,6 +212,8 @@ test('ContentUserLoader:::DownloadData should have the side effect' +
     const lastRecordedStrengthVal = 30
     const proficiencyVal = PROFICIENCIES.TWO
     const timerVal = 30
+    const nextReviewTimeVal = Date.now() + 1000 * 60
+    const lastInteractionTimeVal = Date.now()
 
     const sampleContentUserData: IContentUserDataFromDB = {
         id: contentUserId,
@@ -206,6 +229,12 @@ test('ContentUserLoader:::DownloadData should have the side effect' +
         timer: {
             val: timerVal
         },
+        nextReviewTime: {
+            val: nextReviewTimeVal
+        },
+        lastInteractionTime: {
+            val: lastInteractionTimeVal
+        }
     }
 
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
@@ -238,41 +267,18 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
     const childFirebaseRef = firebaseRef.child(contentId)
     const grandChildFirebaseRef = childFirebaseRef.child(userId)
 
-    // const sampleContentUserData: IContentUserData = {
+    // const sampleContentUserData1: IContentUserData = {
     //     id: contentUserId,
     //     overdue: overdueVal,
-    //     lastRecordedStrength: lastRecordedStrengthVal,
+    //     lastEstimatedStrength: lastRecordedStrengthVal,
     //     proficiency: proficiencyVal,
     //     timer: timerVal
     // }
 
-    const sampleContentUserDataFromDB: IContentUserDataFromDB = {
-        id: contentUserId,
-        overdue: {
-            val: overdueVal,
-        },
-        lastRecordedStrength: {
-            val: lastRecordedStrengthVal,
-        },
-        proficiency: {
-            val: proficiencyVal,
-        },
-        timer: {
-            val: timerVal
-        },
-    }
-
-    const sampleContentUserData: IContentUserData = {
-        id: contentUserId,
-        overdue: overdueVal,
-        lastRecordedStrength: lastRecordedStrengthVal,
-        proficiency: proficiencyVal,
-        timer: timerVal,
-    }
 
     const sampleContentUser: ISyncableMutableSubscribableContentUser =
         ContentUserDeserializer.deserializeFromDB(
-            {id: contentUserId, contentUserDataFromDB: sampleContentUserDataFromDB}
+            {id: contentUserId, contentUserDataFromDB: sampleContentUserDataFromDB1}
             )
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
@@ -281,7 +287,7 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef})
     const contentUserData: IContentUserData = contentUserLoader.getData({contentId, userId})
 
-    expect(contentUserData).to.deep.equal(sampleContentUserData)
+    expect(contentUserData).to.deep.equal(sampleContentUserData1)
     t.pass()
 })
 test('ContentUserLoader:::GetData on a non existing contentUser should throw a RangeError', async (t) => {

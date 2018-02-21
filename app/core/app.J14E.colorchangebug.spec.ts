@@ -81,12 +81,12 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     // const timerVal = 30
     // const contentUserId = getContentUserId({contentId, userId})
     //
-    // const sampleContentUserDataFromDB: IContentUserDataFromDB = {
+    // const sampleContentUserDataFromDB1: IContentUserDataFromDB = {
     //     id: contentUserId,
     //     overdue: {
     //         val: overdueVal
     //     },
-    //     lastRecordedStrength: {
+    //     lastEstimatedStrength: {
     //         val: lastRecordedStrengthVal
     //     },
     //     proficiency: {
@@ -122,7 +122,7 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     // const contentUserItemRef = getContentUserRef({contentUsersRef: mockContentUsersRef, userId, contentId}) as MockFirebase
     // // contentUserItemRef = contentUsersRef.child()
     // // .child(contentUserId)
-    // contentUserItemRef.fakeEvent('value', undefined, sampleContentUserDataFromDB)
+    // contentUserItemRef.fakeEvent('value', undefined, sampleContentUserDataFromDB1)
     // const sigmaNodeLoader: ISigmaNodeLoader =
     //     myContainer.get<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader)
     // const sigmaNodeLoadeDataPromise = sigmaNodeLoader.loadIfNotLoaded(sigmaId)
