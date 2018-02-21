@@ -18,7 +18,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
     public overdue: ISubscribableMutableField<boolean>;
     public timer: ISubscribableMutableField<number>;
     public proficiency: ISubscribableMutableField<PROFICIENCIES>;
-    public lastRecordedStrength: ISubscribableMutableField<number>;
+    public lastEstimatedStrength: ISubscribableMutableField<number>;
     public lastInteractionTime: ISubscribableMutableField<timestamp>
     public nextReviewTime: ISubscribableMutableField<timestamp>
 
@@ -26,7 +26,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
     public val(): IContentUserData {
         return {
             id: this.id,
-            lastRecordedStrength: this.lastRecordedStrength.val(),
+            lastRecordedStrength: this.lastEstimatedStrength.val(),
             overdue: this.overdue.val(),
             proficiency: this.proficiency.val(),
             timer: this.timer.val(),
@@ -43,7 +43,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.overdue = overdue
         this.proficiency = proficiency
         this.timer = timer
-        this.lastRecordedStrength = lastRecordedStrength
+        this.lastEstimatedStrength = lastRecordedStrength
         this.lastInteractionTime = lastInteractionTime
         this.nextReviewTime = nextReviewTime
     }
@@ -59,7 +59,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.overdue.onUpdate(boundCallCallbacks)
         this.proficiency.onUpdate(boundCallCallbacks)
         this.timer.onUpdate(boundCallCallbacks)
-        this.lastRecordedStrength.onUpdate(boundCallCallbacks)
+        this.lastEstimatedStrength.onUpdate(boundCallCallbacks)
         this.lastInteractionTime.onUpdate(boundCallCallbacks)
         this.nextReviewTime.onUpdate(boundCallCallbacks)
     }

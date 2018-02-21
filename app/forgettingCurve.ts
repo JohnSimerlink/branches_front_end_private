@@ -1,4 +1,5 @@
 import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum'
+import {milliseconds, seconds, timestamp, percentage} from './objects/interfaces';
 
 export const e = 2.7182828
 export const criticalRecall = 1 - 1 / e
@@ -7,7 +8,7 @@ export const criticalRecall = 1 - 1 / e
 R = proficiency from 0 to 100
 t equals time since previous interaction in seconds
  */
-export function calculateStrength(R, t) {
+export function calculateStrength({R, t}: {R: number, t: number}) {
     const proficiencyAsDecimal = R / 100
     const logProficiency = Math.log(proficiencyAsDecimal)
     const ebbinghaus = -1 * t / logProficiency
@@ -17,11 +18,19 @@ export function calculateStrength(R, t) {
 // Se = previous estimated strength
 // R = proficiency from 0 to 100
 // t equals time since previous interaction in seconds
-export function calculateSecondsTilCriticalReviewTime(strength) {
-    return calculateTime(strength, criticalRecall)
+export function calculateSecondsTilCriticalReviewTime(strength: number): seconds {
+    return calculateTime({S: strength, R: criticalRecall})
+}
+export function calculateNextReviewTime(
+    {lastInteractionTime, lastInteractionEstimatedStrength}:
+        {lastInteractionTime: milliseconds, lastInteractionEstimatedStrength: number}): timestamp {
+    const secondsIntoFuture: seconds = calculateSecondsTilCriticalReviewTime(lastInteractionEstimatedStrength)
+    const millisecondsIntoFuture = secondsIntoFuture * 1000
+    const nextReviewTime: timestamp = lastInteractionTime + millisecondsIntoFuture
+    return nextReviewTime
 }
 // function measureInitialPreviousInteractionStrength
-export function measurePreviousStrength(estimatedPreviousStrength, R, t) {
+export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {estimatedPreviousStrength: number, R: number, t: number}) {
 
     const proficiencyAsDecimal = R / 100
     const logProficiency = Math.log(proficiencyAsDecimal)
@@ -63,10 +72,10 @@ export function measurePreviousStrength(estimatedPreviousStrength, R, t) {
     */
 }
 
-function doubleLessThanOrEqualTo(doubleOne, doubleTwo) {
+function doubleLessThanOrEqualTo(doubleOne: number, doubleTwo: number) {
     return doubleOne <= (doubleTwo + .01)
 }
-function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo) {
+function doubleGreaterThanOrEqualTo(doubleOne: number, doubleTwo: number) {
     return doubleOne >= (doubleTwo - .01)
 }
 
@@ -74,28 +83,32 @@ function doubleGreaterThanOrEqualTo(doubleOne, doubleTwo) {
 // t is in seconds
 // calculate percent change of recall (e.g. proficiency)
 // returns as a num in range [0,1]
-export function calculateRecall(S, t) {
+export function calculateRecall({S, t}: {S: number, t: number}) {
     return Math.pow(e, -1 * t / decibelsToEbbinghaus(S))
 }
 
-function decibelsToEbbinghaus(dbE) {
+function decibelsToEbbinghaus(dbE: number) {
     return Math.pow(10, dbE / 10)
 }
 // R input is in [0,1]
-export function calculateTime(S, R) {
+export function calculateTime({S, R}: {S: number, R: percentage}): seconds {
     return -1 * decibelsToEbbinghaus(S) * Math.log(R)
 }
 
 // current proficiency in [0, 100]
-export function estimateCurrentStrength(
+export function estimateCurrentStrength({
     previousInteractionStrengthDecibels,
     currentProficiency,
     secondsSinceLastInteraction
-) {
+}: {
+    previousInteractionStrengthDecibels: number,
+    currentProficiency: number,
+    secondsSinceLastInteraction: number
+}) {
     let newInteractionStrengthDecibels
     const t = secondsSinceLastInteraction
     if (currentProficiency <= PROFICIENCIES.ONE) {
-        const t1percent = calculateTime(previousInteractionStrengthDecibels, currentProficiency / 100)
+        const t1percent = calculateTime({S: previousInteractionStrengthDecibels, R: currentProficiency / 100})
         if (t >= t1percent) {
             newInteractionStrengthDecibels = previousInteractionStrengthDecibels * t1percent / t
         } else {
@@ -103,7 +116,7 @@ export function estimateCurrentStrength(
         }
     } else {
         currentProficiency = currentProficiency / 100
-        const Bt = 1 - calculateRecall(previousInteractionStrengthDecibels, t)
+        const Bt = 1 - calculateRecall({S: previousInteractionStrengthDecibels, t})
         const Bp = (e * currentProficiency - 1) / (e - 1)
         const Bc = 10 * (e - 1)
         const deltaStrength = Bt * Bp * Bc

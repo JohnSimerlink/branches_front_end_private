@@ -183,7 +183,7 @@ export interface IContentUser {
     overdue: IMutableField<boolean>
     timer: IMutableField<number>
     proficiency: IMutableField<PROFICIENCIES>
-    lastRecordedStrength: IMutableField<number>
+    lastEstimatedStrength: IMutableField<number>
     // ^^ TODO: this might actually be an object not a simple number
 }
 
@@ -191,7 +191,7 @@ export interface ISubscribableContentUserCore extends IContentUser {
     overdue: ISubscribableMutableField<boolean>
     timer: ISubscribableMutableField<number>
     proficiency: ISubscribableMutableField<PROFICIENCIES>
-    lastRecordedStrength: ISubscribableMutableField<number>
+    lastEstimatedStrength: ISubscribableMutableField<number>
     lastInteractionTime: ISubscribableMutableField<timestamp>
     nextReviewTime: ISubscribableMutableField<timestamp>
     val(): IContentUserData
@@ -201,7 +201,9 @@ export enum ContentUserPropertyNames {
     OVERDUE = 'VERDUE',
     TIMER = 'TIMER',
     PROFICIENCY = 'PROFICIENCY',
-    LAST_RECORDED_STRENGTH = 'LAST_RECORDED_STRENGTH',
+    LAST_ESTIMATED_STRENGTH = 'LAST_ESTIMATED_STRENGTH',
+    LAST_INTERACTION_TIME = 'LAST_INTERACTION_TIME',
+    NEXT_REVIEW_TIME = 'NEXT_REVIEW_TIME',
 }
 
 export interface ISubscribableContentUser extends
@@ -259,6 +261,10 @@ export interface IContentUserDataFromDB {
         val: timestamp
     }
 }
+
+export type seconds = number
+export type percentage = number
+export type milliseconds = number
 
 // dbSync
 

@@ -30,17 +30,17 @@ test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB prop
     // const contentUserData: IContentUserData = {
     //     id,
     //     overdue: overdueVal,
-    //     lastRecordedStrength: lastRecordedStrengthVal,
+    //     lastEstimatedStrength: lastRecordedStrengthVal,
     //     proficiency: proficiencyVal,
     //     timer: timerVal
     // }
 
     // const overdue = new MutableSubscribableField<boolean>({field: overdueVal})
-    // const lastRecordedStrength = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
+    // const lastEstimatedStrength = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
     // const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
     // const timer = new MutableSubscribableField<number>({field: timerVal})
     // const expectedContentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
-    //     {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer}
+    //     {updatesCallbacks: [], id, overdue, lastEstimatedStrength, proficiency, timer}
     // )
     const deserializedContentUser: IMutableSubscribableContentUser
         = ContentUserDeserializer.deserialize({id: sampleContentUserId1, contentUserData: sampleContentUserData1})

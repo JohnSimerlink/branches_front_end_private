@@ -34,9 +34,9 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
     expect(contentUser.overdue).to.deep.equal(overdue)
     expect(contentUser.timer).to.deep.equal(timer)
     expect(contentUser.proficiency).to.deep.equal(proficiency)
-    expect(contentUser.lastRecordedStrength).to.deep.equal(lastRecordedStrength)
+    expect(contentUser.lastEstimatedStrength).to.deep.equal(lastRecordedStrength)
     expect(contentUser.lastInteractionTime).to.deep.equal(proficiency)
-    expect(contentUser.lastRecordedStrength).to.deep.equal(lastRecordedStrength)
+    expect(contentUser.lastEstimatedStrength).to.deep.equal(lastRecordedStrength)
     t.pass()
 })
 test('SubscribableContentUser:::.val() should display the value of the object', (t) => {

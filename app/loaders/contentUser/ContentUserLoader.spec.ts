@@ -270,7 +270,7 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
     // const sampleContentUserData1: IContentUserData = {
     //     id: contentUserId,
     //     overdue: overdueVal,
-    //     lastRecordedStrength: lastRecordedStrengthVal,
+    //     lastEstimatedStrength: lastRecordedStrengthVal,
     //     proficiency: proficiencyVal,
     //     timer: timerVal
     // }

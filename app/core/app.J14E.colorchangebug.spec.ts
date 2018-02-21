@@ -86,7 +86,7 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     //     overdue: {
     //         val: overdueVal
     //     },
-    //     lastRecordedStrength: {
+    //     lastEstimatedStrength: {
     //         val: lastRecordedStrengthVal
     //     },
     //     proficiency: {

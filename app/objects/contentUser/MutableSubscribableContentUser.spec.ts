@@ -61,7 +61,7 @@ test('MutableSubscribableContentUser:::.val() should work after constructor', (t
     t.pass()
 })
 test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
-    'after ADD MUTATION SET lastRecordedStrength', (t) => {
+    'after ADD MUTATION SET lastEstimatedStrength', (t) => {
     /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
@@ -96,7 +96,7 @@ test('MutableSubscribableContentUser:::.val() should give appropiate value ' +
     })
     const mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
         data: newRecordedStrengthVal,
-        propertyName: ContentUserPropertyNames.LAST_RECORDED_STRENGTH,
+        propertyName: ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH,
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
     }
