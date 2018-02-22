@@ -43,7 +43,6 @@ export class ContentUserLoaderAndAutoSaver implements IContentUserLoader {
             error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again')
             return
         }
-        log('contentUserLoaderAndAutoSaver DownloadData called')
         const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({contentId, userId})
         const contentUserId = getContentUserId({contentId, userId})
         const contentUser = this.getItem({contentUserId})
