@@ -8,7 +8,8 @@ import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
     CONTENT_TYPES,
     IContentUserData,
-    ITree3Creator
+    ITree3Creator,
+    timestamp,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 const env = process.env.NODE_ENV || 'development'
@@ -110,6 +111,9 @@ export class Tree3Creator implements ITree3Creator {
                     this.proficiencyInput = contentUserData.proficiency
                     this.contentUserDataLoaded = true
                     return contentUserData
+                },
+                nextReviewTime(): timestamp {
+                    return this.contentUserData.nextReviewTime
                 },
                 // proficiency() {
                 //     return this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
