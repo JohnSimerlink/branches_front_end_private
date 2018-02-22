@@ -269,6 +269,10 @@ export type milliseconds = number
 export interface IOverdueListener extends IStartable {
 
 }
+export interface IOverdueListenerCore {
+    setOverdueTimer()
+    listenAndReactToAnyNextReviewTimeChanges()
+}
 // dbSync
 
 export interface IObjectFirebaseAutoSaver {

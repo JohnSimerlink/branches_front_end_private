@@ -67,6 +67,7 @@ export const TYPES = {
     IMutableSubscribableGlobalStore: Symbol('IMutableSubscribableGlobalStore'),
     INewTreeComponentCreator: ('INewTreeComponentCreator'),
     IOverdueListener: Symbol('IOverdueListener'),
+    IOverdueListenerCore: Symbol('IOverdueListenerCore'),
     IOneToManyMap: Symbol('IOneToManyMap'),
     IProficiencyStats: Symbol('IProficiencyStats'),
     IProppedDatedMutation: Symbol('IProppedDatedMutation'),
