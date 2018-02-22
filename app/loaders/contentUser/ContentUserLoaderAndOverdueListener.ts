@@ -18,7 +18,7 @@ import {OverdueListener, OverdueListenerCore} from "../../objects/contentUser/ov
 export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
     private firebaseRef: Reference
     private contentUserLoader: IContentUserLoader
-    constructor(@inject(TYPES.ContentUserLoaderAndAutoSaverArgs){
+    constructor(@inject(TYPES.ContentUserLoaderAndOverdueListenerArgs){
     firebaseRef, contentUserLoader, }: ContentUserLoaderAndOverdueListenerArgs) {
         this.contentUserLoader = contentUserLoader
         this.firebaseRef = firebaseRef
