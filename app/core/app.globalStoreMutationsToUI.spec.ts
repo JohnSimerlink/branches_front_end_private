@@ -85,8 +85,10 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const lastInteractionTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: ISubscribableMutableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
         id: contentUserId, lastRecordedStrength, overdue,
         proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
