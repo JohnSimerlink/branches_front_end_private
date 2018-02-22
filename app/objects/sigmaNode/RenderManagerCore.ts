@@ -30,7 +30,6 @@ export class RenderManagerCore implements IRenderManagerCore {
         // this.addNodeToSigma(sigmaNode)
     }
     public addEdgesToRenderList(edgeIds: string[]) {
-        log('rendermanager core addEdgeToRenderList called')
         const edges = []
         for (const id of edgeIds) {
             const edge = this.sigmaEdges[id]

@@ -1,23 +1,91 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
-import {IMutable, IMutableSubscribableContentUser, IOverdueListener} from '../interfaces';
+import {
+    FieldMutationTypes, IDatedMutation,
+    IOverdueListener, IOverdueListenerCore,
+    ISubscribableMutableField,
+    timestamp
+} from '../interfaces';
+import Timer = NodeJS.Timer;
+import {log} from '../../core/log'
+import moment = require('moment');
 
-@injectable()
 export class OverdueListener  implements IOverdueListener {
-    public contentUser: IMutableSubscribableContentUser
+    private overdueListenerCore: IOverdueListenerCore
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.OverdueListenerArgs) {
-        contentUser
+        overdueListenerCore
    }: OverdueListenerArgs ) {
-        this.contentUser = contentUser
-
+        this.overdueListenerCore = overdueListenerCore
     }
     public start() {
-
+        this.overdueListenerCore.setOverdueTimer()
+        this.overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges()
     }
 }
 @injectable()
 export class OverdueListenerArgs {
-    @inject(TYPES.IMutableSubscribableContentUser) public contentUser:
-        IMutableSubscribableContentUser
+    @inject(TYPES.IOverdueListenerCore) public overdueListenerCore:
+        IOverdueListenerCore
+}
+
+@injectable()
+export class OverdueListenerCore  implements IOverdueListenerCore {
+    private nextReviewTime: ISubscribableMutableField<timestamp>
+    private overdue: ISubscribableMutableField<boolean>
+    private timeoutId: number
+    // TODO: should the below three objects be private?
+    constructor(@inject(TYPES.OverdueListenerArgs) {
+        overdue,
+        nextReviewTime,
+        timeoutId,
+   }: OverdueListenerCoreArgs ) {
+        this.overdue = overdue
+        this.nextReviewTime = nextReviewTime
+        this.timeoutId = timeoutId
+    }
+    public listenAndReactToAnyNextReviewTimeChanges() {
+        this.nextReviewTime.onUpdate(newNextReviewTime => {
+            const markFalse: IDatedMutation<
+                FieldMutationTypes> = {
+                timestamp: Date.now(),
+                type: FieldMutationTypes.SET,
+                data: false,
+            }
+            this.overdue.addMutation(markFalse)
+
+            clearTimeout(this.timeoutId)
+            this.setOverdueTimer()
+        })
+    }
+    public setOverdueTimer() {
+        const overdueTime = this.nextReviewTime.val()
+        const now = Date.now()
+        const millisecondsTilOverdue = overdueTime - now
+        if (millisecondsTilOverdue <= 0) {
+            this.markOverdue()
+        } else {
+            this.timeoutId = window.setTimeout(() => {
+                /* ^^ deliberately say window.setTimeout (which returns a number,
+                as opposed to Node's setTimeout which returns type Timer. */
+                this.markOverdue()
+            }, millisecondsTilOverdue)
+        }
+    }
+    private markOverdue() {
+        const markTrue: IDatedMutation<FieldMutationTypes> = {
+            timestamp: Date.now(),
+            type: FieldMutationTypes.SET,
+            data: true,
+        }
+        this.overdue.addMutation(markTrue)
+    }
+}
+@injectable()
+export class OverdueListenerCoreArgs {
+    @inject(TYPES.ISubscribableMutableNumber) public nextReviewTime:
+        ISubscribableMutableField<timestamp>
+    @inject(TYPES.ISubscribableMutableBoolean) public overdue:
+        ISubscribableMutableField<boolean>
+    @inject(TYPES.Number) public timeoutId: number
 }

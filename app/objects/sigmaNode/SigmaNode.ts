@@ -7,12 +7,13 @@ import {
     CONTENT_TYPES,
     IColorSlice, IContentData,
     IContentUserData, ICoordinate, IProficiencyStats,
-    ISigmaNode, ITreeDataWithoutId, ITreeLocationData, ITreeUserData
+    ISigmaNode, ITreeDataWithoutId, ITreeLocationData, ITreeUserData, timestamp
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {DEFAULT_NODE_SIZE} from '../../core/globals';
+import moment = require('moment');
 
 @injectable()
 export class SigmaNode implements ISigmaNode {
@@ -33,6 +34,7 @@ export class SigmaNode implements ISigmaNode {
     public proficiencyStats: IProficiencyStats;
     public proficiency: PROFICIENCIES
     public overdue: boolean;
+    public nextReviewTime: timestamp;
 
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
         this.parentId = tree.parentId
@@ -52,6 +54,7 @@ export class SigmaNode implements ISigmaNode {
     public receiveNewContentUserData(contentUserData: IContentUserData) {
         this.contentUserId = contentUserData.id
         this.overdue = contentUserData.overdue
+        this.nextReviewTime = contentUserData.nextReviewTime
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
         this.contentUserData = contentUserData
         this.proficiency = contentUserData.proficiency
@@ -84,6 +87,7 @@ export class SigmaNode implements ISigmaNode {
             aggregationTimer,
             colorSlices,
             overdue,
+            nextReviewTime,
         }: SigmaNodeArgs = {
             id: undefined,
             parentId: undefined,
@@ -99,6 +103,7 @@ export class SigmaNode implements ISigmaNode {
             aggregationTimer: undefined,
             colorSlices: undefined,
             overdue: undefined,
+            nextReviewTime: undefined,
         } ) {
         this.id = id
         this.parentId = parentId
@@ -118,6 +123,7 @@ export class SigmaNode implements ISigmaNode {
         this.size = size || DEFAULT_NODE_SIZE
         this.colorSlices = colorSlices
         this.overdue = overdue
+        this.nextReviewTime = nextReviewTime
     }
 }
 
@@ -137,4 +143,5 @@ export class SigmaNodeArgs {
     @inject(TYPES.IProficiencyStats) public proficiencyStats: IProficiencyStats;
     @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
     @inject(TYPES.Boolean) public overdue: boolean;
+    @inject(TYPES.Number) public nextReviewTime: number;
 }

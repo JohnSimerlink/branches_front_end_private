@@ -170,7 +170,6 @@ function Tooltips(s, renderer, options) {
      */
     this.open = function (o, options, x, y, onComplete) {
         // debugger;
-        console.log('tooltips open called 1', o, options, x, y, onComplete)
         remove();
 
         // Create the DOM element:
@@ -215,7 +214,6 @@ function Tooltips(s, renderer, options) {
         // Style it (pretty sure this does nothing):
         _tooltip.className = options.cssClass;
 
-        console.log('tooltips open called 2')
         if (options.position !== 'css') {
             if (containerPosition === 'static') {
                 _tooltip.style.position = 'absolute';
@@ -324,7 +322,6 @@ function Tooltips(s, renderer, options) {
             }
             if (onComplete) onComplete();
 
-            console.log('tooltips open called 3')
         }, 0);
     };
 

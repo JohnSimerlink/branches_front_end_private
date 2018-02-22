@@ -2,6 +2,7 @@ import {log} from '../../../core/log'
 import {
     IContentUserData,
     IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableContentUser,
+    ISyncableMutableSubscribableContentUserStore,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
@@ -14,7 +15,7 @@ import {TAGS} from '../../tags';
 
 @injectable()
 export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscribableContentUserStore
-    implements IMutableSubscribableContentUserStore {
+    implements ISyncableMutableSubscribableContentUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
     private contentUsersFirebaseRef: Reference
     constructor(@inject(TYPES.AutoSaveMutableSubscribableContentUserStoreArgs){
@@ -41,6 +42,9 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
             syncableObject: contentUser,
             syncableObjectFirebaseRef: contentUserFirebaseRef
         })
+        /* TODO: there are two spots in our code (contentUserLoader and contentUserStore)
+         where in our composed objects we create an auto saver and an overdueListener.
+         It's essentially copied and pasted code. . . . Find some way to unify */
         objectFirebaseAutoSaver.initialSave()
         objectFirebaseAutoSaver.start()
         // TODO: this needs to add the actual value into the db
