@@ -38,7 +38,6 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         this.waitingEdgeIds[edgeId] = true
         const sourceId = getSourceId({edgeId})
         const targetId = getTargetId({edgeId})
-        log('this treeidEdgeIdsMap is', this.treeIdEdgeIdsMap)
         this.treeIdEdgeIdsMap.set(sourceId, edgeId) // TODO: what if same edgeId is added twice for one treeId?
         this.treeIdEdgeIdsMap.set(targetId, edgeId) // TODO: what if same edgeId is added twice for one treeId?
         // edge can be loaded when these two nodes are loaded

@@ -8,6 +8,7 @@ import {
 } from '../interfaces';
 import Timer = NodeJS.Timer;
 import {log} from '../../core/log'
+import moment = require('moment');
 
 export class OverdueListener  implements IOverdueListener {
     private overdueListenerCore: IOverdueListenerCore
@@ -30,10 +31,9 @@ export class OverdueListenerArgs {
 
 @injectable()
 export class OverdueListenerCore  implements IOverdueListenerCore {
-
     private nextReviewTime: ISubscribableMutableField<timestamp>
     private overdue: ISubscribableMutableField<boolean>
-    private timeoutId: Timer
+    private timeoutId: number
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.OverdueListenerArgs) {
         overdue,
@@ -46,6 +46,7 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
     }
     public listenAndReactToAnyNextReviewTimeChanges() {
         this.nextReviewTime.onUpdate(newNextReviewTime => {
+            console.log('markNotOverdue called', moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a'))
             const markFalse: IDatedMutation<
                 FieldMutationTypes> = {
                 timestamp: Date.now(),
@@ -60,17 +61,21 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
     }
     public setOverdueTimer() {
         const overdueTime = this.nextReviewTime.val()
+        log('setOverdueTimer set for ', moment(overdueTime).format('MMMM Do YYYY, h:mm:ss a'))
         const now = Date.now()
         const millisecondsTilOverdue = overdueTime - now
         if (millisecondsTilOverdue <= 0) {
             this.markOverdue()
         } else {
-            this.timeoutId = setTimeout(() => {
+            this.timeoutId = window.setTimeout(() => {
+                /* ^^ deliberately say window.setTimeout (which returns a number,
+                as opposed to Node's setTimeout which returns type Timer. */
                 this.markOverdue()
             }, millisecondsTilOverdue)
         }
     }
     private markOverdue() {
+        console.log('markOverdue called', moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a'))
         const markTrue: IDatedMutation<FieldMutationTypes> = {
             timestamp: Date.now(),
             type: FieldMutationTypes.SET,
@@ -85,5 +90,5 @@ export class OverdueListenerCoreArgs {
         ISubscribableMutableField<timestamp>
     @inject(TYPES.ISubscribableMutableBoolean) public overdue:
         ISubscribableMutableField<boolean>
-    @inject(TYPES.Number) public timeoutId: Timer
+    @inject(TYPES.Number) public timeoutId: number
 }

@@ -110,7 +110,6 @@ const getters = {
     },
     loggedIn(state: IState, getters): boolean {
         const loggedIn = !!state.userId
-        log('getter loggedIn is ', loggedIn)
         return loggedIn
     },
     async hasAccess(state: IState, getters): Promise<boolean> {
@@ -118,10 +117,8 @@ const getters = {
         // return await getters.userHasAccess(state.userId)
     },
     userHasAccess(state: IState, getters) {
-        console.log('userHasAccess getter called')
         return (userId: id): boolean => {
             const userData: IUserData = getters.userData(userId)
-            console.log('userHasAccess getter inside function called. userData is', userData)
             if (!userData) {
                 return false
             } else {

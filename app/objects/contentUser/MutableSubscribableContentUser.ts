@@ -76,28 +76,32 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                         secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000}) || 0
                 const nextReviewTime = calculateNextReviewTime(
                     {
-                        lastInteractionTime,
+                        lastInteractionTime: newInteractionTime,
                         lastInteractionEstimatedStrength: currentEstimatedInteractionStrength}
                     )
+                log('proficiency just calculated to be ', mutation.data)
+                log('lastInteractionTime and lastStrength are ', moment(lastInteractionTime).format('MM/DD/YY, h:mm:ss a'),  previousInteractionStrength)
+                log('newInteractionTime and currentEstimatedStrength are ', moment(newInteractionTime).format('MM/DD/YY, h:mm:ss a'), currentEstimatedInteractionStrength )
+                log('nextReviewTime is ', moment(nextReviewTime).format('MM/DD/YY, h:mm:ss a') )
 
                 const strengthMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH,
-                    timestamp: mutation.timestamp,
+                    timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: currentEstimatedInteractionStrength,
                 }
                 const interactionTimeMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.LAST_INTERACTION_TIME,
-                    timestamp: mutation.timestamp,
+                    timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: newInteractionTime,
                 }
                 const nextReviewTimeMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.NEXT_REVIEW_TIME,
-                    timestamp: mutation.timestamp,
+                    timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: nextReviewTime,
                 }

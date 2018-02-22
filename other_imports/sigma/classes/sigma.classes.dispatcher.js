@@ -29,10 +29,6 @@ dispatcher.prototype.bind = function (events, handler) {
         l,
         event,
         eArray;
-    var centeredNodeEvent = events === CustomSigmaEventNames.CENTERED_NODE
-    if (this._handlers[CustomSigmaEventNames.CENTERED_NODE]){
-        debugger;
-    }
     if (
         arguments.length === 1 &&
         typeof arguments[0] === 'object'
@@ -60,11 +56,6 @@ dispatcher.prototype.bind = function (events, handler) {
             this._handlers[event].push({
                 handler: handler
             });
-            if (event === CustomSigmaEventNames.CENTERED_NODE) {
-                this._handlers.id = Math.random()
-                log('bind for ' + CustomSigmaEventNames.CENTERED_NODE  +' just added id to handlers obj ')
-                log('bind for ' + CustomSigmaEventNames.CENTERED_NODE  +' called with ', events, handler, this._handlers[event], this._handlers)
-            }
         }
     } else
         throw 'bind: Wrong arguments.';

@@ -19,6 +19,7 @@ export const TYPES = {
     ContentLoaderAndAutoSaverArgs: Symbol('ContentLoaderAndAutoSaverArgs'),
     ContentUserLoaderArgs: Symbol('ContentUserLoaderArgs'),
     ContentUserLoaderAndAutoSaverArgs: Symbol('ContentUserLoaderAndAutoSaverArgs'),
+    ContentUserLoaderAndOverdueListenerArgs: Symbol('ContentUserLoaderAndOverdueListenerArgs'),
     CanvasUI: Symbol('CanvasUI'),
     CanvasUIArgs: Symbol('CanvasUIArgs'),
     DBSubscriberToTreeArgs: Symbol('DBSubscriberToTreeArgs'),
