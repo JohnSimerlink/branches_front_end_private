@@ -27,7 +27,6 @@ export class OverdueListenerMutableSubscribableContentUserStore
         {id, contentUserData}:
             { id: string; contentUserData: IContentUserData; })
     : ISyncableMutableSubscribableContentUser {
-        log('OverdueListenerAutoSaveMutableSubscribableContentStore addAndSubscribeToItemFromData', id, contentUserData)
         const contentUser: ISyncableMutableSubscribableContentUser =
             this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData})
 
