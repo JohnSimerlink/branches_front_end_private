@@ -186,6 +186,6 @@ export class MutableSubscribableGlobalStoreArgs /* extends SubscribableGlobalSto
         public contentStore: IMutableSubscribableContentStore
 
     @inject(TYPES.IMutableSubscribableContentUserStore)
-    @tagged(TAGS.AUTO_SAVER, true)
+    @tagged(TAGS.OVERDUE_LISTENER, true)
         public contentUserStore: IMutableSubscribableContentUserStore
 }

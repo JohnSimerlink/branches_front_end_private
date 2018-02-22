@@ -237,6 +237,10 @@ import {
     ContentUserLoaderAndOverdueListener,
     ContentUserLoaderAndOverdueListenerArgs
 } from "./app/loaders/contentUser/ContentUserLoaderAndOverdueListener";
+import {
+    OverdueListenerMutableSubscribableContentUserStore,
+    OverdueListenerMutableSubscribableContentUserStoreArgs
+} from "./app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore";
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -541,6 +545,13 @@ export const stores =
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(AutoSaveMutableSubscribableContentUserStore)
         .whenTargetTagged(TAGS.AUTO_SAVER, true)
+
+    bind<OverdueListenerMutableSubscribableContentUserStoreArgs>(
+        TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs)
+        .to(OverdueListenerMutableSubscribableContentUserStoreArgs)
+    bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
+        .to(OverdueListenerMutableSubscribableContentUserStore)
+        .whenTargetTagged(TAGS.OVERDUE_LISTENER, true)
 
 })
 //
