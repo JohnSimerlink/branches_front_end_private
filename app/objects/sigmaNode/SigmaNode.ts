@@ -52,7 +52,6 @@ export class SigmaNode implements ISigmaNode {
     }
 
     public receiveNewContentUserData(contentUserData: IContentUserData) {
-        log('receiveNewContentUserData', this.id, moment(Date.now()), contentUserData.overdue)
         this.contentUserId = contentUserData.id
         this.overdue = contentUserData.overdue
         this.nextReviewTime = contentUserData.nextReviewTime

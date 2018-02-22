@@ -79,10 +79,6 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                         lastInteractionTime: newInteractionTime,
                         lastInteractionEstimatedStrength: currentEstimatedInteractionStrength}
                     )
-                log('proficiency just calculated to be ', mutation.data)
-                log('lastInteractionTime and lastStrength are ', moment(lastInteractionTime).format('MM/DD/YY, h:mm:ss a'),  previousInteractionStrength)
-                log('newInteractionTime and currentEstimatedStrength are ', moment(newInteractionTime).format('MM/DD/YY, h:mm:ss a'), currentEstimatedInteractionStrength )
-                log('nextReviewTime is ', moment(nextReviewTime).format('MM/DD/YY, h:mm:ss a') )
 
                 const strengthMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {

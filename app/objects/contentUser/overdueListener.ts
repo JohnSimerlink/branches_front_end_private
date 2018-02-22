@@ -46,7 +46,6 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
     }
     public listenAndReactToAnyNextReviewTimeChanges() {
         this.nextReviewTime.onUpdate(newNextReviewTime => {
-            console.log('markNotOverdue called', moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a'))
             const markFalse: IDatedMutation<
                 FieldMutationTypes> = {
                 timestamp: Date.now(),
@@ -61,7 +60,6 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
     }
     public setOverdueTimer() {
         const overdueTime = this.nextReviewTime.val()
-        log('setOverdueTimer set for ', moment(overdueTime).format('MMMM Do YYYY, h:mm:ss a'))
         const now = Date.now()
         const millisecondsTilOverdue = overdueTime - now
         if (millisecondsTilOverdue <= 0) {
@@ -75,7 +73,6 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
         }
     }
     private markOverdue() {
-        console.log('markOverdue called', moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a'))
         const markTrue: IDatedMutation<FieldMutationTypes> = {
             timestamp: Date.now(),
             type: FieldMutationTypes.SET,
