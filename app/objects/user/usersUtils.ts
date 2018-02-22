@@ -27,7 +27,6 @@ export class UserUtils implements IUserUtils {
         return new Promise((resolve, reject) => {
             userRef.once('value', snapshot => {
                 const userVal = snapshot.val()
-                console.log('userExists in DB val is', userVal)
                 if (userVal) {
                     resolve(true)
                 } else {
@@ -52,7 +51,6 @@ export class UserUtils implements IUserUtils {
             syncableObject: user,
             syncableObjectFirebaseRef: userFirebaseRef
         })
-        console.log('about to call objectFirebaseAutoSaver initial Save for user of ', user, ' with id of ', userId)
         objectFirebaseAutoSaver.initialSave()
         objectFirebaseAutoSaver.start()
         return user

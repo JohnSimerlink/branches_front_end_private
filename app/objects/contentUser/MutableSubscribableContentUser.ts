@@ -76,28 +76,28 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                         secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000}) || 0
                 const nextReviewTime = calculateNextReviewTime(
                     {
-                        lastInteractionTime,
+                        lastInteractionTime: newInteractionTime,
                         lastInteractionEstimatedStrength: currentEstimatedInteractionStrength}
                     )
 
                 const strengthMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH,
-                    timestamp: mutation.timestamp,
+                    timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: currentEstimatedInteractionStrength,
                 }
                 const interactionTimeMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.LAST_INTERACTION_TIME,
-                    timestamp: mutation.timestamp,
+                    timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: newInteractionTime,
                 }
                 const nextReviewTimeMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.NEXT_REVIEW_TIME,
-                    timestamp: mutation.timestamp,
+                    timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: nextReviewTime,
                 }

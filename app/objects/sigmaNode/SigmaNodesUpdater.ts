@@ -93,7 +93,6 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 this.contentIdContentUserMap[contentId] = contentUserData
                 // TODO: Cache ContentUserData like we do with CONTENT_DATA
                 sigmaIds = this.getSigmaIdsForContentId(contentId)
-                log(contentUserId, 'sigmaIds for ', contentId, ' is ', sigmaIds)
                 break;
             }
         }
@@ -148,7 +147,6 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 if (!edge) {
                     const color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
                     edge = createParentSigmaEdge({parentId, treeId, color})
-                    log('edge just created in sigmNodesUpdater as ', edge)
                     this.sigmaEdges[edgeId] = edge
                     this.sigmaRenderManager.addWaitingEdge(edgeId)
                     // this.sigmaEdgeRenderManager.markNodeL

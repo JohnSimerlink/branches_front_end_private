@@ -269,6 +269,10 @@ export type milliseconds = number
 export interface IOverdueListener extends IStartable {
 
 }
+export interface IOverdueListenerCore {
+    setOverdueTimer()
+    listenAndReactToAnyNextReviewTimeChanges()
+}
 // dbSync
 
 export interface IObjectFirebaseAutoSaver {
@@ -603,6 +607,7 @@ export interface ISigmaNodeData {
     proficiencyStats: IProficiencyStats;
     proficiency: PROFICIENCIES;
     overdue: boolean;
+    nextReviewTime: timestamp;
 }
 export interface ISigmaEdgeData {
     id: string,
@@ -705,7 +710,14 @@ export interface IMutableSubscribableContentUserStore
         {id, contentUserData}: {id: string, contentUserData: IContentUserData}
         ): IMutableSubscribableContentUser
 }
-export interface IAutoSaveMutableSubscribableContentUserStore extends IMutableSubscribableContentUserStore {
+export interface ISyncableMutableSubscribableContentUserStore
+    extends ISubscribableContentUserStore,
+        IMutable<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+    addAndSubscribeToItemFromData(
+        {id, contentUserData}: {id: string, contentUserData: IContentUserData}
+    ): ISyncableMutableSubscribableContentUser
+}
+export interface IAutoSaveMutableSubscribableContentUserStore extends ISyncableMutableSubscribableContentUserStore {
 }
 
 export interface IMutableSubscribableContentStore

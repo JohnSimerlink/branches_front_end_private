@@ -289,7 +289,6 @@ sigma.misc.bindEvents = function (prefix) {
                     node: nodes[0],
                     captor: e.data
                 });
-                console.log('sigma misc bindEvents clickNode just called')
                 self.dispatchEvent('clickNodes', {
                     node: nodes,
                     captor: e.data

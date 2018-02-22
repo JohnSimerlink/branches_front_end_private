@@ -440,7 +440,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\John\dev\branches_front_end\app\core\app.integration1.spec.ts
+SF:C:\Users\John\dev\branches_front_end\app\core\app.globalStoreMutationsToUI.spec.ts
 FN:45,(anonymous_1)
 FN:68,(anonymous_2)
 FN:117,(anonymous_3)
@@ -630,7 +630,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\John\dev\branches_front_end\app\core\app.integration2.spec.ts
+SF:C:\Users\John\dev\branches_front_end\app\core\app.loadToUI.spec.ts
 FN:30,(anonymous_12)
 FN:64,(anonymous_15)
 FNF:2
