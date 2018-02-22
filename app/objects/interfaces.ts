@@ -607,6 +607,7 @@ export interface ISigmaNodeData {
     proficiencyStats: IProficiencyStats;
     proficiency: PROFICIENCIES;
     overdue: boolean;
+    nextReviewTime: timestamp;
 }
 export interface ISigmaEdgeData {
     id: string,

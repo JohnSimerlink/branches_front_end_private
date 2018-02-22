@@ -53,6 +53,7 @@ test('tooltips renderer content should escape', t => {
          proficiencyStats,
          proficiency: PROFICIENCIES.ONE,
          overdue: false,
+         nextReviewTime: Date.now() + 10000
     }
     // const expectedVueTreeTemplate: string =
     //     `<div id="vue">

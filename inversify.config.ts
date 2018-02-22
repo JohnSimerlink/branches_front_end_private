@@ -233,6 +233,10 @@ import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
 import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
 import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
 import {AuthListener, AuthListenerArgs} from './app/objects/authListener/authListener';
+import {
+    ContentUserLoaderAndOverdueListener,
+    ContentUserLoaderAndOverdueListenerArgs
+} from "./app/loaders/contentUser/ContentUserLoaderAndOverdueListener";
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -334,11 +338,17 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
         .whenTargetTagged(TAGS.AUTO_SAVER, true)
     myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs)
 
+    myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs)
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
         .whenTargetIsDefault()
+    myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
+        .to(ContentUserLoaderAndAutoSaverArgs)
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndAutoSaver)
         .whenTargetTagged(TAGS.AUTO_SAVER, true)
-    myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs)
+    myContainer.bind<ContentUserLoaderAndOverdueListenerArgs>(TYPES.ContentUserLoaderAndOverdueListenerArgs)
+        .to(ContentUserLoaderAndOverdueListenerArgs)
+    myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndOverdueListener)
+        .whenTargetTagged(TAGS.OVERDUE_LISTENER, true)
 
     // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
 
@@ -379,8 +389,6 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
         // .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
         .to(ContentLoaderAndAutoSaverArgs)
-    myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
-        .to(ContentUserLoaderAndAutoSaverArgs)
     myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>(TYPES.TreeLocationLoaderAndAutoSaverArgs)
         .to(TreeLocationLoaderAndAutoSaverArgs)
 

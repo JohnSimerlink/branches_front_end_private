@@ -57,27 +57,9 @@ export class Tree3Creator implements ITree3Creator {
                 contentUserDataString: String,
             },
             async created() {
-                log('tree component created',
-                    this.id, this.x, this.y, this.parentId, this.contentUserId, this.contentId, this.userId,
-                    this.contentString, this.contentUserDataString,
-                )
-                // this.content = JSON.parse(decodeURIComponent(this.content))
-                // var me = this;
-                // log('tree component content is now', this.content)
-                //
-                // this.editing = false
-                // this.addingChild = false
-                // this.nodeBeingDragged = false
-                // this.tree = await Trees.get(this.id)
-                // this.content = await ContentItems.get(this.tree.contentId)
-                // console.log("components/tree.js content is", this.content)
-                // this.startTimer()
-                // this.tree.sortLeavesByStudiedAndStrength()
-
                 if (this.typeIsHeading) {
                     this.addingChild = true
                 }
-                log('adding child is', this.addingChild)
             },
             mounted() {
             },
@@ -111,14 +93,12 @@ export class Tree3Creator implements ITree3Creator {
                     // log('decoded is ', decoded)
                     // const content
                     const content = JSON.parse(this.contentString)
-                    log('parsed is', content)
 
                     return content
                 },
                 contentUserData() {
                     this.contentUserDataLoaded = false
                     if (this.contentUserDataLocal) {
-                        log('ContentUserData updated. using contentUserDataLocal!')
                         return this.contentUserDataLocal
                     }
                     if (!this.contentUserDataString) {
@@ -126,7 +106,6 @@ export class Tree3Creator implements ITree3Creator {
                     }
                     // const content
                     const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
-                    log('contentUserData parsed is', contentUserData)
 
                     this.proficiencyInput = contentUserData.proficiency
                     this.contentUserDataLoaded = true
@@ -148,7 +127,6 @@ export class Tree3Creator implements ITree3Creator {
                 // },
                 typeIsHeading() {
                     const isHeading = this.content.type === 'heading' || this.tree.contentType === 'heading'
-                    log('typeIsHeading is ', isHeading, this.content.type, this.tree.contentType)
                     return this.content.type === 'heading'
                         || this.tree.contentType === 'heading' // backwards compatibility
                 },
@@ -237,8 +215,6 @@ export class Tree3Creator implements ITree3Creator {
                     // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked(proficiency) {
-                    log('proficiencyClicked', this.proficiency, this.userId, this.contentUserId)
-                    log('proficiencyClicked this.proficiency is', this.proficiency, proficiency, this.proficiencyInput)
                     this.proficiencyInput = proficiency
                     const contentUserId = this.contentUserId
                     const timestamp = Date.now()

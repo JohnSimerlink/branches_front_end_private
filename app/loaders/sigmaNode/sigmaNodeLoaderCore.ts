@@ -73,7 +73,9 @@ export class SigmaNodeLoaderCoreArgs {
     @tagged(TAGS.AUTO_SAVER, true)
         public contentLoader: IContentLoader
     @inject(TYPES.IContentUserLoader)
-    @tagged(TAGS.AUTO_SAVER, true)
+    // TODO: I wish I could just arbitrarily compose whatever behavior I wanted onto this injection . . .
+    // e.g. @tagged(TAGS.AUTO_SAVER, true) and @tagged(TAGS.OVERDUE_LISTENER, true) at the same time
+    @tagged(TAGS.OVERDUE_LISTENER, true)
         public contentUserLoader: IContentUserLoader
     @inject(TYPES.BranchesStore)
         public store: Store<any>
