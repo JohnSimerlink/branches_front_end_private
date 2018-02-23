@@ -1,6 +1,6 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
-    IApp, IAuthListener, IMutableSubscribableGlobalStore,
+    IApp, IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
     IUI
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';
@@ -10,10 +10,12 @@ export class App implements IApp {
     private UIs: IUI[]
     private store: IMutableSubscribableGlobalStore
     private authListener: IAuthListener
-    constructor(@inject(TYPES.AppArgs){UIs, store, authListener}: AppArgs ) {
+    private globalDataStoreBranchesStoreSyncer: IGlobalDataStoreBranchesStoreSyncer
+    constructor(@inject(TYPES.AppArgs){UIs, store, authListener, globalDataStoreBranchesStoreSyncer}: AppArgs ) {
         this.UIs = UIs
         this.store = store
         this.authListener = authListener
+        this.globalDataStoreBranchesStoreSyncer = globalDataStoreBranchesStoreSyncer
     }
     public start() {
         // this.stores.loadFromCache() // or // stores.init() or     something
@@ -26,6 +28,7 @@ export class App implements IApp {
         this.store.startPublishing()
 
         this.authListener.start()
+        this.globalDataStoreBranchesStoreSyncer.start()
     }
 }
 
@@ -36,4 +39,6 @@ export class AppArgs {
         public UIs: IUI[]
     @inject(TYPES.IMutableSubscribableGlobalStore) public store: IMutableSubscribableGlobalStore
     @inject(TYPES.IAuthListener) public authListener: IAuthListener
+    @inject(TYPES.IGlobalDataStoreBranchesStoreSyncer)
+        public globalDataStoreBranchesStoreSyncer: IGlobalDataStoreBranchesStoreSyncer
 }

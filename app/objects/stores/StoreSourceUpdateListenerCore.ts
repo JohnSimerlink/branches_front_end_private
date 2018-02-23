@@ -1,7 +1,8 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IOneToManyMap, ISigmaNodes,
+    IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs, ISigmaNodes,
     ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
     ITypeAndIdAndValUpdates, ObjectDataTypes
 } from '../interfaces';
@@ -9,18 +10,22 @@ import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
+import BranchesStore, {MUTATION_NAMES} from "../../core/store2";
+import {Store} from "vuex";
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
     // private sigmaNodes: ISigmaNodes
     private sigmaNodesUpdater: ISigmaNodesUpdater
     private contentIdSigmaIdMap: IOneToManyMap<string>
+    private store: Store<any>
     constructor(
         @inject(TYPES.StoreSourceUpdateListenerCoreArgs){
-            sigmaNodesUpdater, contentIdSigmaIdMap}: StoreSourceUpdateListenerCoreArgs) {
+            sigmaNodesUpdater, contentIdSigmaIdMap, store}: StoreSourceUpdateListenerCoreArgs) {
         // this.sigmaNodes = sigmaNodes
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
+        this.store = store
         // log('StoreSourceUpdateListenerCore sigmaNodes is', this.sigmaNodes, sigmaNodes,
         //     this.contentIdSigmaIdMap, contentIdSigmaIdMap,
         //     this.sigmaNodesUpdater, sigmaNodesUpdater)
@@ -45,6 +50,12 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 // }
                 this.contentIdSigmaIdMap.set(contentId, sigmaId)
                 this.sigmaNodesUpdater.handleUpdate(update)
+
+                const mutationArgs: ISetTreeDataMutationArgs = {
+                    treeId: update.id,
+                    treeDataWithoutId: update.val,
+                }
+                this.store.commit(MUTATION_NAMES.SET_TREE_DATA, mutationArgs)
                 break;
             }
             case ObjectDataTypes.TREE_LOCATION_DATA: {
@@ -53,6 +64,13 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 //     this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
                 // }
                 this.sigmaNodesUpdater.handleUpdate(update)
+
+                const mutationArgs: ISetTreeLocationDataMutationArgs = {
+                    treeId: update.id,
+                    treeLocationData: update.val,
+                }
+                this.store.commit(MUTATION_NAMES.SET_TREE_LOCATION_DATA, mutationArgs)
+
                 break;
             }
             case ObjectDataTypes.CONTENT_DATA: {
@@ -61,6 +79,13 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 // log('StoreSourceUpdateListenerCore sigmaIds in content Data are', sigmaIds, this.contentIdSigmaIdMap)
                 // if (sigmaIds.length) {
                 this.sigmaNodesUpdater.handleUpdate(update)
+
+                const mutationArgs: ISetContentDataMutationArgs = {
+                    contentId: update.id,
+                    contentData: update.val,
+                }
+                this.store.commit(MUTATION_NAMES.SET_CONTENT_DATA, mutationArgs)
+
                 // }
                 break;
             }
@@ -74,6 +99,13 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }
+
+                const mutationArgs: ISetContentUserDataMutationArgs = {
+                    contentUserId: update.id,
+                    contentUserData: update.val,
+                }
+                this.store.commit(MUTATION_NAMES.SET_CONTENT_USER_DATA, mutationArgs)
+
                 break;
             }
             default:
@@ -90,4 +122,6 @@ export class StoreSourceUpdateListenerCoreArgs {
     @inject(TYPES.IOneToManyMap)
     @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
         public contentIdSigmaIdMap: IOneToManyMap<string>
+    @inject(TYPES.BranchesStore)
+        public store: Store<any>
 }
