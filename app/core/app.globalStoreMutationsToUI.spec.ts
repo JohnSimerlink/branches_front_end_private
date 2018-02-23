@@ -90,7 +90,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const nextReviewTime: ISubscribableMutableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue,
         proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const contentUserStore: IMutableSubscribableContentUserStore = (() => {

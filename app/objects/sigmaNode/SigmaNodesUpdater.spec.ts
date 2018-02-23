@@ -169,7 +169,7 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
     const lastInteractionTimeVal = Date.now()
     const val: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: 54, // TODO: this mig
+        lastEstimatedStrength: 54, // TODO: this mig
         overdue: true,
         proficiency: PROFICIENCIES.ONE,
         timer: 432,

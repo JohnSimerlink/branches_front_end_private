@@ -27,7 +27,7 @@ test('tooltips renderer content should escape', t => {
         overdue: false,
         timer: 30,
         proficiency: PROFICIENCIES.ONE,
-        lastRecordedStrength: 40,
+        lastEstimatedStrength: 40,
         nextReviewTime: nextReviewTimeVal,
         lastInteractionTime: lastInteractionTimeVal,
     }

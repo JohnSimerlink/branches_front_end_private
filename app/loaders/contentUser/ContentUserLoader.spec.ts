@@ -173,7 +173,7 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     const sampleContentUserData: IContentUserData = {
         id: contentUserId,
         overdue: overdueVal,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
         timer: timerVal,
         nextReviewTime: nextReviewTimeVal,

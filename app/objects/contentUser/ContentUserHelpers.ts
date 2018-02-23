@@ -48,7 +48,7 @@ export const sampleContentUserDataFromDB1: IContentUserDataFromDB = {
 export const sampleContentUserData1: IContentUserData = {
     id: sampleContentUserId1,
     overdue: overdueVal,
-    lastRecordedStrength: lastRecordedStrengthVal,
+    lastEstimatedStrength: lastRecordedStrengthVal,
     proficiency: proficiencyVal,
     timer: timerVal,
     lastInteractionTime: lastInteractionTimeVal,
@@ -57,7 +57,7 @@ export const sampleContentUserData1: IContentUserData = {
 export const sampleContentUser1: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser({
     id: sampleContentUserId1,
     overdue,
-    lastRecordedStrength,
+    lastEstimatedStrength: lastRecordedStrength,
     proficiency,
     timer,
     lastInteractionTime,

@@ -26,7 +26,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
     public val(): IContentUserData {
         return {
             id: this.id,
-            lastRecordedStrength: this.lastEstimatedStrength.val(),
+            lastEstimatedStrength: this.lastEstimatedStrength.val(),
             overdue: this.overdue.val(),
             proficiency: this.proficiency.val(),
             timer: this.timer.val(),
@@ -35,7 +35,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         }
     }
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
         lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs) {
         super({updatesCallbacks})
@@ -43,7 +43,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.overdue = overdue
         this.proficiency = proficiency
         this.timer = timer
-        this.lastEstimatedStrength = lastRecordedStrength
+        this.lastEstimatedStrength = lastEstimatedStrength
         this.lastInteractionTime = lastInteractionTime
         this.nextReviewTime = nextReviewTime
     }
@@ -69,7 +69,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
 export class SubscribableContentUserArgs {
     @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.String) public id: string
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: ISubscribableMutableField<number>
+    @inject(TYPES.ISubscribableMutableNumber) public lastEstimatedStrength: ISubscribableMutableField<number>
     @inject(TYPES.ISubscribableMutableBoolean) public overdue: ISubscribableMutableField<boolean>
     @inject(TYPES.ISubscribableMutableProficiency) public proficiency: ISubscribableMutableField<PROFICIENCIES>
     @inject(TYPES.ISubscribableMutableNumber) public timer: ISubscribableMutableField<number>

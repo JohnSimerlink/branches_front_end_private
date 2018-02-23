@@ -80,7 +80,7 @@ test('sigmaNode:::receive new ContentUserData', (t) => {
     const lastInteractionTimeVal = Date.now()
     const contentUserData: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,

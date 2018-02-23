@@ -53,7 +53,7 @@ const serverMutations = {
         // console.log(" STORE JS tree leaf values before sorting are ",
         //     JSON.stringify(tree.leaves.map(leaf =>
         //         {
-        //             return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+        //             return {id: leaf.id, strength: leaf.lastEstimatedStrength.value}
         //         }
         //     )),
         // )
@@ -61,7 +61,7 @@ const serverMutations = {
         // console.log(" STORE JS tree leaf values after sorting are ",
         //     JSON.stringify(tree.leaves.map(leaf =>
         //     {
-        //         return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+        //         return {id: leaf.id, strength: leaf.lastEstimatedStrength.value}
         //     }
         //     ))
         // )

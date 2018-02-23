@@ -36,7 +36,7 @@ test('SubscribableContentUserStore > addItem:::' +
     const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
     const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new MutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
