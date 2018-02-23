@@ -7,12 +7,15 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
+    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData,
+    ITreeDataWithoutId,
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
-    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,
+    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
+    ISetContentUserDataMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -67,6 +70,11 @@ export enum MUTATION_NAMES {
     SET_USER_DATA = 'set_user_data',
     SET_MEMBERSHIP_EXPIRATION_DATE = 'set_membership_expiration_date',
     LOGIN_WITH_FACEBOOK = 'login_with_facebook',
+    SET_TREE_DATA = 'set_tree_data',
+    SET_TREE_LOCATION_DATA = 'set_tree_location_data',
+    SET_TREE_USER_DATA = 'set_tree_user_data',
+    SET_CONTENT_DATA = 'set_content_data',
+    SET_CONTENT_USER_DATA = 'set_content_user_data',
 }
 
 const getters = {
@@ -483,7 +491,22 @@ const mutations = {
 
         })
 
-    }
+    },
+    [MUTATION_NAMES.SET_TREE_DATA](state: IState, {treeId, treeDataWithoutId}: ISetTreeDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId)
+    },
+    [MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState, {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.treeLocations, treeId, treeLocationData)
+    },
+    [MUTATION_NAMES.SET_TREE_USER_DATA](state: IState, {treeId, treeUserData}: ISetTreeUserDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.treeUsers, treeId, treeUserData)
+    },
+    [MUTATION_NAMES.SET_CONTENT_DATA](state: IState, {contentId, contentData}: ISetContentDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.content, contentId, contentData)
+    },
+    [MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState, {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData)
+    },
 }
 // TODO: DO I even use these mutation? << YES
 // mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {

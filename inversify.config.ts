@@ -44,7 +44,7 @@ import {
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
-    IAuthListener,
+    IAuthListener, IGlobalDataStoreBranchesStoreSyncer,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -241,6 +241,10 @@ import {
     OverdueListenerMutableSubscribableContentUserStore,
     OverdueListenerMutableSubscribableContentUserStoreArgs
 } from "./app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore";
+import {
+    GlobalDataStoreBranchesStoreSyncer,
+    GlobalDataStoreBranchesStoreSyncerArgs
+} from "./app/core/globalDataStoreBranchesStoreSyncer";
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -739,6 +743,13 @@ export const state: IState
     graph: null,
     sigmaInitialized: false,
     globalDataStore: null,
+    globalDataStoreData: {
+        content: {},
+        contentUsers: {},
+        trees: {},
+        treeUsers: {},
+        treeLocations: {},
+    },
     userLoader: null,
     usersData: {},
     users: {},
@@ -785,6 +796,11 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .to(BranchesStore)
         .inSingletonScope()
         .whenTargetIsDefault()
+
+    bind<GlobalDataStoreBranchesStoreSyncerArgs>(TYPES.GlobalDataStoreBranchesStoreSyncerArgs)
+        .to(GlobalDataStoreBranchesStoreSyncerArgs)
+    bind<IGlobalDataStoreBranchesStoreSyncer>(TYPES.IGlobalDataStoreBranchesStoreSyncer)
+        .to(GlobalDataStoreBranchesStoreSyncer)
 
     // rendering singletons
     const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs = myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs)

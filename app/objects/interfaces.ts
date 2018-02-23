@@ -670,6 +670,8 @@ export interface ISetUserDataMutationArgs {
 
 // stores
 
+export interface IGlobalDataStoreBranchesStoreSyncer extends IStartable {
+}
 export interface IMutableSubscribableGlobalStore
     extends ISubscribableGlobalStore, IMutable<IGlobalMutation> {
 }
@@ -843,6 +845,13 @@ export interface IState {
     graph: ISigmaGraph,
     sigmaInitialized: boolean,
     globalDataStore: IMutableSubscribableGlobalStore,
+    globalDataStoreData: {
+        content: IHash<IContentData>,
+        contentUsers: IHash<IContentUserData>,
+        trees: IHash<ITreeDataWithoutId>,
+        treeUsers: IHash<ITreeUserData>,
+        treeLocations: IHash<ITreeLocationData>,
+    },
     userId: string,
     userLoader: IUserLoader
     usersData: IHash<IUserData>,
@@ -861,6 +870,26 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 export type id = string
 export interface INewChildTreeMutationArgs {
     parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
+}
+export interface ISetTreeDataMutationArgs {
+    treeId: id,
+    treeDataWithoutId: ITreeDataWithoutId
+}
+export interface ISetTreeLocationDataMutationArgs {
+    treeId: id,
+    treeLocationData: ITreeLocationData
+}
+export interface ISetTreeUserDataMutationArgs {
+    treeId: id,
+    treeUserData: ITreeUserData
+}
+export interface ISetContentDataMutationArgs {
+    contentId: id,
+    contentData: IContentData
+}
+export interface ISetContentUserDataMutationArgs {
+    contentUserId: id,
+    contentUserData: IContentUserData
 }
 // tree
 export interface ITree {
