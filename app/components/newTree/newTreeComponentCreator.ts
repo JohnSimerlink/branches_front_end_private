@@ -15,7 +15,7 @@ import {
     IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
 let template = require('./newTree.html').default

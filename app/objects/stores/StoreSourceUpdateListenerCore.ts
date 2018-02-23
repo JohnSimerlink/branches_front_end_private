@@ -10,7 +10,7 @@ import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
-import BranchesStore, {MUTATION_NAMES} from "../../core/store2";
+import BranchesStore, {MUTATION_NAMES} from "../../core/store";
 import {Store} from "vuex";
 
 @injectable()

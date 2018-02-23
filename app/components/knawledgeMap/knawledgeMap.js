@@ -6,7 +6,7 @@ import '../../core/login.js'
 import {user} from '../../objects/user'
 var Snack
 import Vue from 'vue'
-import store from '../../core/store'
+import store from '../../core/store_OUTDATED'
 import {Globals, NODE_TYPES} from '../../core/globals.ts'
 import LocalForage from 'localforage'
 import {isMobile} from '../../core/utils';

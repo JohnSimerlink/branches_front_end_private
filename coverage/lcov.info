@@ -886,7 +886,7 @@ BRF:6
 BRH:6
 end_of_record
 TN:
-SF:C:\Users\John\dev\branches_front_end\app\core\store2.ts
+SF:C:\Users\John\dev\branches_front_end\app\core\store.ts
 FN:16,(anonymous_0)
 FN:22,(anonymous_1)
 FN:23,BranchesStore

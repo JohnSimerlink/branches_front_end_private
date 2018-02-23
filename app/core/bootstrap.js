@@ -19,7 +19,7 @@ Vue.use(VueRouter);
 Vue.use(AsyncComputed);
 import md5 from '../core/md5wrapper'
 window.sessionId = md5(Math.random() + Date.now() + Math.random())
-import store from './store.js'
+import store from './store_OUTDATED.js'
 // 1. Define route components.
 // These can be imported from other files
 const Foo = { template: '<div>foo</div>' }

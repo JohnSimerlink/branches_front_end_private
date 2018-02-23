@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     IContentUserData,
     ITreeCreator,
@@ -96,6 +96,7 @@ export class TreeCreator implements ITreeCreator {
                     return content
                 },
                 contentUserData() {
+                    // const contentUserData = me.store.getters.contentUserData(this.contentUserId)
                     this.contentUserDataLoaded = false
                     if (this.contentUserDataLocal) {
                         return this.contentUserDataLocal

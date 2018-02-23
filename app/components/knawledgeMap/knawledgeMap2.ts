@@ -5,7 +5,7 @@ import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
     IVuexStore, IKnawledgeMapCreator, id, ISigmaNodeLoader, ISigma

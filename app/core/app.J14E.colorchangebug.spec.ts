@@ -20,7 +20,7 @@ import {
 } from '../../inversify.config';
 import {TYPES} from '../objects/types';
 import {AppContainer} from './appContainer';
-import BranchesStore, {MUTATION_NAMES} from './store2';
+import BranchesStore, {MUTATION_NAMES} from './store';
 import {Store} from 'vuex';
 import {log} from './log'
 import {MockFirebase} from 'firebase-mock'

@@ -12,7 +12,7 @@ import {
     measurePreviousStrength, estimateCurrentStrength,
     calculateSecondsTilCriticalReviewTime
 } from "../../forgettingCurve";
-import store from '../../core/store'
+import store from '../../core/store_OUTDATED'
 import message from "../../message";
 import UriContentMap from "../uriContentMap";
 import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList, getLastNBreadcrumbsString, getURIWithoutRootElement} from "./uriParser.ts";

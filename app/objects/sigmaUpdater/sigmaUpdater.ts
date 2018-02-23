@@ -7,7 +7,7 @@ import {ISigmaEdgeData, ISigmaNodeData, ISigmaUpdater} from '../interfaces';
 // import Graph = SigmaJs.Graph;
 // import Node = SigmaJs.Node
 import {log, error} from '../../core/log'
-import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
+import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 // import {SigmaJs} from 'sigmajs';
 

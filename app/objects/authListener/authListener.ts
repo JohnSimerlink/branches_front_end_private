@@ -2,7 +2,7 @@ import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
 import * as firebase from 'firebase';
 import {CreateUserOrLoginMutationArgs, IAuthListener} from '../interfaces';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
+import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {log} from '../../core/log'
 import {Store} from 'vuex';
 

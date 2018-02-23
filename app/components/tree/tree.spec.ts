@@ -7,7 +7,7 @@ import {MockFirebase} from 'firebase-mock'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {BranchesStoreArgs, default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {BranchesStoreArgs, default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';

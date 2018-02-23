@@ -31,7 +31,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,

@@ -5,7 +5,7 @@ import LocalForage from 'localforage'
 import Users from './users'
 let userLoggedIn = false
 let cachedId = null
-import store from '../core/store'
+import store from '../core/store_OUTDATED'
 import DATA_KEYS from '../../dataKeys'
 // create a unique, global symbol name
 // -----------------------------------
