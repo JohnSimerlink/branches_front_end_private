@@ -191,7 +191,7 @@ test('App integration test 3 - create new Tree triggered by user' +
     }
     const instance: any = new Constructor({propsData})
     /* TODO: Why do I have to do this cast on this integration test,
-    but not on the tree3Component spec test? */
+    but not on the tree spec test? */
     const numberOfNodes = numNodes({store})
     log('numberOfNodes is', numberOfNodes)
     expect(numberOfNodes).to.deep.equal(0)

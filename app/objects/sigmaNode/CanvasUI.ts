@@ -3,7 +3,7 @@
 // sourceMap from contentId to sigmaNodeId
 // in the class that creates an instance of CanvasUI
 // subscribe to stores. on stores update parse object type and id
-// and get the correct tree id from either those two properties or from the result of a sourceMap lookup
+// and get the correct tree_OUTDATED id from either those two properties or from the result of a sourceMap lookup
 
 import {inject, injectable, tagged} from 'inversify';
 import {ISigmaNodesUpdater, ITypeAndIdAndValUpdates} from '../interfaces';

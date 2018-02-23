@@ -15,18 +15,18 @@ import {TYPES} from '../../types';
 
 myContainerLoadAllModules()
 test('SubscribableTreeStore > addItem::::' +
-    'An update in a member tree should be published to a subscriber of the tree data stores', (t) => {
+    'An update in a member tree_OUTDATED should be published to a subscriber of the tree_OUTDATED data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.
     It might be that some of these modules are designed poorly, being the reason
      why I couldn't find an easy way to do a pure unit test.
-     e.g. rather than just triggering an update directly on tree, I had to do it indirectly by adding a mutation
+     e.g. rather than just triggering an update directly on tree_OUTDATED, I had to do it indirectly by adding a mutation
      */
     const contentId = new MutableSubscribableField<string>()
     const parentId = new MutableSubscribableField<string>()
     const children = new SubscribableMutableStringSet()
     const TREE_ID = 'efa123'
     const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
-    // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
+    // const tree_OUTDATED = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
     // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)
     // const treeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore)

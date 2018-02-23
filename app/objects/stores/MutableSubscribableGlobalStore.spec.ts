@@ -56,9 +56,9 @@ test('MutableSubscribableGlobalStore:::Dependency injection should set all prope
     expect(injects).to.equal(true)
     t.pass()
 })
-test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeStore.addMutation(mutationObj)'
+test('MutableSubscribableGlobalStore:::adding a tree_OUTDATED mutation should call treeStore.addMutation(mutationObj)'
     + ' but without the objectType in mutationObj', (t) => {
-    // log('MSGlobalStore adding tree mutation called')
+    // log('MSGlobalStore adding tree_OUTDATED mutation called')
 
     const contentId = new MutableSubscribableField<string>({field: CONTENT_ID2})
     const parentId = new MutableSubscribableField<string>({field: 'adf12356'})
@@ -359,7 +359,7 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
 })
 
 test('MutableSubscribableGlobalStore: adding a create' +
-    ' tree Mutation should call tree addAndSubscribeToItemFromData with the correct args', (t) => {
+    ' tree_OUTDATED Mutation should call tree_OUTDATED addAndSubscribeToItemFromData with the correct args', (t) => {
     const logAny: any = log
     logAny.on = false
     const treeStore: IMutableSubscribableTreeStore =
@@ -405,7 +405,7 @@ test('MutableSubscribableGlobalStore: adding a create' +
 })
 
 test('MutableSubscribableGlobalStore: adding a create' +
-    ' tree user Mutation should call tree user addAndSubscribeToItemFromData with the correct args', (t) => {
+    ' tree_OUTDATED user Mutation should call tree_OUTDATED user addAndSubscribeToItemFromData with the correct args', (t) => {
     // const logAny: any = log
     // logAny.on = false
     // const treeStore: IMutableSubscribableTreeUserStore =

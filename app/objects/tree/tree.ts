@@ -135,7 +135,7 @@
 //         return Promise.all(this.getChildTreePromises().sourceMap(async childPromise => await childPromise))
 //     }
 //     /**
-//      * Add a child tree to this tree
+//      * Add a child tree_OUTDATED to this tree_OUTDATED
 //      * @param treeId
 //      */
 //     public async addChild(treeId) {
@@ -236,8 +236,8 @@
 //         } else {
 //             this.getChildTreePromises()
 //                 .sourceMap(async treePromise => {
-//                     const tree = await treePromise
-//                     tree.clearChildrenInteractions()
+//                     const tree_OUTDATED = await treePromise
+//                     tree_OUTDATED.clearChildrenInteractions()
 //                 })
 //         }
 //
@@ -295,7 +295,7 @@
 //     }
 //
 //     /**
-//      * Used to update tree X and Y coordinates
+//      * Used to update tree_OUTDATED X and Y coordinates
 //      * @param prop
 //      * @param val
 //      */
@@ -592,7 +592,7 @@
 //  label: fact.question + ' ' + fact.answer,
 //  size: 1,
 //  color: Globals.existingColor,
-//  type: 'tree'
+//  type: 'tree_OUTDATED'
 //  */
 // // invoke like a constructor - new Tree(parentId, factId)
 //

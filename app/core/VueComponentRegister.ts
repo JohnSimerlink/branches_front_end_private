@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../objects/types';
-import {IKnawledgeMapCreator, INewTreeComponentCreator, ITree3Creator, IVueConfigurer} from '../objects/interfaces';
+import {IKnawledgeMapCreator, INewTreeComponentCreator, ITreeCreator, IVueConfigurer} from '../objects/interfaces';
 import {ComponentOptions} from 'vue'
 let Vue = require('vue').default
 if (!Vue) {
@@ -29,7 +29,7 @@ import BranchesStripe from '../components/giveUsUrMonee/branches-stripe';
 import AsyncComputed from 'vue-async-computed'
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
-    public treeComponentCreator: ITree3Creator
+    public treeComponentCreator: ITreeCreator
     public newTreeComponentCreator: INewTreeComponentCreator
     public knawledgeMapCreator: IKnawledgeMapCreator
     public store: Store<any>
@@ -45,8 +45,8 @@ export class VueConfigurer implements IVueConfigurer {
         this.store = store
     }
     public configure() {
-        // const treeComponentCreator: ITree3Creator =
-        //     new Tree3Creator({store})
+        // const treeComponentCreator: ITreeCreator =
+        //     new TreeCreator({store})
         const Tree = this.treeComponentCreator.create()
         const NewTree = this.newTreeComponentCreator.create()
         const KnawledgeMap = this.knawledgeMapCreator.create()
@@ -103,7 +103,7 @@ export class VueConfigurer implements IVueConfigurer {
 
 @injectable()
 export class VueConfigurerArgs {
-    @inject(TYPES.ITree3Creator) public treeComponentCreator: ITree3Creator
+    @inject(TYPES.ITree3Creator) public treeComponentCreator: ITreeCreator
     @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator
     @inject(TYPES.KnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator
     @inject(TYPES.BranchesStore) public store: Store<any>

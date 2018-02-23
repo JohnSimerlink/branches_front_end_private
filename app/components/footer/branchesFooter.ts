@@ -91,12 +91,12 @@ export default {
 
     // asyncComputed: {
     //     async numOverdue(){
-    //         const tree = await Trees.get(this.treeId)
-    //         return tree.numOverdue
+    //         const tree_OUTDATED = await Trees.get(this.treeId)
+    //         return tree_OUTDATED.numOverdue
     //     },
     //     async title(){
-    //         const tree = await Trees.get(this.treeId)
-    //         const item = await ContentItems.get(tree.contentId)
+    //         const tree_OUTDATED = await Trees.get(this.treeId)
+    //         const item = await ContentItems.get(tree_OUTDATED.contentId)
     //         return item.getLastNBreadcrumbsString(4)
     //         // return item.title
     //     },

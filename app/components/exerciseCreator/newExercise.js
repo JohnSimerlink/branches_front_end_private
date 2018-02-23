@@ -167,7 +167,7 @@ export default {
             // show a snack for 4s
             snack.show('Exercise edited!', 4000);
 
-            //TODO: eventually redirect the user back to the tree/exercise they were studying
+            //TODO: eventually redirect the user back to the tree_OUTDATED/exercise they were studying
 
         }
     },

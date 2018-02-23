@@ -6,9 +6,8 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
 import {
-    CONTENT_TYPES,
     IContentUserData,
-    ITree3Creator,
+    ITreeCreator,
     timestamp,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -22,11 +21,10 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {secondsToPretty} from '../../core/filters'
-import {escape} from '../../objects/tooltipOpener/tooltipRenderer';
 const template = require('./tree.html').default
 // import {Store} from 'vuex';
 @injectable()
-export class Tree3Creator implements ITree3Creator {
+export class TreeCreator implements ITreeCreator {
     private store: Store<any>
     // private userId: string
 
@@ -34,9 +32,9 @@ export class Tree3Creator implements ITree3Creator {
      that determine whether or not they are actually permitted to load the data
       */
     // TODO: will this constructor need userId as an arg?
-    constructor(@inject(TYPES.Tree3CreatorArgs){
+    constructor(@inject(TYPES.TreeCreatorArgs){
          /*userId,*/ store
-    }: Tree3CreatorArgs ) {
+    }: TreeCreatorArgs ) {
         this.store = store
         // this.userId = userId
     }
@@ -44,8 +42,8 @@ export class Tree3Creator implements ITree3Creator {
         const me = this
         const component = {
             template,
-            // '<div>This is the template for tree.html</div>',
-            // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
+            // '<div>This is the template for tree_OUTDATED.html</div>',
+            // require('./tree_OUTDATED.html'), // '<div> {{movie}} this is the tree_OUTDATED template</div>',
             props: {
                 id: String,
                 x: String, // Am I doing this right? should I be giving it a class of Number??
@@ -66,7 +64,7 @@ export class Tree3Creator implements ITree3Creator {
             },
             data() {
                 return {
-                    tree: {}, // this.tree
+                    tree: {}, // this.tree_OUTDATED
                     // content: {}, // this.content
                     editing: false,
                     showHistory: false,
@@ -80,7 +78,7 @@ export class Tree3Creator implements ITree3Creator {
             watch: {
                 // //stop timer when
                 // openNodeId(newNodeId, oldNodeId){
-                //     if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
+                //     if (oldNodeId === this.tree_OUTDATED.id && this.tree_OUTDATED.id !== newNodeId){
                 //         this.content.saveTimer()
                 //     } else {
                 //     }
@@ -166,8 +164,8 @@ export class Tree3Creator implements ITree3Creator {
                 },
                 numChildren() {
                     return 0
-                    // return this.tree && this.tree.children instanceof Object
-                    // ? Object.keys(this.tree.children).length : 0
+                    // return this.tree_OUTDATED && this.tree_OUTDATED.children instanceof Object
+                    // ? Object.keys(this.tree_OUTDATED.children).length : 0
                 },
                 stringifiedContentUserData() {
                     return JSON.stringify(this.contentUserData)
@@ -216,7 +214,7 @@ export class Tree3Creator implements ITree3Creator {
                     // this.$router.push()
                 },
                 clearHeading() {
-                    // this.tree.clearChildrenInteractions()
+                    // this.tree_OUTDATED.clearChildrenInteractions()
                 },
                 proficiencyClicked(proficiency) {
                     this.proficiencyInput = proficiency
@@ -250,13 +248,13 @@ export class Tree3Creator implements ITree3Creator {
                     //     user.addMutation('interaction', {contentId: this.content.id,
                     // proficiency: this.content.proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)
-                    //     this.tree.setInactive()
+                    //     this.tree_OUTDATED.setInactive()
                     //     // stores.commit('closeNode', this.id)
                 },
-                // unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
+                // unnecessary now that tree_OUTDATED chain is composed of categories/headings whose nodes dont have one color
                 async syncTreeChainWithUI() {
                     // this.syncGraphWithNode()
-                    // let parentId = this.tree.treeData.parentId;
+                    // let parentId = this.tree_OUTDATED.treeData.parentId;
                     // let parent
                     // let num = 1
                     // while (parentId) {
@@ -269,9 +267,9 @@ export class Tree3Creator implements ITree3Creator {
                     // }
                 },
                 syncGraphWithNode() {
-                    // // syncGraphWithNode(this.tree.id)
-                    // store.commit('syncGraphWithNode', this.tree.id)
-                    // // PubSub.publish('syncGraphWithNode', this.tree.id)
+                    // // syncGraphWithNode(this.tree_OUTDATED.id)
+                    // store.commit('syncGraphWithNode', this.tree_OUTDATED.id)
+                    // // PubSub.publish('syncGraphWithNode', this.tree_OUTDATED.id)
                 },
                 // global methods
                 changeContent() {
@@ -290,17 +288,17 @@ export class Tree3Creator implements ITree3Creator {
                     //         break;
                     // }
                     // this.content.addTree(this.id)
-                    // this.tree.changeContent(this.content.id, this.tree.contentType)
+                    // this.tree_OUTDATED.changeContent(this.content.id, this.tree_OUTDATED.contentType)
                     //
                     // this.toggleEditing()
                     // this.syncGraphWithNode()
                 },
                 async remove() {
                     //     if (confirm("Warning! Are you sure you would you like to delete
-                    // this tree AND all its children?
+                    // this tree_OUTDATED AND all its children?
                     // THIS CANNOT BE UNDONE")) {
                     //         removeTreeFromGraph(this.id)
-                    //         return this.tree.remove()
+                    //         return this.tree_OUTDATED.remove()
                     //     }
                 },
             }
@@ -310,6 +308,6 @@ export class Tree3Creator implements ITree3Creator {
     }
 }
 @injectable()
-export class Tree3CreatorArgs {
+export class TreeCreatorArgs {
     @inject(TYPES.BranchesStore) public store: Store<any>
 }

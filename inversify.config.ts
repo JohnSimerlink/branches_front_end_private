@@ -36,7 +36,7 @@ import {
     ISubscribableMutableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation,
     ITooltipOpener, ITooltipRenderer, ITree,
-    ITree3Creator,
+    ITreeCreator,
     ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
@@ -138,7 +138,7 @@ import {
     SubscribableTreeUserStoreArgs
 } from './app/objects/stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-// import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
+// import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree_OUTDATED/DBSubscriberToTree';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 // import {
@@ -169,9 +169,9 @@ import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToMa
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap2';
 import {
-    Tree3Creator,
-    Tree3CreatorArgs
-} from './app/components/tree3Component/tree3Component';
+    TreeCreator,
+    TreeCreatorArgs
+} from './app/components/tree/tree';
 import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
@@ -712,9 +712,9 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
         .whenInjectedInto(KnawledgeMapCreatorArgs)
     bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-    bind<Tree3CreatorArgs>(TYPES.Tree3CreatorArgs).to(Tree3CreatorArgs)
-    bind<ITree3Creator>(TYPES.ITree3CreatorClone).to(Tree3Creator)
-    bind<ITree3Creator>(TYPES.ITree3Creator).to(Tree3Creator)
+    bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
+    bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
+    bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
 

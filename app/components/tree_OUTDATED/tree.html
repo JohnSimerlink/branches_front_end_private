@@ -1,13 +1,12 @@
 <div class="tree" v-bind:style="styleObject" >
-<!--<div class="tree">-->
-    <!--TREE TEMPLATE!!?? {{showHistory}}-->
-    <!--{{contentUserId}}-->
-    <!--PROFICIENCY INPUT IS {{proficiencyInput}}-->
-    <!--{{stringifiedContentUserData}}-->
+<!--<div class="tree_OUTDATED">-->
+    TREE TEMPLATE!!?? {{showHistory}}
     <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
+        SHOW HISTORY
         <item-history :item-id="content.id" :tree="tree" ></item-history>
     </div>
     <div v-if="!showHistory">
+        NOT SHOW HISTORY
         <div class="tree-skill" v-if="typeIsSkill">
             <div class="tree-current-skill" v-show="!editing">
                 <input type="text" class="tree-current-skill-id" :value="content.id" hidden>
@@ -42,27 +41,27 @@
     </div>
     <div class="tree-heading" v-if="typeIsHeading" v-on:click.stop="toggleEditingAndAddChild">
         <!-- {{numChildren}} -->
-        <!--{{tree.id}} ---->
+        <!--{{tree_OUTDATED.id}} ---->
         <!--<button v-on:click="recalculateProficiencyAggregation">Recalculate Proficiency Aggregation</button>-->
         <div class="tree-current-heading" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-heading">{{content.title}}</div>
-            <!--<div class="tree-heading-aggregationTimer">-->
-                <!--{{tree.aggregationTimer | secondsToPretty}}-->
+            <!--<div class="tree_OUTDATED-heading-aggregationTimer">-->
+                <!--{{tree_OUTDATED.aggregationTimer | secondsToPretty}}-->
             <!--</div>-->
-            <!--<div class="tree-heading-leaf-proficiencies">-->
-                <!--<div class="tree-heading-leaf-num-unknown">{{tree.proficiencyStats.UNKNOWN}}</div>-->
-                <!--<div class="tree-heading-leaf-num-one">{{tree.proficiencyStats.ONE}}</div>-->
-                <!--<div class="tree-heading-leaf-num-two">{{tree.proficiencyStats.TWO}}</div>-->
-                <!--<div class="tree-heading-leaf-num-three">{{tree.proficiencyStats.THREE}}</div>-->
-                <!--<div class="tree-heading-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>-->
+            <!--<div class="tree_OUTDATED-heading-leaf-proficiencies">-->
+                <!--<div class="tree_OUTDATED-heading-leaf-num-unknown">{{tree_OUTDATED.proficiencyStats.UNKNOWN}}</div>-->
+                <!--<div class="tree_OUTDATED-heading-leaf-num-one">{{tree_OUTDATED.proficiencyStats.ONE}}</div>-->
+                <!--<div class="tree_OUTDATED-heading-leaf-num-two">{{tree_OUTDATED.proficiencyStats.TWO}}</div>-->
+                <!--<div class="tree_OUTDATED-heading-leaf-num-three">{{tree_OUTDATED.proficiencyStats.THREE}}</div>-->
+                <!--<div class="tree_OUTDATED-heading-leaf-num-four">{{tree_OUTDATED.proficiencyStats.FOUR}}</div>-->
             <!--</div>-->
-            <!--<div class="tree-heading-numOverdue">-->
-                <!--{{tree.numOverdue}} overdue items-->
+            <!--<div class="tree_OUTDATED-heading-numOverdue">-->
+                <!--{{tree_OUTDATED.numOverdue}} overdue items-->
             <!--</div>-->
-            <!--<div class="tree-heading-study">-->
-                <!--<button class="tree-heading-study ui button positive" v-on:click.stop="studyHeading">Study this Category</button>-->
-            <!--</div>-->
+            <div class="tree-heading-study">
+                <button class="tree-heading-study ui button positive" v-on:click.stop="studyHeading">Study this Category</button>
+            </div>
         </div>
         <div class="tree-new-heading" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
@@ -73,32 +72,30 @@
             <button class="tree-heading-study ui button negative" v-on:click.stop="clearHeading">Remove All Your Data from this Category</button>
         </div>
     </div>
+    <div v-if="!typeIsHeading">TYPE IS NOT HEADING</div>
     <div class="tree-proficiency" v-show="!addingChild && typeIsFact && !showHistory">
         <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
-        <proficiency-selector v-on:input="proficiencyClicked(proficiencyInput)" v-model="proficiencyInput"></proficiency-selector>
-        <div class="tree-next-review-time">Next Review Time: {{nextReviewTime | timeFromNow }}</div>
+        <proficiency-selector v-on:input="proficiencyClicked" v-model="proficiency"></proficiency-selector>
     </div>
     <div class="tree-footer" v-show="!addingChild && !showHistory">
-        <!--<div class="divider-horizontal"></div>-->
-
+        <div class="divider-horizontal"></div>
         <div class="tree-footer-row">
-            <!--<div class="tree-edit-button" v-on:click.stop="toggleEditing">-->
-                <!--<i :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}" aria-hidden="true"></i>-->
-            <!--</div>-->
+            <div class="tree-edit-button" v-on:click.stop="toggleEditing">
+                <i :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-book': editing}" aria-hidden="true"></i>
+            </div>
             <div class="tree-add-child-button" v-show="typeIsHeading" v-on:click.stop="toggleAddChild">
                 <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" v-if="!typeIsHeading">{{content.timer | secondsToPretty}} </div>
-            <!--<div class="tree-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>-->
-            <!--<i class="tree-delete-button fa fa-cog" aria-hidden="true" v-on:click.stop="toggleHistory"></i>-->
+            <!--<div class="tree_OUTDATED-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>-->
+            <i class="tree-delete-button fa fa-cog" aria-hidden="true" v-on:click.stop="toggleHistory"></i>
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-if="false"  v-on:click.stop="remove" ></i>
         </div>
-
         <div class="tree-proficiency-timeTilReview" v-if="!typeIsHeading && content.hasInteractions && content.nextReviewTime">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
     </div>
     <div v-show="addingChild" class="tree-add-child-button" v-on:click.stop="toggleAddChild">
         <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
     </div>
-    <newtree :parent-x="x" :parent-y="y" :parent-id="id" :primaryparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading" v-on:click="toggleEditingAndAddChild"></newtree>
+    <newtree :parentid="id" :primaryparenttreecontenturi="content.uri" v-show="addingChild && typeIsHeading" v-on:click="toggleEditingAndAddChild"></newtree>
 </div>

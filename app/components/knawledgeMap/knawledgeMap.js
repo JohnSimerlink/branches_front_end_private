@@ -36,7 +36,7 @@ var toolTipsConfig = {
                 var nodeInEscapedJsonForm = encodeURIComponent(JSON.stringify(node))
                 switch(node.type){
                     case 'tree':
-                        template = '<div id="vue"><tree id="' + node.id + '"></tree></div>';
+                        template = '<div id="vue"><tree_OUTDATED id="' + node.id + '"></tree_OUTDATED></div>';
                         break;
                 }
                 var result = template // Mustache.render(template, node)
@@ -83,8 +83,8 @@ export default {
             const newContentItem = await ContentItems.get(newContentItemId)
             // const newContentItemId = this.$stores.state.hoverOverItemId
             const treeId = await newContentItem.getTreeId()
-            // const tree = await Trees.get(treeId)
-            // tree.setActive()
+            // const tree_OUTDATED = await Trees.get(treeId)
+            // tree_OUTDATED.setActive()
         },
         async itemHovered(){
             const newContentItemId = this.$store.state.hoverOverItemId
@@ -273,16 +273,16 @@ export function connectTreeToParent(tree,content){
     } else {
     }
 }
-// //returns sigma tree node
+// //returns sigma tree_OUTDATED node
 // export function addTreeToGraph(parentTreeId, content) {
 //     //1. delete current addNewNode button
 //     var parentTree = s.graph.nodes(parentTreeId);
 //     var newChildTreeX = parseInt(parentTree.x) + newNodeXOffset;
 //     var newChildTreeY = parseInt(parentTree.y) + newNodeYOffset;
-//     var tree = new Tree({contentId: content.id, parentId: parentTreeId, x: newChildTreeX, y: newChildTreeY})
-//     //2. add new node to parent tree on UI
+//     var tree_OUTDATED = new Tree({contentId: content.id, parentId: parentTreeId, x: newChildTreeX, y: newChildTreeY})
+//     //2. add new node to parent tree_OUTDATED on UI
 //     const newTree = {
-//         id: tree.id,
+//         id: tree_OUTDATED.id,
 //         parentId: parentTreeId,
 //         contentId: content.id,
 //         content: content,
@@ -296,7 +296,7 @@ export function connectTreeToParent(tree,content){
 //     }
 //
 //     s.graph.addNode(newTree);
-//     //3. add edge between new node and parent tree
+//     //3. add edge between new node and parent tree_OUTDATED
 //     const newEdge = {
 //         id: createEdgeId(parentTreeId, newTree.id),
 //         source: parentTreeId,
@@ -349,12 +349,12 @@ function jumpToTreeId(treeId){
 }
 
 function _jumpToTreeId(treeId){
-    console.log("jumping to tree id", treeId)
+    console.log("jumping to tree_OUTDATED id", treeId)
     let node = s.graph.nodes(treeId)
     focusNode(s.cameras[0], node);
 }
 /**
- * Go to a given tree ID on the graph, centering the viewport on the tree
+ * Go to a given tree_OUTDATED ID on the graph, centering the viewport on the tree_OUTDATED
  */
 function jumpToAndOpenTreeId(treeId) {
     if (!s){
@@ -565,14 +565,14 @@ function initKnawledgeMap(treeIdToJumpTo){
         return Promise.all([...childTreesPromises])
     }
 
-//recursively load the entire tree
+//recursively load the entire tree_OUTDATED
 // Instantiate sigma:
     /**
-     * Get tree colors for descending proficiency levels. Default to "existing node" color
-     * @param tree
+     * Get tree_OUTDATED colors for descending proficiency levels. Default to "existing node" color
+     * @param tree_OUTDATED
      * @returns {*}
      */
-//returns a promise whose resolved value will be a stringified representation of the tree's fact and subtrees
+//returns a promise whose resolved value will be a stringified representation of the tree_OUTDATED's fact and subtrees
 
     function initSigma(){
         if (initialized) return
@@ -627,7 +627,7 @@ function initKnawledgeMap(treeIdToJumpTo){
                 console.log('async iife called')
                 const targetTrees = await Promise.all(invalidTargetPromises)
                 targetTrees.forEach(tree => {
-                    console.log('invalid target tree is ', tree, tree.id, tree.treeData.parentId)
+                    console.log('invalid target tree_OUTDATED is ', tree, tree.id, tree.treeData.parentId)
                 })
             })()
         }
@@ -866,7 +866,7 @@ function initKnawledgeMap(treeIdToJumpTo){
     }
 
     async function updateTreePosition(data){
-        console.log("update tree Position called");
+        console.log("update tree_OUTDATED Position called");
         let {newX, newY, treeId} = data;
 
         if (!s.graph.nodes().find(node => node.id === treeId && node.type === 'tree')){

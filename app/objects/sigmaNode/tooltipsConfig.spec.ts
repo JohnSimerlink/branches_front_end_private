@@ -57,13 +57,13 @@ test('tooltips renderer content should escape', t => {
     }
     // const expectedVueTreeTemplate: string =
     //     `<div id="vue">
-    //         <tree
+    //         <tree_OUTDATED
     //             parentid='${node.parentId}'
     //             contentid='${node.contentId}'
     //             content-string='${contentEscaped}'
     //             content-user-string='${contentUserDataEscaped}'
     //             id='${node.id}'>
-    //         </tree>
+    //         </tree_OUTDATED>
     //     </div>`;
     // const vueTreeTemplate = renderer(node, null)
     t.pass()

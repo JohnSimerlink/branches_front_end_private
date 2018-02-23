@@ -30,7 +30,7 @@ export class MutableSubscribableTreeStore
         const tree: IMutableSubscribableTree
             = this.storeSource.get(id)
         if (!tree) {
-            throw new RangeError('Couldn\'t find tree for treeId: ' + id + ' in the following storeSource '
+            throw new RangeError('Couldn\'t find tree_OUTDATED for treeId: ' + id + ' in the following storeSource '
                 + JSON.stringify(this.storeSource) + ' ' + this.storeSource['_id'])
         }
 
