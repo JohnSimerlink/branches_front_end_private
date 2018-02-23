@@ -50,16 +50,16 @@ const serverMutations = {
             return
         }
         const tree = await Trees.get(state.currentStudyingCategoryTreeId)
-        // console.log(" STORE JS tree_OUTDATED leaf values before sorting are ",
-        //     JSON.stringify(tree_OUTDATED.leaves.map(leaf =>
+        // console.log(" STORE JS tree leaf values before sorting are ",
+        //     JSON.stringify(tree.leaves.map(leaf =>
         //         {
         //             return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
         //         }
         //     )),
         // )
         await tree.sortLeavesByStudiedAndStrength()
-        // console.log(" STORE JS tree_OUTDATED leaf values after sorting are ",
-        //     JSON.stringify(tree_OUTDATED.leaves.map(leaf =>
+        // console.log(" STORE JS tree leaf values after sorting are ",
+        //     JSON.stringify(tree.leaves.map(leaf =>
         //     {
         //         return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
         //     }
@@ -147,7 +147,7 @@ const localMutations = {
     },
     async enterExploringMode(state, data){
         state.mode = MODES.EXPLORING
-        const itemIdBeingStudied = state.hoverOverItemId; //tree_OUTDATED.getNextItemIdToStudy()
+        const itemIdBeingStudied = state.hoverOverItemId; //tree.getNextItemIdToStudy()
         const contentItem = await ContentItems.get(itemIdBeingStudied)
         console.log('contentItem being studied is', contentItem)
         const leafTreeIdBeingStudied = contentItem.getTreeId()
@@ -178,8 +178,8 @@ const localMutations = {
             this.commit('closeNode')
             // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
         } else {
-            // this.commit('enterExploringMode', {reason: "No Items to study for this tree_OUTDATED" })
-            message({text: "No new / overdue items to study for this tree_OUTDATED!"})
+            // this.commit('enterExploringMode', {reason: "No Items to study for this tree" })
+            message({text: "No new / overdue items to study for this tree!"})
         }
     },
     async openReview(state, itemId){

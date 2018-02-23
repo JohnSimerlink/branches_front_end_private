@@ -74,7 +74,7 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //     const contentString = JSON.stringify(node.content)
 //     const contentUserDataString = JSON.stringify(node.contentUserData)
 //     let expectedVueTreeTemplate: string =
-//         `<div id="vue"><tree_OUTDATED
+//         `<div id="vue"><tree
 //                 id="${node.id}"
 //                 x="${node.x}"
 //                 y="${node.y}"
@@ -82,7 +82,7 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //                 content-id="${node.contentId}"
 //                 content-string="${contentString}"
 //                 content-user-id="${contentUserId}"
-//                 content-user-data-string="${contentUserDataString}"></tree_OUTDATED></div>`;
+//                 content-user-data-string="${contentUserDataString}"></tree></div>`;
 //     expectedVueTreeTemplate = expectedVueTreeTemplate.replace(/\r?\n|\r/g, '')
 //     expectedVueTreeTemplate = expectedVueTreeTemplate.replace(/\s\s+/g, ' ')
 //     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>

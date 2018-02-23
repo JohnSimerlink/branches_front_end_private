@@ -7,7 +7,7 @@ import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     IContentUserData,
-    ITreeCreator,
+    ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
     timestamp,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -42,18 +42,16 @@ export class TreeCreator implements ITreeCreator {
         const me = this
         const component = {
             template,
-            // '<div>This is the template for tree_OUTDATED.html</div>',
-            // require('./tree_OUTDATED.html'), // '<div> {{movie}} this is the tree_OUTDATED template</div>',
+            // '<div>This is the template for tree.html</div>',
+            // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
             props: {
                 id: String,
-                x: String, // Am I doing this right? should I be giving it a class of Number??
-                y: String, // Am I doing this right? should I be giving it a class of Number??
+                // x: String, // Am I doing this right? should I be giving it a class of Number??
+                // y: String, // Am I doing this right? should I be giving it a class of Number??
                 parentId: String,
                 contentUserId: String,
                 contentId: String,
                 userId: String,
-                contentString: String,
-                contentUserDataString: String,
             },
             async created() {
                 if (this.typeIsHeading) {
@@ -64,51 +62,72 @@ export class TreeCreator implements ITreeCreator {
             },
             data() {
                 return {
-                    tree: {}, // this.tree_OUTDATED
+                    tree: {}, // this.tree
                     // content: {}, // this.content
                     editing: false,
                     showHistory: false,
                     addingChild: false,
                     user: {},
                     contentUserDataLocal: null,
-                    contentUserDataLoaded: false,
                     proficiencyInput: PROFICIENCIES.UNKNOWN,
                 }
             },
             watch: {
                 // //stop timer when
                 // openNodeId(newNodeId, oldNodeId){
-                //     if (oldNodeId === this.tree_OUTDATED.id && this.tree_OUTDATED.id !== newNodeId){
+                //     if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
                 //         this.content.saveTimer()
                 //     } else {
                 //     }
                 // }
             },
             computed: {
+                treeData() {
+                    const treeData: ITreeDataWithoutId = me.store.getters.contentData(this.id) || {}
+                    return treeData
+                },
+                treeLocationData() {
+                    const treeLocationData: ITreeLocationData = me.store.getters.treeLocationData(this.id) || {}
+                    return treeLocationData
+                },
+                x(): string {
+                    const x = this.treeLocationData.point && this.treeLocationData.point.x
+                    log('x in treeComputed is ', x, this.treeLocationData)
+                    return x
+                },
+                y(): string {
+                    const y = this.treeLocationData.point && this.treeLocationData.point.y
+                    log('y in treeComputed is ', y, this.treeLocationData)
+                    return y
+                },
                 content() {
-                    if (!this.contentString) {
-                        return {}
-                    }
-                    // log('decoded is ', decoded)
-                    // const content
-                    const content = JSON.parse(this.contentString)
-
-                    return content
+                    const contentData = me.store.getters.contentData(this.contentId) || {}
+                    return contentData
+                },
+                contentUserDataLoaded() {
+                    return this.contentUserData && Object.keys(this.contentUserData).length
                 },
                 contentUserData() {
-                    // const contentUserData = me.store.getters.contentUserData(this.contentUserId)
-                    this.contentUserDataLoaded = false
-                    if (this.contentUserDataLocal) {
-                        return this.contentUserDataLocal
-                    }
-                    if (!this.contentUserDataString) {
-                        return {}
-                    }
-                    // const content
-                    const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
-
-                    this.proficiencyInput = contentUserData.proficiency
-                    this.contentUserDataLoaded = true
+                    const contentUserData = me.store.getters.contentUserData(this.contentUserId) || {}
+                    this.proficiencyInput = contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                    // if (Object.keys(contentUserData).length) {
+                    //     this.contentUserDataLoaded = true // TODO: << figure out what this does
+                    //     log('contentUserData loaded is true', contentUserData)
+                    // } else {
+                    //     log('contentUserData loaded is false', contentUserData)
+                    // }
+                    // this.contentUserDataLoaded = false
+                    // if (this.contentUserDataLocal) {
+                    //     return this.contentUserDataLocal
+                    // }
+                    // if (!this.contentUserDataString) {
+                    //     return {}
+                    // }
+                    // // const content
+                    // const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
+                    //
+                    // this.proficiencyInput = contentUserData.proficiency
+                    // this.contentUserDataLoaded = true
                     return contentUserData
                 },
                 nextReviewTime(): timestamp {
@@ -165,8 +184,8 @@ export class TreeCreator implements ITreeCreator {
                 },
                 numChildren() {
                     return 0
-                    // return this.tree_OUTDATED && this.tree_OUTDATED.children instanceof Object
-                    // ? Object.keys(this.tree_OUTDATED.children).length : 0
+                    // return this.tree && this.tree.children instanceof Object
+                    // ? Object.keys(this.tree.children).length : 0
                 },
                 stringifiedContentUserData() {
                     return JSON.stringify(this.contentUserData)
@@ -215,13 +234,16 @@ export class TreeCreator implements ITreeCreator {
                     // this.$router.push()
                 },
                 clearHeading() {
-                    // this.tree_OUTDATED.clearChildrenInteractions()
+                    // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked(proficiency) {
                     this.proficiencyInput = proficiency
                     const contentUserId = this.contentUserId
                     const timestamp = Date.now()
                     if (!this.contentUserDataLoaded) {
+                        log(
+                            'ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED'
+                        )
                         const contentUserData = me.store.commit(
                             MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA,
                             {
@@ -230,11 +252,13 @@ export class TreeCreator implements ITreeCreator {
                                 timestamp,
                             }
                         )
-                        this.contentUserDataLocal = contentUserData
-                        ;this.contentUserData; // trigger update
-                        ;this.stringifiedContentUserData; // trigger update
-                        this.contentUserDataLoaded = true
+                        // this.contentUserDataLocal = contentUserData
+                        // ;this.contentUserData; // trigger update
+                        // ;this.stringifiedContentUserData; // trigger update // << TODO: figure out if these are necessary
                     } else {
+                        log(
+                            'ADD CONTENT INTERACTION ABOUT TO BE CALLED '
+                        )
                         me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                             contentUserId,
                             proficiency,
@@ -249,13 +273,13 @@ export class TreeCreator implements ITreeCreator {
                     //     user.addMutation('interaction', {contentId: this.content.id,
                     // proficiency: this.content.proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)
-                    //     this.tree_OUTDATED.setInactive()
+                    //     this.tree.setInactive()
                     //     // stores.commit('closeNode', this.id)
                 },
-                // unnecessary now that tree_OUTDATED chain is composed of categories/headings whose nodes dont have one color
+                // unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
                 async syncTreeChainWithUI() {
                     // this.syncGraphWithNode()
-                    // let parentId = this.tree_OUTDATED.treeData.parentId;
+                    // let parentId = this.tree.treeData.parentId;
                     // let parent
                     // let num = 1
                     // while (parentId) {
@@ -268,9 +292,9 @@ export class TreeCreator implements ITreeCreator {
                     // }
                 },
                 syncGraphWithNode() {
-                    // // syncGraphWithNode(this.tree_OUTDATED.id)
-                    // store.commit('syncGraphWithNode', this.tree_OUTDATED.id)
-                    // // PubSub.publish('syncGraphWithNode', this.tree_OUTDATED.id)
+                    // // syncGraphWithNode(this.tree.id)
+                    // store.commit('syncGraphWithNode', this.tree.id)
+                    // // PubSub.publish('syncGraphWithNode', this.tree.id)
                 },
                 // global methods
                 changeContent() {
@@ -289,17 +313,17 @@ export class TreeCreator implements ITreeCreator {
                     //         break;
                     // }
                     // this.content.addTree(this.id)
-                    // this.tree_OUTDATED.changeContent(this.content.id, this.tree_OUTDATED.contentType)
+                    // this.tree.changeContent(this.content.id, this.tree.contentType)
                     //
                     // this.toggleEditing()
                     // this.syncGraphWithNode()
                 },
                 async remove() {
                     //     if (confirm("Warning! Are you sure you would you like to delete
-                    // this tree_OUTDATED AND all its children?
+                    // this tree AND all its children?
                     // THIS CANNOT BE UNDONE")) {
                     //         removeTreeFromGraph(this.id)
-                    //         return this.tree_OUTDATED.remove()
+                    //         return this.tree.remove()
                     //     }
                 },
             }

@@ -9,7 +9,7 @@ export class Skill extends ContentItem {
      * e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -ar Verbs > 1st Person Plural
      * vs. e.g. Spanish > Grammar >Conjugating > Indicative Mood > Present Tense > -er Verbs > 1st Person Plural
      * ^^ Both skills are different, but have the same title: "1st Person Plural"
-     * It is confusing that we are listing a tree_OUTDATED id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree_OUTDATED that was used to create the skill as a unique identifying mechanism
+     * It is confusing that we are listing a tree id with the skill. Because skills and should be totally not related to what trees are using them. But for now I guess we will use the parentTreeId of the parent tree that was used to create the skill as a unique identifying mechanism
    */
     constructor (args /* ={title, primaryParentTreeId} */){
         // if (primaryParentTreeId){

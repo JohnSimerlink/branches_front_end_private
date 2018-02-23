@@ -1,7 +1,7 @@
 async function establishURIs(){
     console.log("establish URIs called")
     const tree = await Trees.get(1)
-    console.log('tree_OUTDATED gotten for id 1 is', tree, tree.contentId)
+    console.log('tree gotten for id 1 is', tree, tree.contentId)
 
     const contentItem = await ContentItems.get(tree.contentId)
     console.log('contentItem gotten is', contentItem)

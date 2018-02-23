@@ -253,8 +253,8 @@ test('Adding a mutation into the global stores for a content data,' +
     t.pass()
 })
 //
-test('Adding a mutation into the global stores for a tree_OUTDATED user data,' +
-    ' should update the sigma node instance for the sigma node for that tree_OUTDATED Id', t => {
+test('Adding a mutation into the global stores for a tree user data,' +
+    ' should update the sigma node instance for the sigma node for that tree Id', t => {
     // canvasUI
 
     const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
@@ -356,8 +356,8 @@ test('Adding a mutation into the global stores for a tree_OUTDATED user data,' +
     t.pass()
 })
 
-test('Adding a mutation into the global stores for a tree_OUTDATED location data,' +
-    ' should update the sigma node instance for the sigma node for that tree_OUTDATED Id', t => {
+test('Adding a mutation into the global stores for a tree location data,' +
+    ' should update the sigma node instance for the sigma node for that tree Id', t => {
     // canvasUI
 
     const sigmaNode1 = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
