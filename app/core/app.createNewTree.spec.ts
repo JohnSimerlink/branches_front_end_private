@@ -59,7 +59,7 @@ import {
     SubscribableContentStore,
     SubscribableContentStoreArgs
 } from '../objects/stores/content/SubscribableContentStore';
-import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../components/newTree/newTreeComponentCreator';
+import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../components/newTree/newTree';
 import newTree from '../components/newTree/newTree';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';

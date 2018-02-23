@@ -22,7 +22,6 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
     }
     public start() {
         this.globalDataStore.onUpdate((update: ITypeAndIdAndValUpdates) => {
-            log('globalDataStoreBranchesSyncer detected a new globalData store update')
             switch (update.type) {
                 case ObjectDataTypes.TREE_DATA: {
                     const mutationArgs: ISetTreeDataMutationArgs = {

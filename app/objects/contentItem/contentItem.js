@@ -12,7 +12,7 @@ import {
     measurePreviousStrength, estimateCurrentStrength,
     calculateSecondsTilCriticalReviewTime
 } from "../../forgettingCurve";
-import store from '../../core/store_OUTDATED'
+import store from '../../core/store'
 import message from "../../message";
 import UriContentMap from "../uriContentMap";
 import {convertBreadcrumbListToString, getLastNBreadcrumbsStringFromList, getLastNBreadcrumbsString, getURIWithoutRootElement} from "./uriParser.ts";
@@ -195,7 +195,7 @@ export default class ContentItem {
         clearTimeout(this.markOverdueTimeout)
     }
     /**
-     * Used to update tree_OUTDATED X and Y coordinates
+     * Used to update tree X and Y coordinates
      * @param prop
      * @param val
      */
@@ -215,7 +215,7 @@ export default class ContentItem {
         }
     }
     /**
-     * Add a tree_OUTDATED to the given content item
+     * Add a tree to the given content item
      * @param treeId
      */
     addTree(treeId){
@@ -264,7 +264,7 @@ export default class ContentItem {
 
     calculateAggregationTimerForTreeChain(){
         const treePromises = this.trees ? Object.keys(this.trees).map(Trees.get)
-            : [] // again with the way we've designed this only one contentItem should exist per tree_OUTDATED and vice versa . . .but i'm keeping this for loop here for now
+            : [] // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
             return tree.calculateAggregationTimer()
@@ -290,7 +290,7 @@ export default class ContentItem {
         delete window.content[this.id]
     }
     recalculateProficiencyAggregationForTreeChain(addChangeToDB){
-        const treePromises = this.getTreePromises()// again with the way we've designed this only one contentItem should exist per tree_OUTDATED and vice versa . . .but i'm keeping this for loop here for now
+        const treePromises = this.getTreePromises()// again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
             return tree.recalculateProficiencyAggregation(addChangeToDB)
@@ -298,7 +298,7 @@ export default class ContentItem {
         return Promise.all(calculationPromises)
     }
     recalculateNumOverdueAggregationForTreeChain(addChangeToDB){
-        const treePromises = this.getTreePromises() // again with the way we've designed this only one contentItem should exist per tree_OUTDATED and vice versa . . .but i'm keeping this for loop here for now
+        const treePromises = this.getTreePromises() // again with the way we've designed this only one contentItem should exist per tree and vice versa . . .but i'm keeping this for loop here for now
         const calculationPromises = treePromises.map(async treePromise => {
             const tree = await treePromise
             return tree.calculateNumOverdueAggregation(addChangeToDB)
@@ -390,10 +390,10 @@ export default class ContentItem {
     }
 
     async syncGraphWithNode() {
-        // syncGraphWithNode(this.tree_OUTDATED.id)
+        // syncGraphWithNode(this.tree.id)
         const treeId = this.getTreeId()
         store.commit('syncGraphWithNode', treeId)
-        // PubSub.publish('syncGraphWithNode', this.tree_OUTDATED.id)
+        // PubSub.publish('syncGraphWithNode', this.tree.id)
 
     }
 

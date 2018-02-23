@@ -185,7 +185,7 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
     expect(storeSource.get(treeId)).to.deep.equal(sampleTree)
     t.pass()
 })
-test('TreeLoader:::GetData on an existing tree_OUTDATED should return the tree_OUTDATED', async (t) => {
+test('TreeLoader:::GetData on an existing tree should return the tree', async (t) => {
     const treeId = '1234'
     const firebaseRef: Reference = new MockFirebase().child(treeId)
 

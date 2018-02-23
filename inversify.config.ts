@@ -138,7 +138,7 @@ import {
     SubscribableTreeUserStoreArgs
 } from './app/objects/stores/treeUser/SubscribableTreeUserStore';
 import {SubscribableArgs} from './app/objects/subscribable/Subscribable';
-// import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree_OUTDATED/DBSubscriberToTree';
+// import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 import {MutableSubscribableTree} from './app/objects/tree/MutableSubscribableTree';
 import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/SubscribableTree';
 // import {
@@ -175,7 +175,7 @@ import {
 import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
-import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTreeComponentCreator';
+import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTree';
 import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';

@@ -54,7 +54,7 @@ import {partialInject} from '../testHelpers/partialInject';
 
 myContainerLoadAllModules()
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
-    'once a tree_OUTDATED/treeLocation is loaded,' +
+    'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
 
     Vue.use(Vuex)

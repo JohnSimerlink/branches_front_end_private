@@ -306,7 +306,7 @@ const mutations = {
         const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
         /**
-         * Add the newly created tree_OUTDATED as a child of the parent
+         * Add the newly created tree as a child of the parent
          */
         mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
 
@@ -361,7 +361,7 @@ const mutations = {
     //         data: {parentId: parentTreeId, contentId, children: []},
     //     }
     //     const treeId = state.globalDataStore.addMutation(createMutation)
-    //     log('treeId created in create tree_OUTDATED mutation', treeId)
+    //     log('treeId created in create tree mutation', treeId)
     //     return treeId
     // },
     [MUTATION_NAMES.CREATE_TREE_LOCATION](

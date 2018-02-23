@@ -23,7 +23,7 @@ if (env === 'test') {
 }
 // tslint:disable-next-line no-var-requires
 export default {
-    template, // '<div> {{movie}} this is the tree_OUTDATED template</div>',
+    template, // '<div> {{movie}} this is the tree template</div>',
     props: [],
     async created() {
         // log('studyMenu created!', template)
@@ -123,19 +123,19 @@ export default {
     // asyncComputed: {
     //     async numOverdue() {
     //         return  2
-    //         // const tree_OUTDATED = await Trees.get(this.treeId)
-    //         // return tree_OUTDATED.userData.numOverdue
+    //         // const tree = await Trees.get(this.treeId)
+    //         // return tree.userData.numOverdue
     //     },
     //     async title() {
     //         // console.log('studyMenu - asyncComputed TITLE() called')
     //         // try {
     //         //     log('studyMenu.js this.treeId', this.treeId )
-    //         //     const tree_OUTDATED = await Trees.get(this.treeId,user.get())
-    //         //     log('studyMenu.js title()', tree_OUTDATED, )
-    //         //     const item = await ContentItems.get(tree_OUTDATED.treeData.contentId)
+    //         //     const tree = await Trees.get(this.treeId,user.get())
+    //         //     log('studyMenu.js title()', tree, )
+    //         //     const item = await ContentItems.get(tree.treeData.contentId)
     //         //     log('studyMenu.js title()', item, )
     //         //     const title = item.getLastNBreadcrumbsString(4)
-    //         //     log('studyMenu title is', tree_OUTDATED, item)
+    //         //     log('studyMenu title is', tree, item)
     //         //     return title
     //         // } catch (err){
     //         //     error('studyMenu.js', err)

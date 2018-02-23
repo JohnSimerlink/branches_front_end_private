@@ -891,7 +891,7 @@ export interface ISetContentUserDataMutationArgs {
     contentUserId: id,
     contentUserData: IContentUserData
 }
-// tree_OUTDATED
+// tree
 export interface ITree {
     getId(): string;
     contentId: IMutableField<string>;

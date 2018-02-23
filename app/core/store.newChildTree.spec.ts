@@ -23,7 +23,7 @@ import {createContentId} from '../objects/content/contentUtils';
 import {createTreeId} from '../objects/tree/TreeUtils';
 import {log} from './log'
 
-test('store create new child tree_OUTDATED should call correct firebaseRefs with correct new data', t => {
+test('store create new child tree should call correct firebaseRefs with correct new data', t => {
     /** Swap out actual firebase refs with Mock firebase refs.
      *
      */
@@ -147,7 +147,7 @@ test('store create new child tree_OUTDATED should call correct firebaseRefs with
     expect(treeLocationRefUpdateSpy.callCount).to.deep.equal(1)
     // const calledWith3 = treeRefUpdateSpy.getCall(0).args[0]
 
-    // CHECK 3: Check that newChild tree_OUTDATED was added as a child of the parentTree
+    // CHECK 3: Check that newChild tree was added as a child of the parentTree
     expect(parentTreeRefChildrenUpdateSpy.callCount).to.deep.equal(1)
     const calledWith3 = parentTreeRefChildrenUpdateSpy.getCall(0).args[0]
     const expectedCalledWith3Val: IHash<boolean> = {

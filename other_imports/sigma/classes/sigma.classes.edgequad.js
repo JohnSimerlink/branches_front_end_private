@@ -607,9 +607,9 @@ function _quadRetrieveArea(rectData, quad, collisionFunc, els) {
  *
  * @param  {object}   bounds       The boundaries of the quad defined by an
  *                                 origin (x, y), width and heigth.
- * @param  {integer}  level        The level of the quad in the tree_OUTDATED.
+ * @param  {integer}  level        The level of the quad in the tree.
  * @param  {integer}  maxElements  The max number of element in a leaf node.
- * @param  {integer}  maxLevel     The max recursion level of the tree_OUTDATED.
+ * @param  {integer}  maxLevel     The max recursion level of the tree.
  * @return {object}                The quadtree object.
  */
 function _quadTree(bounds, level, maxElements, maxLevel) {
@@ -664,7 +664,7 @@ var edgequad = function () {
  *                         width and heigth.
  * prefix:      {string?}  a prefix for edge geometric attributes.
  * maxElements: {integer?} the max number of elements in a leaf node.
- * maxLevel:    {integer?} the max recursion level of the tree_OUTDATED.
+ * maxLevel:    {integer?} the max recursion level of the tree.
  */
 edgequad.prototype.index = function (graph, params) {
     if (!this._enabled)
@@ -682,7 +682,7 @@ edgequad.prototype.index = function (graph, params) {
         n,
         e;
 
-    // Building the tree_OUTDATED
+    // Building the tree
     this._tree = _quadTree(
         params.bounds,
         0,
@@ -692,7 +692,7 @@ edgequad.prototype.index = function (graph, params) {
 
     var edges = graph.edges();
 
-    // Inserting graph edges into the tree_OUTDATED
+    // Inserting graph edges into the tree
     for (var i = 0, l = edges.length; i < l; i++) {
         source = graph.nodes(edges[i].source);
         target = graph.nodes(edges[i].target);

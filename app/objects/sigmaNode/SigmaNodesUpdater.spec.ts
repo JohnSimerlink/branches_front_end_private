@@ -191,7 +191,7 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
     t.pass()
 })
 
-test('SigmaNodesUpdater:::A receive tree_OUTDATED data and receive tree_OUTDATED location data should call the appropriate methods' +
+test('SigmaNodesUpdater:::A receive tree data and receive tree location data should call the appropriate methods' +
     ' on sigmaRenderManager place the node into the rendered nodes list', (t) => {
     const newContentId = '4324234'
     const newParentId = '4344324234'
