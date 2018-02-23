@@ -33,9 +33,9 @@ if (!template || !Object.keys(template).length) {
 // import {Store} from 'vuex';
 // import {MUTATION_NAMES} from '../../core/store2';
 // import {Component} from 'vue';
-// const template = require('./tree.html').default
+// const template = require('./tree_OUTDATED.html').default
 // import {Skill} from "../../objects/skill";
-// import './tree.less'
+// import './tree_OUTDATED.less'
 // import { mapActions } from 'vuex'
 // import message from '../../message'
 //
@@ -131,7 +131,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         // x: childX,
                         // y: childY,
                     }
-                    log('new child tree args being passed into commit are', newChildTreeArgs)
+                    log('new child tree_OUTDATED args being passed into commit are', newChildTreeArgs)
                     log('newTreeComponentCreator . createNewTree() me.store._id is', me.store['_id'])
                     log('newTreeComponentCreator . createNewTree() store\'s globalStore id is',
                         me.store['globalDataStore']['_globalStoreId'])

@@ -20,7 +20,7 @@ export interface IKnawledgeMapCreator extends IVueComponentCreator {
 }
 export interface IKnawledgeMapCreatorClone extends IVueComponentCreator {
 }
-export interface ITree3Creator extends IVueComponentCreator {
+export interface ITreeCreator extends IVueComponentCreator {
 }
 export interface ITreeComponentCreator2 extends IVueComponentCreator {}
 export interface IVuexStore extends Store<any> {
@@ -891,7 +891,7 @@ export interface ISetContentUserDataMutationArgs {
     contentUserId: id,
     contentUserData: IContentUserData
 }
-// tree
+// tree_OUTDATED
 export interface ITree {
     getId(): string;
     contentId: IMutableField<string>;

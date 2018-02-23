@@ -174,7 +174,7 @@ test('treeLocationLoader:::DownloadData should have the side effect' +
     expect(storeSource.get(treeId)).to.deep.equal(sampleTreeLocation)
     t.pass()
 })
-test('treeLocationLoader:::GetData on an existing tree should return the tree', async (t) => {
+test('treeLocationLoader:::GetData on an existing tree_OUTDATED should return the tree_OUTDATED', async (t) => {
     const treeId = '1234'
     const treeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
 

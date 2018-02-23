@@ -26,7 +26,7 @@ import {log} from './log'
 import {MockFirebase} from 'firebase-mock'
 test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with should change when you click on a different proficiency/color in the confidence interval question check', async (t) => {
     //
-    // /* ===== create a sample tree, treeLocation, contentItem, contentUserItem ======= */
+    // /* ===== create a sample tree_OUTDATED, treeLocation, contentItem, contentUserItem ======= */
     // const contentIdVal = '5262'
     // const parentIdVal = '94321'
     // const treeIdVal = 'efa123'
@@ -112,7 +112,7 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     // store.state.userId = userId // TODO: << I don't like modifying state directly
     // store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
     //
-    // /* ===== load in the tree, contentItem, contentUserItem ======= */
+    // /* ===== load in the tree_OUTDATED, contentItem, contentUserItem ======= */
     // const treeItemRef = mockTreesRef.child(treeIdVal)
     // treeItemRef.fakeEvent('value', undefined, sampleTreeDataFromDB)
     // const treeLocationItemRef = mockTreeLocationsRef.child(treeIdVal)
@@ -136,7 +136,7 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     // treeLocationItemRef.flush()
     // log('treeLocationItem ref flushed')
     // log('sigmaNodeLoader promise about to be received')
-    // await sigmaNodeLoadeDataPromise // this line gets called as soon as the first await in the inner inner promise (SigmaNodeLoaderCore await treeLoader downloadData gets called apparently, NOT when the whole treeLoader downloadData promise is called. meaning the rest of the inner inner promise (after SigmNodeloader core await tree downloadData) wont run until after this line. meaning downloadData's on the contentItem and contenUserItem wont get called until after this line, meaning we can't flush conten/contentuser refs until after this line
+    // await sigmaNodeLoadeDataPromise // this line gets called as soon as the first await in the inner inner promise (SigmaNodeLoaderCore await treeLoader downloadData gets called apparently, NOT when the whole treeLoader downloadData promise is called. meaning the rest of the inner inner promise (after SigmNodeloader core await tree_OUTDATED downloadData) wont run until after this line. meaning downloadData's on the contentItem and contenUserItem wont get called until after this line, meaning we can't flush conten/contentuser refs until after this line
     // // TODO: UGH this integration test is hard. Why won't the firebase refs flush the way I want them to???
     // log('about to flush contentItemRef')
     // contentItemRef.flush() // can't flush contentItem and contenUserItem until their downloadData methods have been called

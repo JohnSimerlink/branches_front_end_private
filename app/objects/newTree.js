@@ -56,5 +56,5 @@ export async function newTree(type, parentTreeId,primaryParentTreeContentURI, va
     newContent.addTree(tree.id)
     addTreeNodeToGraph(tree, newContent)
     connectTreeToParent(tree, newContent)
-    console.log('the new tree and new content just created are', tree, newContent)
+    console.log('the new tree_OUTDATED and new content just created are', tree, newContent)
 }

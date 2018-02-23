@@ -3,7 +3,7 @@ import Users from '../../objects/users'
 import {user} from '../../objects/user'
 
 export default {
-    template: require('./reviewSchedule.html'), // '<div> {{movie}} this is the tree template</div>',
+    template: require('./reviewSchedule.html'), // '<div> {{movie}} this is the tree_OUTDATED template</div>',
     created () {
         var self = this;
 

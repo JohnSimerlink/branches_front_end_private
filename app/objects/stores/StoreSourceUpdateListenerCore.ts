@@ -34,7 +34,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     }
     // private receiveUpdate
 
-    /* TODO: edge case - what if a content data is received before the tree data,
+    /* TODO: edge case - what if a content data is received before the tree_OUTDATED data,
     meaning the content data may not have a sigma id to be applied to? */
     /* ^^^ This is handled in SigmaNodesUpdater ^^^^ */
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
@@ -90,7 +90,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 break;
             }
             case ObjectDataTypes.CONTENT_USER_DATA: {
-                // TODO: currently assumes that tree/sigma id's  are loaded before content is
+                // TODO: currently assumes that tree_OUTDATED/sigma id's  are loaded before content is
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
