@@ -240,7 +240,7 @@ const mutations = {
             timer: 0, // TODO: add timer to app
             lastEstimatedStrength: null, // TODO: Add initial calculate strength to app,
             overdue: false, // TODO: add initial overdue functionality
-            lastInteractionTime: timestamp,
+            lastInteractionTime: null,
             nextReviewTime: null, // TODO: add initial calculate nextReviewTime functionality
             proficiency,
         }
