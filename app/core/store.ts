@@ -174,7 +174,7 @@ const mutations = {
         sigmaInstance.cameras[0].goTo({x: 5, y: 5, ratio: .05})
 
         /* TODO: it would be nice if I didn't have to do all this constructing
-         inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
+         inside of store.ts and rather did it inside of appContainer or inversify.config.ts */
         const store = getters.getStore()
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig()
@@ -420,7 +420,7 @@ const mutations = {
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
         const userExistsInDB = await state.userUtils.userExistsInDB(userId)
-        console.log('store2.ts userExistsInDB is', userExistsInDB)
+        console.log('store.ts userExistsInDB is', userExistsInDB)
         let user: ISyncableMutableSubscribableUser
         if (!userExistsInDB) {
             user = await state.userUtils.createUserInDB(userId)

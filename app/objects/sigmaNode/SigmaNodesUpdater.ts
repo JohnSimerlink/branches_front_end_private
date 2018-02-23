@@ -20,7 +20,7 @@ import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {SigmaNode, SigmaNodeArgs} from './SigmaNode';
-import {MUTATION_NAMES} from '../../core/store2';
+import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import {TAGS} from '../tags';
 import {createEdgeId, createParentSigmaEdge} from '../sigmaEdge/sigmaEdge';

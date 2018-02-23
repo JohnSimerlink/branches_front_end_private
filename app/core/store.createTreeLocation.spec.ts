@@ -5,7 +5,7 @@ import {
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../inversify.config';
 import {Store} from 'vuex';
-import BranchesStore, {MUTATION_NAMES} from './store2';
+import BranchesStore, {MUTATION_NAMES} from './store';
 import {TYPES} from '../objects/types';
 import * as sinon from 'sinon'
 import {

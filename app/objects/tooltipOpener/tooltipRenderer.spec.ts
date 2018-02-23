@@ -14,7 +14,7 @@ import {myContainer, myContainerLoadAllModules, state} from '../../../inversify.
 import {TYPES} from '../types';
 import {expect} from 'chai'
 import clonedeep = require('lodash.clonedeep')
-import BranchesStore from '../../core/store2';
+import BranchesStore from '../../core/store';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 

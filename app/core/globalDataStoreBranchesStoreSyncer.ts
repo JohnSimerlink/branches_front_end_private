@@ -9,7 +9,7 @@ import {
 } from '../objects/interfaces';
 import {log} from './log'
 import {TYPES} from '../objects/types';
-import BranchesStore, {MUTATION_NAMES} from './store2';
+import BranchesStore, {MUTATION_NAMES} from './store';
 import {Store} from 'vuex';
 @injectable()
 export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranchesStoreSyncer {

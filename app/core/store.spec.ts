@@ -1,7 +1,7 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom()
 import {injectionWorks} from '../testHelpers/testHelpers';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2';
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {
     CONTENT_TYPES,
     IContentData,

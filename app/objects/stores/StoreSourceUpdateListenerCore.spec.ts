@@ -16,7 +16,7 @@ import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava'
 import {partialInject} from '../../testHelpers/partialInject';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
+import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 
 myContainerLoadAllModules()
