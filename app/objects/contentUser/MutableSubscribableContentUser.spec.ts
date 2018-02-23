@@ -39,7 +39,7 @@ test('OverdueListener:::.val() should work after constructor', (t) => {
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -49,7 +49,7 @@ test('OverdueListener:::.val() should work after constructor', (t) => {
     })
     const expectedContentUserData: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
         timer: timerVal,
@@ -86,7 +86,7 @@ test('OverdueListener:::.val() should give appropiate value ' +
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -102,7 +102,7 @@ test('OverdueListener:::.val() should give appropiate value ' +
     }
     const expectedContentUserData: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: newRecordedStrengthVal,
+        lastEstimatedStrength: newRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
         timer: timerVal,
@@ -141,7 +141,7 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -157,7 +157,7 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
     }
     const expectedContentUserData: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         overdue: newOverdueVal,
         proficiency: proficiencyVal,
         timer: timerVal,
@@ -196,7 +196,7 @@ test('OverdueListener:::.val() should give appropiate value' +
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -212,7 +212,7 @@ test('OverdueListener:::.val() should give appropiate value' +
     }
     const expectedContentUserData: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: newProficiencyVal,
         timer: timerVal,
@@ -249,7 +249,7 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -265,7 +265,7 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
     }
     const expectedContentUserData: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         overdue: overdueVal,
         proficiency: proficiencyVal,
         timer: newTimerVal,
@@ -298,7 +298,7 @@ test('OverdueListener:::a mutation in one of the subscribable properties' +
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -339,7 +339,7 @@ test('OverdueListener:::a mutation in one of the subscribable properties' +
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,
@@ -375,7 +375,7 @@ test('OverdueListener:::addMutation ' +
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,

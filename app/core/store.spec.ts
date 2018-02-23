@@ -71,7 +71,7 @@ test('Store::::' +
     const contentUserData: IContentUserData = {
         id,
         overdue: overdueVal,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
         timer: timerVal,
         nextReviewTime: nextReviewTimeVal,

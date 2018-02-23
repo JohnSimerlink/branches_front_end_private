@@ -235,7 +235,7 @@ export interface IContentUserData {
     overdue: boolean,
     timer: number,
     proficiency: PROFICIENCIES,
-    lastRecordedStrength: number,
+    lastEstimatedStrength: number,
     lastInteractionTime: timestamp,
     nextReviewTime: timestamp,
 }

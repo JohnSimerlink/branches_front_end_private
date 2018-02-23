@@ -43,7 +43,7 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     const nextReviewTime: ISubscribableMutableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency,
         timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
@@ -93,7 +93,7 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     const nextReviewTime: ISubscribableMutableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
@@ -129,7 +129,7 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
         id: contentUserId,
         proficiency: PROFICIENCIES.FOUR,
         timer: 27,
-        lastRecordedStrength: 50,
+        lastEstimatedStrength: 50,
         overdue: false,
         lastInteractionTime: Date.now(),
         nextReviewTime: Date.now() + 1000 * 60,

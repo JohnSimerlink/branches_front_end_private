@@ -12,14 +12,14 @@ export class ContentUserDeserializer {
        ): ISyncableMutableSubscribableContentUser {
 
        const overdue = new MutableSubscribableField<boolean>({field: contentUserData.overdue})
-       const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastRecordedStrength})
+       const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastEstimatedStrength})
        const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: contentUserData.proficiency})
        const timer = new MutableSubscribableField<number>({field: contentUserData.timer})
        const lastInteractionTime = new MutableSubscribableField<number>({field: contentUserData.lastInteractionTime})
        const nextReviewTime = new MutableSubscribableField<number>({field: contentUserData.nextReviewTime})
 
        const contentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
-           {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer,
+           {updatesCallbacks: [], id, overdue, lastEstimatedStrength: lastRecordedStrength, proficiency, timer,
                lastInteractionTime, nextReviewTime}
            )
        return contentUser
@@ -31,14 +31,14 @@ export class ContentUserDeserializer {
             = ContentUserDeserializer.convertDBDataToObjectData({id, contentUserDataFromDB})
 
         const overdue = new MutableSubscribableField<boolean>({field: contentUserData.overdue})
-        const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastRecordedStrength})
+        const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastEstimatedStrength})
         const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: contentUserData.proficiency})
         const timer = new MutableSubscribableField<number>({field: contentUserData.timer})
         const lastInteractionTime = new MutableSubscribableField<number>({field: contentUserData.lastInteractionTime})
         const nextReviewTime = new MutableSubscribableField<number>({field: contentUserData.nextReviewTime})
 
         const contentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
-            {updatesCallbacks: [], id, overdue, lastRecordedStrength, proficiency, timer,
+            {updatesCallbacks: [], id, overdue, lastEstimatedStrength: lastRecordedStrength, proficiency, timer,
                 lastInteractionTime, nextReviewTime
             }
         )
@@ -58,7 +58,7 @@ export class ContentUserDeserializer {
         const contentUserData: IContentUserData = {
             id,
             overdue,
-            lastRecordedStrength,
+            lastEstimatedStrength: lastRecordedStrength,
             proficiency,
             timer,
             lastInteractionTime,

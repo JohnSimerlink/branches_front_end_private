@@ -23,10 +23,10 @@ import moment = require('moment');
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
         lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs ) {
-        super({updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        super({updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
         lastInteractionTime, nextReviewTime})
 
     }

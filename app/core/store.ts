@@ -238,7 +238,7 @@ const mutations = {
         const contentUserData: IContentUserData = {
             id: contentUserId,
             timer: 0, // TODO: add timer to app
-            lastRecordedStrength: null, // TODO: Add initial calculate strength to app,
+            lastEstimatedStrength: null, // TODO: Add initial calculate strength to app,
             overdue: false, // TODO: add initial overdue functionality
             lastInteractionTime: timestamp,
             nextReviewTime: null, // TODO: add initial calculate nextReviewTime functionality

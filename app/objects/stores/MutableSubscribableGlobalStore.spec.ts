@@ -128,7 +128,7 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
     const nextReviewTime: ISubscribableMutableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
@@ -239,7 +239,7 @@ test('MutableSubscribableGlobalStore:::adding a create contentuser' +
         // c`12;[]`
     const contentUserData: IContentUserData = {
         id,
-        lastRecordedStrength,
+        lastEstimatedStrength: lastRecordedStrength,
         overdue,
         proficiency,
         timer,

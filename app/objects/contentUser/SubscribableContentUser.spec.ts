@@ -28,7 +28,7 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
     const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
     const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser: ISubscribableContentUser = new SubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     expect(contentUser.overdue).to.deep.equal(overdue)
@@ -50,13 +50,13 @@ test('SubscribableContentUser:::.val() should display the value of the object', 
     const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
     const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
 
     const expectedVal: IContentUserData = {
         id: contentUserId,
-        lastRecordedStrength: lastRecordedStrength.val(),
+        lastEstimatedStrength: lastRecordedStrength.val(),
         overdue: overdue.val(),
         proficiency: proficiency.val(),
         timer: timer.val(),
@@ -79,7 +79,7 @@ test('SubscribableContentUser:::startPublishing() should call the onUpdate metho
     const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
     const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue, proficiency, timer,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
 
