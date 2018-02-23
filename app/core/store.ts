@@ -30,7 +30,7 @@ import {createParentSigmaEdge} from '../objects/sigmaEdge/sigmaEdge';
 import {MutableSubscribableUser} from '../objects/user/MutableSubscribableUser';
 import {IMutableSubscribableUser} from '../objects/interfaces';
 import {IProppedDatedMutation} from '../objects/interfaces';
-import {UserPropertyNames} from '../objects/interfaces';
+import {UserPropertyNames, ITreeUserData} from '../objects/interfaces';
 import {TAGS} from '../objects/tags';
 import * as firebase from 'firebase';
 import {UserDeserializer} from '../loaders/user/UserDeserializer';
@@ -140,7 +140,22 @@ const getters = {
             // const expirationTime = user.membershipExpirationDate.val()
             // return expirationTime >= Date.now()
         }
-    }
+    },
+    treeData(state: IState, getters) {
+        return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId]
+    },
+    treeLocationData(state: IState, getters) {
+        return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId]
+    },
+    treeUsersData(state: IState, getters) {
+        return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId]
+    },
+    contentData(state: IState, getters) {
+        return (contentId: id): IContentData => state.globalDataStoreData.content[contentId]
+    },
+    contentUserData(state: IState, getters) {
+        return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId]
+    },
 }
 const mutations = {
     initializeSigmaInstance() {
