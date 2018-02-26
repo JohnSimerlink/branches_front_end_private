@@ -167,7 +167,7 @@ import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableS
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
 // import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/tree2Component/treeComponent';
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap2';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
 import {
     TreeCreator,
     TreeCreatorArgs

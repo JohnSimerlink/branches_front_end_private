@@ -279,7 +279,7 @@ export class TreeCreator implements ITreeCreator {
                 // unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
                 async syncTreeChainWithUI() {
                     // this.syncGraphWithNode()
-                    // let parentId = this.tree.treeData.parentId;
+                    // let parentId = this.tree.treeDataFromDB.parentId;
                     // let parent
                     // let num = 1
                     // while (parentId) {
@@ -287,7 +287,7 @@ export class TreeCreator implements ITreeCreator {
                     //     store.commit('syncGraphWithNode', parentId)
                     //     // PubSub.publish('syncGraphWithNode', parentId)
                     //     parent = await Trees.get(parentId)
-                    //     parentId = parent.treeData.parentId
+                    //     parentId = parent.treeDataFromDB.parentId
                     //     num++
                     // }
                 },

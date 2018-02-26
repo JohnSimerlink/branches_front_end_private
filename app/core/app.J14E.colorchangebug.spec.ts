@@ -9,7 +9,7 @@ import {
     CONTENT_TYPES, IAddContentInteractionMutationArgs, IContentDataFromDB, IContentUserData, IContentUserDataFromDB,
     IPoint,
     ISigmaNodeLoader, IState,
-    ITreeDataFromFirebase, ITreeLocationDataFromFirebase
+    ITreeDataFromDB, ITreeLocationDataFromFirebase
 } from '../objects/interfaces';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {getContentUserId, getContentUserRef} from '../loaders/contentUser/ContentUserLoaderUtils';
@@ -30,7 +30,7 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     // const contentIdVal = '5262'
     // const parentIdVal = '94321'
     // const treeIdVal = 'efa123'
-    // const sampleTreeDataFromDB: ITreeDataFromFirebase = {
+    // const sampleTreeDataFromDB: ITreeDataFromDB = {
     //     contentId: {
     //         val: contentIdVal
     //     },

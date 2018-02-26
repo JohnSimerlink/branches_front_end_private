@@ -1,6 +1,6 @@
-import {ITreeDataFromFirebase, ITreeDataWithoutId, ITreeLocationData} from '../interfaces';
+import {ITreeDataFromDB, ITreeDataWithoutId, ITreeLocationData} from '../interfaces';
 
-export function isValidTree(tree: ITreeDataFromFirebase) {
+export function isValidTree(tree: ITreeDataFromDB) {
     return tree && tree.contentId && tree.contentId.val
     && tree.parentId && tree.parentId.val
     && (!tree.children || (tree.children && tree.children.val) || (tree.children && tree.children.mutations))

@@ -13,6 +13,6 @@ export async function convertTreeDataForATree(treeId) {
         contentId: tree.contentId,
         parentId: tree.parentId,
     }
-    tree.set('treeData', treeData)
+    tree.set('treeDataFromDB', treeData)
 }
 window.convertTreeDataForATree = convertTreeDataForATree

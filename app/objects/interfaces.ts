@@ -41,7 +41,7 @@ export interface IContentItem {
 // loaders
 // export interface ITreeLoaderCore {
 //     download(treeId): Promise<ITreeDataWithoutId>
-//     deserializeFromDB(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
+//     deserializeFromDB(treeId, treeDataFromDB: ITreeDataWithoutId): IMutableSubscribableTree
 // }
 export interface ISigmaNodeLoader {
     loadIfNotLoaded(sigmaid: id): Promise<ISigmaLoadData>
@@ -904,7 +904,7 @@ export interface ITreeDataWithoutId {
     parentId: id;
     children: id[];
 }
-export interface ITreeDataFromFirebase {
+export interface ITreeDataFromDB {
     contentId: {
         val: string,
         mutations?
@@ -1002,6 +1002,7 @@ export interface ISubscribableTreeLocationCore extends ITreeLocation {
 
 export enum TreeLocationPropertyNames {
     POINT = 'point',
+    LEVEL = 'level',
 }
 
 export interface ISubscribableTreeLocation extends

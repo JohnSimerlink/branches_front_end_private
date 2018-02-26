@@ -11,7 +11,7 @@ import {TYPES} from '../objects/types';
 import * as sinon from 'sinon'
 import {
     CONTENT_TYPES, IContentData, IContentDataFromDB,
-    ICreateTreeLocationMutationArgs, INewChildTreeMutationArgs, ISet, ITreeDataFromFirebase, ITreeDataWithoutId,
+    ICreateTreeLocationMutationArgs, INewChildTreeMutationArgs, ISet, ITreeDataFromDB, ITreeDataWithoutId,
     ITreeLocationData,
     TreeLocationPropertyNames, TreePropertyNames, IHash
 } from '../objects/interfaces';
@@ -135,7 +135,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
     // CHECK 2a: Check that treeItem was added to db
     expect(treeRefUpdateSpy.callCount).to.deep.equal(1)
     const calledWith2 = treeRefUpdateSpy.getCall(0).args[0]
-    const expectedCalledWith2: ITreeDataFromFirebase = {
+    const expectedCalledWith2: ITreeDataFromDB = {
         contentId: {
             val: contentId,
         },

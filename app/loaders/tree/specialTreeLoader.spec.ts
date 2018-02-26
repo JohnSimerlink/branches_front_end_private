@@ -5,7 +5,7 @@ import test from 'ava'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {
-    IOneToManyMap, ITreeDataFromFirebase,
+    IOneToManyMap, ITreeDataFromDB,
     ITreeLoader
 } from '../../objects/interfaces';
 import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './specialTreeLoader';
@@ -21,7 +21,7 @@ test('SpecialTreeLoader', async (t) => {
     const childFirebaseRef = firebaseRef.child(treeId)
 
     const contentId = '12345532'
-    const sampleTreeData: ITreeDataFromFirebase = {
+    const sampleTreeData: ITreeDataFromDB = {
         contentId: {
             val: contentId
         },

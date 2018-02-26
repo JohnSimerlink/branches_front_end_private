@@ -50,13 +50,20 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                 const treeLocationDataFromFirebase: ITreeLocationDataFromFirebase = snapshot.val()
                 if (isValidTreeLocationDataFromDB(treeLocationDataFromFirebase)) {
                     const tree: ISyncableMutableSubscribableTreeLocation =
-                        TreeLocationDeserializer.deserializeFromDB({treeLocationDataFromDB: treeLocationDataFromFirebase})
+                        TreeLocationDeserializer.deserializeFromDB(
+                            {treeLocationDataFromDB: treeLocationDataFromFirebase}
+                            )
                     const treeLocationData =
-                        TreeLocationDeserializer.convertFromDBToData({treeLocationDataFromDB: treeLocationDataFromFirebase})
+                        TreeLocationDeserializer.convertFromDBToData(
+                            {treeLocationDataFromDB: treeLocationDataFromFirebase}
+                            )
                     me.storeSource.set(treeId, tree)
                     resolve(treeLocationData)
                 } else {
-                    reject('treeLocationData for ' + treeId + ' invalid!' + treeLocationDataFromFirebase )
+                    console.error('treeLocationData for ' , treeId ,
+                        ' invalid!' , treeLocationDataFromFirebase)
+                    reject('treeLocationData for ' + treeId +
+                        ' invalid!' + JSON.stringify(treeLocationDataFromFirebase))
                 }
             })
         }) as Promise<ITreeLocationData>
