@@ -16,6 +16,10 @@ import {AppContainer} from './appContainer';
 import {expect} from 'chai'
 import test from 'ava'
 import {createTreeId} from '../objects/tree/TreeUtils';
+import {
+    sampleTreeLocationData1, sampleTreeLocationData1Level, sampleTreeLocationData1x,
+    sampleTreeLocationData1y
+} from '../objects/treeLocation/treeLocationTestHelpers';
 
 test('store create location should call correct firebaseRef', t => {
     /** Swap out actual firebase refs with Mock firebase refs.
@@ -27,11 +31,10 @@ test('store create location should call correct firebaseRef', t => {
      * Set up data
      */
     const treeId = '123abcde3'
-    const x = 5
-    const y = 7
     const treeLocationData: ICreateTreeLocationMutationArgs = {
-        x,
-        y,
+        x: sampleTreeLocationData1x,
+        y: sampleTreeLocationData1y,
+        level: sampleTreeLocationData1Level,
         treeId,
     }
     /**
@@ -60,17 +63,9 @@ test('store create location should call correct firebaseRef', t => {
      */
     store.commit(MUTATION_NAMES.CREATE_TREE_LOCATION, treeLocationData )
 
-
     expect(treeLocationRefUpdateSpy.callCount).to.deep.equal(1)
     const calledWith = treeLocationRefUpdateSpy.getCall(0).args[0]
-    const expectedCalledWith = {
-        point: {
-            val: {
-                x,
-                y
-            }
-        }
-    }
+    const expectedCalledWith = sampleTreeLocationData1
     expect(calledWith).to.deep.equal(expectedCalledWith)
 
     t.pass()

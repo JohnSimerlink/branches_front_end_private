@@ -106,7 +106,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                 this.addMutation(interactionTimeMutation)
                 this.addMutation(nextReviewTimeMutation)
 
-                // const strength = calculateStrength(proficiency, )
+                // const strength = calculateStrength(sampleContentUser1Proficiency, )
                 break
             case ContentUserPropertyNames.TIMER:
                 this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)

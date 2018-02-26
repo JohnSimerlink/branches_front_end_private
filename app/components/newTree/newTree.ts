@@ -7,11 +7,11 @@ import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 // import {Heading} from "../../objects/heading";
 import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {log} from '../../core/log'
-// import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+// import {PROFICIENCIES} from '../../objects/sampleContentUser1Proficiency/proficiencyEnum';
 import {inject, injectable} from 'inversify';
 import {
     CONTENT_TYPES, INewChildTreeMutationArgs,
-    INewTreeComponentCreator,
+    INewTreeComponentCreator, ITreeLocationData,
     IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -87,6 +87,9 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 }
             },
             computed: {
+                parentLocation(): ITreeLocationData {
+                    return this.$store.getters.treeLocationData(this.parentId)
+                },
                 headingSelectorStyle() {
                     return this.contentIsHeading ?
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
@@ -126,8 +129,9 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         question: questionFormatted,
                         answer: answerFormatted,
                         title: titleFormatted,
-                        parentX: parseInt(this.parentX),
-                        parentY: parseInt(this.parentY),
+                        parentLocation: this.parentLocation(),
+                        // parentX: parseInt(this.parentX),
+                        // parentY: parseInt(this.parentY),
                         // x: childX,
                         // y: childY,
                     }

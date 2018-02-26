@@ -15,23 +15,27 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {linkSync} from 'fs';
+import {
+    sampleTreeData1, sampleTreeData1Children, sampleTreeData1ContentId,
+    sampleTreeData1ParentId
+} from '../tree/treeTestHelpers';
+import {
+    sampleContentUser1OverdueVal, sampleContentUserData1, sampleContentUser1ProficiencyVal,
+    sampleContentUser1Id
+} from '../contentUser/ContentUserHelpers';
+import {
+    sampleTreeLocationData1, sampleTreeLocationData1x,
+    sampleTreeLocationData1y
+} from '../treeLocation/treeLocationTestHelpers';
 
 myContainerLoadAllModules()
 test('sigmaNode:::receive new tree', (t) => {
-    const parentId = '12345'
-    const contentId = '12312345'
-    const children = ['12312345', '123123123123123', '432493598342']
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
 
-    const treeData: ITreeDataWithoutId = {
-        children,
-        contentId,
-        parentId,
-    }
-    sigmaNode.receiveNewTreeData(treeData)
-    expect(sigmaNode.parentId).to.equal(parentId)
-    expect(sigmaNode.contentId).to.equal(contentId)
-    expect(sigmaNode.children).to.deep.equal(children)
+    sigmaNode.receiveNewTreeData(sampleTreeData1)
+    expect(sigmaNode.parentId).to.equal(sampleTreeData1ParentId)
+    expect(sigmaNode.contentId).to.equal(sampleTreeData1ContentId)
+    expect(sigmaNode.children).to.deep.equal(sampleTreeData1Children)
     t.pass()
 })
 test('sigmaNode:::receive new treeUserData', (t) => {
@@ -71,49 +75,25 @@ test('sigmaNode:::receive new ContentData', (t) => {
 })
 test('sigmaNode:::receive new ContentUserData', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
-    const overdue = true
-    const lastRecordedStrength = 50
-    const proficiency: PROFICIENCIES = PROFICIENCIES.THREE
-    const timer = 40
-    const contentUserId = 'abcde_12345'
-    const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastInteractionTimeVal = Date.now()
-    const contentUserData: IContentUserData = {
-        id: contentUserId,
-        lastEstimatedStrength: lastRecordedStrength,
-        overdue,
-        proficiency,
-        timer,
-        nextReviewTime: nextReviewTimeVal,
-        lastInteractionTime: lastInteractionTimeVal,
-    }
-    const size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
+    const size = ContentUserDataUtils.getSizeFromContentUserData(sampleContentUserData1)
     /* QUESTION / TODO: Doesn't this entire test seem useless?
      e.g. a redundant implementation of the implementation? */
 
-    sigmaNode.receiveNewContentUserData(contentUserData)
+    sigmaNode.receiveNewContentUserData(sampleContentUserData1)
     expect(sigmaNode.size).to.equal(size)
-    expect(sigmaNode.overdue).to.equal(overdue)
-    expect(sigmaNode.proficiency).to.equal(proficiency)
-    expect(sigmaNode.contentUserId).to.equal(contentUserId)
-    expect(sigmaNode.contentUserData).to.deep.equal(contentUserData)
+    expect(sigmaNode.overdue).to.equal(sampleContentUser1OverdueVal)
+    expect(sigmaNode.proficiency).to.equal(sampleContentUser1ProficiencyVal)
+    expect(sigmaNode.contentUserId).to.equal(sampleContentUser1Id)
+    expect(sigmaNode.contentUserData).to.deep.equal(sampleContentUserData1)
     t.pass()
 })
 test('sigmaNode:::receive new TreeLocation', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
-    const x = 5
-    const y = 7
-    const location: ITreeLocationData = {
-        point: {
-            x,
-            y
-        },
-    }
     /* QUESTION / TODO: Doesn't this entire test seem useless?
      e.g. a redundant implementation of the implementation? */
 
-    sigmaNode.receiveNewTreeLocationData(location)
-    expect(sigmaNode.x).to.equal(x)
-    expect(sigmaNode.y).to.equal(y)
+    sigmaNode.receiveNewTreeLocationData(sampleTreeLocationData1)
+    expect(sigmaNode.x).to.equal(sampleTreeLocationData1x)
+    expect(sigmaNode.y).to.equal(sampleTreeLocationData1y)
     t.pass()
 })

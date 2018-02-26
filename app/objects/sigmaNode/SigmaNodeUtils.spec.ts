@@ -12,7 +12,7 @@ import {myContainerLoadAllModules} from '../../../inversify.config';
 
 myContainerLoadAllModules()
 test('Get Color Slices from Proficiency Stats::::' +
-    'should do one hundred percent COLOR_ONE for one item proficiency ONE and zero items everything else', (t) => {
+    'should do one hundred percent COLOR_ONE for one item sampleContentUser1Proficiency ONE and zero items everything else', (t) => {
     const proficiencyStats: IProficiencyStats = {
         ONE: 1
     } as IProficiencyStats
@@ -28,7 +28,7 @@ test('Get Color Slices from Proficiency Stats::::' +
     t.pass()
 })
 test('Get Color Slices from Proficiency Stats::::' +
-    'should do one hundred percent COLOR_UNKNOWN for one item proficiency UNKNOWN' +
+    'should do one hundred percent COLOR_UNKNOWN for one item sampleContentUser1Proficiency UNKNOWN' +
     ' and no color everything else', (t) => {
     const proficiencyStats: IProficiencyStats = {
         UNKNOWN: 1
@@ -45,8 +45,8 @@ test('Get Color Slices from Proficiency Stats::::' +
     t.pass()
 })
 test('Get Color Slices from Proficiency Stats::::' +
-    'ColorSlices: two proficiency THREE, two proficiency ONE -' +
-    ' should do first fifty percent COLOR_THREE for two items that are proficiency THREE' +
+    'ColorSlices: two sampleContentUser1Proficiency THREE, two sampleContentUser1Proficiency ONE -' +
+    ' should do first fifty percent COLOR_THREE for two items that are sampleContentUser1Proficiency THREE' +
     ' and the next fifty percent COLOR_ONE for two items PROFICIENCY UNKNOWN', (t) => {
     const proficiencyStats: IProficiencyStats = {
         THREE: 2,

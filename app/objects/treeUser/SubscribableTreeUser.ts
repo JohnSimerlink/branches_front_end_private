@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
     IProficiencyStats,
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     ISubscribableTreeUser,
     ITreeUserData,
     IValUpdates,
@@ -15,8 +15,8 @@ import {TYPES} from '../types'
 @injectable()
 export class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscribableTreeUser {
     private publishing = false
-    public proficiencyStats: ISubscribableMutableField<IProficiencyStats>;
-    public aggregationTimer: ISubscribableMutableField<number>;
+    public proficiencyStats: IMutableSubscribableField<IProficiencyStats>;
+    public aggregationTimer: IMutableSubscribableField<number>;
 
     // TODO: should the below three objects be private?
     public val(): ITreeUserData {
@@ -50,7 +50,7 @@ export class SubscribableTreeUser extends Subscribable<IValUpdates> implements I
 @injectable()
 export class SubscribableTreeUserArgs {
     @inject(TYPES.Array) public updatesCallbacks
-    @inject(TYPES.ISubscribableMutableProficiencyStats)
-        public proficiencyStats: ISubscribableMutableField<IProficiencyStats>
-    @inject(TYPES.ISubscribableMutableNumber) public aggregationTimer: ISubscribableMutableField<number>
+    @inject(TYPES.IMutableSubscribableProficiencyStats)
+        public proficiencyStats: IMutableSubscribableField<IProficiencyStats>
+    @inject(TYPES.IMutableSubscribableNumber) public aggregationTimer: IMutableSubscribableField<number>
 }

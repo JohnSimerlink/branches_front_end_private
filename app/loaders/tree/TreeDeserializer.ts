@@ -14,7 +14,7 @@ export class TreeDeserializer {
        {treeData, treeId}: {treeData: ITreeDataFromFirebase, treeId: string}
        ): ISyncableMutableSubscribableTree {
        const contentId = new MutableSubscribableField<string>({field: treeData.contentId.val})
-       /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+       /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
         // TODO: figure out why DI puts in a bad IUpdatesCallback!
        */
        const parentId = new MutableSubscribableField<string>({field: treeData.parentId.val})
@@ -29,7 +29,7 @@ export class TreeDeserializer {
         {treeDataWithoutId, treeId}: {treeDataWithoutId: ITreeDataWithoutId, treeId: string}
     ): ISyncableMutableSubscribableTree {
         const contentId = new MutableSubscribableField<string>({field: treeDataWithoutId.contentId})
-        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+        /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
          // TODO: figure out why DI puts in a bad IUpdatesCallback!
         */
         const parentId = new MutableSubscribableField<string>({field: treeDataWithoutId.parentId})
@@ -45,7 +45,7 @@ export class TreeDeserializer {
         {treeData, treeId}: {treeData: ITreeData, treeId: string}
     ): ISyncableMutableSubscribableTree {
         const contentId = new MutableSubscribableField<string>({field: treeData.contentId})
-        /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+        /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
          // TODO: figure out why DI puts in a bad IUpdatesCallback!
         */
         const parentId = new MutableSubscribableField<string>({field: treeData.parentId})

@@ -171,7 +171,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 sigmaNode.receiveNewContentUserData(data)
                 // this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
                 //     treeId: sigmaId,
-                //     contentUserProficiency: data.proficiency
+                //     contentUserProficiency: data.sampleContentUser1Proficiency
                 // })
                 break;
             default:

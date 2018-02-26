@@ -16,7 +16,7 @@ import {SyncableMutableSubscribableContentUser} from '../../objects/contentUser/
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {
     sampleContentUser1, sampleContentUserData1,
-    sampleContentUserId1
+    sampleContentUser1Id
 } from '../../objects/contentUser/ContentUserHelpers';
 
 myContainerLoadAllModules()
@@ -29,21 +29,21 @@ test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB prop
     //
     // const contentUserData: IContentUserData = {
     //     id,
-    //     overdue: overdueVal,
+    //     sampleContentUser1Overdue: overdueVal,
     //     lastEstimatedStrength: lastRecordedStrengthVal,
-    //     proficiency: proficiencyVal,
-    //     timer: timerVal
+    //     sampleContentUser1Proficiency: proficiencyVal,
+    //     sampleContentUser1Timer: timerVal
     // }
 
-    // const overdue = new MutableSubscribableField<boolean>({field: overdueVal})
+    // const sampleContentUser1Overdue = new MutableSubscribableField<boolean>({field: overdueVal})
     // const lastEstimatedStrength = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
-    // const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    // const timer = new MutableSubscribableField<number>({field: timerVal})
+    // const sampleContentUser1Proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
+    // const sampleContentUser1Timer = new MutableSubscribableField<number>({field: timerVal})
     // const expectedContentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
-    //     {updatesCallbacks: [], id, overdue, lastEstimatedStrength, proficiency, timer}
+    //     {updatesCallbacks: [], id, sampleContentUser1Overdue, lastEstimatedStrength, sampleContentUser1Proficiency, sampleContentUser1Timer}
     // )
     const deserializedContentUser: IMutableSubscribableContentUser
-        = ContentUserDeserializer.deserialize({id: sampleContentUserId1, contentUserData: sampleContentUserData1})
+        = ContentUserDeserializer.deserialize({id: sampleContentUser1Id, contentUserData: sampleContentUserData1})
     expect(deserializedContentUser).to.deep.equal(sampleContentUser1)
     t.pass()
 })

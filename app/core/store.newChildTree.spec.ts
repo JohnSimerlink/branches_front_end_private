@@ -98,8 +98,13 @@ test('store create new child tree should call correct firebaseRefs with correct 
         question,
         answer,
         title: null,
-        parentX: 5,
-        parentY: 7,
+        parentLocation: {
+            point: {
+                x: 5,
+                y: 7,
+            },
+            level: 2
+        }
     }
     const contentId = createContentId(newContentData)
     const contentLocationRef = mockContentRef.child(contentId)

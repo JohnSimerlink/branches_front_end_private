@@ -35,7 +35,7 @@ test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', 
     const treeId = '092384'
 
     const contentId = new MutableSubscribableField<string>({field: contentIdVal})
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const parentId = new MutableSubscribableField<string>({field: parentIdVal})

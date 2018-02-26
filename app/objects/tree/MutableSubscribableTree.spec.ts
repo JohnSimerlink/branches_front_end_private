@@ -18,7 +18,7 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
     + ' after startPublishing has been called', (t) => {
     
     const contentId = new MutableSubscribableField<string>()
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const parentId = new MutableSubscribableField<string>()
@@ -43,7 +43,7 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
     + ' before startPublishing has been called', (t) => {
     
     const contentId = new MutableSubscribableField<string>()
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const parentId = new MutableSubscribableField<string>()

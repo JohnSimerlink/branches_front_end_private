@@ -8,7 +8,7 @@ import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames,
-    FieldMutationTypes, IContentUserData, IDatedMutation, IProppedDatedMutation, ISubscribableMutableField, timestamp,
+    FieldMutationTypes, IContentUserData, IDatedMutation, IProppedDatedMutation, IMutableSubscribableField, timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
@@ -16,7 +16,7 @@ import {myContainerLoadAllModules} from '../../../inversify.config';
 
 myContainerLoadAllModules()
 test('OverdueListener:::.val() should work after constructor', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
@@ -27,15 +27,15 @@ test('OverdueListener:::.val() should work after constructor', (t) => {
     const timerVal = 1003
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number>
+    const lastRecordedStrength: IMutableSubscribableField<number>
         = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
-    const overdue: ISubscribableMutableField<boolean>
+    const overdue: IMutableSubscribableField<boolean>
         = new MutableSubscribableField<boolean>({field: overdueVal})
-    const proficiency: ISubscribableMutableField<PROFICIENCIES>
+    const proficiency: IMutableSubscribableField<PROFICIENCIES>
         = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>({field: timerVal})
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -62,7 +62,7 @@ test('OverdueListener:::.val() should work after constructor', (t) => {
 })
 test('OverdueListener:::.val() should give appropiate value ' +
     'after ADD MUTATION SET lastEstimatedStrength', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
@@ -74,15 +74,15 @@ test('OverdueListener:::.val() should give appropiate value ' +
     const timerVal = 1003
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number>
+    const lastRecordedStrength: IMutableSubscribableField<number>
         = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
-    const overdue: ISubscribableMutableField<boolean>
+    const overdue: IMutableSubscribableField<boolean>
         = new MutableSubscribableField<boolean>({field: overdueVal})
-    const proficiency: ISubscribableMutableField<PROFICIENCIES>
+    const proficiency: IMutableSubscribableField<PROFICIENCIES>
         = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>({field: timerVal})
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -116,7 +116,7 @@ test('OverdueListener:::.val() should give appropiate value ' +
 })
 
 test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET overdueVal', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
@@ -127,15 +127,15 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
     const timerVal = 1003
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number>
+    const lastRecordedStrength: IMutableSubscribableField<number>
         = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
-    const overdue: ISubscribableMutableField<boolean>
+    const overdue: IMutableSubscribableField<boolean>
         = new MutableSubscribableField<boolean>({field: overdueVal})
-    const proficiency: ISubscribableMutableField<PROFICIENCIES>
+    const proficiency: IMutableSubscribableField<PROFICIENCIES>
         = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>({field: timerVal})
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUserId = 'abc_123'
 
@@ -171,8 +171,8 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
 })
 
 test('OverdueListener:::.val() should give appropiate value' +
-    ' after ADD MUTATION SET proficiency', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    ' after ADD MUTATION SET sampleContentUser1Proficiency', (t) => {
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
@@ -184,15 +184,15 @@ test('OverdueListener:::.val() should give appropiate value' +
     const timerVal = 1003
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number>
+    const lastRecordedStrength: IMutableSubscribableField<number>
         = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
-    const overdue: ISubscribableMutableField<boolean>
+    const overdue: IMutableSubscribableField<boolean>
         = new MutableSubscribableField<boolean>({field: overdueVal})
-    const proficiency: ISubscribableMutableField<PROFICIENCIES>
+    const proficiency: IMutableSubscribableField<PROFICIENCIES>
         = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>({field: timerVal})
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -225,8 +225,8 @@ test('OverdueListener:::.val() should give appropiate value' +
     t.pass()
 })
 
-test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET timer', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET sampleContentUser1Timer', (t) => {
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
@@ -237,15 +237,15 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
     const newTimerVal = 1004
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number>
+    const lastRecordedStrength: IMutableSubscribableField<number>
         = new MutableSubscribableField<number>({field: lastRecordedStrengthVal})
-    const overdue: ISubscribableMutableField<boolean>
+    const overdue: IMutableSubscribableField<boolean>
         = new MutableSubscribableField<boolean>({field: overdueVal})
-    const proficiency: ISubscribableMutableField<PROFICIENCIES>
+    const proficiency: IMutableSubscribableField<PROFICIENCIES>
         = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: timerVal})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>({field: timerVal})
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -281,20 +281,20 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
 test('OverdueListener:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
     const contentUserId = 'abc_123'
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number>
+    const lastRecordedStrength: IMutableSubscribableField<number>
         = new MutableSubscribableField<number>({field: 60})
-    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>({field: false})
-    const proficiency: ISubscribableMutableField<PROFICIENCIES>
+    const overdue: IMutableSubscribableField<boolean> = new MutableSubscribableField<boolean>({field: false})
+    const proficiency: IMutableSubscribableField<PROFICIENCIES>
         = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>({field: 39})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>({field: 39})
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -330,12 +330,12 @@ test('OverdueListener:::a mutation in one of the subscribable properties' +
     const contentUserId = 'abc_123'
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
-    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>()
-    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const lastRecordedStrength: IMutableSubscribableField<number> = new MutableSubscribableField<number>()
+    const overdue: IMutableSubscribableField<boolean> = new MutableSubscribableField<boolean>()
+    const proficiency: IMutableSubscribableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>()
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,
@@ -366,12 +366,12 @@ test('OverdueListener:::addMutation ' +
     const contentUserId = 'abc_123'
     const lastInteractionTimeVal = Date.now()
     const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastRecordedStrength: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
-    const overdue: ISubscribableMutableField<boolean> = new MutableSubscribableField<boolean>()
-    const proficiency: ISubscribableMutableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
-    const timer: ISubscribableMutableField<number> = new MutableSubscribableField<number>()
-    const lastInteractionTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    const lastRecordedStrength: IMutableSubscribableField<number> = new MutableSubscribableField<number>()
+    const overdue: IMutableSubscribableField<boolean> = new MutableSubscribableField<boolean>()
+    const proficiency: IMutableSubscribableField<PROFICIENCIES> = new MutableSubscribableField<PROFICIENCIES>()
+    const timer: IMutableSubscribableField<number> = new MutableSubscribableField<number>()
+    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
 
     const contentUser = new MutableSubscribableContentUser({
         id: contentUserId,

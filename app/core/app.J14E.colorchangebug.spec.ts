@@ -24,7 +24,7 @@ import BranchesStore, {MUTATION_NAMES} from './store';
 import {Store} from 'vuex';
 import {log} from './log'
 import {MockFirebase} from 'firebase-mock'
-test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with should change when you click on a different proficiency/color in the confidence interval question check', async (t) => {
+test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1 interaction with should change when you click on a different sampleContentUser1Proficiency/color in the confidence interval question check', async (t) => {
     //
     // /* ===== create a sample tree, treeLocation, contentItem, contentUserItem ======= */
     // const contentIdVal = '5262'
@@ -83,16 +83,16 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     //
     // const sampleContentUserDataFromDB1: IContentUserDataFromDB = {
     //     id: contentUserId,
-    //     overdue: {
+    //     sampleContentUser1Overdue: {
     //         val: overdueVal
     //     },
     //     lastEstimatedStrength: {
     //         val: lastRecordedStrengthVal
     //     },
-    //     proficiency: {
+    //     sampleContentUser1Proficiency: {
     //         val: proficiencyVal
     //     },
-    //     timer: {
+    //     sampleContentUser1Timer: {
     //         val: timerVal
     //     }
     // }
@@ -152,13 +152,13 @@ test('Bug:J14E: proficiency/color on an item that you have >=1 interaction with 
     // // trigger a UI mutation (e.g. proficiencyClicked({contentItem, userId})
     // const interaction: IAddContentInteractionMutationArgs = {
     //     contentUserId,
-    //     proficiency: PROFICIENCIES.FOUR,
+    //     sampleContentUser1Proficiency: PROFICIENCIES.FOUR,
     //     timestamp: Date.now()
     // }
     // store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, interaction)
     //
     // const sigmaNode = graph.nodes(sigmaId)
-    // expect(sigmaNode.proficiency).to.deep.equal(newProficiencyVal)
+    // expect(sigmaNode.sampleContentUser1Proficiency).to.deep.equal(newProficiencyVal)
     // // verify that the sigmaNode is changed
     t.pass()
 })

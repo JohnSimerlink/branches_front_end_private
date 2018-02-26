@@ -33,7 +33,7 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
+    IMutableSubscribableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation,
     ITooltipOpener, ITooltipRenderer, ITree,
     ITreeCreator,
@@ -640,16 +640,16 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
     bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
     bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
-    bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(MutableSubscribableField)
+    bind<IMutableSubscribableField<boolean>>(TYPES.IMutableSubscribableBoolean).to(MutableSubscribableField)
     bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs)
     bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
-    bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(MutableSubscribableField)
-    bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(MutableSubscribableField)
-    bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
+    bind<IMutableSubscribableField<number>>(TYPES.IMutableSubscribableNumber).to(MutableSubscribableField)
+    bind<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString).to(MutableSubscribableField)
+    bind<IMutableSubscribableField<PROFICIENCIES>>(TYPES.IMutableSubscribableProficiency)
         .to(MutableSubscribableField)
-    bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMutableContentType)
+    bind<IMutableSubscribableField<CONTENT_TYPES>>(TYPES.IMutableSubscribableContentType)
         .to(MutableSubscribableField)
-    bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
+    bind<IMutableSubscribableField<IProficiencyStats>>(TYPES.IMutableSubscribableProficiencyStats)
         .to(MutableSubscribableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)

@@ -5,7 +5,7 @@ import {log} from '../../../app/core/log'
 import {
     ISubscribableTreeLocation, IMutableSubscribablePoint,
     ITreeLocationData,
-    IValUpdates,
+    IValUpdates, IMutableSubscribableField,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
@@ -16,18 +16,21 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
     // this could prove useful if we store the objects (with their updatesCallbacks callbacks array) in local storage
     private publishing = false
     public point: IMutableSubscribablePoint
+    public level: IMutableSubscribableField<number>
 
     // TODO: should the below three objects be private?
     public val(): ITreeLocationData {
         return {
-            point: this.point.val()
+            point: this.point.val(),
+            level: this.level.val(),
         }
     }
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
-        updatesCallbacks, point,
+        updatesCallbacks, point, level
     }: SubscribableTreeLocationArgs) {
         super({updatesCallbacks})
         this.point = point
+        this.level = level
     }
     // TODO: make IValUpdates a generic that takes for example ITreeLocationData
     protected callbackArguments(): IValUpdates {
@@ -40,6 +43,7 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
         this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.point.onUpdate(boundCallCallbacks)
+        this.level.onUpdate(boundCallCallbacks)
     }
 }
 
@@ -47,4 +51,5 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
 export class SubscribableTreeLocationArgs {
     @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint
+    @inject(TYPES.IMutableSubscribableNumber) public level: IMutableSubscribableField<number>
 }

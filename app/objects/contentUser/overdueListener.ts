@@ -3,7 +3,7 @@ import {TYPES} from '../types';
 import {
     FieldMutationTypes, IDatedMutation,
     IOverdueListener, IOverdueListenerCore,
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     timestamp
 } from '../interfaces';
 import Timer = NodeJS.Timer;
@@ -31,8 +31,8 @@ export class OverdueListenerArgs {
 
 @injectable()
 export class OverdueListenerCore  implements IOverdueListenerCore {
-    private nextReviewTime: ISubscribableMutableField<timestamp>
-    private overdue: ISubscribableMutableField<boolean>
+    private nextReviewTime: IMutableSubscribableField<timestamp>
+    private overdue: IMutableSubscribableField<boolean>
     private timeoutId: number
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.OverdueListenerArgs) {
@@ -83,9 +83,9 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
 }
 @injectable()
 export class OverdueListenerCoreArgs {
-    @inject(TYPES.ISubscribableMutableNumber) public nextReviewTime:
-        ISubscribableMutableField<timestamp>
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue:
-        ISubscribableMutableField<boolean>
+    @inject(TYPES.IMutableSubscribableNumber) public nextReviewTime:
+        IMutableSubscribableField<timestamp>
+    @inject(TYPES.IMutableSubscribableBoolean) public overdue:
+        IMutableSubscribableField<boolean>
     @inject(TYPES.Number) public timeoutId: number
 }

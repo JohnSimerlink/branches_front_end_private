@@ -5,7 +5,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     ISubscribableMutableStringSet,
 } from '../interfaces';
 import {TYPES} from '../types';
@@ -14,8 +14,8 @@ import {SubscribableTree} from './SubscribableTree';
 myContainerLoadAllModules()
 test('SubscribableTree:::constructor should set all the subscribable properties', (t) => {
     
-    const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
-    const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
+    const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
+    const parentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
     const TREE_ID = 'efa123'
     const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -27,8 +27,8 @@ test('SubscribableTree:::constructor should set all the subscribable properties'
 })
 test('SubscribableTree:::.val() should display the value of the object', (t) => {
     
-    const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
-    const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
+    const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
+    const parentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
     const TREE_ID = 'efa123'
     const expectedVal = {
@@ -42,8 +42,8 @@ test('SubscribableTree:::.val() should display the value of the object', (t) => 
 })
 test('SubscribableTree:::.getId() should display the id of the object', (t) => {
     
-    const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
-    const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
+    const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
+    const parentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
     const TREE_ID = 'efa123'
     const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})
@@ -53,8 +53,8 @@ test('SubscribableTree:::.getId() should display the id of the object', (t) => {
 test('SubscribableTree:::startPublishing() should call the onUpdate' +
     ' methods of all member Subscribable properties', (t) => {
     
-    const contentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
-    const parentId = myContainer.get<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString)
+    const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
+    const parentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
     const children = myContainer.get<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet)
     const TREE_ID = 'efa123'
     const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children})

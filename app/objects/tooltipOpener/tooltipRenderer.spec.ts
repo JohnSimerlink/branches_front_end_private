@@ -42,9 +42,9 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //     const contentUserId = getContentUserId({contentId, userId})
 //     const contentUserData: IContentUserData = {
 //         id: contentUserId,
-//         overdue: false,
-//         timer: 30,
-//         proficiency: PROFICIENCIES.ONE,
+//         sampleContentUser1Overdue: false,
+//         sampleContentUser1Timer: 30,
+//         sampleContentUser1Proficiency: PROFICIENCIES.ONE,
 //         lastEstimatedStrength: 40,
 //     }
 //     const content = {
@@ -68,8 +68,8 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //         size: 10,
 //         colorSlices: SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats),
 //         proficiencyStats,
-//         proficiency: PROFICIENCIES.ONE,
-//         overdue: false,
+//         sampleContentUser1Proficiency: PROFICIENCIES.ONE,
+//         sampleContentUser1Overdue: false,
 //     }
 //     const contentString = JSON.stringify(node.content)
 //     const contentUserDataString = JSON.stringify(node.contentUserData)

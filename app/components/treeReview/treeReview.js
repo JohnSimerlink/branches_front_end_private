@@ -87,7 +87,7 @@ export default {
             me.flipped = false
         },
         updateProficiency(item, proficiency) {
-            console.log('proficiency updated', item, proficiency)
+            console.log('sampleContentUser1Proficiency updated', item, proficiency)
         },
         updateProficiencyForAllItems(){
             const me = this
@@ -103,7 +103,7 @@ export default {
         },
         nextQuestion(){
             this.items.forEach(item => {
-                item.saveProficiency() // update the item's proficiency in the db. right now its just updated locally
+                item.saveProficiency() // update the item's sampleContentUser1Proficiency in the db. right now its just updated locally
                 item.recalculateProficiencyAggregationForTreeChain()
                 item.saveTimer()
             })

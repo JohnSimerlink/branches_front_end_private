@@ -13,7 +13,7 @@ import {
     IProppedDatedMutation, ISubscribableContentStore,
     ISubscribableContentUserStore,
     ISubscribableGlobalStore,
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     ISubscribableMutableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
     TreePropertyNames
 } from '../interfaces';
