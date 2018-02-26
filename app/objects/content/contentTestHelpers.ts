@@ -15,4 +15,7 @@ export const sampleContentDataFromDB1: IContentDataFromDB = {
     type: {
         val: CONTENT_TYPES.FACT,
     },
+    title: {
+        val: null,
+    }
 }

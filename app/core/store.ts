@@ -273,15 +273,17 @@ const mutations = {
             parentTreeId, timestamp, contentType, question, answer, title, parentLocation,
         }: INewChildTreeMutationArgs
     ): id {
-        log('NEW CHILD TREE CALLED. parentX and parentY are ', parentLocation.point.x, parentLocation.point.y)
+        log('J14J NEW_CHILD_TREE called')
+        // log('NEW CHILD TREE CALLED. parentX and parentY are ', parentLocation.point.x, parentLocation.point.y)
         // TODO: UNIT / INT TEST
         const store = getters.getStore()
         /**
          * Create Content
          */
-        const contentId = store.commit(MUTATION_NAMES.CREATE_CONTENT, {
+        const contentId /*: id */ = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
             question, answer, title, type: contentType
         })
+        log('J14J contentId ', contentId)
         const contentIdString = contentId as any as id // TODO: Why do I have to do this casting?
 
         /**
@@ -332,14 +334,16 @@ const mutations = {
         // TODO: a second mutation that sets the parentId of the child? or is that handled in another mutation?
     },
     [MUTATION_NAMES.CREATE_CONTENT](state: IState, {
-        type, question, answer, title
+        type, question,
+        answer, title
     }: IContentDataEither): id {
+        log('J14J Create Content called')
         const createMutation: ICreateMutation<IContentData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.CONTENT,
             data: {type, question, answer, title},
         }
-        const contentId = state.globalDataStore.addMutation(createMutation)
+        const contentId: id = state.globalDataStore.addMutation(createMutation)
         return contentId
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
