@@ -133,7 +133,7 @@ export const TYPES = {
     ITree: Symbol('ITree'),
     ITree2ComponentCreator: Symbol('ITree2ComponentCreator'),
     ITree3Creator: Symbol('ITreeCreator'),
-    ITreeCreatorClone: Symbol('ITreeCreator'),
+    // ITreeCreatorClone: Symbol('ITreeCreator'),
     ITreeComponentCreator: Symbol('ITreeComponentCreator'),
     ITreeComponentCreator2: Symbol('ITreeComponentCreator2'),
     ITreeLoader: Symbol('ITreeLoader'),
