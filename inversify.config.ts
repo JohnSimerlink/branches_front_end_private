@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 import {log} from './app/core/log'
 import './other_imports/sigmaConfigurations'
 import sigma from './other_imports/sigma/sigma.core.js'
-import {Container, ContainerModule, interfaces} from 'inversify'
+import {Container, ContainerModule, injectable, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {MockFirebase} from 'firebase-mock'
 import {App, AppArgs} from './app/core/app';
@@ -44,7 +44,7 @@ import {
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
-    IAuthListener, IGlobalDataStoreBranchesStoreSyncer,
+    IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -167,7 +167,7 @@ import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableS
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
 // import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/tree2Component/treeComponent';
 import {default as BranchesStore, BranchesStoreArgs} from './app/core/store';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
+// import {KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
 import {
     TreeCreator,
     TreeCreatorArgs
@@ -223,7 +223,7 @@ let Vuex = require('vuex').default
 if (!Vuex) {
     Vuex = require('vuex')
 }
-import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
+import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
@@ -245,6 +245,8 @@ import {
     GlobalDataStoreBranchesStoreSyncer,
     GlobalDataStoreBranchesStoreSyncerArgs
 } from "./app/core/globalDataStoreBranchesStoreSyncer";
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
+
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -709,17 +711,24 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     // bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
     // bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 
-    bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
-        .whenInjectedInto(KnawledgeMapCreatorArgs)
-    bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
+    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
+    // bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
+    //     .whenInjectedInto(KnawledgeMapCreatorArgs)
+    const knawledgeMapCreatorMock = {
+        create() {}
+    }
+    // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).toConstantValue(knawledgeMapCreatorMock)
+    // @injectable()
+    // class KnawledgeMapCreator implements  IKnawledgeMapCreator {
+    //     public create() {}
+    // }
+    // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
+    bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
     bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
     bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
-
-    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
-    bind<KnawledgeMapCreator>(TYPES.KnawledgeMapCreator).to(KnawledgeMapCreator)
 
 })
 // app

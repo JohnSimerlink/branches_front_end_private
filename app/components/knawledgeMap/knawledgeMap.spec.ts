@@ -18,7 +18,7 @@ import {
     ITreeLocationLoader, IKnawledgeMapCreator, ITree, IOneToManyMap
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMap';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMapNew';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
