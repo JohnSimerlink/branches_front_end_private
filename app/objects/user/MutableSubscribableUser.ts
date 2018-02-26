@@ -18,9 +18,10 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
     constructor(@inject(TYPES.SubscribableUserArgs) {
         updatesCallbacks,
         membershipExpirationDate,
-        everActivatedMembership
+        everActivatedMembership,
+        points,
     }: SubscribableUserArgs) {
-        super({updatesCallbacks, membershipExpirationDate, everActivatedMembership})
+        super({updatesCallbacks, membershipExpirationDate, everActivatedMembership, points})
     }
 
     public addMutation(mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>
