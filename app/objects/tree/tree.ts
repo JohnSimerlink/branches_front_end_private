@@ -90,27 +90,27 @@
 //     // public userProficiencyStatsMap;
 //     // public userAggregationTimerMap;
 //     // public mutations;
-//     public treeData: ITreeData;
+//     public treeDataFromDB: ITreeData;
 //     public userData: ITreeUserData;
 //
 //     constructor({createInDB,
-//                     treeData,
+//                     treeDataFromDB,
 //                     userData = blankUserDataObject
 //     }) {
 //         this.leaves = []
 //
-//         this.treeData = treeData
+//         this.treeDataFromDB = treeDataFromDB
 //         this.userData = userData
 //         if (!createInDB) {
 //             return
 //         }
 //
-//         const identificationInfo = {contentId: this.treeData.contentId, parentId : this.treeData.parentId}
+//         const identificationInfo = {contentId: this.treeDataFromDB.contentId, parentId : this.treeDataFromDB.parentId}
 //         this.id = md5(JSON.stringify(identificationInfo))
 //
 //         const updates = {
 //             id: this.id,
-//             treeData,
+//             treeDataFromDB,
 //             userData,
 //         }
 //         const lookupKey = 'trees/' + this.id
@@ -120,10 +120,10 @@
 //         return this.getChildIds().length > 0
 //     }
 //     public getChildIds() {
-//         if (!this.treeData.children) {
+//         if (!this.treeDataFromDB.children) {
 //            return []
 //         }
-//         return Object.keys(this.treeData.children)
+//         return Object.keys(this.treeDataFromDB.children)
 //             .filter(childKey => { // this filter is necessary to remove undefined keys
 //             return childKey
 //         })
@@ -148,15 +148,15 @@
 //         this.updatePrimaryParentTreeContentURI()
 //     }
 //     private async _addChildLocal(treeId) {
-//         this.treeData.children = this.treeData.children || {}
-//         this.treeData.children[treeId] = true
+//         this.treeDataFromDB.children = this.treeDataFromDB.children || {}
+//         this.treeDataFromDB.children[treeId] = true
 //     }
 //     private async _addChildDB() {
 //         const updates = {
-//             children: this.treeData.children,
+//             children: this.treeDataFromDB.children,
 //         }
 //         try {
-//             const lookupKey = 'trees/' + this.id + '/treeData/'
+//             const lookupKey = 'trees/' + this.id + '/treeDataFromDB/'
 //             await firebase.database().ref(lookupKey).update(updates)
 //         } catch (err) {
 //             error(' error for add firebase call', err)
@@ -165,7 +165,7 @@
 //
 //     public async removeAndDisconnectFromParent() {
 //         const me = this
-//         const parentTree = await Trees.get(this.treeData.parentId)
+//         const parentTree = await Trees.get(this.treeDataFromDB.parentId)
 //         parentTree.removeChild(me.id)
 //         this.remove()
 //
@@ -173,11 +173,11 @@
 //     public remove() {
 //         log(this.id, 'remove called!')
 //         const me = this
-//         ContentItems.remove(this.treeData.contentId)
+//         ContentItems.remove(this.treeDataFromDB.contentId)
 //         Trees.remove(this.id)
-//         log(this.id, 'remove about to be called for', JSON.stringify(this.treeData.children))
-//         const removeChildPromises = this.treeData.children ?
-//             Object.keys(this.treeData.children)
+//         log(this.id, 'remove about to be called for', JSON.stringify(this.treeDataFromDB.children))
+//         const removeChildPromises = this.treeDataFromDB.children ?
+//             Object.keys(this.treeDataFromDB.children)
 //             .sourceMap(Trees.get)
 //             .sourceMap(async (childPromise: Promise<Tree>) => {
 //                 const child: Tree = await childPromise
@@ -189,20 +189,20 @@
 //     }
 //
 //     public removeChild(childId) {
-//         if (!this.treeData.children || !this.treeData.children[childId]) {
+//         if (!this.treeDataFromDB.children || !this.treeDataFromDB.children[childId]) {
 //             return
 //         }
-//         delete this.treeData.children[childId]
+//         delete this.treeDataFromDB.children[childId]
 //
-//         const updates = {children: this.treeData.children}
-//         const lookupKey = 'trees/' + this.id + '/treeData/'
+//         const updates = {children: this.treeDataFromDB.children}
+//         const lookupKey = 'trees/' + this.id + '/treeDataFromDB/'
 //         firebase.database().ref(lookupKey).update(updates)
 //     }
 //
 //     public changeParent(newParentId) {
-//         this.treeData.parentId = newParentId
+//         this.treeDataFromDB.parentId = newParentId
 //         const updates = {parentId: newParentId}
-//         const lookupKey = 'trees/' + this.id + '/treeData/'
+//         const lookupKey = 'trees/' + this.id + '/treeDataFromDB/'
 //         firebase.database().ref(lookupKey).update(updates)
 //
 //         this.updatePrimaryParentTreeContentURI()
@@ -212,9 +212,9 @@
 //     // async sync
 //     public async updatePrimaryParentTreeContentURI() {
 //         const [parentTree, contentItem] = await Promise.all(
-//             [Trees.get(this.treeData.parentId), ContentItems.get(this.treeData.contentId)]
+//             [Trees.get(this.treeDataFromDB.parentId), ContentItems.get(this.treeDataFromDB.contentId)]
 //         )
-//         const parentTreeContentItem = await ContentItems.get(parentTree.treeData.contentId)
+//         const parentTreeContentItem = await ContentItems.get(parentTree.treeDataFromDB.contentId)
 //         // return ContentItems.get(parentTree.contentId).then(parentTreeContentItem => {
 //         contentItem.set('primaryParentTreeContentURI', parentTreeContentItem.uri)
 //         contentItem.calculateURIBasedOnParentTreeContentURI()
@@ -232,7 +232,7 @@
 //         // const isLeaf = await this.isLeaf()
 //         if (await this.isLeaf()) {
 //             log(this.id, 'clearChildrenInteractions THIS IS LEAF')
-//             user.addMutation('clearInteractions', {timestamp: Date.now(), contentId: this.treeData.contentId})
+//             user.addMutation('clearInteractions', {timestamp: Date.now(), contentId: this.treeDataFromDB.contentId})
 //         } else {
 //             this.getChildTreePromises()
 //                 .sourceMap(async treePromise => {
@@ -285,11 +285,11 @@
 //      * Available content types currently header and fact
 //      */
 //     public changeContent(contentId) {
-//         this.treeData.contentId = contentId;
+//         this.treeDataFromDB.contentId = contentId;
 //         const updates = {
 //             contentId,
 //         }
-//         const lookupKey = 'trees/' + this.id + '/treeData/'
+//         const lookupKey = 'trees/' + this.id + '/treeDataFromDB/'
 //
 //         firebase.database().ref(lookupKey).update(updates)
 //     }
@@ -312,22 +312,22 @@
 //         this[prop] = val
 //     }
 //     public setTreeData(prop, val) {
-//         if (this.treeData[prop] === val) {
+//         if (this.treeDataFromDB[prop] === val) {
 //             return;
 //         }
 //
-//         this.treeData[prop] = val
+//         this.treeDataFromDB[prop] = val
 //         const updates = {}
 //         updates[prop] = val
 //         // this.treeRef.update(updates)
-//         const lookupKey = 'trees/' + this.id + '/treeData/'
+//         const lookupKey = 'trees/' + this.id + '/treeDataFromDB/'
 //         firebase.database().ref(lookupKey).update(updates)
 //     }
 //     public setLocal(prop, val) {
 //         this[prop] = val
 //     }
 //     public addToX({recursion, deltaX}= {recursion: false, deltaX: 0}) {
-//        const newX = this.treeData.x + deltaX
+//        const newX = this.treeDataFromDB.x + deltaX
 //        this.setTreeData('x', newX)
 //
 //        syncGraphWithNode(this.id)
@@ -341,7 +341,7 @@
 //         })
 //     }
 //     public addToY({recursion, deltaY}= {recursion: false, deltaY: 0}) {
-//         const newY = this.treeData.y + deltaY
+//         const newY = this.treeDataFromDB.y + deltaY
 //         this.setTreeData('y', newY)
 //
 //         syncGraphWithNode(this.id)
@@ -353,26 +353,26 @@
 //     }
 //
 //     public async isLeaf() {
-//         const content = await ContentItems.get(this.treeData.contentId)
+//         const content = await ContentItems.get(this.treeDataFromDB.contentId)
 //         return content.isLeafType()
 //     }
 //     public async calculateProficiencyAggregationForLeaf() {
 //         let proficiencyStats = {...blankProficiencyStats}
-//         const contentItem = await ContentItems.get(this.treeData.contentId)
+//         const contentItem = await ContentItems.get(this.treeDataFromDB.contentId)
 //         proficiencyStats = incrementProficiencyStatsCategory(proficiencyStats, contentItem.sampleContentUser1Proficiency)
 //         return proficiencyStats
 //     }
 //     public async calculateProficiencyAggregationForNotLeaf() {
 //         let proficiencyStats = {...blankProficiencyStats}
-//         if (!this.treeData.children || !Object.keys(this.treeData.children).length) { return proficiencyStats }
+//         if (!this.treeDataFromDB.children || !Object.keys(this.treeDataFromDB.children).length) { return proficiencyStats }
 //         const children = await Promise.all(
-//             Object.keys(this.treeData.children)
+//             Object.keys(this.treeDataFromDB.children)
 //             .sourceMap(Trees.get)
 //             .sourceMap(async childPromise => await childPromise),
 //         )
 //
 //         children.forEach(child => {
-//             proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.treeData.proficiencyStats)
+//             proficiencyStats = addObjToProficiencyStats(proficiencyStats, child.treeDataFromDB.proficiencyStats)
 //         })
 //         return proficiencyStats
 //     }
@@ -388,13 +388,13 @@
 //         store.commit('syncGraphWithNode', this.id)
 //
 //         // PubSub.publish('syncGraphWithNode', this.id)
-//         if (!this.treeData.parentId) { return }
-//         const parent = await Trees.get(this.treeData.parentId)
+//         if (!this.treeDataFromDB.parentId) { return }
+//         const parent = await Trees.get(this.treeDataFromDB.parentId)
 //         return parent.recalculateProficiencyAggregation(addChangeToDB)
 //     }
 //
 //     public async calculateAggregationTimerForLeaf() {
-//         const contentItem = await ContentItems.get(this.treeData.contentId)
+//         const contentItem = await ContentItems.get(this.treeDataFromDB.contentId)
 //         return contentItem.sampleContentUser1Timer
 //     }
 //     public async calculateAggregationTimerForNotLeaf() {
@@ -420,19 +420,19 @@
 //         }
 //         this.setAggregationTimer(sampleContentUser1Timer, addChangeToDB)
 //
-//         if (!this.treeData.parentId) { return }
-//         const parent = await Trees.get(this.treeData.parentId)
+//         if (!this.treeDataFromDB.parentId) { return }
+//         const parent = await Trees.get(this.treeDataFromDB.parentId)
 //         return parent.calculateAggregationTimer()
 //     }
 //
 //     public async calculateNumOverdueAggregationLeaf() {
-//         const contentItem = await ContentItems.get(this.treeData.contentId)
+//         const contentItem = await ContentItems.get(this.treeDataFromDB.contentId)
 //         const sampleContentUser1Overdue = contentItem.sampleContentUser1Overdue ? 1 : 0
 //         return sampleContentUser1Overdue
 //     }
 //     public async calculateNumOverdueAggregationNotLeaf() {
 //         const children = await this.getChildTrees()// await Promise.all(
-//         const numOverdue = children.reduce((sum, child) => sum + (+child.treeData.numOverdue || 0), 0)
+//         const numOverdue = children.reduce((sum, child) => sum + (+child.treeDataFromDB.numOverdue || 0), 0)
 //
 //         return numOverdue
 //         // TODO start storing numOverdue in db - the way we do with the other aggregations
@@ -451,8 +451,8 @@
 //         }
 //         this.setNumOverdue(numOverdue, addChangeToDB)
 //
-//         if (!this.treeData.parentId) { return }
-//         const parent = await Trees.get(this.treeData.parentId)
+//         if (!this.treeDataFromDB.parentId) { return }
+//         const parent = await Trees.get(this.treeDataFromDB.parentId)
 //         return parent.calculateNumOverdueAggregation(addChangeToDB)
 //     }
 //     // returns a list of contentItems that are all on leaf nodes
@@ -468,7 +468,7 @@
 //     public async recalculateLeavesLeaf() {
 //         let leaves = []
 //         try {
-//             if (this.treeData.contentId) {
+//             if (this.treeDataFromDB.contentId) {
 //                 leaves = [await this.getContentItem()]
 //             }
 //         } catch (err) {
@@ -526,16 +526,16 @@
 //         this.leaves.forEach(leaf => {
 //             // log(this.id, " has a leaf ", leaf.id, " with strength of ", leaf.lastEstimatedStrength.value)
 //         })
-//         if (this.treeData.parentId) {
-//             const parent = await Trees.get(this.treeData.parentId)
+//         if (this.treeDataFromDB.parentId) {
+//             const parent = await Trees.get(this.treeDataFromDB.parentId)
 //             parent.sortLeavesByStudiedAndStrength()
 //         }
 //     }
 //     public async getContentItem() {
-//         if (!this.treeData.contentId) {
+//         if (!this.treeDataFromDB.contentId) {
 //             return null
 //         }
-//         const contentItem = await ContentItems.get(this.treeData.contentId)
+//         const contentItem = await ContentItems.get(this.treeDataFromDB.contentId)
 //         return contentItem
 //     }
 //     public areItemsToStudy() {
@@ -568,12 +568,12 @@
 //     //    switch (mutation.type) {
 //     //        case TreeMutationTypes.ADD_CHILD: {
 //     //            const leafId = mutation.data.leafId
-//     //            const leafAlreadyExists = this.treeData.children[leafId]
+//     //            const leafAlreadyExists = this.treeDataFromDB.children[leafId]
 //     //            return leafAlreadyExists
 //     //        }
 //     //        case TreeMutationTypes.REMOVE_CHILD: {
 //     //            const leafId = mutation.data.leafId
-//     //            const leafExists = this.treeData.children[leafId]
+//     //            const leafExists = this.treeDataFromDB.children[leafId]
 //     //            return !leafExists
 //     //        }
 //     //     }

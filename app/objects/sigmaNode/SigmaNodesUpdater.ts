@@ -73,9 +73,9 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
             case ObjectDataTypes.CONTENT_DATA: {
                 const contentId = update.id
                 sigmaIds = this.getSigmaIdsForContentId(contentId)
-                /* cache the content data because the treeData for this contentItem may not be loaded yet,
+                /* cache the content data because the treeDataFromDB for this contentItem may not be loaded yet,
                  so no sigmaIds may be returned,
-                  meaning once the treeData is loaded we need to be able to load the contentData that was cached here
+                  meaning once the treeDataFromDB is loaded we need to be able to load the contentData that was cached here
                  */
                 const contentData: IContentData = update.val
                 this.contentIdContentMap[contentId] = contentData
@@ -85,9 +85,9 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})
                 const contentUserData: IContentUserData = update.val
-                /* cache the content user data because the treeData for this contentuserItem may not be loaded yet,
+                /* cache the content user data because the treeDataFromDB for this contentuserItem may not be loaded yet,
                  so no sigmaIds may be returned,
-                  meaning once the treeData is loaded
+                  meaning once the treeDataFromDB is loaded
                    we need to be able to load the contentUserData that was cached here
                  */
                 this.contentIdContentUserMap[contentId] = contentUserData
@@ -123,7 +123,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 sigmaNode.receiveNewTreeData(data)
                 /* check if there is the contentData already downloaded for this sigmaId,
                  * and if so apply its data to the sigmaNode.
-                 * Because the contentData may have been downloaded/cached before the treeData
+                 * Because the contentData may have been downloaded/cached before the treeDataFromDB
                  */
                 const contentData: IContentData = this.contentIdContentMap[data.contentId]
                 if (contentData) {
@@ -131,7 +131,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 }
                 /* check if there is the contentUserData already downloaded for this sigmaId,
                  * and if so apply its data to the sigmaNode.
-                 * Because the contentUserData may have been downloaded/cached before the treeData
+                 * Because the contentUserData may have been downloaded/cached before the treeDataFromDB
                  */
                 const contentUserData: IContentUserData = this.contentIdContentUserMap[data.contentId]
                 if (contentUserData) {
@@ -155,7 +155,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 
                 this.sigmaRenderManager.markTreeDataLoaded(sigmaId)
                 // ^ the above method will also search for any edges that now can be loaded now
-                // that that treeData is loaded . . . and publishes an update for that edge to be added.
+                // that that treeDataFromDB is loaded . . . and publishes an update for that edge to be added.
                 break
             case ObjectDataTypes.TREE_LOCATION_DATA:
                 sigmaNode.receiveNewTreeLocationData(data)

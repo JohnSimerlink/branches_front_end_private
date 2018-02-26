@@ -9,7 +9,7 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {
     IHash, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
     ISyncableMutableSubscribableTree,
-    ITreeDataFromFirebase,
+    ITreeDataFromDB,
     ITreeDataWithoutId, ITreeLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -77,7 +77,7 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
     const childFirebaseRef = firebaseRef.child(treeId)
 
-    const sampleTreeData: ITreeDataFromFirebase = {
+    const sampleTreeData: ITreeDataFromDB = {
         contentId: {
             val: '12345532',
         },
@@ -115,7 +115,7 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
 
     const contentId = '12345532'
     const parentId = '493284'
-    const sampleTreeData: ITreeDataFromFirebase = {
+    const sampleTreeData: ITreeDataFromDB = {
         contentId: {
             val: contentId
         },
@@ -159,7 +159,7 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES)
     const childFirebaseRef = firebaseRef.child(treeId)
 
-    const sampleTreeData: ITreeDataFromFirebase = {
+    const sampleTreeData: ITreeDataFromDB = {
         contentId: {
             val: '12345532',
         },
@@ -173,7 +173,7 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
             }
         }
     }
-    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
+    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
         myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     const treeLoader = new TreeLoader({storeSource, firebaseRef})
@@ -191,7 +191,7 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
 
     const contentId = '12345532'
     const parentId = '493284'
-    const sampleTreeData: ITreeDataFromFirebase = {
+    const sampleTreeData: ITreeDataFromDB = {
         contentId: {
             val: contentId,
         },
@@ -212,7 +212,7 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
         children: childrenArray,
     }
     const sampleTree: ISyncableMutableSubscribableTree
-        = TreeDeserializer.deserializeFromDB({treeId, treeData: sampleTreeData})
+        = TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData})
     const storeSource: ISubscribableTreeStoreSource =
         myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true)
     storeSource.set(treeId, sampleTree)

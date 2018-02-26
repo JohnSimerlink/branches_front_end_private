@@ -34,7 +34,7 @@ export class Trees {
                 resolve(trees[treeId])
                 return
             }
-            const treeDataLookupKey = 'trees/' + treeId + '/treeData'
+            const treeDataLookupKey = 'trees/' + treeId + '/treeDataFromDB'
             // const contentData = await LocalForage.getItem(lookupKey)
             // if (window.fullCache && contentData){
             //     processTreeData(contentData, resolve)
@@ -71,7 +71,7 @@ export class Trees {
     }
     static async _handleChildAndOldParent(newParentId,childId){
         const child = await Trees.get(childId)
-        const oldParentPromise = Trees.get(child.treeData.parentId)
+        const oldParentPromise = Trees.get(child.treeDataFromDB.parentId)
         child.changeParent(newParentId)
         const oldParent = await oldParentPromise
         oldParent.removeChild(child.id)
