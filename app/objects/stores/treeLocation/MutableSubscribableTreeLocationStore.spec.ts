@@ -19,18 +19,16 @@ import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscri
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
 import {SyncableMutableSubscribableTreeLocation} from '../../treeLocation/SyncableMutableSubscribableTreeLocation';
+import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
 
 myContainerLoadAllModules()
 test('MutableSubscribableTreeLocationStore > addMutation::::' +
     'addMutation to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
-    const treeId = TREE_ID
-    const FIRST_POINT_VALUE = {x: 5, y: 7}
     const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-    const point: IMutableSubscribablePoint
-        = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
-    const treeLocation = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
+    const treeLocation = getASampleTreeLocation1()
+        // new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
     const storeSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
@@ -68,16 +66,12 @@ test('MutableSubscribableTreeLocationStore > addMutation::::' +
     'addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly either' +
     ', should throw a RangeError', (t) => {
 
-    const FIRST_POINT_VALUE = {x: 5, y: 7}
     const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-    const point: IMutableSubscribablePoint
-        = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
     const storeSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
     (TYPES.ISubscribableTreeLocationStoreSource)
 
-    log('Tree Location store Source item is is ' + storeSource)
     const treeLocationStore: IMutableSubscribableTreeLocationStore = new MutableSubscribableTreeLocationStore({
         storeSource,
         updatesCallbacks: []

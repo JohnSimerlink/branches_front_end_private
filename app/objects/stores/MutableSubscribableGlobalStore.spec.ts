@@ -23,7 +23,7 @@ import {
     ISubscribableStoreSource, ISubscribableTreeStoreSource,
     ObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES, IContentData,
     ITreeLocationData,
-    ITreeData, IProficiencyStats, ITreeUserData, timestamp, ISubscribableMutableField,
+    ITreeData, IProficiencyStats, ITreeUserData, timestamp, IMutableSubscribableField,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
@@ -45,6 +45,7 @@ import {MutableSubscribableTreeUser} from '../treeUser/MutableSubscribableTreeUs
 import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
 import {TAGS} from '../tags';
+import {sampleTreeLocationData1, sampleTreeLocationData1x} from "../treeLocation/treeLocationTestHelpers";
 
 myContainerLoadAllModules()
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
@@ -123,12 +124,13 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> =
+    const lastInteractionTime: IMutableSubscribableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> =
+    const nextReviewTime: IMutableSubscribableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue,
+        proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const storeSource: ISubscribableContentUserStoreSource
         = myContainer.get<ISubscribableContentUserStoreSource>
@@ -318,17 +320,10 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
 
 test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
     ' should call treeLocationStore addAndSubscribeToItemFromData with the correct args', (t) => {
-    const logAny: any = log
-    logAny.on = false
     const treeLocationStore: IMutableSubscribableTreeLocationStore =
         myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
     const treeId = 'abababa14141'
-    const x = 50
-    const y = 60
-    const point = {x, y}
-    const treeLocationData: ITreeLocationData = {
-        point
-    }
+    const treeLocationData: ITreeLocationData = sampleTreeLocationData1
     const id = treeId
     const createMutation: ICreateMutation<ITreeLocationData> = {
         id,
@@ -343,13 +338,11 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
         injections: {treeLocationStore},
         container: myContainer
     })
-    logAny.on = true
     const treeLocationStoreAddAndSubscribeToItemFromDataSpy
         = sinon.spy(treeLocationStore, 'addAndSubscribeToItemFromData')
 
     globalStore.startPublishing()
     globalStore.addMutation(createMutation)
-    logAny.on = false
 
     expect(treeLocationStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1)
     const calledWith = treeLocationStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0]
@@ -360,8 +353,6 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
 
 test('MutableSubscribableGlobalStore: adding a create' +
     ' tree Mutation should call tree addAndSubscribeToItemFromData with the correct args', (t) => {
-    const logAny: any = log
-    logAny.on = false
     const treeStore: IMutableSubscribableTreeStore =
         myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
     const contentId = 'contentIdacbacacb159815987'
@@ -389,13 +380,11 @@ test('MutableSubscribableGlobalStore: adding a create' +
         injections: {treeStore},
         container: myContainer
     })
-    logAny.on = true
     const treeStoreAddAndSubscribeToItemFromDataSpy
         = sinon.spy(treeStore, 'addAndSubscribeToItemFromData')
 
     globalStore.startPublishing()
     globalStore.addMutation(createMutation)
-    logAny.on = false
 
     expect(treeStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1)
     const calledWith = treeStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0]

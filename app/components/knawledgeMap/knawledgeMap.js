@@ -200,7 +200,7 @@ function edgeAlreadyLoaded(edgeId){
 
 function getSizeFromContent(content) {
     // return Globals.regularSize
-    return /*content.overdue ? Globals.overdueSize : */ Globals.regularSize
+    return /*content.sampleContentUser1Overdue ? Globals.overdueSize : */ Globals.regularSize
 }
 
 function createEdgeId(nodeOneId, nodeTwoId){
@@ -568,7 +568,7 @@ function initKnawledgeMap(treeIdToJumpTo){
 //recursively load the entire tree
 // Instantiate sigma:
     /**
-     * Get tree colors for descending proficiency levels. Default to "existing node" color
+     * Get tree colors for descending sampleContentUser1Proficiency levels. Default to "existing node" color
      * @param tree
      * @returns {*}
      */

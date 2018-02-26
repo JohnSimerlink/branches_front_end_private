@@ -5,20 +5,20 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {FieldMutationTypes, IDatedMutation} from '../interfaces';
-import {ISubscribableMutableField} from '../interfaces';
+import {IMutableSubscribableField} from '../interfaces';
 import {TYPES} from '../types';
 import {MutableSubscribableField} from './MutableSubscribableField';
 
 myContainerLoadAllModules()
 test('MutableSubscribableField > Subscribable::::Adding a mutation,' +
     ' should trigger an update for one of the subscribers [is this an integration test?]', (t) => {
-    // const subscribableMutableId: ISubscribableMutableField =
-    //     myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    // const subscribableMutableId: IMutableSubscribableField =
+    //     myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     /* TODO: ^^^ USING THE ABOVE dependency injection fetcher fetches like an IDetailedUpdates object
     * and places it into the updatesCallbacks array, which causes a type error because ISubscribable
     * tries to invoke one of the updates, and the update is just an object not a function . . . .
     * */
-    const subscribableMutableId: ISubscribableMutableField<string> = new MutableSubscribableField<string>()
+    const subscribableMutableId: IMutableSubscribableField<string> = new MutableSubscribableField<string>()
     const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0
     expect(typeof callback).to.equal('function')
     const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation)

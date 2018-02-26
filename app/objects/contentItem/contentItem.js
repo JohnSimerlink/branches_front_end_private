@@ -138,7 +138,7 @@ export default class ContentItem {
     }
 
     setOverdue(overdue, updateInDB = true){
-        // console.log(this.id, "setOverdue called with parameter of ", overdue)
+        // console.log(this.id, "setOverdue called with parameter of ", sampleContentUser1Overdue)
         this.overdue = overdue
 
         this.userOverdueMap[user.get()] = this.overdue
@@ -233,7 +233,7 @@ export default class ContentItem {
         this.set('uri', uri)
         UriContentMap.set(uri, this.id)
     }
-        //TODO : make timer for heading be the sum of the time of all the child facts
+        //TODO : make sampleContentUser1Timer for heading be the sum of the time of all the child facts
     resetTimer(){
         this.timer = 0
     }
@@ -243,7 +243,7 @@ export default class ContentItem {
         if (!this.timerId) { //to prevent from two or more timers being created simultaneously on the content item
             this.timerId = setInterval(function () {
                 me.timer  = me.timer || 0
-                me.timer++ // = fact.timer || 0
+                me.timer++ // = fact.sampleContentUser1Timer || 0
                 me.calculateAggregationTimerForTreeChain()//propagate the time increase all the way up
             }, 1000)
         }
@@ -417,7 +417,7 @@ export default class ContentItem {
     }
 
     async addInteraction({proficiency, timestamp}, addChangeToDB){
-        this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.proficiency is already set I think, but not saved in db
+        this.saveProficiency({proficiency, timestamp}, addChangeToDB) //  this.content.sampleContentUser1Proficiency is already set I think, but not saved in db
         // console.log
         const recentDecibelIncrease = this.getRecentDecibelIncrease()
         console.log('recent decibel increase', recentDecibelIncrease)
@@ -501,7 +501,7 @@ export default class ContentItem {
         }
 
         firebase.database().ref('content/' + this.id).update(updates)
-        //set timeout to mark the item overdue when it becomes overdue
+        //set timeout to mark the item sampleContentUser1Overdue when it becomes sampleContentUser1Overdue
     }
     //methods for html templates
     isProficiencyUnknown(){

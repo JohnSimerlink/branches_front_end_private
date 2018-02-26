@@ -121,10 +121,10 @@ export interface IContent {
 }
 
 export interface ISubscribableContentCore extends IContent {
-    type: ISubscribableMutableField<CONTENT_TYPES>;
-    question: ISubscribableMutableField<string>;
-    answer: ISubscribableMutableField<string>;
-    title: ISubscribableMutableField<string>;
+    type: IMutableSubscribableField<CONTENT_TYPES>;
+    question: IMutableSubscribableField<string>;
+    answer: IMutableSubscribableField<string>;
+    title: IMutableSubscribableField<string>;
     val(): IContentData
 }
 
@@ -188,12 +188,12 @@ export interface IContentUser {
 }
 
 export interface ISubscribableContentUserCore extends IContentUser {
-    overdue: ISubscribableMutableField<boolean>
-    timer: ISubscribableMutableField<number>
-    proficiency: ISubscribableMutableField<PROFICIENCIES>
-    lastEstimatedStrength: ISubscribableMutableField<number>
-    lastInteractionTime: ISubscribableMutableField<timestamp>
-    nextReviewTime: ISubscribableMutableField<timestamp>
+    overdue: IMutableSubscribableField<boolean>
+    timer: IMutableSubscribableField<number>
+    proficiency: IMutableSubscribableField<PROFICIENCIES>
+    lastEstimatedStrength: IMutableSubscribableField<number>
+    lastInteractionTime: IMutableSubscribableField<timestamp>
+    nextReviewTime: IMutableSubscribableField<timestamp>
     val(): IContentUserData
 }
 
@@ -320,7 +320,7 @@ export interface IField<T> {
 }
 export interface IMutableField<T> extends IMutable<IDatedMutation<FieldMutationTypes>>, IField<T> {}
 
-export interface ISubscribableMutableField<T> extends ISubscribable<IDetailedUpdates>, IMutableField<T> {
+export interface IMutableSubscribableField<T> extends ISubscribable<IDetailedUpdates>, IMutableField<T> {
 }
 
 // misc
@@ -440,8 +440,8 @@ export interface IUser {
     // title: IMutableField<string>
 }
 export interface ISubscribableUserCore extends IUser {
-    membershipExpirationDate: ISubscribableMutableField<timestamp>
-    everActivatedMembership: ISubscribableMutableField<boolean>
+    membershipExpirationDate: IMutableSubscribableField<timestamp>
+    everActivatedMembership: IMutableSubscribableField<boolean>
     val(): IUserData
 }
 
@@ -869,7 +869,8 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 }
 export type id = string
 export interface INewChildTreeMutationArgs {
-    parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
+    parentTreeId, timestamp, contentType, question, answer, title,
+    parentLocation: ITreeLocationData
 }
 export interface ISetTreeDataMutationArgs {
     treeId: id,
@@ -928,11 +929,11 @@ export interface ICreateTreeMutationArgs {
     parentId: id, contentId: id, children?: id[]
 }
 export interface ICreateTreeLocationMutationArgs {
-    treeId: id, x: number, y: number
+    treeId: id, x: number, y: number, level: number
 }
 export interface ISubscribableTreeCore extends ITree {
-    contentId: ISubscribableMutableField<string>
-    parentId: ISubscribableMutableField<string>
+    contentId: IMutableSubscribableField<string>
+    parentId: IMutableSubscribableField<string>
     children: ISubscribableMutableStringSet
     val(): ITreeDataWithoutId
 }
@@ -965,8 +966,8 @@ export interface ITreeUser {
 }
 
 export interface ISubscribableTreeUserCore extends ITreeUser {
-    proficiencyStats: ISubscribableMutableField<IProficiencyStats>,
-    aggregationTimer: ISubscribableMutableField<number>,
+    proficiencyStats: IMutableSubscribableField<IProficiencyStats>,
+    aggregationTimer: IMutableSubscribableField<number>,
     val(): ITreeUserData
 }
 
@@ -990,10 +991,12 @@ export interface ITreeUserData {
 // treeLocation
 export interface ITreeLocation {
     point: IUndoableMutablePoint,
+    level: IMutableSubscribableField<number>,
 }
 
 export interface ISubscribableTreeLocationCore extends ITreeLocation {
     point: IMutableSubscribablePoint,
+    level: IMutableSubscribableField<number>,
     val(): ITreeLocationData
 }
 
@@ -1009,12 +1012,16 @@ export interface IMutableSubscribableTreeLocation
         IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
 
 export interface ITreeLocationData {
-    point: ICoordinate
+    point: ICoordinate,
+    level: number,
 }
 
 export interface ITreeLocationDataFromFirebase {
     point: {
         val: ICoordinate
+    },
+    level: {
+        val: number
     },
 }
 export interface CreateUserOrLoginMutationArgs {

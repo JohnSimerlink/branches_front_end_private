@@ -237,17 +237,17 @@ const mutations = {
         state: IState, {contentUserId, proficiency, timestamp}) {
         const contentUserData: IContentUserData = {
             id: contentUserId,
-            timer: 0, // TODO: add timer to app
+            timer: 0, // TODO: add sampleContentUser1Timer to app
             lastEstimatedStrength: null, // TODO: Add initial calculate strength to app,
-            overdue: false, // TODO: add initial overdue functionality
+            overdue: false, // TODO: add initial sampleContentUser1Overdue functionality
             lastInteractionTime: null,
-            nextReviewTime: null, // TODO: add initial calculate nextReviewTime functionality
+            nextReviewTime: null, // TODO: add initial calculate sampleContentUser1NextReviewTime functionality
             proficiency,
         }
         /**
          * logic for initial stuff up there ^^^^
          *
-         if (this.proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
+         if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
                     millisecondsSinceLastInteraction = 60 * 60 * 1000
                 }
          *
@@ -270,15 +270,16 @@ const mutations = {
     [MUTATION_NAMES.NEW_CHILD_TREE](
         state: IState,
         {
-            parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
+            parentTreeId, timestamp, contentType, question, answer, title, parentLocation,
         }: INewChildTreeMutationArgs
     ): id {
-        log('NEW CHILD TREE CALLED. parentX and parentY are ', parentX, parentY)
+        log('NEW CHILD TREE CALLED. parentX and parentY are ', parentLocation.point.x, parentLocation.point.y)
         // TODO: UNIT / INT TEST
+        const store = getters.getStore()
         /**
          * Create Content
          */
-        const contentId = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
+        const contentId = store.commit(MUTATION_NAMES.CREATE_CONTENT, {
             question, answer, title, type: contentType
         })
         const contentIdString = contentId as any as id // TODO: Why do I have to do this casting?
@@ -297,23 +298,24 @@ const mutations = {
          */
         const r = 30
         const newLocation: ICoordinate =
-            obtainNewLocation({r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentX, y: parentY}})
+            obtainNewLocation(
+                {r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentLocation.point.x, y: parentLocation.point.y}})
 
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
-            treeId: treeIdString, x: newLocation.x, y: newLocation.y
+            treeId: treeIdString, x: newLocation.x, y: newLocation.y, level: parentLocation.level + 1
         }
 
-        const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
+        const treeLocationData = store.commit(MUTATION_NAMES.CREATE_TREE_LOCATION, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
         /**
          * Add the newly created tree as a child of the parent
          */
-        mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
+        store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: treeId})
 
         return treeIdString
         },
     [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState,
-                                         {
+     {
          parentTreeId, childTreeId,
      }) {
 
@@ -367,7 +369,7 @@ const mutations = {
     [MUTATION_NAMES.CREATE_TREE_LOCATION](
         state: IState,
         {
-            treeId, x, y,
+            treeId, x, y, level
         }: ICreateTreeLocationMutationArgs
     ): ITreeLocationData {
         const createMutation: ICreateMutation<ITreeLocationData> = {
@@ -377,6 +379,7 @@ const mutations = {
                 point: {
                     x, y,
                 },
+                level,
             },
             id: treeId
         }

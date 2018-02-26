@@ -58,7 +58,7 @@
                 <!--<div class="tree-heading-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>-->
             <!--</div>-->
             <!--<div class="tree-heading-numOverdue">-->
-                <!--{{tree.numOverdue}} overdue items-->
+                <!--{{tree.numOverdue}} sampleContentUser1Overdue items-->
             <!--</div>-->
             <!--<div class="tree-heading-study">-->
                 <!--<button class="tree-heading-study ui button positive" v-on:click.stop="studyHeading">Study this Category</button>-->
@@ -90,7 +90,7 @@
                 <i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" v-if="!typeIsHeading">{{content.timer | secondsToPretty}} </div>
-            <!--<div class="tree-proficiency-value" title="proficiency"> {{content.proficiency}}% </div>-->
+            <!--<div class="tree-sampleContentUser1Proficiency-value" title="sampleContentUser1Proficiency"> {{content.sampleContentUser1Proficiency}}% </div>-->
             <!--<i class="tree-delete-button fa fa-cog" aria-hidden="true" v-on:click.stop="toggleHistory"></i>-->
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-if="false"  v-on:click.stop="remove" ></i>
         </div>

@@ -5,7 +5,7 @@ import {
     CONTENT_TYPES,
     IContentData, ISubscribable,
     ISubscribableContent,
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     IValUpdates,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
@@ -14,10 +14,10 @@ import {TYPES} from '../types'
 @injectable()
 export class SubscribableContent extends Subscribable<IValUpdates> implements ISubscribableContent {
     private publishing = false
-    public type: ISubscribableMutableField<CONTENT_TYPES>;
-    public question: ISubscribableMutableField<string>;
-    public answer: ISubscribableMutableField<string>;
-    public title: ISubscribableMutableField<string>;
+    public type: IMutableSubscribableField<CONTENT_TYPES>;
+    public question: IMutableSubscribableField<string>;
+    public answer: IMutableSubscribableField<string>;
+    public title: IMutableSubscribableField<string>;
 
     // TODO: should the below three objects be private?
     public val(): IContentData {
@@ -56,8 +56,8 @@ export class SubscribableContent extends Subscribable<IValUpdates> implements IS
 @injectable()
 export class SubscribableContentArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[]
-    @inject(TYPES.ISubscribableMutableContentType) public type
-    @inject(TYPES.ISubscribableMutableString) public question: ISubscribableMutableField<string>
-    @inject(TYPES.ISubscribableMutableString) public answer: ISubscribableMutableField<string>
-    @inject(TYPES.ISubscribableMutableString) public title: ISubscribableMutableField<string>
+    @inject(TYPES.IMutableSubscribableContentType) public type
+    @inject(TYPES.IMutableSubscribableString) public question: IMutableSubscribableField<string>
+    @inject(TYPES.IMutableSubscribableString) public answer: IMutableSubscribableField<string>
+    @inject(TYPES.IMutableSubscribableString) public title: IMutableSubscribableField<string>
 }

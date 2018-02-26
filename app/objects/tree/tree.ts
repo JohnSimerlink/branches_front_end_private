@@ -256,8 +256,8 @@
 //         firebase.database().ref(lookupKey).update(updates)
 //     }
 //
-//     public setAggregationTimer(timer, addChangeToDB) {
-//         this.userData.aggregationTimer = timer
+//     public setAggregationTimer(sampleContentUser1Timer, addChangeToDB) {
+//         this.userData.aggregationTimer = sampleContentUser1Timer
 //         if (!addChangeToDB) {
 //             return
 //         }
@@ -359,7 +359,7 @@
 //     public async calculateProficiencyAggregationForLeaf() {
 //         let proficiencyStats = {...blankProficiencyStats}
 //         const contentItem = await ContentItems.get(this.treeData.contentId)
-//         proficiencyStats = incrementProficiencyStatsCategory(proficiencyStats, contentItem.proficiency)
+//         proficiencyStats = incrementProficiencyStatsCategory(proficiencyStats, contentItem.sampleContentUser1Proficiency)
 //         return proficiencyStats
 //     }
 //     public async calculateProficiencyAggregationForNotLeaf() {
@@ -395,30 +395,30 @@
 //
 //     public async calculateAggregationTimerForLeaf() {
 //         const contentItem = await ContentItems.get(this.treeData.contentId)
-//         return contentItem.timer
+//         return contentItem.sampleContentUser1Timer
 //     }
 //     public async calculateAggregationTimerForNotLeaf() {
 //         const me = this
-//         let timer = 0
+//         let sampleContentUser1Timer = 0
 //         if (!this.hasChildren()) {
-//             return timer
+//             return sampleContentUser1Timer
 //         }
 //         const children = await this.getChildTrees()
 //
 //         children.forEach((child: Tree ) => {
-//             timer += +child.userData.aggregationTimer
+//             sampleContentUser1Timer += +child.userData.aggregationTimer
 //         })
-//         return timer
+//         return sampleContentUser1Timer
 //     }
 //     public async calculateAggregationTimer(addChangeToDB = false) {
-//         let timer;
+//         let sampleContentUser1Timer;
 //         const isLeaf = await this.isLeaf()
 //         if (isLeaf) {
-//             timer = await this.calculateAggregationTimerForLeaf()
+//             sampleContentUser1Timer = await this.calculateAggregationTimerForLeaf()
 //         } else {
-//             timer = await this.calculateAggregationTimerForNotLeaf()
+//             sampleContentUser1Timer = await this.calculateAggregationTimerForNotLeaf()
 //         }
-//         this.setAggregationTimer(timer, addChangeToDB)
+//         this.setAggregationTimer(sampleContentUser1Timer, addChangeToDB)
 //
 //         if (!this.treeData.parentId) { return }
 //         const parent = await Trees.get(this.treeData.parentId)
@@ -427,8 +427,8 @@
 //
 //     public async calculateNumOverdueAggregationLeaf() {
 //         const contentItem = await ContentItems.get(this.treeData.contentId)
-//         const overdue = contentItem.overdue ? 1 : 0
-//         return overdue
+//         const sampleContentUser1Overdue = contentItem.sampleContentUser1Overdue ? 1 : 0
+//         return sampleContentUser1Overdue
 //     }
 //     public async calculateNumOverdueAggregationNotLeaf() {
 //         const children = await this.getChildTrees()// await Promise.all(
@@ -516,8 +516,8 @@
 //                 return a.lastEstimatedStrength.value > b.lastEstimatedStrength.value ? 1
 //                     : a.lastEstimatedStrength.value < b.lastEstimatedStrength.value ? -1 : 0
 //            })
-//         const overdueLeaves = studiedLeaves.filter(leaf => leaf.overdue)
-//         const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.overdue)
+//         const overdueLeaves = studiedLeaves.filter(leaf => leaf.sampleContentUser1Overdue)
+//         const notOverdueLeaves = studiedLeaves.filter(leaf => !leaf.sampleContentUser1Overdue)
 //
 //         const notStudiedLeaves = this.leaves.filter(leaf => !leaf.hasInteractions)
 //         this.leaves = [...overdueLeaves, ...notStudiedLeaves, ...notOverdueLeaves]
@@ -545,7 +545,7 @@
 //     public areNewOrOverdueItems() {
 //         if (!this.areItemsToStudy()) {return false}
 //         const firstItem: IContentItem = this.leaves[0]
-//         return firstItem.isNew() || firstItem.overdue
+//         return firstItem.isNew() || firstItem.sampleContentUser1Overdue
 //     }
 //     public getNextItemIdToStudy() {
 //         return this.leaves[0].id

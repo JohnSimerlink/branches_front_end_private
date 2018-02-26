@@ -73,7 +73,7 @@ export class TreeCreator implements ITreeCreator {
                 }
             },
             watch: {
-                // //stop timer when
+                // //stop sampleContentUser1Timer when
                 // openNodeId(newNodeId, oldNodeId){
                 //     if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
                 //         this.content.saveTimer()
@@ -126,15 +126,15 @@ export class TreeCreator implements ITreeCreator {
                     // // const content
                     // const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
                     //
-                    // this.proficiencyInput = contentUserData.proficiency
+                    // this.proficiencyInput = contentUserData.sampleContentUser1Proficiency
                     // this.contentUserDataLoaded = true
                     return contentUserData
                 },
                 nextReviewTime(): timestamp {
                     return this.contentUserData.nextReviewTime
                 },
-                // proficiency() {
-                //     return this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                // sampleContentUser1Proficiency() {
+                //     return this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
                 // },
                 timer() {
                     let timer = 0
@@ -169,7 +169,7 @@ export class TreeCreator implements ITreeCreator {
                     } else {
                         // if ()
                         const proficiency = this.proficiencyInput
-                        // ^^ this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                        // ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
                         styles['background-color'] = ProficiencyUtils.getColor(proficiency)
                         if (this.showHistory) {
                             styles['background-color'] = 'black'
@@ -267,11 +267,11 @@ export class TreeCreator implements ITreeCreator {
                     }
                     // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                     //     contentUserId: this.contentUserId,
-                    //     proficiency, // NOTICE HOW `this` is different from `me`
+                    //     sampleContentUser1Proficiency, // NOTICE HOW `this` is different from `me`
                     //     timestamp: Date.now()
                     // })
                     //     user.addMutation('interaction', {contentId: this.content.id,
-                    // proficiency: this.content.proficiency, timestamp: Date.now()})
+                    // sampleContentUser1Proficiency: this.content.sampleContentUser1Proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)
                     //     this.tree.setInactive()
                     //     // stores.commit('closeNode', this.id)

@@ -13,7 +13,7 @@ export class ContentDeserializer {
        {contentData, contentId}: {contentData: IContentData, contentId: string}
        ): ISyncableMutableSubscribableContent {
        const type = new MutableSubscribableField<CONTENT_TYPES>({field: contentData.type})
-       /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+       /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
         // TODO: figure out why DI puts in a bad IUpdatesCallback!
        */
        const question = new MutableSubscribableField<string>({field: contentData.question})

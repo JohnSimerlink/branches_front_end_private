@@ -34,7 +34,7 @@ test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly
     const question = new MutableSubscribableField<string>({field: questionVal})
     const answer = new MutableSubscribableField<string>({field: answerVal})
     const title = new MutableSubscribableField<string>({field: titleVal})
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const expectedContent: ISyncableMutableSubscribableContent = new SyncableMutableSubscribableContent(

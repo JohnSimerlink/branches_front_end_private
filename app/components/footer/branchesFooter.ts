@@ -67,7 +67,7 @@ export default {
         // numItemsMastered() {
         //     var itemsKeys = Object.keys(this.items)
         //     var numMastered = itemsKeys.reduce((sum, key) => {
-        //         if (this.items[key].proficiency >= 96) {
+        //         if (this.items[key].sampleContentUser1Proficiency >= 96) {
         //             sum++
         //         }
         //         return sum

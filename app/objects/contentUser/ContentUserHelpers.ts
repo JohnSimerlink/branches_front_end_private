@@ -1,5 +1,5 @@
 import {
-    IContentUserData, IContentUserDataFromDB, ISubscribableMutableField, ISyncableMutableSubscribableContentUser,
+    IContentUserData, IContentUserDataFromDB, IMutableSubscribableField, ISyncableMutableSubscribableContentUser,
     timestamp
 } from '../interfaces';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
@@ -7,60 +7,61 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {SyncableMutableSubscribableContentUser} from './SyncableMutableSubscribableContentUser';
 
-const contentId = '423487234'
-const userId = '12476abc'
-export const sampleContentUserId1 = getContentUserId({contentId, userId})
-const overdueVal = true
-const lastRecordedStrengthVal = 30
-const proficiencyVal = PROFICIENCIES.TWO
-const timerVal = 30
-const nextReviewTimeVal = Date.now() + 1000 * 60
-const lastInteractionTimeVal = Date.now()
-const overdue = new MutableSubscribableField<boolean>({field: false})
-const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
-const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
-const timer = new MutableSubscribableField<number>({field: 30})
-const lastInteractionTime: ISubscribableMutableField<timestamp> =
-    new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-const nextReviewTime: ISubscribableMutableField<timestamp> =
-    new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+export const sampleContentUser1ContentId = '423487234'
+export const sampleContentUser1UserId = '12476abc'
+export const sampleContentUser1Id =
+    getContentUserId({contentId: sampleContentUser1ContentId, userId: sampleContentUser1UserId})
+export const sampleContentUser1OverdueVal = true
+export const sampleContentUser1LastRecordedStrengthVal = 30
+export const sampleContentUser1ProficiencyVal = PROFICIENCIES.TWO
+export const sampleContentUser1TimerVal = 30
+export const sampleContentUser1NextReviewTimeVal = Date.now() + 1000 * 60
+export const sampleContentUser1LastInteractionTimeVal = Date.now()
+export const sampleContentUser1Overdue = new MutableSubscribableField<boolean>({field: sampleContentUser1OverdueVal})
+export const sampleContentUser1LastRecordedStrength = new MutableSubscribableField<number>({field: 45})
+export const sampleContentUser1Proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
+export const sampleContentUser1Timer = new MutableSubscribableField<number>({field: 30})
+export const sampleContentUser1LastInteractionTime: IMutableSubscribableField<timestamp> =
+    new MutableSubscribableField<timestamp>({field: sampleContentUser1LastInteractionTimeVal})
+export const sampleContentUser1NextReviewTime: IMutableSubscribableField<timestamp> =
+    new MutableSubscribableField<timestamp>({field: sampleContentUser1NextReviewTimeVal})
 export const sampleContentUserDataFromDB1: IContentUserDataFromDB = {
-    id: sampleContentUserId1,
+    id: sampleContentUser1Id,
     overdue: {
-        val: overdueVal,
+        val: sampleContentUser1OverdueVal,
     },
     lastRecordedStrength: {
-        val: lastRecordedStrengthVal,
+        val: sampleContentUser1LastRecordedStrengthVal,
     },
     proficiency: {
-        val: proficiencyVal,
+        val: sampleContentUser1ProficiencyVal,
     },
     timer: {
-        val: timerVal
+        val: sampleContentUser1TimerVal
     },
     lastInteractionTime: {
-        val: lastInteractionTimeVal,
+        val: sampleContentUser1LastInteractionTimeVal,
     },
     nextReviewTime: {
-        val: nextReviewTimeVal,
+        val: sampleContentUser1NextReviewTimeVal,
     }
 }
 export const sampleContentUserData1: IContentUserData = {
-    id: sampleContentUserId1,
-    overdue: overdueVal,
-    lastEstimatedStrength: lastRecordedStrengthVal,
-    proficiency: proficiencyVal,
-    timer: timerVal,
-    lastInteractionTime: lastInteractionTimeVal,
-    nextReviewTime: nextReviewTimeVal,
+    id: sampleContentUser1Id,
+    overdue: sampleContentUser1OverdueVal,
+    lastEstimatedStrength: sampleContentUser1LastRecordedStrengthVal,
+    proficiency: sampleContentUser1ProficiencyVal,
+    timer: sampleContentUser1TimerVal,
+    lastInteractionTime: sampleContentUser1LastInteractionTimeVal,
+    nextReviewTime: sampleContentUser1NextReviewTimeVal,
 }
 export const sampleContentUser1: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser({
-    id: sampleContentUserId1,
-    overdue,
-    lastEstimatedStrength: lastRecordedStrength,
-    proficiency,
-    timer,
-    lastInteractionTime,
-    nextReviewTime,
+    id: sampleContentUser1Id,
+    overdue: sampleContentUser1Overdue,
+    lastEstimatedStrength: sampleContentUser1LastRecordedStrength,
+    proficiency: sampleContentUser1Proficiency,
+    timer: sampleContentUser1Timer,
+    lastInteractionTime: sampleContentUser1LastInteractionTime,
+    nextReviewTime: sampleContentUser1NextReviewTime,
     updatesCallbacks: [],
 })
