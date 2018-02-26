@@ -30,6 +30,8 @@ export class UserDeserializer {
             userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val || 0,
           everActivatedMembership:
             userDataFromDB.everActivatedMembership && userDataFromDB.everActivatedMembership.val || false,
+          points:
+            userDataFromDB.points && userDataFromDB.points.val || 0
           // TODO: ensure that when a user is created,
           // that this field gets set in the DB to some value (e.g. 10 years ago,
           // or maybe even a 24 hour trial <<< NAH FOO )

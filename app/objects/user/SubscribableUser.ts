@@ -58,4 +58,5 @@ export class SubscribableUserArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[]
     @inject(TYPES.IMutableSubscribableNumber) public membershipExpirationDate: IMutableSubscribableField<timestamp>
     @inject(TYPES.IMutableSubscribableBoolean) public everActivatedMembership: IMutableSubscribableField<boolean>
+    @inject(TYPES.IMutableSubscribableNumber) public points: IMutableSubscribableField<number>
 }
