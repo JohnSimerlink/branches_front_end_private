@@ -21,14 +21,22 @@ import {TAGS} from '../../objects/tags';
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
+// import {injectable, inject} from 'inversify';
+// import {IKnawledgeMapCreator, ISigmaNodeLoader} from '../../objects/interfaces';
+// import {TYPES} from '../../objects/types';
+// import {Store} from 'vuex';
+// import {KnawledgeMapCreatorArgs} from './knawledgeMap';
+
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private sigmaNodeLoader: ISigmaNodeLoader
     private store: Store<any>
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){
-        sigmaNodeLoader,
-        store
-    }: KnawledgeMapCreatorArgs) {
+    constructor(
+        @inject(TYPES.KnawledgeMapCreatorArgs)
+        {
+            sigmaNodeLoader,
+            store
+        }: KnawledgeMapCreatorArgs) {
         this.sigmaNodeLoader = sigmaNodeLoader
         this.store = store
     }
@@ -81,8 +89,10 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 }
             }
         }
+
     }
 }
+
 @injectable()
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ISigmaNodeLoader)

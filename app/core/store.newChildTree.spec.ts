@@ -13,7 +13,7 @@ import {
     CONTENT_TYPES, IContentData, IContentDataFromDB,
     ICreateTreeLocationMutationArgs, INewChildTreeMutationArgs, ISet, ITreeDataFromDB, ITreeDataWithoutId,
     ITreeLocationData,
-    TreeLocationPropertyNames, TreePropertyNames, IHash
+    TreeLocationPropertyNames, TreePropertyNames, IHash, IVueConfigurer, IKnawledgeMapCreator
 } from '../objects/interfaces';
 import {AppContainer} from './appContainer';
 import {expect} from 'chai'
@@ -23,7 +23,7 @@ import {createContentId} from '../objects/content/contentUtils';
 import {createTreeId} from '../objects/tree/TreeUtils';
 import {log} from './log'
 import {sampleTreeData1} from '../objects/tree/treeTestHelpers';
-import {sampleContentData1, sampleContentDataFromDB1} from "../objects/content/contentTestHelpers";
+// import {sampleContentData1, sampleContentDataFromDB1} from "../objects/content/contentTestHelpers";
 
 test('store create new child tree should call correct firebaseRefs with correct new data', t => {
     /** Swap out actual firebase refs with Mock firebase refs.
@@ -37,7 +37,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
     /**
      * Grab the store singleton with which we will create the action
      * @type {Store<any>}
-    //  */
+     */
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
     /**
      * Set up spy - spy on the firebase ref.
@@ -46,7 +46,9 @@ test('store create new child tree should call correct firebaseRefs with correct 
     /**
      * Start the app
      */
-    // const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
+    // const vueConfigurer = myContainer.get<IVueConfigurer>(TYPES.IVueConfigurer)
+    const knawledgeMapCreator = myContainer.get<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator)
+    const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
     // appContainer.start()
     // /**
     //  * initialize sigma to avoid refresh on null error

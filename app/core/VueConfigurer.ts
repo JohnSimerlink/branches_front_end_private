@@ -34,13 +34,13 @@ export class VueConfigurer implements IVueConfigurer {
     public knawledgeMapCreator: IKnawledgeMapCreator
     public store: Store<any>
     constructor(@inject(TYPES.VueConfigurerArgs){
-        treeComponentCreator,
-        newTreeComponentCreator,
+        // treeComponentCreator,
+        // newTreeComponentCreator,
         knawledgeMapCreator,
         store,
    }: VueConfigurerArgs) {
-        this.treeComponentCreator = treeComponentCreator
-        this.newTreeComponentCreator = newTreeComponentCreator
+        // this.treeComponentCreator = treeComponentCreator
+        // this.newTreeComponentCreator = newTreeComponentCreator
         this.knawledgeMapCreator = knawledgeMapCreator
         this.store = store
     }
@@ -103,8 +103,8 @@ export class VueConfigurer implements IVueConfigurer {
 
 @injectable()
 export class VueConfigurerArgs {
-    @inject(TYPES.ITree3Creator) public treeComponentCreator: ITreeCreator
-    @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator
-    @inject(TYPES.KnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator
+    // @inject(TYPES.ITree3Creator) public treeComponentCreator: ITreeCreator
+    // @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator
+    @inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator
     @inject(TYPES.BranchesStore) public store: Store<any>
 }
