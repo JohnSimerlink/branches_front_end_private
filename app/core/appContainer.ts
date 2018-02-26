@@ -38,24 +38,24 @@ export class AppContainer {
         treeStoreSource,
         treeUserStoreSource,
         treeLocationStoreSource,
-        // vueConfigurer,
-        // store,
-        // renderedNodesManager,
-        // sigmaRenderManager,
-        // storeSourceUpdateListener,
-        // app,
+        vueConfigurer,
+        store,
+        renderedNodesManager,
+        sigmaRenderManager,
+        storeSourceUpdateListener,
+        app,
    }: AppContainerArgs) {
         this.contentStoreSource = contentStoreSource
         this.contentUserStoreSource = contentUserStoreSource
         this.treeStoreSource = treeStoreSource
         this.treeUserStoreSource = treeUserStoreSource
         this.treeLocationStoreSource = treeLocationStoreSource
-        // this.vueConfigurer = vueConfigurer
-        // this.store = store
-        // this.renderedNodesManager = renderedNodesManager
-        // this.sigmaRenderManager = sigmaRenderManager
-        // this.storeSourceUpdateListener = storeSourceUpdateListener
-        // this.app = app
+        this.vueConfigurer = vueConfigurer
+        this.store = store
+        this.renderedNodesManager = renderedNodesManager
+        this.sigmaRenderManager = sigmaRenderManager
+        this.storeSourceUpdateListener = storeSourceUpdateListener
+        this.app = app
     }
     public start() {
         configureSigma(sigma)
@@ -91,15 +91,15 @@ export class AppContainerArgs {
         public treeLocationStoreSource: ISubscribableTreeLocationStoreSource
     @inject(TYPES.IVueConfigurer)
         public vueConfigurer: IVueConfigurer
-    // @inject(TYPES.BranchesStore)
-    //     public store: Store<any>
-    // @inject(TYPES.IRenderedNodesManager)
-    //     public renderedNodesManager: IRenderManager
-    // @inject(TYPES.ISigmaRenderManager)
-    // @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
-    //     public sigmaRenderManager: ISigmaRenderManager
-    // @inject(TYPES.IStoreSourceUpdateListener)
-    //     public storeSourceUpdateListener: IStoreSourceUpdateListener
-    // @inject(TYPES.IApp)
-    //     public app: IApp
+    @inject(TYPES.BranchesStore)
+        public store: Store<any>
+    @inject(TYPES.IRenderedNodesManager)
+        public renderedNodesManager: IRenderManager
+    @inject(TYPES.ISigmaRenderManager)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaRenderManager: ISigmaRenderManager
+    @inject(TYPES.IStoreSourceUpdateListener)
+        public storeSourceUpdateListener: IStoreSourceUpdateListener
+    @inject(TYPES.IApp)
+        public app: IApp
 }

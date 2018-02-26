@@ -170,7 +170,7 @@ import {default as BranchesStore, BranchesStoreArgs} from './app/core/store';
 // import {KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
 import {
     TreeCreator,
-    TreeCreatorArgs
+    // TreeCreatorArgs
 } from './app/components/tree/tree';
 import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
@@ -246,6 +246,7 @@ import {
     GlobalDataStoreBranchesStoreSyncerArgs
 } from "./app/core/globalDataStoreBranchesStoreSyncer";
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
+import {TreeCreator4, TreeCreatorArgs} from "./app/components/tree/tree4";
 
 Vue.use(Vuex)
 
@@ -725,8 +726,8 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
-    bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
-    bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator)
+    // bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
+    bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator4)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
 
