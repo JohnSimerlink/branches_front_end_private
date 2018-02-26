@@ -18,6 +18,15 @@ import {TYPES} from '../../objects/types';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
+const env = process.env.NODE_ENV || 'development'
+if (env === 'test') {
+    let register = require('ignore-styles').default
+    if (!register) {
+        register = require('ignore-styles')
+    }
+    register(['.html'])
+}
+
 let template = require('./newTree.html').default
 if (!template) {
     template = require('./newTree.html')
@@ -129,7 +138,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         question: questionFormatted,
                         answer: answerFormatted,
                         title: titleFormatted,
-                        parentLocation: this.parentLocation(),
+                        parentLocation: this.parentLocation,
                         // parentX: parseInt(this.parentX),
                         // parentY: parseInt(this.parentY),
                         // x: childX,

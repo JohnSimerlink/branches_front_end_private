@@ -52,11 +52,11 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                     const tree: ISyncableMutableSubscribableTreeLocation =
                         TreeLocationDeserializer.deserializeFromDB(
                             {treeLocationDataFromDB: treeLocationDataFromFirebase}
-                            )
+                        )
                     const treeLocationData =
                         TreeLocationDeserializer.convertFromDBToData(
                             {treeLocationDataFromDB: treeLocationDataFromFirebase}
-                            )
+                        )
                     me.storeSource.set(treeId, tree)
                     resolve(treeLocationData)
                 } else {

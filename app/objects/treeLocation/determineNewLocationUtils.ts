@@ -119,22 +119,16 @@ export function distance({x1, y1, x2, y2}: {x1: number, x2: number, y1: number, 
 export function getNeighboringNodesCoordinates(
     {nodes, r, point}: {nodes: ICoordinate[], r: number, point: ICoordinate}): ICoordinate[] {
     // log('getNeighboringNodesCoordinates called ', sigmaInstance, r, point)
-    log('getNeighboringNodesCoordinates called . all nodes are ', nodes)
     const neighboringNodesCoordinates: ICoordinate[] = []
     /* TODO: use some sort of hashmap or sorted metric 1d hilbert space for a
     more O(1) or O(log(n)) algorithm rather than O(n)
     */
     for (const node of nodes) {
-        log('getNeighboringNodesCoordinates node is', node)
         const d = distance(
             {x1: node.x, y1: node.y, x2: point.x, y2: point.y}
         )
-        log('getNeighboringNodesCoordinates distance is ', d)
         if (d < r) {
             neighboringNodesCoordinates.push({x: node.x, y: node.y})
-            log('getNeighboringNodesCoordinates distance is less than r')
-        } else {
-            log('getNeighboringNodesCoordinates distance is NOT less than r')
         }
     }
     return neighboringNodesCoordinates

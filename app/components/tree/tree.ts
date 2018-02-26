@@ -92,12 +92,10 @@ export class TreeCreator implements ITreeCreator {
                 },
                 x(): string {
                     const x = this.treeLocationData.point && this.treeLocationData.point.x
-                    log('x in treeComputed is ', x, this.treeLocationData)
                     return x
                 },
                 y(): string {
                     const y = this.treeLocationData.point && this.treeLocationData.point.y
-                    log('y in treeComputed is ', y, this.treeLocationData)
                     return y
                 },
                 content() {

@@ -103,8 +103,6 @@ test('App integration test 3 - create new Tree triggered by user' +
         = new RenderManagerCore({sigmaNodes, sigmaEdges: {}, sigmaUpdater})
     const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore})
 
-    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-
     const treeStoreSource: ISubscribableTreeStoreSource
         = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
     const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
@@ -172,7 +170,7 @@ test('App integration test 3 - create new Tree triggered by user' +
             container: myContainer,
         })
     log('Branches Store in newTreeComponent Creator in integration test is ', newTreeComponentCreator['store']['_id'])
-
+    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
     renderedNodesManager.subscribe(sigmaRenderManager)
     storeSourceUpdateListener.subscribe(treeStoreSource)
     storeSourceUpdateListener.subscribe(treeLocationStoreSource)
