@@ -597,6 +597,7 @@ export interface ISigmaNodeData {
     children: string[];
     x: number;
     y: number;
+    level: number;
     aggregationTimer: number;
     content: IContentData;
     contentUserId: string;

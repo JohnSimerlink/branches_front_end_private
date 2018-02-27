@@ -26,6 +26,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
         {id, treeDataWithoutId}:
         { id: string; treeDataWithoutId: ITreeDataWithoutId; })
     : ISyncableMutableSubscribableTree {
+        log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem called', id, treeDataWithoutId)
         const treeId = id
         const treeItem: ISyncableMutableSubscribableTree =
             super.addAndSubscribeToItemFromData({id, treeDataWithoutId})
@@ -37,6 +38,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
             syncableObjectFirebaseRef: treeItemFirebaseRef
         })
         objectFirebaseAutoSaver.initialSave()
+        log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem initialSave just  called', id, treeDataWithoutId)
         objectFirebaseAutoSaver.start()
         // TODO: this needs to add the actual value into the db
         return treeItem

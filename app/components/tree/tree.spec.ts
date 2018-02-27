@@ -41,7 +41,7 @@ test('TreeComponent DI constructor should work', t => {
     const injects = injectionWorks<TreeCreatorArgs, ITreeCreator >({
         container: myContainer,
         argsType: TYPES.TreeCreatorArgs,
-        interfaceType: TYPES.ITreeCreatorClone,
+        interfaceType: TYPES.ITree3Creator,
     })
     expect(injects).to.equal(true)
     t.pass()

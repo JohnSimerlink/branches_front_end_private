@@ -319,7 +319,7 @@ sigma.misc.bindEvents = function (prefix) {
             self.dispatchEvent('doubleClick', e.data);
 
             nodes = getNodes(e);
-            console.log('bindEvents 267 onDoubleClick called, getEdges about to be called')
+            // console.log('bindEvents 267 onDoubleClick called, getEdges about to be called')
             edges = getEdges(e);
 
             if (nodes.length) {
@@ -351,7 +351,7 @@ sigma.misc.bindEvents = function (prefix) {
             self.dispatchEvent('rightClick', e.data);
 
             nodes = getNodes(e);
-            console.log("onRightClick getEdges about to be called")
+            // console.log("onRightClick getEdges about to be called")
             edges = getEdges(e);
 
             if (nodes.length) {
