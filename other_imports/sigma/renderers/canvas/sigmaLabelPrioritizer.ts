@@ -16,7 +16,7 @@ export var packageData = {
     labels: {},
     labelLevels,
     rowHeight: sigma.settings.defaultLabelSize * 1.75,
-    columnWidth: null,
+    columnWidth: 100,
 }
 export function initializePackageData() {
     const graphContainer = document.querySelector('#graph-container')
@@ -26,8 +26,7 @@ export function initializePackageData() {
     packageData.width = graphContainer.clientWidth
     packageData.height = graphContainer.clientHeight
     packageData.numRowsOnScreen = packageData.height / packageData.rowHeight
-    /*packageData.height / (sigma.settings.defaultLabelSize * .75)*/
-    packageData.columnWidth = packageData.width / packageData.numColumnsOnScreen
+    packageData.numColumnsOnScreen = packageData.width / packageData.columnWidth
     packageData.initialized = true
     clearLabelKnowledge()
     windowAny.packageData = packageData

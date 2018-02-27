@@ -201,6 +201,7 @@ const mutations = {
                     store,
                     tooltipsConfig,
                 })
+        const dragListener = sigmaAny.plugins.dragNodes(sigmaInstance, sigmaInstance.renderers[0])
         const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader)
         const sigmaEventListener: ISigmaEventListener
             = new SigmaEventListener({tooltipOpener, sigmaInstance, familyLoader})
