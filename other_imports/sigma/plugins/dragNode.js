@@ -228,6 +228,7 @@ function DragNodes(s, renderer) {
                 renderer: _renderer
             });
         }
+        // debugger
         _self.dispatchEvent('dragend', {
             node: _node,
             captor: event,

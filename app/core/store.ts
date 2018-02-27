@@ -15,7 +15,7 @@ import {
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
     ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
-    ISetContentUserDataMutationArgs,
+    ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -59,6 +59,7 @@ export enum MUTATION_NAMES {
     CREATE_CONTENT_USER_DATA = 'create_content_user_data',
     CREATE_CONTENT = 'create_content',
     CREATE_TREE_LOCATION = 'create_tree_location',
+    MOVE_TREE_COORDINATE = 'move_tree_coordinate',
     CREATE_TREE = 'create_tree',
     ADD_CONTENT_INTERACTION = 'add_content_interaction',
     ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA = 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
@@ -201,9 +202,11 @@ const mutations = {
                     store,
                     tooltipsConfig,
                 })
+        const dragListener = sigmaAny.plugins.dragNodes(sigmaInstance, sigmaInstance.renderers[0])
+        log('dragListener in INITIALIZE SIGMA INSTANCE IS ', dragListener)
         const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader)
         const sigmaEventListener: ISigmaEventListener
-            = new SigmaEventListener({tooltipOpener, sigmaInstance, familyLoader})
+            = new SigmaEventListener({tooltipOpener, sigmaInstance, familyLoader, dragListener, store})
         sigmaEventListener.startListening()
     },
     [MUTATION_NAMES.REFRESH](state: IState) {
@@ -399,6 +402,18 @@ const mutations = {
     //     }
     //
     // },
+    [MUTATION_NAMES.MOVE_TREE_COORDINATE](state: IState, {treeId, point }: IMoveTreeCoordinateMutationArgs) {
+        const mutation: ITypeIdProppedDatedMutation<PointMutationTypes> = {
+            objectType: ObjectTypes.TREE_LOCATION,
+            id: treeId,
+            timestamp: Date.now(),
+            type: PointMutationTypes.SET,
+            propertyName: TreeLocationPropertyNames.POINT,
+            data: {point},
+        }
+
+        state.globalDataStore.addMutation(mutation)
+    },
     [MUTATION_NAMES.ADD_NODE](state: IState, {node}: IAddNodeMutationArgs) {
         // const addParentEdgeMutationArgs: IAddParentEdgeMutationArgs = {
         //     parentId: node.parentId,
