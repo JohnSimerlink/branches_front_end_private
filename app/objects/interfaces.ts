@@ -395,7 +395,8 @@ export enum SetMutationTypes {
 }
 
 export enum PointMutationTypes {
-    SHIFT = 'PointMutationTypes_SHIFT'
+    SHIFT = 'PointMutationTypes_SHIFT',
+    SET = 'PointMutationTypes_SET'
 }
 
 export enum FieldMutationTypes {
@@ -562,6 +563,9 @@ export interface ISigmaEdge extends ISigmaEdgeData {
 export type ISigmaNodes = IHash<SigmaNode>
 export type ISigmaEdges = IHash<ISigmaEdge>
 export type ISigma = any
+export interface IBindable {
+    bind(eventName: string, callback: (event) => void)
+}
 // export interface ISigma {
 //     graph?: any,
 //     refresh?(arg: any): any,
@@ -872,6 +876,10 @@ export type id = string
 export interface INewChildTreeMutationArgs {
     parentTreeId, timestamp, contentType, question, answer, title,
     parentLocation: ITreeLocationData
+}
+export interface IMoveTreeCoordinateMutationArgs {
+    treeId: id,
+    point: ICoordinate,
 }
 export interface ISetTreeDataMutationArgs {
     treeId: id,
