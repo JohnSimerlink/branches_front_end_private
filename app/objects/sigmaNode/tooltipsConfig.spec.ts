@@ -31,30 +31,30 @@ test('tooltips renderer content should escape', t => {
         nextReviewTime: nextReviewTimeVal,
         lastInteractionTime: lastInteractionTimeVal,
     }
-    const node: ISigmaNodeData = {
-         id: '1234',
-         parentId: '12345',
-         contentId: '4239847',
-         children: [],
-         x: 5,
-         y: 7,
-         aggregationTimer: 50,
-         content: {
-              type: CONTENT_TYPES.FACT,
-              question: 'What is capital of Ohio?',
-              answer: 'Columbus',
-              title: null,
-         },
-         contentUserData,
-         contentUserId: contentUserData.id,
-         label: 'What is capital . . .',
-         size: 10,
-         colorSlices: SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats),
-         proficiencyStats,
-         proficiency: PROFICIENCIES.ONE,
-         overdue: false,
-         nextReviewTime: Date.now() + 10000
-    }
+    // const node: ISigmaNodeData = {
+    //      id: '1234',
+    //      parentId: '12345',
+    //      contentId: '4239847',
+    //      children: [],
+    //      x: 5,
+    //      y: 7,
+    //      aggregationTimer: 50,
+    //      content: {
+    //           type: CONTENT_TYPES.FACT,
+    //           question: 'What is capital of Ohio?',
+    //           answer: 'Columbus',
+    //           title: null,
+    //      },
+    //      contentUserData,
+    //      contentUserId: contentUserData.id,
+    //      label: 'What is capital . . .',
+    //      size: 10,
+    //      colorSlices: SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats),
+    //      proficiencyStats,
+    //      proficiency: PROFICIENCIES.ONE,
+    //      overdue: false,
+    //      nextReviewTime: Date.now() + 10000
+    // }
     // const expectedVueTreeTemplate: string =
     //     `<div id="vue">
     //         <tree

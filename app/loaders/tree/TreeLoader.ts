@@ -68,7 +68,7 @@ export class TreeLoader implements ITreeLoader {
                     const convertedData = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData})
                     resolve(convertedData)
                 } else {
-                    reject('treeDataFromDB is invalid! ! ' + JSON.stringify(treeData))
+                    reject('treeDataFromDB with id of ' + treeId + ' is invalid! ! ' + JSON.stringify(treeData))
                 }
             })
         }) as Promise<ITreeDataWithoutId>

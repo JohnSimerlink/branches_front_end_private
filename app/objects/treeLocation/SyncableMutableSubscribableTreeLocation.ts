@@ -16,6 +16,9 @@ export class SyncableMutableSubscribableTreeLocation
     public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
         return {
             point: this.point,
+            level: this.level, // TODO: Make it where I don't have to manually define the properties. . .
+            // And I can just define an object with certain properties and then define a syncer for that object
+            // and everything just gets synced without all this set up . . .
         }
     }
 }

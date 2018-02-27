@@ -141,11 +141,12 @@ test('store create new child tree should call correct firebaseRefs with correct 
     // CHECK 3: Check that newChild tree was added as a child of the parentTree
     expect(parentTreeRefChildrenUpdateSpy.callCount).to.deep.equal(1)
     const calledWith3 = parentTreeRefChildrenUpdateSpy.getCall(0).args[0]
-    const expectedChildIds =
+    // const expectedChildIds =
     const expectedCalledWith3Val: IHash<boolean> = {
-        [childTreeId]: true,
-        [sampleChildId1]: true,
-        [sampleChildId2]: true
+        [childTreeId]: true
+    }
+    for (const id of parentTreeData.children) {
+        expectedCalledWith3Val[id] = true
     }
     const expectedCalledWith3 = {
         val: expectedCalledWith3Val
