@@ -208,6 +208,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // console.log("nodesOnScreen and nodesOnScreen2", nodesOnScreen)
     // console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
     // nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
+    console.log('this inside of sigma renderers canvas is ', this)
     nodesOnScreen.forEach(node => {
         // console.log('a node on screen is ', node)
         // if (node.type !== NODE_TYPES.TREE) {
@@ -365,23 +366,15 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
 
     // Draw nodes:
     // - No batching
+    let nodesToRender
     if (drawNodes) {
         // console.log(' sigma renderers canvas:  drawNodes about to get called', drawNodes)
         renderers = sigma.canvas.nodes;
-        for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++) {
-            // console.log("sigma renderers canvas: the node on the screen is a[i]")
-            if (!a[i].hidden) {
-                // console.log('sigma renderers canvas: the node is not hidden')
-                ;(renderers[
-                a[i].type || this.settings(options, 'defaultNodeType')
-                    ] || renderers.def)(
-                    a[i],
-                    this.contexts.nodes,
-                    embedSettings
-                );
-            } else {
-                // console.log('sigma renderers canvas: the node is hidden')
-            }
+        nodesToRender = this.nodesOnScreen.filter( n => !n.hidden)
+        for (a = nodesToRender, i = 0, l = a.length; i < l; i++) {
+            const nodeType = a[i].type || this.settings(options, 'defaultNodeType')
+            const renderer = renderers[nodeType] || renderers.def
+            renderer(a[i], this.contexts.nodes, embedSettings)
         }
     }
 
@@ -389,15 +382,14 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // - No batching
     if (drawLabels) {
         renderers = sigma.canvas.labels;
-        for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++)
-            if (!a[i].hidden)
-                (renderers[
-                a[i].type || this.settings(options, 'defaultNodeType')
-                    ] || renderers.def)(
-                    a[i],
-                    this.contexts.labels,
-                    embedSettings
-                );
+        if (!nodesToRender) {
+            nodesToRender = this.nodesOnScreen.filter( n => !n.hidden)
+        }
+        for (a = nodesToRender, i = 0, l = a.length; i < l; i++){
+            const nodeType = a[i].type || this.settings(options, 'defaultNodeType')
+            const renderer = renderers[nodeType] || renderers.def
+            renderer(a[i], this.contexts.labels, embedSettings)
+        }
     }
 
     this.dispatchEvent('render');
