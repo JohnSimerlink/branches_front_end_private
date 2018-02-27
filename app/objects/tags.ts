@@ -5,6 +5,7 @@ export const TAGS = {
     CONTENT_USERS_REF: Symbol('content_users_ref'),
     DEFAULT: Symbol('default'),
     DEFAULT_UIS_ARRAY: Symbol('default_uis_array'),
+    DRAG_LISTENER: Symbol('drag_listener'),
     MAIN_APP: Symbol('main_app'),
     MAIN_SIGMA_INSTANCE: Symbol('main_sigma_instance'),
     OVERDUE_LISTENER: Symbol('overdue_listener'),

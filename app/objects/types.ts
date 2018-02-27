@@ -36,6 +36,7 @@ export const TYPES = {
     IApp: Symbol('IApp'),
     IAuthListener: Symbol('IAuthListener'),
     IAutoSaveMutableSubscribableContentUserStore: Symbol('IAutoSaveMutableSubscribableContentUserStore'),
+    IBindable: Symbol('IBindable'),
     ICanvasUI: Symbol('ICanvasUI'),
     IColorSlice: Symbol('IColorSlice'),
     IContentIdSigmaIdMap: Symbol('IContentIdSigmaIdMap'),

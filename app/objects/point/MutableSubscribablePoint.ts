@@ -66,6 +66,11 @@ export class MutableSubscribablePoint
         this.y -= delta.y
         return this.val()
     }
+    private set(point: ICoordinate): ICoordinate {
+        this.x = point.x
+        this.y = point.y
+        return this.val()
+    }
 
     public addMutation(mutation: IDatedMutation<PointMutationTypes>): void {
         this.doMutation(mutation)
@@ -86,6 +91,9 @@ export class MutableSubscribablePoint
         switch (mutation.type) {
             case PointMutationTypes.SHIFT:
                 this.shift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
+                break;
+            case PointMutationTypes.SET:
+                this.set(mutation.data.point) // TODO: Law of Demeter Violation? How to fix?
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
