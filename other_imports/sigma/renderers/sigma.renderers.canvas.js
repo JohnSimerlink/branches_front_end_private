@@ -135,7 +135,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     options = options || {};
     dontPublish = dontPublish || false
 
-    // window.resetLabelData()
+    window.resetLabelData()
     var a,
         i,
         k,

@@ -23,6 +23,11 @@ import {
 } from '../../testHelpers/testHelpers';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
+import {sampleTreeLocationData1} from "../treeLocation/treeLocationTestHelpers";
+import {sampleTreeUserData1} from "../treeUser/treeUsertestHelpers";
+import {sampleContentData1} from "../content/contentTestHelpers";
+import {sampleContentUserData1} from "../contentUser/ContentUserHelpers";
+import {sampleTreeData1} from "../tree/treeTestHelpers";
 function refresh() {}
 myContainerLoadAllModules()
 
@@ -89,23 +94,17 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
 //
 test('SigmaNodesUpdater:::A Tree Location Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
-    const val: ITreeLocationData = {
-        point: {
-            x: 5,
-            y: 9,
-        },
-    }
     const update: ITypeAndIdAndValUpdates = {
         id: TREE_ID,
         type: ObjectDataTypes.TREE_LOCATION_DATA,
-        val,
+        val: sampleTreeLocationData1,
     }
 
     const sigmaNode1ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeLocationData')
     const sigmaNode2ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeLocationData')
 
     sigmaNodesUpdater.handleUpdate(update)
-    expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(val)
+    expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(sampleTreeLocationData1)
     expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1)
     expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0)
     t.pass()
@@ -113,27 +112,17 @@ test('SigmaNodesUpdater:::A Tree Location Update should call' +
 //
 test('SigmaNodesUpdater:::A Tree User Data Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
-    const val: ITreeUserData = {
-        aggregationTimer: 1230,
-        proficiencyStats: {
-            UNKNOWN: 8,
-            ONE: 3,
-            TWO: 4,
-            THREE: 5,
-            FOUR: 8,
-        },
-    }
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
     const update: ITypeAndIdAndValUpdates = {
         id: TREE_ID,
         type: ObjectDataTypes.TREE_USER_DATA,
-        val,
+        val: sampleTreeUserData1,
     }
     const sigmaNode1ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData')
     const sigmaNode2ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeUserData')
 
     sigmaNodesUpdater.handleUpdate(update)
-    expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
+    expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleTreeUserData1)
     expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1)
     expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0)
     t.pass()
@@ -141,82 +130,50 @@ test('SigmaNodesUpdater:::A Tree User Data Update should call' +
 //
 test('SigmaNodesUpdater:::A Content Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
-    const val: IContentData = {
-        answer: 'Sacramento',
-        question: 'California',
-        type: CONTENT_TYPES.FACT,
-    }
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
     const update: ITypeAndIdAndValUpdates = {
         id: CONTENT_ID,
         type: ObjectDataTypes.CONTENT_DATA,
-        val,
+        val: sampleContentData1,
     }
     const sigmaNode1ReceiveNewContentDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentData')
     const sigmaNode2ReceiveNewContentDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentData')
 
     sigmaNodesUpdater.handleUpdate(update)
-    expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(val)
+    expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentData1)
+    expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentData1)
     t.pass()
 })
 //
 test('SigmaNodesUpdater:::A Content User Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
-    const userId = '12345'
-    const contentUserId = getContentUserId({userId, contentId: CONTENT_ID})
-    const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastInteractionTimeVal = Date.now()
-    const val: IContentUserData = {
-        id: contentUserId,
-        lastRecordedStrength: 54, // TODO: this mig
-        overdue: true,
-        proficiency: PROFICIENCIES.ONE,
-        timer: 432,
-        nextReviewTime: nextReviewTimeVal,
-        lastInteractionTime: lastInteractionTimeVal,
-    }
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
     const update: ITypeAndIdAndValUpdates = {
         id: CONTENT_ID,
         type: ObjectDataTypes.CONTENT_USER_DATA,
-        val,
+        val: sampleContentUserData1,
     }
     const sigmaNode1ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentUserData')
     const sigmaNode2ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentUserData')
 
     sigmaNodesUpdater.handleUpdate(update)
-    expect(sigmaNode1ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
-    expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(val)
+    expect(sigmaNode1ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1)
+    expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1)
     t.pass()
 })
 
 test('SigmaNodesUpdater:::A receive tree data and receive tree location data should call the appropriate methods' +
     ' on sigmaRenderManager place the node into the rendered nodes list', (t) => {
-    const newContentId = '4324234'
-    const newParentId = '4344324234'
-    const newChildren = ['45344324234', 'aabc321', 'abcd43132']
-    const treeData: ITreeDataWithoutId = {
-        children: newChildren,
-        contentId: newContentId,
-        parentId: newParentId,
-    }
     const treeDataUpdate: ITypeAndIdAndValUpdates = {
         id: TREE_ID,
         type: ObjectDataTypes.TREE_DATA,
-        val: treeData,
+        val: sampleTreeData1,
     }
 
-    const treeLocationData: ITreeLocationData = {
-        point: {
-            x: 5,
-            y: 9,
-        },
-    }
     const treeLocationDataUpdate: ITypeAndIdAndValUpdates = {
         id: TREE_ID,
         type: ObjectDataTypes.TREE_LOCATION_DATA,
-        val: treeLocationData,
+        val: sampleTreeLocationData1,
     }
 
     const sigmaRenderManagerMarkTreeDataLoadedSpy = sinon.spy(sigmaRenderManager, 'markTreeDataLoaded')

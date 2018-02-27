@@ -11,7 +11,7 @@ But no tree is received yet that has that contentId
 So when a tree(s) is received that has the contentId it will check the contentIdContentMap[contentId] and automatically call receiveNewContent with that content value
 
 app integration 4
--we need to mak eit so that we can just swap out the firebaseTrees ref, swap out the store2.ts injection, fetch the appContainer. . . run appContainer.start(), then run store.commit(MUTATION_NAMES.CHANGE_PARENT_ID, {parentTreeId, childTreeid}) and see that the spy gets called on the appropriate child ref
+-we need to mak eit so that we can just swap out the firebaseTrees ref, swap out the store.ts injection, fetch the appContainer. . . run appContainer.start(), then run store.commit(MUTATION_NAMES.CHANGE_PARENT_ID, {parentTreeId, childTreeid}) and see that the spy gets called on the appropriate child ref
 
 --so intermediate step is get it so that bootstrap.ts simply just fetches appContainer, then calls appContainer.start()
 

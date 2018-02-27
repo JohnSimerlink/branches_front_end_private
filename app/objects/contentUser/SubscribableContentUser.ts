@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import {
     IContentUserData,
     ISubscribableContentUser,
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     IValUpdates, timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -15,18 +15,18 @@ import {TYPES} from '../types'
 export class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
     private publishing = false
     public id: string
-    public overdue: ISubscribableMutableField<boolean>;
-    public timer: ISubscribableMutableField<number>;
-    public proficiency: ISubscribableMutableField<PROFICIENCIES>;
-    public lastEstimatedStrength: ISubscribableMutableField<number>;
-    public lastInteractionTime: ISubscribableMutableField<timestamp>
-    public nextReviewTime: ISubscribableMutableField<timestamp>
+    public overdue: IMutableSubscribableField<boolean>;
+    public timer: IMutableSubscribableField<number>;
+    public proficiency: IMutableSubscribableField<PROFICIENCIES>;
+    public lastEstimatedStrength: IMutableSubscribableField<number>;
+    public lastInteractionTime: IMutableSubscribableField<timestamp>
+    public nextReviewTime: IMutableSubscribableField<timestamp>
 
     // TODO: should the below three objects be private?
     public val(): IContentUserData {
         return {
             id: this.id,
-            lastRecordedStrength: this.lastEstimatedStrength.val(),
+            lastEstimatedStrength: this.lastEstimatedStrength.val(),
             overdue: this.overdue.val(),
             proficiency: this.proficiency.val(),
             timer: this.timer.val(),
@@ -35,7 +35,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         }
     }
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
         lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs) {
         super({updatesCallbacks})
@@ -43,7 +43,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.overdue = overdue
         this.proficiency = proficiency
         this.timer = timer
-        this.lastEstimatedStrength = lastRecordedStrength
+        this.lastEstimatedStrength = lastEstimatedStrength
         this.lastInteractionTime = lastInteractionTime
         this.nextReviewTime = nextReviewTime
     }
@@ -69,10 +69,10 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
 export class SubscribableContentUserArgs {
     @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.String) public id: string
-    @inject(TYPES.ISubscribableMutableNumber) public lastRecordedStrength: ISubscribableMutableField<number>
-    @inject(TYPES.ISubscribableMutableBoolean) public overdue: ISubscribableMutableField<boolean>
-    @inject(TYPES.ISubscribableMutableProficiency) public proficiency: ISubscribableMutableField<PROFICIENCIES>
-    @inject(TYPES.ISubscribableMutableNumber) public timer: ISubscribableMutableField<number>
-    @inject(TYPES.ISubscribableMutableNumber) public lastInteractionTime: ISubscribableMutableField<timestamp>
-    @inject(TYPES.ISubscribableMutableNumber) public nextReviewTime: ISubscribableMutableField<timestamp>
+    @inject(TYPES.IMutableSubscribableNumber) public lastEstimatedStrength: IMutableSubscribableField<number>
+    @inject(TYPES.IMutableSubscribableBoolean) public overdue: IMutableSubscribableField<boolean>
+    @inject(TYPES.IMutableSubscribableProficiency) public proficiency: IMutableSubscribableField<PROFICIENCIES>
+    @inject(TYPES.IMutableSubscribableNumber) public timer: IMutableSubscribableField<number>
+    @inject(TYPES.IMutableSubscribableNumber) public lastInteractionTime: IMutableSubscribableField<timestamp>
+    @inject(TYPES.IMutableSubscribableNumber) public nextReviewTime: IMutableSubscribableField<timestamp>
 }

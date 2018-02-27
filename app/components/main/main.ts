@@ -1,4 +1,3 @@
-import './main.less'
 import {log} from '../../core/log'
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
@@ -6,8 +5,9 @@ if (env === 'test') {
     if (!register) {
         register = require('ignore-styles')
     }
-    register(['.html'])
+    register(['.html', '.less'])
 }
+import './main.less'
 // tslint:disable-next-line no-var-requires
 const template = require('./main.html').default
 export default {

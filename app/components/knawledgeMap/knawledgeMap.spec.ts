@@ -9,7 +9,7 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
@@ -18,7 +18,7 @@ import {
     ITreeLocationLoader, IKnawledgeMapCreator, ITree, IOneToManyMap
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMap2';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMapNew';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';

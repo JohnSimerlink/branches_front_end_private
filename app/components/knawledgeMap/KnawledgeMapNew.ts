@@ -5,7 +5,7 @@ import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {ANOTHER_CONTENT_ID, ANOTHER_ID, INITIAL_ID_TO_DOWNLOAD, ROOT_CONTENT_ID} from '../../core/globals';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     IContentLoader, IContentUserLoader, IVueComponentCreator, ITree, ITreeLoader, ITreeLocationLoader,
     IVuexStore, IKnawledgeMapCreator, id, ISigmaNodeLoader, ISigma
@@ -21,14 +21,22 @@ import {TAGS} from '../../objects/tags';
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default
 // import {Store} from 'vuex';
+// import {injectable, inject} from 'inversify';
+// import {IKnawledgeMapCreator, ISigmaNodeLoader} from '../../objects/interfaces';
+// import {TYPES} from '../../objects/types';
+// import {Store} from 'vuex';
+// import {KnawledgeMapCreatorArgs} from './knawledgeMap';
+
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     private sigmaNodeLoader: ISigmaNodeLoader
     private store: Store<any>
-    constructor(@inject(TYPES.KnawledgeMapCreatorArgs){
-        sigmaNodeLoader,
-        store
-    }: KnawledgeMapCreatorArgs) {
+    constructor(
+        @inject(TYPES.KnawledgeMapCreatorArgs)
+        {
+            sigmaNodeLoader,
+            store
+        }: KnawledgeMapCreatorArgs) {
         this.sigmaNodeLoader = sigmaNodeLoader
         this.store = store
     }
@@ -81,8 +89,10 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 }
             }
         }
+
     }
 }
+
 @injectable()
 export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ISigmaNodeLoader)

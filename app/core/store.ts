@@ -7,12 +7,15 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData, ITreeDataWithoutId,
+    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData,
+    ITreeDataWithoutId,
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
-    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,
+    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
+    ISetContentUserDataMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -27,7 +30,7 @@ import {createParentSigmaEdge} from '../objects/sigmaEdge/sigmaEdge';
 import {MutableSubscribableUser} from '../objects/user/MutableSubscribableUser';
 import {IMutableSubscribableUser} from '../objects/interfaces';
 import {IProppedDatedMutation} from '../objects/interfaces';
-import {UserPropertyNames} from '../objects/interfaces';
+import {UserPropertyNames, ITreeUserData} from '../objects/interfaces';
 import {TAGS} from '../objects/tags';
 import * as firebase from 'firebase';
 import {UserDeserializer} from '../loaders/user/UserDeserializer';
@@ -67,6 +70,11 @@ export enum MUTATION_NAMES {
     SET_USER_DATA = 'set_user_data',
     SET_MEMBERSHIP_EXPIRATION_DATE = 'set_membership_expiration_date',
     LOGIN_WITH_FACEBOOK = 'login_with_facebook',
+    SET_TREE_DATA = 'set_tree_data',
+    SET_TREE_LOCATION_DATA = 'set_tree_location_data',
+    SET_TREE_USER_DATA = 'set_tree_user_data',
+    SET_CONTENT_DATA = 'set_content_data',
+    SET_CONTENT_USER_DATA = 'set_content_user_data',
 }
 
 const getters = {
@@ -132,7 +140,22 @@ const getters = {
             // const expirationTime = user.membershipExpirationDate.val()
             // return expirationTime >= Date.now()
         }
-    }
+    },
+    treeData(state: IState, getters) {
+        return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId]
+    },
+    treeLocationData(state: IState, getters) {
+        return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId]
+    },
+    treeUsersData(state: IState, getters) {
+        return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId]
+    },
+    contentData(state: IState, getters) {
+        return (contentId: id): IContentData => state.globalDataStoreData.content[contentId]
+    },
+    contentUserData(state: IState, getters) {
+        return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId]
+    },
 }
 const mutations = {
     initializeSigmaInstance() {
@@ -166,7 +189,7 @@ const mutations = {
         sigmaInstance.cameras[0].goTo({x: 5, y: 5, ratio: .05})
 
         /* TODO: it would be nice if I didn't have to do all this constructing
-         inside of store2.ts and rather did it inside of appContainer or inversify.config.ts */
+         inside of store.ts and rather did it inside of appContainer or inversify.config.ts */
         const store = getters.getStore()
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig()
@@ -214,17 +237,17 @@ const mutations = {
         state: IState, {contentUserId, proficiency, timestamp}) {
         const contentUserData: IContentUserData = {
             id: contentUserId,
-            timer: 0, // TODO: add timer to app
-            lastRecordedStrength: null, // TODO: Add initial calculate strength to app,
-            overdue: false, // TODO: add initial overdue functionality
-            lastInteractionTime: timestamp,
-            nextReviewTime: null, // TODO: add initial calculate nextReviewTime functionality
+            timer: 0, // TODO: add sampleContentUser1Timer to app
+            lastEstimatedStrength: null, // TODO: Add initial calculate strength to app,
+            overdue: false, // TODO: add initial sampleContentUser1Overdue functionality
+            lastInteractionTime: null,
+            nextReviewTime: null, // TODO: add initial calculate sampleContentUser1NextReviewTime functionality
             proficiency,
         }
         /**
          * logic for initial stuff up there ^^^^
          *
-         if (this.proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
+         if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
                     millisecondsSinceLastInteraction = 60 * 60 * 1000
                 }
          *
@@ -247,17 +270,20 @@ const mutations = {
     [MUTATION_NAMES.NEW_CHILD_TREE](
         state: IState,
         {
-            parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
+            parentTreeId, timestamp, contentType, question, answer, title, parentLocation,
         }: INewChildTreeMutationArgs
     ): id {
-        log('NEW CHILD TREE CALLED. parentX and parentY are ', parentX, parentY)
+        log('J14J NEW_CHILD_TREE called')
+        // log('NEW CHILD TREE CALLED. parentX and parentY are ', parentLocation.point.x, parentLocation.point.y)
         // TODO: UNIT / INT TEST
+        const store = getters.getStore()
         /**
          * Create Content
          */
-        const contentId = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
+        const contentId /*: id */ = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
             question, answer, title, type: contentType
         })
+        log('J14J contentId ', contentId)
         const contentIdString = contentId as any as id // TODO: Why do I have to do this casting?
 
         /**
@@ -274,23 +300,24 @@ const mutations = {
          */
         const r = 30
         const newLocation: ICoordinate =
-            obtainNewLocation({r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentX, y: parentY}})
+            obtainNewLocation(
+                {r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentLocation.point.x, y: parentLocation.point.y}})
 
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
-            treeId: treeIdString, x: newLocation.x, y: newLocation.y
+            treeId: treeIdString, x: newLocation.x, y: newLocation.y, level: parentLocation.level + 1
         }
 
-        const treeLocationData = mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
+        const treeLocationData = store.commit(MUTATION_NAMES.CREATE_TREE_LOCATION, createTreeLocationMutationArgs)
         /* TODO: Why can't I type treelocationData? why are all the mutation methods being listed as void? */
         /**
          * Add the newly created tree as a child of the parent
          */
-        mutations[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state, {parentTreeId, childTreeId: treeId})
+        store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: treeId})
 
         return treeIdString
         },
     [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState,
-                                         {
+     {
          parentTreeId, childTreeId,
      }) {
 
@@ -307,14 +334,16 @@ const mutations = {
         // TODO: a second mutation that sets the parentId of the child? or is that handled in another mutation?
     },
     [MUTATION_NAMES.CREATE_CONTENT](state: IState, {
-        type, question, answer, title
+        type, question,
+        answer, title
     }: IContentDataEither): id {
+        log('J14J Create Content called')
         const createMutation: ICreateMutation<IContentData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.CONTENT,
             data: {type, question, answer, title},
         }
-        const contentId = state.globalDataStore.addMutation(createMutation)
+        const contentId: id = state.globalDataStore.addMutation(createMutation)
         return contentId
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
@@ -344,7 +373,7 @@ const mutations = {
     [MUTATION_NAMES.CREATE_TREE_LOCATION](
         state: IState,
         {
-            treeId, x, y,
+            treeId, x, y, level
         }: ICreateTreeLocationMutationArgs
     ): ITreeLocationData {
         const createMutation: ICreateMutation<ITreeLocationData> = {
@@ -354,6 +383,7 @@ const mutations = {
                 point: {
                     x, y,
                 },
+                level,
             },
             id: treeId
         }
@@ -412,7 +442,7 @@ const mutations = {
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
         const userExistsInDB = await state.userUtils.userExistsInDB(userId)
-        console.log('store2.ts userExistsInDB is', userExistsInDB)
+        console.log('store.ts userExistsInDB is', userExistsInDB)
         let user: ISyncableMutableSubscribableUser
         if (!userExistsInDB) {
             user = await state.userUtils.createUserInDB(userId)
@@ -483,7 +513,22 @@ const mutations = {
 
         })
 
-    }
+    },
+    [MUTATION_NAMES.SET_TREE_DATA](state: IState, {treeId, treeDataWithoutId}: ISetTreeDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId)
+    },
+    [MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState, {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.treeLocations, treeId, treeLocationData)
+    },
+    [MUTATION_NAMES.SET_TREE_USER_DATA](state: IState, {treeId, treeUserData}: ISetTreeUserDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.treeUsers, treeId, treeUserData)
+    },
+    [MUTATION_NAMES.SET_CONTENT_DATA](state: IState, {contentId, contentData}: ISetContentDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.content, contentId, contentData)
+    },
+    [MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState, {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
+        Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData)
+    },
 }
 // TODO: DO I even use these mutation? << YES
 // mutations[MUTATION_NAMES.ADD_NODE] = (state, {node}: IAddNodeMutationArgs) => {

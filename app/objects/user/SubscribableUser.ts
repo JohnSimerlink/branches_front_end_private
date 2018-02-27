@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import {
     IUserData,
     ISubscribableUser,
-    ISubscribableMutableField,
+    IMutableSubscribableField,
     IValUpdates, timestamp,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
@@ -14,8 +14,8 @@ import {TYPES} from '../types'
 export class SubscribableUser extends Subscribable<IValUpdates> implements ISubscribableUser {
     // TODO: dependeny inject the publishing field
     private publishing = false
-    public membershipExpirationDate: ISubscribableMutableField<timestamp>;
-    public everActivatedMembership: ISubscribableMutableField<boolean>;
+    public membershipExpirationDate: IMutableSubscribableField<timestamp>;
+    public everActivatedMembership: IMutableSubscribableField<boolean>;
 
     constructor(@inject(TYPES.SubscribableUserArgs) {
         updatesCallbacks,
@@ -52,6 +52,6 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
 @injectable()
 export class SubscribableUserArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[]
-    @inject(TYPES.ISubscribableMutableNumber) public membershipExpirationDate: ISubscribableMutableField<timestamp>
-    @inject(TYPES.ISubscribableMutableBoolean) public everActivatedMembership: ISubscribableMutableField<boolean>
+    @inject(TYPES.IMutableSubscribableNumber) public membershipExpirationDate: IMutableSubscribableField<timestamp>
+    @inject(TYPES.IMutableSubscribableBoolean) public everActivatedMembership: IMutableSubscribableField<boolean>
 }

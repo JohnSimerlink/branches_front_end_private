@@ -5,7 +5,7 @@ import {
     ISyncableMutableSubscribableTreeLocation, ITreeLocationData, ITreeLocationDataFromFirebase,
     ITreeLocationLoader
 } from '../../objects/interfaces';
-import {isValidTreeLocationDataFromFirebase} from '../../objects/treeLocation/treeLocationValidator';
+import {isValidTreeLocationDataFromDB} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import * as firebase from 'firebase';
@@ -48,15 +48,22 @@ export class TreeLocationLoader implements ITreeLocationLoader {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {
                 const treeLocationDataFromFirebase: ITreeLocationDataFromFirebase = snapshot.val()
-                if (isValidTreeLocationDataFromFirebase(treeLocationDataFromFirebase)) {
+                if (isValidTreeLocationDataFromDB(treeLocationDataFromFirebase)) {
                     const tree: ISyncableMutableSubscribableTreeLocation =
-                        TreeLocationDeserializer.deserializeFromFirebase({treeLocationDataFromFirebase})
+                        TreeLocationDeserializer.deserializeFromDB(
+                            {treeLocationDataFromDB: treeLocationDataFromFirebase}
+                        )
                     const treeLocationData =
-                        TreeLocationDeserializer.convertFromFirebaseToData({treeLocationDataFromFirebase})
+                        TreeLocationDeserializer.convertFromDBToData(
+                            {treeLocationDataFromDB: treeLocationDataFromFirebase}
+                        )
                     me.storeSource.set(treeId, tree)
                     resolve(treeLocationData)
                 } else {
-                    reject('treeLocationData for ' + treeId + ' invalid!' + treeLocationDataFromFirebase )
+                    console.error('treeLocationData for ' , treeId ,
+                        ' invalid!' , treeLocationDataFromFirebase)
+                    reject('treeLocationData for ' + treeId +
+                        ' invalid!' + JSON.stringify(treeLocationDataFromFirebase))
                 }
             })
         }) as Promise<ITreeLocationData>

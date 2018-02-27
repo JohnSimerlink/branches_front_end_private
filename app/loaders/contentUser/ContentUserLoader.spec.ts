@@ -173,7 +173,7 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     const sampleContentUserData: IContentUserData = {
         id: contentUserId,
         overdue: overdueVal,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
         timer: timerVal,
         nextReviewTime: nextReviewTimeVal,
@@ -269,10 +269,10 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
 
     // const sampleContentUserData1: IContentUserData = {
     //     id: contentUserId,
-    //     overdue: overdueVal,
+    //     sampleContentUser1Overdue: overdueVal,
     //     lastEstimatedStrength: lastRecordedStrengthVal,
-    //     proficiency: proficiencyVal,
-    //     timer: timerVal
+    //     sampleContentUser1Proficiency: proficiencyVal,
+    //     sampleContentUser1Timer: timerVal
     // }
 
 

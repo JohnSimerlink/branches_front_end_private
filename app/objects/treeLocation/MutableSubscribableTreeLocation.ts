@@ -19,9 +19,9 @@ export class MutableSubscribableTreeLocation
 
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
-        updatesCallbacks, point
+        updatesCallbacks, point, level
     }: SubscribableTreeLocationArgs) {
-        super({updatesCallbacks, point})
+        super({updatesCallbacks, point, level})
     }
 
     public addMutation(mutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>

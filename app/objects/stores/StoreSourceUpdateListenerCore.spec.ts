@@ -16,7 +16,7 @@ import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava'
 import {partialInject} from '../../testHelpers/partialInject';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store2';
+import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 
 myContainerLoadAllModules()
@@ -46,15 +46,23 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
     }
     const sigmaNodes = {}
     // const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-    const sigmaNodesUpdater: ISigmaNodesUpdater = partialInject<SigmaNodesUpdaterArgs>({
+    const sigmaNodesUpdater: ISigmaNodesUpdater
+        = partialInject<SigmaNodesUpdaterArgs>({
         constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
-        konstructor: SigmaNodesUpdater, container: myContainer,
+        konstructor: SigmaNodesUpdater,
+        container: myContainer,
         injections: {sigmaNodes}
     })
-        // = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
+    // = new SigmaNodesUpdater({sigmaNodes, sigmaRenderManager, getSigmaIdsForContentId: () => void 0})
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        = new StoreSourceUpdateListenerCore({sigmaNodesUpdater, contentIdSigmaIdMap})
+        = partialInject<StoreSourceUpdateListenerCoreArgs>({
+        constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
+        konstructor: StoreSourceUpdateListenerCore,
+        container: myContainer,
+        injections: {sigmaNodesUpdater, contentIdSigmaIdMap}
+    })
+
     const sigmaNodesUpdaterHandleUpdateSpy = sinon.spy(sigmaNodesUpdater, 'handleUpdate')
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
     store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)

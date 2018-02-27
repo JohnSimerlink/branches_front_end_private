@@ -56,17 +56,17 @@ export default {
             // this.saveStudySettings()
         },
         selectOverdue() {
-            // this.studySettings.oldTypes.overdue = true
+            // this.studySettings.oldTypes.sampleContentUser1Overdue = true
             // this.studySettings.oldTypes.notOverdue = false
             // this.saveStudySettings()
         },
         selectNotOverdue() {
-            // this.studySettings.oldTypes.overdue = false
+            // this.studySettings.oldTypes.sampleContentUser1Overdue = false
             // this.studySettings.oldTypes.notOverdue = true
             // this.saveStudySettings()
         },
         selectBothOverdueAndNotOverdue() {
-            // this.studySettings.oldTypes.overdue = true
+            // this.studySettings.oldTypes.sampleContentUser1Overdue = true
             // this.studySettings.oldTypes.notOverdue = true
             // this.saveStudySettings()
         },

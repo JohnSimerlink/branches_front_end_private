@@ -23,10 +23,10 @@ import moment = require('moment');
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
-        updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
         lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs ) {
-        super({updatesCallbacks, id, overdue, proficiency, timer, lastRecordedStrength,
+        super({updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
         lastInteractionTime, nextReviewTime})
 
     }
@@ -106,7 +106,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                 this.addMutation(interactionTimeMutation)
                 this.addMutation(nextReviewTimeMutation)
 
-                // const strength = calculateStrength(proficiency, )
+                // const strength = calculateStrength(sampleContentUser1Proficiency, )
                 break
             case ContentUserPropertyNames.TIMER:
                 this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
