@@ -53,7 +53,7 @@ const serverMutations = {
         // console.log(" STORE JS tree leaf values before sorting are ",
         //     JSON.stringify(tree.leaves.map(leaf =>
         //         {
-        //             return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+        //             return {id: leaf.id, strength: leaf.lastEstimatedStrength.value}
         //         }
         //     )),
         // )
@@ -61,7 +61,7 @@ const serverMutations = {
         // console.log(" STORE JS tree leaf values after sorting are ",
         //     JSON.stringify(tree.leaves.map(leaf =>
         //     {
-        //         return {id: leaf.id, strength: leaf.lastRecordedStrength.value}
+        //         return {id: leaf.id, strength: leaf.lastEstimatedStrength.value}
         //     }
         //     ))
         // )
@@ -73,11 +73,11 @@ const serverMutations = {
             // const label = contentItem.getLabel()
             // message(
             //     {
-            //         text: 'No new or overdue items for ' + label + "! Study something else :)",
+            //         text: 'No new or sampleContentUser1Overdue items for ' + label + "! Study something else :)",
             //     }
             // )
             this.commit('hoverOverItemId', contentItem.id)
-            this.commit('enterExploringMode', {reason: "No more new or overdue items!"})
+            this.commit('enterExploringMode', {reason: "No more new or sampleContentUser1Overdue items!"})
         }
     },
 }
@@ -179,7 +179,7 @@ const localMutations = {
             // PubSub.publish('canvas.closeTooltip', {oldNode: treeId})
         } else {
             // this.commit('enterExploringMode', {reason: "No Items to study for this tree" })
-            message({text: "No new / overdue items to study for this tree!"})
+            message({text: "No new / sampleContentUser1Overdue items to study for this tree!"})
         }
     },
     async openReview(state, itemId){

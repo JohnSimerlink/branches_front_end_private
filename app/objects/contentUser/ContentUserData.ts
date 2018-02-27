@@ -10,7 +10,7 @@ export class ContentUserData implements IContentUserData {
     public overdue: boolean;
     public timer: number;
     public proficiency: PROFICIENCIES;
-    public lastRecordedStrength: any;
+    public lastEstimatedStrength: any;
     public lastInteractionTime: timestamp;
     public nextReviewTime: timestamp;
     constructor(@inject(TYPES.ContentUserDataArgs) {
@@ -21,7 +21,7 @@ export class ContentUserData implements IContentUserData {
         this.overdue = overdue
         this.timer = timer
         this.proficiency = proficiency
-        this.lastRecordedStrength = lastRecordedStrength
+        this.lastEstimatedStrength = lastRecordedStrength
         this.lastInteractionTime = lastInteractionTime
         this.nextReviewTime = nextReviewTime
     }

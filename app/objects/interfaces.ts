@@ -20,7 +20,7 @@ export interface IKnawledgeMapCreator extends IVueComponentCreator {
 }
 export interface IKnawledgeMapCreatorClone extends IVueComponentCreator {
 }
-export interface ITree3Creator extends IVueComponentCreator {
+export interface ITreeCreator extends IVueComponentCreator {
 }
 export interface ITreeComponentCreator2 extends IVueComponentCreator {}
 export interface IVuexStore extends Store<any> {
@@ -41,7 +41,7 @@ export interface IContentItem {
 // loaders
 // export interface ITreeLoaderCore {
 //     download(treeId): Promise<ITreeDataWithoutId>
-//     deserializeFromDB(treeId, treeData: ITreeDataWithoutId): IMutableSubscribableTree
+//     deserializeFromDB(treeId, treeDataFromDB: ITreeDataWithoutId): IMutableSubscribableTree
 // }
 export interface ISigmaNodeLoader {
     loadIfNotLoaded(sigmaid: id): Promise<ISigmaLoadData>
@@ -121,10 +121,10 @@ export interface IContent {
 }
 
 export interface ISubscribableContentCore extends IContent {
-    type: ISubscribableMutableField<CONTENT_TYPES>;
-    question: ISubscribableMutableField<string>;
-    answer: ISubscribableMutableField<string>;
-    title: ISubscribableMutableField<string>;
+    type: IMutableSubscribableField<CONTENT_TYPES>;
+    question: IMutableSubscribableField<string>;
+    answer: IMutableSubscribableField<string>;
+    title: IMutableSubscribableField<string>;
     val(): IContentData
 }
 
@@ -188,12 +188,12 @@ export interface IContentUser {
 }
 
 export interface ISubscribableContentUserCore extends IContentUser {
-    overdue: ISubscribableMutableField<boolean>
-    timer: ISubscribableMutableField<number>
-    proficiency: ISubscribableMutableField<PROFICIENCIES>
-    lastEstimatedStrength: ISubscribableMutableField<number>
-    lastInteractionTime: ISubscribableMutableField<timestamp>
-    nextReviewTime: ISubscribableMutableField<timestamp>
+    overdue: IMutableSubscribableField<boolean>
+    timer: IMutableSubscribableField<number>
+    proficiency: IMutableSubscribableField<PROFICIENCIES>
+    lastEstimatedStrength: IMutableSubscribableField<number>
+    lastInteractionTime: IMutableSubscribableField<timestamp>
+    nextReviewTime: IMutableSubscribableField<timestamp>
     val(): IContentUserData
 }
 
@@ -235,7 +235,7 @@ export interface IContentUserData {
     overdue: boolean,
     timer: number,
     proficiency: PROFICIENCIES,
-    lastRecordedStrength: number,
+    lastEstimatedStrength: number,
     lastInteractionTime: timestamp,
     nextReviewTime: timestamp,
 }
@@ -320,7 +320,7 @@ export interface IField<T> {
 }
 export interface IMutableField<T> extends IMutable<IDatedMutation<FieldMutationTypes>>, IField<T> {}
 
-export interface ISubscribableMutableField<T> extends ISubscribable<IDetailedUpdates>, IMutableField<T> {
+export interface IMutableSubscribableField<T> extends ISubscribable<IDetailedUpdates>, IMutableField<T> {
 }
 
 // misc
@@ -440,8 +440,8 @@ export interface IUser {
     // title: IMutableField<string>
 }
 export interface ISubscribableUserCore extends IUser {
-    membershipExpirationDate: ISubscribableMutableField<timestamp>
-    everActivatedMembership: ISubscribableMutableField<boolean>
+    membershipExpirationDate: IMutableSubscribableField<timestamp>
+    everActivatedMembership: IMutableSubscribableField<boolean>
     val(): IUserData
 }
 
@@ -597,6 +597,7 @@ export interface ISigmaNodeData {
     children: string[];
     x: number;
     y: number;
+    level: number;
     aggregationTimer: number;
     content: IContentData;
     contentUserId: string;
@@ -670,6 +671,8 @@ export interface ISetUserDataMutationArgs {
 
 // stores
 
+export interface IGlobalDataStoreBranchesStoreSyncer extends IStartable {
+}
 export interface IMutableSubscribableGlobalStore
     extends ISubscribableGlobalStore, IMutable<IGlobalMutation> {
 }
@@ -843,6 +846,13 @@ export interface IState {
     graph: ISigmaGraph,
     sigmaInitialized: boolean,
     globalDataStore: IMutableSubscribableGlobalStore,
+    globalDataStoreData: {
+        content: IHash<IContentData>,
+        contentUsers: IHash<IContentUserData>,
+        trees: IHash<ITreeDataWithoutId>,
+        treeUsers: IHash<ITreeUserData>,
+        treeLocations: IHash<ITreeLocationData>,
+    },
     userId: string,
     userLoader: IUserLoader
     usersData: IHash<IUserData>,
@@ -860,7 +870,28 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 }
 export type id = string
 export interface INewChildTreeMutationArgs {
-    parentTreeId, timestamp, contentType, question, answer, title, parentX, parentY,
+    parentTreeId, timestamp, contentType, question, answer, title,
+    parentLocation: ITreeLocationData
+}
+export interface ISetTreeDataMutationArgs {
+    treeId: id,
+    treeDataWithoutId: ITreeDataWithoutId
+}
+export interface ISetTreeLocationDataMutationArgs {
+    treeId: id,
+    treeLocationData: ITreeLocationData
+}
+export interface ISetTreeUserDataMutationArgs {
+    treeId: id,
+    treeUserData: ITreeUserData
+}
+export interface ISetContentDataMutationArgs {
+    contentId: id,
+    contentData: IContentData
+}
+export interface ISetContentUserDataMutationArgs {
+    contentUserId: id,
+    contentUserData: IContentUserData
 }
 // tree
 export interface ITree {
@@ -874,7 +905,7 @@ export interface ITreeDataWithoutId {
     parentId: id;
     children: id[];
 }
-export interface ITreeDataFromFirebase {
+export interface ITreeDataFromDB {
     contentId: {
         val: string,
         mutations?
@@ -899,11 +930,11 @@ export interface ICreateTreeMutationArgs {
     parentId: id, contentId: id, children?: id[]
 }
 export interface ICreateTreeLocationMutationArgs {
-    treeId: id, x: number, y: number
+    treeId: id, x: number, y: number, level: number
 }
 export interface ISubscribableTreeCore extends ITree {
-    contentId: ISubscribableMutableField<string>
-    parentId: ISubscribableMutableField<string>
+    contentId: IMutableSubscribableField<string>
+    parentId: IMutableSubscribableField<string>
     children: ISubscribableMutableStringSet
     val(): ITreeDataWithoutId
 }
@@ -936,8 +967,8 @@ export interface ITreeUser {
 }
 
 export interface ISubscribableTreeUserCore extends ITreeUser {
-    proficiencyStats: ISubscribableMutableField<IProficiencyStats>,
-    aggregationTimer: ISubscribableMutableField<number>,
+    proficiencyStats: IMutableSubscribableField<IProficiencyStats>,
+    aggregationTimer: IMutableSubscribableField<number>,
     val(): ITreeUserData
 }
 
@@ -961,15 +992,18 @@ export interface ITreeUserData {
 // treeLocation
 export interface ITreeLocation {
     point: IUndoableMutablePoint,
+    level: IMutableSubscribableField<number>,
 }
 
 export interface ISubscribableTreeLocationCore extends ITreeLocation {
     point: IMutableSubscribablePoint,
+    level: IMutableSubscribableField<number>,
     val(): ITreeLocationData
 }
 
 export enum TreeLocationPropertyNames {
     POINT = 'point',
+    LEVEL = 'level',
 }
 
 export interface ISubscribableTreeLocation extends
@@ -980,12 +1014,16 @@ export interface IMutableSubscribableTreeLocation
         IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
 
 export interface ITreeLocationData {
-    point: ICoordinate
+    point: ICoordinate,
+    level: number,
 }
 
 export interface ITreeLocationDataFromFirebase {
     point: {
         val: ICoordinate
+    },
+    level: {
+        val: number
     },
 }
 export interface CreateUserOrLoginMutationArgs {

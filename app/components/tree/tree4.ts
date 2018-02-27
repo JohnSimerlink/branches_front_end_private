@@ -4,11 +4,10 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store2';
+import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
-    CONTENT_TYPES,
     IContentUserData,
-    ITree3Creator,
+    ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
     timestamp,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -22,11 +21,10 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {secondsToPretty} from '../../core/filters'
-import {escape} from '../../objects/tooltipOpener/tooltipRenderer';
 const template = require('./tree.html').default
 // import {Store} from 'vuex';
 @injectable()
-export class Tree3Creator implements ITree3Creator {
+export class TreeCreator4 implements ITreeCreator {
     private store: Store<any>
     // private userId: string
 
@@ -34,9 +32,9 @@ export class Tree3Creator implements ITree3Creator {
      that determine whether or not they are actually permitted to load the data
       */
     // TODO: will this constructor need userId as an arg?
-    constructor(@inject(TYPES.Tree3CreatorArgs){
-         /*userId,*/ store
-    }: Tree3CreatorArgs ) {
+    constructor(@inject(TYPES.TreeCreatorArgs){
+                                                  /*userId,*/ store
+                                              }: TreeCreatorArgs ) {
         this.store = store
         // this.userId = userId
     }
@@ -48,14 +46,12 @@ export class Tree3Creator implements ITree3Creator {
             // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
             props: {
                 id: String,
-                x: String, // Am I doing this right? should I be giving it a class of Number??
-                y: String, // Am I doing this right? should I be giving it a class of Number??
+                // x: String, // Am I doing this right? should I be giving it a class of Number??
+                // y: String, // Am I doing this right? should I be giving it a class of Number??
                 parentId: String,
                 contentUserId: String,
                 contentId: String,
                 userId: String,
-                contentString: String,
-                contentUserDataString: String,
             },
             async created() {
                 if (this.typeIsHeading) {
@@ -73,12 +69,11 @@ export class Tree3Creator implements ITree3Creator {
                     addingChild: false,
                     user: {},
                     contentUserDataLocal: null,
-                    contentUserDataLoaded: false,
                     proficiencyInput: PROFICIENCIES.UNKNOWN,
                 }
             },
             watch: {
-                // //stop timer when
+                // //stop sampleContentUser1Timer when
                 // openNodeId(newNodeId, oldNodeId){
                 //     if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
                 //         this.content.saveTimer()
@@ -87,36 +82,57 @@ export class Tree3Creator implements ITree3Creator {
                 // }
             },
             computed: {
+                treeData() {
+                    const treeData: ITreeDataWithoutId = me.store.getters.contentData(this.id) || {}
+                    return treeData
+                },
+                treeLocationData() {
+                    const treeLocationData: ITreeLocationData = me.store.getters.treeLocationData(this.id) || {}
+                    return treeLocationData
+                },
+                x(): string {
+                    const x = this.treeLocationData.point && this.treeLocationData.point.x
+                    return x
+                },
+                y(): string {
+                    const y = this.treeLocationData.point && this.treeLocationData.point.y
+                    return y
+                },
                 content() {
-                    if (!this.contentString) {
-                        return {}
-                    }
-                    // log('decoded is ', decoded)
-                    // const content
-                    const content = JSON.parse(this.contentString)
-
-                    return content
+                    const contentData = me.store.getters.contentData(this.contentId) || {}
+                    return contentData
+                },
+                contentUserDataLoaded() {
+                    return this.contentUserData && Object.keys(this.contentUserData).length
                 },
                 contentUserData() {
-                    this.contentUserDataLoaded = false
-                    if (this.contentUserDataLocal) {
-                        return this.contentUserDataLocal
-                    }
-                    if (!this.contentUserDataString) {
-                        return {}
-                    }
-                    // const content
-                    const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
-
-                    this.proficiencyInput = contentUserData.proficiency
-                    this.contentUserDataLoaded = true
+                    const contentUserData = me.store.getters.contentUserData(this.contentUserId) || {}
+                    this.proficiencyInput = contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                    // if (Object.keys(contentUserData).length) {
+                    //     this.contentUserDataLoaded = true // TODO: << figure out what this does
+                    //     log('contentUserData loaded is true', contentUserData)
+                    // } else {
+                    //     log('contentUserData loaded is false', contentUserData)
+                    // }
+                    // this.contentUserDataLoaded = false
+                    // if (this.contentUserDataLocal) {
+                    //     return this.contentUserDataLocal
+                    // }
+                    // if (!this.contentUserDataString) {
+                    //     return {}
+                    // }
+                    // // const content
+                    // const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
+                    //
+                    // this.proficiencyInput = contentUserData.sampleContentUser1Proficiency
+                    // this.contentUserDataLoaded = true
                     return contentUserData
                 },
                 nextReviewTime(): timestamp {
                     return this.contentUserData.nextReviewTime
                 },
-                // proficiency() {
-                //     return this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                // sampleContentUser1Proficiency() {
+                //     return this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
                 // },
                 timer() {
                     let timer = 0
@@ -151,7 +167,7 @@ export class Tree3Creator implements ITree3Creator {
                     } else {
                         // if ()
                         const proficiency = this.proficiencyInput
-                        // ^^ this.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
+                        // ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
                         styles['background-color'] = ProficiencyUtils.getColor(proficiency)
                         if (this.showHistory) {
                             styles['background-color'] = 'black'
@@ -223,6 +239,9 @@ export class Tree3Creator implements ITree3Creator {
                     const contentUserId = this.contentUserId
                     const timestamp = Date.now()
                     if (!this.contentUserDataLoaded) {
+                        log(
+                            'ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED'
+                        )
                         const contentUserData = me.store.commit(
                             MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA,
                             {
@@ -231,11 +250,13 @@ export class Tree3Creator implements ITree3Creator {
                                 timestamp,
                             }
                         )
-                        this.contentUserDataLocal = contentUserData
-                        ;this.contentUserData; // trigger update
-                        ;this.stringifiedContentUserData; // trigger update
-                        this.contentUserDataLoaded = true
+                        // this.contentUserDataLocal = contentUserData
+                        // ;this.contentUserData; // trigger update
+                        // ;this.stringifiedContentUserData; // trigger update // << TODO: figure out if these are necessary
                     } else {
+                        log(
+                            'ADD CONTENT INTERACTION ABOUT TO BE CALLED '
+                        )
                         me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                             contentUserId,
                             proficiency,
@@ -244,11 +265,11 @@ export class Tree3Creator implements ITree3Creator {
                     }
                     // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                     //     contentUserId: this.contentUserId,
-                    //     proficiency, // NOTICE HOW `this` is different from `me`
+                    //     sampleContentUser1Proficiency, // NOTICE HOW `this` is different from `me`
                     //     timestamp: Date.now()
                     // })
                     //     user.addMutation('interaction', {contentId: this.content.id,
-                    // proficiency: this.content.proficiency, timestamp: Date.now()})
+                    // sampleContentUser1Proficiency: this.content.sampleContentUser1Proficiency, timestamp: Date.now()})
                     //     store.commit('itemStudied', this.content.id)
                     //     this.tree.setInactive()
                     //     // stores.commit('closeNode', this.id)
@@ -256,7 +277,7 @@ export class Tree3Creator implements ITree3Creator {
                 // unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
                 async syncTreeChainWithUI() {
                     // this.syncGraphWithNode()
-                    // let parentId = this.tree.treeData.parentId;
+                    // let parentId = this.tree.treeDataFromDB.parentId;
                     // let parent
                     // let num = 1
                     // while (parentId) {
@@ -264,7 +285,7 @@ export class Tree3Creator implements ITree3Creator {
                     //     store.commit('syncGraphWithNode', parentId)
                     //     // PubSub.publish('syncGraphWithNode', parentId)
                     //     parent = await Trees.get(parentId)
-                    //     parentId = parent.treeData.parentId
+                    //     parentId = parent.treeDataFromDB.parentId
                     //     num++
                     // }
                 },
@@ -310,6 +331,6 @@ export class Tree3Creator implements ITree3Creator {
     }
 }
 @injectable()
-export class Tree3CreatorArgs {
+export class TreeCreatorArgs {
     @inject(TYPES.BranchesStore) public store: Store<any>
 }

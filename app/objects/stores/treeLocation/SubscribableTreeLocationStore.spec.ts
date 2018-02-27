@@ -13,17 +13,16 @@ import {
 import {MutableSubscribablePoint} from '../../point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscribableTreeLocation';
 import {TYPES} from '../../types';
+import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
 
 myContainerLoadAllModules()
 test('SubscribableTreeLocationStore > addItem:::' +
     'An update in a member treeLocation should be published to a subscriber of the treeLocation data stores', (t) => {
     const treeId = TREE_ID
-    const FIRST_POINT_VALUE = {x: 5, y: 7}
     const MUTATION_VALUE = {delta: {x: 3, y: 4}}
-    const point: IMutableSubscribablePoint
-        = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
-    const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point})
+    const treeLocation = getASampleTreeLocation1()
+    // const treeLocation = getTree
     // const treeLocation = myContainer.get<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation)
     // <<< TODO: using this dependency injection causes this entire test to fail. WHY?
     const treeLocationStore: ISubscribableTreeLocationStore

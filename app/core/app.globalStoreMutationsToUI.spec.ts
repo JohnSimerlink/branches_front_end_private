@@ -25,7 +25,7 @@ import {
     ISubscribableTreeStoreSource, ISubscribableTreeUserStoreSource,
     IUI,
     ObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
-    TreeUserPropertyMutationTypes, TreeUserPropertyNames, ISubscribableMutableField, timestamp,
+    TreeUserPropertyMutationTypes, TreeUserPropertyNames, IMutableSubscribableField, timestamp,
 } from '../objects/interfaces';
 import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
@@ -33,7 +33,10 @@ import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from '../objects/stores/contentUser/MutableSubscribableContentUserStore';
-import {MutableSubscribableGlobalStore} from '../objects/stores/MutableSubscribableGlobalStore';
+import {
+    MutableSubscribableGlobalStore,
+    MutableSubscribableGlobalStoreArgs
+} from '../objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
 import {MutableSubscribableTreeLocation} from '../objects/treeLocation/MutableSubscribableTreeLocation';
@@ -48,6 +51,7 @@ import {SyncableMutableSubscribableTreeLocation} from '../objects/treeLocation/S
 import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
+import {getASampleTreeLocation1} from "../objects/treeLocation/treeLocationTestHelpers";
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 myContainerLoadAllModules()
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
@@ -85,12 +89,12 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45})
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO})
     const timer = new MutableSubscribableField<number>({field: 30})
-    const lastInteractionTime: ISubscribableMutableField<timestamp> =
+    const lastInteractionTime: IMutableSubscribableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
-    const nextReviewTime: ISubscribableMutableField<timestamp> =
+    const nextReviewTime: IMutableSubscribableField<timestamp> =
         new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
     const contentUser = new SyncableMutableSubscribableContentUser({
-        id: contentUserId, lastRecordedStrength, overdue,
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue,
         proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     })
     const contentUserStore: IMutableSubscribableContentUserStore = (() => {
@@ -387,22 +391,8 @@ test('Adding a mutation into the global stores for a tree location data,' +
         x: FIRST_POINT_VALUE.x + MUTATION_VALUE.delta.x,
         y: FIRST_POINT_VALUE.y + MUTATION_VALUE.delta.y
     }
-    const point: IMutableSubscribablePoint
-        = new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE})
 
-    const treeLocation = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
-
-    const contentUserStore: IMutableSubscribableContentUserStore =
-        myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
-
-    const treeStore: IMutableSubscribableTreeStore =
-        myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
-
-    const treeUserStore: IMutableSubscribableTreeUserStore =
-        myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
-
-    const contentStore: IMutableSubscribableContentStore =
-        myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
+    const treeLocation = getASampleTreeLocation1()
 
     const treeLocationStore: IMutableSubscribableTreeLocationStore = (() => {
         const storeSource: ISubscribableTreeLocationStoreSource
@@ -417,8 +407,16 @@ test('Adding a mutation into the global stores for a tree location data,' +
     })()
 
     const store: IMutableSubscribableGlobalStore =
-        new MutableSubscribableGlobalStore(
-            {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
+        partialInject<MutableSubscribableGlobalStoreArgs>({
+            konstructor: MutableSubscribableGlobalStore,
+            constructorArgsType: TYPES.MutableSubscribableGlobalStoreArgs,
+            injections: {
+                treeLocationStore,
+            },
+            container: myContainer,
+        })
+        // new MutableSubscribableGlobalStore(
+        //     {updatesCallbacks: [], contentUserStore, treeStore, treeUserStore, treeLocationStore, contentStore})
 
     const canvasUI: IUI = new CanvasUI({sigmaNodesUpdater})
     const UIs = [canvasUI]
@@ -436,7 +434,6 @@ test('Adding a mutation into the global stores for a tree location data,' +
         })
 
     app.start()
-    const newAnswer = 'Columbus!!'
     const mutation: ITypeIdProppedDatedMutation<TreeLocationPropertyMutationTypes> = {
         objectType: ObjectTypes.TREE_LOCATION,
         id: TREE_ID,

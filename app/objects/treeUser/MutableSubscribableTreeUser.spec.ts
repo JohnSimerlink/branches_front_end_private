@@ -8,7 +8,7 @@ import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
     IDatedMutation, IProficiencyStats,
-    IProppedDatedMutation, ISubscribableMutableField, ITreeUserData,
+    IProppedDatedMutation, IMutableSubscribableField, ITreeUserData,
     TreeUserPropertyMutationTypes, TreeUserPropertyNames,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
@@ -18,7 +18,7 @@ import {myContainerLoadAllModules} from '../../../inversify.config';
 myContainerLoadAllModules()
 test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) => {
     
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const proficiencyStatsVal: IProficiencyStats = {
@@ -43,7 +43,7 @@ test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) =
 test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
     ' after ADD MUTATION SET proficiencyStats', (t) => {
     
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const proficiencyStatsVal: IProficiencyStats = {
@@ -76,7 +76,7 @@ test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
 test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
     ' after ADD MUTATION SET aggregationTimerVal', (t) => {
     
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
     // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const proficiencyStatsVal: IProficiencyStats = {
@@ -112,7 +112,7 @@ test('MutableSubscribableTreeUser:::a mutation in one of the subscribable proper
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
     
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const proficiencyStatsVal: IProficiencyStats = {

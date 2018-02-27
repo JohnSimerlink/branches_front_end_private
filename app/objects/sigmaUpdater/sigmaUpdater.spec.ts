@@ -9,7 +9,7 @@ import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {error} from '../../core/log'
-import BranchesStore, {MUTATION_NAMES} from '../../core/store2'
+import BranchesStore, {MUTATION_NAMES} from '../../core/store'
 import {log} from '../../core/log'
 import {Store} from 'vuex';
 myContainerLoadAllModules()

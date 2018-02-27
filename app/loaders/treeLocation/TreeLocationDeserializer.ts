@@ -1,24 +1,22 @@
 import {
-    IMutableSubscribablePoint, ISyncableMutableSubscribableTreeLocation,
+    IMutableSubscribablePoint, IMutableSubscribableField, ISyncableMutableSubscribableTreeLocation,
     ITreeLocationData, ITreeLocationDataFromFirebase
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
 import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
-import {isValidTreeLocationDataFromFirebase} from '../../objects/treeLocation/treeLocationValidator';
+import {isValidTreeLocationDataFromDB} from '../../objects/treeLocation/treeLocationValidator';
+import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 
 export class TreeLocationDeserializer {
-   public static deserializeFromFirebase(
-       {treeLocationDataFromFirebase}: {treeLocationDataFromFirebase: ITreeLocationDataFromFirebase}
+   public static deserializeFromDB(
+       {treeLocationDataFromDB}: {treeLocationDataFromDB: ITreeLocationDataFromFirebase}
        ): ISyncableMutableSubscribableTreeLocation {
-       if (!isValidTreeLocationDataFromFirebase(treeLocationDataFromFirebase)) {
-           throw new Error(treeLocationDataFromFirebase + ' is not valid treeLocation data from firebase')
+       if (!isValidTreeLocationDataFromDB(treeLocationDataFromDB)) {
+           throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase')
        }
-       const pointVal = treeLocationDataFromFirebase.point.val // << TODO: Violation of Law of Demeter?
-       const point: IMutableSubscribablePoint =
-           new MutableSubscribablePoint({...pointVal})
-       const treeLocation: ISyncableMutableSubscribableTreeLocation
-           = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
-
+       const treeLocationData: ITreeLocationData =
+           TreeLocationDeserializer.convertFromDBToData({treeLocationDataFromDB})
+       const treeLocation = TreeLocationDeserializer.deserialize({treeLocationData})
        return treeLocation
    }
     public static deserialize(
@@ -27,25 +25,22 @@ export class TreeLocationDeserializer {
         const pointVal = treeLocationData.point // << TODO: Violation of Law of Demeter?
         const point: IMutableSubscribablePoint =
             new MutableSubscribablePoint({...pointVal})
+        const level: IMutableSubscribableField<number> = new MutableSubscribableField({field: treeLocationData.level })
         const treeLocation: ISyncableMutableSubscribableTreeLocation
-            = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
+            = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, level})
 
         return treeLocation
     }
-    public static convertFromFirebaseToData(
-        {treeLocationDataFromFirebase}: {treeLocationDataFromFirebase: ITreeLocationDataFromFirebase}
+    public static convertFromDBToData(
+        {treeLocationDataFromDB}: {treeLocationDataFromDB: ITreeLocationDataFromFirebase}
     ): ITreeLocationData {
-        if (!isValidTreeLocationDataFromFirebase(treeLocationDataFromFirebase)) {
-            throw new Error(treeLocationDataFromFirebase + ' is not valid treeLocation data from firebase')
+        if (!isValidTreeLocationDataFromDB(treeLocationDataFromDB)) {
+            throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase')
         }
         const treeLocationData: ITreeLocationData = {
-            point: treeLocationDataFromFirebase.point.val
+            point: treeLocationDataFromDB.point.val,
+            level: treeLocationDataFromDB.level.val,
         }
-        // const pointVal = treeLocationDataFromFirebase.point.val // << TODO: Violation of Law of Demeter?
-        // const point: IMutableSubscribablePoint =
-        //     new MutableSubscribablePoint({...pointVal})
-        // const treeLocation: ISyncableMutableSubscribableTreeLocation
-        //     = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
 
         return treeLocationData
     }

@@ -12,7 +12,7 @@ import {
     // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
     myContainerLoadAllModulesExceptFirebaseRefs, mockFirebaseReferences,
 } from '../../inversify.config';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
 import {TYPES} from '../objects/types';
 import {error} from './log'
 import {log} from './log'

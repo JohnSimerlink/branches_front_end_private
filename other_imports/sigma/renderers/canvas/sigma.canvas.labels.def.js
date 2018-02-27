@@ -1,47 +1,18 @@
 import sigma from '../../sigma.core'
 import {DEFAULT_FONT_SIZE} from '../../../../app/core/globals.ts'
-var labelLevels = {}
-var packageData = {
-    width: 0,
-    height: 0,
-    numRowsOnScreen: 0,
-    numColumnsOnScreen: 5,
-    initialized: false,
-    labels: {},
-    labelLevels: labelLevels,
-}
+import {labelLevels} from './sigmaLabelPrioritizer.ts'
+import {packageData} from './sigmaLabelPrioritizer.ts'
+import {initializePackageData} from './sigmaLabelPrioritizer.ts'
+import {clearLabelKnowledge} from './sigmaLabelPrioritizer.ts'
 
 // window.packageData = packageData
 
-var xOffset = 50
 var rowHeight = sigma.settings.defaultLabelSize * 1.75
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', function (event) {
     initializePackageData()
 })
-function initializePackageData() {
-    var graphContainer = document.querySelector('#graph-container')
-    if (!graphContainer) return //e.g. a user is not on the knowledgeMap page
-    packageData.width = graphContainer.clientWidth
-    packageData.height = graphContainer.clientHeight
-    packageData.rowHeight = rowHeight
-    packageData.numRowsOnScreen = packageData.height / rowHeight
-    /*packageData.height / (sigma.settings.defaultLabelSize * .75)*/
-    packageData.columnWidth = packageData.width / packageData.numColumnsOnScreen
-    packageData.initialized = true
-    clearLabelKnowledge()
 
-}
 
-var A_BIG_NUMBER = 9001
-
-function clearLabelKnowledge() {
-    for (var row = 0; row < packageData.numRowsOnScreen; row++) {
-        labelLevels[row] = []
-        for (var column = 0; column < packageData.numColumnsOnScreen; column++) {
-            labelLevels[row][column] = {id: null, label: null, level: A_BIG_NUMBER}
-        }
-    }
-}
 
 resetLabelData()
 // PubSub.subscribe('canvas.zoom', resetLabelData)
@@ -57,6 +28,7 @@ function resetLabelData() {
     packageData.recentHistory = []
     packageData.justReset = true
 }
+window.resetLabelData = resetLabelData
 
 // window.resetLabelData = resetLabelData
 //assumes fixed label size
@@ -70,9 +42,7 @@ function determineSection(node, prefix) {
     var y = node[prefix + 'y']
     var column = Math.floor(x / packageData.columnWidth)
     var row = Math.floor(y / packageData.rowHeight)
-    // console.log('determineSection', node, node[prefix + 'x'], node[prefix + 'y'], x, y, column, row)
     var section = {row, column}
-    // console.log ('section determined for ', node, ' was ', section)
     return section
 }
 
@@ -110,6 +80,9 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     if (!node.label || typeof node.label !== 'string') {
         return;
     }
+    if (node.label === 'Spanish') {
+        // console.log('1NODE LABEL IS SPANISH!!!')
+    }
     // console.log('sigma canvas prioritizable called 2!')
 
     // fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
@@ -119,10 +92,15 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     // settings('labelSizeRatio') * size;
 
     var section = determineSection(node, prefix)
+    var x = node[prefix + 'x']
+    var y = node[prefix + 'y']
+    // console.log ('section determined for ', node.label, x, y, ' was ', section)
     if (sectionOffScreen(section)) {
         packageData.hideCount++
+        // console.log(node.label, 'is off screen!')
         return
     } else {
+        // console.log(node.label, 'is on screen!')
     }
     // console.log('node section is', section)
 
@@ -130,8 +108,11 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     // console.log('sigma canvas prioritizable called 3!')
 
     var nodeAtThatSection = labelLevels[section.row][section.column]
-    if (node.level >= nodeAtThatSection.level && node.id != nodeAtThatSection.id) {
+    if (node.level >= nodeAtThatSection.level && node.id !== nodeAtThatSection.id) {
+        // console.log(node.label, ' (level ' + node.level + ')  was overriden by ', nodeAtThatSection.label, ' (Level ' + nodeAtThatSection.level + ')!')
         return
+    } else {
+        // console.log(node.label, ' (level ' + node.level + ')  was NOT overriden by ', nodeAtThatSection.label, ' (Level ' + nodeAtThatSection.level + ')!')
     }
 
     var info = {

@@ -31,7 +31,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -59,7 +59,7 @@ import {
     SubscribableContentStore,
     SubscribableContentStoreArgs
 } from '../objects/stores/content/SubscribableContentStore';
-import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../components/newTree/newTreeComponentCreator';
+import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../components/newTree/newTree';
 import newTree from '../components/newTree/newTree';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
@@ -102,8 +102,6 @@ test('App integration test 3 - create new Tree triggered by user' +
     const renderedNodesManagerCore: IRenderManagerCore
         = new RenderManagerCore({sigmaNodes, sigmaEdges: {}, sigmaUpdater})
     const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore})
-
-    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
 
     const treeStoreSource: ISubscribableTreeStoreSource
         = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
@@ -172,7 +170,7 @@ test('App integration test 3 - create new Tree triggered by user' +
             container: myContainer,
         })
     log('Branches Store in newTreeComponent Creator in integration test is ', newTreeComponentCreator['store']['_id'])
-
+    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
     renderedNodesManager.subscribe(sigmaRenderManager)
     storeSourceUpdateListener.subscribe(treeStoreSource)
     storeSourceUpdateListener.subscribe(treeLocationStoreSource)
@@ -191,7 +189,7 @@ test('App integration test 3 - create new Tree triggered by user' +
     }
     const instance: any = new Constructor({propsData})
     /* TODO: Why do I have to do this cast on this integration test,
-    but not on the tree3Component spec test? */
+    but not on the tree spec test? */
     const numberOfNodes = numNodes({store})
     log('numberOfNodes is', numberOfNodes)
     expect(numberOfNodes).to.deep.equal(0)

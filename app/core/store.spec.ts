@@ -1,7 +1,7 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom()
 import {injectionWorks} from '../testHelpers/testHelpers';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2';
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {
     CONTENT_TYPES,
     IContentData,
@@ -23,6 +23,10 @@ import * as sinon from 'sinon'
 import {Store} from 'vuex';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
+import {
+    sampleTreeLocationData1, sampleTreeLocationData1x,
+    sampleTreeLocationData1y
+} from "../objects/treeLocation/treeLocationTestHelpers";
 
 // NOTE don't worry about the injection works for store2
 test('Store::: ' +
@@ -71,7 +75,7 @@ test('Store::::' +
     const contentUserData: IContentUserData = {
         id,
         overdue: overdueVal,
-        lastRecordedStrength: lastRecordedStrengthVal,
+        lastEstimatedStrength: lastRecordedStrengthVal,
         proficiency: proficiencyVal,
         timer: timerVal,
         nextReviewTime: nextReviewTimeVal,
@@ -241,22 +245,16 @@ test('Store::::' +
     // const children = ['23487', '2304985']
     const treeId = '129874'
     const id = treeId
-    const x = 123214
-    const y = 13214
-    const point = { x, y}
-    const treeLocationData: ITreeLocationData = {
-        point
-    }
     const createMutation: ICreateMutation<ITreeLocationData> = {
         objectType: ObjectTypes.TREE_LOCATION,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
         id,
-        data: treeLocationData,
+        data: sampleTreeLocationData1,
     }
     store.commit(
         MUTATION_NAMES.CREATE_TREE_LOCATION,
         {
-            x, y, treeId
+            x: sampleTreeLocationData1x, y: sampleTreeLocationData1y, treeId
         }
     )
 

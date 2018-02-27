@@ -5,7 +5,7 @@ export const e = 2.7182828
 export const criticalRecall = 1 - 1 / e
 /* memory strength in decibels -
  https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
-R = proficiency from 0 to 100
+R = sampleContentUser1Proficiency from 0 to 100
 t equals time since previous interaction in seconds
  */
 export function calculateStrength({R, t}: {R: number, t: number}) {
@@ -16,7 +16,7 @@ export function calculateStrength({R, t}: {R: number, t: number}) {
     return dbE > 0 ? dbE : 0
 }
 // Se = previous estimated strength
-// R = proficiency from 0 to 100
+// R = sampleContentUser1Proficiency from 0 to 100
 // t equals time since previous interaction in seconds
 export function calculateSecondsTilCriticalReviewTime(strength: number): seconds {
     return calculateTime({S: strength, R: criticalRecall})
@@ -38,7 +38,7 @@ export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {esti
     let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
     measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength : 0
 
-    /* if proficiency is less than PROFICIENCIES.ONE, and its been a really long time
+    /* if sampleContentUser1Proficiency is less than PROFICIENCIES.ONE, and its been a really long time
     since the user last saw the fact,
     our measure strength formula above can unintentionally think
     the user's strength value was much higher than it possible
@@ -51,7 +51,7 @@ export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {esti
         measuredPreviousStrength = estimatedPreviousStrength
     }
 
-    /* if proficiency is greater than PROFICIENCIES.FOUR,
+    /* if sampleContentUser1Proficiency is greater than PROFICIENCIES.FOUR,
     and its been a really short time since the user last saw the fact,
     our measure strength formula above can unintentionally think
     the user's strength value was much lower than it possible could have been,
@@ -81,7 +81,7 @@ function doubleGreaterThanOrEqualTo(doubleOne: number, doubleTwo: number) {
 
 // S is in decibels
 // t is in seconds
-// calculate percent change of recall (e.g. proficiency)
+// calculate percent change of recall (e.g. sampleContentUser1Proficiency)
 // returns as a num in range [0,1]
 export function calculateRecall({S, t}: {S: number, t: number}) {
     return Math.pow(e, -1 * t / decibelsToEbbinghaus(S))
@@ -95,7 +95,7 @@ export function calculateTime({S, R}: {S: number, R: percentage}): seconds {
     return -1 * decibelsToEbbinghaus(S) * Math.log(R)
 }
 
-// current proficiency in [0, 100]
+// current sampleContentUser1Proficiency in [0, 100]
 export function estimateCurrentStrength({
     previousInteractionStrengthDecibels,
     currentProficiency,

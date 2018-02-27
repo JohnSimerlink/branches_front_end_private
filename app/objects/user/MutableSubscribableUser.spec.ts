@@ -17,7 +17,7 @@ myContainerLoadAllModules()
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
@@ -46,7 +46,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
     ' should NOT publish an update of the entire object\'s value'
     + ' before startPublishing has been called', (t) => {
 
-    /* = myContainer.get<ISubscribableMutableField>(TYPES.ISubscribableMutableField)
+    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 

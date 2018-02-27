@@ -11,20 +11,20 @@ import {log} from '../../core/log'
 //     const now = Date.now()
 //     const howManyMillisecondsTilOverdue = 5000
 //     const nextReviewTimeVal = now + howManyMillisecondsTilOverdue
-//     const nextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
-//     const overdue = new MutableSubscribableField<boolean>({field: false})
+//     const sampleContentUser1NextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+//     const sampleContentUser1Overdue = new MutableSubscribableField<boolean>({field: false})
 //
 //     const overdueListenerCore = new OverdueListenerCore({
-//         nextReviewTime,
-//         overdue,
+//         sampleContentUser1NextReviewTime,
+//         sampleContentUser1Overdue,
 //         timeoutId: null
 //     })
 //     const clock = sinon.useFakeTimers(now)
 //
 //     overdueListenerCore.setOverdueTimer()
-//     expect(overdue.val()).to.deep.equal(false)
+//     expect(sampleContentUser1Overdue.val()).to.deep.equal(false)
 //     clock.tick(howManyMillisecondsTilOverdue + 100)
-//     expect(overdue.val()).to.deep.equal(true)
+//     expect(sampleContentUser1Overdue.val()).to.deep.equal(true)
 //
 //     t.pass()
 // })
@@ -41,7 +41,7 @@ test('overdueListenerCore - listenAndReactToAnyNextReviewTimeChanges', t => {
         overdue,
         timeoutId: null
     })
-    // nextReviewTime.
+    // sampleContentUser1NextReviewTime.
     overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges()
     expect(overdue.val()).to.deep.equal(true)
     const now2 = Date.now()
@@ -61,25 +61,25 @@ test('overdueListenerCore - listenAndReactToAnyNextReviewTimeChanges', t => {
 
     // should clear any current timers
 
-    // should call set overdue timer
+    // should call set sampleContentUser1Overdue sampleContentUser1Timer
 
     // const now = Date.now()
     // const howManyMillisecondsTilOverdue = 5000
     // const nextReviewTimeVal = now + howManyMillisecondsTilOverdue
-    // const nextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
-    // const overdue = new MutableSubscribableField<boolean>({field: false})
+    // const sampleContentUser1NextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
+    // const sampleContentUser1Overdue = new MutableSubscribableField<boolean>({field: false})
     //
     // const overdueListenerCore = new OverdueListenerCore({
-    //     nextReviewTime,
-    //     overdue,
+    //     sampleContentUser1NextReviewTime,
+    //     sampleContentUser1Overdue,
     //     timeoutId: null
     // })
     // const clock = sinon.useFakeTimers(now)
     //
     // overdueListenerCore.setOverdueTimer()
-    // expect(overdue.val()).to.deep.equal(false)
+    // expect(sampleContentUser1Overdue.val()).to.deep.equal(false)
     // clock.tick(howManyMillisecondsTilOverdue + 100)
-    // expect(overdue.val()).to.deep.equal(true)
+    // expect(sampleContentUser1Overdue.val()).to.deep.equal(true)
 
     t.pass()
 })

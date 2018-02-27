@@ -4,9 +4,10 @@ import {ICoordinate, ITreeLocationData, ITreeLocationDataFromFirebase} from '../
  *
  * These functions are for typechecking data that came from the database
  */
-export function isValidTreeLocationDataFromFirebase(treeLocationDataFromFirebase: ITreeLocationDataFromFirebase) {
+export function isValidTreeLocationDataFromDB(treeLocationDataFromFirebase: ITreeLocationDataFromFirebase) {
     return treeLocationDataFromFirebase && treeLocationDataFromFirebase.point
         && isValidCoordinate(treeLocationDataFromFirebase.point.val)
+        && treeLocationDataFromFirebase.level && treeLocationDataFromFirebase.level.val
 }
 
 export function isValidCoordinate(coordinate: ICoordinate) {

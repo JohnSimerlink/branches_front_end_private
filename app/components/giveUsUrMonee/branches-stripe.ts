@@ -1,7 +1,7 @@
 import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
 import './branches-stripe.less'
-import {MUTATION_NAMES} from '../../core/store2';
+import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
 // let request = require('request-promise').default
 // if (!request) {

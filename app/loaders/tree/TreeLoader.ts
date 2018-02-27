@@ -4,7 +4,7 @@ import {log} from '../../../app/core/log'
 import {
     id,
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree,
-    ITreeDataFromFirebase,
+    ITreeDataFromDB,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
@@ -46,7 +46,7 @@ export class TreeLoader implements ITreeLoader {
         const me = this
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {
-                const treeData: ITreeDataFromFirebase = snapshot.val()
+                const treeData: ITreeDataFromDB = snapshot.val()
                 if (!treeData) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -57,18 +57,18 @@ export class TreeLoader implements ITreeLoader {
                      as the promise will actually get resolved in ideally a few more (dozen) milliseconds
                     */
                 }
-                // let children = treeData.children || {}
+                // let children = treeDataFromDB.children || {}
                 // children = setToStringArray(children)
-                // treeData.children = children as string[]
+                // treeDataFromDB.children = children as string[]
 
                 if (isValidTree(treeData)) {
                     const tree: ISyncableMutableSubscribableTree =
-                        TreeDeserializer.deserializeFromDB({treeId, treeData})
+                        TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: treeData})
                     me.storeSource.set(treeId, tree)
-                    const convertedData = TreeDeserializer.convertSetsToArrays({treeData})
+                    const convertedData = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData})
                     resolve(convertedData)
                 } else {
-                    reject('treeData is invalid! ! ' + JSON.stringify(treeData))
+                    reject('treeDataFromDB with id of ' + treeId + ' is invalid! ! ' + JSON.stringify(treeData))
                 }
             })
         }) as Promise<ITreeDataWithoutId>

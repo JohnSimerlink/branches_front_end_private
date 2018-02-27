@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 import {log} from './app/core/log'
 import './other_imports/sigmaConfigurations'
 import sigma from './other_imports/sigma/sigma.core.js'
-import {Container, ContainerModule, interfaces} from 'inversify'
+import {Container, ContainerModule, injectable, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {MockFirebase} from 'firebase-mock'
 import {App, AppArgs} from './app/core/app';
@@ -33,10 +33,10 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    ISubscribableMutableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
+    IMutableSubscribableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation,
     ITooltipOpener, ITooltipRenderer, ITree,
-    ITree3Creator,
+    ITreeCreator,
     ITreeComponentCreator,
     ITreeUserLoader, IVuexStore,
     radian,
@@ -44,7 +44,7 @@ import {
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
-    IAuthListener,
+    IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -166,16 +166,16 @@ import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscri
 import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
 // import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/tree2Component/treeComponent';
-import {default as BranchesStore, BranchesStoreArgs} from './app/core/store2';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap2';
+import {default as BranchesStore, BranchesStoreArgs} from './app/core/store';
+// import {KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
 import {
-    Tree3Creator,
-    Tree3CreatorArgs
-} from './app/components/tree3Component/tree3Component';
+    TreeCreator,
+    // TreeCreatorArgs
+} from './app/components/tree/tree';
 import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
 import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
-import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTreeComponentCreator';
+import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTree';
 import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
@@ -223,7 +223,7 @@ let Vuex = require('vuex').default
 if (!Vuex) {
     Vuex = require('vuex')
 }
-import {VueConfigurer, VueConfigurerArgs} from './app/core/VueComponentRegister';
+import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
@@ -241,6 +241,13 @@ import {
     OverdueListenerMutableSubscribableContentUserStore,
     OverdueListenerMutableSubscribableContentUserStoreArgs
 } from "./app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore";
+import {
+    GlobalDataStoreBranchesStoreSyncer,
+    GlobalDataStoreBranchesStoreSyncerArgs
+} from "./app/core/globalDataStoreBranchesStoreSyncer";
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
+import {TreeCreator4, TreeCreatorArgs} from "./app/components/tree/tree4";
+
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
@@ -636,16 +643,16 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
     bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
     bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
-    bind<ISubscribableMutableField<boolean>>(TYPES.ISubscribableMutableBoolean).to(MutableSubscribableField)
+    bind<IMutableSubscribableField<boolean>>(TYPES.IMutableSubscribableBoolean).to(MutableSubscribableField)
     bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs)
     bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
-    bind<ISubscribableMutableField<number>>(TYPES.ISubscribableMutableNumber).to(MutableSubscribableField)
-    bind<ISubscribableMutableField<string>>(TYPES.ISubscribableMutableString).to(MutableSubscribableField)
-    bind<ISubscribableMutableField<PROFICIENCIES>>(TYPES.ISubscribableMutableProficiency)
+    bind<IMutableSubscribableField<number>>(TYPES.IMutableSubscribableNumber).to(MutableSubscribableField)
+    bind<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString).to(MutableSubscribableField)
+    bind<IMutableSubscribableField<PROFICIENCIES>>(TYPES.IMutableSubscribableProficiency)
         .to(MutableSubscribableField)
-    bind<ISubscribableMutableField<CONTENT_TYPES>>(TYPES.ISubscribableMutableContentType)
+    bind<IMutableSubscribableField<CONTENT_TYPES>>(TYPES.IMutableSubscribableContentType)
         .to(MutableSubscribableField)
-    bind<ISubscribableMutableField<IProficiencyStats>>(TYPES.ISubscribableMutableProficiencyStats)
+    bind<IMutableSubscribableField<IProficiencyStats>>(TYPES.IMutableSubscribableProficiencyStats)
         .to(MutableSubscribableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
@@ -705,17 +712,24 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     // bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
     // bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 
-    bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
-        .whenInjectedInto(KnawledgeMapCreatorArgs)
-    bind<KnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-    bind<Tree3CreatorArgs>(TYPES.Tree3CreatorArgs).to(Tree3CreatorArgs)
-    bind<ITree3Creator>(TYPES.ITree3CreatorClone).to(Tree3Creator)
-    bind<ITree3Creator>(TYPES.ITree3Creator).to(Tree3Creator)
+    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
+    // bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
+    //     .whenInjectedInto(KnawledgeMapCreatorArgs)
+    const knawledgeMapCreatorMock = {
+        create() {}
+    }
+    // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).toConstantValue(knawledgeMapCreatorMock)
+    // @injectable()
+    // class KnawledgeMapCreator implements  IKnawledgeMapCreator {
+    //     public create() {}
+    // }
+    // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
+    bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
+    bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
+    // bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
+    bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator4)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
-
-    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
-    bind<KnawledgeMapCreator>(TYPES.KnawledgeMapCreator).to(KnawledgeMapCreator)
 
 })
 // app
@@ -739,6 +753,13 @@ export const state: IState
     graph: null,
     sigmaInitialized: false,
     globalDataStore: null,
+    globalDataStoreData: {
+        content: {},
+        contentUsers: {},
+        trees: {},
+        treeUsers: {},
+        treeLocations: {},
+    },
     userLoader: null,
     usersData: {},
     users: {},
@@ -785,6 +806,11 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .to(BranchesStore)
         .inSingletonScope()
         .whenTargetIsDefault()
+
+    bind<GlobalDataStoreBranchesStoreSyncerArgs>(TYPES.GlobalDataStoreBranchesStoreSyncerArgs)
+        .to(GlobalDataStoreBranchesStoreSyncerArgs)
+    bind<IGlobalDataStoreBranchesStoreSyncer>(TYPES.IGlobalDataStoreBranchesStoreSyncer)
+        .to(GlobalDataStoreBranchesStoreSyncer)
 
     // rendering singletons
     const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs = myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs)

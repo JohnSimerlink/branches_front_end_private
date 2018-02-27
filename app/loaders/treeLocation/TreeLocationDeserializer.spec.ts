@@ -4,7 +4,7 @@ import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {
-    IMutableSubscribableTreeLocation,
+    IMutableSubscribableTreeLocation, ISyncableMutableSubscribableTreeLocation,
     ITreeLocationData, ITreeLocationDataFromFirebase,
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
@@ -12,27 +12,19 @@ import {MutableSubscribableTreeLocation} from '../../objects/treeLocation/Mutabl
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
+import {
+    getASampleTreeLocation1,
+    sampleTreeLocationDataFromFirebase1
+} from "../../objects/treeLocation/treeLocationTestHelpers";
 
 myContainerLoadAllModules()
 test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
     ' (besides the mutation from creation)', (t) => {
-
-    const pointVal = {
-        x: 5,
-        y: 9,
-    }
-    const treeLocationDataFromFirebase: ITreeLocationDataFromFirebase = {
-        point: {
-            val: pointVal
-        }
-    }
-
-    const point = new MutableSubscribablePoint({...pointVal})
-    const expectedTreeLocation: IMutableSubscribableTreeLocation
-        = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
+    const sampleTreeLocation1: ISyncableMutableSubscribableTreeLocation
+        = getASampleTreeLocation1()
     const deserializedTreeLocation: IMutableSubscribableTreeLocation
-        = TreeLocationDeserializer.deserializeFromFirebase({treeLocationDataFromFirebase})
-    expect(deserializedTreeLocation).to.deep.equal(expectedTreeLocation)
+        = TreeLocationDeserializer.deserializeFromDB({treeLocationDataFromDB: sampleTreeLocationDataFromFirebase1})
+    expect(deserializedTreeLocation).to.deep.equal(sampleTreeLocation1)
     t.pass()
 })
 // it('Should deserializeFromDB properly with a mutation history', () => {

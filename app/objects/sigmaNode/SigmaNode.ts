@@ -25,6 +25,7 @@ export class SigmaNode implements ISigmaNode {
     public children: string[];
     public x: number;
     public y: number;
+    public level: number;
     public aggregationTimer: number;
     public content: IContentData;
     public contentUserData: IContentUserData;
@@ -65,6 +66,7 @@ export class SigmaNode implements ISigmaNode {
         const pointVal: ICoordinate = treeLocationData.point
         this.x = pointVal.x
         this.y = pointVal.y
+        this.level = treeLocationData.level
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance
@@ -79,6 +81,7 @@ export class SigmaNode implements ISigmaNode {
             children,
             x,
             y,
+            level,
             content,
             contentUserData,
             label,
@@ -95,6 +98,7 @@ export class SigmaNode implements ISigmaNode {
             children: undefined,
             x: undefined,
             y: undefined,
+            level: undefined,
             content: undefined,
             contentUserData: undefined,
             proficiencyStats: undefined,
@@ -111,6 +115,7 @@ export class SigmaNode implements ISigmaNode {
         this.children = children
         this.x = x
         this.y = y
+        this.level = level
         this.proficiencyStats = proficiencyStats
         this.aggregationTimer = aggregationTimer
         this.content = content || {
@@ -135,6 +140,7 @@ export class SigmaNodeArgs {
     @inject(TYPES.Array) public children: string[];
     @inject(TYPES.Number) public x: number;
     @inject(TYPES.Number) public y: number;
+    @inject(TYPES.Number) public level: number;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
     @inject(TYPES.Object) public content: IContentData;

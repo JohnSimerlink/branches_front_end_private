@@ -29,7 +29,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store2'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -48,6 +48,7 @@ import * as Vue from 'vue';
 import * as Vuex from 'vuex'
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
+import {sampleTreeLocationDataFromFirebase1} from "../objects/treeLocation/treeLocationTestHelpers";
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
@@ -65,15 +66,6 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         contentId: '12345532',
         parentId: '493284',
         children: ['2948, 2947']
-    }
-
-    const sampleTreeLocationData: ITreeLocationDataFromFirebase = {
-        point: {
-            val: {
-                x: 5,
-                y: 8,
-            }
-        }
     }
 
     const firebaseTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
@@ -169,7 +161,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
     expect(inRenderedSet).to.equal(false)
 
-    treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationData)
+    treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1)
     treeLocationLoader.downloadData(treeIdToDownload)
     treeLocationRef.flush()
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(2)
