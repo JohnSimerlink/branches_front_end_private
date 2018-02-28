@@ -437,7 +437,7 @@ export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
     everActivatedMembership: IMutableField<boolean>
     points: IMutableField<number>
-    // points:
+    // sampleUser1Points:
     // question: IMutableField<string>
     // answer: IMutableField<string>
     // title: IMutableField<string>
@@ -467,8 +467,8 @@ export interface IUserDataFromDB {
 }
 
 export enum UserPropertyNames {
-    MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
-    EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
+    MEMBERSHIP_EXPIRATION_DATE = 'sampleUser1MembershipExpirationDate',
+    EVER_ACTIVATED_MEMBERSHIP = 'sampleUser1EverActivatedMembership',
     POINTS = 'points',
 }
 

@@ -43,7 +43,8 @@ export class UserUtils implements IUserUtils {
         }
         const userData: IUserData = {
             everActivatedMembership: false,
-            membershipExpirationDate: 1496340000  // Jun 1st 2017. <<< Already expired
+            membershipExpirationDate: 1496340000,  // Jun 1st 2017. <<< Already expired
+            points: 0,
         }
         const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData})
         const userFirebaseRef = this.usersFirebaseRef.child(userId)

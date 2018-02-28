@@ -24,11 +24,11 @@ export const sampleUserDataFromDB1: IUserDataFromDB = {
     },
 }
 
-export const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: sampleUserData1ExpirationDate})
-export const everActivatedMembership =
+export const sampleUser1MembershipExpirationDate = new MutableSubscribableField<timestamp>({field: sampleUserData1ExpirationDate})
+export const sampleUser1EverActivatedMembership =
     new MutableSubscribableField<boolean>({field: sampleUserData1TimestampEverBeenActivatedValue})
-export const points =
+export const sampleUser1Points =
     new MutableSubscribableField<number>({field: sampleUserData1Points})
-export const expectedUser1: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
-    {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership, points}
+export const sampleUser1: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
+    {updatesCallbacks: [], membershipExpirationDate: sampleUser1MembershipExpirationDate, everActivatedMembership: sampleUser1EverActivatedMembership, points: sampleUser1Points}
 )

@@ -6,6 +6,7 @@
   "scripts": {
     "pre-dev-install": "Before running tests you must install C++ windows 8.1 SDK and cairo and npm canvas per https://www.npmjs.com/package/canvas. To do this you may also have to create a C++ project in VS2015 per https://stackoverflow.com/questions/33183161/node-gyp-error-tracker-error-trk0005-failed-to-locate-cl-exe-the-system-c",
     "dev": "cross-env set NODE_ENV=development && webpack-dev-server --inline --hot",
+    "dev-mac": "NODE_ENV=development webpack-dev-server --inline --hot ",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "test": "cross-env NODE_ENV=test ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/components/tree3Component/*.spec.ts app/loaders/**/*.spec.ts app/objects/**/*.spec.ts app/objects/*.spec.ts --verbose --color",
     "test-some": "cross-env NODE_ENV=test ava-ts --color",

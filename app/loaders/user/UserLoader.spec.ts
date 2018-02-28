@@ -12,7 +12,7 @@ import {TYPES} from '../../objects/types';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {UserLoader, UserLoaderArgs} from './UserLoader';
-import {expectedUser1, sampleUserData1, sampleUserDataFromDB1} from "../../objects/user/UserTestHelpers";
+import {sampleUser1, sampleUserData1, sampleUserDataFromDB1} from "../../objects/user/UserTestHelpers";
 
 myContainerLoadAllModules()
 test('UserLoader:::DI constructor should work', (t) => {

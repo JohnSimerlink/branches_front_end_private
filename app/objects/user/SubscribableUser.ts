@@ -22,10 +22,12 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
         updatesCallbacks,
         membershipExpirationDate,
         everActivatedMembership,
+        points,
     }: SubscribableUserArgs ) {
         super({updatesCallbacks})
         this.membershipExpirationDate = membershipExpirationDate
         this.everActivatedMembership = everActivatedMembership
+        this.points = points
     }
     // TODO: should the below three objects be private?
     public val(): IUserData {
