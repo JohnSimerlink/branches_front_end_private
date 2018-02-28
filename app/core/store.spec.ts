@@ -7,7 +7,7 @@ import {
     IContentData,
     IContentUser, IContentUserData, ICreateMutation, IGlobalMutation, IMutableSubscribableGlobalStore,
     ITreeDataWithoutId, ITreeLocationData, IVuexStore,
-    ObjectTypes, STORE_MUTATION_TYPES
+    GlobalDataStoreObjectTypes, STORE_MUTATION_TYPES
 } from '../objects/interfaces';
 import {
     mockFirebaseReferences, myContainer, myContainerLoadAllModules,
@@ -85,7 +85,7 @@ test('Store::::' +
     const createMutation: ICreateMutation<ContentUserData> = {
         id,
         data: contentUserData,
-        objectType: ObjectTypes.CONTENT_USER,
+        objectType: GlobalDataStoreObjectTypes.CONTENT_USER,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
     }
     store.commit(
@@ -144,7 +144,7 @@ test('Store::::' +
     }
 
     const createMutation: ICreateMutation<IContentData> = {
-        objectType: ObjectTypes.CONTENT,
+        objectType: GlobalDataStoreObjectTypes.CONTENT,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
         // id,
         data: contentData,
@@ -196,7 +196,7 @@ test('Store::::' +
     }
 
     const createMutation: ICreateMutation<ITreeDataWithoutId> = {
-        objectType: ObjectTypes.TREE,
+        objectType: GlobalDataStoreObjectTypes.TREE,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
         // id,
         data: treeDataWithoutId,
@@ -246,7 +246,7 @@ test('Store::::' +
     const treeId = '129874'
     const id = treeId
     const createMutation: ICreateMutation<ITreeLocationData> = {
-        objectType: ObjectTypes.TREE_LOCATION,
+        objectType: GlobalDataStoreObjectTypes.TREE_LOCATION,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
         id,
         data: sampleTreeLocationData1,

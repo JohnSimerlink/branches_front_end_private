@@ -14,7 +14,7 @@ import {
     ISigmaRenderManager,
     ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
-    ObjectDataTypes,
+    GlobalDataStoreObjectDataTypes,
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
@@ -62,15 +62,15 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 
     private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdates) {
         let sigmaIds = []
-        const type: ObjectDataTypes = update.type
+        const type: GlobalDataStoreObjectDataTypes = update.type
         switch (type) {
-            case ObjectDataTypes.TREE_DATA:
-            case ObjectDataTypes.TREE_LOCATION_DATA:
-            case ObjectDataTypes.TREE_USER_DATA:
+            case GlobalDataStoreObjectDataTypes.TREE_DATA:
+            case GlobalDataStoreObjectDataTypes.TREE_LOCATION_DATA:
+            case GlobalDataStoreObjectDataTypes.TREE_USER_DATA:
                 const treeId = update.id
                 sigmaIds = [treeId]
                 break
-            case ObjectDataTypes.CONTENT_DATA: {
+            case GlobalDataStoreObjectDataTypes.CONTENT_DATA: {
                 const contentId = update.id
                 sigmaIds = this.getSigmaIdsForContentId(contentId)
                 /* cache the content data because the treeDataFromDB for this contentItem may not be loaded yet,
@@ -81,7 +81,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 this.contentIdContentMap[contentId] = contentData
                 break
             }
-            case ObjectDataTypes.CONTENT_USER_DATA: {
+            case GlobalDataStoreObjectDataTypes.CONTENT_USER_DATA: {
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})
                 const contentUserData: IContentUserData = update.val
@@ -116,10 +116,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         {
             sigmaNode, updateType, data, sigmaId,
         }: {
-            sigmaNode: ISigmaNode, updateType: ObjectDataTypes, data: ObjectDataDataTypes, sigmaId: string
+            sigmaNode: ISigmaNode, updateType: GlobalDataStoreObjectDataTypes, data: ObjectDataDataTypes, sigmaId: string
         }) {
         switch (updateType) {
-            case ObjectDataTypes.TREE_DATA:
+            case GlobalDataStoreObjectDataTypes.TREE_DATA:
                 sigmaNode.receiveNewTreeData(data)
                 /* check if there is the contentData already downloaded for this sigmaId,
                  * and if so apply its data to the sigmaNode.
@@ -157,17 +157,17 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 // ^ the above method will also search for any edges that now can be loaded now
                 // that that treeDataFromDB is loaded . . . and publishes an update for that edge to be added.
                 break
-            case ObjectDataTypes.TREE_LOCATION_DATA:
+            case GlobalDataStoreObjectDataTypes.TREE_LOCATION_DATA:
                 sigmaNode.receiveNewTreeLocationData(data)
                 this.sigmaRenderManager.markTreeLocationDataLoaded(sigmaId)
                 break
-            case ObjectDataTypes.TREE_USER_DATA:
+            case GlobalDataStoreObjectDataTypes.TREE_USER_DATA:
                 sigmaNode.receiveNewTreeUserData(data)
                 break
-            case ObjectDataTypes.CONTENT_DATA:
+            case GlobalDataStoreObjectDataTypes.CONTENT_DATA:
                 sigmaNode.receiveNewContentData(data)
                 break;
-            case ObjectDataTypes.CONTENT_USER_DATA:
+            case GlobalDataStoreObjectDataTypes.CONTENT_USER_DATA:
                 sigmaNode.receiveNewContentUserData(data)
                 // this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
                 //     treeId: sigmaId,
@@ -175,7 +175,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 // })
                 break;
             default:
-                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(ObjectDataTypes))
+                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(GlobalDataStoreObjectDataTypes))
         }
         this.store.commit(MUTATION_NAMES.REFRESH)
     }

@@ -7,7 +7,7 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
     IMutableSubscribableTree, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
-    ObjectDataTypes
+    GlobalDataStoreObjectDataTypes
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
@@ -29,7 +29,7 @@ test('SubscribableStoreSource - get should work', (t) => {
     
     const tree: IMutableSubscribableTree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
     const hashmap = {}
-    const type = ObjectDataTypes.TREE_DATA
+    const type = GlobalDataStoreObjectDataTypes.TREE_DATA
     hashmap[TREE_ID] = tree
     const subscribableStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: []})
@@ -42,7 +42,7 @@ test('SubscribableStoreSource - set should work', (t) => {
     const tree: IMutableSubscribableTree =
         myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
     const hashmap = {}
-    const type = ObjectDataTypes.TREE_DATA
+    const type = GlobalDataStoreObjectDataTypes.TREE_DATA
     const subscribableStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: []})
     subscribableStoreSource.set(TREE_ID, tree)
@@ -55,7 +55,7 @@ test('SubscribableStoreSource - set should call callbacks', (t) => {
     const callback = sinon.spy()
     const tree: IMutableSubscribableTree =
         myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree)
-    const type = ObjectDataTypes.TREE_DATA
+    const type = GlobalDataStoreObjectDataTypes.TREE_DATA
     const hashmap = {}
     const subscribableStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: [callback]})
