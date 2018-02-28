@@ -436,19 +436,23 @@ export type timestamp = number
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
     everActivatedMembership: IMutableField<boolean>
+    points: IMutableField<number>
+    // points:
     // question: IMutableField<string>
     // answer: IMutableField<string>
     // title: IMutableField<string>
 }
 export interface ISubscribableUserCore extends IUser {
-    membershipExpirationDate: IMutableSubscribableField<timestamp>
     everActivatedMembership: IMutableSubscribableField<boolean>
+    membershipExpirationDate: IMutableSubscribableField<timestamp>
+    points: IMutableSubscribableField<number>
     val(): IUserData
 }
 
 export interface IUserData {
     membershipExpirationDate: timestamp
     everActivatedMembership: boolean
+    points: number
 }
 export interface IUserDataFromDB {
     membershipExpirationDate: {
@@ -457,11 +461,15 @@ export interface IUserDataFromDB {
     everActivatedMembership: {
         val: boolean;
     },
+    points: {
+        val: number
+    }
 }
 
 export enum UserPropertyNames {
     MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
     EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
+    POINTS = 'points',
 }
 
 export interface ISubscribableUser extends
