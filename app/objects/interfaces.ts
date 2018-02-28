@@ -206,6 +206,8 @@ export enum ContentUserPropertyNames {
     NEXT_REVIEW_TIME = 'NEXT_REVIEW_TIME',
 }
 
+export type decibels = number
+
 export interface ISubscribableContentUser extends
     ISubscribable<IValUpdates>, ISubscribableContentUserCore, IDescendantPublisher {}
 
