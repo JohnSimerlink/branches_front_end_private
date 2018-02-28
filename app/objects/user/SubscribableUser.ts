@@ -37,9 +37,6 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
             points: this.points.val(),
         }
     }
-    public dbVal(): IUserData {
-        return this.val()
-    }
     protected callbackArguments(): IValUpdates {
         return this.val()
     }
