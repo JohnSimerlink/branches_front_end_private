@@ -39,6 +39,9 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
             case UserPropertyNames.EVER_ACTIVATED_MEMBERSHIP:
                 this.everActivatedMembership.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
+            case UserPropertyNames.POINTS:
+                this.points.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)

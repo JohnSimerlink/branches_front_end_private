@@ -16,6 +16,7 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
     private publishing = false
     public membershipExpirationDate: IMutableSubscribableField<timestamp>;
     public everActivatedMembership: IMutableSubscribableField<boolean>;
+    public points: IMutableSubscribableField<number>;
 
     constructor(@inject(TYPES.SubscribableUserArgs) {
         updatesCallbacks,
@@ -31,6 +32,7 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
         return {
             membershipExpirationDate: this.membershipExpirationDate.val(),
             everActivatedMembership: this.everActivatedMembership.val(),
+            points: this.points.val(),
         }
     }
     public dbVal(): IUserData {
@@ -46,6 +48,8 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
         this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.membershipExpirationDate.onUpdate(boundCallCallbacks)
+        this.everActivatedMembership.onUpdate(boundCallCallbacks)
+        this.points.onUpdate(boundCallCallbacks)
     }
 }
 
