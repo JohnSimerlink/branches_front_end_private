@@ -435,6 +435,10 @@ export enum ObjectTypes {
 }
 export type timestamp = number
 
+// map object
+export interface IBranchesMap {
+    root_tree_id: id
+}
 // user object
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
