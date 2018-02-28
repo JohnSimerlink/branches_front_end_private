@@ -13,9 +13,10 @@ import {
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
-    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, ISetTreeDataMutationArgs,
+    /*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/ ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
     ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
+    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -126,6 +127,11 @@ const getters = {
             return userData.points
         }
     },
+    // contentUserLastEstimatedStrength (state: IState, getters) {
+    //     return (contentUserId: id) => {
+    //         const lastEstimatedStrength: decibels = state.
+    //     }
+    // },
     loggedIn(state: IState, getters): boolean {
         const loggedIn = !!state.userId
         return loggedIn
