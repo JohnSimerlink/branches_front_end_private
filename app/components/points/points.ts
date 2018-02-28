@@ -19,12 +19,15 @@ export default {
     },
     data() {
         return {
-            name: 'Bob',
-            points: 54
+            name: 'Tai',
         }
     },
     methods: {
     },
     computed: {
+        points() {
+            const userId = this.$store.getters.userId
+            return this.$store.getters.userPoints(userId)
+        }
     }
 }

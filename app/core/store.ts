@@ -117,6 +117,15 @@ const getters = {
             return obj
         }
     },
+    userPoints(state: IState, getters) {
+        return (userId: id) => {
+            const userData = getters.userData(userId)
+            if (!userData) {
+                return 0
+            }
+            return userData.points
+        }
+    },
     loggedIn(state: IState, getters): boolean {
         const loggedIn = !!state.userId
         return loggedIn
