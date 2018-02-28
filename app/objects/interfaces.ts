@@ -467,8 +467,8 @@ export interface IUserDataFromDB {
 }
 
 export enum UserPropertyNames {
-    MEMBERSHIP_EXPIRATION_DATE = 'sampleUser1MembershipExpirationDate',
-    EVER_ACTIVATED_MEMBERSHIP = 'sampleUser1EverActivatedMembership',
+    MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
+    EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
     POINTS = 'points',
 }
 
