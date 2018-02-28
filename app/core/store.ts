@@ -6,7 +6,7 @@ import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
-    ObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
+    GlobalDataStoreObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
     IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData,
     ITreeDataWithoutId,
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
@@ -246,7 +246,7 @@ const mutations = {
         const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId)
 
         const id = contentUserId
-        const objectType = ObjectTypes.CONTENT_USER
+        const objectType = GlobalDataStoreObjectTypes.CONTENT_USER
         const propertyName = ContentUserPropertyNames.PROFICIENCY;
         const type = FieldMutationTypes.SET;
         const data = proficiency
@@ -301,7 +301,7 @@ const mutations = {
         const createMutation: ICreateMutation<ContentUserData> = {
             id: contentUserId,
             data: contentUserData,
-            objectType: ObjectTypes.CONTENT_USER,
+            objectType: GlobalDataStoreObjectTypes.CONTENT_USER,
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
         }
         state.globalDataStore.addMutation(createMutation)
@@ -363,7 +363,7 @@ const mutations = {
      }) {
 
         const globalStoreMutation: ITypeIdProppedDatedMutation<SetMutationTypes> = {
-            objectType: ObjectTypes.TREE,
+            objectType: GlobalDataStoreObjectTypes.TREE,
             id: parentTreeId,
             timestamp: Date.now(),
             type: SetMutationTypes.ADD,
@@ -380,7 +380,7 @@ const mutations = {
     }: IContentDataEither): id {
         const createMutation: ICreateMutation<IContentData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
-            objectType: ObjectTypes.CONTENT,
+            objectType: GlobalDataStoreObjectTypes.CONTENT,
             data: {type, question, answer, title},
         }
         const contentId: id = state.globalDataStore.addMutation(createMutation)
@@ -389,7 +389,7 @@ const mutations = {
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
-            objectType: ObjectTypes.TREE,
+            objectType: GlobalDataStoreObjectTypes.TREE,
             data: {parentId, contentId, children},
         }
         const treeId = state.globalDataStore.addMutation(createMutation)
@@ -403,7 +403,7 @@ const mutations = {
     ): ITreeLocationData {
         const createMutation: ICreateMutation<ITreeLocationData> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
-            objectType: ObjectTypes.TREE_LOCATION,
+            objectType: GlobalDataStoreObjectTypes.TREE_LOCATION,
             data: {
                 point: {
                     x, y,
@@ -417,7 +417,7 @@ const mutations = {
     },
     [MUTATION_NAMES.MOVE_TREE_COORDINATE](state: IState, {treeId, point }: IMoveTreeCoordinateMutationArgs) {
         const mutation: ITypeIdProppedDatedMutation<PointMutationTypes> = {
-            objectType: ObjectTypes.TREE_LOCATION,
+            objectType: GlobalDataStoreObjectTypes.TREE_LOCATION,
             id: treeId,
             timestamp: Date.now(),
             type: PointMutationTypes.SET,

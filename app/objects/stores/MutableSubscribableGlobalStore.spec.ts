@@ -21,7 +21,7 @@ import {
     IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore, ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeStoreSource,
-    ObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES, IContentData,
+    GlobalDataStoreObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES, IContentData,
     ITreeLocationData,
     ITreeData, IProficiencyStats, ITreeUserData, timestamp, IMutableSubscribableField,
 } from '../interfaces';
@@ -86,7 +86,7 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
     })
 
     const NEW_CONTENT_ID = 'def123'
-    const objectType = ObjectTypes.TREE
+    const objectType = GlobalDataStoreObjectTypes.TREE
     const propertyName = TreePropertyNames.CONTENT_ID;
     const type = FieldMutationTypes.SET;
     const data = NEW_CONTENT_ID
@@ -148,7 +148,7 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
         container: myContainer
     })
     const newProficiencyVal = PROFICIENCIES.THREE
-    const objectType = ObjectTypes.CONTENT_USER
+    const objectType = GlobalDataStoreObjectTypes.CONTENT_USER
     const propertyName = ContentUserPropertyNames.PROFICIENCY;
     const type = FieldMutationTypes.SET;
     const data = newProficiencyVal
@@ -202,7 +202,7 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
         container: myContainer
     })
     const newQuestionVal = 'What is the capital of Iowa?'
-    const objectType = ObjectTypes.CONTENT
+    const objectType = GlobalDataStoreObjectTypes.CONTENT
     const propertyName = ContentPropertyNames.QUESTION;
     const mutationType = FieldMutationTypes.SET;
     const data = newQuestionVal
@@ -251,7 +251,7 @@ test('MutableSubscribableGlobalStore:::adding a create contentuser' +
     const createMutation: ICreateMutation<IContentUserData> = {
         id,
         data: contentUserData,
-        objectType: ObjectTypes.CONTENT_USER,
+        objectType: GlobalDataStoreObjectTypes.CONTENT_USER,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
     }
 
@@ -292,7 +292,7 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
     const createMutation: ICreateMutation<IContentData> = {
         id,
         data: contentData,
-        objectType: ObjectTypes.CONTENT,
+        objectType: GlobalDataStoreObjectTypes.CONTENT,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
     }
 
@@ -328,7 +328,7 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
     const createMutation: ICreateMutation<ITreeLocationData> = {
         id,
         data: treeLocationData,
-        objectType: ObjectTypes.TREE_LOCATION,
+        objectType: GlobalDataStoreObjectTypes.TREE_LOCATION,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
     }
 
@@ -370,7 +370,7 @@ test('MutableSubscribableGlobalStore: adding a create' +
     // const id = treeId
     const createMutation: ICreateMutation<ITreeDataWithoutId> = {
         data: treeDataWithoutId,
-        objectType: ObjectTypes.TREE,
+        objectType: GlobalDataStoreObjectTypes.TREE,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
     }
 
@@ -421,7 +421,7 @@ test('MutableSubscribableGlobalStore: adding a create' +
     // // const id = treeId
     // const createMutation: ICreateMutation<ITreeDataWithoutId> = {
     //     data: treeDataWithoutId,
-    //     objectType: ObjectTypes.TREE,
+    //     objectType: GlobalDataStoreObjectTypes.TREE,
     //     type: STORE_MUTATION_TYPES.CREATE_ITEM,
     // }
     //

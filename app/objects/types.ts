@@ -157,7 +157,7 @@ export const TYPES = {
     ObjectFirebaseAutoSaverArgs: Symbol('ObjectFirebaseAutoSaverArgs'),
     OverdueListenerArgs: Symbol('OverdueListenerArgs'),
     OverdueListenerMutableSubscribableContentUserStoreArgs: Symbol('OverdueListenerMutableSubscribableContentUserStoreArgs'),
-    ObjectDataTypes: Symbol('ObjectDataTypes'),
+    ObjectDataTypes: Symbol('GlobalDataStoreObjectDataTypes'),
     OneToManyMapArgs: Symbol('OneToManyMapArgs'),
     PropertyFirebaseSaverArgs: Symbol('PropertyFirebaseSaverArgs'),
     PROFICIENCIES: Symbol('PROFICIENCIES'),

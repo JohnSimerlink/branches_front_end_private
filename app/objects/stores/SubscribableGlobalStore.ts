@@ -7,7 +7,7 @@ import {
     ISubscribableContentUserStore,
     ISubscribableGlobalStore, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
     ITypeAndIdAndValUpdates, IUpdatesCallback,
-    ObjectDataTypes,
+    GlobalDataStoreObjectDataTypes,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
@@ -44,7 +44,7 @@ implements ISubscribableGlobalStore {
         const me = this
         this.treeStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectDataTypes.TREE_DATA,
+                type: GlobalDataStoreObjectDataTypes.TREE_DATA,
                 ...update
             }
             me.callCallbacks()
@@ -52,7 +52,7 @@ implements ISubscribableGlobalStore {
         this.treeStore.startPublishing()
         this.treeUserStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectDataTypes.TREE_USER_DATA,
+                type: GlobalDataStoreObjectDataTypes.TREE_USER_DATA,
                 ...update
             }
             me.callCallbacks()
@@ -60,7 +60,7 @@ implements ISubscribableGlobalStore {
         this.treeUserStore.startPublishing()
         this.treeLocationStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectDataTypes.TREE_LOCATION_DATA,
+                type: GlobalDataStoreObjectDataTypes.TREE_LOCATION_DATA,
                 ...update
             }
             me.callCallbacks()
@@ -68,7 +68,7 @@ implements ISubscribableGlobalStore {
         this.treeLocationStore.startPublishing()
         this.contentStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectDataTypes.CONTENT_DATA,
+                type: GlobalDataStoreObjectDataTypes.CONTENT_DATA,
                 ...update
             }
             me.callCallbacks()
@@ -76,7 +76,7 @@ implements ISubscribableGlobalStore {
         this.contentStore.startPublishing()
         this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
-                type: ObjectDataTypes.CONTENT_USER_DATA,
+                type: GlobalDataStoreObjectDataTypes.CONTENT_USER_DATA,
                 ...update
             }
             me.callCallbacks()

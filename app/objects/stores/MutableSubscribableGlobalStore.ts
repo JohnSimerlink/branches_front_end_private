@@ -3,7 +3,7 @@ import {log} from '../../../app/core/log'
 import {
     AllPropertyMutationTypes, ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, ITypeIdProppedDatedMutation,
-    IIdProppedDatedMutation, IMutableSubscribableGlobalStore, ObjectTypes, TreeLocationPropertyMutationTypes,
+    IIdProppedDatedMutation, IMutableSubscribableGlobalStore, GlobalDataStoreObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
     TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, IContentData,
     ITreeData, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, id, IUpdatesCallback,
@@ -36,7 +36,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
         // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
-            case ObjectTypes.TREE: {
+            case GlobalDataStoreObjectTypes.TREE: {
                 // log('MSGlobalStore addEditMutation TREE called', mutation)
                 const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
                 const type: TreePropertyMutationTypes = mutation.type as TreePropertyMutationTypes
@@ -51,7 +51,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 this.treeStore.addMutation(treeStoreMutation)
                 break
             }
-            case ObjectTypes.TREE_USER: {
+            case GlobalDataStoreObjectTypes.TREE_USER: {
                 const propertyName: TreeUserPropertyNames = mutation.propertyName as TreeUserPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const type: TreeUserPropertyMutationTypes = mutation.type as TreeUserPropertyMutationTypes
@@ -68,7 +68,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 this.treeUserStore.addMutation(treeUserStoreMutation)
                 break
             }
-            case ObjectTypes.TREE_LOCATION: {
+            case GlobalDataStoreObjectTypes.TREE_LOCATION: {
                 const propertyName: TreeLocationPropertyNames = mutation.propertyName as TreeLocationPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const type: TreeLocationPropertyMutationTypes = mutation.type as TreeLocationPropertyMutationTypes
@@ -83,7 +83,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 this.treeLocationStore.addMutation(treeLocationStoreMutation)
                 break
             }
-            case ObjectTypes.CONTENT_USER: {
+            case GlobalDataStoreObjectTypes.CONTENT_USER: {
                 const propertyName: ContentUserPropertyNames = mutation.propertyName as ContentUserPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const contentUserStoreMutation:
@@ -98,7 +98,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 this.contentUserStore.addMutation(contentUserStoreMutation)
                 break
             }
-            case ObjectTypes.CONTENT: {
+            case GlobalDataStoreObjectTypes.CONTENT: {
                 const propertyName: ContentPropertyNames = mutation.propertyName as ContentPropertyNames
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
                 const contentStoreMutation:
@@ -118,7 +118,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         log('MSGLobalStore addCreateMutation called. id is,',
             this._globalStoreId, 'and mutation objectType is', mutation.objectType)
         switch (mutation.objectType) {
-            case ObjectTypes.CONTENT_USER: {
+            case GlobalDataStoreObjectTypes.CONTENT_USER: {
                 const id = mutation.id
                 const contentUserData = mutation.data
                 this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData})
@@ -127,13 +127,13 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                  . TODO: make an intgration test for this */
                 return id
             }
-            case ObjectTypes.CONTENT: {
+            case GlobalDataStoreObjectTypes.CONTENT: {
                 const contentData: IContentData = mutation.data
                 const contentId = createContentId(contentData)
                 this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData})
                 return contentId
             }
-            case ObjectTypes.TREE: {
+            case GlobalDataStoreObjectTypes.TREE: {
                 const treeDataWithoutId: ITreeDataWithoutId = mutation.data
                 const id = createTreeId(treeDataWithoutId)
                 this.treeStore.addAndSubscribeToItemFromData({id, treeDataWithoutId})
@@ -141,7 +141,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
             }
             /* TODO: WE HAVE A LOT OF INTEGRATION TESTS
              TO MAKE SURE ALL THESE CREATION MUTATIONS WORK PROPERLY and STAY PROPERLY WORKING */
-            case ObjectTypes.TREE_LOCATION: {
+            case GlobalDataStoreObjectTypes.TREE_LOCATION: {
                 const treeLocationData: ITreeLocationData = mutation.data
                 const id = mutation.id
                 this.treeLocationStore.addAndSubscribeToItemFromData({id, treeLocationData})

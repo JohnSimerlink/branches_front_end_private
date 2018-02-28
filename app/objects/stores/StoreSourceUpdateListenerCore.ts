@@ -4,7 +4,7 @@ import {
     IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISigmaNodes,
     ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
-    ITypeAndIdAndValUpdates, ObjectDataTypes
+    ITypeAndIdAndValUpdates, GlobalDataStoreObjectDataTypes
 } from '../interfaces';
 import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
@@ -40,9 +40,9 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
         // log('StoreSourceUpdateListenerCore, with id of ', this['_id'],' receiveUpdate CALLED!!!', update, this.sigmaNodes,
         //     this.sigmaNodesUpdater, this.contentIdSigmaIdMap)
-        const type: ObjectDataTypes = update.type
+        const type: GlobalDataStoreObjectDataTypes = update.type
         switch (type) {
-            case ObjectDataTypes.TREE_DATA: {
+            case GlobalDataStoreObjectDataTypes.TREE_DATA: {
                 const sigmaId = update.id
                 const contentId = update.val.contentId
                 // if (!this.sigmaNodes[sigmaId]) {
@@ -58,7 +58,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 this.store.commit(MUTATION_NAMES.SET_TREE_DATA, mutationArgs)
                 break;
             }
-            case ObjectDataTypes.TREE_LOCATION_DATA: {
+            case GlobalDataStoreObjectDataTypes.TREE_LOCATION_DATA: {
                 // const sigmaId = update.id
                 // if (!this.sigmaNodes[sigmaId]) {
                 //     this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
@@ -73,7 +73,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 
                 break;
             }
-            case ObjectDataTypes.CONTENT_DATA: {
+            case GlobalDataStoreObjectDataTypes.CONTENT_DATA: {
                 // const contentId = update.id
                 // const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
                 // log('StoreSourceUpdateListenerCore sigmaIds in content Data are', sigmaIds, this.contentIdSigmaIdMap)
@@ -89,7 +89,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 // }
                 break;
             }
-            case ObjectDataTypes.CONTENT_USER_DATA: {
+            case GlobalDataStoreObjectDataTypes.CONTENT_USER_DATA: {
                 // TODO: currently assumes that tree_OUTDATED/sigma id's  are loaded before content is
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})

@@ -369,7 +369,7 @@ export interface IIdDatedMutation<MutationTypes> extends IDatedMutation<Mutation
 }
 export interface ITypeIdProppedDatedMutation<MutationTypes>
     extends IIdProppedDatedMutation<MutationTypes, AllPropertyNames> {
-    objectType: ObjectTypes
+    objectType: GlobalDataStoreObjectTypes
 }
 export interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
     active: boolean
@@ -378,7 +378,7 @@ export interface IActivatableDatedMutation<MutationTypes>
     extends IDatedMutation<MutationTypes>, IActivatableMutation<MutationTypes> {
 }
 export interface ICreateMutation<ObjectDataInterface> {
-    objectType: ObjectTypes
+    objectType: GlobalDataStoreObjectTypes
     id?: string /* only should exist for ICreateMutation<IContentUserData>
      and ICreateMutation<ITreeLocation> and ICreateMutation<ITreeUserData> */
     data: ObjectDataInterface // e.g. ITreeData ... ITreeLocationData
@@ -419,14 +419,14 @@ export type AllPropertyMutationTypes =
     | ContentUserPropertyMutationTypes
     | ContentPropertyMutationTypes
 
-export enum ObjectDataTypes {
+export enum GlobalDataStoreObjectDataTypes {
     TREE_DATA = 'TREE_DATA',
     TREE_LOCATION_DATA = 'TREE_LOCATION_DATA',
     TREE_USER_DATA = 'TREE_USER_DATA',
     CONTENT_DATA = 'CONTENT_DATA',
     CONTENT_USER_DATA = 'CONTENT_USER_DATA',
 }
-export enum ObjectTypes {
+export enum GlobalDataStoreObjectTypes {
     TREE = 'TREE',
     TREE_LOCATION =  'TREE_LOCATION',
     TREE_USER = 'TREE_USER',
@@ -777,7 +777,7 @@ export interface ITypeAndIdAndValAndObjUpdates extends ITypeAndIdAndValUpdates {
     obj
 }
 export interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
-    type: ObjectDataTypes
+    type: GlobalDataStoreObjectDataTypes
 }
 export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
     ITreeLocationData & IContentData & IContentUserData & ICoordinate
