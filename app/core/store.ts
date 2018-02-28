@@ -50,7 +50,7 @@ Vue.use(Vuex)
 export enum MUTATION_NAMES {
     CREATE_USER_OR_LOGIN = 'create_user_or_login',
     LOGIN = 'login',
-    INITIALIZE_SIGMA_INSTANCE = 'initializeSigmaInstance',
+    INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED = 'initializeSigmaInstance',
     JUMP_TO = 'jump_to',
     REFRESH = 'refresh',
     ADD_NODE = 'add_node',
@@ -76,6 +76,7 @@ export enum MUTATION_NAMES {
     SET_CONTENT_DATA = 'set_content_data',
     SET_CONTENT_USER_DATA = 'set_content_user_data',
     ADD_USER_POINTS = 'add_user_points',
+    SET_MAP_ID = 'set_map_id',
 }
 
 const getters = {
@@ -185,7 +186,10 @@ const mutations = {
         }
         user.addMutation(mutation)
     },
-    [MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE](state: IState) {
+    [MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED](state: IState) {
+        if (state.sigmaInitialized) {
+            return
+        }
         const sigmaInstance /*: Sigma*/ = new sigma({
             graph: state.graphData,
             container: GRAPH_CONTAINER_ID,
@@ -208,12 +212,14 @@ const mutations = {
 
         sigmaInstance.cameras[0].goTo({x: 5, y: 5, ratio: .05})
 
+        const renderer = sigmaInstance.renderers[0]
+        state.renderer = renderer
         /* TODO: it would be nice if I didn't have to do all this constructing
          inside of store.ts and rather did it inside of appContainer or inversify.config.ts */
         const store = getters.getStore()
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store})
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig()
-        const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, sigmaInstance.renderers[0], tooltipsConfig)
+        const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig)
         const tooltipOpener: ITooltipOpener =
             new TooltipOpener(
                 {
@@ -333,7 +339,10 @@ const mutations = {
         const r = 30
         const newLocation: ICoordinate =
             obtainNewLocation(
-                {r, sigmaInstance: state.sigmaInstance, parentCoordinate: {x: parentLocation.point.x, y: parentLocation.point.y}})
+                {r, sigmaInstance: state.sigmaInstance,
+                    parentCoordinate:
+                        {x: parentLocation.point.x, y: parentLocation.point.y}
+                })
 
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
             treeId: treeIdString, x: newLocation.x, y: newLocation.y, level: parentLocation.level + 1
@@ -509,6 +518,14 @@ const mutations = {
             console.error('There was an error ', errorCode, errorMessage, email, credential)
         });
 
+    },
+    [MUTATION_NAMES.SET_MAP_ID](state: IState, {mapId}: {mapId: id}) {
+        if (!state.sigmaInitialized) {
+            throw new Error('Cannot set map id before sigma has been initialized.' +
+                ' because the renderer we are trying to set the mapIdOn is null')
+        }
+        state.currentMapId = mapId
+        state.renderer.mapIdToRender = mapId // TODO: pathological coupling with the sigma renderer class
     },
     [MUTATION_NAMES.SET_TREE_DATA](state: IState, {treeId, treeDataWithoutId}: ISetTreeDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId)

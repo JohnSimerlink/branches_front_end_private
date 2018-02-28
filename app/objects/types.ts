@@ -139,6 +139,7 @@ export const TYPES = {
     ITreeComponentCreator2: Symbol('ITreeComponentCreator2'),
     ITreeLoader: Symbol('ITreeLoader'),
     ITreeLocation: Symbol('ITreeLocation'),
+    ITreeLocationData: Symbol('ITreeLocationData'),
     ITreeLocationLoader: Symbol('ITreeLocationLoader'),
     ITreeUser: Symbol('ITree'),
     ITreeUserLoader: Symbol('ITreeUserLoader'),

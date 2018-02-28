@@ -201,18 +201,12 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     var A_BIG_NUMBER = 999999999
     let mostCenteredNodeId = null
     let mostCenteredNodeDistance = A_BIG_NUMBER
-    // window.mostCenteredNodeId = null
-    // window.mostCenteredNodeDistance = A_BIG_NUMBER
-    var nodesOnScreen = this.camera.quadtree.area(rect)
-    // var nodesOnScreen = this.graph.nodes()
-    // console.log("nodesOnScreen and nodesOnScreen2", nodesOnScreen)
-    // console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
-    // nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
-    nodesOnScreen.forEach(node => {
-        // console.log('a node on screen is ', node)
-        // if (node.type !== NODE_TYPES.TREE) {
-        //     return
-        // }
+    const nodesOnScreen = this.camera.quadtree.area(rect)
+    const nodesOnScreenAndPartOfMap = nodesOnScreen.filter(
+        (node) => node.treeLocationData.mapId === this.mapIdToRender
+    )
+
+    nodesOnScreenAndPartOfMap.forEach(node => {
         node.onScreen = true
         const x = node[prefix + "x"]
         const y = node[prefix + "y"]
@@ -244,8 +238,9 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // this.camera.getRectangle(this.width, this.height)
     // );
 
-    for (a = this.nodesOnScreen, i = 0, l = a.length; i < l; i++)
+    for (a = nodesOnScreenAndPartOfMap, i = 0, l = a.length; i < l; i++) {
         index[a[i].id] = a[i];
+    }
 
     // Draw edges:
     // - If settings('batchEdgesDrawing') is true, the edges are displayed per
@@ -369,7 +364,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     if (drawNodes) {
         // console.log(' sigma renderers canvas:  drawNodes about to get called', drawNodes)
         renderers = sigma.canvas.nodes;
-        nodesToRender = this.nodesOnScreen.filter( n => !n.hidden)
+        nodesToRender = nodesOnScreenAndPartOfMap.filter( n => !n.hidden)
         for (a = nodesToRender, i = 0, l = a.length; i < l; i++) {
             const nodeType = a[i].type || this.settings(options, 'defaultNodeType')
             const renderer = renderers[nodeType] || renderers.def
@@ -382,7 +377,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     if (drawLabels) {
         renderers = sigma.canvas.labels;
         if (!nodesToRender) {
-            nodesToRender = this.nodesOnScreen.filter( n => !n.hidden)
+            nodesToRender = nodesOnScreenAndPartOfMap.filter( n => !n.hidden)
         }
         for (a = nodesToRender, i = 0, l = a.length; i < l; i++){
             const nodeType = a[i].type || this.settings(options, 'defaultNodeType')

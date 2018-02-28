@@ -57,7 +57,7 @@ test('store create location should call correct firebaseRef', t => {
     /**
      * initialize sigma to avoid refresh on null error
      */
-    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
     /**
      * test the actual mutation we are testing
      */

@@ -110,7 +110,7 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     // const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
     // // initialize userId to prevent ContentUserLoader DownloadData error
     // store.state.userId = userId // TODO: << I don't like modifying state directly
-    // store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    // store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
     //
     // /* ===== load in the tree, contentItem, contentUserItem ======= */
     // const treeItemRef = mockTreesRef.child(treeIdVal)

@@ -78,7 +78,7 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     /**
      * initialize sigma to avoid refresh on null error
      */
-    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
     /**
      * get data in the store source and with syncers
      */

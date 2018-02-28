@@ -65,7 +65,7 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
 
     const sigmaNodesUpdaterHandleUpdateSpy = sinon.spy(sigmaNodesUpdater, 'handleUpdate')
     const store: Store<any> = myContainer.get<BranchesStore>(TYPES.BranchesStore) as Store<any>
-    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
 
     storeSourceUpdateListenerCore.receiveUpdate(update)
 

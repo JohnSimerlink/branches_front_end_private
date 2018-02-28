@@ -95,7 +95,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
 
     expect(storeCommitSpy.callCount).to.equal(1)
     calledWith = storeCommitSpy.getCall(0).args[0]
-    expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
 
     t.pass()
 })

@@ -7,7 +7,7 @@ import {
     CONTENT_TYPES,
     IColorSlice, IContentData,
     IContentUserData, ICoordinate, IProficiencyStats,
-    ISigmaNode, ITreeDataWithoutId, ITreeLocationData, ITreeUserData, timestamp
+    ISigmaNode, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, ITreeUserData, timestamp
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
@@ -26,6 +26,7 @@ export class SigmaNode implements ISigmaNode {
     public x: number;
     public y: number;
     public level: number;
+    public treeLocationData: ITreeLocationData;
     public aggregationTimer: number;
     public content: IContentData;
     public contentUserData: IContentUserData;
@@ -67,6 +68,7 @@ export class SigmaNode implements ISigmaNode {
         this.x = pointVal.x
         this.y = pointVal.y
         this.level = treeLocationData.level
+        this.treeLocationData = treeLocationData
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance
@@ -82,6 +84,7 @@ export class SigmaNode implements ISigmaNode {
             x,
             y,
             level,
+            treeLocationData,
             content,
             contentUserData,
             label,
@@ -98,6 +101,7 @@ export class SigmaNode implements ISigmaNode {
             children: undefined,
             x: undefined,
             y: undefined,
+            treeLocationData: undefined,
             level: undefined,
             content: undefined,
             contentUserData: undefined,
@@ -116,6 +120,7 @@ export class SigmaNode implements ISigmaNode {
         this.x = x
         this.y = y
         this.level = level
+        this.treeLocationData = treeLocationData
         this.proficiencyStats = proficiencyStats
         this.aggregationTimer = aggregationTimer
         this.content = content || {
@@ -141,6 +146,7 @@ export class SigmaNodeArgs {
     @inject(TYPES.Number) public x: number;
     @inject(TYPES.Number) public y: number;
     @inject(TYPES.Number) public level: number;
+    @inject(TYPES.ITreeLocationData) public treeLocationData: ITreeLocationData;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
     @inject(TYPES.Object) public content: IContentData;

@@ -612,6 +612,7 @@ export interface ISigmaNodeData {
     x: number;
     y: number;
     level: number;
+    treeLocationData: ITreeLocationData;
     aggregationTimer: number;
     content: IContentData;
     contentUserId: string;
@@ -852,13 +853,18 @@ export interface ISigmaGraphData {
     nodes: ISigmaNodeData[]
     edges: ISigmaEdgeData[]
 }
+export interface IBranchesMapRenderer {
+    mapIdToRender: id
+}
 export interface IState {
     uri: string,
     centeredTreeId: string,
+    currentMapId: string,
     sigmaInstance: ISigma,
     graphData: ISigmaGraphData,
     graph: ISigmaGraph,
     sigmaInitialized: boolean,
+    renderer: IBranchesMapRenderer,
     globalDataStore: IMutableSubscribableGlobalStore,
     globalDataStoreData: {
         content: IHash<IContentData>,
