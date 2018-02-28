@@ -15,7 +15,8 @@ export class SyncableMutableSubscribableUser
     public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
         return {
             membershipExpirationDate: this.membershipExpirationDate,
-            everActivatedMembership: this.everActivatedMembership
+            everActivatedMembership: this.everActivatedMembership,
+            points: this.points,
         }
     }
 }

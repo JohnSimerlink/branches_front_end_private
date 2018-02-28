@@ -40,9 +40,11 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
     private add(delta: number) {
         /*TODO:// */
         /* Please find a less hacky way to do this - Mo */
+        log('J15 point field value before mutation', this.field)
         let field: number = parseInt(this.field.toString())
         field += delta
         this.field = field as any as T
+        log('J15 point field value after mutation', this.field)
         this.updates.val = this.field
     }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {
@@ -51,7 +53,7 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
                 this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?
                 break;
             case FieldMutationTypes.ADD:
-                this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?
+                this.add(mutation.data) // TODO: Law of Demeter Violation? How to fix?
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'

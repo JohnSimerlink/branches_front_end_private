@@ -769,7 +769,7 @@ export interface ISubscribableContentStore
 
 export type IValUpdates = any
 export interface IIdAndValUpdates {
-    id: any,
+    id: id,
     val: any
 }
 export interface ITypeAndIdAndValAndObjUpdates extends ITypeAndIdAndValUpdates {
