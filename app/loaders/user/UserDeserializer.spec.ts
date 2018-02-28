@@ -13,7 +13,7 @@ import {MutableSubscribableUser} from '../../objects/user/MutableSubscribableUse
 import {UserDeserializer} from './UserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableUser} from '../../objects/user/SyncableMutableSubscribableUser';
-import {expectedUser1, sampleUserData1} from "../../objects/user/UserTestHelpers";
+import {expectedUser1, sampleUserData1, sampleUserDataFromDB1} from "../../objects/user/UserTestHelpers";
 
 myContainerLoadAllModules()
 test('UserDeserializer::: deserialize should deserialize properly', (t) => {
@@ -22,24 +22,10 @@ test('UserDeserializer::: deserialize should deserialize properly', (t) => {
     t.pass()
 })
 test('UserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
-    const timestampToday = Date.now()
-    const everBeenActivatedValue: boolean = false
 
-    const userDataFromDB: IUserDataFromDB = {
-        membershipExpirationDate: {
-            val: timestampToday
-        },
-        everActivatedMembership: {
-            val: everBeenActivatedValue
-        }
-    }
-
-    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
-    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
-    const expectedUser: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
-        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
-    )
+    const userDataFromDB: IUserDataFromDB = sampleUserDataFromDB1
+    
     const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserializeFromDB({userDataFromDB})
-    expect(deserializedUser).to.deep.equal(expectedUser)
+    expect(deserializedUser).to.deep.equal(expectedUser1)
     t.pass()
 })
