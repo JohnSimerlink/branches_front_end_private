@@ -138,7 +138,7 @@ const getters = {
             // }
             // const user: ISyncableMutableSubscribableUser = state.users[userId]
             //     || await state.userLoader.downloadUser(userId)
-            // const expirationTime = user.membershipExpirationDate.val()
+            // const expirationTime = user.sampleUser1MembershipExpirationDate.val()
             // return expirationTime >= Date.now()
         }
     },
