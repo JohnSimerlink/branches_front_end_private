@@ -1,0 +1,45 @@
+import {inject, injectable, tagged} from 'inversify';
+import {
+    IBranchesMapData, id, IMutableSubscribableBranchesMap, IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableBranchesMap, IBranchesMapLoader
+} from '../../objects/interfaces';
+import {TYPES} from '../../objects/types';
+import {BranchesMapLoader} from './BranchesMapLoader';
+import {log} from '../../core/log'
+import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
+import {TAGS} from '../../objects/tags';
+
+// Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
+@injectable()
+export class BranchesMapLoaderAndAutoSaver implements IBranchesMapLoader {
+    private firebaseRef: Reference
+    private branchesMapLoader: IBranchesMapLoader
+    constructor(@inject(TYPES.BranchesMapLoaderAndAutoSaverArgs){
+        firebaseRef, branchesMapLoader, }: BranchesMapLoaderAndAutoSaverArgs) {
+        this.branchesMapLoader = branchesMapLoader
+        this.firebaseRef = firebaseRef
+    }
+    public async downloadBranchesMap(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
+        log('branchesMapLoaderAutoSaver download BranchesMap called', branchesMapId)
+        const branchesMap = await this.branchesMapLoader.downloadBranchesMap(branchesMapId)
+
+        const branchesMapFirebaseRef = this.firebaseRef.child(branchesMapId)
+        const branchesMapAutoSaver: IObjectFirebaseAutoSaver =
+            new ObjectFirebaseAutoSaver({
+                syncableObjectFirebaseRef: branchesMapFirebaseRef,
+                syncableObject: branchesMap
+            })
+        branchesMapAutoSaver.start()
+        log('branchesMapAuto saver just called')
+
+        return branchesMap
+    }
+}
+
+@injectable()
+export class BranchesMapLoaderAndAutoSaverArgs {
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
+    @inject(TYPES.IBranchesMapLoader) public branchesMapLoader: IBranchesMapLoader
+}

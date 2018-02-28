@@ -8,7 +8,7 @@ import {
     IOneToManyMap,
     ISigmaNodesUpdater, ISigmaRenderManager,
     IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdates,
-    GlobalDataStoreObjectDataTypes
+    GlobalStoreObjectDataTypes
 } from '../interfaces';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager} from '../sigmaNode/SigmaRenderManager';
@@ -41,7 +41,7 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
     }
     const update: ITypeAndIdAndValUpdates = {
         id: TREE_ID,
-        type: GlobalDataStoreObjectDataTypes.TREE_DATA,
+        type: GlobalStoreObjectDataTypes.TREE_DATA,
         val,
     }
     const sigmaNodes = {}

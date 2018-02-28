@@ -24,7 +24,7 @@ import {
     id,
     IMutableSubscribableTreeStore,
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
-    GlobalDataStoreObjectDataTypes
+    GlobalStoreObjectDataTypes
 } from '../objects/interfaces';
 import {SubscribableTreeStoreSource, SubscribableTreeStoreSourceArgs} from '../objects/stores/SubscribableStoreSource';
 import {TreeDeserializer} from '../loaders/tree/TreeDeserializer';

@@ -86,6 +86,9 @@ export interface IContentUserLoader {
 export interface IUserLoader {
     downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser>
 }
+export interface IBranchesMapLoader {
+    downloadBranchesMap(mapId: id): Promise<ISyncableMutableSubscribableBranchesMap>
+}
 
 export interface ISigmaNodeLoaderCore {
     load(sigmaId: id):
@@ -231,6 +234,9 @@ export interface ISyncableMutableSubscribableTreeUser extends
 export interface ISyncableMutableSubscribableUser extends
     IMutableSubscribableUser, ISyncable {
 }
+export interface ISyncableMutableSubscribableBranchesMap extends
+    IMutableSubscribableBranchesMap, ISyncable {
+}
 
 export interface IContentUserData {
     id: string,
@@ -369,7 +375,7 @@ export interface IIdDatedMutation<MutationTypes> extends IDatedMutation<Mutation
 }
 export interface ITypeIdProppedDatedMutation<MutationTypes>
     extends IIdProppedDatedMutation<MutationTypes, AllPropertyNames> {
-    objectType: GlobalDataStoreObjectTypes
+    objectType: GlobalStoreObjectTypes
 }
 export interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
     active: boolean
@@ -378,7 +384,7 @@ export interface IActivatableDatedMutation<MutationTypes>
     extends IDatedMutation<MutationTypes>, IActivatableMutation<MutationTypes> {
 }
 export interface ICreateMutation<ObjectDataInterface> {
-    objectType: GlobalDataStoreObjectTypes
+    objectType: GlobalStoreObjectTypes
     id?: string /* only should exist for ICreateMutation<IContentUserData>
      and ICreateMutation<ITreeLocation> and ICreateMutation<ITreeUserData> */
     data: ObjectDataInterface // e.g. ITreeData ... ITreeLocationData
@@ -388,7 +394,7 @@ export enum STORE_MUTATION_TYPES {
     CREATE_ITEM = 'STORE_MUTATION_TYPES_CREATE_ITEM',
     DELETE_ITEM = 'STORE_MUTATION_TYPES_DELETE_ITEM',
 }
-export type IGlobalMutation = ITypeIdProppedDatedMutation<AllPropertyMutationTypes>
+export type IGlobalMutation = ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>
     | ICreateMutation<any>
 
 export enum SetMutationTypes {
@@ -412,21 +418,22 @@ export type TreeLocationPropertyMutationTypes = PointMutationTypes
 export type ContentUserPropertyMutationTypes = FieldMutationTypes
 export type ContentPropertyMutationTypes = FieldMutationTypes
 export type UserPropertyMutationTypes = FieldMutationTypes
-export type AllPropertyMutationTypes =
+export type BranchesMapPropertyMutationTypes = FieldMutationTypes
+export type GlobalStorePropertyMutationTypes =
     TreePropertyMutationTypes
     | TreeUserPropertyMutationTypes
     | TreeLocationPropertyMutationTypes
     | ContentUserPropertyMutationTypes
     | ContentPropertyMutationTypes
 
-export enum GlobalDataStoreObjectDataTypes {
+export enum GlobalStoreObjectDataTypes {
     TREE_DATA = 'TREE_DATA',
     TREE_LOCATION_DATA = 'TREE_LOCATION_DATA',
     TREE_USER_DATA = 'TREE_USER_DATA',
     CONTENT_DATA = 'CONTENT_DATA',
     CONTENT_USER_DATA = 'CONTENT_USER_DATA',
 }
-export enum GlobalDataStoreObjectTypes {
+export enum GlobalStoreObjectTypes {
     TREE = 'TREE',
     TREE_LOCATION =  'TREE_LOCATION',
     TREE_USER = 'TREE_USER',
@@ -436,10 +443,47 @@ export enum GlobalDataStoreObjectTypes {
 export type timestamp = number
 
 // map object
-export interface IBranchesMap {
-    root_tree_id: id
+export interface IBranchesMapData {
+    rootTreeId: id
 }
+export interface IBranchesMap {
+    rootTreeId: IMutableField<id>
+}
+
+export interface ISubscribableBranchesMapCore extends IBranchesMap {
+    rootTreeId: IMutableSubscribableField<id>
+    val(): IBranchesMapData
+}
+
+export interface IBranchesMapDataFromDB {
+    rootTreeId: {
+        val: id;
+    },
+}
+
+export enum BranchesMapPropertyNames {
+    ROOT_TREE_ID = 'rootTreeId',
+    EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
+}
+
+export interface ISubscribableBranchesMap extends
+    ISubscribable<IValUpdates>, ISubscribableBranchesMapCore, IDescendantPublisher {}
+
+export interface IMutableSubscribableBranchesMap
+    extends ISubscribableBranchesMap,
+        IMutable<IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>> {}
+
+export interface IBranchesMapUtils {
+    userExistsInDB(userId: id): Promise<boolean>
+    createBranchesMapInDB(userId: id): Promise<ISyncableMutableSubscribableBranchesMap>
+}
+
+
 // user object
+export interface IUserData {
+    membershipExpirationDate: timestamp
+    everActivatedMembership: boolean
+}
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
     everActivatedMembership: IMutableField<boolean>
@@ -777,7 +821,7 @@ export interface ITypeAndIdAndValAndObjUpdates extends ITypeAndIdAndValUpdates {
     obj
 }
 export interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
-    type: GlobalDataStoreObjectDataTypes
+    type: GlobalStoreObjectDataTypes
 }
 export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
     ITreeLocationData & IContentData & IContentUserData & ICoordinate

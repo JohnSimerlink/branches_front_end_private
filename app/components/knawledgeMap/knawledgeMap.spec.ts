@@ -8,7 +8,7 @@ import {Container, interfaces} from 'inversify';
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {INITIAL_ID_TO_DOWNLOAD} from '../../core/globals';
+import {INITIAL_TREE_ID_TO_DOWNLOAD} from '../../core/globals';
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import Reference = firebase.database.Reference;
@@ -90,7 +90,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     knawledgeMap.mounted()
     expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
-    const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
+    const expectedCalledWith = INITIAL_TREE_ID_TO_DOWNLOAD
     expect(calledWith).to.equal(expectedCalledWith)
 
     expect(storeCommitSpy.callCount).to.equal(1)

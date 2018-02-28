@@ -24,7 +24,7 @@ import {
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource, ISubscribableTreeUserStoreSource,
     IUI,
-    GlobalDataStoreObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
+    GlobalStoreObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
     TreeUserPropertyMutationTypes, TreeUserPropertyNames, IMutableSubscribableField, timestamp,
 } from '../objects/interfaces';
 import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
@@ -141,7 +141,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
 
     app.start()
     const mutation: ITypeIdProppedDatedMutation<ContentUserPropertyMutationTypes> = {
-        objectType: GlobalDataStoreObjectTypes.CONTENT_USER,
+        objectType: GlobalStoreObjectTypes.CONTENT_USER,
         id: contentId,
         propertyName: ContentUserPropertyNames.OVERDUE,
         type: FieldMutationTypes.SET,
@@ -240,7 +240,7 @@ test('Adding a mutation into the global stores for a content data,' +
     app.start()
     const newAnswer = 'Columbus!!'
     const mutation: ITypeIdProppedDatedMutation<ContentPropertyMutationTypes> = {
-        objectType: GlobalDataStoreObjectTypes.CONTENT,
+        objectType: GlobalStoreObjectTypes.CONTENT,
         id: contentId,
         propertyName: ContentPropertyNames.ANSWER,
         type: FieldMutationTypes.SET,
@@ -347,7 +347,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
     app.start()
     const newAnswer = 'Columbus!!'
     const mutation: ITypeIdProppedDatedMutation<TreeUserPropertyMutationTypes> = {
-        objectType: GlobalDataStoreObjectTypes.TREE_USER,
+        objectType: GlobalStoreObjectTypes.TREE_USER,
         id: TREE_ID,
         propertyName: TreeUserPropertyNames.PROFICIENCY_STATS,
         type: FieldMutationTypes.SET,
@@ -435,7 +435,7 @@ test('Adding a mutation into the global stores for a tree location data,' +
 
     app.start()
     const mutation: ITypeIdProppedDatedMutation<TreeLocationPropertyMutationTypes> = {
-        objectType: GlobalDataStoreObjectTypes.TREE_LOCATION,
+        objectType: GlobalStoreObjectTypes.TREE_LOCATION,
         id: TREE_ID,
         propertyName: TreeLocationPropertyNames.POINT,
         type: PointMutationTypes.SHIFT,
