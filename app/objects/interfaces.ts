@@ -404,6 +404,7 @@ export enum PointMutationTypes {
 export enum FieldMutationTypes {
     SET = 'FIELD_MUTATION_TYPES_SET',
     INCREMENT = 'FIELD_MUTATION_TYPES_INCREMENT',
+    ADD = 'FIELD_MUTATION_TYPES_ADD',
 }
 export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 export type TreeUserPropertyMutationTypes = FieldMutationTypes
@@ -537,7 +538,10 @@ export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUp
 export interface ISigmaEdgeUpdater {
     addEdge()
 }
-
+export interface IAddUserPointsMutationArgs {
+    userId: id,
+    points: number,
+}
 export interface IAddNodeMutationArgs {
     node: ISigmaNodeData,
 }
