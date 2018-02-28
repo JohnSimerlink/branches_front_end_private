@@ -15,11 +15,14 @@ export class UserDeserializer {
        const membershipExpirationDate
            = new MutableSubscribableField<timestamp>({field: userData.membershipExpirationDate})
        const everActivatedMembership = new MutableSubscribableField<boolean>({field: userData.everActivatedMembership})
+       const points = new MutableSubscribableField<number>({field: userData.points})
+
        const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
            {
                updatesCallbacks: [],
                membershipExpirationDate,
                everActivatedMembership,
+               points,
            })
        return user
    }

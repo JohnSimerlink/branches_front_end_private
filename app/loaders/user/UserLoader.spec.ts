@@ -12,6 +12,8 @@ import {TYPES} from '../../objects/types';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {UserLoader, UserLoaderArgs} from './UserLoader';
+import {expectedUser1, sampleUserData1, sampleUserDataFromDB1} from "../../objects/user/UserTestHelpers";
+
 myContainerLoadAllModules()
 test('UserLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<UserLoaderArgs, IUserLoader>({
@@ -27,17 +29,9 @@ test('UserLoader:::DownloadUser should return the user', async (t) => {
      because the tests run in parallet and will trigger firebase events for other tests . . .if the ids are the same */
     const firebaseRef  = new MockFirebase(FIREBASE_PATHS.USERS)
     const childFirebaseRef = firebaseRef.child(userId)
-    const membershipExpirationDateVal = Date.now()
+    
+    const sampleUserDataFromDB: IUserDataFromDB = sampleUserDataFromDB1
 
-    const everBeenActivatedValue: boolean = false
-    const sampleUserDataFromDB: IUserDataFromDB = {
-        membershipExpirationDate: {
-            val: membershipExpirationDateVal,
-        },
-        everActivatedMembership: {
-            val: everBeenActivatedValue
-        }
-    }
     const userLoader = new UserLoader({firebaseRef})
 
     // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
@@ -52,7 +46,6 @@ test('UserLoader:::DownloadUser should return the user', async (t) => {
     const user = await userDataPromise
     // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
-    // TODO: DEEP EQUAL test the whole object
-    expect(user.membershipExpirationDate.val()).to.deep.equal(membershipExpirationDateVal)
+    expect(user.val()).to.deep.equal(sampleUserData1)
     t.pass()
 })

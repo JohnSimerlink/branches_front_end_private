@@ -1,4 +1,4 @@
-import {ISyncableMutableSubscribableUser, IUserData, timestamp} from '../interfaces';
+import {ISyncableMutableSubscribableUser, IUserData,IUserDataFromDB, timestamp} from '../interfaces';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
 
@@ -10,6 +10,18 @@ export const sampleUserData1: IUserData = {
     membershipExpirationDate: sampleUserData1ExpirationDate,
     everActivatedMembership: sampleUserData1TimestampEverBeenActivatedValue,
     points: sampleUserData1Points,
+}
+
+export const sampleUserDataFromDB1: IUserDataFromDB = {
+    membershipExpirationDate: {
+    	val: sampleUserData1ExpirationDate,
+    },
+    everActivatedMembership: {
+    	val: sampleUserData1TimestampEverBeenActivatedValue
+    },
+    points: {
+    	val: sampleUserData1Points
+    },
 }
 
 export const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: sampleUserData1ExpirationDate})
