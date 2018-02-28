@@ -54,7 +54,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
     /**
      * initialize sigma to avoid refresh on null error
      */
-    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
 
     /**
      * load in parenttreeData to prevent errors

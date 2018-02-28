@@ -43,10 +43,10 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
     public create() {
         const me = this
         return {
-            props: [],
+            props: ['mapId'],
             template,
             mounted() {
-                me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+                me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
                 me.sigmaNodeLoader.loadIfNotLoaded(INITIAL_ID_TO_DOWNLOAD)
                 // me.sigmaNodeLoader.loadIfNotLoaded(ANOTHER_ID)
                 // // TODO: Maybe all of these download actions should be done via Vuex Store actions
@@ -66,7 +66,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 //
                 // // TreeLoader.downLoadData(1)
                 // log('about to initialized sigma')
-                // me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+                // me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
                 // // sigmaInstance.initialize()
                 // // log('kn created')
                 // // log('container is ' + document.querySelector('#graph-container'))

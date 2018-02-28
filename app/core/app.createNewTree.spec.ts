@@ -176,7 +176,7 @@ test('App integration test 3 - create new Tree triggered by user' +
     storeSourceUpdateListener.subscribe(treeLocationStoreSource)
     globalDataStore.startPublishing()
 
-    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE)
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
     /* TODO: is it bad that my unit test has to test
     some property on the entire store . .. rather than just that property itself? */
 
