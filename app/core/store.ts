@@ -16,7 +16,7 @@ import {
     /*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/ ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
     ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
-    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels,
+    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -77,6 +77,7 @@ export enum MUTATION_NAMES {
     SET_TREE_USER_DATA = 'set_tree_user_data',
     SET_CONTENT_DATA = 'set_content_data',
     SET_CONTENT_USER_DATA = 'set_content_user_data',
+    ADD_USER_POINTS = 'add_user_points',
 }
 
 const getters = {
@@ -127,11 +128,16 @@ const getters = {
             return userData.points
         }
     },
-    // contentUserLastEstimatedStrength (state: IState, getters) {
-    //     return (contentUserId: id) => {
-    //         const lastEstimatedStrength: decibels = state.
-    //     }
-    // },
+    contentUserLastEstimatedStrength(state: IState, getters) {
+        return (contentUserId: id): decibels => {
+            const contentUserData = state.globalDataStoreData.contentUsers[contentUserId]
+            if (!contentUserData) {
+                return 0
+            }
+            const lastEstimatedStrength: decibels = contentUserData.lastEstimatedStrength
+            return lastEstimatedStrength
+        }
+    },
     loggedIn(state: IState, getters): boolean {
         const loggedIn = !!state.userId
         return loggedIn
@@ -179,6 +185,15 @@ const mutations = {
     },
     [MUTATION_NAMES.JUMP_TO](state: IState, treeId) {
         // state.jumpToId = treeId
+    },
+    [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs){
+        const user = state.users[userId]
+        const mutation: IProppedDatedMutation = {
+            propertyName: UserPropertyNames.POINTS,
+            timestamp: Date.now(),
+            data: points,
+            type: FieldMutationTypes.INCREMENT
+        }
     },
     [MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE](state: IState) {
         const sigmaInstance /*: Sigma*/ = new sigma({
@@ -234,6 +249,8 @@ const mutations = {
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
     ) {
+        const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId)
+
         const id = contentUserId
         const objectType = ObjectTypes.CONTENT_USER
         const propertyName = ContentUserPropertyNames.PROFICIENCY;
@@ -249,6 +266,10 @@ const mutations = {
             ...storeMutation
         }
         state.globalDataStore.addMutation(globalMutation)
+
+        const newLastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId)
+        const strengthDifference = newLastEstimatedStrength - lastEstimatedStrength
+
         mutations[MUTATION_NAMES.REFRESH](state, null)
     },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](

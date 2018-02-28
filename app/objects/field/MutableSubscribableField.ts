@@ -37,9 +37,20 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         this.field = field
         this.updates.val = field
     }
+    private add(delta: number) {
+        /*TODO:// */
+        /* Please find a less hacky way to do this - Mo */
+        let field: number = parseInt(this.field.toString())
+        field += delta
+        this.field = field as any as T
+        this.updates.val = this.field
+    }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {
         switch (mutation.type) {
             case FieldMutationTypes.SET:
+                this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?
+                break;
+            case FieldMutationTypes.ADD:
                 this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?
                 break;
             default:
