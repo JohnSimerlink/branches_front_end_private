@@ -1,6 +1,7 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
+import {log} from '../../core/log'
 import {
     UserPropertyMutationTypes,
     UserPropertyNames, FieldMutationTypes,
@@ -41,6 +42,7 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                 this.everActivatedMembership.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
             case UserPropertyNames.POINTS:
+                log('J15 user add mutation switch statement', mutation)
                 this.points.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
             default:

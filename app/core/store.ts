@@ -17,6 +17,7 @@ import {
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
     ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
     ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
+    UserPropertyMutationTypes,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -37,6 +38,7 @@ import * as firebase from 'firebase';
 import {UserDeserializer} from '../loaders/user/UserDeserializer';
 import {UserLoader} from '../loaders/user/UserLoader';
 import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
+import {getUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
 
 let Vue = require('vue').default // for webpack
 if (!Vue) {
@@ -186,14 +188,17 @@ const mutations = {
     [MUTATION_NAMES.JUMP_TO](state: IState, treeId) {
         // state.jumpToId = treeId
     },
-    [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs){
+    [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs) {
         const user = state.users[userId]
-        const mutation: IProppedDatedMutation = {
+
+        const mutation: IProppedDatedMutation <UserPropertyMutationTypes,  UserPropertyNames> = {
             propertyName: UserPropertyNames.POINTS,
             timestamp: Date.now(),
             data: points,
-            type: FieldMutationTypes.INCREMENT
+            type: FieldMutationTypes.ADD
         }
+        log('J15 inside of add user points mutation', {userId, points}, user, mutation)
+        user.addMutation(mutation)
     },
     [MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE](state: IState) {
         const sigmaInstance /*: Sigma*/ = new sigma({
@@ -251,6 +256,7 @@ const mutations = {
     ) {
         const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId)
 
+        log('J15 add content interaction mutation called', {contentUserId, proficiency, timestamp})
         const id = contentUserId
         const objectType = ObjectTypes.CONTENT_USER
         const propertyName = ContentUserPropertyNames.PROFICIENCY;
@@ -269,8 +275,16 @@ const mutations = {
 
         const newLastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId)
         const strengthDifference = newLastEstimatedStrength - lastEstimatedStrength
+        log('J15', strengthDifference, lastEstimatedStrength, newLastEstimatedStrength)
 
-        mutations[MUTATION_NAMES.REFRESH](state, null)
+        const userId = getUserId({contentUserId})
+        const addUserMutationPointArgs: IAddUserPointsMutationArgs = {
+          userId, points: strengthDifference
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs)
+
+        store.commit(MUTATION_NAMES.REFRESH, null)
     },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](
         state: IState, {contentUserId, proficiency, timestamp}) {
@@ -291,8 +305,9 @@ const mutations = {
                 }
          *
          */
-        mutations[MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state, {contentUserId, contentUserData})
-        mutations[MUTATION_NAMES.ADD_CONTENT_INTERACTION](state, {contentUserId, proficiency, timestamp})
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.CREATE_CONTENT_USER_DATA, {contentUserId, contentUserData})
+        store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {contentUserId, proficiency, timestamp})
         return contentUserData
     },
     [MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state: IState, {contentUserId, contentUserData}) {
@@ -500,7 +515,7 @@ const mutations = {
         } else {
             user = await state.userLoader.downloadUser(userId)
         }
-        storeUserInState({user, userId, state})
+        storeUserInStateAndSubscribe({user, userId, state})
         // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
 
     },
@@ -640,7 +655,16 @@ export class BranchesStoreArgs {
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }
 
-function storeUserInState({user, state, userId}: {user: ISyncableMutableSubscribableUser, state: IState, userId: id}) {
+function storeUserInStateAndSubscribe({user, state, userId}: {user: ISyncableMutableSubscribableUser, state: IState, userId: id}) {
+
+    const store = getters.getStore()
+    user.onUpdate((userVal) => {
+        const mutationArgs: ISetUserDataMutationArgs = {
+            userData: userVal,
+            userId,
+        }
+        store.commit(MUTATION_NAMES.SET_USER_DATA, mutationArgs)
+    })
     user.startPublishing() // << idk if necessary
     state.users[userId] = user
     state.usersData[userId] = user.val()
