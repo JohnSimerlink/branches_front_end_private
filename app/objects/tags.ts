@@ -1,5 +1,6 @@
 export const TAGS = {
     AUTO_SAVER: Symbol('auto_saver'),
+    BRANCHES_MAP_REF: Symbol('branches_map_ref'),
     CONTENT_ID_SIGMA_IDS_MAP: Symbol('contentIdSigmaIdsMap'),
     CONTENT_REF: Symbol('content_ref'),
     CONTENT_USERS_REF: Symbol('content_users_ref'),

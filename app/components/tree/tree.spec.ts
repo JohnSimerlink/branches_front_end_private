@@ -91,7 +91,7 @@ test.afterEach(t => {
 //     tree3Creator.mounted()
 //     expect(treeLoaderDownloadDataSpy.callCount).to.equal(2)
 //     let calledWith = treeLoaderDownloadDataSpy.getCall(0).args[0]
-//     const expectedCalledWith = INITIAL_ID_TO_DOWNLOAD
+//     const expectedCalledWith = INITIAL_TREE_ID_TO_DOWNLOAD
 //     expect(calledWith).to.equal(expectedCalledWith)
 //
 //     expect(storeCommitSpy.callCount).to.equal(1)
