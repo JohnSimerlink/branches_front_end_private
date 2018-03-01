@@ -13,9 +13,7 @@ if (env === 'test') {
 }
 // tslint:disable-next-line no-var-requires
 export default {
-    props: [],
-    async created() {
-    },
+    template,
     computed: {
         points() {
             const userId = this.$store.getters.userId
