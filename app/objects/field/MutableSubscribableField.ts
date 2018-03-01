@@ -5,7 +5,6 @@ import {IDetailedUpdates} from '../interfaces';
 import {FieldMutationTypes, IDatedMutation, IMutableField} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {log} from '../../core/log'
 @injectable()
 export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
     private field: T
@@ -20,8 +19,6 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         super({updatesCallbacks})
         this.field = field
         this._mutations = mutations
-        // this._id = Math.random()
-        // log('Mutable Subscribable field just created with id of ', this._id, this)
     }
 
     public val(): T {
@@ -40,11 +37,9 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
     private add(delta: number) {
         /*TODO:// */
         /* Please find a less hacky way to do this - Mo */
-        log('J15 point field value before mutation', this.field)
         let field: number = parseInt(this.field.toString())
         field += delta
         this.field = field as any as T
-        log('J15 point field value after mutation', this.field)
         this.updates.val = this.field
     }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {

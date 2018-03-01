@@ -440,10 +440,6 @@ export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
     everActivatedMembership: IMutableField<boolean>
     points: IMutableField<number>
-    // sampleUser1Points:
-    // question: IMutableField<string>
-    // answer: IMutableField<string>
-    // title: IMutableField<string>
 }
 export interface ISubscribableUserCore extends IUser {
     everActivatedMembership: IMutableSubscribableField<boolean>

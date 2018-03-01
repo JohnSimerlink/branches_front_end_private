@@ -7,6 +7,7 @@ import {SyncableMutableSubscribableUser} from '../../objects/user/SyncableMutabl
 import {isValidUserDataFromDB} from '../../objects/user/userValidator';
 import {TreeDeserializer} from '../tree/TreeDeserializer';
 import {log} from '../../core/log'
+import {DEFAULT_MEMBERSHIP_EXPIRATION_DATE} from '../../objects/user/usersUtils';
 
 export class UserDeserializer {
    public static deserialize(
@@ -30,14 +31,11 @@ export class UserDeserializer {
        {userDataFromDB}: {userDataFromDB: IUserDataFromDB}): IUserData {
       const userData: IUserData = {
           membershipExpirationDate:
-            userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val || 0,
+            userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val || DEFAULT_MEMBERSHIP_EXPIRATION_DATE,
           everActivatedMembership:
             userDataFromDB.everActivatedMembership && userDataFromDB.everActivatedMembership.val || false,
           points:
             userDataFromDB.points && userDataFromDB.points.val || 0
-          // TODO: ensure that when a user is created,
-          // that this field gets set in the DB to some value (e.g. 10 years ago,
-          // or maybe even a 24 hour trial <<< NAH FOO )
       }
       return userData
    }
@@ -48,7 +46,6 @@ export class UserDeserializer {
            throw new Error('Cannot deserialize user from db with  value of ' + userDataFromDB)
        }
        const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB})
-       log('userData from db is', userData)
        const user: ISyncableMutableSubscribableUser
             = UserDeserializer.deserialize({userData})
        return user
