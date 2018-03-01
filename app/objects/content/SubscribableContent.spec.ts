@@ -26,7 +26,7 @@ test('SubscribableContent:::constructor should set all the subscribable properti
     expect(content.title).to.deep.equal(title)
     t.pass()
 })
-test('SubscribableContent:::.val() should display the value of the object', (t) => {
+test('SubscribableContent:::.val() should display the value of the branchesMap', (t) => {
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})
     const answer = new MutableSubscribableField<string>({field: 'Columbus'})

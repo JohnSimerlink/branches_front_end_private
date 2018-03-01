@@ -11,7 +11,7 @@
     /**
      * SVG Element creation.
      *
-     * @param  {object}                   node     The node object.
+     * @param  {object}                   node     The node branchesMap.
      * @param  {configurable}             settings The settings function.
      */
     create: function(node, settings) {
@@ -31,7 +31,7 @@
     /**
      * SVG Element update.
      *
-     * @param  {object}                   node     The node object.
+     * @param  {object}                   node     The node branchesMap.
      * @param  {DOMElement}               circle   The node DOM element.
      * @param  {configurable}             settings The settings function.
      */

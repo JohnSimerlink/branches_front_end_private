@@ -17,7 +17,7 @@ export function escape(str) {
 }
 /* If we ever have a feature where someone can essentially masquerade
  as another user and open a tooltip with a different userId,
- we will have to instantiate another tooltipOpener object */
+ we will have to instantiate another tooltipOpener branchesMap */
 @injectable()
 export class TooltipRenderer implements ITooltipRenderer {
     private store: Store<any>

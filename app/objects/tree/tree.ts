@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-// /* tslint:disable object-literal-sort-keys */
+// /* tslint:disable branchesMap-literal-sort-keys */
 // import {error, log} from '../../core/log';
 // import md5 from '../../core/md5wrapper'
 // import store from '../../core/storeSource'
@@ -51,7 +51,7 @@
 //     x: number;
 //     y: number;
 //     level: number;
-//     children: object;
+//     children: branchesMap;
 //     mutations: any[];
 // }
 // interface ITreeUserData {

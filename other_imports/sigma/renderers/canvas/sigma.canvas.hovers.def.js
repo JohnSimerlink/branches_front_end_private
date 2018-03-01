@@ -7,7 +7,7 @@ sigma.canvas.hovers = sigma.canvas.hovers || {}
 /**
  * This hover renderer will basically display the label with a background.
  *
- * @param  {object}                   node     The node object.
+ * @param  {object}                   node     The node branchesMap.
  * @param  {CanvasRenderingContext2D} context  The canvas context.
  * @param  {configurable}             settings The settings function.
  */

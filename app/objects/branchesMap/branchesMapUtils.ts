@@ -5,7 +5,7 @@ import {
     ISyncableMutableSubscribableBranchesMap,
     IBranchesMapData,
     IBranchesMapUtils,
-    IObjectFirebaseAutoSaver, id,
+    IObjectFirebaseAutoSaver, id, ICreateMapMutationArgs, ICreateBranchesMapReturnObject,
 } from '../interfaces';
 import {TYPES} from '../types'
 import {TAGS} from '../tags';
@@ -23,20 +23,26 @@ export class BranchesMapUtils implements IBranchesMapUtils {
     }: BranchesMapUtilsArgs ) {
         this.branchesMapsFirebaseRef = firebaseRef
     }
-    public async createInDBAndAutoSaveBranchesMap(mapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
+    public async createBranchesMapInDBAndAutoSave(
+        {rootTreeId}: ICreateMapMutationArgs): Promise<ICreateBranchesMapReturnObject> {
         const branchesMapData: IBranchesMapData = {
-            rootTreeId: NON_EXISTENT_ID  // Jun 1st 2017. <<< Already expired
+            rootTreeId
         }
         const branchesMap: ISyncableMutableSubscribableBranchesMap
             = BranchesMapDeserializer.deserialize({branchesMapData})
-        const userFirebaseRef = this.branchesMapsFirebaseRef.child(mapId)
+        const branchesMapFirebaseRef: Reference = this.branchesMapsFirebaseRef.push(branchesMapData)
+        const branchesMapId = branchesMapFirebaseRef.key
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: branchesMap,
-            syncableObjectFirebaseRef: userFirebaseRef
+            syncableObjectFirebaseRef: branchesMapFirebaseRef
         })
         objectFirebaseAutoSaver.initialSave()
         objectFirebaseAutoSaver.start()
-        return branchesMap
+        const returnObject = {
+            branchesMap,
+            id: branchesMapId
+        }
+        return returnObject
     }
 }
 

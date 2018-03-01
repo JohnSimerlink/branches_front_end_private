@@ -501,7 +501,7 @@ describe('Kitchen Sink', function(){
       cy.window().should('have.property', 'top')
     })
 
-    it('cy.document() - get the document object', function(){
+    it('cy.document() - get the document branchesMap', function(){
       // https://on.cypress.io/document
       cy.document().should('have.property', 'charset').and('eq', 'UTF-8')
     })
@@ -647,10 +647,10 @@ describe('Kitchen Sink', function(){
       cy.visit('https://example.cypress.io/commands/navigation', {
         timeout: 50000, // increase total time for the visit to resolve
         onBeforeLoad: function(contentWindow){
-          // contentWindow is the remote page's window object
+          // contentWindow is the remote page's window branchesMap
         },
         onLoad: function(contentWindow){
-          // contentWindow is the remote page's window object
+          // contentWindow is the remote page's window branchesMap
         }
       })
       })

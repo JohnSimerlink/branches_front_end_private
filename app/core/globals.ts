@@ -1,4 +1,6 @@
 export const GLOBAL_ROOT_ID: string = '1'
+export const MAP_DEFAULT_X: number = 0
+export const MAP_DEFAULT_Y: number = 0
 export const DEFAULT_MAP_ID: string = '1'
 export const NON_EXISTENT_ID: string = 'nothing'
 export const ROOT_CONTENT_ID: string = '8904d53adfef7376627f4227ada47cd8'

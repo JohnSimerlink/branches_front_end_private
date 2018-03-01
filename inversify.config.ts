@@ -743,17 +743,16 @@ export const app = new ContainerModule((bind: interfaces.Bind, unbind: interface
 
 export const state: IState
  = {
-    uri: null,
+    branchesMapsData: {},
+    branchesMaps: {},
+    branchesMapUtils: null,
     centeredTreeId: GLOBAL_ROOT_ID,
     currentMapId: DEFAULT_MAP_ID,
-    sigmaInstance: null,
     graphData: {
         nodes: [],
         edges: [],
     },
     graph: null,
-    sigmaInitialized: false,
-    renderer: null,
     globalDataStore: null,
     globalDataStoreData: {
         content: {},
@@ -762,6 +761,10 @@ export const state: IState
         treeUsers: {},
         treeLocations: {},
     },
+    renderer: null,
+    sigmaInstance: null,
+    sigmaInitialized: false,
+    uri: null,
     userLoader: null,
     usersData: {},
     users: {},

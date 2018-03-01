@@ -44,16 +44,16 @@ var __instances = {};
  * Recognized parameters:
  * **********************
  * Here is the exhaustive list of every accepted parameters, when calling the
- * constructor with to top level configuration object (fourth case in the
+ * constructor with to top level configuration branchesMap (fourth case in the
  * previous examples):
  *
  *   {?string} id        The id of the instance. It will be generated
  *                       automatically if not specified.
  *   {?array}  renderers An array containing objects describing renderers.
- *   {?object} graph     An object containing an array of nodes and an array
+ *   {?branchesMap} graph     An branchesMap containing an array of nodes and an array
  *                       of edges, to avoid having to add them by hand later.
- *   {?object} settings  An object containing instance specific settings that
- *                       will override the default ones defined in the object
+ *   {?branchesMap} settings  An branchesMap containing instance specific settings that
+ *                       will override the default ones defined in the branchesMap
  *                       sigma.settings.
  */
 var sigma = function (conf) {
@@ -81,7 +81,7 @@ var sigma = function (conf) {
     //  - If there are no configuration at all, then nothing is done.
     //  - If there are no renderer list, the given configuration object will be
     //    considered as describing the first and only renderer.
-    //  - If there are no renderer list nor "container" object, it will be
+    //  - If there are no renderer list nor "container" branchesMap, it will be
     //    considered as the container itself (a DOM element).
     //  - If the argument passed to sigma() is a string, it will be considered
     //    as the ID of the DOM container.
@@ -314,7 +314,7 @@ sigma.prototype.killCamera = function (v) {
  * Recognized parameters:
  * **********************
  * Here is the exhaustive list of every accepted parameters in the "options"
- * object:
+ * branchesMap:
  *
  *   {?string}            id     Eventually the renderer id.
  *   {?(function|string)} type   Eventually the renderer constructor or its
@@ -705,11 +705,11 @@ sigma.prototype.kill = function () {
 
 
 /**
- * Returns a clone of the instances object or a specific running instance.
+ * Returns a clone of the instances branchesMap or a specific running instance.
  *
  * @param  {?string} id Eventually an instance ID.
  * @return {object}     The related instance or a clone of the instances
- *                      object.
+ *                      branchesMap.
  */
 sigma.instances = function (id) {
     return arguments.length ?

@@ -1,5 +1,5 @@
 // tslint:disable no-var-requires
-// tslint:disable object-literal-sort-keys
+// tslint:disable branchesMap-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom()
 import {expect} from 'chai'
@@ -8,7 +8,7 @@ import test from 'ava'
 import {IProficiencyStats} from '../interfaces';
 import {addObjToProficiencyStats} from './proficiencyStatsUtils';
 
-test('addObjToProficiencyStats::::should add a standalone ONE object to the current object', (t) => {
+test('addObjToProficiencyStats::::should add a standalone ONE branchesMap to the current branchesMap', (t) => {
     const proficiencyStats: IProficiencyStats = {
         UNKNOWN: 5,
         ONE: 4,
@@ -28,7 +28,7 @@ test('addObjToProficiencyStats::::should add a standalone ONE object to the curr
     expect(attemptedAnswer).to.deep.equal(answer)
     t.pass()
 })
-test('addObjToProficiencyStats::::should correctly add another object to the current object 1', (t) => {
+test('addObjToProficiencyStats::::should correctly add another branchesMap to the current branchesMap 1', (t) => {
     const proficiencyStats: IProficiencyStats  = {
         UNKNOWN: 5,
         ONE: 4,
@@ -53,7 +53,7 @@ test('addObjToProficiencyStats::::should correctly add another object to the cur
     expect(addObjToProficiencyStats(proficiencyStats, obj)).to.deep.equal(answer)
     t.pass()
 })
-test('addObjToProficiencyStats::::should correctly add another object to the current object 1', (t) => {
+test('addObjToProficiencyStats::::should correctly add another branchesMap to the current branchesMap 1', (t) => {
     const proficiencyStats: IProficiencyStats  = {
         UNKNOWN: 0,
         ONE: 4,

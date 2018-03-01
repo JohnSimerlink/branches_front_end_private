@@ -1,6 +1,6 @@
 import {Store} from 'vuex'
 import * as Vuex from 'vuex'
-import {GRAPH_CONTAINER_ID, GLOBAL_ROOT_ID} from './globals';
+import {GRAPH_CONTAINER_ID, GLOBAL_ROOT_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y} from './globals';
 import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
@@ -17,7 +17,9 @@ import {
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
     ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
     ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
-    UserPropertyMutationTypes,
+    UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
+    ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
+    ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -63,11 +65,12 @@ export enum MUTATION_NAMES {
     ADD_CONTENT_INTERACTION = 'add_content_interaction',
     ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA = 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
     ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
-    CHANGE_USER_ID = 'changeUserId',
     NEW_CHILD_TREE = 'new_child_tree',
     ADD_CHILD_TO_PARENT = ' add_child_to_parent',
     ADD_PARENT_EDGE_NO_REFRESH = 'add_parent_edge_no_refresh',
     SET_USER_DATA = 'set_user_data',
+    SET_USER_ID = 'set_user_id',
+    SET_BRANCHES_MAP_DATA = 'set_branches_map_data',
     SET_MEMBERSHIP_EXPIRATION_DATE = 'set_membership_expiration_date',
     LOGIN_WITH_FACEBOOK = 'login_with_facebook',
     SET_TREE_DATA = 'set_tree_data',
@@ -77,6 +80,7 @@ export enum MUTATION_NAMES {
     SET_CONTENT_USER_DATA = 'set_content_user_data',
     ADD_USER_POINTS = 'add_user_points',
     CREATE_MAP = 'create_map',
+    CREATE_MAP_AND_ROOT_TREE_ID = 'create_map_and_root_tree_id',
     SET_MAP_ID = 'set_map_id',
 }
 
@@ -237,7 +241,7 @@ const mutations = {
     [MUTATION_NAMES.REFRESH](state: IState) {
         state.sigmaInstance.refresh()
     },
-    [MUTATION_NAMES.CHANGE_USER_ID](state: IState, userId) {
+    [MUTATION_NAMES.SET_USER_ID](state: IState, userId) {
         state.userId = userId
     },
 // TODO: if contentUser does not yet exist in the DB create it.
@@ -385,7 +389,40 @@ const mutations = {
             data: {type, question, answer, title},
         }
         const contentId: id = state.globalDataStore.addMutation(createMutation)
+        if (type === CONTENT_TYPES.MAP) {
+        }
         return contentId
+    },
+    [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): id {
+        const store = getters.getStore()
+        const createTreeMutationArgs: ICreateTreeMutationArgs = {
+            parentId: NON_EXISTENT_ID,
+            contentId,
+            children: [],
+        }
+        const rootTreeId: void = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
+        const rootTreeIdString = rootTreeId as any as id
+        const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
+            treeId: rootTreeIdString,
+            level: 1,
+            x: MAP_DEFAULT_X,
+            y: MAP_DEFAULT_Y,
+        }
+        mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
+        const createMapMutationArgs: ICreateMapMutationArgs = {
+            rootTreeId: rootTreeIdString,
+        }
+        const mapId: void = mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs)
+        const mapIdString = mapId as any as id
+        return mapIdString
+    },
+    async [MUTATION_NAMES.CREATE_MAP](state: IState, {rootTreeId}: ICreateMapMutationArgs): Promise<id> {
+        const objectAndId: ICreateBranchesMapReturnObject
+        = await state.branchesMapUtils.createBranchesMapInDBAndAutoSave({rootTreeId})
+        const branchesMapId = objectAndId.id
+        const branchesMap = objectAndId.branchesMap
+        storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
+        return branchesMapId
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
@@ -464,6 +501,8 @@ const mutations = {
             user = await state.userLoader.downloadUser(userId)
         }
         storeUserInStateAndSubscribe({user, userId, state})
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_USER_ID, userId)
         // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
 
     },
@@ -520,18 +559,19 @@ const mutations = {
         });
 
     },
-    [MUTATION_NAMES.SET_MAP_ID](state: IState, {mapId}: {mapId: id}) {
+    [MUTATION_NAMES.SET_MAP_ID](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {
         if (!state.sigmaInitialized) {
             throw new Error('Cannot set map id before sigma has been initialized.' +
                 ' because the renderer we are trying to set the mapIdOn is null')
         }
-        state.currentMapId = mapId
-        state.renderer.mapIdToRender = mapId // TODO: pathological coupling with the sigma renderer class
+        state.currentMapId = branchesMapId
+        state.renderer.mapIdToRender = branchesMapId // TODO: fix pathological coupling with the sigma renderer class
     },
     [MUTATION_NAMES.SET_TREE_DATA](state: IState, {treeId, treeDataWithoutId}: ISetTreeDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId)
     },
-    [MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState, {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
+    [MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState,
+        {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.treeLocations, treeId, treeLocationData)
     },
     [MUTATION_NAMES.SET_TREE_USER_DATA](state: IState, {treeId, treeUserData}: ISetTreeUserDataMutationArgs) {
@@ -540,7 +580,8 @@ const mutations = {
     [MUTATION_NAMES.SET_CONTENT_DATA](state: IState, {contentId, contentData}: ISetContentDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.content, contentId, contentData)
     },
-    [MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState, {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
+    [MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState,
+       {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData)
     },
 }
@@ -589,10 +630,11 @@ export class BranchesStoreArgs {
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }
 
-function storeUserInStateAndSubscribe({user, state, userId}: {user: ISyncableMutableSubscribableUser, state: IState, userId: id}) {
+function storeUserInStateAndSubscribe(
+    {user, state, userId}: {user: ISyncableMutableSubscribableUser, state: IState, userId: id}) {
 
     const store = getters.getStore()
-    user.onUpdate((userVal) => {
+    user.onUpdate((userVal: IUserData) => {
         const mutationArgs: ISetUserDataMutationArgs = {
             userData: userVal,
             userId,
@@ -603,5 +645,20 @@ function storeUserInStateAndSubscribe({user, state, userId}: {user: ISyncableMut
     state.users[userId] = user
     state.usersData[userId] = user.val()
     state.userId = userId
+}
+function storeBranchesMapInStateAndSubscribe(
+    {state, branchesMapId, branchesMap}:
+        {state: IState, branchesMap: ISyncableMutableSubscribableBranchesMap, branchesMapId: id}) {
 
+    const store = getters.getStore()
+    branchesMap.onUpdate((branchesMapVal: IBranchesMapData) => {
+        const mutationArgs: ISetBranchesMapDataMutationArgs = {
+            branchesMapData: branchesMapVal,
+            branchesMapId,
+        }
+        store.commit(MUTATION_NAMES.SET_BRANCHES_MAP_DATA, mutationArgs)
+    })
+    branchesMap.startPublishing()
+    state.branchesMaps[branchesMapId] = branchesMap
+    state.branchesMapsData[branchesMapId] = branchesMap.val()
 }

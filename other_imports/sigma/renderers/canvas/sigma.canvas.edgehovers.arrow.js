@@ -6,7 +6,7 @@
   /**
    * This hover renderer will display the edge with a different color or size.
    *
-   * @param  {object}                   edge         The edge object.
+   * @param  {object}                   edge         The edge branchesMap.
    * @param  {object}                   source node  The edge source node.
    * @param  {object}                   target node  The edge target node.
    * @param  {CanvasRenderingContext2D} context      The canvas context.

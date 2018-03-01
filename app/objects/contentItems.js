@@ -110,7 +110,7 @@ export default class ContentItems {
     }
 
     /**
-     * Create a new content object in the database
+     * Create a new content branchesMap in the database
      * @param contentItem
      * @returns newly created contentItem
      */

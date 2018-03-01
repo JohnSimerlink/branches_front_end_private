@@ -189,7 +189,7 @@ var settings = {
      */
     // {boolean} Determines whether the instance has to refresh itself
     //           automatically when a "resize" event is dispatched from the
-    //           window object.
+    //           window branchesMap.
     autoResize: true,
     // {boolean} Determines whether the "rescale" middleware has to be called
     //           automatically for each camera on refresh.

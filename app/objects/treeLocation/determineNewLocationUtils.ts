@@ -9,8 +9,8 @@ const CIRCLE_PREFERENCE_FACTOR = 10
 // he da man
 export function determineObstacleVectorField({obstacleCoordinate, r}: {obstacleCoordinate: ICoordinate, r: number}): fXYField {
     let vectorField: fXYField
-    /* the closer the object is to the obstacle, the more negative a value the field should return.
-     * As the object approaches infinite distance from the obstacle, the field should
+    /* the closer the branchesMap is to the obstacle, the more negative a value the field should return.
+     * As the branchesMap approaches infinite distance from the obstacle, the field should
       * return a negative value that is essentially zero.
      */
     function field({x, y}: ICoordinate): number {

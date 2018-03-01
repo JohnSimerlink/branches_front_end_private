@@ -2,10 +2,10 @@ import sigma from '../sigma.core'
 
 /**
  * This utils aims to facilitate the manipulation of each instance setting.
- * Using a function instead of an object brings two main advantages: First,
+ * Using a function instead of an branchesMap brings two main advantages: First,
  * it will be easier in the future to catch settings updates through a
- * function than an object. Second, giving it a full object will "merge" it
- * to the settings object properly, keeping us to have to always add a loop.
+ * function than an branchesMap. Second, giving it a full branchesMap will "merge" it
+ * to the settings branchesMap properly, keeping us to have to always add a loop.
  *
  * @return {configurable} The "settings" function.
  */
@@ -23,8 +23,8 @@ var configurable = function () {
      *                               property. If it is a string and if a2 is
      *                               set, then it will set a2 as the property
      *                               corresponding to a1, and return this. If
-     *                               it is an object, then each pair string +
-     *                               object(or any other type) will be set as a
+     *                               it is an branchesMap, then each pair string +
+     *                               branchesMap(or any other type) will be set as a
      *                               property.
      * @param  {*?}               a2 The new property corresponding to a1 if a1
      *                               is a string.

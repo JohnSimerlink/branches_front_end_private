@@ -11,9 +11,9 @@
     /**
      * SVG Element creation.
      *
-     * @param  {object}                   edge       The edge object.
-     * @param  {object}                   source     The source node object.
-     * @param  {object}                   target     The target node object.
+     * @param  {object}                   edge       The edge branchesMap.
+     * @param  {object}                   source     The source node branchesMap.
+     * @param  {object}                   target     The target node branchesMap.
      * @param  {configurable}             settings   The settings function.
      */
     create: function(edge, source, target, settings) {
@@ -49,10 +49,10 @@
     /**
      * SVG Element update.
      *
-     * @param  {object}                   edge       The edge object.
+     * @param  {object}                   edge       The edge branchesMap.
      * @param  {DOMElement}               line       The line DOM Element.
-     * @param  {object}                   source     The source node object.
-     * @param  {object}                   target     The target node object.
+     * @param  {object}                   source     The source node branchesMap.
+     * @param  {object}                   target     The target node branchesMap.
      * @param  {configurable}             settings   The settings function.
      */
     update: function(edge, path, source, target, settings) {

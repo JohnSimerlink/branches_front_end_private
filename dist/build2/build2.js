@@ -244,7 +244,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }();
     }return n.promise(t);
   }, x.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function (e, t) {
-    c["[object " + t + "]"] = t.toLowerCase();
+    c["[branchesMap " + t + "]"] = t.toLowerCase();
   });function M(e) {
     var t = e.length,
         n = x.type(e);return x.isWindow(e) ? !1 : 1 === e.nodeType && t ? !0 : "array" === n || "function" !== n && (0 === t || "number" == typeof t && t > 0 && t - 1 in e);
@@ -1563,7 +1563,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       kt = /^$|\/(?:java|ecma)script/i,
       Et = /^true\/(.*)/,
       St = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
-      At = { option: [1, "<select multiple='multiple'>", "</select>"], legend: [1, "<fieldset>", "</fieldset>"], area: [1, "<map>", "</map>"], param: [1, "<object>", "</object>"], thead: [1, "<table>", "</table>"], tr: [2, "<table><tbody>", "</tbody></table>"], col: [2, "<table><tbody></tbody><colgroup>", "</colgroup></table>"], td: [3, "<table><tbody><tr>", "</tr></tbody></table>"], _default: x.support.htmlSerialize ? [0, "", ""] : [1, "X<div>", "</div>"] },
+      At = { option: [1, "<select multiple='multiple'>", "</select>"], legend: [1, "<fieldset>", "</fieldset>"], area: [1, "<map>", "</map>"], param: [1, "<branchesMap>", "</branchesMap>"], thead: [1, "<table>", "</table>"], tr: [2, "<table><tbody>", "</tbody></table>"], col: [2, "<table><tbody></tbody><colgroup>", "</colgroup></table>"], td: [3, "<table><tbody><tr>", "</tr></tbody></table>"], _default: x.support.htmlSerialize ? [0, "", ""] : [1, "X<div>", "</div>"] },
       jt = dt(a),
       Dt = jt.appendChild(a.createElement("div"));At.optgroup = At.option, At.tbody = At.tfoot = At.colgroup = At.caption = At.thead, At.th = At.td, x.fn.extend({ text: function text(e) {
       return x.access(this, function (e) {

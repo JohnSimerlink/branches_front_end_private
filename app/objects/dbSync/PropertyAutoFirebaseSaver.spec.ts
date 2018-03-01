@@ -22,7 +22,7 @@ test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdat
 
     /* so i need to test if subscribe works
     todo that I could 1) check if numSubscribers on the ISubscribable increases after subscribe.
-     But that would be inspecting on a different object, making this an integration, not a unit test.
+     But that would be inspecting on a different branchesMap, making this an integration, not a unit test.
      And numSubscribers is a privated variable. Actually it doesn't even exist.
       2) call callCallbacks on the Subscribable and see if that calls syncToDB's private save method . . .
       but that would be unit testing a private method . . .

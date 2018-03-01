@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
 var proficiencyStats_1 = require("../app/objects/tree/proficiencyStats");
 describe('addObjToProficiencyStats', function () {
-    it('should add a standalone ONE object to the current object', function () {
+    it('should add a standalone ONE branchesMap to the current branchesMap', function () {
         var proficiencyStats = {
             UNKNOWN: 5,
             ONE: 4,
@@ -27,7 +27,7 @@ describe('addObjToProficiencyStats', function () {
         catch (err) {
         }
     });
-    it('should correctly add another object to the current object', function () {
+    it('should correctly add another branchesMap to the current branchesMap', function () {
         var proficiencyStats = {
             UNKNOWN: 5,
             ONE: 4,

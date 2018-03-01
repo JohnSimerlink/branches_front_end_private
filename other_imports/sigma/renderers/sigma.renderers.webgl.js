@@ -10,7 +10,7 @@ import conrad from '../conrad'
    * @param  {sigma.classes.camera}           camera   The camera.
    * @param  {configurable}           settings The sigma instance settings
    *                                           function.
-   * @param  {object}                 object   The options object.
+   * @param  {object}                 branchesMap   The options branchesMap.
    * @return {sigma.renderers.canvas}          The renderer instance.
    */
   sigma.renderers.webgl = function(graph, camera, settings, options) {
@@ -250,7 +250,7 @@ import conrad from '../conrad'
    * As in the canvas renderer, it is possible to display edges, nodes and / or
    * labels in batches, to make the whole thing way more scalable.
    *
-   * @param  {?object}               params Eventually an object of options.
+   * @param  {?object}               params Eventually an branchesMap of options.
    * @return {sigma.renderers.webgl}        Returns the instance itself.
    */
   sigma.renderers.webgl.prototype.render = function(params) {
@@ -631,7 +631,7 @@ import conrad from '../conrad'
 
 
   /**
-   * The object "sigma.webgl.nodes" contains the different WebGL node
+   * The branchesMap "sigma.webgl.nodes" contains the different WebGL node
    * renderers. The default one draw nodes as discs. Here are the attributes
    * any node renderer must have:
    *
@@ -639,18 +639,18 @@ import conrad from '../conrad'
    * {number}   ATTRIBUTES  The number of attributes needed to draw one point.
    * {function} addNode     A function that adds a node to the data stack that
    *                        will be given to the buffer. Here is the arguments:
-   *                        > {object}       node
+   *                        > {branchesMap}       node
    *                        > {number}       index   The node index in the
    *                                                 nodes array.
    *                        > {Float32Array} data    The stack.
-   *                        > {object}       options Some options.
+   *                        > {branchesMap}       options Some options.
    * {function} render      The function that will effectively render the nodes
    *                        into the buffer.
    *                        > {WebGLRenderingContext} gl
    *                        > {WebGLProgram}          program
    *                        > {Float32Array} data    The stack to give to the
    *                                                 buffer.
-   *                        > {object}       params  An object containing some
+   *                        > {branchesMap}       params  An branchesMap containing some
    *                                                 options, like width,
    *                                                 height, the camera ratio.
    * {function} initProgram The function that will initiate the program, with
@@ -666,7 +666,7 @@ import conrad from '../conrad'
 
 
   /**
-   * The object "sigma.webgl.edges" contains the different WebGL edge
+   * The branchesMap "sigma.webgl.edges" contains the different WebGL edge
    * renderers. The default one draw edges as direct lines. Here are the
    * attributes any edge renderer must have:
    *
@@ -674,18 +674,18 @@ import conrad from '../conrad'
    * {number}   ATTRIBUTES  The number of attributes needed to draw one point.
    * {function} addEdge     A function that adds an edge to the data stack that
    *                        will be given to the buffer. Here is the arguments:
-   *                        > {object}       edge
-   *                        > {object}       source
-   *                        > {object}       target
+   *                        > {branchesMap}       edge
+   *                        > {branchesMap}       source
+   *                        > {branchesMap}       target
    *                        > {Float32Array} data    The stack.
-   *                        > {object}       options Some options.
+   *                        > {branchesMap}       options Some options.
    * {function} render      The function that will effectively render the edges
    *                        into the buffer.
    *                        > {WebGLRenderingContext} gl
    *                        > {WebGLProgram}          program
    *                        > {Float32Array} data    The stack to give to the
    *                                                 buffer.
-   *                        > {object}       params  An object containing some
+   *                        > {branchesMap}       params  An branchesMap containing some
    *                                                 options, like width,
    *                                                 height, the camera ratio.
    * {function} initProgram The function that will initiate the program, with
@@ -701,7 +701,7 @@ import conrad from '../conrad'
 
 
   /**
-   * The object "sigma.canvas.labels" contains the different
+   * The branchesMap "sigma.canvas.labels" contains the different
    * label renderers for the WebGL renderer. Since displaying texts in WebGL is
    * definitely painful and since there a way less labels to display than nodes
    * or edges, the default renderer simply renders them in a canvas.

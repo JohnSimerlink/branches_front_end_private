@@ -36,7 +36,7 @@ var _getID = (function () {
  *
  * @param  {camera}  camera  The camera to animate.
  * @param  {object}  target  The coordinates to reach.
- * @param  {?object} options Eventually an object to specify some options to
+ * @param  {?object} options Eventually an branchesMap to specify some options to
  *                           the function. The available options are
  *                           presented in the description of the function.
  * @return {number}          The animation id, to make it easy to kill
@@ -174,7 +174,7 @@ sigma.misc.animation.kill = function (id) {
  *
  * @param  {?(string|object)} filter A string to filter the animations to kill
  *                                   on their type (example: "camera"), or an
- *                                   object to filter on their target.
+ *                                   branchesMap to filter on their target.
  * @return {number}                  Returns the number of animations killed
  *                                   that way.
  */
@@ -215,7 +215,7 @@ sigma.misc.animation.killAll = function (filter) {
  *
  * @param  {string|object} filter A string to filter the animations to kill
  *                                on their type (example: "camera"), or an
- *                                object to filter on their target.
+ *                                branchesMap to filter on their target.
  * @return {boolean}              Returns true if any running animation
  *                                matches.
  */

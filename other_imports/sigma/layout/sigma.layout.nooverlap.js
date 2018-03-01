@@ -124,7 +124,7 @@
             ymin = ycenter - self.config.permittedExpansion*yheight / 2;
             ymax = ycenter + self.config.permittedExpansion*yheight / 2;
 
-            grid = {}; //An object of objects where grid[row][col] is an array of node ids representing nodes that fall in that grid. Nodes can fall in more than one grid
+            grid = {}; //An branchesMap of objects where grid[row][col] is an array of node ids representing nodes that fall in that grid. Nodes can fall in more than one grid
 
             for(row = 0; row < self.config.gridSize; row++) {
                 grid[row] = {};
@@ -309,7 +309,7 @@
      * Recognized options:
      * **********************
      * Here is the exhaustive list of every accepted parameter in the settings
-     * object:
+     * branchesMap:
      *
      *   {?number}            speed               A larger value increases the convergence speed at the cost of precision
      *   {?number}            scaleNodes          The ratio to scale nodes by - a larger ratio will lead to more space around larger nodes
@@ -323,7 +323,7 @@
      *   {?number}            duration            The duration of the animation. If not specified, the "animationsTime" setting value of the sigma instance will be used instead.
      *
      *
-     * @param  {object} config  The optional configuration object.
+     * @param  {object} config  The optional configuration branchesMap.
      *
      * @return {sigma.classes.dispatcher} Returns an event emitter.
      */
@@ -360,7 +360,7 @@
      * Recognized options:
      * **********************
      * Here is the exhaustive list of every accepted parameter in the settings
-     * object
+     * branchesMap
      *
      *   {?number}            speed               A larger value increases the convergence speed at the cost of precision
      *   {?number}            scaleNodes          The ratio to scale nodes by - a larger ratio will lead to more space around larger nodes
@@ -375,7 +375,7 @@
      *
      *
      *
-     * @param  {object} config  The optional configuration object.
+     * @param  {object} config  The optional configuration branchesMap.
      *
      * @return {sigma.classes.dispatcher} Returns an event emitter.
      */

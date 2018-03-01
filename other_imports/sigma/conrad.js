@@ -106,7 +106,7 @@ var _parameters = {
 };
 
 /**
- * This object contains every handlers bound to conrad events. It does not
+ * This branchesMap contains every handlers bound to conrad events. It does not
  * requirea any DOM implementation, since the events are all JavaScript.
  *
  * @type {Object}
@@ -154,7 +154,7 @@ function _bind(events, handler) {
             if (!_handlers[event])
                 _handlers[event] = [];
 
-            // Using an object instead of directly the handler will make possible
+            // Using an branchesMap instead of directly the handler will make possible
             // later to add flags
             _handlers[event].push({
                 handler: handler
@@ -250,7 +250,7 @@ function _dispatch(events, data) {
  * Executes the most prioritary job once, and deals with filling the stats
  * (done, time, averageTime, currentTime, etc...).
  *
- * @return {?Object} Returns the job object if it has to be killed, null else.
+ * @return {?Object} Returns the job branchesMap if it has to be killed, null else.
  */
 function _executeFirstJob() {
     var i,
@@ -292,7 +292,7 @@ function _executeFirstJob() {
 }
 
 /**
- * Activates a job, by adding it to the _runningJobs object and the
+ * Activates a job, by adding it to the _runningJobs branchesMap and the
  * _sortedByPriorityJobs array. It also initializes its currentTime value.
  *
  * @param  {Object} job The job to activate.
@@ -334,7 +334,7 @@ function _loop() {
         time,
         deadJob;
 
-    // Deal with the newly added jobs (the _jobs object):
+    // Deal with the newly added jobs (the _jobs branchesMap):
     for (k in _jobs) {
         job = _jobs[k];
 
@@ -387,10 +387,10 @@ function _loop() {
  * execute it. If a job is added with the "id" of another job that is waiting
  * or still running, an error will be thrown.
  *
- * When a job is added, it is referenced in the _jobs object, by its id.
+ * When a job is added, it is referenced in the _jobs branchesMap, by its id.
  * Then, if it has to be executed right now, it will be also referenced in
- * the _runningJobs object. If it has to wait, then it will be added into the
- * _waitingJobs object, until it can start.
+ * the _runningJobs branchesMap. If it has to wait, then it will be added into the
+ * _waitingJobs branchesMap, until it can start.
  *
  * Keep reading this documentation to see how to call this method.
  *
@@ -486,7 +486,7 @@ function _addJob(v1, v2) {
             _loop();
         }
     } else if (typeof v1 === 'object') {
-        // One job (object):
+        // One job (branchesMap):
         if (typeof v1.id === 'string')
             _addJob(v1.id, v1);
 
@@ -533,7 +533,7 @@ function _addJob(v1, v2) {
                 job: v2
             };
 
-            // One job (string, object):
+            // One job (string, branchesMap):
         } else if (typeof v2 === 'object') {
             o = __extend(
                 {
@@ -670,7 +670,7 @@ function _killAll() {
  * waiting, and false else.
  *
  * @param  {String}  id The id of the job.
- * @return {?Object} Returns the job object if it exists.
+ * @return {?Object} Returns the job branchesMap if it exists.
  */
 function _hasJob(id) {
     var job = _jobs[id] || _runningJobs[id] || _waitingJobs[id];
@@ -720,7 +720,7 @@ function _getIsRunning() {
 }
 
 /**
- * Unreference every job that is stored in the _doneJobs object. It will
+ * Unreference every job that is stored in the _doneJobs branchesMap. It will
  * not be possible anymore to get stats about these jobs, but it will release
  * the memory.
  *
@@ -843,11 +843,11 @@ function _getStats(v1, v2) {
 
 /**
  * This function takes any number of objects as arguments, copies from each
- * of these objects each pair key/value into a new object, and finally
- * returns this object.
+ * of these objects each pair key/value into a new branchesMap, and finally
+ * returns this branchesMap.
  *
  * The arguments are parsed from the last one to the first one, such that
- * when two objects have keys in common, the "earliest" object wins.
+ * when two objects have keys in common, the "earliest" branchesMap wins.
  *
  * Example:
  * ********
@@ -869,7 +869,7 @@ function _getStats(v1, v2) {
    *  > // };
  *
  * @param  {Object+} Any number of objects.
- * @return {Object}  The merged object.
+ * @return {Object}  The merged branchesMap.
  */
 function __extend() {
     var i,
@@ -885,12 +885,12 @@ function __extend() {
 }
 
 /**
- * This function simply clones an object. This object must contain only
+ * This function simply clones an branchesMap. This branchesMap must contain only
  * objects, arrays and immutable values. Since it is not public, it does not
  * deal with cyclic references, DOM elements and instantiated objects - so
  * use it carefully.
  *
- * @param  {Object} The object to clone.
+ * @param  {Object} The branchesMap to clone.
  * @return {Object} The clone.
  */
 function __clone(item) {
@@ -914,9 +914,9 @@ function __clone(item) {
 }
 
 /**
- * Returns an array containing the values of an object.
+ * Returns an array containing the values of an branchesMap.
  *
- * @param  {Object} The object.
+ * @param  {Object} The branchesMap.
  * @return {Array}  The array of values.
  */
 function __objectValues(o) {

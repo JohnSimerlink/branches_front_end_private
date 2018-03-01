@@ -174,7 +174,7 @@ export class TreeCreator implements ITreeCreator {
                             styles['color'] = 'white'
                         }
                     }
-                    // console.log('trees style object is ', styles)
+                    // console.log('trees style branchesMap is ', styles)
                     return styles
                 },
                 timerMouseOverMessage() {
