@@ -13,16 +13,8 @@ if (env === 'test') {
 }
 // tslint:disable-next-line no-var-requires
 export default {
-    template, // '<div> {{movie}} this is the tree template</div>',
     props: [],
     async created() {
-    },
-    data() {
-        return {
-            name: 'Tai',
-        }
-    },
-    methods: {
     },
     computed: {
         points() {
