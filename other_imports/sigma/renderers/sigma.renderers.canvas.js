@@ -208,7 +208,6 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // console.log("nodesOnScreen and nodesOnScreen2", nodesOnScreen)
     // console.log('sigma renderers canvas nodesOnSreen', nodesOnScreen, rect)
     // nodesOnScreen.sort((a, b) => a.level < b.level ? -1 : 1)
-    console.log('this inside of sigma renderers canvas is ', this)
     nodesOnScreen.forEach(node => {
         // console.log('a node on screen is ', node)
         // if (node.type !== NODE_TYPES.TREE) {

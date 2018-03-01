@@ -206,6 +206,8 @@ export enum ContentUserPropertyNames {
     NEXT_REVIEW_TIME = 'NEXT_REVIEW_TIME',
 }
 
+export type decibels = number
+
 export interface ISubscribableContentUser extends
     ISubscribable<IValUpdates>, ISubscribableContentUserCore, IDescendantPublisher {}
 
@@ -402,6 +404,7 @@ export enum PointMutationTypes {
 export enum FieldMutationTypes {
     SET = 'FIELD_MUTATION_TYPES_SET',
     INCREMENT = 'FIELD_MUTATION_TYPES_INCREMENT',
+    ADD = 'FIELD_MUTATION_TYPES_ADD',
 }
 export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes
 export type TreeUserPropertyMutationTypes = FieldMutationTypes
@@ -436,19 +439,19 @@ export type timestamp = number
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
     everActivatedMembership: IMutableField<boolean>
-    // question: IMutableField<string>
-    // answer: IMutableField<string>
-    // title: IMutableField<string>
+    points: IMutableField<number>
 }
 export interface ISubscribableUserCore extends IUser {
-    membershipExpirationDate: IMutableSubscribableField<timestamp>
     everActivatedMembership: IMutableSubscribableField<boolean>
+    membershipExpirationDate: IMutableSubscribableField<timestamp>
+    points: IMutableSubscribableField<number>
     val(): IUserData
 }
 
 export interface IUserData {
     membershipExpirationDate: timestamp
     everActivatedMembership: boolean
+    points: number
 }
 export interface IUserDataFromDB {
     membershipExpirationDate: {
@@ -457,11 +460,15 @@ export interface IUserDataFromDB {
     everActivatedMembership: {
         val: boolean;
     },
+    points: {
+        val: number
+    }
 }
 
 export enum UserPropertyNames {
     MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
     EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
+    POINTS = 'points',
 }
 
 export interface ISubscribableUser extends
@@ -527,7 +534,10 @@ export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUp
 export interface ISigmaEdgeUpdater {
     addEdge()
 }
-
+export interface IAddUserPointsMutationArgs {
+    userId: id,
+    points: number,
+}
 export interface IAddNodeMutationArgs {
     node: ISigmaNodeData,
 }
@@ -755,7 +765,7 @@ export interface ISubscribableContentStore
 
 export type IValUpdates = any
 export interface IIdAndValUpdates {
-    id: any,
+    id: id,
     val: any
 }
 export interface ITypeAndIdAndValAndObjUpdates extends ITypeAndIdAndValUpdates {

@@ -1,6 +1,7 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
+import {log} from '../../core/log'
 import {
     UserPropertyMutationTypes,
     UserPropertyNames, FieldMutationTypes,
@@ -18,9 +19,10 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
     constructor(@inject(TYPES.SubscribableUserArgs) {
         updatesCallbacks,
         membershipExpirationDate,
-        everActivatedMembership
+        everActivatedMembership,
+        points,
     }: SubscribableUserArgs) {
-        super({updatesCallbacks, membershipExpirationDate, everActivatedMembership})
+        super({updatesCallbacks, membershipExpirationDate, everActivatedMembership, points})
     }
 
     public addMutation(mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>
@@ -38,6 +40,9 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                 break;
             case UserPropertyNames.EVER_ACTIVATED_MEMBERSHIP:
                 this.everActivatedMembership.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
+            case UserPropertyNames.POINTS:
+                this.points.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
             default:
                 throw new TypeError(

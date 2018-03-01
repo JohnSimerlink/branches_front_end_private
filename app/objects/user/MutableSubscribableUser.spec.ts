@@ -13,6 +13,8 @@ import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
 import {TYPES} from '../types';
 import {MutableSubscribableUser} from './MutableSubscribableUser';
 import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
+import {sampleUser1, sampleUserData1, sampleUserDataFromDB1, sampleUserData1ExpirationDate} from "../../objects/user/UserTestHelpers";
+
 myContainerLoadAllModules()
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
@@ -21,13 +23,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
-    const timestampToday = Date.now()
-    const everBeenActivatedValue: boolean = false
-    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
-    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
-    const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
-        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
-    )
+    const user: ISyncableMutableSubscribableUser = sampleUser1
 
     user.startPublishing()
 
@@ -50,13 +46,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
-    const timestampToday = Date.now()
-    const everBeenActivatedValue: boolean = false
-    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
-    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
-    const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
-        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
-    )
+    const user: ISyncableMutableSubscribableUser = sampleUser1
 
     const callback = sinon.spy()
     user.onUpdate(callback)
@@ -68,14 +58,9 @@ test('MutableSubscribableUser:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
 
-    const timestampToday = Date.now()
-    const everBeenActivatedValue: boolean = false
-    const membershipExpirationDate = new MutableSubscribableField<timestamp>({field: timestampToday})
-    const everActivatedMembership = new MutableSubscribableField<boolean>({field: everBeenActivatedValue})
-    const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
-        {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
-    )
-    const membershipExpirationAddMutationSpy = sinon.spy(membershipExpirationDate, 'addMutation')
+    const user: ISyncableMutableSubscribableUser = sampleUser1
+
+    const membershipExpirationAddMutationSpy = sinon.spy(sampleUserData1ExpirationDate, 'addMutation')
 
     // tslint:disable variable-name
     const mutationWithoutPropName: IDatedMutation<FieldMutationTypes> = {

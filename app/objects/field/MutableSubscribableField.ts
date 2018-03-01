@@ -5,7 +5,6 @@ import {IDetailedUpdates} from '../interfaces';
 import {FieldMutationTypes, IDatedMutation, IMutableField} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {log} from '../../core/log'
 @injectable()
 export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
     private field: T
@@ -20,8 +19,6 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         super({updatesCallbacks})
         this.field = field
         this._mutations = mutations
-        // this._id = Math.random()
-        // log('Mutable Subscribable field just created with id of ', this._id, this)
     }
 
     public val(): T {
@@ -37,10 +34,21 @@ export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> 
         this.field = field
         this.updates.val = field
     }
+    private add(delta: number) {
+        /*TODO:// */
+        /* Please find a less hacky way to do this - Mo */
+        let field: number = parseInt(this.field.toString())
+        field += delta
+        this.field = field as any as T
+        this.updates.val = this.field
+    }
     public addMutation(mutation: IDatedMutation<FieldMutationTypes>) {
         switch (mutation.type) {
             case FieldMutationTypes.SET:
                 this.set(mutation.data) // TODO: Law of Demeter Violation? How to fix?
+                break;
+            case FieldMutationTypes.ADD:
+                this.add(mutation.data) // TODO: Law of Demeter Violation? How to fix?
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
