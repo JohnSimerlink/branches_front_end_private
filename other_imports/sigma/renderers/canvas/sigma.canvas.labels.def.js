@@ -66,7 +66,7 @@ sigma.canvas.labels = sigma.canvas.labels || {}
 /**
  * This label renderer will just display the label on the right of the node.
  *
- * @param  {object}                   node     The node object.
+ * @param  {object}                   node     The node branchesMap.
  * @param  {CanvasRenderingContext2D} context  The canvas context.
  * @param  {configurable}             settings The settings function.
  */

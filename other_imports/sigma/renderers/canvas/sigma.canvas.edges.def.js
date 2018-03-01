@@ -7,7 +7,7 @@ sigma.canvas.edges = sigma.canvas.edges || {}
 /**
  * The default edge renderer. It renders the edge as a simple line.
  *
- * @param  {object}                   edge         The edge object.
+ * @param  {object}                   edge         The edge branchesMap.
  * @param  {object}                   source node  The edge source node.
  * @param  {object}                   target node  The edge target node.
  * @param  {CanvasRenderingContext2D} context      The canvas context.

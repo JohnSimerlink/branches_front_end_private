@@ -67,7 +67,7 @@ test('MutableSubscribableTreeLocation::::.val() should give appropriate value af
     t.pass()
 })
 test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable properties' +
-    ' should publish an update of the entire object\'s value '
+    ' should publish an update of the entire branchesMap\'s value '
     + ' after startPublishing has been called', (t) => {
     /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad updatesCallback!
@@ -107,7 +107,7 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
 })
 
 test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable properties' +
-    ' should NOT publish an update of the entire object\'s value'
+    ' should NOT publish an update of the entire branchesMap\'s value'
     + ' before startPublishing has been called', (t) => {
 
     

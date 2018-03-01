@@ -111,6 +111,7 @@ export interface IFamilyLoaderCore {
 
 export enum CONTENT_TYPES {
     LOADING = 'loading',
+    MAP = 'map',
     SKILL = 'skill',
     CATEGORY = 'heading', // heading, bc of backwards compatability
     FACT = 'fact',
@@ -187,7 +188,7 @@ export interface IContentUser {
     timer: IMutableField<number>
     proficiency: IMutableField<PROFICIENCIES>
     lastEstimatedStrength: IMutableField<number>
-    // ^^ TODO: this might actually be an object not a simple number
+    // ^^ TODO: this might actually be an branchesMap not a simple number
 }
 
 export interface ISubscribableContentUserCore extends IContentUser {
@@ -236,6 +237,17 @@ export interface ISyncableMutableSubscribableUser extends
 }
 export interface ISyncableMutableSubscribableBranchesMap extends
     IMutableSubscribableBranchesMap, ISyncable {
+}
+export interface IAwesomeObject<PropertyMutationTypes, PropertyNames>
+    extends ISyncable, IMutable<
+        IProppedDatedMutation<PropertyMutationTypes, PropertyNames>
+    >,
+    ISubscribable<IValUpdates> {
+}
+
+export interface ICreateBranchesMapReturnObject {
+    branchesMap: ISyncableMutableSubscribableBranchesMap,
+    id: id
 }
 
 export interface IContentUserData {
@@ -442,7 +454,7 @@ export enum GlobalStoreObjectTypes {
 }
 export type timestamp = number
 
-// map object
+// map branchesMap
 export interface IBranchesMapData {
     rootTreeId: id
 }
@@ -474,10 +486,10 @@ export interface IMutableSubscribableBranchesMap
         IMutable<IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>> {}
 
 export interface IBranchesMapUtils {
-    createInDBAndAutoSaveBranchesMap(userId: id): Promise<ISyncableMutableSubscribableBranchesMap>
+    createBranchesMapInDBAndAutoSave({rootTreeId}: ICreateMapMutationArgs): Promise<ICreateBranchesMapReturnObject>
 }
 
-// user object
+// user branchesMap
 export interface IUserData {
     membershipExpirationDate: timestamp
     everActivatedMembership: boolean
@@ -729,6 +741,14 @@ export interface ISetUserDataMutationArgs {
     userData: IUserData,
     userId: id,
 }
+export interface ISetBranchesMapDataMutationArgs {
+    branchesMapData: IBranchesMapData,
+    branchesMapId: id,
+}
+export interface ISetBranchesMapIdMutationArgs {
+    branchesMapData: IBranchesMapData,
+    branchesMapId: id,
+}
 
 // stores
 
@@ -840,7 +860,7 @@ export interface IDescendantPublisher {
 }
 /* TODO: make the sigmaRenderingMechanism stateless,
  whereby this update contains the data that needs to be rendered,
- rather than the subscriber to the update having to fetch the data from an object */
+ rather than the subscriber to the update having to fetch the data from an branchesMap */
 export type ISigmaRenderUpdate = ISigmaRenderUpdateCore & (ISigmaRenderUpdateNewNode | ISigmaRenderUpdateNewEdge)
 
 export enum RenderUpdateTypes {
@@ -904,6 +924,9 @@ export interface IBranchesMapRenderer {
 }
 export interface IState {
     uri: string,
+    branchesMapsData: IHash<IBranchesMapData>,
+    branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>,
+    branchesMapUtils: IBranchesMapUtils,
     centeredTreeId: string,
     currentMapId: string,
     sigmaInstance: ISigma,
@@ -1001,6 +1024,12 @@ export interface ICreateTreeMutationArgs {
 }
 export interface ICreateTreeLocationMutationArgs {
     treeId: id, x: number, y: number, level: number
+}
+export interface ICreateMapMutationArgs {
+    rootTreeId: id,
+}
+export interface ICreateMapAndRootTreeIdMutationArgs {
+    contentId: id
 }
 export interface ISubscribableTreeCore extends ITree {
     contentId: IMutableSubscribableField<string>

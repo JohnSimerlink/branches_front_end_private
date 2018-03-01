@@ -43,7 +43,7 @@ https://github.com/mroderick/PubSubJS
 
 	/**
 	 *	Returns a function that throws the passed exception, for use as argument for setTimeout
-	 *	@param { Object } ex An Error object
+	 *	@param { Object } ex An Error branchesMap
 	 */
 	function throwException( ex ){
 		return function reThrowException(){
@@ -164,7 +164,7 @@ https://github.com/mroderick/PubSubJS
 		}
 
 		// forcing token as String, to allow for future expansions without breaking usage
-		// and allow for easy use as key names for the 'messages' object
+		// and allow for easy use as key names for the 'messages' branchesMap
 		var token = 'uid_' + String(++lastUid);
 		messages[message][token] = func;
 

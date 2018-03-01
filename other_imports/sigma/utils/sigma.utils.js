@@ -138,11 +138,11 @@ sigma.utils.map = SigmaMap;
 
 /**
  * This function takes any number of objects as arguments, copies from each
- * of these objects each pair key/value into a new object, and finally
- * returns this object.
+ * of these objects each pair key/value into a new branchesMap, and finally
+ * returns this branchesMap.
  *
  * The arguments are parsed from the last one to the first one, such that
- * when several objects have keys in common, the "earliest" object wins.
+ * when several objects have keys in common, the "earliest" branchesMap wins.
  *
  * Example:
  * ********
@@ -164,7 +164,7 @@ sigma.utils.map = SigmaMap;
    *  > // };
  *
  * @param  {object+} Any number of objects.
- * @return {object}  The merged object.
+ * @return {object}  The merged branchesMap.
  */
 sigma.utils.extend = function () {
     var i,
@@ -1284,7 +1284,7 @@ var imgCache = {};
 /**
  * Draw an image inside the specified node on the canvas.
  *
- * @param  {object}                   node     The node object.
+ * @param  {object}                   node     The node branchesMap.
  * @param  {number}                   x        The node x coordinate.
  * @param  {number}                   y        The node y coordinate.
  * @param  {number}                   size     The node size.
@@ -1347,7 +1347,7 @@ sigma.utils.canvas.drawImage =
 /**
  * Draw an icon inside the specified node on the canvas.
  *
- * @param  {object}                   node     The node object.
+ * @param  {object}                   node     The node branchesMap.
  * @param  {number}                   x        The node x coordinate.
  * @param  {number}                   y        The node y coordinate.
  * @param  {number}                   size     The node size.

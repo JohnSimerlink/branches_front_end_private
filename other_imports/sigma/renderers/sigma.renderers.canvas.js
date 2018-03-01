@@ -30,7 +30,7 @@ sigma.utils.pkg('sigma.renderers');
  * @param  {sigma.classes.camera}           camera   The camera.
  * @param  {configurable}           settings The sigma instance settings
  *                                           function.
- * @param  {object}                 object   The options object.
+ * @param  {object}                 branchesMap   The options branchesMap.
  * @return {sigma.renderers.canvas}          The renderer instance.
  */
 sigma.renderers = sigma.renderers || {}
@@ -125,7 +125,7 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
 /**
  * This method renders the graph on the canvases.
  *
- * @param  {?object}                options Eventually an object of options.
+ * @param  {?object}                options Eventually an branchesMap of options.
  * @return {sigma.renderers.canvas}         Returns the instance itself.
  */
 sigma.renderers.canvas.prototype.render = function (options, dontPublish) {

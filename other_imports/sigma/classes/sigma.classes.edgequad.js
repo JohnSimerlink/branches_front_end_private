@@ -464,7 +464,7 @@ function _quadCollision(corners, quadCorners) {
  * not generate all four nodes not to potentially create unused nodes.
  *
  * @param  {integer}  index The index of the node to create.
- * @param  {object}   quad  The quad object to subdivide.
+ * @param  {object}   quad  The quad branchesMap to subdivide.
  * @return {object}         A new quad representing the node created.
  */
 function _quadSubdivide(index, quad) {
@@ -571,7 +571,7 @@ function _quadRetrievePoint(point, quad) {
  * @param  {object|array} rectData       The searched area defined either by
  *                                       an array of four corners (x, y) in
  *                                       the case of a non-axis-aligned
- *                                       rectangle or an object with two top
+ *                                       rectangle or an branchesMap with two top
  *                                       points (x1, y1), (x2, y2) and height.
  * @param  {object}       quad           The searched quad.
  * @param  {function}     collisionFunc  The collision function used to search
@@ -603,14 +603,14 @@ function _quadRetrieveArea(rectData, quad, collisionFunc, els) {
 }
 
 /**
- * Creates the quadtree object itself.
+ * Creates the quadtree branchesMap itself.
  *
  * @param  {object}   bounds       The boundaries of the quad defined by an
  *                                 origin (x, y), width and heigth.
  * @param  {integer}  level        The level of the quad in the tree.
  * @param  {integer}  maxElements  The max number of element in a leaf node.
  * @param  {integer}  maxLevel     The max recursion level of the tree.
- * @return {object}                The quadtree object.
+ * @return {object}                The quadtree branchesMap.
  */
 function _quadTree(bounds, level, maxElements, maxLevel) {
     return {
@@ -635,9 +635,9 @@ function _quadTree(bounds, level, maxElements, maxLevel) {
 /**
  * The edgequad core that will become the sigma interface with the quadtree.
  *
- * property {object} _tree     Property holding the quadtree object.
- * property {object} _geom     Exposition of the _geom namespace for testing.
- * property {object} _cache    Cache for the area method.
+ * property {branchesMap} _tree     Property holding the quadtree branchesMap.
+ * property {branchesMap} _geom     Exposition of the _geom namespace for testing.
+ * property {branchesMap} _cache    Cache for the area method.
  * property {boolean} _enabled Can index and retreive elements.
  */
 var edgequad = function () {
@@ -654,13 +654,13 @@ var edgequad = function () {
  * Index a graph by inserting its edges into the quadtree.
  *
  * @param  {object} graph   A graph instance.
- * @param  {object} params  An object of parameters with at least the quad
+ * @param  {object} params  An branchesMap of parameters with at least the quad
  *                          bounds.
- * @return {object}         The quadtree object.
+ * @return {object}         The quadtree branchesMap.
  *
  * Parameters:
  * ----------
- * bounds:      {object}   boundaries of the quad defined by its origin (x, y)
+ * bounds:      {branchesMap}   boundaries of the quad defined by its origin (x, y)
  *                         width and heigth.
  * prefix:      {string?}  a prefix for edge geometric attributes.
  * maxElements: {integer?} the max number of elements in a leaf node.

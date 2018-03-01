@@ -40,7 +40,7 @@ var graph = function (settings) {
      * DATA:
      * *****
      * Every data that is callable from graph methods are stored in this "data"
-     * object. This object will be served as context for all these methods,
+     * branchesMap. This branchesMap will be served as context for all these methods,
      * and it is possible to add other type of data in it.
      */
     data = {
@@ -127,11 +127,11 @@ function __bindGraphMethod(methodName, scope, fn) {
 
 /**
  * This custom tool function removes every pair key/value from an hash. The
- * goal is to avoid creating a new object while some other references are
+ * goal is to avoid creating a new branchesMap while some other references are
  * still hanging in some scopes...
  *
- * @param  {object} obj The object to empty.
- * @return {object}     The empty object.
+ * @param  {object} obj The branchesMap to empty.
+ * @return {object}     The empty branchesMap.
  */
 function __emptyObject(obj) {
     var k;
@@ -290,7 +290,7 @@ graph.attachBefore = function (methodName, key, fn) {
 
 /**
  * This methods is just an helper to deal with custom indexes. It takes as
- * arguments the name of the index and an object containing all the different
+ * arguments the name of the index and an branchesMap containing all the different
  * functions to bind to the methods.
  *
  * Here is a basic example, that creates an index to keep the number of nodes
@@ -320,7 +320,7 @@ graph.attachBefore = function (methodName, key, fn) {
  *  > console.log(myGraph.getNodesCount()); // outputs 2
  *
  * @param  {string} name     The name of the index.
- * @param  {object} bindings The object containing the functions to bind.
+ * @param  {object} bindings The branchesMap containing the functions to bind.
  * @return {object}          The global graph constructor.
  */
 graph.addIndex = function (name, bindings) {
@@ -363,7 +363,7 @@ graph.addIndex = function (name, bindings) {
  * @return {object}      The graph instance.
  */
 graph.addMethod('addNode', function (node) {
-    // Check that the node is an object and has an id:
+    // Check that the node is an branchesMap and has an id:
     if (Object(node) !== node || arguments.length !== 1)
         throw 'addNode: Wrong arguments.';
 
@@ -412,7 +412,7 @@ graph.addMethod('addNode', function (node) {
 });
 
 /**
- * This method adds an edge to the graph. The edge must be an object, with a
+ * This method adds an edge to the graph. The edge must be an branchesMap, with a
  * string under the key "id", and strings under the keys "source" and
  * "target" that design existing nodes. Except for this, it is possible to
  * add any other attribute, that will be preserved all along the
@@ -668,7 +668,7 @@ graph.addMethod('clear', function () {
 });
 
 /**
- * This method reads an object and adds the nodes and edges, through the
+ * This method reads an branchesMap and adds the nodes and edges, through the
  * proper methods "addNode" and "addEdge".
  *
  * Here is an example:
@@ -693,7 +693,7 @@ graph.addMethod('clear', function () {
  *  >   myGraph.edges().length
  *  > ); // outputs 2 1
  *
- * @param  {object} g The graph object.
+ * @param  {object} g The graph branchesMap.
  * @return {object}   The graph instance.
  */
 graph.addMethod('read', function (g) {

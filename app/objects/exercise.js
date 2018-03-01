@@ -19,7 +19,7 @@ export default class Exercise {
 
     /**
      *  ABSTRACT METHOD - should only be called by objects whose type is a subclass of Exercise
-     * @param exercise - must be an object that is a subclass of Exercise
+     * @param exercise - must be an branchesMap that is a subclass of Exercise
      * @returns {*}
      */
     static create(exercise){

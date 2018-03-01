@@ -14,9 +14,9 @@ test('MutableSubscribableField > Subscribable::::Adding a mutation,' +
     ' should trigger an update for one of the subscribers [is this an integration test?]', (t) => {
     // const subscribableMutableId: IMutableSubscribableField =
     //     myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
-    /* TODO: ^^^ USING THE ABOVE dependency injection fetcher fetches like an IDetailedUpdates object
+    /* TODO: ^^^ USING THE ABOVE dependency injection fetcher fetches like an IDetailedUpdates branchesMap
     * and places it into the updatesCallbacks array, which causes a type error because ISubscribable
-    * tries to invoke one of the updates, and the update is just an object not a function . . . .
+    * tries to invoke one of the updates, and the update is just an branchesMap not a function . . . .
     * */
     const subscribableMutableId: IMutableSubscribableField<string> = new MutableSubscribableField<string>()
     const callback = sinon.spy() // (updates: IDetailedUpdates) => void 0

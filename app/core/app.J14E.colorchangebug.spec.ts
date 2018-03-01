@@ -146,7 +146,7 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     // log('contentUserItem ref flushed')
     // log('promise received')
     // // get access to the sigmaNode in the renderedSigmaNodes set
-    // const state: IState  = myContainer.get<object>(TYPES.BranchesStoreState) as IState
+    // const state: IState  = myContainer.get<branchesMap>(TYPES.BranchesStoreState) as IState
     // const graph = state.graph // get nodes through graph.nodes()
     //
     // // trigger a UI mutation (e.g. proficiencyClicked({contentItem, userId})

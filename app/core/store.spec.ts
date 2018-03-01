@@ -109,7 +109,7 @@ test('Store::::' +
     myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
-    // raw javascript object and sinon spy that I don't know . . .
+    // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             log('addMutation called')
@@ -169,7 +169,7 @@ test('Store::::' +
     myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
-    // raw javascript object and sinon spy that I don't know . . .
+    // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             log('addMutation called')
@@ -221,7 +221,7 @@ test('Store::::' +
     myContainerLoadAllModules()
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
-    // raw javascript object and sinon spy that I don't know . . .
+    // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             log('addMutation called')

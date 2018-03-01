@@ -40,7 +40,7 @@ test('SubscribableTreeLocation:::constructor should set all the subscribable pro
     expect(treeLocation.point).to.deep.equal(point)
     t.pass()
 })
-test('SubscribableTreeLocation:::.val() should display the value of the object', (t) => {
+test('SubscribableTreeLocation:::.val() should display the value of the branchesMap', (t) => {
     
     const FIRST_POINT_VALUE: ICoordinate = {x: 5, y: 7}
     const levelVal = 2

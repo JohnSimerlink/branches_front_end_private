@@ -46,7 +46,7 @@
     /**
      * SVG Element update.
      *
-     * @param  {object}                   node     The node object.
+     * @param  {object}                   node     The node branchesMap.
      * @param  {DOMElement}               text     The label DOM element.
      * @param  {configurable}             settings The settings function.
      */

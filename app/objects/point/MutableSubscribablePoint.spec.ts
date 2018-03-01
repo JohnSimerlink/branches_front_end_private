@@ -13,7 +13,7 @@ import {TYPES} from '../types';
 // import {Point} from '../app/objects/point/point'
 /*
 TODO: For MY Mutation tests, for performance reasons,
- there should be a way to declare certain mutation/object sets as
+ there should be a way to declare certain mutation/branchesMap sets as
   commutative or non-commutative. Because in this example shifting is
    commutative, so I don't have to recalculate everything from scratch
     (or at least from a checkpoint). Whereas, for other operations that

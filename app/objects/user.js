@@ -11,7 +11,7 @@ import DATA_KEYS from '../../dataKeys'
 // -----------------------------------
 const SINGLETON_KEY = Symbol.for("Branches.Singletons.User");
 
-// check if the global object has this symbol
+// check if the global branchesMap has this symbol
 // add it if it does not have the symbol, yet
 // ------------------------------------------
 

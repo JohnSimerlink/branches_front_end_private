@@ -63,10 +63,10 @@ var settings = {
  *
  * Recognized parameters of options:
  * *********************************
- * Enable node tooltips by adding the "node" key to the options object.
- * Enable edge tooltips by adding the "edge" key to the options object.
+ * Enable node tooltips by adding the "node" key to the options branchesMap.
+ * Enable edge tooltips by adding the "edge" key to the options branchesMap.
  * Each value could be an array of objects for multiple tooltips,
- * or an object for one tooltip.
+ * or an branchesMap for one tooltip.
  * Here is the exhaustive list of every accepted parameter in these objects:
  *
  *   {?string}   show       The event that triggers the tooltip. Default
@@ -111,7 +111,7 @@ var settings = {
  *
  * @param {sigma}    s        The related sigma instance.
  * @param {renderer} renderer The related sigma renderer.
- * @param {object}   options  An object with options.
+ * @param {object}   options  An branchesMap with options.
  */
 function Tooltips(s, renderer, options) {
     var self = this,
@@ -163,7 +163,7 @@ function Tooltips(s, renderer, options) {
      * specified node or edge.
      *
      * @param {object}    o          The node or the edge.
-     * @param {object}    options    The options related to the object.
+     * @param {object}    options    The options related to the branchesMap.
      * @param {number}    x          The X coordinate of the mouse.
      * @param {number}    y          The Y coordinate of the mouse.
      * @param {function?} onComplete Optional function called when open finish
@@ -175,7 +175,7 @@ function Tooltips(s, renderer, options) {
         // Create the DOM element:
         _tooltip = document.createElement('div');
         if (options.renderer) {
-            // Copy the object:
+            // Copy the branchesMap:
             var clone = Object.create(null),
                 tooltipRenderer,
                 type,
@@ -650,7 +650,7 @@ var _instance = {};
 /**
  * @param {sigma}    s        The related sigma instance.
  * @param {renderer} renderer The related sigma renderer.
- * @param {object}   options  An object with options.
+ * @param {object}   options  An branchesMap with options.
  */
 sigma.plugins.tooltips = function (s, renderer, options) {
     // Create object if undefined

@@ -328,7 +328,7 @@ var _instance = {};
  * @param  {renderer} renderer The related renderer instance.
  */
 sigma.plugins.dragNodes = function (s, renderer) {
-    // Create object if undefined
+    // Create branchesMap if undefined
     if (!_instance[s.id]) {
         _instance[s.id] = new DragNodes(s, renderer);
     }

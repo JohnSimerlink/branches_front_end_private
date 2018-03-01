@@ -24,6 +24,7 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
 import Coordinates from '../components/coordinates/coordinates'
 import Points from '../components/points/points'
+import MapChooser from '../components/mapChooser/mapChooser'
 import {Store} from 'vuex';
 import { StripeCheckout } from 'vue-stripe'
 import BranchesStripe from '../components/giveUsUrMonee/branches-stripe';
@@ -65,6 +66,7 @@ export class VueConfigurer implements IVueConfigurer {
         Vue.component('branchesFooter', BranchesFooter)
         Vue.component('branchesStripe', BranchesStripe)
         Vue.component('points', Points)
+        Vue.component('mapChooser', MapChooser)
 
         Vue.use(VueRouter);
         Vue.use(AsyncComputed)

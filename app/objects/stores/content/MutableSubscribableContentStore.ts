@@ -28,7 +28,7 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
     public addMutation(
         mutation: IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>
     ) {
-        // TODO: what to do if object does not exist in storeSource
+        // TODO: what to do if branchesMap does not exist in storeSource
         const id = mutation.id
         const content: IMutableSubscribableContent
             = this.storeSource.get(id)

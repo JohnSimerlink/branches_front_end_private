@@ -25,7 +25,7 @@ test('SubscribableTree:::constructor should set all the subscribable properties'
     expect(tree.getId()).to.deep.equal(TREE_ID)
     t.pass()
 })
-test('SubscribableTree:::.val() should display the value of the object', (t) => {
+test('SubscribableTree:::.val() should display the value of the branchesMap', (t) => {
     
     const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
     const parentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
@@ -40,7 +40,7 @@ test('SubscribableTree:::.val() should display the value of the object', (t) => 
     expect(tree.val()).to.deep.equal(expectedVal)
     t.pass()
 })
-test('SubscribableTree:::.getId() should display the id of the object', (t) => {
+test('SubscribableTree:::.getId() should display the id of the branchesMap', (t) => {
     
     const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)
     const parentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString)

@@ -325,7 +325,7 @@ test('OverdueListener:::a mutation in one of the subscribable properties' +
 })
 
 test('OverdueListener:::a mutation in one of the subscribable properties' +
-    ' should NOT publish an update of the entire object\'s value'
+    ' should NOT publish an update of the entire branchesMap\'s value'
     + ' before startPublishing has been called', (t) => {
     const contentUserId = 'abc_123'
     const lastInteractionTimeVal = Date.now()

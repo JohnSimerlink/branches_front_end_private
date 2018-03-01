@@ -14,7 +14,7 @@ import {SubscribableTree} from './SubscribableTree';
 
 myContainerLoadAllModules()
 test('MutableSubscribableTree:::a mutation in one of the subscribable properties' +
-    ' should publish an update of the entire object\'s value '
+    ' should publish an update of the entire branchesMap\'s value '
     + ' after startPublishing has been called', (t) => {
     
     const contentId = new MutableSubscribableField<string>()
@@ -39,7 +39,7 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
     t.pass()
 })
 test('MutableSubscribableTree:::a mutation in one of the subscribable properties' +
-    ' should NOT publish an update of the entire object\'s value'
+    ' should NOT publish an update of the entire branchesMap\'s value'
     + ' before startPublishing has been called', (t) => {
     
     const contentId = new MutableSubscribableField<string>()
