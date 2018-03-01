@@ -474,10 +474,8 @@ export interface IMutableSubscribableBranchesMap
         IMutable<IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>> {}
 
 export interface IBranchesMapUtils {
-    userExistsInDB(userId: id): Promise<boolean>
-    createBranchesMapInDB(userId: id): Promise<ISyncableMutableSubscribableBranchesMap>
+    createInDBAndAutoSaveBranchesMap(userId: id): Promise<ISyncableMutableSubscribableBranchesMap>
 }
-
 
 // user object
 export interface IUserData {
