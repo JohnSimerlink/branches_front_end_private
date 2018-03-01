@@ -1,5 +1,6 @@
 export const GLOBAL_ROOT_ID: string = '1'
 export const DEFAULT_MAP_ID: string = '1'
+export const NON_EXISTENT_ID: string = 'nothing'
 export const ROOT_CONTENT_ID: string = '8904d53adfef7376627f4227ada47cd8'
 export const INITIAL_TREE_ID_TO_DOWNLOAD: string = GLOBAL_ROOT_ID
 export const ANOTHER_ID: string = '0544dddbb98b36dd9328eb71ba938465'
