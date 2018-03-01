@@ -5,7 +5,6 @@ import {
 } from '../../objects/interfaces';
 import {SyncableMutableSubscribableBranchesMap} from '../../objects/branchesMap/SyncableMutableSubscribableBranchesMap';
 import {isValidBranchesMapDataFromDB} from '../../objects/branchesMap/branchesMapValidator';
-import {TreeDeserializer} from '../tree/TreeDeserializer';
 import {log} from '../../core/log'
 import {GLOBAL_ROOT_ID} from '../../core/globals';
 

@@ -76,6 +76,7 @@ export enum MUTATION_NAMES {
     SET_CONTENT_DATA = 'set_content_data',
     SET_CONTENT_USER_DATA = 'set_content_user_data',
     ADD_USER_POINTS = 'add_user_points',
+    CREATE_MAP = 'create_map',
     SET_MAP_ID = 'set_map_id',
 }
 

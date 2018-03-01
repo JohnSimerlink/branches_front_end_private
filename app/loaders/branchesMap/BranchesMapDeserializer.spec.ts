@@ -9,10 +9,10 @@ import {
     CONTENT_TYPES, ISyncableMutableSubscribableBranchesMap, timestamp, IBranchesMapDataFromDB
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableBranchesMap} from '../../objects/user/MutableSubscribableBranchesMap';
+import {MutableSubscribableBranchesMap} from '../../objects/branchesMap/MutableSubscribableBranchesMap';
 import {BranchesMapDeserializer} from './BranchesMapDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-import {SyncableMutableSubscribableBranchesMap} from '../../objects/user/SyncableMutableSubscribableBranchesMap';
+import {SyncableMutableSubscribableBranchesMap} from '../../objects/branchesMap/SyncableMutableSubscribableBranchesMap';
 //
 // myContainerLoadAllModules()
 // test('BranchesMapDeserializer::: deserialize should deserialize properly', (t) => {
@@ -27,7 +27,8 @@ import {SyncableMutableSubscribableBranchesMap} from '../../objects/user/Syncabl
 //     const expectedBranchesMap: ISyncableMutableSubscribableBranchesMap = new SyncableMutableSubscribableBranchesMap(
 //         {updatesCallbacks: [], membershipExpirationDate, everActivatedMembership}
 //     )
-//     const deserializedBranchesMap: IMutableSubscribableBranchesMap = BranchesMapDeserializer.deserialize({branchesMapData})
+//     const deserializedBranchesMap: IMutableSubscribableBranchesMap =
+// BranchesMapDeserializer.deserialize({branchesMapData})
 //     expect(deserializedBranchesMap).to.deep.equal(expectedBranchesMap)
 //     t.pass()
 // })
