@@ -44,7 +44,7 @@ export class UserUtils implements IUserUtils {
         }
         const userData: IUserData = {
             everActivatedMembership: false,
-            membershipExpirationDate: DEFAULT_MEMBERSHIP_EXPIRATION_DATE
+            membershipExpirationDate: DEFAULT_MEMBERSHIP_EXPIRATION_DATE,
             points: 0,
         }
         const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData})
