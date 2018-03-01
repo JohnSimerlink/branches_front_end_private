@@ -360,16 +360,20 @@ export interface IDatedMutation<MutationTypes> extends IMutation<MutationTypes> 
 export interface IProppedDatedMutation<MutationTypes, PropertyNames> extends IDatedMutation<MutationTypes> {
     propertyName: PropertyNames
 }
+export interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
+    id: string
+}
 export interface IIdProppedDatedMutation<MutationTypes, PropertyNames>
     extends IIdDatedMutation<MutationTypes> {
     propertyName: PropertyNames
 }
-export interface IIdDatedMutation<MutationTypes> extends IDatedMutation<MutationTypes> {
-    id: string
-}
 export interface ITypeIdProppedDatedMutation<MutationTypes>
     extends IIdProppedDatedMutation<MutationTypes, AllPropertyNames> {
     objectType: ObjectTypes
+}
+export interface IEditMutation<MutationTypes>
+    extends ITypeIdProppedDatedMutation<MutationTypes> {
+
 }
 export interface IActivatableMutation<MutationTypes> extends IMutation<MutationTypes> {
     active: boolean
@@ -538,6 +542,17 @@ export interface IAddUserPointsMutationArgs {
     userId: id,
     points: number,
 }
+export interface IEditFactMutationArgs {
+    contentId: id,
+    question: string,
+    answer: string,
+}
+
+export interface IEditCategoryMutationArgs {
+    contentId: id,
+    title: string,
+}
+
 export interface IAddNodeMutationArgs {
     node: ISigmaNodeData,
 }
