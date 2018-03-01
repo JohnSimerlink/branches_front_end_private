@@ -6,6 +6,7 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
+    CONTENT_TYPES,
     IContentUserData,
     ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
     timestamp,
@@ -296,25 +297,18 @@ export class TreeCreator implements ITreeCreator {
                 },
                 // global methods
                 changeContent() {
-                    // switch (this.content.type) {
-                    //     case 'fact':
-                    //         var fact = new Fact({question: this.content.question, answer: this.content.answer})
-                    //         this.content = ContentItems.create(fact)
-                    //         break;
-                    //     case 'heading':
-                    //         const heading = new Heading({title: this.content.title})
-                    //         this.content = ContentItems.create(heading)
-                    //         break;
-                    //     case 'skill':
-                    //         const skill = new Skill({title: this.content.title})
-                    //         this.content = ContentItems.create(skill)
-                    //         break;
-                    // }
-                    // this.content.addTree(this.id)
-                    // this.tree.changeContent(this.content.id, this.tree.contentType)
-                    //
-                    // this.toggleEditing()
-                    // this.syncGraphWithNode()
+                    switch (this.content.type) {
+                        case CONTENT_TYPES.FACT:
+
+                            break;
+                        case CONTENT_TYPES.CATEGORY:
+                            break;
+                    }
+                    this.content.addTree(this.id)
+                    this.tree.changeContent(this.content.id, this.tree.contentType)
+
+                    this.toggleEditing()
+                    this.syncGraphWithNode()
                 },
                 async remove() {
                     //     if (confirm("Warning! Are you sure you would you like to delete
