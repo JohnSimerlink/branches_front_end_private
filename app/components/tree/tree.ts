@@ -6,8 +6,8 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
-    CONTENT_TYPES,
-    IContentUserData,
+    CONTENT_TYPES, IContentData,
+    IContentUserData, IEditCategoryMutationArgs, IEditFactMutationArgs,
     ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
     timestamp,
 } from '../../objects/interfaces';
@@ -54,11 +54,11 @@ export class TreeCreator implements ITreeCreator {
                 contentId: String,
                 userId: String,
             },
-            async created() {
-                if (this.typeIsHeading) {
-                    this.addingChild = true
-                }
-            },
+            // async created() {
+            //     if (this.typeIsCategory) {
+            //         this.addingChild = true
+            //     }
+            // },
             mounted() {
             },
             data() {
@@ -99,7 +99,7 @@ export class TreeCreator implements ITreeCreator {
                     const y = this.treeLocationData.point && this.treeLocationData.point.y
                     return y
                 },
-                content() {
+                content(): IContentData {
                     const contentData = me.store.getters.contentData(this.contentId) || {}
                     return contentData
                 },
@@ -146,23 +146,22 @@ export class TreeCreator implements ITreeCreator {
                 // openNodeId(){
                 //     return this.$store.state.openNodeId;
                 // },
-                typeIsHeading() {
-                    const isHeading = this.content.type === 'heading' || this.tree.contentType === 'heading'
-                    return this.content.type === 'heading'
-                        || this.tree.contentType === 'heading' // backwards compatibility
+                typeIsCategory() {
+                    return true //this.content.type === CONTENT_TYPES.CATEGORY
+                },
+                myComputedProp() {
+                  return 'we done'
                 },
                 typeIsFact() {
-                    return this.content.type === 'fact'
-                        || this.tree.contentType === 'fact' // backwards compatibility
+                    return this.content.type === CONTENT_TYPES.FACT
                 },
                 typeIsSkill() {
-                    return this.content.type === 'skill'
-                        || this.tree.contentType === 'skill' // backwards compatibility
+                    return this.content.type === CONTENT_TYPES.SKILL
                 },
                 styleObject() {
                     const styles = {}
                     styles['background-color'] = 'gray'
-                    if (this.typeIsHeading) {
+                    if (this.typeIsCategory) {
                         styles['background-color'] = 'black';
                         styles['color'] = 'white'
                     } else {
@@ -212,7 +211,7 @@ export class TreeCreator implements ITreeCreator {
                     this.addingChild = !this.addingChild
                 },
                 toggleHistory() {
-                    if (this.typeisHeading) {
+                    if (this.typeIsCategory) {
                         return
                     }
                     this.showHistory = !this.showHistory
@@ -225,14 +224,14 @@ export class TreeCreator implements ITreeCreator {
                     // goToFromMap({name: 'study', params: {leafId: this.id}})
                     // this.$router.push()
                 },
-                studyHeading() {
-                    // console.log('study HEADING called!')
+                studyCategory() {
+                    // console.log('study CATEGORY called!')
                     // this.$store.commit('setCurrentStudyingTree', this.id)
                     // this.$store.commit('enterStudyingMode')
                     // // goToFromMap({name: 'study', params: {leafId: this.id}})
                     // this.$router.push()
                 },
-                clearHeading() {
+                clearCategory() {
                     // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked(proficiency) {
@@ -275,7 +274,7 @@ export class TreeCreator implements ITreeCreator {
                     //     this.tree.setInactive()
                     //     // stores.commit('closeNode', this.id)
                 },
-                // unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
+                // unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
                 async syncTreeChainWithUI() {
                     // this.syncGraphWithNode()
                     // let parentId = this.tree.treeDataFromDB.parentId;
@@ -299,16 +298,24 @@ export class TreeCreator implements ITreeCreator {
                 changeContent() {
                     switch (this.content.type) {
                         case CONTENT_TYPES.FACT:
-
+                            log('J16 - inside of the content types mutation')
+                            const editFactMutation: IEditFactMutationArgs = {
+                                contentId: this.contentId,
+                                question: this.$refs.question.value,
+                                answer: this.$refs.answer.value,
+                            }
+                            this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation)
                             break;
                         case CONTENT_TYPES.CATEGORY:
+                            log('J16 - inside of the category types mutation')
+                            const editCategoryMutation: IEditCategoryMutationArgs = {
+                                contentId: this.contentId,
+                                title: this.$refs.title.value,
+                            }
+                            this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation)
                             break;
                     }
-                    this.content.addTree(this.id)
-                    this.tree.changeContent(this.content.id, this.tree.contentType)
-
-                    this.toggleEditing()
-                    this.syncGraphWithNode()
+                    this.editing = false
                 },
                 async remove() {
                     //     if (confirm("Warning! Are you sure you would you like to delete
