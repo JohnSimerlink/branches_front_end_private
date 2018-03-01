@@ -16,21 +16,25 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
     private publishing = false
     public membershipExpirationDate: IMutableSubscribableField<timestamp>;
     public everActivatedMembership: IMutableSubscribableField<boolean>;
+    public points: IMutableSubscribableField<number>;
 
     constructor(@inject(TYPES.SubscribableUserArgs) {
         updatesCallbacks,
         membershipExpirationDate,
         everActivatedMembership,
+        points,
     }: SubscribableUserArgs ) {
         super({updatesCallbacks})
         this.membershipExpirationDate = membershipExpirationDate
         this.everActivatedMembership = everActivatedMembership
+        this.points = points
     }
     // TODO: should the below three objects be private?
     public val(): IUserData {
         return {
             membershipExpirationDate: this.membershipExpirationDate.val(),
             everActivatedMembership: this.everActivatedMembership.val(),
+            points: this.points.val(),
         }
     }
     public dbVal(): IUserData {
@@ -46,6 +50,8 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
         this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.membershipExpirationDate.onUpdate(boundCallCallbacks)
+        this.everActivatedMembership.onUpdate(boundCallCallbacks)
+        this.points.onUpdate(boundCallCallbacks)
     }
 }
 
@@ -54,4 +60,5 @@ export class SubscribableUserArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[]
     @inject(TYPES.IMutableSubscribableNumber) public membershipExpirationDate: IMutableSubscribableField<timestamp>
     @inject(TYPES.IMutableSubscribableBoolean) public everActivatedMembership: IMutableSubscribableField<boolean>
+    @inject(TYPES.IMutableSubscribableNumber) public points: IMutableSubscribableField<number>
 }

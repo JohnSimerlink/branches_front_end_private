@@ -13,6 +13,7 @@ import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {ObjectFirebaseAutoSaver} from '../dbSync/ObjectAutoFirebaseSaver';
 import {UserDeserializer} from '../../loaders/user/UserDeserializer';
+export const DEFAULT_MEMBERSHIP_EXPIRATION_DATE = 1496340000 // Jun 1st 2017. <<< Already expired
 
 @injectable()
 export class UserUtils implements IUserUtils {
@@ -43,7 +44,8 @@ export class UserUtils implements IUserUtils {
         }
         const userData: IUserData = {
             everActivatedMembership: false,
-            membershipExpirationDate: 1496340000  // Jun 1st 2017. <<< Already expired
+            membershipExpirationDate: DEFAULT_MEMBERSHIP_EXPIRATION_DATE
+            points: 0,
         }
         const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData})
         const userFirebaseRef = this.usersFirebaseRef.child(userId)
