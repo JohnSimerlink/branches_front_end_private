@@ -17,7 +17,8 @@ import {
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
     ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
     ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
-    UserPropertyMutationTypes,
+    UserPropertyMutationTypes, IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
+    ContentPropertyMutationTypes, ContentPropertyNames,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -57,6 +58,8 @@ export enum MUTATION_NAMES {
     ADD_EDGES = 'add_edges',
     CREATE_CONTENT_USER_DATA = 'create_content_user_data',
     CREATE_CONTENT = 'create_content',
+    EDIT_FACT = 'edit_fact',
+    EDIT_CATEGORY = 'edit_category',
     CREATE_TREE_LOCATION = 'create_tree_location',
     MOVE_TREE_COORDINATE = 'move_tree_coordinate',
     CREATE_TREE = 'create_tree',
@@ -370,17 +373,48 @@ const mutations = {
         answer, title
     }: IContentDataEither): id {
         const createMutation: ICreateMutation<IContentData> = {
-            type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.CONTENT,
+            type: STORE_MUTATION_TYPES.CREATE_ITEM,
             data: {type, question, answer, title},
         }
         const contentId: id = state.globalDataStore.addMutation(createMutation)
         return contentId
     },
+    [MUTATION_NAMES.EDIT_FACT](state: IState, {contentId, question, answer}: IEditFactMutationArgs) {
+        const editQuestionMutation: IEditMutation<ContentPropertyMutationTypes> = {
+            objectType: ObjectTypes.CONTENT,
+            type: FieldMutationTypes.SET,
+            id: contentId,
+            propertyName: ContentPropertyNames.QUESTION,
+            timestamp: Date.now(),
+            data: question,
+        }
+        const editAnswerMutation: IEditMutation<ContentPropertyMutationTypes> = {
+            objectType: ObjectTypes.CONTENT,
+            type: FieldMutationTypes.SET,
+            id: contentId,
+            propertyName: ContentPropertyNames.ANSWER,
+            timestamp: Date.now(),
+            data: answer,
+        }
+        state.globalDataStore.addMutation(editQuestionMutation)
+        state.globalDataStore.addMutation(editAnswerMutation)
+    },
+    [MUTATION_NAMES.EDIT_CATEGORY](state: IState, {contentId, title}: IEditCategoryMutationArgs) {
+        const editCategoryMutation: IEditMutation<ContentPropertyMutationTypes> = {
+            objectType: ObjectTypes.CONTENT,
+            type: FieldMutationTypes.SET,
+            id: contentId,
+            propertyName: ContentPropertyNames.TITLE,
+            timestamp: Date.now(),
+            data: title,
+        }
+        state.globalDataStore.addMutation(editCategoryMutation)
+    },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
-            type: STORE_MUTATION_TYPES.CREATE_ITEM,
             objectType: ObjectTypes.TREE,
+            type: STORE_MUTATION_TYPES.CREATE_ITEM,
             data: {parentId, contentId, children},
         }
         const treeId = state.globalDataStore.addMutation(createMutation)

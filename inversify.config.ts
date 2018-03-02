@@ -236,17 +236,17 @@ import {AuthListener, AuthListenerArgs} from './app/objects/authListener/authLis
 import {
     ContentUserLoaderAndOverdueListener,
     ContentUserLoaderAndOverdueListenerArgs
-} from "./app/loaders/contentUser/ContentUserLoaderAndOverdueListener";
+} from './app/loaders/contentUser/ContentUserLoaderAndOverdueListener';
 import {
     OverdueListenerMutableSubscribableContentUserStore,
     OverdueListenerMutableSubscribableContentUserStoreArgs
-} from "./app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore";
+} from './app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore';
 import {
     GlobalDataStoreBranchesStoreSyncer,
     GlobalDataStoreBranchesStoreSyncerArgs
-} from "./app/core/globalDataStoreBranchesStoreSyncer";
+} from './app/core/globalDataStoreBranchesStoreSyncer';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
-import {TreeCreator4, TreeCreatorArgs} from "./app/components/tree/tree4";
+import {TreeCreatorArgs} from './app/components/tree/tree';
 
 Vue.use(Vuex)
 
@@ -727,7 +727,7 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
     // bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
-    bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator4)
+    bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
 

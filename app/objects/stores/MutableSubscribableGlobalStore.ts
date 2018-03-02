@@ -8,7 +8,7 @@ import {
     TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, IContentData,
     ITreeData, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, id, IUpdatesCallback,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableTreeStore
+    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableTreeStore, IEditMutation
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
@@ -33,7 +33,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         this._globalStoreId = Math.random()
         // log('/**/328pm mutablesubscribableglobalstore just created', this._globalStoreId)
     }
-    private addEditMutation(mutation: ITypeIdProppedDatedMutation<AllPropertyMutationTypes>) {
+    private addEditMutation(mutation: IEditMutation<AllPropertyMutationTypes>) {
         // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
             case ObjectTypes.TREE: {
