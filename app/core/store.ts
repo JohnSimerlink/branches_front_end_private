@@ -401,7 +401,15 @@ const mutations = {
         state.globalDataStore.addMutation(editAnswerMutation)
     },
     [MUTATION_NAMES.EDIT_CATEGORY](state: IState, {contentId, title}: IEditCategoryMutationArgs) {
-
+        const editCategoryMutation: IEditMutation<ContentPropertyMutationTypes> = {
+            objectType: ObjectTypes.CONTENT,
+            type: FieldMutationTypes.SET,
+            id: contentId,
+            propertyName: ContentPropertyNames.TITLE,
+            timestamp: Date.now(),
+            data: title,
+        }
+        state.globalDataStore.addMutation(editCategoryMutation)
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {

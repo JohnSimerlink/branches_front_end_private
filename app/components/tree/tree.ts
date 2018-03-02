@@ -147,7 +147,7 @@ export class TreeCreator implements ITreeCreator {
                 //     return this.$store.state.openNodeId;
                 // },
                 typeIsCategory() {
-                    return true //this.content.type === CONTENT_TYPES.CATEGORY
+                    return this.content.type === CONTENT_TYPES.CATEGORY
                 },
                 myComputedProp() {
                   return 'we done'
