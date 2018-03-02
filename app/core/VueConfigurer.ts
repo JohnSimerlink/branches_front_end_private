@@ -105,7 +105,7 @@ export class VueConfigurer implements IVueConfigurer {
 
 @injectable()
 export class VueConfigurerArgs {
-    @inject(TYPES.ITree3Creator) public treeComponentCreator: ITreeCreator
+    @inject(TYPES.ITreeCreator) public treeComponentCreator: ITreeCreator
     @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator
     @inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator
     @inject(TYPES.BranchesStore) public store: Store<any>

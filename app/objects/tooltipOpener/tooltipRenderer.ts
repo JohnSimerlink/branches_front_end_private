@@ -39,8 +39,6 @@ export class TooltipRenderer implements ITooltipRenderer {
         resultElement.setAttribute('id', 'vue')
         const tree = document.createElement('tree')
         tree.setAttribute('id', node.id)
-        tree.setAttribute('x', '' + node.x)
-        tree.setAttribute('y', '' + node.y)
         tree.setAttribute('parent-id', node.parentId)
         tree.setAttribute('content-id', node.contentId)
         tree.setAttribute('content-string', contentString)

@@ -56,13 +56,13 @@
   z-index: 9003;
 
   .tree-skill {
-    .tree-new-skill {
+    .tree-edit-skill {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .tree-new-skill-input {
+    .tree-edit-skill-input {
       .tree-textarea;
     }
 
@@ -82,12 +82,12 @@
       align-items: center;
     }
 
-    .tree-new-fact {
+    .tree-edit-fact {
       display: flex;
       flex-direction: column;
     }
 
-    .tree-new-fact-answer {
+    .tree-edit-fact-answer {
       .tree-textarea;
 
     }
@@ -155,12 +155,20 @@
   justify-content: space-between;
 }
 
-.tree-edit-button {
+.icon-button {
   cursor: pointer;
 }
 
+.tree-edit-button {
+  .icon-button;
+}
+
+.tree-add-child-button {
+  .icon-button;
+}
+
 .tree-delete-button {
-  cursor: pointer;
+  .icon-button;
 }
 
 .tree-current-fact-question {
