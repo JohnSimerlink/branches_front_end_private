@@ -1,5 +1,6 @@
 export const FIREBASE_PATHS = {
     TREES: 'trees',
+    BRANCHES_MAPS: 'maps',
     TREE_LOCATIONS: 'treeLocations',
     TREE_USERS: 'treeUsers',
     CONTENT: 'content',

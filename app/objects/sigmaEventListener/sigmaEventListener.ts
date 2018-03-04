@@ -1,7 +1,9 @@
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
-    IBindable, IFamilyLoader, IMoveTreeCoordinateMutationArgs, ISigma, ISigmaEventListener,
+    CONTENT_TYPES,
+    IBindable, IFamilyLoader, ILoadAndSwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
+    ISigmaEventListener, ISigmaNodeData,
     ITooltipOpener
 } from '../interfaces';
 import {log} from '../../core/log'
@@ -36,6 +38,19 @@ export class SigmaEventListener implements ISigmaEventListener {
                 event.data.node && event.data.node.id
             const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
             this.tooltipOpener.openTooltip(sigmaNode)
+
+            const nodeData: ISigmaNodeData = event.data.node
+            const contentType: CONTENT_TYPES = event.data.node.content.type
+            switch (contentType) {
+                case CONTENT_TYPES.MAP: {
+                    const mapId = nodeId
+                    const loadAndSwitchToMapMutationArgs: ILoadAndSwitchToMapMutationArgs = {
+                        mapId
+                    }
+                    // MUTATIO
+                }
+            }
+
         })
         // debugger;
         this.sigmaInstance.bind('overNode', (event) => {
@@ -53,7 +68,7 @@ export class SigmaEventListener implements ISigmaEventListener {
             this.store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE, mutationArgs)
         })
         // debugger;
-        this.sigmaInstance['renderers'][0].bind(CustomSigmaEventNames.CENTERED_NODE, (event) => {
+        this.sigmaInstance.renderers[0].bind(CustomSigmaEventNames.CENTERED_NODE, (event) => {
             const nodeId = event && event.data &&
                 event.data.centeredNodeId
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)

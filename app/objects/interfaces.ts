@@ -563,6 +563,10 @@ export enum UserPropertyNames {
     MEMBERSHIP_EXPIRATION_DATE = 'membershipExpirationDate',
     EVER_ACTIVATED_MEMBERSHIP = 'everActivatedMembership',
     POINTS = 'points',
+    ROOT_MAP_ID = 'rootMapId',
+    OPEN_MAP_ID = 'openMapId',
+    CURRENT_HOVERED_TREE_ID = 'currentHoveredTreeId',
+    USER_INFO = 'userInfo',
 }
 
 export interface ISubscribableUser extends
@@ -574,7 +578,13 @@ export interface IMutableSubscribableUser
 
 export interface IUserUtils {
     userExistsInDB(userId: id): Promise<boolean>
-    createUserInDB(userId: id): Promise<ISyncableMutableSubscribableUser>
+    createUserInDB({userId, userInfo}
+    : ICreateUserInDBArgs ): Promise<ISyncableMutableSubscribableUser>
+}
+
+export interface ICreateUserInDBArgs {
+    userId: id
+    userInfo: firebase.UserInfo
 }
 
 // UI Manager objects
@@ -1067,6 +1077,42 @@ export interface ICreateMapMutationArgs {
 export interface ICreateMapAndRootTreeIdMutationArgs {
     contentId: id
 }
+export interface ILoadAndSwitchToMapMutationArgs {
+    mapId: id
+}
+
+export interface ICreateUserOrLoginMutationArgs {
+    userId: id,
+    userInfo: firebase.UserInfo,
+}
+
+export interface ICreatePrimaryUserMapIfNotCreatedMutationArgs {
+    userData: IUserData,
+}
+
+export interface ICreateUserPrimaryMapMutationArgs {
+    userName: string,
+}
+
+export interface ILoadAndSwitchToMapMutationArgs {
+    mapId: id
+}
+
+export interface ILoadMapMutationArgs {
+    branchesMapId: id
+}
+
+export interface ISaveUserInfoFromLoginProviderMutationArgs {
+    userId: id,
+    userInfo: firebase.UserInfo
+}
+
+export interface ISetUserIdMutationArgs {
+    userId: id
+}
+
+export type ICreateContentMutationArgs = IContentDataEither
+
 export interface ISubscribableTreeCore extends ITree {
     contentId: IMutableSubscribableField<string>
     parentId: IMutableSubscribableField<string>
