@@ -36,7 +36,7 @@ test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', as
 
     childFirebaseRef.fakeEvent('value', undefined, sampleBranchesMapDataFromDB1)
     const branchesMapDataPromise: Promise<ISyncableMutableSubscribableBranchesMap> =
-        branchesMapLoader.downloadBranchesMap(branchesMapId)
+        branchesMapLoader.loadIfNotLoaded(branchesMapId)
     childFirebaseRef.flush()
 
     const branchesMap = await branchesMapDataPromise

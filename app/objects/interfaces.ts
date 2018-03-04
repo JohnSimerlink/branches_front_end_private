@@ -5,6 +5,7 @@ import {UIColor} from './uiColor';
 import {SigmaNode, SigmaNodeArgs} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
 import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
+import * as firebase from "firebase";
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -86,8 +87,13 @@ export interface IContentUserLoader {
 export interface IUserLoader {
     downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser>
 }
+
+export interface IBranchesMapLoaderCore {
+    load(mapId: id): Promise<ISyncableMutableSubscribableBranchesMap>
+}
+
 export interface IBranchesMapLoader {
-    downloadBranchesMap(mapId: id): Promise<ISyncableMutableSubscribableBranchesMap>
+    loadIfNotLoaded(mapId: id): Promise<ISyncableMutableSubscribableBranchesMap>
 }
 
 export interface ISigmaNodeLoaderCore {
@@ -489,28 +495,46 @@ export interface IBranchesMapUtils {
     createBranchesMapInDBAndAutoSave({rootTreeId}: ICreateMapMutationArgs): Promise<ICreateBranchesMapReturnObject>
 }
 
+export interface ISigmaCamera {
+    angle: number
+    ratio: number
+    x: number
+    y: number
+}
+
 // user branchesMap
 export interface IUserData {
     membershipExpirationDate: timestamp
     everActivatedMembership: boolean
+    points: number
+    rootMapId: id
+    userInfo: firebase.UserInfo
+    openMapId: id
+    currentHoveredTreeId: id
+    /* TODO: this could cause a bug where we have stored
++     what treeId the user is at . . .so we load that treeId, but then */
+    // camera: ISigmaCamera
 }
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
     everActivatedMembership: IMutableField<boolean>
     points: IMutableField<number>
+    rootMapId: IMutableField<id>
+    openMapId: IMutableField<id>
+    currentHoveredTreeId: IMutableField<id>
+    userInfo: IMutableField<firebase.UserInfo>
 }
 export interface ISubscribableUserCore extends IUser {
     everActivatedMembership: IMutableSubscribableField<boolean>
     membershipExpirationDate: IMutableSubscribableField<timestamp>
     points: IMutableSubscribableField<number>
+    rootMapId: IMutableSubscribableField<id>
+    openMapId: IMutableSubscribableField<id>
+    currentHoveredTreeId: IMutableSubscribableField<id>
+    userInfo: IMutableSubscribableField<firebase.UserInfo>
     val(): IUserData
 }
 
-export interface IUserData {
-    membershipExpirationDate: timestamp
-    everActivatedMembership: boolean
-    points: number
-}
 export interface IUserDataFromDB {
     membershipExpirationDate: {
         val: timestamp;
@@ -520,7 +544,19 @@ export interface IUserDataFromDB {
     },
     points: {
         val: number
-    }
+    },
+    rootMapId: {
+        val: id
+    },
+    openMapId: {
+        val: id
+    },
+    currentHoveredTreeId: {
+       val: id
+    },
+    userInfo: {
+        val: firebase.UserInfo
+    },
 }
 
 export enum UserPropertyNames {

@@ -1,6 +1,5 @@
 import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
-import './branches-stripe.less'
 import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
 // let request = require('request-promise').default
@@ -11,10 +10,13 @@ let axios = require('axios').default || require('axios')
 // import request from 'request-promise'
 // const request = require('request')
 
-let template = require('./branches-stripe.html').default
-if (!template) {
-    template = require('./branches-stripe.html')
+const env = process.env.NODE_ENV || 'development'
+if (env === 'test') {
+    let register = require('ignore-styles').default || require('ignore-styles')
+    register(['.html', '.less'])
 }
+let template = require('./branches-stripe.html').default || require('./branches-stripe.html')
+import './branches-stripe.less'
 export default {
     template,
     created() {

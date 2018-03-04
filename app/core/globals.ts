@@ -1,4 +1,6 @@
 export const GLOBAL_ROOT_ID: string = '1'
+import * as firebase from 'firebase';
+import {koalaURL} from '../koalaUrl';
 export const MAP_DEFAULT_X: number = 0
 export const MAP_DEFAULT_Y: number = 0
 export const DEFAULT_MAP_ID: string = '1'
@@ -13,6 +15,14 @@ export const DEFAULT_FONT_SIZE = 24
 export const DEFAULT_EDGE_SIZE = 0.5
 export const DEFAULT_NODE_SIZE = 2
 export const COMBINED_ID_SEPARATOR = '__'
+export const DEFAULT_USER_INFO: firebase.UserInfo = {
+    displayName: 'Display Name',
+    email: 'email@email.com',
+    phoneNumber: '513-111-1111',
+    photoURL: koalaURL,
+    providerId: 'providerId',
+    uid: 'user id'
+}
 export const Globals = {
     colors: {
         proficiency_1: 'red',

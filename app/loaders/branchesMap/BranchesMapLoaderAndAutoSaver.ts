@@ -21,9 +21,9 @@ export class BranchesMapLoaderAndAutoSaver implements IBranchesMapLoader {
         this.branchesMapLoader = branchesMapLoader
         this.firebaseRef = firebaseRef
     }
-    public async downloadBranchesMap(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
+    public async loadIfNotLoaded(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
         log('branchesMapLoaderAutoSaver download BranchesMap called', branchesMapId)
-        const branchesMap = await this.branchesMapLoader.downloadBranchesMap(branchesMapId)
+        const branchesMap = await this.branchesMapLoader.loadIfNotLoaded(branchesMapId)
 
         const branchesMapFirebaseRef = this.firebaseRef.child(branchesMapId)
         const branchesMapAutoSaver: IObjectFirebaseAutoSaver =
@@ -40,6 +40,6 @@ export class BranchesMapLoaderAndAutoSaver implements IBranchesMapLoader {
 
 @injectable()
 export class BranchesMapLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.BRANCHES_MAPS_REF, true) public firebaseRef: Reference
     @inject(TYPES.IBranchesMapLoader) public branchesMapLoader: IBranchesMapLoader
 }

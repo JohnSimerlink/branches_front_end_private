@@ -53,6 +53,7 @@ export enum MUTATION_NAMES {
     CREATE_USER_OR_LOGIN = 'create_user_or_login',
     LOGIN = 'login',
     INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED = 'initializeSigmaInstance',
+    CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED = 'initialize_user_data',
     JUMP_TO = 'jump_to',
     REFRESH = 'refresh',
     ADD_NODE = 'add_node',
@@ -81,7 +82,12 @@ export enum MUTATION_NAMES {
     ADD_USER_POINTS = 'add_user_points',
     CREATE_MAP = 'create_map',
     CREATE_MAP_AND_ROOT_TREE_ID = 'create_map_and_root_tree_id',
+    CREATE_USER_PRIMARY_MAP = 'create_user_primary_map',
+    LOAD_MAP_IF_NOT_LOADED = 'load_map',
+    LOAD_MAP_AND_ROOT_SIGMA_NODE = 'load_map_and_root_tree_id',
     SET_MAP_ID = 'set_map_id',
+    SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',
+    SWITCH_TO_MAP = 'switch_to_map',
 }
 
 const getters = {
