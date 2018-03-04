@@ -21,8 +21,19 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
         membershipExpirationDate,
         everActivatedMembership,
         points,
-    }: SubscribableUserArgs) {
-        super({updatesCallbacks, membershipExpirationDate, everActivatedMembership, points})
+        rootMapId,
+        openMapId,
+        currentHoveredTreeId,
+        userInfo
+}: SubscribableUserArgs) {
+            super({
+                updatesCallbacks, membershipExpirationDate,
+                everActivatedMembership, points,
+                rootMapId,
+                openMapId,
+                currentHoveredTreeId,
+                userInfo,
+            })
     }
 
     public addMutation(mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>

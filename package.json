@@ -26,7 +26,7 @@
     "express": "^4.16.2",
     "firebase": "^4.8.0",
     "fs": "0.0.1-security",
-    "inversify": "^4.5.1",
+    "inversify": "^4.11.1",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "json-loader": "^0.5.4",

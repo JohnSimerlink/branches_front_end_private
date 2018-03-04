@@ -17,6 +17,10 @@ export class SyncableMutableSubscribableUser
             membershipExpirationDate: this.membershipExpirationDate,
             everActivatedMembership: this.everActivatedMembership,
             points: this.points,
+            currentHoveredTreeId: this.currentHoveredTreeId,
+            rootMapId: this.rootMapId,
+            openMapId: this.openMapId,
+            userInfo: this.userInfo,
         }
     }
 }

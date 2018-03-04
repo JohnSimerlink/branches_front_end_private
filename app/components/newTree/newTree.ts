@@ -20,20 +20,11 @@ import {Store} from 'vuex';
 import Vue from 'vue';
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
-    let register = require('ignore-styles').default
-    if (!register) {
-        register = require('ignore-styles')
-    }
-    register(['.html'])
+    let register = require('ignore-styles').default || require('ignore-styles')
+    register(['.html', '.less'])
 }
 
-let template = require('./newTree.html').default
-if (!template) {
-    template = require('./newTree.html')
-    // log('newTreeComponentCreator template was not created from .default', template)
-} else {
-    // log('newTreeComponentCreator template was created from .default', template)
-}
+let template = require('./newTree.html').default || require('./newTree.html')
 if (!template || !Object.keys(template).length) {
     template = '<div>BLANK TEMPLATE</div>'
 }

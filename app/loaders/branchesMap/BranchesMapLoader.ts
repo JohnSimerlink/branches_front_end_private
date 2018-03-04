@@ -20,7 +20,7 @@ export class BranchesMapLoader implements IBranchesMapLoader {
 
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
-    public async downloadBranchesMap(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
+    public async loadIfNotLoaded(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
         log('branchesMapLoader download BranchesMap called', branchesMapId)
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(branchesMapId).once('value', (snapshot) => {
@@ -41,5 +41,5 @@ export class BranchesMapLoader implements IBranchesMapLoader {
 @injectable()
 export class BranchesMapLoaderArgs {
     @inject(TYPES.FirebaseReference)
-    @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
+    @tagged(TAGS.BRANCHES_MAPS_REF, true) public firebaseRef: Reference
 }

@@ -48,6 +48,10 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             mounted() {
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
                 me.sigmaNodeLoader.loadIfNotLoaded(INITIAL_TREE_ID_TO_DOWNLOAD)
+
+                /*
+                    me.branchesMapLoader.load(this.$store.getters.
+                */
                 // me.sigmaNodeLoader.loadIfNotLoaded(ANOTHER_ID)
                 // // TODO: Maybe all of these download actions should be done via Vuex Store actions
                 // me.specialTreeLoader.downloadData(INITIAL_TREE_ID_TO_DOWNLOAD)
