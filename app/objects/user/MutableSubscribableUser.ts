@@ -55,6 +55,18 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
             case UserPropertyNames.POINTS:
                 this.points.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
+
+            case UserPropertyNames.ROOT_MAP_ID:
+                this.rootMapId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
+            case UserPropertyNames.OPEN_MAP_ID:
+                this.openMapId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
+            case UserPropertyNames.CURRENT_HOVERED_TREE_ID:
+                this.currentHoveredTreeId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break;
+            case UserPropertyNames.USER_INFO:
+                throw new RangeError('You cannot change user info in this manner')
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)

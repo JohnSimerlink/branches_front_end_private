@@ -5,7 +5,7 @@ import {
     ISyncableMutableSubscribableUser,
     IUserData,
     IUserUtils,
-    IObjectFirebaseAutoSaver,
+    IObjectFirebaseAutoSaver, ICreateUserInDBArgs,
 } from '../interfaces';
 import {TYPES} from '../types'
 import {TAGS} from '../tags';
@@ -37,7 +37,7 @@ export class UserUtils implements IUserUtils {
             })
         }) as Promise<boolean>
     }
-    public async createUserInDB(userId: string): Promise<ISyncableMutableSubscribableUser> {
+    public async createUserInDB({userId, userInfo}: ICreateUserInDBArgs): Promise<ISyncableMutableSubscribableUser> {
         const userExists = await this.userExistsInDB(userId)
         if (userExists) {
             console.error('not creating user. user already existsb')
