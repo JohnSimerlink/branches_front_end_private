@@ -1081,8 +1081,8 @@ export interface ICreateMapMutationArgs {
 export interface ICreateMapAndRootTreeIdMutationArgs {
     contentId: id
 }
-export interface ILoadAndSwitchToMapMutationArgs {
-    mapId: id
+export interface ISwitchToMapMutationArgs {
+    branchesMapId: id
 }
 
 export interface ICreateUserOrLoginMutationArgs {
@@ -1103,6 +1103,10 @@ export interface ILoadAndSwitchToMapMutationArgs {
 }
 
 export interface ILoadMapMutationArgs {
+    branchesMapId: id
+}
+
+export interface ILoadMapAndRootSigmaNodeMutationArgs {
     branchesMapId: id
 }
 

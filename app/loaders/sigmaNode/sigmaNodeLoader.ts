@@ -4,6 +4,7 @@ import {
     IContentLoader, IContentUserData, IContentUserLoader, id, IHash, ISigma, ISigmaLoadData, ISigmaNodeLoader,
     ISigmaNodeLoaderCore,
 } from '../../objects/interfaces';
+import {log} from '../../core/log'
 import {TYPES} from '../../objects/types';
 
 @injectable()
@@ -37,6 +38,7 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 
     // TODO: prevent from being called twice
     public async loadIfNotLoaded(sigmaId: id): Promise<ISigmaLoadData> {
+        log('sigmaNodeLoader loadIfNotLoaded called', sigmaId)
         // check if data is in cache
         const loadData: ISigmaLoadData
             = this.sigmaIdLoadDataMap[sigmaId]

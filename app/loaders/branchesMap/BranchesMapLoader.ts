@@ -29,6 +29,7 @@ export class BranchesMapLoader implements IBranchesMapLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async loadIfNotLoaded(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
+        log('J14I: BML loadIfNl called', branchesMapId)
 
         // check if data is in cache
         const branchesMap: ISyncableMutableSubscribableBranchesMap
