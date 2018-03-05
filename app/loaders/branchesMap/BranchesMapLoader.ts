@@ -16,7 +16,7 @@ export class BranchesMapLoader implements IBranchesMapLoader {
     private branchesMapLoaderCore: IBranchesMapLoaderCore
     private branchesMapIdObjectPromiseMap: IHash<Promise<ISyncableMutableSubscribableBranchesMap>>
     private branchesMapIdObjectMap: IHash<ISyncableMutableSubscribableBranchesMap>
-    constructor(@inject(TYPES.BranchesMapArgs){
+    constructor(@inject(TYPES.BranchesMapLoaderArgs){
         branchesMapLoaderCore,
         branchesMapIdObjectPromiseMap,
         branchesMapIdObjectMap,

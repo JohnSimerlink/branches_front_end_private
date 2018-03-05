@@ -972,6 +972,7 @@ export interface IBranchesMapRenderer {
 export interface IState {
     uri: string,
     branchesMapsData: IHash<IBranchesMapData>,
+    branchesMapLoader: IBranchesMapLoader,
     branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>,
     branchesMapUtils: IBranchesMapUtils,
     centeredTreeId: string,
