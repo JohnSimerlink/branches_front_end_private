@@ -22,7 +22,8 @@ import {
     ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs, ISetUserIdMutationArgs,
     ICreateUserPrimaryMapMutationArgs,
     ICreateContentMutationArgs,
-    ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs,
+    ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
+    ISaveUserInfoFromLoginProviderMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -525,7 +526,7 @@ const mutations = {
     },
     async [MUTATION_NAMES.LOGIN](state: IState, {userId}) {
     },
-    async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId}) {
+    async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId, userInfo}: ICreateUserOrLoginMutationArgs) {
         if (!userId) {
             throw new RangeError('UserId cannot be blank')
         }
@@ -533,16 +534,24 @@ const mutations = {
             throw new Error('Can\'t log user with id of ' + userId
                 + ' in!. There is already a user logged in with id of ' + state.userId)
         }
+        const store = getters.getStore()
         const userExistsInDB = await state.userUtils.userExistsInDB(userId)
         let user: ISyncableMutableSubscribableUser
         if (!userExistsInDB) {
-            user = await state.userUtils.createUserInDB(userId)
+            user = await state.userUtils.createUserInDB({userId, userInfo})
+            store.commit(MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED)
         } else {
             user = await state.userLoader.downloadUser(userId)
         }
         storeUserInStateAndSubscribe({user, userId, state})
-        const store = getters.getStore()
         store.commit(MUTATION_NAMES.SET_USER_ID, userId)
+
+        const saveUserInfoFromLoginProvider: ISaveUserInfoFromLoginProviderMutationArgs = {
+            userId,
+            userInfo,
+        }
+        store.commit(MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER, saveUserInfoFromLoginProvider)
+
         // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
 
     },
