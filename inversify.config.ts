@@ -761,6 +761,7 @@ export const state: IState
  = {
     branchesMapsData: {},
     branchesMaps: {},
+    branchesMapLoader: null,
     branchesMapUtils: null,
     centeredTreeId: GLOBAL_ROOT_ID,
     currentMapId: DEFAULT_MAP_ID,

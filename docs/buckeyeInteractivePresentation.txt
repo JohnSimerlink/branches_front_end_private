@@ -45,7 +45,7 @@ so mutation CREATE_CONTENT is called
 		call CREATE_MAP 
 
 mutation CREATE MAP title
-	it has to create mapId - it does this based off the map title, the timestamp, and a random number
+	it has to create mapId - it does this based off the map title, the timestamp, and a random number . . .actually not based off 
 	it has to create the root tree's content item, which is going to be a category that has the same title as the title of the map on the previous map.
 		we get the id for this from the regular CREATE_CONTENT mutation
 	it has to create rootTreeId
@@ -54,5 +54,38 @@ mutation CREATE MAP title
 	after discussion with mo, we are now making contentId a completely random id
 	it has to create the root tree (and tree location, with map property set to mapId)
 	
-	8*Wreck7&College6^Branch5%Knowledge4$
+on knawledgemap mount we call
 	
+so upon knawledgeMap mount we call SWITCH_TO_LAST_USED_MAP
+	which will for now call SWITCH_TO_MAP (GLOBAL_MAP_ID)
+
+SWITCH TO MAP mapId
+	will call LOAD_MAP_AND_ROOT_SIGMA_NODE
+	will call SET_MAP_ID mapId
+ 	call set_camera_to map.rootTreeId << // TODO: eventually set to whatever location the user was at in the map beforehand
+
+LOAD_MAP_AND_ROOT_SIGMA_NODE mapId
+	will call
+	will call load MAP_IF_NOT_LOADED (mapId)
+	gets map 
+	will call FamilyLoader.load(map.rootTreeId)
+
+SET_CAMERA_TO_ROOT_TREE_ID mapId
+	gets map /// TODO: Whenever we get a map should we call loadMap if not loaded?
+	calls SET_CAMERA_TO map.rootTreeId
+
+SET_CAMERA_TO treeId
+	gets treeLocationData from state.treeLocationData . . . // TODO: whenever we get treeLocationData should we first call loadTreeLocationIfNotLoaded?
+
+TODO: add branchesMapStore and UserStore as substores under MutableGlobalSubscribableStore
+	
+List the 9 Principles of MIT Media Lab
+1) Emergence over authority
+2) Pull over Push
+3) Compasses over Maps
+4) Risk over Safety
+5) Disobedience over Compliance
+6) Practice over Theory
+7) Diversity over ability
+8) Resilience over Strength
+9) Systems over Objects

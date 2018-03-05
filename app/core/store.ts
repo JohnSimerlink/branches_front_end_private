@@ -23,7 +23,7 @@ import {
     ICreateUserPrimaryMapMutationArgs,
     ICreateContentMutationArgs,
     ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
-    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore,
+    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -464,6 +464,36 @@ const mutations = {
         storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
         return branchesMapId
     },
+    async [MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](
+        state: IState, {branchesMapId}: ILoadMapMutationArgs): Promise<ISyncableMutableSubscribableBranchesMap> {
+        if (state.branchesMaps[branchesMapId]) {
+            return
+        }
+        const branchesMap: ISyncableMutableSubscribableBranchesMap
+            = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId)
+        /* TODO: i could see how if a map was created via branchesMapUtils
+        that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
+        storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
+        return branchesMap
+    },
+    async [MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE](
+        state: IState, {branchesMapId}: ILoadMapMutationArgs) {
+        // if (state.branchesMaps[branchesMapId]) {
+        //     return
+        // }
+        const loadMapMutationArgs: ILoadMapMutationArgs = {
+            branchesMapId
+        }
+        const branchesMap: ISyncableMutableSubscribableBranchesMap
+            = mutations[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any
+        const branchesMapVal = branchesMap.val()
+        const rootTreeId = branchesMapVal.rootTreeId
+        // state.fa
+        /* TODO: i could see how if a map was created via branchesMapUtils
+        that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
+        // storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
+        // return branchesMap
+    },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
             type: STORE_MUTATION_TYPES.CREATE_ITEM,
@@ -673,6 +703,7 @@ export default class BranchesStore {
         state,
         sigmaNodeLoader,
         sigmaNodeLoaderCore,
+        branchesMapLoader,
         userLoader,
         userUtils,
     }: BranchesStoreArgs) {
@@ -685,6 +716,7 @@ export default class BranchesStore {
             globalDataStore,
             sigmaNodeLoader,
             sigmaNodeLoaderCore,
+            branchesMapLoader,
             userLoader,
             userUtils
         }
@@ -699,6 +731,7 @@ export default class BranchesStore {
         store['userLoader'] = userLoader // added just to pass injectionWorks test
         store['sigmaNodeLoader'] = sigmaNodeLoader // added just to pass injectionWorks test
         store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore // added just to pass injectionWorks test
+        store['branchesMapLoader'] = branchesMapLoader
         store['userUtils'] = userUtils // added just to pass injectionWorks test
         store['_id'] = Math.random()
         initialized = true
@@ -714,6 +747,8 @@ export class BranchesStoreArgs {
         public sigmaNodeLoader: ISigmaNodeLoader
     @inject(TYPES.ISigmaNodeLoaderCore)
         public sigmaNodeLoaderCore: ISigmaNodeLoaderCore
+    @inject(TYPES.IBranchesMapLoader)
+        public branchesMapLoader: IBranchesMapLoader
     @inject(TYPES.BranchesStoreState) public state: IState
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }
@@ -732,7 +767,6 @@ function storeUserInStateAndSubscribe(
     user.startPublishing()
     state.users[userId] = user
     state.usersData[userId] = user.val()
-    state.userId = userId
 }
 function storeBranchesMapInStateAndSubscribe(
     {state, branchesMapId, branchesMap}:
