@@ -615,6 +615,17 @@ const mutations = {
         });
 
     },
+    [MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER](state: IState,
+        {userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
+        const user = state.users[userId]
+        const mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
+            propertyName: UserPropertyNames.USER_INFO,
+            timestamp: Date.now(),
+            type: FieldMutationTypes.SET,
+            data: userInfo
+        }
+        user.addMutation(mutation)
+    },
     // TODO: we also need a mutation called SET_MAP_ID_AND_ZOOM_TO_ROOT_TREE_ID
     [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {
         const store = getters.getStore()
