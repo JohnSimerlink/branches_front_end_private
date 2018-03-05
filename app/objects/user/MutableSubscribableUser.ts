@@ -11,6 +11,7 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types'
 import {SubscribableUser, SubscribableUserArgs} from './SubscribableUser';
+import * as firebase from "firebase";
 
 @injectable()
 export class MutableSubscribableUser extends SubscribableUser implements IMutableSubscribableUser {
@@ -66,7 +67,21 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                 this.currentHoveredTreeId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break;
             case UserPropertyNames.USER_INFO:
-                throw new RangeError('You cannot change user info in this manner')
+                const userInfoObject = mutation.data
+                const userInfo: firebase.UserInfo = {
+                    displayName: userInfoObject.displayName,
+                    email: userInfoObject.email,
+                    phoneNumber: userInfoObject.phoneNumber,
+                    providerId: userInfoObject.providerId,
+                    photoURL: userInfoObject.photoURL,
+                    uid: userInfoObject.uid,
+                }
+                propertyMutation.data = userInfo
+                // ^ ensures there aren't any extraneous functions
+                // or properties on the object being passed in to the SET mutation
+                log('the user info mutation we are adding in MSUser addMutation is ', propertyMutation)
+                this.userInfo.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                break
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
