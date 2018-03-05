@@ -19,7 +19,10 @@ import {
     ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
     UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
     ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
-    ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs,
+    ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs, ISetUserIdMutationArgs,
+    ICreateUserPrimaryMapMutationArgs,
+    ICreateContentMutationArgs,
+    ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -53,7 +56,7 @@ export enum MUTATION_NAMES {
     CREATE_USER_OR_LOGIN = 'create_user_or_login',
     LOGIN = 'login',
     INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED = 'initializeSigmaInstance',
-    CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED = 'initialize_user_data',
+    CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED = 'CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED',
     JUMP_TO = 'jump_to',
     REFRESH = 'refresh',
     ADD_NODE = 'add_node',
@@ -83,8 +86,8 @@ export enum MUTATION_NAMES {
     CREATE_MAP = 'create_map',
     CREATE_MAP_AND_ROOT_TREE_ID = 'create_map_and_root_tree_id',
     CREATE_USER_PRIMARY_MAP = 'create_user_primary_map',
-    LOAD_MAP_IF_NOT_LOADED = 'load_map',
-    LOAD_MAP_AND_ROOT_SIGMA_NODE = 'load_map_and_root_tree_id',
+    LOAD_MAP_IF_NOT_LOADED = 'load_map_if_not_loaded',
+    LOAD_MAP_AND_ROOT_SIGMA_NODE = 'load_map_and_root_sigma_node',
     SET_MAP_ID = 'set_map_id',
     SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',
     SWITCH_TO_MAP = 'switch_to_map',
@@ -247,6 +250,9 @@ const mutations = {
     [MUTATION_NAMES.REFRESH](state: IState) {
         state.sigmaInstance.refresh()
     },
+    [MUTATION_NAMES.SET_USER_ID](state: IState, {userId}: ISetUserIdMutationArgs) {
+        state.userId = userId
+    },
     [MUTATION_NAMES.SET_USER_ID](state: IState, userId) {
         state.userId = userId
     },
@@ -298,7 +304,7 @@ const mutations = {
         /**
          * logic for initial stuff up there ^^^^
          *
-         if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE && !this.hasInteractions()){
+         if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE && !this.hasInteractions()) {
                     millisecondsSinceLastInteraction = 60 * 60 * 1000
                 }
          *
@@ -399,7 +405,35 @@ const mutations = {
         }
         return contentId
     },
-    [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): id {
+    [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState, {userName}: ICreateUserPrimaryMapMutationArgs): id {
+        const createContentMutationArgs: ICreateContentMutationArgs = {
+            type: CONTENT_TYPES.MAP,
+            title: userName,
+        }
+        const userPrimaryMapRootTreeContentId: void =
+            mutations[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs)
+        const userPrimaryMapRootTreeContentIdString: id = userPrimaryMapRootTreeContentId as any as id
+        const createMapAndRootTreeIdMutationArgs: ICreateMapAndRootTreeIdMutationArgs = {
+           contentId: userPrimaryMapRootTreeContentIdString
+   }
+        const userRootMapId: id =
+            mutations[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
+                state, createMapAndRootTreeIdMutationArgs) /* void */ as any as id
+        return userRootMapId
+   },
+   [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
+        state: IState, {userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
+        const userRootMapId = userData.rootMapId
+        if (userRootMapId) {
+            return
+        }
+        const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
+            userName: userData.userInfo.displayName
+        }
+        const rootMapId: id = mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+            state, createUserPrimaryMapMutationArgs) as any as id
+    },
+   [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): id {
         const store = getters.getStore()
         const createTreeMutationArgs: ICreateTreeMutationArgs = {
             parentId: NON_EXISTENT_ID,
@@ -564,6 +598,15 @@ const mutations = {
             console.error('There was an error ', errorCode, errorMessage, email, credential)
         });
 
+    },
+    // TODO: we also need a mutation called SET_MAP_ID_AND_ZOOM_TO_ROOT_TREE_ID
+    [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {
+        const store = getters.getStore()
+        const loadMapMutationArgs: ILoadMapMutationArgs = {
+            branchesMapId
+        }
+        store.commit(MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED, loadMapMutationArgs)
+        store.commit(MUTATION_NAMES.SET_MAP_ID, loadMapMutationArgs)
     },
     [MUTATION_NAMES.SET_MAP_ID](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {
         if (!state.sigmaInitialized) {
