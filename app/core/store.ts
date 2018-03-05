@@ -594,8 +594,15 @@ const mutations = {
         })
         const store: Store<any> = getters.getStore()
         firebase.auth().signInWithRedirect(provider).then( (result) => {
-            const userId = result.user.uid
-            store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, {userId})
+            log('user result is', result, result.user)
+            const userInfo: firebase.UserInfo = result.user
+            const userId = userInfo.uid
+            const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
+                userId,
+                userInfo,
+            }
+            store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs)
+
         }).catch((error) => {
             // Handle Errors here.
             const errorCode = error.code
@@ -604,7 +611,7 @@ const mutations = {
             const email = error.email
             // The firebase.auth.AuthCredential type that was used.
             const credential = error.credential
-            console.error('There was an error ', errorCode, errorMessage, email, credential)
+            error('There was an error ', errorCode, errorMessage, email, credential)
         });
 
     },
