@@ -417,6 +417,8 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
 
     myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs)
     myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
+        .inSingletonScope()
+        .whenTargetIsDefault()
     myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs)
     myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
         .inSingletonScope()
@@ -778,6 +780,7 @@ export const state: IState
     renderer: null,
     sigmaInstance: null,
     sigmaNodeLoader: null,
+    sigmaNodeLoaderCore: null,
     sigmaInitialized: false,
     uri: null,
     userLoader: null,

@@ -990,6 +990,7 @@ export interface IState {
         treeLocations: IHash<ITreeLocationData>,
     },
     sigmaNodeLoader: ISigmaNodeLoader,
+    sigmaNodeLoaderCore: ISigmaNodeLoaderCore,
     userId: string,
     userLoader: IUserLoader
     usersData: IHash<IUserData>,
