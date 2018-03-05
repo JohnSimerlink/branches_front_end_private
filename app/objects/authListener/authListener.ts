@@ -1,7 +1,7 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
 import * as firebase from 'firebase';
-import {CreateUserOrLoginMutationArgs, IAuthListener} from '../interfaces';
+import {CreateUserOrLoginMutationArgs, IAuthListener, ICreateUserOrLoginMutationArgs} from '../interfaces';
 import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {log} from '../../core/log'
 import {Store} from 'vuex';
@@ -16,14 +16,17 @@ export class AuthListener implements IAuthListener {
         this.store = store
     }
     public start() {
-        firebase.auth().onAuthStateChanged((user) => {
+        firebase.auth().onAuthStateChanged((user: firebase.UserInfo) => {
             if (!user) {
                 return
             }
             log('AUTH STATE CHANGED. NEW RESULT IS ', user)
-            const mutationArgs: CreateUserOrLoginMutationArgs = {
-                userId: user && user.uid || null
+
+            const mutationArgs: ICreateUserOrLoginMutationArgs = {
+                userId: user && user.uid || null,
+                userInfo: user,
             }
+
             this.store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, mutationArgs)
         })
     }
