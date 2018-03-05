@@ -23,7 +23,7 @@ import {
     ICreateUserPrimaryMapMutationArgs,
     ICreateContentMutationArgs,
     ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
-    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader,
+    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -252,12 +252,11 @@ const mutations = {
         state.sigmaInstance.refresh()
     },
     [MUTATION_NAMES.SET_USER_ID](state: IState, {userId}: ISetUserIdMutationArgs) {
+        log('mutations set user Id just called', userId)
         state.userId = userId
+        state.sigmaNodeLoaderCore.setUserId(userId)
     },
-    [MUTATION_NAMES.SET_USER_ID](state: IState, userId) {
-        state.userId = userId
-    },
-// TODO: if contentUser does not yet exist in the DB create it.
+    // TODO: if contentUser does not yet exist in the DB create it.
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
     ) {
@@ -544,7 +543,10 @@ const mutations = {
             user = await state.userLoader.downloadUser(userId)
         }
         storeUserInStateAndSubscribe({user, userId, state})
-        store.commit(MUTATION_NAMES.SET_USER_ID, userId)
+        const setUserIdMutationArgs: ISetUserIdMutationArgs = {
+            userId
+        }
+        store.commit(MUTATION_NAMES.SET_USER_ID, setUserIdMutationArgs)
 
         const saveUserInfoFromLoginProvider: ISaveUserInfoFromLoginProviderMutationArgs = {
             userId,
@@ -670,6 +672,7 @@ export default class BranchesStore {
         globalDataStore,
         state,
         sigmaNodeLoader,
+        sigmaNodeLoaderCore,
         userLoader,
         userUtils,
     }: BranchesStoreArgs) {
@@ -681,6 +684,7 @@ export default class BranchesStore {
             ...state,
             globalDataStore,
             sigmaNodeLoader,
+            sigmaNodeLoaderCore,
             userLoader,
             userUtils
         }
@@ -694,6 +698,7 @@ export default class BranchesStore {
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         store['userLoader'] = userLoader // added just to pass injectionWorks test
         store['sigmaNodeLoader'] = sigmaNodeLoader // added just to pass injectionWorks test
+        store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore // added just to pass injectionWorks test
         store['userUtils'] = userUtils // added just to pass injectionWorks test
         store['_id'] = Math.random()
         initialized = true
@@ -707,6 +712,8 @@ export class BranchesStoreArgs {
     @tagged(TAGS.AUTO_SAVER, true) public userLoader: IUserLoader
     @inject(TYPES.ISigmaNodeLoader)
         public sigmaNodeLoader: ISigmaNodeLoader
+    @inject(TYPES.ISigmaNodeLoaderCore)
+        public sigmaNodeLoaderCore: ISigmaNodeLoaderCore
     @inject(TYPES.BranchesStoreState) public state: IState
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }
