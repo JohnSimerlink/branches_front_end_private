@@ -777,6 +777,7 @@ export const state: IState
     },
     renderer: null,
     sigmaInstance: null,
+    sigmaNodeLoader: null,
     sigmaInitialized: false,
     uri: null,
     userLoader: null,

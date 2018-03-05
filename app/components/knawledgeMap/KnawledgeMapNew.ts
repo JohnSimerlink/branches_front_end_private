@@ -47,7 +47,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             template,
             mounted() {
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
-                me.sigmaNodeLoader.loadIfNotLoaded(INITIAL_TREE_ID_TO_DOWNLOAD)
+                // me.sigmaNodeLoader.loadIfNotLoaded(INITIAL_TREE_ID_TO_DOWNLOAD)
 
                 /*
                     me.branchesMapLoader.load(this.$store.getters.

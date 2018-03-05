@@ -21,21 +21,27 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
     // private treeUserLoader: ITreeUserLoader
     private contentLoader: IContentLoader
     private contentUserLoader: IContentUserLoader
-    private store: Store<any>
+    // private store: Store<any>
+    private userId: id
     constructor(@inject(TYPES.SigmaNodeLoaderCoreArgs){
         specialTreeLoader,
         treeLocationLoader,
         contentLoader,
         contentUserLoader,
-        store,
+        userId,
+        // store,
   }: SigmaNodeLoaderCoreArgs) {
         this.treeLoader = specialTreeLoader
         this.treeLocationLoader = treeLocationLoader
         this.contentLoader = contentLoader
         this.contentUserLoader = contentUserLoader
-        this.store = store
+        this.userId = userId
+        // this.store = store
     }
 
+    public setUserId(userId: id) {
+        this.userId = userId
+    }
     public async load(sigmaId: id): Promise<ISigmaLoadData> {
         const treeId = sigmaId
         const treeLocationPromise: Promise<ITreeLocationData> = this.treeLocationLoader.downloadData(treeId)
@@ -47,7 +53,7 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
         const contentDataPromise: Promise<IContentData> = this.contentLoader.downloadData(treeDataWithoutId.contentId)
         const contentUserDataPromise: Promise<IContentUserData> = this.contentUserLoader.downloadData({
             contentId: treeDataWithoutId.contentId,
-            userId: this.store.getters.userId
+            userId: this.userId,
         })
         const [treeLocationData, contentData, contentUserData]
             = await Promise.all([treeLocationPromise, contentDataPromise, contentUserDataPromise])
@@ -77,8 +83,10 @@ export class SigmaNodeLoaderCoreArgs {
     // e.g. @tagged(TAGS.AUTO_SAVER, true) and @tagged(TAGS.OVERDUE_LISTENER, true) at the same time
     @tagged(TAGS.OVERDUE_LISTENER, true)
         public contentUserLoader: IContentUserLoader
-    @inject(TYPES.BranchesStore)
-        public store: Store<any>
+    @inject(TYPES.String)
+        public userId: id
+    // @inject(TYPES.BranchesStore)
+    //     public store: Store<any>
     // @inject(TYPES.Id)
     //     public userId: id
     // @inject(TYPES.ITreeLoader)
