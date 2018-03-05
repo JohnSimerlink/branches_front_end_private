@@ -1,6 +1,9 @@
 import {Store} from 'vuex'
 import * as Vuex from 'vuex'
-import {GRAPH_CONTAINER_ID, GLOBAL_ROOT_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y} from './globals';
+import {
+    GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
+    GLOBAL_MAP_ID
+} from './globals';
 import {log} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
 import {
@@ -24,6 +27,7 @@ import {
     ICreateContentMutationArgs,
     ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
     ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
+    ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -92,6 +96,7 @@ export enum MUTATION_NAMES {
     SET_MAP_ID = 'set_map_id',
     SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',
     SWITCH_TO_MAP = 'switch_to_map',
+    SWITCH_TO_LAST_USED_MAP = 'SWITCH_TO_LAST_USED_MAP',
 }
 
 const getters = {
@@ -466,28 +471,33 @@ const mutations = {
     },
     async [MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](
         state: IState, {branchesMapId}: ILoadMapMutationArgs): Promise<ISyncableMutableSubscribableBranchesMap> {
+        log('J14I: loadMap if not loaded called with ', branchesMapId)
         if (state.branchesMaps[branchesMapId]) {
             return
         }
         const branchesMap: ISyncableMutableSubscribableBranchesMap
             = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId)
+        log('J14I: loadMap if not loaded. the branchesMap retrieved is ', branchesMap)
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
         storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
         return branchesMap
     },
     async [MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE](
-        state: IState, {branchesMapId}: ILoadMapMutationArgs) {
+        state: IState, {branchesMapId}: ILoadMapAndRootSigmaNodeMutationArgs) {
         // if (state.branchesMaps[branchesMapId]) {
         //     return
         // }
+        log('loadMapAndRootSigmaNode called ', branchesMapId)
         const loadMapMutationArgs: ILoadMapMutationArgs = {
             branchesMapId
         }
         const branchesMap: ISyncableMutableSubscribableBranchesMap
-            = mutations[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any
+            = await mutations[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any
+        log('loadMapAndRootSigmaNode loadedBranchesMap is  ', branchesMap)
         const branchesMapVal = branchesMap.val()
         const rootTreeId = branchesMapVal.rootTreeId
+        state.sigmaNodeLoader.loadIfNotLoaded(rootTreeId)
         // state.fa
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
@@ -659,12 +669,22 @@ const mutations = {
         user.addMutation(mutation)
     },
     // TODO: we also need a mutation called SET_MAP_ID_AND_ZOOM_TO_ROOT_TREE_ID
-    [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {
+    [MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP](state: IState) {
+        const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
+            branchesMapId: GLOBAL_MAP_ID // hardcode last used map as GLOBAL_MAP_ID for now
+        }
         const store = getters.getStore()
-        const loadMapMutationArgs: ILoadMapMutationArgs = {
+        store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs)
+    },
+    [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISwitchToMapMutationArgs) {
+        log('J14I: Switch to map called', branchesMapId)
+        const store = getters.getStore()
+
+        const loadMapMutationArgs: ILoadMapAndRootSigmaNodeMutationArgs = {
             branchesMapId
         }
-        store.commit(MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED, loadMapMutationArgs)
+
+        store.commit(MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE, loadMapMutationArgs)
         store.commit(MUTATION_NAMES.SET_MAP_ID, loadMapMutationArgs)
     },
     [MUTATION_NAMES.SET_MAP_ID](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {

@@ -2,7 +2,7 @@ import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
     CONTENT_TYPES,
-    IBindable, IFamilyLoader, ILoadAndSwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
+    IBindable, IFamilyLoader, ISwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
     ISigmaEventListener, ISigmaNodeData,
     ITooltipOpener
 } from '../interfaces';
@@ -10,7 +10,7 @@ import {log} from '../../core/log'
 import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
-import {MUTATION_NAMES} from "../../core/store";
+import {MUTATION_NAMES} from '../../core/store';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -46,10 +46,11 @@ export class SigmaEventListener implements ISigmaEventListener {
             const contentType: CONTENT_TYPES = event.data.node.content.type
             switch (contentType) {
                 case CONTENT_TYPES.MAP: {
-                    const mapId = nodeId
-                    const loadAndSwitchToMapMutationArgs: ILoadAndSwitchToMapMutationArgs = {
-                        mapId
+                    const branchesMapId = nodeId
+                    const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
+                        branchesMapId
                     }
+                    this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs)
                     // MUTATIO
                 }
             }
@@ -59,6 +60,9 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.sigmaInstance.bind('overNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id
+            if (!nodeId) {
+                return
+            }
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)
         })
         this.dragListener.bind('dragend', (event) => {

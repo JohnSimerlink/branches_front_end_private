@@ -6,7 +6,7 @@ import {
 import {SyncableMutableSubscribableBranchesMap} from '../../objects/branchesMap/SyncableMutableSubscribableBranchesMap';
 import {isValidBranchesMapDataFromDB} from '../../objects/branchesMap/branchesMapValidator';
 import {log} from '../../core/log'
-import {GLOBAL_ROOT_ID} from '../../core/globals';
+import {GLOBAL_MAP_ROOT_TREE_ID} from '../../core/globals';
 
 export class BranchesMapDeserializer {
    public static deserialize(
@@ -19,13 +19,14 @@ export class BranchesMapDeserializer {
                updatesCallbacks: [],
                rootTreeId,
            })
+       log('J14I: The Deserialized BranchesMap is', user)
        return user
    }
    public static convertBranchesMapDataFromDBToApp(
        {branchesMapDataFromDB}: {branchesMapDataFromDB: IBranchesMapDataFromDB}): IBranchesMapData {
       const branchesMapData: IBranchesMapData = {
           rootTreeId:
-            branchesMapDataFromDB.rootTreeId && branchesMapDataFromDB.rootTreeId.val || GLOBAL_ROOT_ID,
+            branchesMapDataFromDB.rootTreeId && branchesMapDataFromDB.rootTreeId.val || GLOBAL_MAP_ROOT_TREE_ID,
       }
       return branchesMapData
    }

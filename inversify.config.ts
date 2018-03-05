@@ -158,7 +158,7 @@ import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
-import {DEFAULT_MAP_ID, GRAPH_CONTAINER_ID, JOHN_USER_ID, GLOBAL_ROOT_ID} from './app/core/globals';
+import {DEFAULT_MAP_ID, GRAPH_CONTAINER_ID, JOHN_USER_ID, GLOBAL_MAP_ROOT_TREE_ID} from './app/core/globals';
 import {ContentLoader, ContentLoaderArgs} from './app/loaders/content/ContentLoader';
 import {ContentUserLoader, ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
 import {TreeUserLoader, TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
@@ -763,7 +763,7 @@ export const state: IState
     branchesMaps: {},
     branchesMapLoader: null,
     branchesMapUtils: null,
-    centeredTreeId: GLOBAL_ROOT_ID,
+    centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
     currentMapId: DEFAULT_MAP_ID,
     graphData: {
         nodes: [],

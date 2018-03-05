@@ -9,7 +9,7 @@ import {
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
-
+import {log} from '../../core/log'
 @injectable()
 export class SubscribableBranchesMap extends Subscribable<IValUpdates> implements ISubscribableBranchesMap {
     // TODO: dependeny inject the publishing field
@@ -18,8 +18,10 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdates> implement
 
     constructor(@inject(TYPES.SubscribableBranchesMapArgs) {
         updatesCallbacks,
+        rootTreeId
     }: SubscribableBranchesMapArgs ) {
         super({updatesCallbacks})
+        this.rootTreeId = rootTreeId
     }
     // TODO: should the below three objects be private?
     public val(): IBranchesMapData {
@@ -36,6 +38,7 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdates> implement
         }
         this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
+        log('J14I: rootTreeId in SubscribableBranchesMap startPublishing is', this.rootTreeId, this)
         this.rootTreeId.onUpdate(boundCallCallbacks)
     }
 }

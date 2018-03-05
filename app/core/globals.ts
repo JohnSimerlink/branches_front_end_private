@@ -1,12 +1,13 @@
-export const GLOBAL_ROOT_ID: string = '1'
+export const GLOBAL_MAP_ID: string = '1'
+export const GLOBAL_MAP_ROOT_TREE_ID: string = '1'
 import * as firebase from 'firebase';
 import {koalaURL} from '../koalaUrl';
 export const MAP_DEFAULT_X: number = 0
 export const MAP_DEFAULT_Y: number = 0
-export const DEFAULT_MAP_ID: string = '1'
+export const DEFAULT_MAP_ID: string = GLOBAL_MAP_ID
 export const NON_EXISTENT_ID: string = 'nothing'
 export const ROOT_CONTENT_ID: string = '8904d53adfef7376627f4227ada47cd8'
-export const INITIAL_TREE_ID_TO_DOWNLOAD: string = GLOBAL_ROOT_ID
+export const INITIAL_TREE_ID_TO_DOWNLOAD: string = GLOBAL_MAP_ROOT_TREE_ID
 export const ANOTHER_ID: string = '0544dddbb98b36dd9328eb71ba938465'
 export const ANOTHER_CONTENT_ID: string = '6cc727081ac4baa0e9a08dfb034698b8'
 export const JOHN_USER_ID: string = 'svyioFSkuqPTf1gjmHYGIsi42IA3'

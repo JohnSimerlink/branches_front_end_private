@@ -10,6 +10,7 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types'
 import {SubscribableBranchesMap, SubscribableBranchesMapArgs} from './SubscribableBranchesMap';
+import {log} from '../../core/log'
 
 @injectable()
 export class MutableSubscribableBranchesMap extends SubscribableBranchesMap implements IMutableSubscribableBranchesMap {
@@ -20,6 +21,7 @@ export class MutableSubscribableBranchesMap extends SubscribableBranchesMap impl
         rootTreeId
     }: SubscribableBranchesMapArgs) {
         super({updatesCallbacks, rootTreeId})
+        log('J14I: MutableSubscribableBranchesMap just called', rootTreeId)
     }
 
     public addMutation(mutation: IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>
