@@ -99,6 +99,7 @@ export interface IBranchesMapLoader {
 export interface ISigmaNodeLoaderCore {
     load(sigmaId: id):
         Promise<ISigmaLoadData>
+    setUserId(userId: id)
 }
 export interface ISigmaLoadData  {
     treeDataWithoutId: ITreeDataWithoutId,
@@ -988,6 +989,7 @@ export interface IState {
         treeUsers: IHash<ITreeUserData>,
         treeLocations: IHash<ITreeLocationData>,
     },
+    sigmaNodeLoader: ISigmaNodeLoader,
     userId: string,
     userLoader: IUserLoader
     usersData: IHash<IUserData>,

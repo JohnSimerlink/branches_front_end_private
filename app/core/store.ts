@@ -23,7 +23,7 @@ import {
     ICreateUserPrimaryMapMutationArgs,
     ICreateContentMutationArgs,
     ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
-    ISaveUserInfoFromLoginProviderMutationArgs,
+    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -669,6 +669,7 @@ export default class BranchesStore {
     constructor(@inject(TYPES.BranchesStoreArgs){
         globalDataStore,
         state,
+        sigmaNodeLoader,
         userLoader,
         userUtils,
     }: BranchesStoreArgs) {
@@ -679,6 +680,7 @@ export default class BranchesStore {
         const stateArg: IState = {
             ...state,
             globalDataStore,
+            sigmaNodeLoader,
             userLoader,
             userUtils
         }
@@ -691,6 +693,7 @@ export default class BranchesStore {
         getters.getStore = () => store
         store['globalDataStore'] = globalDataStore // added just to pass injectionWorks test
         store['userLoader'] = userLoader // added just to pass injectionWorks test
+        store['sigmaNodeLoader'] = sigmaNodeLoader // added just to pass injectionWorks test
         store['userUtils'] = userUtils // added just to pass injectionWorks test
         store['_id'] = Math.random()
         initialized = true
@@ -702,6 +705,8 @@ export class BranchesStoreArgs {
     @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore
     @inject(TYPES.IUserLoader)
     @tagged(TAGS.AUTO_SAVER, true) public userLoader: IUserLoader
+    @inject(TYPES.ISigmaNodeLoader)
+        public sigmaNodeLoader: ISigmaNodeLoader
     @inject(TYPES.BranchesStoreState) public state: IState
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }

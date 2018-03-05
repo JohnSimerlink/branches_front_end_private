@@ -36,6 +36,9 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.sigmaInstance.bind('clickNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id
+            if (!nodeId) {
+                return
+            }
             const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
             this.tooltipOpener.openTooltip(sigmaNode)
 
@@ -71,6 +74,9 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.sigmaInstance.renderers[0].bind(CustomSigmaEventNames.CENTERED_NODE, (event) => {
             const nodeId = event && event.data &&
                 event.data.centeredNodeId
+            if (!nodeId) {
+                return
+            }
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)
         })
         // debugger;
