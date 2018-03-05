@@ -44,7 +44,8 @@ import {
     ISyncableMutableSubscribableContent, id, ISigmaNodes, IVueConfigurer, IUI, ISigmaNodeLoader, ISigmaNodeLoaderCore,
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
-    IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator,
+    IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
+    IBranchesMapLoaderCore,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -236,17 +237,19 @@ import {AuthListener, AuthListenerArgs} from './app/objects/authListener/authLis
 import {
     ContentUserLoaderAndOverdueListener,
     ContentUserLoaderAndOverdueListenerArgs
-} from "./app/loaders/contentUser/ContentUserLoaderAndOverdueListener";
+} from './app/loaders/contentUser/ContentUserLoaderAndOverdueListener';
 import {
     OverdueListenerMutableSubscribableContentUserStore,
     OverdueListenerMutableSubscribableContentUserStoreArgs
-} from "./app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore";
+} from './app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore';
 import {
     GlobalDataStoreBranchesStoreSyncer,
     GlobalDataStoreBranchesStoreSyncerArgs
-} from "./app/core/globalDataStoreBranchesStoreSyncer";
+} from './app/core/globalDataStoreBranchesStoreSyncer';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
-import {TreeCreator4, TreeCreatorArgs} from "./app/components/tree/tree4";
+import {TreeCreator4, TreeCreatorArgs} from './app/components/tree/tree4';
+import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMap/BranchesMapLoader';
+import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
 
 Vue.use(Vuex)
 
@@ -285,11 +288,13 @@ export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
 export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
 export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
 export const usersRef = firebase.database().ref(FIREBASE_PATHS.USERS)
+export const branchesMapsRef = firebase.database().ref(FIREBASE_PATHS.BRANCHES_MAPS)
 export const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
 export const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
 export const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS)
 export const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
 export const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
+export const mockBranchesMapsRef = new MockFirebase(FIREBASE_PATHS.BRANCHES_MAPS)
 export const mockUsersRef = new MockFirebase(FIREBASE_PATHS.USERS)
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
@@ -308,6 +313,8 @@ export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, un
         .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(usersRef)
         .whenTargetTagged(TAGS.USERS_REF, true)
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(branchesMapsRef)
+        .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true)
 })
 export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreesRef)
@@ -392,6 +399,11 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<IUserUtils>(TYPES.IUserUtils).to(UserUtils)
 
     // loaders
+
+    myContainer.bind<BranchesMapLoaderArgs>(TYPES.BranchesMapLoaderArgs).to(BranchesMapLoaderArgs)
+    myContainer.bind<IBranchesMapLoader>(TYPES.IBranchesMapLoader).to(BranchesMapLoader)
+    myContainer.bind<BranchesMapLoaderCoreArgs>(TYPES.BranchesMapLoaderCoreArgs).to(BranchesMapLoaderCoreArgs)
+    myContainer.bind<IBranchesMapLoaderCore>(TYPES.IBranchesMapLoaderCore).to(BranchesMapLoaderCore)
 
     // loader auto savers
 
@@ -653,6 +665,8 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<IMutableSubscribableField<CONTENT_TYPES>>(TYPES.IMutableSubscribableContentType)
         .to(MutableSubscribableField)
     bind<IMutableSubscribableField<IProficiencyStats>>(TYPES.IMutableSubscribableProficiencyStats)
+        .to(MutableSubscribableField)
+    bind<IMutableSubscribableField<firebase.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
         .to(MutableSubscribableField)
     bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
