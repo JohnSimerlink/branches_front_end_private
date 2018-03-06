@@ -427,7 +427,7 @@ const mutations = {
     async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState, {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
         log('J14I: CREATE USER PRIMARY MAP mutation called', userName)
         const createContentMutationArgs: ICreateContentMutationArgs = {
-            type: CONTENT_TYPES.MAP,
+            type: CONTENT_TYPES.CATEGORY,
             title: userName,
         }
         log('J14I: CREATE USER PRIMARY MAP CREATE CONTEN MUTATION ABOUT TO BE CALLED', createContentMutationArgs)
@@ -754,6 +754,7 @@ const mutations = {
         store.commit(MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE, loadMapMutationArgs)
         // MUTATION_NAMES.ZOOM_TO_LAST_LOCATION_USER_WAS_AT_ON_THE_MAP
         store.commit(MUTATION_NAMES.SET_MAP_ID, loadMapMutationArgs)
+        store.commit(MUTATION_NAMES.REFRESH)
     },
     [MUTATION_NAMES.SET_MAP_ID](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {
         if (!state.sigmaInitialized) {

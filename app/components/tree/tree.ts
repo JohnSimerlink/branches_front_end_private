@@ -6,6 +6,7 @@ import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
+    CONTENT_TYPES,
     IContentUserData,
     ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
     timestamp,
@@ -157,6 +158,9 @@ export class TreeCreator implements ITreeCreator {
                 typeIsSkill() {
                     return this.content.type === 'skill'
                         || this.tree.contentType === 'skill' // backwards compatibility
+                },
+                typeIsMap() {
+                    return this.content.type === CONTENT_TYPES.MAP
                 },
                 styleObject() {
                     const styles = {}

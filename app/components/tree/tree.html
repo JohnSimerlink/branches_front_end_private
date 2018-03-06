@@ -23,6 +23,14 @@
                 </div>
             </div>
         </div>
+        <div class="tree-map" v-if="typeIsMap">
+            <div class="tree-map-current" v-if="!editing">
+                {{content.question}}
+            </div>
+            <div class="tree-map-edit" v-if="editing">
+                <input class="tree-map-edit-title" ref="mapTitle" v-on:click.stop="changeContent">
+            </div>
+        </div>
         <div class="tree-fact" v-if="typeIsFact">
             <div class="tree-current-fact" v-show="!editing">
                 <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
