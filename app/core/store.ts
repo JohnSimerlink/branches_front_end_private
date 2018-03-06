@@ -27,7 +27,7 @@ import {
     ICreateContentMutationArgs,
     ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
     ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
-    ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs,
+    ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -256,6 +256,10 @@ const mutations = {
         sigmaEventListener.startListening()
     },
     [MUTATION_NAMES.REFRESH](state: IState) {
+        if (!state.sigmaInitialized) {
+            console.error('sigma is not initialized yet. we cannot call refresh')
+            return
+        }
         state.sigmaInstance.refresh()
     },
     [MUTATION_NAMES.SET_USER_ID](state: IState, {userId}: ISetUserIdMutationArgs) {
@@ -420,35 +424,45 @@ const mutations = {
         }
         return contentId
     },
-    [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState, {userName}: ICreateUserPrimaryMapMutationArgs): id {
+    async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState, {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
+        log('J14I: CREATE USER PRIMARY MAP mutation called', userName)
         const createContentMutationArgs: ICreateContentMutationArgs = {
             type: CONTENT_TYPES.MAP,
             title: userName,
         }
+        log('J14I: CREATE USER PRIMARY MAP CREATE CONTEN MUTATION ABOUT TO BE CALLED', createContentMutationArgs)
         const userPrimaryMapRootTreeContentId: void =
             mutations[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs)
+        log('J14I: CREATE USER PRIMARY MAP CREATE CONTENT MUTATION' +
+            ' FINISHED BEING CALLED. the created content id is', userPrimaryMapRootTreeContentId)
         const userPrimaryMapRootTreeContentIdString: id = userPrimaryMapRootTreeContentId as any as id
         const createMapAndRootTreeIdMutationArgs: ICreateMapAndRootTreeIdMutationArgs = {
            contentId: userPrimaryMapRootTreeContentIdString
    }
         const userRootMapId: id =
-            mutations[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
+            await mutations[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
                 state, createMapAndRootTreeIdMutationArgs) /* void */ as any as id
+        log('J14I: CREATE USER PRIMARY MAP - CREATE MAP AND ROOT TREE ID MUTATION JUST CALLED.',
+            ' the resulting userRootMapid id', userRootMapId)
         return userRootMapId
    },
-   [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
+   async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
         state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED ', user, userData)
        const userRootMapId = userData.rootMapId
        if (userRootMapId) {
            return
        }
+       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ')
        const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
            userName: userData.userInfo.displayName
        }
-       const rootMapId: id = mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ')
+       const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
            state, createUserPrimaryMapMutationArgs) as any as id
+       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ')
 
-       log('About to set user rootMapId to be ', rootMapId)
+       log('J14I: About to set user rootMapId to be ', rootMapId)
        const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
            propertyName: UserPropertyNames.ROOT_MAP_ID,
            timestamp: Date.now(),
@@ -456,8 +470,9 @@ const mutations = {
            data: rootMapId
        }
        user.addMutation(userSetRootMapIdMutation)
+       log('J14I: user rootMapId just set . user val is now ', user.val())
     },
-   [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): id {
+   async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): Promise<id> {
         const store = getters.getStore()
         const createTreeMutationArgs: ICreateTreeMutationArgs = {
             parentId: NON_EXISTENT_ID,
@@ -469,7 +484,7 @@ const mutations = {
         const createMapMutationArgs: ICreateMapMutationArgs = {
             rootTreeId: rootTreeIdString,
         }
-        const mapId = mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id
+        const mapId = await mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
            treeId: rootTreeIdString,
            level: 1,
@@ -492,11 +507,12 @@ const mutations = {
     async [MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](
         state: IState, {branchesMapId}: ILoadMapMutationArgs): Promise<ISyncableMutableSubscribableBranchesMap> {
         log('J14I: loadMap if not loaded called with ', branchesMapId)
-        if (state.branchesMaps[branchesMapId]) {
-            return
+        let branchesMap: ISyncableMutableSubscribableBranchesMap
+            = state.branchesMaps[branchesMapId]
+        if (branchesMap) {
+            return branchesMap
         }
-        const branchesMap: ISyncableMutableSubscribableBranchesMap
-            = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId)
+        branchesMap = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId)
         log('J14I: loadMap if not loaded. the branchesMap retrieved is ', branchesMap)
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
@@ -587,6 +603,7 @@ const mutations = {
     async [MUTATION_NAMES.LOGIN](state: IState, {userId}) {
     },
     async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId, userInfo}: ICreateUserOrLoginMutationArgs) {
+        log('J14I: CreateUserOrLogin mutation called with ', userId, userInfo)
         if (!userId) {
             throw new RangeError('UserId cannot be blank')
         }
@@ -614,7 +631,9 @@ const mutations = {
         }
         store.commit(MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER, saveUserInfoFromLoginProvider)
 
-        // TODO: we should really be passing these user mutations through the globalDataStore mutation funnel . .. or maybe not . .. idk yet
+        /* TODO: we should really be passing these user mutations through the
+        globalDataStore mutation funnel . .. or maybe not . .. idk yet
+         */
         const createPrimaryUserMapIfNotCreatedArgs: ICreatePrimaryUserMapIfNotCreatedMutationArgs = {
             userData: user.val(),
             user,
@@ -773,6 +792,7 @@ export default class BranchesStore {
         sigmaNodeLoader,
         sigmaNodeLoaderCore,
         branchesMapLoader,
+        branchesMapUtils,
         userLoader,
         userUtils,
     }: BranchesStoreArgs) {
@@ -786,6 +806,7 @@ export default class BranchesStore {
             sigmaNodeLoader,
             sigmaNodeLoaderCore,
             branchesMapLoader,
+            branchesMapUtils,
             userLoader,
             userUtils
         }
@@ -801,6 +822,7 @@ export default class BranchesStore {
         store['sigmaNodeLoader'] = sigmaNodeLoader // added just to pass injectionWorks test
         store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore // added just to pass injectionWorks test
         store['branchesMapLoader'] = branchesMapLoader
+        store['branchesMapUtils'] = branchesMapUtils
         store['userUtils'] = userUtils // added just to pass injectionWorks test
         store['_id'] = Math.random()
         initialized = true
@@ -816,6 +838,8 @@ export class BranchesStoreArgs {
         public sigmaNodeLoader: ISigmaNodeLoader
     @inject(TYPES.ISigmaNodeLoaderCore)
         public sigmaNodeLoaderCore: ISigmaNodeLoaderCore
+    @inject(TYPES.IBranchesMapUtils)
+        public branchesMapUtils: IBranchesMapUtils
     @inject(TYPES.IBranchesMapLoader)
         public branchesMapLoader: IBranchesMapLoader
     @inject(TYPES.BranchesStoreState) public state: IState
