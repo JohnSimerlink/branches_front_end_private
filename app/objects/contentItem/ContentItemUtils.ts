@@ -9,6 +9,8 @@ export class ContentItemUtils {
                 return contentData.question // + QUESTION_ANSWER_LABEL_SEPARATOR + contentData.answer
             case CONTENT_TYPES.SKILL:
                 return contentData.title
+            case CONTENT_TYPES.MAP:
+                return contentData.title
             case CONTENT_TYPES.CATEGORY:
                 return contentData.title
         }
