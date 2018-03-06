@@ -10,7 +10,7 @@ import {log} from '../../core/log'
 // import {PROFICIENCIES} from '../../objects/sampleContentUser1Proficiency/proficiencyEnum';
 import {inject, injectable} from 'inversify';
 import {
-    CONTENT_TYPES, INewChildTreeMutationArgs,
+    CONTENT_TYPES, IContentData, INewChildTreeMutationArgs,
     INewTreeComponentCreator, ITreeLocationData,
     IVuexStore
 } from '../../objects/interfaces';
@@ -114,7 +114,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
             },
             methods: {
                 createNewTree(
-                    {question, answer, title, type}
+                    {question, answer, title, type}: IContentData
                     = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
                     // log('newtree: createNewTree called', question, answer, title, type)
                     const titleFormatted = title && title.trim() || ''
@@ -142,12 +142,16 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs)
                 },
                 submitForm() {
-                    this.createNewTree({
+                    const newContentData: IContentData = {
                         question: this.question,
                         answer: this.answer,
                         title: this.title,
                         type: this.type
-                    })
+                    }
+                    if (!newContentDataValid(newContentData)) {
+                        return
+                    }
+                    this.createNewTree(newContentData)
                     // clear form
                     this.question = ''
                     this.answer = ''
@@ -191,4 +195,12 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 @injectable()
 export class NewTreeComponentCreatorArgs {
     @inject(TYPES.BranchesStore) public store: Store<any>
+}
+export function newContentDataValid(contentData: IContentData): boolean {
+    return !!(contentData &&
+        (contentData.title ||
+            (contentData.question && contentData.answer)
+        )
+    )
+
 }

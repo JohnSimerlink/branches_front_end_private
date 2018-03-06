@@ -1101,6 +1101,7 @@ export interface ICreateUserOrLoginMutationArgs {
 
 export interface ICreatePrimaryUserMapIfNotCreatedMutationArgs {
     userData: IUserData,
+    user: ISyncableMutableSubscribableUser,
 }
 
 export interface ICreateUserPrimaryMapMutationArgs {
