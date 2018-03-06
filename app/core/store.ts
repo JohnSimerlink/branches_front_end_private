@@ -97,6 +97,8 @@ export enum MUTATION_NAMES {
     SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',
     SWITCH_TO_MAP = 'switch_to_map',
     SWITCH_TO_LAST_USED_MAP = 'SWITCH_TO_LAST_USED_MAP',
+    SWITCH_TO_GLOBAL_MAP = 'SWITCH_TO_GLOBAL_MAP',
+    SWITCH_TO_PERSONAL_MAP = 'SWITCH_TO_PERSONAL_MAP',
 }
 
 const getters = {
@@ -686,6 +688,24 @@ const mutations = {
         const store = getters.getStore()
         store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs)
     },
+    [MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP](state: IState) {
+        const store = getters.getStore()
+        const switchToMapArgs: ISwitchToMapMutationArgs = {
+            branchesMapId: GLOBAL_MAP_ID
+        }
+        store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapArgs)
+        // TODO: more specifically switch to the submap they were on on the global map?
+    },
+    [MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP](state: IState) {
+        const store = getters.getStore()
+        const userData: IUserData = state.usersData[state.userId]
+        const personalMapId = userData.rootMapId
+        const switchToMapArgs: ISwitchToMapMutationArgs = {
+            branchesMapId: personalMapId
+        }
+        store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapArgs)
+        // TODO: more specifically switch to the submap they were on on the personal map?
+    },
     [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISwitchToMapMutationArgs) {
         log('J14I: Switch to map called', branchesMapId)
         const store = getters.getStore()
@@ -695,6 +715,7 @@ const mutations = {
         }
 
         store.commit(MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE, loadMapMutationArgs)
+        // MUTATION_NAMES.ZOOM_TO_LAST_LOCATION_USER_WAS_AT_ON_THE_MAP
         store.commit(MUTATION_NAMES.SET_MAP_ID, loadMapMutationArgs)
     },
     [MUTATION_NAMES.SET_MAP_ID](state: IState, {branchesMapId}: ISetBranchesMapIdMutationArgs) {

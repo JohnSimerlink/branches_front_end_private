@@ -1,12 +1,10 @@
 import {log} from '../../core/log'
+import {MUTATION_NAMES} from "../../core/store";
 const env = process.env.NODE_ENV || 'development'
 let template = ''
 if (env === 'test') {
-    let register = require('ignore-styles').default
-    if (!register) {
-        register = require('ignore-styles')
-    }
-    register(['.html'])
+    let register = require('ignore-styles').default || require('ignore-styles')
+    register(['.html', '.less'])
 } else {
     template = require('./mapChooser.html').default
     require('./mapChooser.less')
@@ -21,11 +19,15 @@ export default {
         }
     },
     methods: {
-        selectGlobal() {
+        switchToGlobalMap() {
             this.globalSelected = true
+            this.localSelected = false
+            this.$store.commit(MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP)
         },
-        selectLocal() {
+        switchToPersonalMap() {
             this.localSelected = true
+            this.globalSelected = false
+            this.$store.commit(MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP)
         },
     },
 }
