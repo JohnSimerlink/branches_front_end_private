@@ -45,7 +45,7 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore,
+    IBranchesMapLoaderCore, IBranchesMapUtils,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -250,6 +250,7 @@ import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/kna
 import {TreeCreator4, TreeCreatorArgs} from './app/components/tree/tree4';
 import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMap/BranchesMapLoader';
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
+import {BranchesMapUtils, BranchesMapUtilsArgs} from "./app/objects/branchesMap/branchesMapUtils";
 
 Vue.use(Vuex)
 
@@ -404,6 +405,9 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<IBranchesMapLoader>(TYPES.IBranchesMapLoader).to(BranchesMapLoader)
     myContainer.bind<BranchesMapLoaderCoreArgs>(TYPES.BranchesMapLoaderCoreArgs).to(BranchesMapLoaderCoreArgs)
     myContainer.bind<IBranchesMapLoaderCore>(TYPES.IBranchesMapLoaderCore).to(BranchesMapLoaderCore)
+
+    myContainer.bind<BranchesMapUtilsArgs>(TYPES.BranchesMapUtilsArgs).to(BranchesMapUtilsArgs)
+    myContainer.bind<IBranchesMapUtils>(TYPES.IBranchesMapUtils).to(BranchesMapUtils)
 
     // loader auto savers
 

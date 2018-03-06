@@ -12,5 +12,5 @@ export function isValidTreeLocationDataFromDB(treeLocationDataFromFirebase: ITre
 }
 
 export function isValidCoordinate(coordinate: ICoordinate) {
-    return coordinate && coordinate.x && coordinate.y
+    return coordinate && !isNaN(coordinate.x) && !isNaN(coordinate.y)
 }
