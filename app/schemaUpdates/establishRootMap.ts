@@ -1,4 +1,4 @@
-import {injectFakeDom} from './injectFakeDom';
+import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom()
 import {branchesMapsRef} from '../../inversify.config';
 import {IBranchesMapData, IBranchesMapDataFromDB} from '../objects/interfaces';

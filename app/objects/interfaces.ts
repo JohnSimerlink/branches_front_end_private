@@ -493,7 +493,7 @@ export interface IMutableSubscribableBranchesMap
         IMutable<IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>> {}
 
 export interface IBranchesMapUtils {
-    createBranchesMapInDBAndAutoSave({rootTreeId}: ICreateMapMutationArgs): Promise<ICreateBranchesMapReturnObject>
+    createBranchesMapInDBAndAutoSave({rootTreeId}: ICreateMapMutationArgs): ICreateBranchesMapReturnObject
 }
 
 export interface ISigmaCamera {
@@ -1009,7 +1009,12 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 }
 export type id = string
 export interface INewChildTreeMutationArgs {
-    parentTreeId, timestamp, contentType, question, answer, title,
+    parentTreeId: id,
+    timestamp: timestamp,
+    contentType: CONTENT_TYPES,
+    question: string,
+    answer: string,
+    title: string,
     parentLocation: ITreeLocationData
 }
 export interface IMoveTreeCoordinateMutationArgs {
@@ -1073,7 +1078,11 @@ export interface ICreateTreeMutationArgs {
     parentId: id, contentId: id, children?: id[]
 }
 export interface ICreateTreeLocationMutationArgs {
-    treeId: id, x: number, y: number, level: number
+    treeId: id,
+    x: number,
+    y: number,
+    level: number,
+    mapId: id
 }
 export interface ICreateMapMutationArgs {
     rootTreeId: id,
@@ -1179,32 +1188,10 @@ export interface ITreeUserData {
 }
 
 // treeLocation
-export interface ITreeLocation {
-    point: IUndoableMutablePoint,
-    level: IMutableSubscribableField<number>,
-}
-
-export interface ISubscribableTreeLocationCore extends ITreeLocation {
-    point: IMutableSubscribablePoint,
-    level: IMutableSubscribableField<number>,
-    val(): ITreeLocationData
-}
-
-export enum TreeLocationPropertyNames {
-    POINT = 'point',
-    LEVEL = 'level',
-}
-
-export interface ISubscribableTreeLocation extends
-    ISubscribable<IValUpdates>, ISubscribableTreeLocationCore, IDescendantPublisher {}
-
-export interface IMutableSubscribableTreeLocation
-    extends ISubscribableTreeLocation,
-        IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
-
 export interface ITreeLocationData {
     point: ICoordinate,
     level: number,
+    mapId: id,
 }
 
 export interface ITreeLocationDataFromFirebase {
@@ -1214,7 +1201,36 @@ export interface ITreeLocationDataFromFirebase {
     level: {
         val: number
     },
+    mapId: {
+        val: id
+    },
 }
+export interface ITreeLocation {
+    point: IUndoableMutablePoint,
+    level: IMutableSubscribableField<number>,
+    mapId: IMutableSubscribableField<id>,
+}
+
+export interface ISubscribableTreeLocationCore extends ITreeLocation {
+    point: IMutableSubscribablePoint,
+    level: IMutableSubscribableField<number>,
+    mapId: IMutableSubscribableField<id>,
+    val(): ITreeLocationData
+}
+
+export enum TreeLocationPropertyNames {
+    POINT = 'point',
+    LEVEL = 'level',
+    MAP_ID = 'mapId'
+}
+
+export interface ISubscribableTreeLocation extends
+    ISubscribable<IValUpdates>, ISubscribableTreeLocationCore, IDescendantPublisher {}
+
+export interface IMutableSubscribableTreeLocation
+    extends ISubscribableTreeLocation,
+        IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
+
 export interface CreateUserOrLoginMutationArgs {
 
 }

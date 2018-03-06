@@ -23,8 +23,8 @@ export class BranchesMapUtils implements IBranchesMapUtils {
     }: BranchesMapUtilsArgs ) {
         this.branchesMapsFirebaseRef = firebaseRef
     }
-    public async createBranchesMapInDBAndAutoSave(
-        {rootTreeId}: ICreateMapMutationArgs): Promise<ICreateBranchesMapReturnObject> {
+    public createBranchesMapInDBAndAutoSave(
+        {rootTreeId}: ICreateMapMutationArgs): ICreateBranchesMapReturnObject {
         const branchesMapData: IBranchesMapData = {
             rootTreeId
         }

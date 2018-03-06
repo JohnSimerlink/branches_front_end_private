@@ -17,7 +17,7 @@ import {expect} from 'chai'
 import test from 'ava'
 import {createTreeId} from '../objects/tree/TreeUtils';
 import {
-    sampleTreeLocationData1, sampleTreeLocationData1Level, sampleTreeLocationData1x,
+    sampleTreeLocationData1, sampleTreeLocationData1Level, sampleTreeLocationData1MapId, sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../objects/treeLocation/treeLocationTestHelpers';
 
@@ -36,6 +36,7 @@ test('store create location should call correct firebaseRef', t => {
         y: sampleTreeLocationData1y,
         level: sampleTreeLocationData1Level,
         treeId,
+        mapId: sampleTreeLocationData1MapId,
     }
     /**
      * Grab the store singleton with which we will create the action

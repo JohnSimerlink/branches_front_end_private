@@ -37,7 +37,7 @@ import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
 import {myContainer, state} from '../../inversify.config';
 import {distance} from '../objects/treeLocation/determineNewLocationUtils';
-import {determineNewLocation, obtainNewLocation} from '../objects/treeLocation/determineNewLocation';
+import {determineNewLocation, obtainNewCoordinate} from '../objects/treeLocation/determineNewLocation';
 import {createParentSigmaEdge} from '../objects/sigmaEdge/sigmaEdge';
 import {MutableSubscribableUser} from '../objects/user/MutableSubscribableUser';
 import {IMutableSubscribableUser} from '../objects/interfaces';
@@ -359,15 +359,23 @@ const mutations = {
          * Create TreeLocation
          */
         const r = 30
-        const newLocation: ICoordinate =
-            obtainNewLocation(
+        const newCoordinate: ICoordinate =
+            obtainNewCoordinate(
                 {r, sigmaInstance: state.sigmaInstance,
                     parentCoordinate:
                         {x: parentLocation.point.x, y: parentLocation.point.y}
                 })
 
+        // get parent tree map Id
+
+        const parentLocationMapId = parentLocation.mapId
+        if (!parentLocationMapId) {
+            throw new Error('Could not create new child tree because parentTree with id of '
+                + parentTreeId + ' does not have an mapId in it\'s treeLocation object')
+        }
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
-            treeId: treeIdString, x: newLocation.x, y: newLocation.y, level: parentLocation.level + 1
+            treeId: treeIdString, x: newCoordinate.x, y: newCoordinate.y, level: parentLocation.level + 1,
+            mapId: parentLocationMapId
         }
 
         const treeLocationData = store.commit(MUTATION_NAMES.CREATE_TREE_LOCATION, createTreeLocationMutationArgs)
@@ -447,17 +455,18 @@ const mutations = {
         }
         const rootTreeId: void = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs)
         const rootTreeIdString = rootTreeId as any as id
-        const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
-            treeId: rootTreeIdString,
-            level: 1,
-            x: MAP_DEFAULT_X,
-            y: MAP_DEFAULT_Y,
-        }
-        mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         const createMapMutationArgs: ICreateMapMutationArgs = {
             rootTreeId: rootTreeIdString,
         }
-        const mapId: void = mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs)
+        const mapId = mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id
+        const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
+           treeId: rootTreeIdString,
+           level: 1,
+           x: MAP_DEFAULT_X,
+           y: MAP_DEFAULT_Y,
+           mapId,
+       }
+       mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs)
         const mapIdString = mapId as any as id
         return mapIdString
     },
@@ -516,7 +525,7 @@ const mutations = {
     [MUTATION_NAMES.CREATE_TREE_LOCATION](
         state: IState,
         {
-            treeId, x, y, level
+            treeId, x, y, level, mapId
         }: ICreateTreeLocationMutationArgs
     ): ITreeLocationData {
         const createMutation: ICreateMutation<ITreeLocationData> = {
@@ -527,6 +536,7 @@ const mutations = {
                     x, y,
                 },
                 level,
+                mapId,
             },
             id: treeId
         }
