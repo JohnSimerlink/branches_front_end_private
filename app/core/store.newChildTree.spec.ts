@@ -24,6 +24,7 @@ import {createTreeId} from '../objects/tree/TreeUtils';
 import {log} from './log'
 import {sampleTreeData1} from '../objects/tree/treeTestHelpers';
 import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';
+import {getASampleTreeLocation1} from "../objects/treeLocation/treeLocationTestHelpers";
 // import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';
 
 test('store create new child tree should call correct firebaseRefs with correct new data', t => {
@@ -83,13 +84,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
         question: newContentData.question,
         answer: newContentData.answer,
         title: null,
-        parentLocation: {
-            point: {
-                x: 5,
-                y: 7,
-            },
-            level: 2
-        }
+        parentLocation: getASampleTreeLocation1().val()
     }
     const contentId = createContentId(newContentData)
     log('J14J - contentId in newChildTree is ', contentId)

@@ -16,12 +16,11 @@ import {SubscribableTreeLocation, SubscribableTreeLocationArgs} from './Subscrib
 @injectable()
 export class MutableSubscribableTreeLocation
     extends SubscribableTreeLocation implements IMutableSubscribableTreeLocation {
-
     // TODO: should the below three objects be private?
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
-        updatesCallbacks, point, level
+        updatesCallbacks, point, level, mapId
     }: SubscribableTreeLocationArgs) {
-        super({updatesCallbacks, point, level})
+        super({updatesCallbacks, point, level, mapId})
     }
 
     public addMutation(mutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>

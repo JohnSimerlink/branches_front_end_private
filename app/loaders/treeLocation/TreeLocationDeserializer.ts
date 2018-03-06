@@ -1,6 +1,6 @@
 import {
     IMutableSubscribablePoint, IMutableSubscribableField, ISyncableMutableSubscribableTreeLocation,
-    ITreeLocationData, ITreeLocationDataFromFirebase
+    ITreeLocationData, ITreeLocationDataFromFirebase, id
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
 import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
@@ -26,8 +26,9 @@ export class TreeLocationDeserializer {
         const point: IMutableSubscribablePoint =
             new MutableSubscribablePoint({...pointVal})
         const level: IMutableSubscribableField<number> = new MutableSubscribableField({field: treeLocationData.level })
+        const mapId: IMutableSubscribableField<id> = new MutableSubscribableField({field: treeLocationData.mapId })
         const treeLocation: ISyncableMutableSubscribableTreeLocation
-            = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, level})
+            = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, mapId, level})
 
         return treeLocation
     }
@@ -40,6 +41,7 @@ export class TreeLocationDeserializer {
         const treeLocationData: ITreeLocationData = {
             point: treeLocationDataFromDB.point.val,
             level: treeLocationDataFromDB.level.val,
+            mapId: treeLocationDataFromDB.mapId.val,
         }
 
         return treeLocationData

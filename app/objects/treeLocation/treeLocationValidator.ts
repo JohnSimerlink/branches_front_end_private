@@ -8,6 +8,7 @@ export function isValidTreeLocationDataFromDB(treeLocationDataFromFirebase: ITre
     return treeLocationDataFromFirebase && treeLocationDataFromFirebase.point
         && isValidCoordinate(treeLocationDataFromFirebase.point.val)
         && treeLocationDataFromFirebase.level && treeLocationDataFromFirebase.level.val
+        && treeLocationDataFromFirebase.mapId && treeLocationDataFromFirebase.mapId.val
 }
 
 export function isValidCoordinate(coordinate: ICoordinate) {

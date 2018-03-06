@@ -5,7 +5,7 @@ import {log} from '../../../app/core/log'
 import {
     ISubscribableTreeLocation, IMutableSubscribablePoint,
     ITreeLocationData,
-    IValUpdates, IMutableSubscribableField,
+    IValUpdates, IMutableSubscribableField, id,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
@@ -17,20 +17,23 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
     private publishing = false
     public point: IMutableSubscribablePoint
     public level: IMutableSubscribableField<number>
+    public mapId: IMutableSubscribableField<id>
 
     // TODO: should the below three objects be private?
     public val(): ITreeLocationData {
         return {
             point: this.point.val(),
             level: this.level.val(),
+            mapId: this.mapId.val(),
         }
     }
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
-        updatesCallbacks, point, level
+        updatesCallbacks, point, level, mapId
     }: SubscribableTreeLocationArgs) {
         super({updatesCallbacks})
         this.point = point
         this.level = level
+        this.mapId = mapId
     }
     // TODO: make IValUpdates a generic that takes for example ITreeLocationData
     protected callbackArguments(): IValUpdates {
@@ -44,6 +47,7 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
         const boundCallCallbacks = this.callCallbacks.bind(this)
         this.point.onUpdate(boundCallCallbacks)
         this.level.onUpdate(boundCallCallbacks)
+        this.mapId.onUpdate(boundCallCallbacks)
     }
 }
 
@@ -52,4 +56,5 @@ export class SubscribableTreeLocationArgs {
     @inject(TYPES.Array) public updatesCallbacks: Array<Function>
     @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint
     @inject(TYPES.IMutableSubscribableNumber) public level: IMutableSubscribableField<number>
+    @inject(TYPES.IMutableSubscribableString) public mapId: IMutableSubscribableField<id>
 }
