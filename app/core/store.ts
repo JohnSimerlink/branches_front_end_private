@@ -437,16 +437,25 @@ const mutations = {
         return userRootMapId
    },
    [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
-        state: IState, {userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
-        const userRootMapId = userData.rootMapId
-        if (userRootMapId) {
-            return
-        }
-        const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
-            userName: userData.userInfo.displayName
-        }
-        const rootMapId: id = mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
-            state, createUserPrimaryMapMutationArgs) as any as id
+        state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
+       const userRootMapId = userData.rootMapId
+       if (userRootMapId) {
+           return
+       }
+       const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
+           userName: userData.userInfo.displayName
+       }
+       const rootMapId: id = mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+           state, createUserPrimaryMapMutationArgs) as any as id
+
+       log('About to set user rootMapId to be ', rootMapId)
+       const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
+           propertyName: UserPropertyNames.ROOT_MAP_ID,
+           timestamp: Date.now(),
+           type: FieldMutationTypes.SET,
+           data: rootMapId
+       }
+       user.addMutation(userSetRootMapIdMutation)
     },
    [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): id {
         const store = getters.getStore()
@@ -590,7 +599,6 @@ const mutations = {
         let user: ISyncableMutableSubscribableUser
         if (!userExistsInDB) {
             user = await state.userUtils.createUserInDB({userId, userInfo})
-            store.commit(MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED)
         } else {
             user = await state.userLoader.downloadUser(userId)
         }
@@ -605,6 +613,13 @@ const mutations = {
             userInfo,
         }
         store.commit(MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER, saveUserInfoFromLoginProvider)
+
+        // TODO: we should really be passing these user mutations through the globalDataStore mutation funnel . .. or maybe not . .. idk yet
+        const createPrimaryUserMapIfNotCreatedArgs: ICreatePrimaryUserMapIfNotCreatedMutationArgs = {
+            userData: user.val(),
+            user,
+        }
+        store.commit(MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED, createPrimaryUserMapIfNotCreatedArgs)
 
         // TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
 
@@ -689,6 +704,7 @@ const mutations = {
         store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs)
     },
     [MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP](state: IState) {
+        log('J14I: Switch to Global Map called ')
         const store = getters.getStore()
         const switchToMapArgs: ISwitchToMapMutationArgs = {
             branchesMapId: GLOBAL_MAP_ID
@@ -697,8 +713,10 @@ const mutations = {
         // TODO: more specifically switch to the submap they were on on the global map?
     },
     [MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP](state: IState) {
+        log('J14I: Switch to Personal Map called ')
         const store = getters.getStore()
         const userData: IUserData = state.usersData[state.userId]
+        log('J14I: Switch to Personal Map, userData is ', userData)
         const personalMapId = userData.rootMapId
         const switchToMapArgs: ISwitchToMapMutationArgs = {
             branchesMapId: personalMapId
