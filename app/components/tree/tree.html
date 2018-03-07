@@ -1,5 +1,4 @@
 <div class="tree" v-bind:style="styleObject" >
-<!--<div class="tree">-->
     <div class="tree-history" v-if="showHistory" v-on:click="toggleHistory">
         <item-history :item-id="content.id" :tree="tree" ></item-history>
     </div>
@@ -45,28 +44,9 @@
 
     </div>
     <div class="tree-category" v-if="typeIsCategory">
-        <!-- {{numChildren}} -->
-        <!--{{tree.id}} ---->
-        <!--<button v-on:click="recalculateProficiencyAggregation">Recalculate Proficiency Aggregation</button>-->
         <div class="tree-current-category" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-category">{{content.title}}</div>
-            <!--<div class="tree-category-aggregationTimer">-->
-                <!--{{tree.aggregationTimer | secondsToPretty}}-->
-            <!--</div>-->
-            <!--<div class="tree-category-leaf-proficiencies">-->
-                <!--<div class="tree-category-leaf-num-unknown">{{tree.proficiencyStats.UNKNOWN}}</div>-->
-                <!--<div class="tree-category-leaf-num-one">{{tree.proficiencyStats.ONE}}</div>-->
-                <!--<div class="tree-category-leaf-num-two">{{tree.proficiencyStats.TWO}}</div>-->
-                <!--<div class="tree-category-leaf-num-three">{{tree.proficiencyStats.THREE}}</div>-->
-                <!--<div class="tree-category-leaf-num-four">{{tree.proficiencyStats.FOUR}}</div>-->
-            <!--</div>-->
-            <!--<div class="tree-category-numOverdue">-->
-                <!--{{tree.numOverdue}} sampleContentUser1Overdue items-->
-            <!--</div>-->
-            <!--<div class="tree-category-study">-->
-                <!--<button class="tree-category-study ui button positive" v-on:click.stop="studyCategory">Study this Category</button>-->
-            <!--</div>-->
         </div>
         <div class="tree-edit-category" v-show="editing">
             <input class="tree-id" v-model="content.id" hidden>
@@ -74,7 +54,6 @@
             <div>
                 <button class="tree-edit-category-save" v-on:click.stop="changeContent()">Save</button>
             </div>
-            <!--<button class="tree-category-study ui button negative" v-on:click.stop="clearCategory">Remove All Your Data from this Category</button>-->
         </div>
     </div>
     <div class="tree-proficiency" v-show="!addingChild && typeIsFact && !showHistory && !editing">
@@ -94,15 +73,10 @@
                 <i v-on:click.stop="toggleAddChild" :class="{'tree-add-child-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square': addingChild}" aria-hidden="true"></i>
             </div>
             <div class="tree-timer" :title="timerMouseOverMessage" v-if="!typeIsCategory">{{content.timer | secondsToPretty}} </div>
-            <!--<div class="tree-sampleContentUser1Proficiency-value" title="sampleContentUser1Proficiency"> {{content.sampleContentUser1Proficiency}}% </div>-->
-            <!--<i class="tree-delete-button fa fa-cog" aria-hidden="true" v-on:click.stop="toggleHistory"></i>-->
             <i class="tree-delete-button fa fa-trash-o" aria-hidden="true" v-if="false"  v-on:click.stop="remove" ></i>
         </div>
 
         <div class="tree-proficiency-timeTilReview" v-if="!typeIsCategory && content.hasInteractions && content.nextReviewTime">Next Review Time: {{content.nextReviewTime | timeFromNow}}</div>
     </div>
-    <!--<div v-show="addingChild" class="tree-add-child-button" v-on:click.stop="toggleAddChild">-->
-        <!--<i :class="{'tree-edit-button': true, 'fa': true, 'fa-plus-square-o': !addingChild, 'fa-minus-square-o': addingChild}" aria-hidden="true"></i>-->
-    <!--</div>-->
     <newtree :parent-x="x" :parent-y="y" :parent-id="id" :primaryparenttreecontenturi="content.uri" v-show="addingChild && typeIsCategory"></newtree>
 </div>
