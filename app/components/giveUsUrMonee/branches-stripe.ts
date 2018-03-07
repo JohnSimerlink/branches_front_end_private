@@ -19,7 +19,7 @@ export default {
         me.subscription = {
             name: 'Branches One Month Purchase',
             description: 'Non-Recurring Purchase to Buy One Month of Branches Membership',
-            amount: 199 // $19.99 in cents
+            amount: 399 // $3.99 in cents
         }
         Bus.$on('vue-stripe.success', async payload => {
             try {
