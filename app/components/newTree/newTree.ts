@@ -41,6 +41,10 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         this.setTypeToFactUILogic()
                         break;
                 }
+                console.log('new tree is created')
+            },
+            mounted() {
+                console.log('new tree is mounted')
             },
             data() {
                 return {
@@ -55,7 +59,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     return this.$store.getters.treeLocationData(this.parentId)
                 },
                 headingSelectorStyle() {
-                    return this.contentIsHeading ?
+                    return this.contentIsCategory ?
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
                 },
                 factSelectorStyle() {
@@ -69,7 +73,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 contentIsFact() {
                     return this.type === CONTENT_TYPES.FACT // 'fact'
                 },
-                contentIsHeading() {
+                contentIsCategory() {
                     return this.type === CONTENT_TYPES.CATEGORY // 'heading'
                 },
                 contentIsSkill() {
@@ -119,13 +123,13 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                             break
                     }
                 },
-                async setTypeToHeading() {
+                async setTypeToCategory() {
                     this.type = CONTENT_TYPES.CATEGORY
                     this.setTypeToCategoryUILogic()
                 },
                 async setTypeToFact() {
                     this.type = CONTENT_TYPES.FACT
-                    await this.setTypeToAnythingLogic()
+                    await this.setTypeToFactUILogic()
                 },
                 async setTypeToAnythingLogic() {
                     await Vue.nextTick

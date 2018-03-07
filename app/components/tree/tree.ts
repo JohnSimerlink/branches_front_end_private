@@ -58,6 +58,9 @@ export class TreeCreator implements ITreeCreator {
             //     }
             // },
             mounted() {
+                if (this.typeIsCategory) {
+                    this.addingChild = true
+                }
             },
             data() {
                 return {
