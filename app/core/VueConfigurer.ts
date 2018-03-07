@@ -18,7 +18,6 @@ if (!AsyncComputed ) {
 import Main from '../components/main/main'
 import SignUp from '../components/signUp/signUp'
 import StudyMenu from '../components/studyMenu/studyMenu'
-import ItemHistory from '../components/itemHistory/itemHistory'
 import BranchesFooter from '../components/footer/branchesFooter'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
@@ -60,7 +59,6 @@ export class VueConfigurer implements IVueConfigurer {
         Vue.component('signUp', SignUp)
         Vue.component('stripeCheckout', StripeCheckout);
         Vue.component('studyMenu', StudyMenu)
-        Vue.component('itemHistory', ItemHistory)
         Vue.component('proficiencySelector', ProficiencySelector)
         Vue.component('newtree', NewTree)
         Vue.component('branchesFooter', BranchesFooter)
@@ -107,7 +105,7 @@ export class VueConfigurer implements IVueConfigurer {
 
 @injectable()
 export class VueConfigurerArgs {
-    @inject(TYPES.ITree3Creator) public treeComponentCreator: ITreeCreator
+    @inject(TYPES.ITreeCreator) public treeComponentCreator: ITreeCreator
     @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator
     @inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator
     @inject(TYPES.BranchesStore) public store: Store<any>

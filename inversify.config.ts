@@ -247,10 +247,10 @@ import {
     GlobalDataStoreBranchesStoreSyncerArgs
 } from './app/core/globalDataStoreBranchesStoreSyncer';
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
-import {TreeCreator4, TreeCreatorArgs} from './app/components/tree/tree4';
 import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMap/BranchesMapLoader';
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
-import {BranchesMapUtils, BranchesMapUtilsArgs} from "./app/objects/branchesMap/branchesMapUtils";
+import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
+import {TreeCreatorArgs} from './app/components/tree/tree';
 
 Vue.use(Vuex)
 
@@ -380,7 +380,6 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
     //     .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
 
-
     // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader)
     //     .to(TreeLoaderAndAutoSaver)
     //     .whenInjectedInto(KnawledgeMapCreatorArgs)
@@ -440,9 +439,11 @@ const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationSto
     = new SubscribableTreeLocationStoreSource(
         {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA})
 const subscribableTreeUserStoreSourceSingleton: ISubscribableTreeUserStoreSource
-    = new SubscribableTreeUserStoreSource({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA})
+    = new SubscribableTreeUserStoreSource(
+        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA})
 const subscribableContentStoreSourceSingleton: ISubscribableContentStoreSource
-    = new SubscribableContentStoreSource({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_DATA})
+    = new SubscribableContentStoreSource(
+        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_DATA})
 const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStoreSource
     = new SubscribableContentUserStoreSource
 ({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA})
@@ -520,13 +521,15 @@ export const stores =
 
     bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_DATA)
         .whenInjectedInto(SubscribableTreeStoreSourceArgs)
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_LOCATION_DATA)
+    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
+        GlobalStoreObjectDataTypes.TREE_LOCATION_DATA)
         .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
     bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_USER_DATA)
         .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
     bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.CONTENT_DATA)
         .whenInjectedInto(SubscribableContentStoreSourceArgs)
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.CONTENT_USER_DATA)
+    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
+        GlobalStoreObjectDataTypes.CONTENT_USER_DATA)
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
 
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
@@ -747,7 +750,7 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
     bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
     // bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
-    bind<ITreeCreator>(TYPES.ITree3Creator).to(TreeCreator4)
+    bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator)
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
     bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
 
