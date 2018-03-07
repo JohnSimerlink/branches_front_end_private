@@ -73,7 +73,12 @@ sigma.misc.drawHovers = function (prefix) {
             Object.keys(hoveredNodes).length
         ) {
             hoveredNode = hoveredNodes[Object.keys(hoveredNodes)[0]];
-            (
+            console.log('J14I: this inside of sigma misc drawHovers is ', this, ' and self is ', self)
+            if (!shouldRenderNode(hoveredNode, self)){
+                return
+            }
+
+            ;(
                 nodeRenderers[hoveredNode.type] ||
                 nodeRenderers[defaultNodeType] ||
                 nodeRenderers.def
@@ -215,3 +220,7 @@ sigma.misc.drawHovers = function (prefix) {
         }
     }
 };
+
+function shouldRenderNode(node, renderer){
+    return node.treeLocationData.mapId === renderer.mapIdToRender
+}
