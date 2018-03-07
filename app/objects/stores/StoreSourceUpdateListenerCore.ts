@@ -10,8 +10,8 @@ import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
-import BranchesStore, {MUTATION_NAMES} from "../../core/store";
-import {Store} from "vuex";
+import BranchesStore, {MUTATION_NAMES} from '../../core/store';
+import {Store} from 'vuex';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
@@ -26,11 +26,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodesUpdater = sigmaNodesUpdater
         this.contentIdSigmaIdMap = contentIdSigmaIdMap
         this.store = store
-        // log('StoreSourceUpdateListenerCore sigmaNodes is', this.sigmaNodes, sigmaNodes,
-        //     this.contentIdSigmaIdMap, contentIdSigmaIdMap,
-        //     this.sigmaNodesUpdater, sigmaNodesUpdater)
         this['_id'] = Math.random()
-        // log('StoreSourceUpdateListenerCore id is', this['_id'])
     }
     // private receiveUpdate
 
@@ -38,8 +34,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     meaning the content data may not have a sigma id to be applied to? */
     /* ^^^ This is handled in SigmaNodesUpdater ^^^^ */
     public receiveUpdate(update: ITypeAndIdAndValUpdates) {
-        // log('StoreSourceUpdateListenerCore, with id of ', this['_id'],' receiveUpdate CALLED!!!', update, this.sigmaNodes,
-        //     this.sigmaNodesUpdater, this.contentIdSigmaIdMap)
         const type: GlobalStoreObjectDataTypes = update.type
         switch (type) {
             case GlobalStoreObjectDataTypes.TREE_DATA: {
@@ -74,10 +68,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 break;
             }
             case GlobalStoreObjectDataTypes.CONTENT_DATA: {
-                // const contentId = update.id
-                // const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
-                // log('StoreSourceUpdateListenerCore sigmaIds in content Data are', sigmaIds, this.contentIdSigmaIdMap)
-                // if (sigmaIds.length) {
                 this.sigmaNodesUpdater.handleUpdate(update)
 
                 const mutationArgs: ISetContentDataMutationArgs = {
@@ -94,8 +84,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 const contentUserId = update.id
                 const contentId = getContentId({contentUserId})
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId)
-                // log('StoreSourceUpdateListenerCore sigmaIds in content ' +
-                //     'user data are', sigmaIds, this.contentIdSigmaIdMap)
                 if (sigmaIds.length) {
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }

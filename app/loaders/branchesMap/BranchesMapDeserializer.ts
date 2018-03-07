@@ -19,7 +19,6 @@ export class BranchesMapDeserializer {
                updatesCallbacks: [],
                rootTreeId,
            })
-       log('J14I: The Deserialized BranchesMap is', user)
        return user
    }
    public static convertBranchesMapDataFromDBToApp(
@@ -38,7 +37,6 @@ export class BranchesMapDeserializer {
        }
        const branchesMapData: IBranchesMapData =
            BranchesMapDeserializer.convertBranchesMapDataFromDBToApp({branchesMapDataFromDB})
-       log('branchesMapData from db is', branchesMapData)
        const user: ISyncableMutableSubscribableBranchesMap
             = BranchesMapDeserializer.deserialize({branchesMapData})
        return user

@@ -73,7 +73,6 @@ sigma.misc.drawHovers = function (prefix) {
             Object.keys(hoveredNodes).length
         ) {
             hoveredNode = hoveredNodes[Object.keys(hoveredNodes)[0]];
-            console.log('J14I: this inside of sigma misc drawHovers is ', this, ' and self is ', self)
             if (!shouldRenderNode(hoveredNode, self)){
                 return
             }

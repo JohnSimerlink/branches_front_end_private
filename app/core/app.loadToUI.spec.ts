@@ -169,7 +169,6 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance.graph.nodes()))
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance))
-    log('sigmaInstance state is ', JSON.stringify(store.state))
     inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store})
     expect(inRenderedSet).to.equal(true)
     t.pass()

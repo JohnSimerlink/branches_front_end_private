@@ -56,10 +56,8 @@ export function getBestLocation({preferenceField}: {preferenceField: number[][]}
 }
 
 export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoordinate {
-    log('obtainNewLOcation', {r, sigmaInstance, parentCoordinate})
     const obstacles: ICoordinate[] =
         getNeighboringNodesCoordinates({nodes: sigmaInstance.graph.nodes(), r, point: parentCoordinate})
-    log('obstacles in obtainNewCoordinate are', obstacles)
 
     const fieldWidth = 2 * r + 1
     const preferenceField = create2DArrayWith0s(fieldWidth)

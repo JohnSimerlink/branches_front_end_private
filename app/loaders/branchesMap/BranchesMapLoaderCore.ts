@@ -21,7 +21,6 @@ export class BranchesMapLoaderCore implements IBranchesMapLoaderCore {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async load(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
-        log('branchesMapLoader download BranchesMap called', branchesMapId)
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(branchesMapId).once('value', (snapshot) => {
                 const branchesMapDataFromDB: IBranchesMapDataFromDB = snapshot.val()
