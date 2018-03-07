@@ -48,7 +48,7 @@ import * as Vue from 'vue';
 import * as Vuex from 'vuex'
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
-import {sampleTreeLocationDataFromFirebase1} from "../objects/treeLocation/treeLocationTestHelpers";
+import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeLocationTestHelpers';
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
