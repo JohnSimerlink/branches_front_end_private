@@ -7,7 +7,8 @@ import {log} from '../../../app/core/log'
 import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     CONTENT_TYPES,
-    IContentUserData,
+    IContentData,
+    IContentUserData, IEditCategoryMutationArgs, IEditFactMutationArgs,
     ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
     timestamp,
 } from '../../objects/interfaces';
@@ -37,14 +38,11 @@ export class TreeCreator implements ITreeCreator {
          /*userId,*/ store
     }: TreeCreatorArgs ) {
         this.store = store
-        // this.userId = userId
     }
     public create() {
         const me = this
         const component = {
             template,
-            // '<div>This is the template for tree.html</div>',
-            // require('./tree.html'), // '<div> {{movie}} this is the tree template</div>',
             props: {
                 id: String,
                 // x: String, // Am I doing this right? should I be giving it a class of Number??
@@ -54,11 +52,11 @@ export class TreeCreator implements ITreeCreator {
                 contentId: String,
                 userId: String,
             },
-            async created() {
-                if (this.typeIsHeading) {
-                    this.addingChild = true
-                }
-            },
+            // async created() {
+            //     if (this.typeIsCategory) {
+            //         this.addingChild = true
+            //     }
+            // },
             mounted() {
             },
             data() {
@@ -72,15 +70,6 @@ export class TreeCreator implements ITreeCreator {
                     contentUserDataLocal: null,
                     proficiencyInput: PROFICIENCIES.UNKNOWN,
                 }
-            },
-            watch: {
-                // //stop sampleContentUser1Timer when
-                // openNodeId(newNodeId, oldNodeId){
-                //     if (oldNodeId === this.tree.id && this.tree.id !== newNodeId){
-                //         this.content.saveTimer()
-                //     } else {
-                //     }
-                // }
             },
             computed: {
                 treeData() {
@@ -99,7 +88,7 @@ export class TreeCreator implements ITreeCreator {
                     const y = this.treeLocationData.point && this.treeLocationData.point.y
                     return y
                 },
-                content() {
+                content(): IContentData {
                     const contentData = me.store.getters.contentData(this.contentId) || {}
                     return contentData
                 },
@@ -109,32 +98,11 @@ export class TreeCreator implements ITreeCreator {
                 contentUserData() {
                     const contentUserData = me.store.getters.contentUserData(this.contentUserId) || {}
                     this.proficiencyInput = contentUserData.proficiency || PROFICIENCIES.UNKNOWN
-                    // if (Object.keys(contentUserData).length) {
-                    //     this.contentUserDataLoaded = true // TODO: << figure out what this does
-                    //     log('contentUserData loaded is true', contentUserData)
-                    // } else {
-                    //     log('contentUserData loaded is false', contentUserData)
-                    // }
-                    // this.contentUserDataLoaded = false
-                    // if (this.contentUserDataLocal) {
-                    //     return this.contentUserDataLocal
-                    // }
-                    // if (!this.contentUserDataString) {
-                    //     return {}
-                    // }
-                    // // const content
-                    // const contentUserData: IContentUserData = JSON.parse(this.contentUserDataString)
-                    //
-                    // this.proficiencyInput = contentUserData.sampleContentUser1Proficiency
-                    // this.contentUserDataLoaded = true
                     return contentUserData
                 },
                 nextReviewTime(): timestamp {
                     return this.contentUserData.nextReviewTime
                 },
-                // sampleContentUser1Proficiency() {
-                //     return this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
-                // },
                 timer() {
                     let timer = 0
 
@@ -143,21 +111,17 @@ export class TreeCreator implements ITreeCreator {
                     }
                     return timer
                 },
-                // openNodeId(){
-                //     return this.$store.state.openNodeId;
-                // },
-                typeIsHeading() {
-                    const isHeading = this.content.type === 'heading' || this.tree.contentType === 'heading'
-                    return this.content.type === 'heading'
-                        || this.tree.contentType === 'heading' // backwards compatibility
+                typeIsCategory() {
+                    return this.content.type === CONTENT_TYPES.CATEGORY
+                },
+                myComputedProp() {
+                  return 'we done'
                 },
                 typeIsFact() {
-                    return this.content.type === 'fact'
-                        || this.tree.contentType === 'fact' // backwards compatibility
+                    return this.content.type === CONTENT_TYPES.FACT
                 },
                 typeIsSkill() {
-                    return this.content.type === 'skill'
-                        || this.tree.contentType === 'skill' // backwards compatibility
+                    return this.content.type === CONTENT_TYPES.SKILL
                 },
                 typeIsMap() {
                     return this.content.type === CONTENT_TYPES.MAP
@@ -165,7 +129,7 @@ export class TreeCreator implements ITreeCreator {
                 styleObject() {
                     const styles = {}
                     styles['background-color'] = 'gray'
-                    if (this.typeIsHeading) {
+                    if (this.typeIsCategory) {
                         styles['background-color'] = 'black';
                         styles['color'] = 'white'
                     } else {
@@ -198,15 +162,6 @@ export class TreeCreator implements ITreeCreator {
                         log('i ', i)
                     }
                 },
-                // ...mapActions(['itemStudied']),
-                // // ...mapAction
-                // //user methods
-                startTimer() {
-                    // this.content.startTimer()
-                },
-                saveTimer() {
-                    // this.content.saveTimer()
-                },
                 toggleEditing() {
                     this.editing = !this.editing
                 },
@@ -214,7 +169,7 @@ export class TreeCreator implements ITreeCreator {
                     this.addingChild = !this.addingChild
                 },
                 toggleHistory() {
-                    if (this.typeisHeading) {
+                    if (this.typeIsCategory) {
                         return
                     }
                     this.showHistory = !this.showHistory
@@ -222,19 +177,6 @@ export class TreeCreator implements ITreeCreator {
                 toggleEditingAndAddChild() {
                     this.addingChild = !this.addingChild
                     this.editing = this.addingChild
-                },
-                studySkill() {
-                    // goToFromMap({name: 'study', params: {leafId: this.id}})
-                    // this.$router.push()
-                },
-                studyHeading() {
-                    // this.$store.commit('setCurrentStudyingTree', this.id)
-                    // this.$store.commit('enterStudyingMode')
-                    // // goToFromMap({name: 'study', params: {leafId: this.id}})
-                    // this.$router.push()
-                },
-                clearHeading() {
-                    // this.tree.clearChildrenInteractions()
                 },
                 proficiencyClicked(proficiency) {
                     this.proficiencyInput = proficiency
@@ -252,9 +194,6 @@ export class TreeCreator implements ITreeCreator {
                                 timestamp,
                             }
                         )
-                        // this.contentUserDataLocal = contentUserData
-                        // ;this.contentUserData; // trigger update
-                        // ;this.stringifiedContentUserData; // trigger update // << TODO: figure out if these are necessary
                     } else {
                         log(
                             'ADD CONTENT INTERACTION ABOUT TO BE CALLED '
@@ -265,66 +204,28 @@ export class TreeCreator implements ITreeCreator {
                             timestamp
                         })
                     }
-                    // me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
-                    //     contentUserId: this.contentUserId,
-                    //     sampleContentUser1Proficiency, // NOTICE HOW `this` is different from `me`
-                    //     timestamp: Date.now()
-                    // })
-                    //     user.addMutation('interaction', {contentId: this.content.id,
-                    // sampleContentUser1Proficiency: this.content.sampleContentUser1Proficiency, timestamp: Date.now()})
-                    //     store.commit('itemStudied', this.content.id)
-                    //     this.tree.setInactive()
-                    //     // stores.commit('closeNode', this.id)
                 },
-                // unnecessary now that tree chain is composed of categories/headings whose nodes dont have one color
-                async syncTreeChainWithUI() {
-                    // this.syncGraphWithNode()
-                    // let parentId = this.tree.treeDataFromDB.parentId;
-                    // let parent
-                    // let num = 1
-                    // while (parentId) {
-                    //     // syncGraphWithNode(parentId)
-                    //     store.commit('syncGraphWithNode', parentId)
-                    //     // PubSub.publish('syncGraphWithNode', parentId)
-                    //     parent = await Trees.get(parentId)
-                    //     parentId = parent.treeDataFromDB.parentId
-                    //     num++
-                    // }
-                },
-                syncGraphWithNode() {
-                    // // syncGraphWithNode(this.tree.id)
-                    // store.commit('syncGraphWithNode', this.tree.id)
-                    // // PubSub.publish('syncGraphWithNode', this.tree.id)
-                },
+                // unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
                 // global methods
                 changeContent() {
-                    // switch (this.content.type) {
-                    //     case 'fact':
-                    //         var fact = new Fact({question: this.content.question, answer: this.content.answer})
-                    //         this.content = ContentItems.create(fact)
-                    //         break;
-                    //     case 'heading':
-                    //         const heading = new Heading({title: this.content.title})
-                    //         this.content = ContentItems.create(heading)
-                    //         break;
-                    //     case 'skill':
-                    //         const skill = new Skill({title: this.content.title})
-                    //         this.content = ContentItems.create(skill)
-                    //         break;
-                    // }
-                    // this.content.addTree(this.id)
-                    // this.tree.changeContent(this.content.id, this.tree.contentType)
-                    //
-                    // this.toggleEditing()
-                    // this.syncGraphWithNode()
-                },
-                async remove() {
-                    //     if (confirm("Warning! Are you sure you would you like to delete
-                    // this tree AND all its children?
-                    // THIS CANNOT BE UNDONE")) {
-                    //         removeTreeFromGraph(this.id)
-                    //         return this.tree.remove()
-                    //     }
+                    switch (this.content.type) {
+                        case CONTENT_TYPES.FACT:
+                            const editFactMutation: IEditFactMutationArgs = {
+                                contentId: this.contentId,
+                                question: this.$refs.question.value,
+                                answer: this.$refs.answer.value,
+                            }
+                            this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation)
+                            break;
+                        case CONTENT_TYPES.CATEGORY:
+                            const editCategoryMutation: IEditCategoryMutationArgs = {
+                                contentId: this.contentId,
+                                title: this.$refs.title.value,
+                            }
+                            this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation)
+                            break;
+                    }
+                    this.editing = false
                 },
             }
         }

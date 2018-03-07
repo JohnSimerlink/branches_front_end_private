@@ -1,14 +1,15 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    GlobalStorePropertyMutationTypes, ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
+    GlobalStorePropertyMutationTypes,
+    ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
     ContentUserPropertyNames, ITypeIdProppedDatedMutation,
     IIdProppedDatedMutation, IMutableSubscribableGlobalStore, GlobalStoreObjectTypes, TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
     TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, IContentData,
     ITreeData, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, id, IUpdatesCallback,
     IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableTreeStore
+    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableTreeStore, IEditMutation
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
@@ -32,7 +33,8 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
         this._globalStoreId = Math.random()
     }
-    private addEditMutation(mutation: ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>) {
+    private addEditMutation(mutation: IEditMutation<GlobalStorePropertyMutationTypes>) {
+        // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
             case GlobalStoreObjectTypes.TREE: {
                 const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames

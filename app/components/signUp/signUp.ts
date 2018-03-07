@@ -1,7 +1,5 @@
 import {log} from '../../core/log'
-import {login} from '../../core/login'
 import {MUTATION_NAMES} from '../../core/store';
-import * as firebase from 'firebase';
 const env = process.env.NODE_ENV || 'development'
 let template
 if (env === 'test') {
