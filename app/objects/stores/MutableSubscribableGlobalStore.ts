@@ -31,13 +31,10 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
     }: MutableSubscribableGlobalStoreArgs) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks})
         this._globalStoreId = Math.random()
-        // log('/**/328pm mutablesubscribableglobalstore just created', this._globalStoreId)
     }
     private addEditMutation(mutation: ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>) {
-        // log('MSGlobalStore addEditMutation called',)
         switch (mutation.objectType) {
             case GlobalStoreObjectTypes.TREE: {
-                // log('MSGlobalStore addEditMutation TREE called', mutation)
                 const propertyName: TreePropertyNames = mutation.propertyName as TreePropertyNames
                 const type: TreePropertyMutationTypes = mutation.type as TreePropertyMutationTypes
                 // ^^^ TODO: figure out better typesafety. This trust the caller + type casting is a bit scary
@@ -94,7 +91,6 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                     timestamp: mutation.timestamp,
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 }
-                // log('this contentUserStore is ', this.contentUserStore, this.contentUserStore.addMutation)
                 this.contentUserStore.addMutation(contentUserStoreMutation)
                 break
             }
@@ -115,8 +111,6 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         }
     }
     private addCreateMutation(mutation: ICreateMutation<any>): any /*but preferably id */ {
-        log('MSGLobalStore addCreateMutation called. id is,',
-            this._globalStoreId, 'and mutation objectType is', mutation.objectType)
         switch (mutation.objectType) {
             case GlobalStoreObjectTypes.CONTENT_USER: {
                 const id = mutation.id
@@ -150,9 +144,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         }
     }
     public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
-        // log('MSGLobalStore addMutation called 1', mutation.type, STORE_MUTATION_TYPES.CREATE_ITEM)
         if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
-            // log('MSGLobalStore addMutation called: about to call addCreateMutation 2 ')
             return this.addCreateMutation(mutation)
         } else {
             return this.addEditMutation(mutation)

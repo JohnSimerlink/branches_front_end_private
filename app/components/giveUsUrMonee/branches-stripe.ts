@@ -2,13 +2,7 @@ import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
 import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
-// let request = require('request-promise').default
-// if (!request) {
-//     request = require('request-promise')
-// }
 let axios = require('axios').default || require('axios')
-// import request from 'request-promise'
-// const request = require('request')
 
 const env = process.env.NODE_ENV || 'development'
 if (env === 'test') {
@@ -21,9 +15,6 @@ export default {
     template,
     created() {
         const me = this;
-        // me.loggedIn = false;
-            // me.user = {};
-                // me.username = '';
         me.stripekey = 'pk_live_TB07uwuUxDQZdD2M77YiRy1O';
         me.subscription = {
             name: 'Branches One Month Purchase',
@@ -41,12 +32,6 @@ export default {
                 const serverResultPromise =
                     await axios.post(uri, newPayload)
 
-                //     request({
-                //     method: 'POST',
-                //     uri,
-                //     body: payload,
-                //     json: true,
-                // })
                 console.log('serverResultPromise is', serverResultPromise)
                 const serverResult = await serverResultPromise
                 console.log('serverResult is', serverResult)

@@ -26,7 +26,7 @@ import {ContentUserData} from '../objects/contentUser/ContentUserData';
 import {
     sampleTreeLocationData1, sampleTreeLocationData1x,
     sampleTreeLocationData1y
-} from "../objects/treeLocation/treeLocationTestHelpers";
+} from '../objects/treeLocation/treeLocationTestHelpers';
 
 // NOTE don't worry about the injection works for store2
 test('Store::: ' +
@@ -50,7 +50,6 @@ test('Store::::' +
     // raw javascript object and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            log('addMutation called')
             return void 0
         }
     }
@@ -112,7 +111,6 @@ test('Store::::' +
     // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            log('addMutation called')
             return void 0
         }
     }
@@ -172,7 +170,6 @@ test('Store::::' +
     // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            log('addMutation called')
             return void 0
         }
     }
@@ -224,7 +221,6 @@ test('Store::::' +
     // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            log('addMutation called')
             return void 0
         }
     }

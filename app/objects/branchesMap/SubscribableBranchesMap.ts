@@ -38,7 +38,6 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdates> implement
         }
         this.publishing = true
         const boundCallCallbacks = this.callCallbacks.bind(this)
-        log('J14I: rootTreeId in SubscribableBranchesMap startPublishing is', this.rootTreeId, this)
         this.rootTreeId.onUpdate(boundCallCallbacks)
     }
 }

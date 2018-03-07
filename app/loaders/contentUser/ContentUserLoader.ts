@@ -45,7 +45,6 @@ export class ContentUserLoader implements IContentUserLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData({contentId, userId}): Promise<IContentUserData> {
-        // log('contentUserLoader downloadData called', contentId, userId)
         if (!contentId || ! userId ) {
           throw RangeError('No contentId or userId supplied for downloadData')
         }
@@ -87,7 +86,6 @@ export class ContentUserLoader implements IContentUserLoader {
                     me.storeSource.set(contentUserId, contentUser)
                     resolve(contentUserData)
                 } else {
-                    log('ContentUserData invalid', contentUserData )
                     setTimeout(() => {}, 0)
                     reject('contentUser is invalid! ! ' + JSON.stringify(contentUserData))
                 }

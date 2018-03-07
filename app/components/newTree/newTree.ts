@@ -1,21 +1,12 @@
-// import {Trees} from '../../objects/trees'
-import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
-// import {Fact} from '../../objects/fact'
-// import ContentItems from '../../objects/contentItems'
-//
-// import {user} from '../../objects/user'
-// import {Heading} from "../../objects/heading";
 import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {log} from '../../core/log'
-// import {PROFICIENCIES} from '../../objects/sampleContentUser1Proficiency/proficiencyEnum';
 import {inject, injectable} from 'inversify';
 import {
     CONTENT_TYPES, IContentData, INewChildTreeMutationArgs,
     INewTreeComponentCreator, ITreeLocationData,
-    IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
+import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
 const env = process.env.NODE_ENV || 'development'
@@ -28,30 +19,6 @@ let template = require('./newTree.html').default || require('./newTree.html')
 if (!template || !Object.keys(template).length) {
     template = '<div>BLANK TEMPLATE</div>'
 }
-// log('template in newTreeComponent Creator is', template)
-// TODO: TEMPLATES still seem to load completely empty during tests . . . ^^
-// import {Store} from 'vuex';
-// import {MUTATION_NAMES} from '../../core/store2';
-// import {Component} from 'vue';
-// const template = require('./tree.html').default
-// import {Skill} from "../../objects/skill";
-// import './tree.less'
-// import { mapActions } from 'vuex'
-// import message from '../../message'
-//
-// import store from '../../core/store'
-// import {loadDescendants} from "../knawledgeMap/knawledgeMap";
-// function refreshGraph() {
-//     PubSub.publish('refreshGraph')
-// }
-// function removeTreeFromGraph(treeId){
-//     PubSub.publish('removeTreeFromGraph', treeId)
-// }
-// function goToFromMap(path){
-//     PubSub.publish('goToFromMap', path)
-// }
-// TODO every time we click on a node a new instance of this vue element is created
-// . . . so if you click on the node 5 times 5 instances get created . . .
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
     private store: Store<any>
@@ -59,7 +26,6 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
        store
    }: NewTreeComponentCreatorArgs) {
         this.store = store
-        // log('the BRANCHES_STORE store id created in newTreeComponentCreator is', this.store['_id'])
     }
     public create() {
         const me = this
@@ -67,8 +33,6 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
             template,
             props: ['parentId', 'parentX', 'parentY', 'primaryparenttreecontenturi'],
             created() {
-                // log('newTree component created props are ',
-                //     this.parentId, this.primaryparenttreecontenturi, this.parentX, this.parentY)
                 switch (this.type) {
                     case CONTENT_TYPES.CATEGORY:
                         this.setTypeToCategoryUILogic()
@@ -116,12 +80,9 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 createNewTree(
                     {question, answer, title, type}: IContentData
                     = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
-                    // log('newtree: createNewTree called', question, answer, title, type)
                     const titleFormatted = title && title.trim() || ''
                     const questionFormatted = question && question.trim() || ''
                     const answerFormatted = answer && answer.trim() || ''
-                    // const childX: number = +this.parentX + 10
-                    // const childY: number = +this.parentY + 10
                     const newChildTreeArgs: INewChildTreeMutationArgs = {
                         parentTreeId: this.parentId,
                         timestamp: Date.now(),
@@ -130,15 +91,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         answer: answerFormatted,
                         title: titleFormatted,
                         parentLocation: this.parentLocation,
-                        // parentX: parseInt(this.parentX),
-                        // parentY: parseInt(this.parentY),
-                        // x: childX,
-                        // y: childY,
                     }
-                    log('new child tree args being passed into commit are', newChildTreeArgs)
-                    log('newTreeComponentCreator . createNewTree() me.store._id is', me.store['_id'])
-                    log('newTreeComponentCreator . createNewTree() store\'s globalStore id is',
-                        me.store['globalDataStore']['_globalStoreId'])
                     me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs)
                 },
                 submitForm() {

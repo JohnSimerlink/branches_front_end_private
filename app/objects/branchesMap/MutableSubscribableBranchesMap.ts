@@ -21,7 +21,6 @@ export class MutableSubscribableBranchesMap extends SubscribableBranchesMap impl
         rootTreeId
     }: SubscribableBranchesMapArgs) {
         super({updatesCallbacks, rootTreeId})
-        log('J14I: MutableSubscribableBranchesMap just called', rootTreeId)
     }
 
     public addMutation(mutation: IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>

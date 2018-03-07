@@ -79,7 +79,6 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                 propertyMutation.data = userInfo
                 // ^ ensures there aren't any extraneous functions
                 // or properties on the object being passed in to the SET mutation
-                log('the user info mutation we are adding in MSUser addMutation is ', propertyMutation)
                 this.userInfo.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
                 break
             default:

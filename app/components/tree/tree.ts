@@ -178,7 +178,6 @@ export class TreeCreator implements ITreeCreator {
                             styles['color'] = 'white'
                         }
                     }
-                    // console.log('trees style branchesMap is ', styles)
                     return styles
                 },
                 timerMouseOverMessage() {
@@ -229,7 +228,6 @@ export class TreeCreator implements ITreeCreator {
                     // this.$router.push()
                 },
                 studyHeading() {
-                    // console.log('study HEADING called!')
                     // this.$store.commit('setCurrentStudyingTree', this.id)
                     // this.$store.commit('enterStudyingMode')
                     // // goToFromMap({name: 'study', params: {leafId: this.id}})

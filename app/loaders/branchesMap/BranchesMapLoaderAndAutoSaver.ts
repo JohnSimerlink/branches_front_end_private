@@ -4,7 +4,6 @@ import {
     ISyncableMutableSubscribableBranchesMap, IBranchesMapLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {BranchesMapLoader} from './BranchesMapLoader';
 import {log} from '../../core/log'
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
@@ -22,7 +21,6 @@ export class BranchesMapLoaderAndAutoSaver implements IBranchesMapLoader {
         this.firebaseRef = firebaseRef
     }
     public async loadIfNotLoaded(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
-        log('branchesMapLoaderAutoSaver download BranchesMap called', branchesMapId)
         const branchesMap = await this.branchesMapLoader.loadIfNotLoaded(branchesMapId)
 
         const branchesMapFirebaseRef = this.firebaseRef.child(branchesMapId)
@@ -32,7 +30,6 @@ export class BranchesMapLoaderAndAutoSaver implements IBranchesMapLoader {
                 syncableObject: branchesMap
             })
         branchesMapAutoSaver.start()
-        log('branchesMapAuto saver just called')
 
         return branchesMap
     }
