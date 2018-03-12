@@ -11,7 +11,6 @@ import TreeReviewContainer from '../components/treeReview/treeReviewContainer'
 import NewExercise from '../components/exerciseCreator/newExercise'
 import ExerciseList from '../components/exerciseList/exerciseList'
 import Tree from '../components/tree/tree'
-import NewTree from '../components/newTree/newtree_OUTDATED'
 import Toolbar from '../components/toolbar/toolbar'
 import GoBack from '../components/goBack/goBack'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
@@ -28,7 +27,6 @@ Vue.component('treeReviewContainer', TreeReviewContainer)
 Vue.component('exerciseList', ExerciseList)
 Vue.component('newExercise', NewExercise)
 Vue.component('tree', Tree)
-Vue.component('newtree', NewTree)
 Vue.component('toolbar', Toolbar)
 Vue.component('goBack', GoBack)
 Vue.component('proficiencySelector', ProficiencySelector)
