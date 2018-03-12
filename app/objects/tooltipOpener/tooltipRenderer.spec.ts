@@ -7,7 +7,7 @@ import {
     ISigmaNodeData, ITooltipRenderer
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SigmaNodeUtils} from '../SigmaNode/SigmaNodeUtils';
+import {SigmaNodeUtils} from '../sigmaNode/SigmaNodeUtils';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {escape, TooltipRenderer, TooltipRendererArgs} from './tooltipRenderer';
 import {myContainer, myContainerLoadAllModules, state} from '../../../inversify.config';

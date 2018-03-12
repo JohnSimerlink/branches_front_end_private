@@ -5,7 +5,7 @@ import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserLoader, IContentUserData, IContentUserDataFromDB, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
-import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/contentUserValidator';
+import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/ContentUserValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
