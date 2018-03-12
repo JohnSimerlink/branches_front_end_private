@@ -22,3 +22,4 @@
 ## Documents
 - [The Secret Master Plan](http://branches-app.com/theplan)
 - [Our Google Drive](https://drive.google.com/drive/folders/0B2TCJxQ4w3a8aE9tVFg1YWJJb1E?usp=sharing)
+- [Our Slack Team](https://branches-app.slack.com)
