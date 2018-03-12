@@ -14,11 +14,8 @@ if (env === 'test') {
     let register = require('ignore-styles').default || require('ignore-styles')
     register(['.html', '.less'])
 }
-
+import './newTree.less'
 let template = require('./newTree.html').default || require('./newTree.html')
-if (!template || !Object.keys(template).length) {
-    template = '<div>BLANK TEMPLATE</div>'
-}
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
     private store: Store<any>
@@ -58,7 +55,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 parentLocation(): ITreeLocationData {
                     return this.$store.getters.treeLocationData(this.parentId)
                 },
-                headingSelectorStyle() {
+                categorySelectorStyle() {
                     return this.contentIsCategory ?
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
                 },
@@ -74,7 +71,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     return this.type === CONTENT_TYPES.FACT // 'fact'
                 },
                 contentIsCategory() {
-                    return this.type === CONTENT_TYPES.CATEGORY // 'heading'
+                    return this.type === CONTENT_TYPES.CATEGORY // 'category'
                 },
                 contentIsSkill() {
                     return this.type === CONTENT_TYPES.SKILL // 'skill'
