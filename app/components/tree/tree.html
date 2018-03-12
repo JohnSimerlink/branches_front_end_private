@@ -63,8 +63,6 @@
         <div class="tree-next-review-time">Next Review Time: {{nextReviewTime | timeFromNow }}</div>
     </div>
     <div class="tree-footer" v-show="!showHistory">
-        <!--<div class="divider-horizontal"></div>-->
-
         <div class="tree-footer-row">
             <div >
                 <i v-on:click.stop="toggleEditing" :class="{'tree-edit-button': true, 'fa': true, 'fa-pencil-square-o': !editing, 'fa-arrow-left': editing}" aria-hidden="true"></i>
