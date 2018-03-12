@@ -334,6 +334,9 @@ export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind
         .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockUsersRef)
         .whenTargetTagged(TAGS.USERS_REF, true)
+
+    myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockBranchesMapsRef)
+        .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true)
 })
 export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
@@ -874,6 +877,9 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
 
 })
 
+export function myContainerLoadMockFirebaseReferences() {
+    myContainer.load(mockFirebaseReferences)
+}
 export function myContainerLoadAllModules() {
     myContainer.load(firebaseReferences)
     myContainerLoadAllModulesExceptFirebaseRefs()
