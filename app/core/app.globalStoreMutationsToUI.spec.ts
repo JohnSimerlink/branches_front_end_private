@@ -451,24 +451,3 @@ test('Adding a mutation into the global stores for a tree location data,' +
     expect(sigmaNode1.y).to.deep.equal(SECOND_POINT_VALUE.y)
     t.pass()
 })
-
-/*
-        const treeLocationStoreAddMutationSpy = sinon.spy(treeLocationStore, 'addMutation')
-        const treeLocationAddMutationSpy = sinon.spy(treeLocation, 'addMutation')
-        const proficiencyStatsAddMutationSpy = sinon.spy(proficiencyStats, 'addMutation')
-        const treeLocationStoreCallCallbacksSpy = sinon.spy(treeLocationStore, 'callCallbacks')
-        const treeLocationCallCallbacksSpy = sinon.spy(treeLocation, 'callCallbacks')
-        const proficiencyStatsCallCallbacksSpy = sinon.spy(proficiencyStats, 'callCallbacks')
-        expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
-        expect(sigmaNode2.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal)
-        storeSource.addMutation(mutation)
-        expect(treeLocationStoreAddMutationSpy.callCount).to.equal(1)
-        expect(treeLocationAddMutationSpy.callCount).to.equal(1)
-        expect(proficiencyStatsAddMutationSpy.callCount).to.equal(1)
-        expect(proficiencyStatsCallCallbacksSpy.callCount).to.equal(1)
-        expect(treeLocationCallCallbacksSpy.callCount).to.equal(1)
-        expect(treeLocationStoreCallCallbacksSpy.callCount).to.equal(1)
-        expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
-        expect(sigmaNode2.proficiencyStats).to.deep.equal(newProficiencyStatsVal)
-
- */
