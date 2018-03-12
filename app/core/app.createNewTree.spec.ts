@@ -42,7 +42,6 @@ import {TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import {error} from './log'
 import sigma from '../../other_imports/sigma/sigma.core.js'
-// import GraphData = SigmaJs.GraphData;
 import {configureSigma} from '../objects/sigmaNode/configureSigma'
 import {log} from './log'
 import {OneToManyMap} from '../objects/oneToManyMap/oneToManyMap';
@@ -65,9 +64,6 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
-// import Graph = SigmaJs.Graph;
-// import Edge = SigmaJs.Edge;
-// import Sigma = SigmaJs.Sigma;
 
 myContainerLoadAllModules()
 test('App integration test 3 - create new Tree triggered by user' +
@@ -111,7 +107,6 @@ test('App integration test 3 - create new Tree triggered by user' +
     const contentStoreSource: ISubscribableContentStoreSource
         = myContainer.get<ISubscribableContentStoreSource>
     (TYPES.ISubscribableContentStoreSource)
-    // const treeStore
 
     const treeStore: IMutableSubscribableTreeStore
         = partialInject<SubscribableTreeStoreArgs>({

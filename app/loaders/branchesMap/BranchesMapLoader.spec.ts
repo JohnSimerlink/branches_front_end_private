@@ -28,20 +28,3 @@ test('BranchesMapLoader:::DI constructor should work', (t) => {
     expect(injects).to.equal(true)
     t.pass()
 })
-test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', async (t) => {
-    // const branchesMapId = '12345'
-    // const firebaseRef  = new MockFirebase(FIREBASE_PATHS.USERS)
-    // const childFirebaseRef = firebaseRef.child(branchesMapId)
-    // const branchesMapLoader = new BranchesMapLoader({firebaseRef})
-    //
-    // childFirebaseRef.fakeEvent('value', undefined, sampleBranchesMapDataFromDB1)
-    // const branchesMapDataPromise: Promise<ISyncableMutableSubscribableBranchesMap> =
-    //     branchesMapLoader.loadIfNotLoaded(branchesMapId)
-    // childFirebaseRef.flush()
-    //
-    // const branchesMap = await branchesMapDataPromise
-    //
-    // expect(branchesMap).to.deep.equal(sampleBranchesMap1)
-    // expect(branchesMap.val()).to.deep.equal(sampleBranchesMapData1) // << redundand lol
-    // t.pass()
-})
