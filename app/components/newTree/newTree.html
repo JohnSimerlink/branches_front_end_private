@@ -2,24 +2,22 @@
     <div class="divider-horizontal"></div>
     <div class="arrow"></div>
     <div class="newTree-header">Add a new child </div>
-    <!--<div class="sigma-tooltip-header">Add a new child </div>-->
-    <!--<div class="sigma-tooltip-header">Add a new child {{primaryparenttreecontenturi}} {{parentid}} </div>-->
-    <!--<div class="sigma-tooltip-body">-->
     <div>
         <div class="newTree-type-selector">
-            <button class="newTree-type-selector-heading-button tree-button-choice-selected"  v-bind:style="headingSelectorStyle" v-on:click="setTypeToCategory">Category</button>
-            <button class="newTree-type-selector-fact-button" v-bind:style="factSelectorStyle" v-on:click="setTypeToFact">Fact</button>
+            <button class="newTree-type-selector-category-button tree-button-choice-selected" v-bind:style="categorySelectorStyle" v-on:click="setTypeToCategory">Category</button>
+            <button class="newTree-type-selector-fact-button" v-bind:style="factSelectorStyle" v-on:click="setTypeToFact">Flashcard</button>
         </div>
         <p class="newTree-form">
             <p class="newTree-form tree-fact" v-if="contentIsFact">
                 <input type="hidden" class="newTree-parentId" v-model="parentId">
-                <span class="tree-label">Question:</span><input class='newTree-question' type='text' ref="question" v-model="question" autofocus><br>
-                <span class="tree-label">Answer:</span> <input class='newTree-answer' type='text' v-model="answer" v-on:keyup.enter="submitForm"><br>
+                <textarea placeholder="Question" class='newTree-question' type='text' ref="question" v-model="question" autofocus></textarea><br>
+                <textarea class='newTree-answer' placeholder="Answer" type='text' v-model="answer" v-on:keyup.enter="submitForm"></textarea>
+                <br>
                 <button class='newTree-create-button' v-on:click="submitForm">Create</button>
             </p>
-            <p class="newTree-form tree-heading" v-if="contentIsCategory">
+            <p class="newTree-form tree-category" v-if="contentIsCategory">
                 <input type="hidden" class="newTree-parentId" v-model="parentId">
-                <span class="tree-label" >Category:</span> <input class='newTree-heading' ref="category" type='text' v-model="title" v-on:keyup.enter="submitForm"><br>
+                <input class='newTree-category' placeholder="Type your category name here" ref="category" type='text' v-model="title" v-on:keyup.enter="submitForm"><br>
                 <button class='newTree-create-button'  v-on:click="submitForm">Create</button>
             </p>
         </p>
