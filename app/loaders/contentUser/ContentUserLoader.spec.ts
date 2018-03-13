@@ -75,7 +75,7 @@ import {sampleContentUserDataFromDB1} from '../../objects/contentUser/ContentUse
 //     expect(isLoaded).to.deep.equal(false)
 //     t.pass()
 // })
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('ContentUserLoader:::Should mark an id as loaded after being loaded', async (t) => {
     const contentId = '423487'
     const userId = '12476'

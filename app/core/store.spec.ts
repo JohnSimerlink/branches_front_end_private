@@ -32,7 +32,7 @@ import {
 test('Store::: ' +
     ' DI constructor should work', (t) => {
 
-    myContainerLoadAllModules()
+    myContainerLoadAllModules({fakeSigma: true})
     // log('global window is', globalAny.window)
     const injects = injectionWorks<BranchesStoreArgs, BranchesStore>({
         container: myContainer,
@@ -44,7 +44,7 @@ test('Store::: ' +
 })
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT_USER_DATA', (t) => {
-    myContainerLoadAllModules()
+    myContainerLoadAllModules({fakeSigma: true})
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript object and sinon spy that I don't know . . .
@@ -105,7 +105,7 @@ test('Store::::' +
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT: should call globalDataStore with the correct args', (t) => {
 
-    myContainerLoadAllModules()
+    myContainerLoadAllModules({fakeSigma: true})
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript branchesMap and sinon spy that I don't know . . .
@@ -164,7 +164,7 @@ test('Store::::' +
 test('Store::::' +
     ' MUTATIONS CREATE_TREE: should call globalDataStore with the correct args', (t) => {
 
-    myContainerLoadAllModules()
+    myContainerLoadAllModules({fakeSigma: true})
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript branchesMap and sinon spy that I don't know . . .
@@ -215,7 +215,7 @@ test('Store::::' +
 test('Store::::' +
     ' MUTATIONS CREATE_TREE_LOCATION: should call globalDataStore with the correct args', (t) => {
 
-    myContainerLoadAllModules()
+    myContainerLoadAllModules({fakeSigma: true})
     // log('global window is', globalAny.window)
     // WHY I couldn't just do a normal
     // raw javascript branchesMap and sinon spy that I don't know . . .

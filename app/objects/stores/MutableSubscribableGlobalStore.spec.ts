@@ -47,7 +47,7 @@ import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubs
 import {TAGS} from '../tags';
 import {sampleTreeLocationData1, sampleTreeLocationData1x} from '../treeLocation/treeLocationTestHelpers';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
     const injects: boolean = injectionWorks<MutableSubscribableGlobalStoreArgs, IMutableSubscribableGlobalStore>({
         container: myContainer,

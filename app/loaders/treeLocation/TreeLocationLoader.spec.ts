@@ -21,7 +21,7 @@ import {
     sampleTreeLocationDataFromFirebase1
 } from '../../objects/treeLocation/treeLocationTestHelpers';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('treeLocationLoader:::DI Constructor should work', (t) => {
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)

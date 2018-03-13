@@ -10,7 +10,7 @@ import {myContainer, myContainerLoadAllModules, treeLocationsRef} from '../../in
 import {GLOBAL_MAP_ID, GLOBAL_MAP_ROOT_TREE_ID} from '../core/globals';
 import {TYPES} from '../objects/types';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 const treeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
 async function updateTreeLocationToHaveRootMapId(treeId: id) {
     const treeLocationRef = treeLocationsRef.child(treeId)

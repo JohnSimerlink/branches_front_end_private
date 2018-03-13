@@ -28,7 +28,7 @@ import {
     sampleTreeLocationData1y
 } from '../treeLocation/treeLocationTestHelpers';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('sigmaNode:::receive new tree', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
 

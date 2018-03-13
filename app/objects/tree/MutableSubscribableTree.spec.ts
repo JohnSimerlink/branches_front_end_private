@@ -12,7 +12,7 @@ import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('MutableSubscribableTree:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire branchesMap\'s value '
     + ' after startPublishing has been called', (t) => {

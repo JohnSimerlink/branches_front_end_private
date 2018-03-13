@@ -36,7 +36,7 @@ if (!Vue) {
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('TreeComponent DI constructor should work', t => {
     const injects = injectionWorks<TreeCreatorArgs, ITreeCreator >({
         container: myContainer,

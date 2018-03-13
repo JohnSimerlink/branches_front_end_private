@@ -9,7 +9,7 @@ import {IMutableSubscribableField} from '../interfaces';
 import {TYPES} from '../types';
 import {MutableSubscribableField} from './MutableSubscribableField';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('MutableSubscribableField > Subscribable::::Adding a mutation,' +
     ' should trigger an update for one of the subscribers [is this an integration test?]', (t) => {
     // const subscribableMutableId: IMutableSubscribableField =

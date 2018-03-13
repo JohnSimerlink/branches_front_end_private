@@ -28,7 +28,7 @@ import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils
 import {partialInject} from '../../testHelpers/partialInject';
 import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
     
     const expectedProperties = Object.getOwnPropertyNames

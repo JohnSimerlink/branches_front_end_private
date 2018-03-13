@@ -61,7 +61,7 @@ const FIRST_MUTATION_INDEX = 0
 const SECOND_MUTATION_INDEX = 1
 const THIRD_MUTATION_INDEX = 2
 const FOURTH_MUTATION_INDEX = 3
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('Point DI constructor works', (t) => {
     const injects = injectionWorks<MutableSubscribablePointArgs, IMutableSubscribablePoint>({
         container: myContainer,

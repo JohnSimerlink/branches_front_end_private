@@ -11,7 +11,7 @@ import {
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('SubscribableTreeUser:::constructor should set all the subscribable properties', (t) => {
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>()
     const aggregationTimer = new MutableSubscribableField<number>()

@@ -229,6 +229,7 @@ const mutations = {
             glyphTextThreshold: 6,
             glyphThreshold: 3,
         } as any/* as SigmaConfigs*/) as any
+        log('THE SIGMA INSTANCE JUST CREATED ', sigmaInstance)
         state.sigmaInstance = sigmaInstance
         state.graph = sigmaInstance.graph
         state.sigmaInitialized = true

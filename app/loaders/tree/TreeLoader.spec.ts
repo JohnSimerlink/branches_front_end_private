@@ -20,7 +20,7 @@ import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('TreeLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
         container: myContainer,

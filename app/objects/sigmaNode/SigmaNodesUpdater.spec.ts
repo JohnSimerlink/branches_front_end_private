@@ -29,7 +29,7 @@ import {sampleContentData1} from "../content/contentTestHelpers";
 import {sampleContentUserData1} from "../contentUser/ContentUserHelpers";
 import {sampleTreeData1} from "../tree/treeTestHelpers";
 function refresh() {}
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 
 let sigmaNodes
 let sigmaNode1

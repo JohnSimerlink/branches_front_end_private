@@ -101,7 +101,7 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     //
     // /*** ====== loadContainer ======= ***/
     // myContainer.load(mockFirebaseReferences)
-    // myContainerLoadAllModulesExceptFirebaseRefs()
+    // myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true})
     //
     // const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
     // appContainer.start()

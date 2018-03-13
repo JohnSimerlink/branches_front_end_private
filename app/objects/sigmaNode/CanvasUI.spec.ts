@@ -11,7 +11,7 @@ import {
 import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('CanvasUI:::should subscribe to the onUpdate method of a subscribable obj passed to it', (t) => {
     const canvasUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
 
