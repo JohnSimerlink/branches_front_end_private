@@ -3,7 +3,7 @@ injectFakeDom();
 // only to be run on 2018-Mar-05 as admin
 
 import {
-    id, ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation, ITreeDataWithoutId, ITreeLoader,
+    id, ITreeDataWithoutId, ITreeLoader,
     TreeLocationPropertyNames
 } from '../objects/interfaces';
 import {myContainer, myContainerLoadAllModules, treeLocationsRef} from '../../inversify.config';
