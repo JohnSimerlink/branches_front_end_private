@@ -11,10 +11,7 @@ const STATES = {
 };
 const TIME_SHOWING = 16000; // 00000
 const TIME_SUBTRACTING_BY_7 = 32000; // 64000
-let template = require('./ebbinghaus.html').default;
-if (!template) {
-    template = require('./ebbinghaus.html')
-}
+const template = require('./ebbinghaus.html')
 
 export default {
     template,
@@ -63,9 +60,9 @@ export default {
 }
 
 function randomMeaninglessTriplet() {
-    const meaningfulTripletsForJohn = ['lsd', 'lds', 'dsl', 'hrc', 'dmv', 'cbs', 'kfc', 'mtn', 'gdp', 'frs', 
-                                       'cds', 'std', 'gwt', 'dtf', 'cpr', 'csr', 'phx', 'hjb', 'dsk', 'snp', 
-                                       'pbj', 'cht', 'hbs','cpx' , 'ftv', 'bsh', 'bch', 'crm', 'vgl', 'jks', 
+    const meaningfulTripletsForJohn = ['lsd', 'lds', 'dsl', 'hrc', 'dmv', 'cbs', 'kfc', 'mtn', 'gdp', 'frs',
+                                       'cds', 'std', 'gwt', 'dtf', 'cpr', 'csr', 'phx', 'hjb', 'dsk', 'snp',
+                                       'pbj', 'cht', 'hbs', 'cpx', 'ftv', 'bsh', 'bch', 'crm', 'vgl', 'jks',
                                        'dmz', 'bmv', 'dmv'];
     const numLetters = 26;
     const CHAR_CODE_A = 97;

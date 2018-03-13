@@ -27,7 +27,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
             storeSource: ISubscribableStoreSource<
         ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
         >,
-            updatesCallbacks: Function[],
+            updatesCallbacks: () => void,
         }
     ) {
         super({updatesCallbacks});

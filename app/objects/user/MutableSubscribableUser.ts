@@ -11,7 +11,7 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types'
 import {SubscribableUser, SubscribableUserArgs} from './SubscribableUser';
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 
 @injectable()
 export class MutableSubscribableUser extends SubscribableUser implements IMutableSubscribableUser {

@@ -13,7 +13,7 @@ import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {ObjectFirebaseAutoSaver} from '../dbSync/ObjectAutoFirebaseSaver';
 import {UserDeserializer} from '../../loaders/user/UserDeserializer';
-import {DEFAULT_USER_INFO} from "../../core/globals";
+import {DEFAULT_USER_INFO} from '../../core/globals';
 export const DEFAULT_MEMBERSHIP_EXPIRATION_DATE = 1496340000; // Jun 1st 2017. <<< Already expired
 
 @injectable()

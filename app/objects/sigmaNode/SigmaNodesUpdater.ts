@@ -7,7 +7,13 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    fGetSigmaIdsForContentId, IContentData, IContentUserData, IHash, ISigmaEdge, ISigmaEdgeData, ISigmaEdges,
+    fGetSigmaIdsForContentId,
+    IContentData,
+    IContentUserData,
+    IHash,
+    ISigmaEdge,
+    ISigmaEdgeData,
+    ISigmaEdges,
     ISigmaEdgesUpdater,
     ISigmaEdgeUpdater, ISigmaNodes,
     ISigmaNodesUpdater,
@@ -73,9 +79,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
             case GlobalStoreObjectDataTypes.CONTENT_DATA: {
                 const contentId = update.id;
                 sigmaIds = this.getSigmaIdsForContentId(contentId);
-                /* cache the content data because the treeDataFromDB for this contentItem may not be loaded yet,
-                 so no sigmaIds may be returned,
-                  meaning once the treeDataFromDB is loaded we need to be able to load the contentData that was cached here
+                /* cache the content data because the treeDataFromDB for this
+                   contentItem may not be loaded yet, so no sigmaIds may be returned,
+                   meaning once the treeDataFromDB is loaded we need to be able to
+                   load the contentData that was cached here.
                  */
                 const contentData: IContentData = update.val;
                 this.contentIdContentMap[contentId] = contentData;
@@ -85,10 +92,11 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 const contentUserId = update.id;
                 const contentId = getContentId({contentUserId});
                 const contentUserData: IContentUserData = update.val;
-                /* cache the content user data because the treeDataFromDB for this contentuserItem may not be loaded yet,
-                 so no sigmaIds may be returned,
-                  meaning once the treeDataFromDB is loaded
-                   we need to be able to load the contentUserData that was cached here
+                /* cache the content user data because the treeDataFromDB
+                   for this contentuserItem may not be loaded yet,
+                   so no sigmaIds may be returned, meaning once the treeDataFromDB
+                   is loaded we need to be able to load the contentUserData
+                   that was cached here.
                  */
                 this.contentIdContentUserMap[contentId] = contentUserData;
                 // TODO: Cache ContentUserData like we do with CONTENT_DATA

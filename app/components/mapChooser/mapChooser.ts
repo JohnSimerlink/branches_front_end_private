@@ -1,9 +1,9 @@
 import {log} from '../../core/log'
-import {MUTATION_NAMES} from "../../core/store";
+import {MUTATION_NAMES} from '../../core/store';
 const env = process.env.NODE_ENV || 'development';
 let template = '';
 if (env === 'test') {
-    let register = require('ignore-styles').default || require('ignore-styles');
+    const register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less'])
 } else {
     template = require('./mapChooser.html').default;

@@ -134,6 +134,6 @@ export class SigmaRenderManagerArgs {
     @inject(TYPES.Array) public edgeIdsToBroadcast: id[];
     @inject(TYPES.Object) public waitingEdgeIds: IHash<boolean>;
     @inject(TYPES.IOneToManyMap) public treeIdEdgeIdsMap: IOneToManyMap<id>;
-    @inject(TYPES.Array) public updatesCallbacks: Function[];
+    @inject(TYPES.Array) public updatesCallbacks: () => void;
     @inject(TYPES.Object) public broadcastedNodes: IHash<boolean>
 }

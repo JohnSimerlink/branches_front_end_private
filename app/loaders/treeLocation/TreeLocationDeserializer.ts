@@ -1,9 +1,14 @@
 import {
-    IMutableSubscribablePoint, IMutableSubscribableField, ISyncableMutableSubscribableTreeLocation,
-    ITreeLocationData, ITreeLocationDataFromFirebase, id
+    IMutableSubscribablePoint,
+    IMutableSubscribableField,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
+    ITreeLocationDataFromFirebase,
+    id
 } from '../../objects/interfaces';
 import {MutableSubscribablePoint} from '../../objects/point/MutableSubscribablePoint';
-import {SyncableMutableSubscribableTreeLocation} from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
+import {SyncableMutableSubscribableTreeLocation} 
+    from '../../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {isValidTreeLocationDataFromDB} from '../../objects/treeLocation/treeLocationValidator';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 

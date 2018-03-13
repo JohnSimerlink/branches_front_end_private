@@ -5,14 +5,14 @@ import {UIColor} from './uiColor';
 import {SigmaNode, SigmaNodeArgs} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
 import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 // import {SigmaJs} from 'sigmajs';
 
 // app
-
 export interface IApp {
     start()
 }
+
 // components
 export interface IVueComponentCreator {
     create()
