@@ -7,7 +7,7 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {
     ISigmaNodeCreator, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
-    ITypeAndIdAndValUpdates
+    ITypeAndIdAndValUpdate
 } from '../interfaces';
 import {TYPES} from '../types';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
@@ -25,7 +25,7 @@ test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
 });
 test('StoreSourceUpdateListener:::subscribe', (t) => {
     
-    const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = {
+    const subscribable: ISubscribable<ITypeAndIdAndValUpdate> = {
         onUpdate() {
         }
     };

@@ -12,9 +12,9 @@ import {
     ISigmaEdgeUpdater, ISigmaNodes,
     ISigmaNodesUpdater,
     ISigmaRenderManager,
-    ITypeAndIdAndValUpdates,
+    ITypeAndIdAndValUpdate,
     ObjectDataDataTypes,
-    GlobalStoreObjectDataTypes,
+    CustomStoreDataTypes,
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
@@ -60,17 +60,17 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 
     }
 
-    private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdates) {
+    private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdate) {
         let sigmaIds = [];
-        const type: GlobalStoreObjectDataTypes = update.type;
+        const type: CustomStoreDataTypes = update.type;
         switch (type) {
-            case GlobalStoreObjectDataTypes.TREE_DATA:
-            case GlobalStoreObjectDataTypes.TREE_LOCATION_DATA:
-            case GlobalStoreObjectDataTypes.TREE_USER_DATA:
+            case CustomStoreDataTypes.TREE_DATA:
+            case CustomStoreDataTypes.TREE_LOCATION_DATA:
+            case CustomStoreDataTypes.TREE_USER_DATA:
                 const treeId = update.id;
                 sigmaIds = [treeId];
                 break;
-            case GlobalStoreObjectDataTypes.CONTENT_DATA: {
+            case CustomStoreDataTypes.CONTENT_DATA: {
                 const contentId = update.id;
                 sigmaIds = this.getSigmaIdsForContentId(contentId);
                 /* cache the content data because the treeDataFromDB for this contentItem may not be loaded yet,
@@ -81,7 +81,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 this.contentIdContentMap[contentId] = contentData;
                 break
             }
-            case GlobalStoreObjectDataTypes.CONTENT_USER_DATA: {
+            case CustomStoreDataTypes.CONTENT_USER_DATA: {
                 const contentUserId = update.id;
                 const contentId = getContentId({contentUserId});
                 const contentUserData: IContentUserData = update.val;
@@ -100,7 +100,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     }
     // Assumes the sigmaNodes that the update affects already exist
     // TODO: ensure that anything calling this has the sigmaNodes exist
-    public handleUpdate(update: ITypeAndIdAndValUpdates) {
+    public handleUpdate(update: ITypeAndIdAndValUpdate) {
         const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update);
         const me = this;
         sigmaIds.forEach(sigmaId => {
@@ -116,10 +116,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         {
             sigmaNode, updateType, data, sigmaId,
         }: {
-            sigmaNode: ISigmaNode, updateType: GlobalStoreObjectDataTypes, data: ObjectDataDataTypes, sigmaId: string
+            sigmaNode: ISigmaNode, updateType: CustomStoreDataTypes, data: ObjectDataDataTypes, sigmaId: string
         }) {
         switch (updateType) {
-            case GlobalStoreObjectDataTypes.TREE_DATA:
+            case CustomStoreDataTypes.TREE_DATA:
                 sigmaNode.receiveNewTreeData(data);
                 /* check if there is the contentData already downloaded for this sigmaId,
                  * and if so apply its data to the sigmaNode.
@@ -157,17 +157,17 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 // ^ the above method will also search for any edges that now can be loaded now
                 // that that treeDataFromDB is loaded . . . and publishes an update for that edge to be added.
                 break;
-            case GlobalStoreObjectDataTypes.TREE_LOCATION_DATA:
+            case CustomStoreDataTypes.TREE_LOCATION_DATA:
                 sigmaNode.receiveNewTreeLocationData(data);
                 this.sigmaRenderManager.markTreeLocationDataLoaded(sigmaId);
                 break;
-            case GlobalStoreObjectDataTypes.TREE_USER_DATA:
+            case CustomStoreDataTypes.TREE_USER_DATA:
                 sigmaNode.receiveNewTreeUserData(data);
                 break;
-            case GlobalStoreObjectDataTypes.CONTENT_DATA:
+            case CustomStoreDataTypes.CONTENT_DATA:
                 sigmaNode.receiveNewContentData(data);
                 break;
-            case GlobalStoreObjectDataTypes.CONTENT_USER_DATA:
+            case CustomStoreDataTypes.CONTENT_USER_DATA:
                 sigmaNode.receiveNewContentUserData(data);
                 // this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
                 //     treeId: sigmaId,
@@ -175,7 +175,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 // })
                 break;
             default:
-                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(GlobalStoreObjectDataTypes))
+                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(CustomStoreDataTypes))
         }
         this.store.commit(MUTATION_NAMES.REFRESH)
     }

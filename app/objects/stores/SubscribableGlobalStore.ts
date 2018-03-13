@@ -3,20 +3,20 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log'
 import {
-    IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableContentStore,
+    IIdAndValUpdate, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableContentStore,
     ISubscribableContentUserStore,
     ISubscribableGlobalStore, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
-    ITypeAndIdAndValUpdates, IUpdatesCallback,
-    GlobalStoreObjectDataTypes,
+    ITypeAndIdAndValUpdate, IUpdatesCallback,
+    CustomStoreDataTypes,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 
 @injectable()
-export class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUpdates>
+export class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUpdate>
 implements ISubscribableGlobalStore {
-    private update: ITypeAndIdAndValUpdates;
-    protected callbackArguments(): ITypeAndIdAndValUpdates {
+    private update: ITypeAndIdAndValUpdate;
+    protected callbackArguments(): ITypeAndIdAndValUpdate {
         // log('globaldatastore callback arguments called')
         return this.update
     }
@@ -42,41 +42,41 @@ implements ISubscribableGlobalStore {
     }
     public startPublishing() {
         const me = this;
-        this.treeStore.onUpdate((update: IIdAndValUpdates) => {
+        this.treeStore.onUpdate((update: IIdAndValUpdate) => {
             me.update = {
-                type: GlobalStoreObjectDataTypes.TREE_DATA,
+                type: CustomStoreDataTypes.TREE_DATA,
                 ...update
             };
             me.callCallbacks()
         });
         this.treeStore.startPublishing();
-        this.treeUserStore.onUpdate((update: IIdAndValUpdates) => {
+        this.treeUserStore.onUpdate((update: IIdAndValUpdate) => {
             me.update = {
-                type: GlobalStoreObjectDataTypes.TREE_USER_DATA,
+                type: CustomStoreDataTypes.TREE_USER_DATA,
                 ...update
             };
             me.callCallbacks()
         });
         this.treeUserStore.startPublishing();
-        this.treeLocationStore.onUpdate((update: IIdAndValUpdates) => {
+        this.treeLocationStore.onUpdate((update: IIdAndValUpdate) => {
             me.update = {
-                type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA,
+                type: CustomStoreDataTypes.TREE_LOCATION_DATA,
                 ...update
             };
             me.callCallbacks()
         });
         this.treeLocationStore.startPublishing();
-        this.contentStore.onUpdate((update: IIdAndValUpdates) => {
+        this.contentStore.onUpdate((update: IIdAndValUpdate) => {
             me.update = {
-                type: GlobalStoreObjectDataTypes.CONTENT_DATA,
+                type: CustomStoreDataTypes.CONTENT_DATA,
                 ...update
             };
             me.callCallbacks()
         });
         this.contentStore.startPublishing();
-        this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
+        this.contentUserStore.onUpdate((update: IIdAndValUpdate) => {
             me.update = {
-                type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA,
+                type: CustomStoreDataTypes.CONTENT_USER_DATA,
                 ...update
             };
             me.callCallbacks()

@@ -7,8 +7,8 @@ import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
     IOneToManyMap,
     ISigmaNodesUpdater, ISigmaRenderManager,
-    IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdates,
-    GlobalStoreObjectDataTypes
+    IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdate,
+    CustomStoreDataTypes
 } from '../interfaces';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../sigmaNode/SigmaNodesUpdater';
 import {SigmaRenderManager} from '../sigmaNode/SigmaRenderManager';
@@ -39,9 +39,9 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
         contentId: newContentId,
         parentId: newParentId,
     };
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_DATA,
+        type: CustomStoreDataTypes.TREE_DATA,
         val,
     };
     const sigmaNodes = {};

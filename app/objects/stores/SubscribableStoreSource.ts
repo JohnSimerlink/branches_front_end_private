@@ -6,9 +6,9 @@ import {
     ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser, ITypeAndIdAndValAndObjUpdates,
-    ITypeAndIdAndValUpdates, IValable,
-    GlobalStoreObjectDataTypes,
+    ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser, IStoreObjectUpdate,
+    ITypeAndIdAndValUpdate, IValable,
+    CustomStoreDataTypes,
     ISyncableMutableSubscribableTree,
     ISyncableMutableSubscribableTreeLocation,
     ISyncableMutableSubscribableContent,
@@ -24,9 +24,9 @@ if (!Object.entries) {
 
 @injectable()
 export class SubscribableStoreSource<T> extends
-    SubscribableCore<ITypeAndIdAndValUpdates> implements ISubscribableStoreSource<T> {
-    private update: ITypeAndIdAndValAndObjUpdates;
-    private type: GlobalStoreObjectDataTypes;
+    SubscribableCore<ITypeAndIdAndValUpdate> implements ISubscribableStoreSource<T> {
+    private update: IStoreObjectUpdate;
+    private type: CustomStoreDataTypes;
     private hashmap: IHash<T>;
     private _id;
     constructor(@inject(TYPES.SubscribableStoreSourceArgs){
@@ -38,7 +38,7 @@ export class SubscribableStoreSource<T> extends
         this.type = type;
         this.hashmap = hashmap
     }
-    protected callbackArguments(): ITypeAndIdAndValAndObjUpdates {
+    protected callbackArguments(): IStoreObjectUpdate {
         return this.update
     }
     public get(id: string): T {
@@ -59,7 +59,7 @@ export class SubscribableStoreSource<T> extends
 export class SubscribableStoreSourceArgs {
     @inject(TYPES.Object) public hashmap: IHash<any>;
     @inject(TYPES.Array) public updatesCallbacks: any[];
-    @inject(TYPES.String) public type: GlobalStoreObjectDataTypes
+    @inject(TYPES.String) public type: CustomStoreDataTypes
 }
 @injectable()
 export class SubscribableTreeStoreSource extends SubscribableStoreSource<ISyncableMutableSubscribableTree>
@@ -111,29 +111,29 @@ export class SubscribableContentUserStoreSource
 export class SubscribableTreeStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: GlobalStoreObjectDataTypes
+    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes
 }
 @injectable()
 export class SubscribableTreeLocationStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: GlobalStoreObjectDataTypes
+    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes
 }
 @injectable()
 export class SubscribableTreeUserStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: GlobalStoreObjectDataTypes
+    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes
 }
 @injectable()
 export class SubscribableContentStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: GlobalStoreObjectDataTypes
+    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes
 }
 @injectable()
 export class SubscribableContentUserStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: GlobalStoreObjectDataTypes
+    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes
 }

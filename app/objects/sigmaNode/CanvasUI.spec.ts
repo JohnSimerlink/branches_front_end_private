@@ -6,7 +6,7 @@ import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     ISubscribable, ISubscribableGlobalStore,
-    ITypeAndIdAndValUpdates
+    ITypeAndIdAndValUpdate
 } from '../interfaces';
 import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
@@ -15,7 +15,7 @@ myContainerLoadAllModules({fakeSigma: true});
 test('CanvasUI:::should subscribe to the onUpdate method of a subscribable obj passed to it', (t) => {
     const canvasUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
 
-    const subscribable: ISubscribable<ITypeAndIdAndValUpdates>
+    const subscribable: ISubscribable<ITypeAndIdAndValUpdate>
         = myContainer.get<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore);
 
     const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate');

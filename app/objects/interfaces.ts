@@ -450,7 +450,7 @@ export type GlobalStorePropertyMutationTypes =
     | ContentUserPropertyMutationTypes
     | ContentPropertyMutationTypes
 
-export enum GlobalStoreObjectDataTypes {
+export enum CustomStoreDataTypes {
     TREE_DATA = 'TREE_DATA',
     TREE_LOCATION_DATA = 'TREE_LOCATION_DATA',
     TREE_USER_DATA = 'TREE_USER_DATA',
@@ -686,7 +686,7 @@ export interface ISigmaEdgesUpdater {
 }
 export type fGetSigmaIdsForContentId = (id: string) => string[]
 export interface ISigmaNodesUpdater {
-    handleUpdate(update: ITypeAndIdAndValUpdates)
+    handleUpdate(update: ITypeAndIdAndValUpdate)
 }
 export interface ISigmaEdge extends ISigmaEdgeData {
 
@@ -767,12 +767,12 @@ export interface ISigmaNodeCreatorCore {
 export interface IManagedSigmaNodeCreatorCore extends ISigmaNodeCreatorCore {
 }
 export interface ISigmaNodeCreator {
-    receiveUpdate(update: ITypeAndIdAndValUpdates)
+    receiveUpdate(update: ITypeAndIdAndValUpdate)
 }
-export interface IStoreSourceUpdateListener extends ISubscriber<ITypeAndIdAndValUpdates> {}
+export interface IStoreSourceUpdateListener extends ISubscriber<ITypeAndIdAndValUpdate> {}
 // SigmaRendererManager
 export interface IStoreSourceUpdateListenerCore {
-    receiveUpdate(update: ITypeAndIdAndValUpdates)
+    receiveUpdate(update: ITypeAndIdAndValUpdate)
 }
 export interface ISigmaRenderManager extends ISubscribable<ISigmaRenderUpdate> {
     markTreeDataLoaded(treeId)
@@ -822,7 +822,7 @@ export interface IMutableSubscribableGlobalStore
     extends ISubscribableGlobalStore, IMutable<IGlobalMutation> {
 }
 
-export interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdates>,
+export interface ISubscribableGlobalStore extends ISubscribable<ITypeAndIdAndValUpdate>,
     IDescendantPublisher {
 }
 
@@ -876,8 +876,8 @@ export interface IMutableSubscribableContentStore
     ): IMutableSubscribableContent
 }
 
-export interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdates>,
-    ICoreSubscribableStore<IIdAndValUpdates, SubscribableCoreInterface> {}
+export interface ISubscribableStore<SubscribableCoreInterface> extends ISubscribable<IIdAndValUpdate>,
+    ICoreSubscribableStore<IIdAndValUpdate, SubscribableCoreInterface> {}
 
 export interface ISubscribableTreeStore
     extends ISubscribableStore<ISubscribableTreeCore> {}
@@ -894,16 +894,17 @@ export interface ISubscribableContentUserStore
 export interface ISubscribableContentStore
     extends ISubscribableStore<ISubscribableContentCore> {}
 
-export type IValUpdates = any
-export interface IIdAndValUpdates {
+export type IValUpdate = any
+export interface IIdAndValUpdate {
     id: id,
-    val: any
+    val: IValUpdate
 }
-export interface ITypeAndIdAndValAndObjUpdates extends ITypeAndIdAndValUpdates {
+export type IStoreObjectUpdate = ITypeAndIdAndValAndObjUpdate
+export interface ITypeAndIdAndValAndObjUpdate extends ITypeAndIdAndValUpdate {
     obj
 }
-export interface ITypeAndIdAndValUpdates extends IIdAndValUpdates {
-    type: GlobalStoreObjectDataTypes
+export interface ITypeAndIdAndValUpdate extends IIdAndValUpdate {
+    type: CustomStoreDataTypes
 }
 export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
     ITreeLocationData & IContentData & IContentUserData & ICoordinate
@@ -961,17 +962,17 @@ export interface IMap<T> {
 export type entry<T> = [string, T]
 
 // IStoreSource
-export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<ITypeAndIdAndValUpdates> {}
+export interface ISubscribableStoreSource<T> extends IMap<T>, ISubscribable<ITypeAndIdAndValUpdate> {}
 export interface ISubscribableTreeStoreSource
-    extends IMap<ISyncableMutableSubscribableTree>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableTree>, ISubscribable<ITypeAndIdAndValUpdate> {}
 export interface ISubscribableTreeLocationStoreSource
-    extends IMap<ISyncableMutableSubscribableTreeLocation>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableTreeLocation>, ISubscribable<ITypeAndIdAndValUpdate> {}
 export interface ISubscribableTreeUserStoreSource
-    extends IMap<ISyncableMutableSubscribableTreeUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableTreeUser>, ISubscribable<ITypeAndIdAndValUpdate> {}
 export interface ISubscribableContentStoreSource
-    extends IMap<ISyncableMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableContent>, ISubscribable<ITypeAndIdAndValUpdate> {}
 export interface ISubscribableContentUserStoreSource
-    extends IMap<ISyncableMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdates> {}
+    extends IMap<ISyncableMutableSubscribableContentUser>, ISubscribable<ITypeAndIdAndValUpdate> {}
 
 // store
 export interface ISigmaGraph {
@@ -1006,6 +1007,13 @@ export interface IState {
         trees: IHash<ITreeDataWithoutId>,
         treeUsers: IHash<ITreeUserData>,
         treeLocations: IHash<ITreeLocationData>,
+    },
+    globalDataStoreObjects: {
+        content: IHash<ISyncableMutableSubscribableContent>,
+        contentUsers: IHash<ISyncableMutableSubscribableContentUser>,
+        trees: IHash<ISyncableMutableSubscribableTree>,
+        treeUsers: IHash<ISyncableMutableSubscribableTreeUser>,
+        treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
     },
     sigmaFactory: ISigmaFactory,
     sigmaNodeLoader: ISigmaNodeLoader,
@@ -1270,4 +1278,4 @@ export interface IStartable {
 export interface IAuthListener extends IStartable {
 }
 // ui
-export interface IUI extends ISubscriber<ITypeAndIdAndValUpdates> {}
+export interface IUI extends ISubscriber<ITypeAndIdAndValUpdate> {}

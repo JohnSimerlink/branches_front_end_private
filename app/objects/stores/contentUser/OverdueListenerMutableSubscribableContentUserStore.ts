@@ -1,7 +1,7 @@
 import {log} from '../../../core/log'
 import {
     ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    IContentUserData, IContentUserLoader, id, IIdAndValUpdates, IIdProppedDatedMutation,
+    IContentUserData, IContentUserLoader, id, IIdAndValUpdate, IIdProppedDatedMutation,
     IMutableSubscribableContentUser,
     IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISubscribable, ISubscribableContentUserCore,
     ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableContentUserStore,
@@ -38,11 +38,11 @@ export class OverdueListenerMutableSubscribableContentUserStore
 
         return contentUser
     }
-    public onUpdate(func: IUpdatesCallback<IIdAndValUpdates>) {
+    public onUpdate(func: IUpdatesCallback<IIdAndValUpdate>) {
         return this.contentUserStore.onUpdate(func)
     }
 
-    public addItem(id: any, item: ISubscribable<IIdAndValUpdates> & ISubscribableContentUserCore) {
+    public addItem(id: any, item: ISubscribable<IIdAndValUpdate> & ISubscribableContentUserCore) {
         return this.contentUserStore.addItem(id, item)
     }
 
