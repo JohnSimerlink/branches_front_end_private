@@ -129,16 +129,11 @@ test('TreeUserLoader:::DownloadData should return the data', async (t) => {
     const treeUserLoader = new TreeUserLoader({ storeSource, firebaseRef})
 
     const treeUserDataPromise = treeUserLoader.downloadData({treeId, userId})
-    const wrappedPromise = makeQuerablePromise(treeUserDataPromise)
-    log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
     childFirebaseRef.fakeEvent('value', undefined, expectedTreeUserData)
-    log('wrapped Promise is Fulfilled 2', wrappedPromise.isFulfilled())
     childFirebaseRef.flush()
-    log('wrapped Promise is Fulfilled 3', wrappedPromise.isFulfilled())
 
     const treeUserData = await treeUserDataPromise
-    log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(treeUserData).to.deep.equal(expectedTreeUserData)
     t.pass()
