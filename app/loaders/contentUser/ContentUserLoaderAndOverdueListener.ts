@@ -16,11 +16,11 @@ import {OverdueListener, OverdueListenerCore} from "../../objects/contentUser/ov
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
 export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
-    private firebaseRef: Reference
-    private contentUserLoader: IContentUserLoader
+    private firebaseRef: Reference;
+    private contentUserLoader: IContentUserLoader;
     constructor(@inject(TYPES.ContentUserLoaderAndOverdueListenerArgs){
     firebaseRef, contentUserLoader, }: ContentUserLoaderAndOverdueListenerArgs) {
-        this.contentUserLoader = contentUserLoader
+        this.contentUserLoader = contentUserLoader;
         this.firebaseRef = firebaseRef
     }
 
@@ -41,17 +41,17 @@ export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
 
     public async downloadData({contentId, userId}: { contentId: any; userId: any }): Promise<IContentUserData> {
         if (this.isLoaded({contentId, userId})) {
-            error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again')
+            error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again');
             return
         }
-        const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({contentId, userId})
-        const contentUserId = getContentUserId({contentId, userId})
-        const contentUser = this.getItem({contentUserId})
+        const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({contentId, userId});
+        const contentUserId = getContentUserId({contentId, userId});
+        const contentUser = this.getItem({contentUserId});
         const overdueListenerCore = new OverdueListenerCore(
             {overdue: contentUser.overdue, nextReviewTime: contentUser.nextReviewTime, timeoutId: null}
-        ) // = getContentUserRef({contentId, userId, contentUsersRef: this.firebaseRef})
-        const overdueListener = new OverdueListener({overdueListenerCore})
-        overdueListener.start()
+        ); // = getContentUserRef({contentId, userId, contentUsersRef: this.firebaseRef})
+        const overdueListener = new OverdueListener({overdueListenerCore});
+        overdueListener.start();
 
         return contentUserData
     }
@@ -59,6 +59,6 @@ export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
 
 @injectable()
 export class ContentUserLoaderAndOverdueListenerArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_USERS_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_USERS_REF, true) public firebaseRef: Reference;
     @inject(TYPES.IContentUserLoader) @tagged(TAGS.AUTO_SAVER, true) public contentUserLoader: IContentUserLoader
 }

@@ -12,7 +12,7 @@ import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class UserLoader implements IUserLoader {
-    private firebaseRef: Reference
+    private firebaseRef: Reference;
     constructor(@inject(TYPES.UserLoaderArgs){firebaseRef}: UserLoaderArgs) {
         this.firebaseRef = firebaseRef
     }
@@ -20,14 +20,14 @@ export class UserLoader implements IUserLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser> {
-        log('userLoader download User called', userId)
+        log('userLoader download User called', userId);
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(userId).once('value', (snapshot) => {
-                const userDataFromDB: IUserDataFromDB = snapshot.val()
+                const userDataFromDB: IUserDataFromDB = snapshot.val();
 
                 if (isValidUserDataFromDB(userDataFromDB)) {
                     const user: ISyncableMutableSubscribableUser =
-                        UserDeserializer.deserializeFromDB({userDataFromDB})
+                        UserDeserializer.deserializeFromDB({userDataFromDB});
                     resolve(user)
                 } else {
                     reject('userDataFromDB is invalid! ! ' + JSON.stringify(userDataFromDB))

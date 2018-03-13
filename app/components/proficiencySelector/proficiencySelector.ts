@@ -1,19 +1,18 @@
 import {log} from '../../core/log'
-const env = process.env.NODE_ENV || 'development'
-let template = ''
+const env = process.env.NODE_ENV || 'development';
+let template = '';
 if (env === 'test') {
-    let register = require('ignore-styles').default
+    let register = require('ignore-styles').default;
     if (!register) {
         register = require('ignore-styles')
     }
-    // log('configure is ', register)
     register(['.html, .less'])
 } else {
-    let style = require('./proficiency-selector.less').default
+    let style = require('./proficiency-selector.less').default;
     if (!style) {
         style = require('./proficiency-selector.less')
     }
-    template = require('./proficiencySelector.html').default
+    template = require('./proficiencySelector.html').default;
     if (!template) {
         template = require('./proficiencySelector.html')
     }

@@ -13,15 +13,15 @@ import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class ContentLoader implements IContentLoader {
-    private storeSource: ISubscribableContentStoreSource
-    private firebaseRef: Reference
+    private storeSource: ISubscribableContentStoreSource;
+    private firebaseRef: Reference;
     constructor(@inject(TYPES.ContentLoaderArgs){firebaseRef, storeSource}: ContentLoaderArgs) {
-        this.storeSource = storeSource
+        this.storeSource = storeSource;
         this.firebaseRef = firebaseRef
     }
 
     public getData(contentId): IContentData {
-        const contentItem = this.storeSource.get(contentId)
+        const contentItem = this.storeSource.get(contentId);
         if (!contentItem) {
             throw new RangeError(contentId +
                 ' does not exist in ContentLoader storeSource. Use isLoaded(contentId) to check.')
@@ -30,7 +30,7 @@ export class ContentLoader implements IContentLoader {
         // TODO: fix violoation of law of demeter
     }
     public getItem(contentId: any): ISyncableMutableSubscribableContent {
-        const contentItem = this.storeSource.get(contentId)
+        const contentItem = this.storeSource.get(contentId);
         if (!contentItem) {
             throw new RangeError(contentId +
                 ' does not exist in ContentLoader storeSource. Use isLoaded(contentId) to check.')
@@ -44,10 +44,10 @@ export class ContentLoader implements IContentLoader {
         if (this.isLoaded(contentId)) {
             return this.getData(contentId)
         }
-        const me = this
+        const me = this;
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(contentId).once('value', (snapshot) => {
-                const contentDataFromDB: IContentDataFromDB = snapshot.val()
+                const contentDataFromDB: IContentDataFromDB = snapshot.val();
                 if (!contentDataFromDB) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -64,10 +64,10 @@ export class ContentLoader implements IContentLoader {
 
                 if (isValidContentDataFromDB(contentDataFromDB)) {
                     const content: ISyncableMutableSubscribableContent =
-                        ContentDeserializer.deserializeFromDB({contentId, contentDataFromDB})
+                        ContentDeserializer.deserializeFromDB({contentId, contentDataFromDB});
                     const contentData: IContentData
-                        = ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB})
-                    me.storeSource.set(contentId, content)
+                        = ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB});
+                    me.storeSource.set(contentId, content);
                     resolve(contentData)
                 } else {
                     reject('contentDataFromDB is invalid! ! ' + JSON.stringify(contentDataFromDB))
@@ -85,6 +85,6 @@ export class ContentLoader implements IContentLoader {
 
 @injectable()
 export class ContentLoaderArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference;
     @inject(TYPES.ISubscribableContentStoreSource) public storeSource: ISubscribableContentStoreSource
 }

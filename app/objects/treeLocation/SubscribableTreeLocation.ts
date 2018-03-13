@@ -14,10 +14,10 @@ import {TYPES} from '../types'
 export class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISubscribableTreeLocation {
     // TODO: inject the publishing variable via dependency injection into constructor.
     // this could prove useful if we store the objects (with their updatesCallbacks callbacks array) in local storage
-    private publishing = false
-    public point: IMutableSubscribablePoint
-    public level: IMutableSubscribableField<number>
-    public mapId: IMutableSubscribableField<id>
+    private publishing = false;
+    public point: IMutableSubscribablePoint;
+    public level: IMutableSubscribableField<number>;
+    public mapId: IMutableSubscribableField<id>;
 
     // TODO: should the below three objects be private?
     public val(): ITreeLocationData {
@@ -30,9 +30,9 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
         updatesCallbacks, point, level, mapId
     }: SubscribableTreeLocationArgs) {
-        super({updatesCallbacks})
-        this.point = point
-        this.level = level
+        super({updatesCallbacks});
+        this.point = point;
+        this.level = level;
         this.mapId = mapId
     }
     // TODO: make IValUpdates a generic that takes for example ITreeLocationData
@@ -43,18 +43,18 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
         if (this.publishing) {
             return
         }
-        this.publishing = true
-        const boundCallCallbacks = this.callCallbacks.bind(this)
-        this.point.onUpdate(boundCallCallbacks)
-        this.level.onUpdate(boundCallCallbacks)
+        this.publishing = true;
+        const boundCallCallbacks = this.callCallbacks.bind(this);
+        this.point.onUpdate(boundCallCallbacks);
+        this.level.onUpdate(boundCallCallbacks);
         this.mapId.onUpdate(boundCallCallbacks)
     }
 }
 
 @injectable()
 export class SubscribableTreeLocationArgs {
-    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
-    @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint
-    @inject(TYPES.IMutableSubscribableNumber) public level: IMutableSubscribableField<number>
+    @inject(TYPES.Array) public updatesCallbacks: Array<Function>;
+    @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint;
+    @inject(TYPES.IMutableSubscribableNumber) public level: IMutableSubscribableField<number>;
     @inject(TYPES.IMutableSubscribableString) public mapId: IMutableSubscribableField<id>
 }

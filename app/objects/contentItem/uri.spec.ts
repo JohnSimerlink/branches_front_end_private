@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 test('uri: user or program should not be able to create uri longer than 768 bytes', (t) => {
    try {
@@ -8,4 +8,4 @@ test('uri: user or program should not be able to create uri longer than 768 byte
 
    }
    t.pass()
-})
+});

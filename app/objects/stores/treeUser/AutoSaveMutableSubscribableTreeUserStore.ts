@@ -16,11 +16,11 @@ import {TAGS} from '../../tags';
 export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribableTreeUserStore
     implements IMutableSubscribableTreeUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    private treeUsersFirebaseRef: Reference
+    private treeUsersFirebaseRef: Reference;
     constructor(@inject(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs){
         storeSource, updatesCallbacks, treeUsersFirebaseRef,
     }: AutoSaveMutableSubscribableTreeUserStoreArgs) {
-        super({storeSource, updatesCallbacks})
+        super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableTreeUserStore created')
         this.treeUsersFirebaseRef = treeUsersFirebaseRef
     }
@@ -28,17 +28,17 @@ export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribabl
         {id, treeUserData}:
         { id: string; treeUserData: ITreeUserData; })
     : ISyncableMutableSubscribableTreeUser {
-        const treeUserId = id
+        const treeUserId = id;
         const treeUser: ISyncableMutableSubscribableTreeUser =
-            super.addAndSubscribeToItemFromData({id, treeUserData})
-        const treeUserFirebaseRef = this.treeUsersFirebaseRef.child(treeUserId)
+            super.addAndSubscribeToItemFromData({id, treeUserData});
+        const treeUserFirebaseRef = this.treeUsersFirebaseRef.child(treeUserId);
         // const treeUserFirebaseRef = treeUserFirebaseRef.child(userId)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: treeUser,
             syncableObjectFirebaseRef: treeUserFirebaseRef
-        })
-        objectFirebaseAutoSaver.initialSave()
-        objectFirebaseAutoSaver.start()
+        });
+        objectFirebaseAutoSaver.initialSave();
+        objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
         return treeUser
     }

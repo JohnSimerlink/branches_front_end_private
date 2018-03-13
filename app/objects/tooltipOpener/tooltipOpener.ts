@@ -20,13 +20,13 @@ export function escape(str) {
   with the way we currently have this set up */
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
-    private tooltips
-    private store: Store<any>
-    private tooltipsConfig: object
+    private tooltips;
+    private store: Store<any>;
+    private tooltipsConfig: object;
     // private userId: string
     constructor(@inject(TYPES.TooltipOpenerArgs){tooltips, store, tooltipsConfig}: TooltipOpenerArgs ) {
-        this.tooltipsConfig = tooltipsConfig
-        this.tooltips = tooltips
+        this.tooltipsConfig = tooltipsConfig;
+        this.tooltips = tooltips;
         this.store = store
         // TODO: maybe set up this watch outside of constructor?
         // this.store.watch(
@@ -36,9 +36,9 @@ export class TooltipOpener implements ITooltipOpener {
         //     })
     }
     public openTooltip(node: ISigmaNode) {
-        const me = this
+        const me = this;
         // Make copy of singleton's config by value to avoid mutation
-        const tooltipsConfig = this.tooltipsConfig
+        const tooltipsConfig = this.tooltipsConfig;
         const configClone = clonedeep(tooltipsConfig);
 
         if (isMobile.any()) {
@@ -63,7 +63,7 @@ export class TooltipOpener implements ITooltipOpener {
 
 @injectable()
 export class TooltipOpenerArgs {
-    @inject(TYPES.Object) public tooltips
-    @inject(TYPES.Object) public tooltipsConfig
+    @inject(TYPES.Object) public tooltips;
+    @inject(TYPES.Object) public tooltipsConfig;
     @inject(TYPES.Object) public store
 }

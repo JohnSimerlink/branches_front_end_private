@@ -1,4 +1,4 @@
-const md5c = require( 'crypto-js/md5') // md5
+const md5c = require( 'crypto-js/md5'); // md5
 export default function(message){
     return md5c(message).toString()
 }

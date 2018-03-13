@@ -5,7 +5,7 @@ import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserLoader, IContentUserData, IContentUserDataFromDB, ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
-import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/contentUserValidator';
+import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/ContentUserValidator';
 import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
@@ -15,15 +15,15 @@ import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class ContentUserLoader implements IContentUserLoader {
-    private storeSource: ISubscribableContentUserStoreSource
-    private firebaseRef: Reference
+    private storeSource: ISubscribableContentUserStoreSource;
+    private firebaseRef: Reference;
     constructor(@inject(TYPES.ContentUserLoaderArgs){firebaseRef, storeSource}: ContentUserLoaderArgs) {
-        this.storeSource = storeSource
+        this.storeSource = storeSource;
         this.firebaseRef = firebaseRef
     }
 
     public getData({contentId, userId}): IContentUserData {
-        const contentUserId = getContentUserId({contentId, userId})
+        const contentUserId = getContentUserId({contentId, userId});
         if (!this.storeSource.get(contentUserId)) {
             throw new RangeError(contentUserId +
                 ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.')
@@ -33,7 +33,7 @@ export class ContentUserLoader implements IContentUserLoader {
     }
 
     public getItem({contentUserId}): ISyncableMutableSubscribableContentUser {
-        const contentItem = this.storeSource.get(contentUserId)
+        const contentItem = this.storeSource.get(contentUserId);
         if (!contentItem) {
             throw new RangeError(contentUserId +
                 ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.')
@@ -48,16 +48,16 @@ export class ContentUserLoader implements IContentUserLoader {
         if (!contentId || ! userId ) {
           throw RangeError('No contentId or userId supplied for downloadData')
         }
-        const contentUserId = getContentUserId({contentId, userId})
+        const contentUserId = getContentUserId({contentId, userId});
         if (this.isLoaded({contentId, userId})) {
             return this.getData({contentId, userId})
         }
         const contentUserRef: Reference =
-            getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId})
-        const me = this
+            getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId});
+        const me = this;
         return new Promise((resolve, reject) => {
             contentUserRef.once('value', (snapshot) => {
-                const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val()
+                const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val();
                 if (!contentUserDataFromDB) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -73,20 +73,20 @@ export class ContentUserLoader implements IContentUserLoader {
                        */
                 } else {
                 }
-                contentUserDataFromDB.id = contentUserId
+                contentUserDataFromDB.id = contentUserId;
                 // let children = contentUser.children || {}
                 // children = setToStringArray(children)
                 // contentUser.children = children as string[]
 
                 const contentUserData: IContentUserData =
-                    ContentUserDeserializer.convertDBDataToObjectData({contentUserDataFromDB, id: contentUserId})
+                    ContentUserDeserializer.convertDBDataToObjectData({contentUserDataFromDB, id: contentUserId});
                 if (isValidContentUserDataFromDB(contentUserDataFromDB)) {
                     const contentUser: ISyncableMutableSubscribableContentUser =
-                        ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB})
-                    me.storeSource.set(contentUserId, contentUser)
+                        ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB});
+                    me.storeSource.set(contentUserId, contentUser);
                     resolve(contentUserData)
                 } else {
-                    setTimeout(() => {}, 0)
+                    setTimeout(() => {}, 0);
                     reject('contentUser is invalid! ! ' + JSON.stringify(contentUserData))
                 }
             })
@@ -96,7 +96,7 @@ export class ContentUserLoader implements IContentUserLoader {
 
     // TODO: violates the COMMAND, DON'T ASK PRINCIPLE
     public isLoaded({contentId, userId}): boolean {
-        const contentUserId = getContentUserId({contentId, userId})
+        const contentUserId = getContentUserId({contentId, userId});
         return !!this.storeSource.get(contentUserId)
     }
 
@@ -104,6 +104,6 @@ export class ContentUserLoader implements IContentUserLoader {
 
 @injectable()
 export class ContentUserLoaderArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_USERS_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_USERS_REF, true) public firebaseRef: Reference;
     @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource: ISubscribableContentUserStoreSource
 }

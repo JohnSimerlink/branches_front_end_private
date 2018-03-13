@@ -26,16 +26,16 @@ export class MutableSubscribableTreeLocation
     public addMutation(mutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>
     // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: TreeLocationPropertyNames = mutation.propertyName
+        const propertyName: TreeLocationPropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<TreeLocationPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             case TreeLocationPropertyNames.POINT:
-                this.point.addMutation(propertyMutation as IDatedMutation<PointMutationTypes>)
-                break
+                this.point.addMutation(propertyMutation as IDatedMutation<PointMutationTypes>);
+                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)

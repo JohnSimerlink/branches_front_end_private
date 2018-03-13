@@ -9,33 +9,33 @@ import {TYPES} from '../../objects/types';
 import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
-    let register = require('ignore-styles').default || require('ignore-styles')
+    let register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less'])
 }
 import './newTree.less'
-let template = require('./newTree.html').default || require('./newTree.html')
+let template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
-    private store: Store<any>
+    private store: Store<any>;
     constructor(@inject(TYPES.NewTreeComponentCreatorArgs){
        store
    }: NewTreeComponentCreatorArgs) {
         this.store = store
     }
     public create() {
-        const me = this
+        const me = this;
         return {
             template,
             props: ['parentId', 'parentX', 'parentY', 'primaryparenttreecontenturi'],
             created() {
                 switch (this.type) {
                     case CONTENT_TYPES.CATEGORY:
-                        this.setTypeToCategoryUILogic()
+                        this.setTypeToCategoryUILogic();
                         break;
                     case CONTENT_TYPES.FACT:
-                        this.setTypeToFactUILogic()
+                        this.setTypeToFactUILogic();
                         break;
                 }
                 console.log('new tree is created')
@@ -81,9 +81,9 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                 createNewTree(
                     {question, answer, title, type}: IContentData
                     = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
-                    const titleFormatted = title && title.trim() || ''
-                    const questionFormatted = question && question.trim() || ''
-                    const answerFormatted = answer && answer.trim() || ''
+                    const titleFormatted = title && title.trim() || '';
+                    const questionFormatted = question && question.trim() || '';
+                    const answerFormatted = answer && answer.trim() || '';
                     const newChildTreeArgs: INewChildTreeMutationArgs = {
                         parentTreeId: this.parentId,
                         timestamp: Date.now(),
@@ -92,7 +92,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         answer: answerFormatted,
                         title: titleFormatted,
                         parentLocation: this.parentLocation,
-                    }
+                    };
                     me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs)
                 },
                 submitForm() {
@@ -101,42 +101,42 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         answer: this.answer,
                         title: this.title,
                         type: this.type
-                    }
+                    };
                     if (!newContentDataValid(newContentData)) {
                         return
                     }
-                    this.createNewTree(newContentData)
+                    this.createNewTree(newContentData);
                     // clear form
-                    this.question = ''
-                    this.answer = ''
-                    this.title = ''
+                    this.question = '';
+                    this.answer = '';
+                    this.title = '';
                     // focus cursor
                     switch (this.type) {
                         case CONTENT_TYPES.FACT:
-                            this.$refs.question.focus()
-                            break
+                            this.$refs.question.focus();
+                            break;
                         case CONTENT_TYPES.CATEGORY:
-                            this.$refs.category.focus()
+                            this.$refs.category.focus();
                             break
                     }
                 },
                 async setTypeToCategory() {
-                    this.type = CONTENT_TYPES.CATEGORY
+                    this.type = CONTENT_TYPES.CATEGORY;
                     this.setTypeToCategoryUILogic()
                 },
                 async setTypeToFact() {
-                    this.type = CONTENT_TYPES.FACT
+                    this.type = CONTENT_TYPES.FACT;
                     await this.setTypeToFactUILogic()
                 },
                 async setTypeToAnythingLogic() {
                     await Vue.nextTick
                 },
                 async setTypeToFactUILogic() {
-                    await this.setTypeToAnythingLogic()
+                    await this.setTypeToAnythingLogic();
                     this.$refs.question.focus()
                 },
                 async setTypeToCategoryUILogic() {
-                    await this.setTypeToAnythingLogic()
+                    await this.setTypeToAnythingLogic();
                     this.$refs.category.focus()
                 },
                 setTypeToSkill() {
