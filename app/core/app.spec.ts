@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
@@ -15,7 +15,7 @@ import {injectionWorks} from '../testHelpers/testHelpers';
 import {App, AppArgs} from './app';
 import {partialInject} from '../testHelpers/partialInject';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true})
 test('App:::: DI Constructor works', (t) => {
 
 
@@ -23,24 +23,24 @@ test('App:::: DI Constructor works', (t) => {
         container: myContainer,
         argsType: TYPES.AppArgs,
         interfaceType: TYPES.IApp,
-    });
-    expect(injects).to.equal(true);
+    })
+    expect(injects).to.equal(true)
     t.pass()
-});
+})
 test('App:::::Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', (t) => {
 
     const UI1mock: IUI = {
         subscribe() {}
-    };
+    }
     const UI2mock: IUI = {
         subscribe() {}
-    };
-    const UIs = [UI1mock, UI2mock];
-    const UI1SubscribeSpy = sinon.spy(UI1mock, 'subscribe');
-    const UI2SubscribeSpy = sinon.spy(UI2mock, 'subscribe');
+    }
+    const UIs = [UI1mock, UI2mock]
+    const UI1SubscribeSpy = sinon.spy(UI1mock, 'subscribe')
+    const UI2SubscribeSpy = sinon.spy(UI2mock, 'subscribe')
 
     const store: IMutableSubscribableGlobalStore
-        = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore);
+        = myContainer.get<IMutableSubscribableGlobalStore>(TYPES.IMutableSubscribableGlobalStore)
 
     const app: IApp =
         partialInject<AppArgs>({
@@ -51,17 +51,17 @@ test('App:::::Should subscribe the uis to the updates in the store (Non-DI for s
                 store
             },
             container: myContainer
-        });
-    app.start();
-    const UI1SubscribeSpyCalledWith = UI1SubscribeSpy.getCall(0).args[0];
-    expect(UI1SubscribeSpyCalledWith).to.deep.equal(store);
-    expect(UI1SubscribeSpy.callCount).to.deep.equal(1);
+        })
+    app.start()
+    const UI1SubscribeSpyCalledWith = UI1SubscribeSpy.getCall(0).args[0]
+    expect(UI1SubscribeSpyCalledWith).to.deep.equal(store)
+    expect(UI1SubscribeSpy.callCount).to.deep.equal(1)
 
-    const UI2SubscribeSpyCalledWith = UI2SubscribeSpy.getCall(0).args[0];
-    expect(UI2SubscribeSpyCalledWith).to.deep.equal(store);
-    expect(UI2SubscribeSpy.callCount).to.deep.equal(1);
+    const UI2SubscribeSpyCalledWith = UI2SubscribeSpy.getCall(0).args[0]
+    expect(UI2SubscribeSpyCalledWith).to.deep.equal(store)
+    expect(UI2SubscribeSpy.callCount).to.deep.equal(1)
     t.pass()
-});
+})
 // test('Should subscribe the uis to the updates in the storeSource (DI for subcomponents)', (t) => {
 //     // const UI1mock: IUI = {
 //     //     subscribe() {}

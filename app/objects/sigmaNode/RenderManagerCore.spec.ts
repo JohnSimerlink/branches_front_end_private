@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -9,25 +9,25 @@ import {TYPES} from '../types';
 import {RenderManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true})
 test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
-    const sigmaId = TREE_ID;
-    const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
-    const sigmaNodes = {};
-    sigmaNodes[sigmaId] = sigmaNode;
+    const sigmaId = TREE_ID
+    const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)
+    const sigmaNodes = {}
+    sigmaNodes[sigmaId] = sigmaNode
     const sigmaUpdater = {
         addNode() {},
         addEdges() {},
-    };
-    const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode');
+    }
+    const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode')
     const renderedNodesManagerCore: IRenderManagerCore
         = new RenderManagerCore(
             {sigmaNodes, sigmaEdges: {}, sigmaUpdater}
-            );
+            )
 
-    renderedNodesManagerCore.addNodeToRenderList(sigmaId);
-    expect(addNodeToSigma.callCount).to.deep.equal(1);
-    const calledWith = addNodeToSigma.getCall(0).args[0];
-    expect(calledWith).to.deep.equal(sigmaNode);
+    renderedNodesManagerCore.addNodeToRenderList(sigmaId)
+    expect(addNodeToSigma.callCount).to.deep.equal(1)
+    const calledWith = addNodeToSigma.getCall(0).args[0]
+    expect(calledWith).to.deep.equal(sigmaNode)
     t.pass()
-});
+})
