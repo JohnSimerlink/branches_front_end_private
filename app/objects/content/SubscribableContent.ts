@@ -13,7 +13,7 @@ import {TYPES} from '../types'
 
 @injectable()
 export class SubscribableContent extends Subscribable<IValUpdates> implements ISubscribableContent {
-    private publishing = false
+    private publishing = false;
     public type: IMutableSubscribableField<CONTENT_TYPES>;
     public question: IMutableSubscribableField<string>;
     public answer: IMutableSubscribableField<string>;
@@ -31,10 +31,10 @@ export class SubscribableContent extends Subscribable<IValUpdates> implements IS
     constructor(@inject(TYPES.SubscribableContentArgs) {
         updatesCallbacks, type, question, answer, title
     }: SubscribableContentArgs ) {
-        super({updatesCallbacks})
-        this.type = type
-        this.question = question
-        this.answer = answer
+        super({updatesCallbacks});
+        this.type = type;
+        this.question = question;
+        this.answer = answer;
         this.title = title
     }
     protected callbackArguments(): IValUpdates {
@@ -44,20 +44,20 @@ export class SubscribableContent extends Subscribable<IValUpdates> implements IS
         if (this.publishing) {
             return
         }
-        this.publishing = true
-        const boundCallCallbacks = this.callCallbacks.bind(this)
-        this.type.onUpdate(boundCallCallbacks)
-        this.question.onUpdate(boundCallCallbacks)
-        this.answer.onUpdate(boundCallCallbacks)
+        this.publishing = true;
+        const boundCallCallbacks = this.callCallbacks.bind(this);
+        this.type.onUpdate(boundCallCallbacks);
+        this.question.onUpdate(boundCallCallbacks);
+        this.answer.onUpdate(boundCallCallbacks);
         this.title.onUpdate(boundCallCallbacks)
     }
 }
 
 @injectable()
 export class SubscribableContentArgs {
-    @inject(TYPES.Array) public updatesCallbacks: any[]
-    @inject(TYPES.IMutableSubscribableContentType) public type
-    @inject(TYPES.IMutableSubscribableString) public question: IMutableSubscribableField<string>
-    @inject(TYPES.IMutableSubscribableString) public answer: IMutableSubscribableField<string>
+    @inject(TYPES.Array) public updatesCallbacks: any[];
+    @inject(TYPES.IMutableSubscribableContentType) public type;
+    @inject(TYPES.IMutableSubscribableString) public question: IMutableSubscribableField<string>;
+    @inject(TYPES.IMutableSubscribableString) public answer: IMutableSubscribableField<string>;
     @inject(TYPES.IMutableSubscribableString) public title: IMutableSubscribableField<string>
 }

@@ -17,7 +17,7 @@ import {OverdueListener, OverdueListenerCore} from '../../contentUser/overdueLis
 export class OverdueListenerMutableSubscribableContentUserStore
     implements IMutableSubscribableContentUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    private contentUserStore: ISyncableMutableSubscribableContentUserStore
+    private contentUserStore: ISyncableMutableSubscribableContentUserStore;
     constructor(@inject(TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs){
         contentUserStore,
     }: OverdueListenerMutableSubscribableContentUserStoreArgs) {
@@ -28,13 +28,13 @@ export class OverdueListenerMutableSubscribableContentUserStore
             { id: string; contentUserData: IContentUserData; })
     : ISyncableMutableSubscribableContentUser {
         const contentUser: ISyncableMutableSubscribableContentUser =
-            this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData})
+            this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData});
 
         const overdueListenerCore = new OverdueListenerCore(
             {overdue: contentUser.overdue, nextReviewTime: contentUser.nextReviewTime, timeoutId: null}
-        )
-        const overdueListener = new OverdueListener({overdueListenerCore})
-        overdueListener.start()
+        );
+        const overdueListener = new OverdueListener({overdueListenerCore});
+        overdueListener.start();
 
         return contentUser
     }

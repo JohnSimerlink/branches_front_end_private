@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import {MutableSubscribableField} from '../objects/field/MutableSubscribableField';
@@ -161,4 +161,4 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     // expect(sigmaNode.sampleContentUser1Proficiency).to.deep.equal(newProficiencyVal)
     // // verify that the sigmaNode is changed
     t.pass()
-})
+});

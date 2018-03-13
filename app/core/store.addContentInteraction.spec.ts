@@ -6,4 +6,4 @@ test('add Content Interaction', t => {
     // should
 
     t.pass()
-})
+});

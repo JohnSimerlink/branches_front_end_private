@@ -9,16 +9,16 @@ import {TYPES} from '../../objects/types';
 
 @injectable()
 export class BranchesMapLoader implements IBranchesMapLoader {
-    private branchesMapLoaderCore: IBranchesMapLoaderCore
-    private branchesMapIdObjectPromiseMap: IHash<Promise<ISyncableMutableSubscribableBranchesMap>>
-    private branchesMapIdObjectMap: IHash<ISyncableMutableSubscribableBranchesMap>
+    private branchesMapLoaderCore: IBranchesMapLoaderCore;
+    private branchesMapIdObjectPromiseMap: IHash<Promise<ISyncableMutableSubscribableBranchesMap>>;
+    private branchesMapIdObjectMap: IHash<ISyncableMutableSubscribableBranchesMap>;
     constructor(@inject(TYPES.BranchesMapLoaderArgs){
         branchesMapLoaderCore,
         branchesMapIdObjectPromiseMap,
         branchesMapIdObjectMap,
     }: BranchesMapLoaderArgs) {
-        this.branchesMapLoaderCore = branchesMapLoaderCore
-        this.branchesMapIdObjectPromiseMap = branchesMapIdObjectPromiseMap
+        this.branchesMapLoaderCore = branchesMapLoaderCore;
+        this.branchesMapIdObjectPromiseMap = branchesMapIdObjectPromiseMap;
         this.branchesMapIdObjectMap = branchesMapIdObjectMap
     }
 
@@ -28,23 +28,23 @@ export class BranchesMapLoader implements IBranchesMapLoader {
 
         // check if data is in cache
         const branchesMap: ISyncableMutableSubscribableBranchesMap
-            = this.branchesMapIdObjectMap[branchesMapId]
+            = this.branchesMapIdObjectMap[branchesMapId];
         if (branchesMap) {
             return branchesMap
         }
         // check if data is currently being fetched by another instance of this method
         const storedObjectPromise: Promise<ISyncableMutableSubscribableBranchesMap> =
-            this.branchesMapIdObjectPromiseMap[branchesMapId]
+            this.branchesMapIdObjectPromiseMap[branchesMapId];
         if (storedObjectPromise) {
             return await storedObjectPromise
         }
         // else load the data
-        const dataPromise = this.branchesMapLoaderCore.load(branchesMapId)
-        this.branchesMapIdObjectPromiseMap[branchesMapId] = dataPromise
+        const dataPromise = this.branchesMapLoaderCore.load(branchesMapId);
+        this.branchesMapIdObjectPromiseMap[branchesMapId] = dataPromise;
 
-        const data = await dataPromise
-        this.branchesMapIdObjectMap[branchesMapId] = data
-        delete this.branchesMapIdObjectPromiseMap[branchesMapId]
+        const data = await dataPromise;
+        this.branchesMapIdObjectMap[branchesMapId] = data;
+        delete this.branchesMapIdObjectPromiseMap[branchesMapId];
         return dataPromise
 
     }
@@ -52,9 +52,9 @@ export class BranchesMapLoader implements IBranchesMapLoader {
 
 @injectable()
 export class BranchesMapLoaderArgs {
-    @inject(TYPES.IBranchesMapLoaderCore) public branchesMapLoaderCore: IBranchesMapLoaderCore
+    @inject(TYPES.IBranchesMapLoaderCore) public branchesMapLoaderCore: IBranchesMapLoaderCore;
     @inject(TYPES.Object)
-        private branchesMapIdObjectPromiseMap: IHash<Promise<ISyncableMutableSubscribableBranchesMap>>
+        private branchesMapIdObjectPromiseMap: IHash<Promise<ISyncableMutableSubscribableBranchesMap>>;
     @inject(TYPES.Object)
         private branchesMapIdObjectMap: IHash<ISyncableMutableSubscribableBranchesMap>
 }

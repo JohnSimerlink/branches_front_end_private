@@ -14,11 +14,11 @@ import {TAGS} from '../../tags';
 export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTreeStore
     implements IMutableSubscribableTreeStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    private treesFirebaseRef: Reference
+    private treesFirebaseRef: Reference;
     constructor(@inject(TYPES.AutoSaveMutableSubscribableTreeStoreArgs){
         storeSource, updatesCallbacks, treesFirebaseRef,
     }: AutoSaveMutableSubscribableTreeStoreArgs) {
-        super({storeSource, updatesCallbacks})
+        super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableTreeStore created')
         this.treesFirebaseRef = treesFirebaseRef
     }
@@ -26,20 +26,20 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
         {id, treeDataWithoutId}:
         { id: string; treeDataWithoutId: ITreeDataWithoutId; })
     : ISyncableMutableSubscribableTree {
-        log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem called', id, treeDataWithoutId)
-        const treeId = id
+        log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem called', id, treeDataWithoutId);
+        const treeId = id;
         const treeItem: ISyncableMutableSubscribableTree =
-            super.addAndSubscribeToItemFromData({id, treeDataWithoutId})
-        const treeItemFirebaseRef = this.treesFirebaseRef.child(treeId)
+            super.addAndSubscribeToItemFromData({id, treeDataWithoutId});
+        const treeItemFirebaseRef = this.treesFirebaseRef.child(treeId);
         // const treeItemFirebaseRef = treeFirebaseRef.child(userId)
         // log('treesFirebaseRef and treeItemFirebaseRef are', this.treesFirebaseRef, treeItemFirebaseRef)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: treeItem,
             syncableObjectFirebaseRef: treeItemFirebaseRef
-        })
-        objectFirebaseAutoSaver.initialSave()
-        log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem initialSave just  called', id, treeDataWithoutId)
-        objectFirebaseAutoSaver.start()
+        });
+        objectFirebaseAutoSaver.initialSave();
+        log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem initialSave just  called', id, treeDataWithoutId);
+        objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
         return treeItem
     }
