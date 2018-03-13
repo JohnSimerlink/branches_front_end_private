@@ -7,7 +7,8 @@ const CIRCLE_PREFERENCE_FACTOR = 10;
 
 // shout out to archit
 // he da man
-export function determineObstacleVectorField({obstacleCoordinate, r}: {obstacleCoordinate: ICoordinate, r: number}): fXYField {
+export function determineObstacleVectorField({obstacleCoordinate, r}:
+    {obstacleCoordinate: ICoordinate, r: number}): fXYField {
     let vectorField: fXYField;
     /* the closer the branchesMap is to the obstacle, the more negative a value the field should return.
      * As the branchesMap approaches infinite distance from the obstacle, the field should
@@ -95,7 +96,9 @@ export function determinePreferenceField({parentCoordinate, r}: {parentCoordinat
 
     return vectorField
 }
-export function inCircle({center, r, x, y}: {center: {x: number, y: number}, r: number, x: number, y: number}): boolean {
+
+export function inCircle({center, r, x, y}:
+    {center: {x: number, y: number}, r: number, x: number, y: number}): boolean {
     const d = distance({x1: x, y1: y, x2: center.x, y2: center.y});
     // log('the distance inside of inCircle is ', {center, r, x, y}, d)
     return d < r
@@ -145,4 +148,3 @@ export function create2DArrayWith0s(width): number[][] {
     }
     return matrix
 }
-

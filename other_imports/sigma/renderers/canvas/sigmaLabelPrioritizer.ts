@@ -1,13 +1,14 @@
 import sigmaImport from '../../sigma.core'
-// import {A_BIG_NUMBER} from "../../../../app/objects/treeLocation/determineNewLocationUtils";
-const sigma: any = sigmaImport
 import {isMobile} from '../../../../app/core/utils'
-var xOffset = 50
-var A_BIG_NUMBER = 9001
-const windowAny: any = window
-export var labelLevels = {}
-const numColumnsOnScreen = isMobile.any()
-export var packageData = {
+
+const sigma: any = sigmaImport;
+const A_BIG_NUMBER = 9001;
+const windowAny: any = window;
+const numColumnsOnScreen = isMobile.any();
+
+export let labelLevels = {}
+
+export let packageData = {
     width: 0,
     height: 0,
     numRowsOnScreen: 0,
@@ -18,6 +19,7 @@ export var packageData = {
     rowHeight: sigma.settings.defaultLabelSize * 1.75,
     columnWidth: 100,
 }
+
 export function initializePackageData() {
     const graphContainer = document.querySelector('#graph-container')
     if (!graphContainer) {

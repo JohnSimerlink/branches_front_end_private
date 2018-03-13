@@ -30,7 +30,8 @@ export function calculateNextReviewTime(
     return nextReviewTime
 }
 // function measureInitialPreviousInteractionStrength
-export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {estimatedPreviousStrength: number, R: number, t: number}) {
+export function measurePreviousStrength({estimatedPreviousStrength, R, t}:
+    {estimatedPreviousStrength: number, R: number, t: number}) {
 
     const proficiencyAsDecimal = R / 100;
     const logProficiency = Math.log(proficiencyAsDecimal);

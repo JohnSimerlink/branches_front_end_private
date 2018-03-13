@@ -8,8 +8,8 @@ import {isValidUserDataFromDB} from '../../objects/user/userValidator';
 import {TreeDeserializer} from '../tree/TreeDeserializer';
 import {log} from '../../core/log'
 import {DEFAULT_MEMBERSHIP_EXPIRATION_DATE} from '../../objects/user/usersUtils';
-import * as firebase from "firebase";
-import {DEFAULT_USER_INFO} from "../../core/globals";
+import * as firebase from 'firebase';
+import {DEFAULT_USER_INFO} from '../../core/globals';
 
 export class UserDeserializer {
    public static deserialize(

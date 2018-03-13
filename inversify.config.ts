@@ -177,7 +177,9 @@ import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tool
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
 import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTree';
 import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutableSubscribableTree';
-import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
+import {
+    SyncableMutableSubscribableTreeLocation
+} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
 import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './app/loaders/tree/specialTreeLoader';
@@ -186,7 +188,10 @@ import {
     TreeLocationLoaderAndAutoSaver,
     TreeLocationLoaderAndAutoSaverArgs
 } from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
-import {ContentLoaderAndAutoSaverArgs, ContentLoaderAndAutoSaver} from './app/loaders/content/ContentLoaderAndAutoSaver';
+import {
+    ContentLoaderAndAutoSaverArgs,
+    ContentLoaderAndAutoSaver
+} from './app/loaders/content/ContentLoaderAndAutoSaver';
 import {
     ContentUserLoaderAndAutoSaver,
     ContentUserLoaderAndAutoSaverArgs
@@ -215,14 +220,8 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
-let Vue = require('vue').default
-if (!Vue) {
-    Vue = require('vue')
-}
-let Vuex = require('vuex').default
-if (!Vuex) {
-    Vuex = require('vuex')
-}
+import Vue from 'vue';
+import Vuex from 'vuex';
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
@@ -820,7 +819,7 @@ export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .whenTargetIsDefault()
 // tslint:disable-next-line ban-types
     bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
-    bind<Number>(TYPES.Number).toConstantValue(0)
+    bind<number>(TYPES.Number).toConstantValue(0)
     bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
         state

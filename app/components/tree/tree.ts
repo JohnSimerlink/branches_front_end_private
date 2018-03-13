@@ -8,8 +8,12 @@ import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     CONTENT_TYPES,
     IContentData,
-    IContentUserData, IEditCategoryMutationArgs, IEditFactMutationArgs,
-    ITreeCreator, ITreeDataWithoutId, ITreeLocationData,
+    IContentUserData,
+    IEditCategoryMutationArgs,
+    IEditFactMutationArgs,
+    ITreeCreator,
+    ITreeDataWithoutId,
+    ITreeLocationData,
     timestamp,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -133,8 +137,11 @@ export class TreeCreator implements ITreeCreator {
                     const styles = {};
                     styles['background-color'] = 'gray';
                     if (this.typeIsCategory) {
-                        styles['background-color'] = 'black';
-                        styles['color'] = 'white'
+                        const color: string = 'color';
+                        const backgroundColor: string = 'background-color';
+
+                        styles[backgroundColor] = 'black';
+                        styles[color] = 'white'
                     } else {
                         // if ()
                         const proficiency = this.proficiencyInput;
@@ -184,7 +191,7 @@ export class TreeCreator implements ITreeCreator {
                 proficiencyClicked(proficiency) {
                     this.proficiencyInput = proficiency;
                     const contentUserId = this.contentUserId;
-                    const timestamp = Date.now();
+                    const _timestamp = Date.now();
                     if (!this.contentUserDataLoaded) {
                         log(
                             'ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED'
@@ -194,7 +201,7 @@ export class TreeCreator implements ITreeCreator {
                             {
                                 contentUserId,
                                 proficiency,
-                                timestamp,
+                                _timestamp,
                             }
                         )
                     } else {
@@ -204,7 +211,7 @@ export class TreeCreator implements ITreeCreator {
                         me.store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
                             contentUserId,
                             proficiency,
-                            timestamp
+                            _timestamp
                         })
                     }
                 },
