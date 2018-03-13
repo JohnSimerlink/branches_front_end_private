@@ -7,9 +7,9 @@
 // import ContentItems from "../../objects/contentItems";
 import {log} from '../../core/log'
 
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
-    let register = require('ignore-styles').default
+    let register = require('ignore-styles').default;
     if (!register) {
         register = require('ignore-styles')
     }
@@ -17,7 +17,7 @@ if (env === 'test') {
     register(['.html'])
 }
 // tslint:disable-next-line no-var-requires
-const template = require('./branches-footer.html').default
+const template = require('./branches-footer.html').default;
 export default {
     template,
     created() {
