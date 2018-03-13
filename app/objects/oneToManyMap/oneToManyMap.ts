@@ -1,6 +1,7 @@
 import {inject, injectable} from 'inversify';
 import {IMap, IOneToManyMap} from '../interfaces';
 import {TYPES} from '../types';
+
 let md5 = require('md5').default;
 if (!md5) {
     md5 = require('md5')

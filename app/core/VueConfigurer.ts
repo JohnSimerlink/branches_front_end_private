@@ -26,7 +26,7 @@ import Points from '../components/points/points'
 import MapChooser from '../components/mapChooser/mapChooser'
 import {Store} from 'vuex';
 import { StripeCheckout } from 'vue-stripe'
-import BranchesStripe from '../components/giveUsUrMonee/branches-stripe';
+import BranchesStripe from '../components/stripe/branches-stripe';
 import AsyncComputed from 'vue-async-computed'
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
@@ -52,7 +52,7 @@ export class VueConfigurer implements IVueConfigurer {
         const NewTree = this.newTreeComponentCreator.create();
         const KnawledgeMap = this.knawledgeMapCreator.create();
 
-        const Buy = { template: require('../components/giveUsUrMonee/branches-stripe.html')};
+        const Buy = { template: require('../components/stripe/branches-stripe.html')};
 
         Vue.component('knawledgeMap', KnawledgeMap);
         Vue.component('tree', Tree);

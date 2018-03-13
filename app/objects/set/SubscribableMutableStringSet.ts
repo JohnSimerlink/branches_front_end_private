@@ -10,7 +10,7 @@ import {
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log'
-var clonedeep = require('lodash.clonedeep');
+import clonedeep = require('lodash.clonedeep');
 
 /*
 Decided to not implement IUndoable on this class, because undo/redo add/remove aren't
