@@ -51,6 +51,10 @@ import {UserDeserializer} from '../loaders/user/UserDeserializer';
 import {UserLoader} from '../loaders/user/UserLoader';
 import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 import {getUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
+import {
+    ISetContentMutationArgs, ISetContentUserMutationArgs, ISetTreeLocationMutationArgs, ISetTreeMutationArgs,
+    ISetTreeUserMutationArgs
+} from './store_interfaces';
 
 let Vue = require('vue').default; // for webpack
 if (!Vue) {
@@ -60,6 +64,11 @@ if (!Vue) {
 Vue.use(Vuex);
 
 export enum MUTATION_NAMES {
+    SET_CONTENT_USER = 'SET_CONTENT_USER',
+    SET_CONTENT = 'SET_CONTENT',
+    SET_TREE_USER = 'SET_TREE_USER',
+    SET_TREE = 'SET_TREE',
+    SET_TREE_LOCATION = 'SET_TREE_LOCATION',
     CREATE_USER_OR_LOGIN = 'create_user_or_login',
     LOGIN = 'login',
     INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED = 'initializeSigmaInstance',
@@ -817,6 +826,23 @@ const mutations = {
     [MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState,
        {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData)
+    },
+    [MUTATION_NAMES.SET_TREE](state: IState, {treeId, tree}: ISetTreeMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.trees, treeId, tree)
+    },
+    [MUTATION_NAMES.SET_TREE_LOCATION](state: IState,
+                                            {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.treeLocations, treeId, treeLocation)
+    },
+    [MUTATION_NAMES.SET_TREE_USER](state: IState, {treeId, treeUser}: ISetTreeUserMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.treeUsers, treeId, treeUser)
+    },
+    [MUTATION_NAMES.SET_CONTENT](state: IState, {contentId, content}: ISetContentMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.content, contentId, content)
+    },
+    [MUTATION_NAMES.SET_CONTENT_USER](state: IState,
+                                           {contentUserId, contentUser }: ISetContentUserMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.contentUsers, contentUserId, contentUser)
     },
 };
 const actions = {};

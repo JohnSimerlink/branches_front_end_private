@@ -28,7 +28,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.store = store;
         this['_id'] = Math.random()
     }
-    // private receiveUpdate
 
     /* TODO: edge case - what if a content data is received before the tree_OUTDATED data,
     meaning the content data may not have a sigma id to be applied to? */
@@ -39,9 +38,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
             case GlobalStoreObjectDataTypes.TREE_DATA: {
                 const sigmaId = update.id;
                 const contentId = update.val.contentId;
-                // if (!this.sigmaNodes[sigmaId]) {
-                //     this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
-                // }
+
                 this.contentIdSigmaIdMap.set(contentId, sigmaId);
                 this.sigmaNodesUpdater.handleUpdate(update);
 
@@ -53,10 +50,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 break;
             }
             case GlobalStoreObjectDataTypes.TREE_LOCATION_DATA: {
-                // const sigmaId = update.id
-                // if (!this.sigmaNodes[sigmaId]) {
-                //     this.sigmaNodes[sigmaId] = new SigmaNode({id: sigmaId} as SigmaNodeArgs)
-                // }
                 this.sigmaNodesUpdater.handleUpdate(update);
 
                 const mutationArgs: ISetTreeLocationDataMutationArgs = {
@@ -92,7 +85,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                     contentUserId: update.id,
                     contentUserData: update.val,
                 };
-                this.store.commit(MUTATION_NAMES.SET_CONTENT_USER_DATA, mutationArgs);
+                this.store.commit(MUTATION_NAMES.SET_CONTENT_USER, mutationArgs);
 
                 break;
             }
