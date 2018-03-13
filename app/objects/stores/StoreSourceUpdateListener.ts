@@ -7,7 +7,7 @@ import {TYPES} from '../types';
 
 @injectable()
 export class StoreSourceUpdateListener implements IStoreSourceUpdateListener {
-    private storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
+    private storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore;
     constructor(@inject(TYPES.StoreSourceUpdateListenerArgs){storeSourceUpdateListenerCore}: StoreSourceUpdateListenerArgs) {
         this.storeSourceUpdateListenerCore = storeSourceUpdateListenerCore
     }

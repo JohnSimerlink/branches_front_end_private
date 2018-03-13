@@ -17,12 +17,12 @@ export class ContentUserData implements IContentUserData {
         id, overdue, timer, proficiency, lastRecordedStrength,
         lastInteractionTime, nextReviewTime,
     }: ContentUserDataArgs) {
-        this.id = id
-        this.overdue = overdue
-        this.timer = timer
-        this.proficiency = proficiency
-        this.lastEstimatedStrength = lastRecordedStrength
-        this.lastInteractionTime = lastInteractionTime
+        this.id = id;
+        this.overdue = overdue;
+        this.timer = timer;
+        this.proficiency = proficiency;
+        this.lastEstimatedStrength = lastRecordedStrength;
+        this.lastInteractionTime = lastInteractionTime;
         this.nextReviewTime = nextReviewTime
     }
 }

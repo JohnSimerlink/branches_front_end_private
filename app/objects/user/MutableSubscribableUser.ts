@@ -40,34 +40,34 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
     public addMutation(mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>
                        // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: UserPropertyNames = mutation.propertyName
+        const propertyName: UserPropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<UserPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             case UserPropertyNames.MEMBERSHIP_EXPIRATION_DATE:
-                this.membershipExpirationDate.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.membershipExpirationDate.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case UserPropertyNames.EVER_ACTIVATED_MEMBERSHIP:
-                this.everActivatedMembership.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.everActivatedMembership.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case UserPropertyNames.POINTS:
-                this.points.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.points.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
 
             case UserPropertyNames.ROOT_MAP_ID:
-                this.rootMapId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.rootMapId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case UserPropertyNames.OPEN_MAP_ID:
-                this.openMapId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.openMapId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case UserPropertyNames.CURRENT_HOVERED_TREE_ID:
-                this.currentHoveredTreeId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.currentHoveredTreeId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case UserPropertyNames.USER_INFO:
-                const userInfoObject = mutation.data
+                const userInfoObject = mutation.data;
                 const userInfo: firebase.UserInfo = {
                     displayName: userInfoObject.displayName,
                     email: userInfoObject.email,
@@ -75,12 +75,12 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                     providerId: userInfoObject.providerId,
                     photoURL: userInfoObject.photoURL,
                     uid: userInfoObject.uid,
-                }
-                propertyMutation.data = userInfo
+                };
+                propertyMutation.data = userInfo;
                 // ^ ensures there aren't any extraneous functions
                 // or properties on the object being passed in to the SET mutation
-                this.userInfo.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
+                this.userInfo.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)

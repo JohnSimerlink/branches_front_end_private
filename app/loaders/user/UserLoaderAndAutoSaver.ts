@@ -14,25 +14,25 @@ import {TAGS} from '../../objects/tags';
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
 export class UserLoaderAndAutoSaver implements IUserLoader {
-    private firebaseRef: Reference
-    private userLoader: IUserLoader
+    private firebaseRef: Reference;
+    private userLoader: IUserLoader;
     constructor(@inject(TYPES.UserLoaderAndAutoSaverArgs){
         firebaseRef, userLoader, }: UserLoaderAndAutoSaverArgs) {
-        this.userLoader = userLoader
+        this.userLoader = userLoader;
         this.firebaseRef = firebaseRef
     }
     public async downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser> {
-        log('userLoaderAutoSaver download User called', userId)
-        const user = await this.userLoader.downloadUser(userId)
+        log('userLoaderAutoSaver download User called', userId);
+        const user = await this.userLoader.downloadUser(userId);
 
-        const userFirebaseRef = this.firebaseRef.child(userId)
+        const userFirebaseRef = this.firebaseRef.child(userId);
         const userAutoSaver: IObjectFirebaseAutoSaver =
             new ObjectFirebaseAutoSaver({
                 syncableObjectFirebaseRef: userFirebaseRef,
                 syncableObject: user
-            })
-        userAutoSaver.start()
-        log('userAuto saver just called')
+            });
+        userAutoSaver.start();
+        log('userAuto saver just called');
 
         return user
     }
@@ -40,6 +40,6 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
 
 @injectable()
 export class UserLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference;
     @inject(TYPES.IUserLoader) public userLoader: IUserLoader
 }

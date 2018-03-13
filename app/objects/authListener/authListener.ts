@@ -9,7 +9,7 @@ import {Store} from 'vuex';
 @injectable()
 
 export class AuthListener implements IAuthListener {
-    private store: Store<any>
+    private store: Store<any>;
     constructor(@inject(TYPES.AuthListenerArgs) {
         store
         }: AuthListenerArgs ) {
@@ -20,12 +20,12 @@ export class AuthListener implements IAuthListener {
             if (!user) {
                 return
             }
-            log('AUTH STATE CHANGED. NEW RESULT IS ', user)
+            log('AUTH STATE CHANGED. NEW RESULT IS ', user);
 
             const mutationArgs: ICreateUserOrLoginMutationArgs = {
                 userId: user && user.uid || null,
                 userInfo: user,
-            }
+            };
 
             this.store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, mutationArgs)
         })

@@ -15,4 +15,4 @@ export const TAGS = {
     TREE_LOCATIONS_REF: Symbol('tree_locations_ref'),
     TREE_USERS_REF: Symbol('tree_users_ref'),
     USERS_REF: Symbol('users_ref'),
-}
+};

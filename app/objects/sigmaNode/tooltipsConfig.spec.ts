@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import 'reflect-metadata'
 import {renderer} from './tooltipsConfig'
@@ -11,17 +11,17 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-myContainerLoadAllModules()
+myContainerLoadAllModules();
 test('tooltips renderer content should escape', t => {
-    const contentId = '452340985'
-    const userId = 'abdcede13'
+    const contentId = '452340985';
+    const userId = 'abdcede13';
     const proficiencyStats: IProficiencyStats = {
         THREE: 2,
         ONE: 2,
-    } as IProficiencyStats
-    const contentUserId = getContentUserId({contentId, userId})
-    const nextReviewTimeVal = Date.now() + 1000 * 60
-    const lastInteractionTimeVal = Date.now()
+    } as IProficiencyStats;
+    const contentUserId = getContentUserId({contentId, userId});
+    const nextReviewTimeVal = Date.now() + 1000 * 60;
+    const lastInteractionTimeVal = Date.now();
     const contentUserData: IContentUserData = {
         id: contentUserId,
         overdue: false,
@@ -30,7 +30,7 @@ test('tooltips renderer content should escape', t => {
         lastEstimatedStrength: 40,
         nextReviewTime: nextReviewTimeVal,
         lastInteractionTime: lastInteractionTimeVal,
-    }
+    };
     // const node: ISigmaNodeData = {
     //      id: '1234',
     //      parentId: '12345',
@@ -67,4 +67,4 @@ test('tooltips renderer content should escape', t => {
     //     </div>`;
     // const vueTreeTemplate = renderer(node, null)
     t.pass()
-})
+});

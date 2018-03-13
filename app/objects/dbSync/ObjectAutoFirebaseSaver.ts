@@ -11,20 +11,20 @@ import Reference = firebase.database.Reference;
 
 @injectable()
 export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
-    private syncableObject: ISyncable
-    private syncableObjectFirebaseRef: Reference
+    private syncableObject: ISyncable;
+    private syncableObjectFirebaseRef: Reference;
 
     constructor(@inject(TYPES.ObjectFirebaseAutoSaverArgs){
         syncableObject, syncableObjectFirebaseRef
     }: ObjectFirebaseAutoSaverArgs) {
-        this.syncableObject = syncableObject
+        this.syncableObject = syncableObject;
         this.syncableObjectFirebaseRef = syncableObjectFirebaseRef
     }
 
     public initialSave() {
-        const saveVal: IHash<IValObject> = {}
+        const saveVal: IHash<IValObject> = {};
 
-        const propertiesToSync = this.syncableObject.getPropertiesToSync()
+        const propertiesToSync = this.syncableObject.getPropertiesToSync();
         for (const [propName, property] of Object.entries(propertiesToSync)) {
             saveVal[propName] = {
                 val: property.dbVal(),
@@ -33,13 +33,13 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
         this.syncableObjectFirebaseRef.update(saveVal)
     }
     public start() {
-        const propertiesToSync = this.syncableObject.getPropertiesToSync()
+        const propertiesToSync = this.syncableObject.getPropertiesToSync();
         for (const [propName, property] of Object.entries(propertiesToSync)) {
-            const propertyFirebaseRef = this.syncableObjectFirebaseRef.child(propName)
-            const propertyFirebaseSaver: IDatabaseSaver = new PropertyFirebaseSaver({firebaseRef: propertyFirebaseRef})
+            const propertyFirebaseRef = this.syncableObjectFirebaseRef.child(propName);
+            const propertyFirebaseSaver: IDatabaseSaver = new PropertyFirebaseSaver({firebaseRef: propertyFirebaseRef});
             const propertyAutoFirebaseSaver: IDatabaseAutoSaver = new PropertyAutoFirebaseSaver({
                 saveUpdatesToDBFunction: propertyFirebaseSaver.save.bind(propertyFirebaseSaver)
-            })
+            });
             propertyAutoFirebaseSaver.subscribe(property)
         }
     }
@@ -47,6 +47,6 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
 
 @injectable()
 export class ObjectFirebaseAutoSaverArgs {
-    @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncable
+    @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncable;
     @inject(TYPES.FirebaseReference) public syncableObjectFirebaseRef: Reference
 }
