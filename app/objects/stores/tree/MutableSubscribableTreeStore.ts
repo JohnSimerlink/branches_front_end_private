@@ -30,8 +30,9 @@ export class MutableSubscribableTreeStore
         const tree: IMutableSubscribableTree
             = this.storeSource.get(id);
         if (!tree) {
+            const _id: string = '_id';
             throw new RangeError('Couldn\'t find tree for treeId: ' + id + ' in the following storeSource '
-                + JSON.stringify(this.storeSource) + ' ' + this.storeSource['_id'])
+                + JSON.stringify(this.storeSource) + ' ' + this.storeSource[_id])
         }
 
         const proppedDatedMutation:

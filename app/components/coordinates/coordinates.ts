@@ -95,10 +95,10 @@ function valueToColor(value): string {
     // log('value in valueToColor is', value)
     // value = value + 50
     let red = 75 - value;
-    if (red < 0) red = 0;
+    if (red < 0) {red = 0};
     let green = value - 25;
-    if (green < 0) green = 0;
+    if (green < 0) {green = 0};
     red = red * 3;
     green = green * 3;
-    return "rgb(" + red + ", " + green + ", 0)"
+    return 'rgb(' + red + ', ' + green + ', 0)'
 }
